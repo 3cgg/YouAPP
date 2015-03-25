@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<!-- <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script> -->
+<script src="../page/js/jquery-1.11.2.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+<div  class="modal fade"  id="mddiv">
+abc
+</div>
+
+<button type="button" class="btn btn-default"  id="mdbt"
+data-toggle="modal" data-target="#mddiv" 
+ >Open</button>
+
+<button type="button" class="btn btn-default"  id="bt"
+ >Open JS Trigger</button>
+
+
+
+<div class="dropdown"  id="mydropdown">
+	<button id="dLabel" type="button"  data-toggle="dropdown" 
+	aria-haspopup="true"  aria-expanded="false"
+	       > Dropdown trigger
+	       <span class="caret"></span>
+	       </button>
+
+	<ul class="dropdown-menu"  role="menu"
+		aria-labelledby="dLabel"
+	>
+	<li  role="presentation" >
+		<a role="menuitem"  tableindex="-1"  href="#">Action</a>
+	 </li>
+	
+	
+	
+	</ul>
+
+
+</div>
+
+<button type="button" class="btn btn-default"  id="triggerMenu"  data-toggle="dropdown" 
+ >Open MENU Trigger</button>
+
+
+<div  id="out">
+	<div id="inner">INNER</div>
+</div>
+
+
+
+
+<div class="dropdown">
+<a class="dropdown-toggle" data-toggle="dropdown">Show menu</a>
+
+<ul class="dropdown-menu" role="menu">
+    <li>Link 1</li>
+    <li>Link 2</li> 
+    <li>Link 3</li>                                             
+</ul>
+</div>
+
+<script type="text/javascript">
+
+
+$('#mddiv').on('hidden.bs.modal', function (e) {
+
+	console.log('close');
+	
+	
+});
+
+$('#mddiv').on('show.bs.modal', function (e) {
+
+	console.log('show');
+	
+	
+});
+
+$('#mydropdown').on('show.bs.dropdown',function(){
+	
+	console.log(' show dropdown ');
+})
+
+
+$('#triggerMenu').on('click',function (){
+	console.log(' trigger menu ');
+//	$('#mydropdown').dropdown();
+	
+});
+
+document.getElementById('triggerMenu').addEventListener('doubleclick',function (){
+	
+	console.log('double click');
+});
+
+$('#bt').on('click',function(){
+	//console('on clicking');
+	$('#mddiv').modal('show');
+	
+}) ;
+
+document.getElementById('out').addEventListener('click',function (){
+	console.log('out click');
+});
+
+document.getElementById('inner').addEventListener('click',function (){
+	console.log('inner click');
+});
+
+</script>
+
+
+</body>
+</html>

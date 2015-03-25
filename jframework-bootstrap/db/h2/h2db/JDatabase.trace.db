@@ -1,0 +1,22 @@
+02-04 10:54:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "PERSON" not found; SQL statement:
+insert into PERSON
+(
+age,firstname,lastname,id,createId,updateId,createTime,updateTime,deleted,version
+)
+ values 
+(
+?,
+?,
+?
+,?
+,?
+,?
+,?
+,?
+,?
+,?
+) [42102-185]
+02-04 10:54:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "PERSON" not found; SQL statement:
+select * from PERSON where id=? [42102-185]

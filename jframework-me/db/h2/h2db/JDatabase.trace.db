@@ -1,0 +1,90 @@
+02-04 10:54:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "PERSON" not found; SQL statement:
+insert into PERSON
+(
+age,firstname,lastname,id,createId,updateId,createTime,updateTime,deleted,version
+)
+ values 
+(
+?,
+?,
+?
+,?
+,?
+,?
+,?
+,?
+,?
+,?
+) [42102-185]
+02-04 10:54:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "PERSON" not found; SQL statement:
+select * from PERSON where id=? [42102-185]
+03-04 10:02:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'users'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) DEFAULT NULL,'password' VARCHAR(60) DEFAULT NULL,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) DEFAULT NULL,'version' INT, PRIMARY KEY ('id')); "; expected "identifier"; SQL statement:
+CREATE TABLE 'users' ('id' varchar(32),'userName' varchar(20) DEFAULT NULL,'password' varchar(60) DEFAULT NULL,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) DEFAULT NULL,'version' int, PRIMARY KEY ('id')); [42001-185]
+03-04 10:03:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'users'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) ,'password' VARCHAR(60) ,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) ,'version' INT, PRIMARY KEY ('id')); "; expected "identifier"; SQL statement:
+CREATE TABLE 'users' ('id' varchar(32),'userName' varchar(20) ,'password' varchar(60) ,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) ,'version' int, PRIMARY KEY ('id')); [42001-185]
+03-04 10:07:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'users'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) ,'password' VARCHAR(60) ,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) ,'version' INT ); "; expected "identifier"; SQL statement:
+CREATE TABLE 'users' ('id' varchar(32),'userName' varchar(20) ,'password' varchar(60) ,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) ,'version' int ); [42001-185]
+03-04 10:07:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'users'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) DEFAULT NULL,'password' VARCHAR(60) DEFAULT NULL,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) DEFAULT NULL,'version' INT, PRIMARY KEY ('id')) "; expected "identifier"; SQL statement:
+CREATE TABLE 'users' ('id' varchar(32),'userName' varchar(20) DEFAULT NULL,'password' varchar(60) DEFAULT NULL,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) DEFAULT NULL,'version' int, PRIMARY KEY ('id')) [42001-185]
+03-04 10:10:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'users_'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) DEFAULT NULL,'password' VARCHAR(60) DEFAULT NULL,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) DEFAULT NULL,'version' INT, PRIMARY KEY ('id')) "; expected "identifier"; SQL statement:
+CREATE TABLE 'users_' ('id' varchar(32),'userName' varchar(20) DEFAULT NULL,'password' varchar(60) DEFAULT NULL,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) DEFAULT NULL,'version' int, PRIMARY KEY ('id')) [42001-185]
+03-04 10:11:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE 'ussss'[*] ('id' VARCHAR(32),'userName' VARCHAR(20) DEFAULT NULL,'password' VARCHAR(60) DEFAULT NULL,'createId' VARCHAR(32),'createTime' TIMESTAMP  ,'updateId' VARCHAR(32) , 'updateTime' TIMESTAMP,'deleted' VARCHAR(1) DEFAULT NULL,'version' INT, PRIMARY KEY ('id')) "; expected "identifier"; SQL statement:
+CREATE TABLE 'ussss' ('id' varchar(32),'userName' varchar(20) DEFAULT NULL,'password' varchar(60) DEFAULT NULL,'createId' varchar(32),'createTime' timestamp  ,'updateId' varchar(32) , 'updateTime' timestamp,'deleted' varchar(1) DEFAULT NULL,'version' int, PRIMARY KEY ('id')) [42001-185]
+03-04 10:46:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "CREATE TABLE USERSS (ID VARCHAR(32),USERNAME VARCHAR(20) DEFAULT NULL,PASSWORD VARCHAR(60) DEFAULT NULL,                                                                                                                                                             ; [*]"; expected "identifier"; SQL statement:
+CREATE TABLE usersS (id varchar(32),userName varchar(20) DEFAULT NULL,password varchar(60) DEFAULT NULL, -- ABCcreateId varchar(32),createTime timestamp  ,updateId varchar(32) , updateTime timestamp,deleted varchar(1) DEFAULT NULL,version int, PRIMARY KEY (id)); [42001-185]
+03-05 11:08:22 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "DBA_TABLES" not found; SQL statement:
+SELECT owner, table_name
+  FROM dba_tables [42102-185]
+03-05 11:08:26 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "DBA_TABLES" not found; SQL statement:
+SELECT owner, table_name  FROM dba_tables [42102-185]
+03-05 11:08:59 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "TABLES" not found; SQL statement:
+select * from  tables [42102-185]
+03-05 11:09:52 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement "SELECT * FROM  INFORMATION_SCHEMA.TABLES
+
+SELECT[*] * FROM INFORMATION_SCHEMA.SESSIONS "; SQL statement:
+select * from  INFORMATION_SCHEMA.TABLES
+
+select * from INFORMATION_SCHEMA.sessions [42000-185]
+03-05 11:11:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Schema "S" not found; SQL statement:
+-- select * from  INFORMATION_SCHEMA.TABLES
+
+--select * from INFORMATION_SCHEMA.sessions
+
+create table s.user( a varchar ) [90079-185]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:345)
+	at org.h2.message.DbException.get(DbException.java:179)
+	at org.h2.message.DbException.get(DbException.java:155)
+	at org.h2.command.Parser.getSchema(Parser.java:656)
+	at org.h2.command.Parser.getSchema(Parser.java:663)
+	at org.h2.command.Parser.parseCreateTable(Parser.java:5732)
+	at org.h2.command.Parser.parseCreate(Parser.java:4141)
+	at org.h2.command.Parser.parsePrepared(Parser.java:350)
+	at org.h2.command.Parser.parse(Parser.java:305)
+	at org.h2.command.Parser.parse(Parser.java:277)
+	at org.h2.command.Parser.prepareCommand(Parser.java:242)
+	at org.h2.engine.Session.prepareLocal(Session.java:446)
+	at org.h2.engine.Session.prepareCommand(Session.java:388)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1189)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:170)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:158)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1390)
+	at org.h2.server.web.WebApp.query(WebApp.java:1063)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1025)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1012)
+	at org.h2.server.web.WebThread.process(WebThread.java:168)
+	at org.h2.server.web.WebThread.run(WebThread.java:93)
+	at java.lang.Thread.run(Thread.java:662)

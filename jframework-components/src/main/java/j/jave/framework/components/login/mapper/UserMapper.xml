@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="j.jave.framework.components.login.mapper.UserMapper">
+
+
+<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+		<result column="ID" property="id" />
+		<result column="CREATEID" property="createId" />
+		<result column="UPDATEID" property="updateId" />
+		<result column="CREATETIME" property="createTime" />
+		<result column="UPDATETIME" property="updateTime" />
+		<result column="DELETED" property="deleted" />
+		<result column="VERSION" property="version" />
+</resultMap>
+
+<resultMap type="j.jave.framework.components.login.model.User" id="user"  extends="base" >
+	<result column="USERNAME" property="userName" />
+	<result column="PASSWORD" property="password" />
+</resultMap>
+
+
+<insert  id="save" parameterType="j.jave.framework.components.login.model.User">
+insert into USERS
+(
+USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)
+ values 
+(
+#{userName}
+,#{password}
+,#{id}
+,#{createId}
+,#{updateId}
+,#{createTime}
+,#{updateTime}
+,#{deleted}
+,#{version}
+) 
+</insert>
+
+<select id="getUserByNameAndPassword"  resultMap="user"  >
+select * from USERS where DELETED='N' and USERNAME=#{userName} and PASSWORD=#{password}
+</select>
+
+
+<select id="getUserByName"  resultMap="user"  >
+select * from USERS where DELETED='N' and USERNAME=#{userName}
+</select>
+
+
+<select id="get"   resultMap="user"  >
+select * from USERS where id=#{param1}
+</select>
+
+
+
+
+
+
+</mapper>

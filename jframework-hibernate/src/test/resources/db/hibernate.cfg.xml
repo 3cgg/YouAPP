@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+		<!-- Write all SQL statements to console. This is an alternative to 
+		setting the log category org.hibernate.SQL to debug.
+		e.g. true | false -->
+		<property name="show_sql">true</property>
+		<!-- Pretty print the SQL in the log and console. e.g. true | false -->
+		<property name="format_sql">true</property>
+		
+		<property name="dialect">org.hibernate.dialect.H2Dialect</property>
+		
+		<!-- Database connection settings -->
+		<!-- 
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:./db/h2/h2db/JDatabase</property>
+        <property name="connection.username">J</property>
+        <property name="connection.password">J</property
+		 -->
+		<!-- If turned on, Hibernate will generate comments inside the SQL, for easier debugging, defaults to false.
+			e.g. true | false -->
+		<property name="use_sql_comments">true</property>
+		
+		<!-- A non-zero value determines the JDBC fetch size (calls Statement.setFetchSize()). -->
+		<property name="jdbc.fetch_size">50</property>
+
+		<!-- A non-zero value enables use of JDBC2 batch updates by Hibernate. e.g. recommended values between 5 and 30 -->
+		<property name="jdbc.batch_size">30</property>
+	
+		<!-- hibernate.connection.<propertyName>	
+			Pass the JDBC property <propertyName> to DriverManager.getConnection(). -->
+		<!-- 
+		<property name="connection.datasource">java:comp/env/jdbc/datasourcename</property>
+ 		-->
+ 		
+		<!-- The classname of a custom org.hibernate.connection.ConnectionProvider 
+			which provides JDBC connections to Hibernate.
+			e.g. classname.of.ConnectionProvider -->
+		<!--  
+			<property name="connection.provider_class">net.sf.hibernate.connection.DatasourceConnectionProvider</property>
+		-->
+
+		<!-- connection pool -->
+		<!-- 
+		<property name="c3p0.min_size">5</property>
+
+		<property name="c3p0.max_size">20</property>
+
+		<property name="c3p0.timeout">1800</property>
+
+		<property name="c3p0.max_statements">50</property>
+		 -->
+		<!--  assemble mapping files   -->
+		<mapping resource="db/cfg/Person.hbm.xml" />
+		
+		
+	</session-factory>
+</hibernate-configuration>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jframework-me">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="jframework-components-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components/jframework-components">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-mybatis-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-mybatis/jframework-mybatis">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-core/jframework-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="jframework-me"/>
+        <property name="java-output-path" value="/jframework-me/target/classes"/>
+    </wb-module>
+</project-modules>

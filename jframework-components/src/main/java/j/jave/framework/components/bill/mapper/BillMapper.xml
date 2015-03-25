@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="j.jave.framework.components.bill.mapper.BillMapper">
+
+
+<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+		<result column="ID" property="id" />
+		<result column="CREATEID" property="createId" />
+		<result column="UPDATEID" property="updateId" />
+		<result column="CREATETIME" property="createTime" />
+		<result column="UPDATETIME" property="updateTime" />
+		<result column="DELETED" property="deleted" />
+		<result column="VERSION" property="version" />
+</resultMap>
+
+<resultMap type="j.jave.framework.components.bill.model.Bill" id="bill"  extends="base" >
+	<result column="USER_CODE" property="userCode" />
+	<result column="MONEY" property="money" />
+	<result column="GOOD_TYPE" property="goodType" />
+	<result column="MALL_CODE" property="mallCode" />
+	<result column="MALL_NAME" property="mallName" />
+	<result column="BILL_TIME" property="billTime" />
+	<result column="DESCRIPTION" property="desc" />
+	<result column="GOOD_NAME" property="goodName" />
+	<!--   EXTEND PROPERTIES  -->
+	<result column="MALL_CODE_NAME" property="mallCodeName" />
+	<result column="GOOD_TYPE_NAME" property="goodTypeName" />
+	<result column="USER_CODE_NAME" property="userCodeName" />
+</resultMap>
+
+
+<insert  id="save" >
+insert into BILL
+(
+ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,USER_CODE 
+,MONEY 
+,GOOD_TYPE 
+,MALL_CODE 
+,MALL_NAME 
+,BILL_TIME   
+,DESCRIPTION 
+,GOOD_NAME
+)
+ values 
+(
+#{id}
+,#{createId}
+,#{updateId}
+,#{createTime}
+,#{updateTime}
+,#{deleted}
+,#{version}
+,#{userCode}
+,#{money}
+,#{goodType}
+,#{mallCode}
+,#{mallName}
+,#{billTime}
+,#{desc}
+,#{goodName}
+) 
+</insert>
+
+<update id="update">
+update bill 
+set UPDATEID=#{updateId}
+,UPDATETIME=#{updateTime}
+,VERSION=#{version}
+,USER_CODE =#{userCode}
+,MONEY =#{money}
+,GOOD_TYPE =#{goodType}
+,MALL_CODE =#{mallCode}
+,MALL_NAME =#{mallName}
+,BILL_TIME   =#{billTime}
+,DESCRIPTION =#{desc}
+,GOOD_NAME=#{goodName}
+where ID=#{id}
+
+</update>
+
+<sql id="selectfor">
+	select a.*,
+(select s.name from param s where s.functionid='MALL' and s.code=a.mall_code ) mall_code_name,
+(select s.name from param s where s.functionid='GOOD' and s.code=a.good_type ) good_type_name,
+(select s.name from param s where s.functionid='USERS' and s.code=a.user_code ) user_code_name
+ from bill a 
+</sql>
+
+<select id="get"   resultMap="bill"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+<delete id="markDeleted" >
+	update BILL set DELETED='Y' where ID=#{id}
+</delete>
+
+<select id="getBillByUserName"  resultMap="bill"  >
+	<include refid="selectfor"></include>
+	where a.DELETED='N' and a.USERNAME = #{userName} 
+</select>
+
+<select id="getBillsByPage"  resultMap="bill"  parameterType="j.jave.framework.model.JBaseModel">
+	<include refid="selectfor"></include>
+	 where a.DELETED='N' 
+	<if test="userCode !=null and userCode !=''">
+		and a.USER_CODE = #{userCode}
+	</if>
+	<if test="goodName !=null and goodName !=''">
+		and a.GOOD_NAME like  CONCAT( '%',  #{goodName},'%')
+	</if>
+	<if test="goodType !=null and goodType !=''">
+		and a.GOOD_TYPE = #{goodType}
+	</if>
+	<if test="mallCode !=null and mallCode !=''">
+		and a.MALL_CODE = #{mallCode}
+	</if>
+	<if test="mallName !=null and mallName !=''">
+		and a.MALL_NAME like  CONCAT( '%',  #{mallName},'%')
+	</if>
+	<if test="billTime !=null and billTime !=''">
+		and a.BILL_TIME &gt;=  #{billTime}
+	</if>
+	<if test="money !=null and money !=''">
+		and a.MONEY &gt;=  #{money}
+	</if>
+	
+	order by a.BILL_TIME desc , a.UPDATETIME desc
+</select>
+
+
+</mapper>

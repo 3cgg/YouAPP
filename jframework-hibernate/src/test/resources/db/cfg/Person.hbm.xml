@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping  package="j.jave.framework.hibernate.test.model">
+
+    <class  name="j.jave.framework.hibernate.test.model.Person"  table="PERSON">
+        <id name="id" column="ID">
+            <generator class="assigned"/>
+        </id>
+         <version type="integer" name="version" column="VERSION"></version>
+         
+        <property name="age" column="AGE"/>
+        <property name="firstname" column="FIRSTNAME"/>
+        <property name="lastname" column="LASTNAME"/>
+        
+        <property name="createId" column="CREATEID"></property>
+        <property name="updateId" column="UPDATEID"></property>
+        <property name="createTime" column="CREATETIME"></property>
+        <property name="updateTime" column="UPDATETIME"></property>
+        <property name="deleted" column="DELETED"></property>
+       
+    </class>
+    
+	
+</hibernate-mapping>

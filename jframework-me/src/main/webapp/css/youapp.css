@@ -1,0 +1,32 @@
+
+.youapp-error{
+	color: #dd4b39;
+	font-weight: 700;
+	font-size: 11px;
+}
+.youapp-simeple-table-div{
+	background-color: #f4f4f4;
+}
+.youapp-popover-mark{
+}
+
+.youapp-btn-app {
+  border-radius: 3px;
+  position: relative;
+  padding: 10px 5px;
+  margin: 0 0 10px 10px;
+  min-width: 50px;
+  height: 50px;
+  text-align: center;
+  color: #666;
+  border: 1px solid #ddd;
+  background-color: #f4f4f4;
+  font-size: 12px;
+}
+.youapp-edit{
+	font-size: 18px;
+	color: #000000;
+}
+
+
+

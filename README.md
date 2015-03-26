@@ -1,6 +1,6 @@
 # YouAPP
 贾中进的私人项目-公开源代码
-
-此项目基于bootstrap(http://getbootstrap.com/) 开发的
-使用了AdminTLE(https://www.almsaeedstudio.com/) 的UI。
-计划未来添加ANDROID SUPPORT
+The project is the private one that ZhongJin Jia commited , but the source code is public. 
+This project is based on the bootstrap(http://getbootstrap.com/) ，
+，The UI Template is from AdminTLE(https://www.almsaeedstudio.com/) , thanks AdminTLE !  
+I will add ANDROID supported in the future. 

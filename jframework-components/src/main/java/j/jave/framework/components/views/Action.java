@@ -1,5 +1,7 @@
 package j.jave.framework.components.views;
 
-public interface Action {
+import java.io.Serializable;
+
+public interface Action  extends Serializable {
 
 }

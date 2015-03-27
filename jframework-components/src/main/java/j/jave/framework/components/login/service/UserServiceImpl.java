@@ -3,6 +3,8 @@
  */
 package j.jave.framework.components.login.service;
 
+import java.util.List;
+
 import j.jave.framework.components.core.context.ServiceContext;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.AbstractBaseService;
@@ -63,10 +65,24 @@ public class UserServiceImpl extends AbstractBaseService implements UserService 
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see j.jave.framework.components.login.service.UserService#getUsersByPage(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
+	 */
+	@Override
+	public List<User> getUsersByPage(ServiceContext context, User user) {
+		return userMapper.getUsersByPage(user);
+	}
 	
 	
+	@Override
+	public void delete(ServiceContext context, String id) {
+		userMapper.markDeleted(id);
+	}
 	
-	
+	@Override
+	public User getUserById(ServiceContext context, String id) {
+		return userMapper.get(id);
+	}
 	
 	
 

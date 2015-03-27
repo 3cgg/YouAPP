@@ -3,6 +3,8 @@
  */
 package j.jave.framework.components.login.mapper;
 
+import java.util.List;
+
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.mybatis.JMapper;
 
@@ -23,5 +25,6 @@ public interface UserMapper extends JMapper<User> {
 	public User getUserByName(
 			@Param(value="userName")String userName);
 	
+	public List<User> getUsersByPage(User user) ;
 	
 }

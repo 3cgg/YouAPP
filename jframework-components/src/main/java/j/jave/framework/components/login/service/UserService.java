@@ -3,6 +3,8 @@
  */
 package j.jave.framework.components.login.service;
 
+import java.util.List;
+
 import j.jave.framework.components.core.context.ServiceContext;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.login.model.User;
@@ -45,5 +47,30 @@ public interface UserService {
 	 * @return
 	 */
 	public User getUserByName(ServiceContext context, String userName);
+
+	/**
+	 * search user 
+	 * @param context
+	 * @param user
+	 * @return
+	 */
+	public List<User> getUsersByPage(ServiceContext context, User user) ;
+	
+	/**
+	 * make the record not available
+	 * @param context
+	 * @param id
+	 */
+	public void delete(ServiceContext context, String id);
+	
+	
+	/**
+	 * 
+	 * @param context
+	 * @param id
+	 * @return
+	 */
+	public User getUserById(ServiceContext context, String id);
+	
 	
 }

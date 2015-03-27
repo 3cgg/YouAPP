@@ -39,6 +39,10 @@ USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ) 
 </insert>
 
+<delete id="markDeleted" >
+	update USERS set DELETED='Y' where ID=#{id}
+</delete>
+
 <select id="getUserByNameAndPassword"  resultMap="user"  >
 select * from USERS where DELETED='N' and USERNAME=#{userName} and PASSWORD=#{password}
 </select>
@@ -53,6 +57,14 @@ select * from USERS where DELETED='N' and USERNAME=#{userName}
 select * from USERS where id=#{param1}
 </select>
 
+
+<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.framework.model.JBaseModel">
+	select * from USERS where DELETED='N' 
+	<if test="userName !=null and userName !=''">
+		and USERNAME like CONCAT('%',  #{userName} ,'%')  
+	</if>
+	order by USERNAME desc ,UPDATETIME desc
+</select>
 
 
 

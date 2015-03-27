@@ -51,4 +51,14 @@ public interface LoginAccessService  extends Service {
 	 * @throws ServiceException
 	 */
 	public String login(String name,String password) throws ServiceException;
+	
+	
+	/**
+	 * check whether the resource is authorized. 
+	 * @param resource
+	 * @param name
+	 * @return
+	 */
+	public boolean authorize(String resource,String name);
+	
 }

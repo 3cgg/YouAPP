@@ -7,10 +7,14 @@ import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.param.service.ParamService;
 import j.jave.framework.components.views.HTTPAction;
+import j.jave.framework.components.views.view.SimpleBarChart;
+import j.jave.framework.utils.JUtils;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -46,6 +50,8 @@ public class BillAction extends HTTPAction {
 	public String recordBill() throws Exception {
 		billService.saveBill(getServiceContext(), bill);
 		setSuccessMessage(CREATE_SUCCESS);
+		
+		initSelect();
 		return "/WEB-INF/jsp/bill/record-bill.jsp";
 	}
 	
@@ -124,6 +130,23 @@ public class BillAction extends HTTPAction {
 		
 	}
 	
-	
+	public String toViewChart () throws ServiceException{
+		
+		if(billSearchCriteria==null){
+			billSearchCriteria=new BillSearchCriteria();
+		}
+		SimpleBarChart simpleBarChart=new SimpleBarChart();
+		List<Bill> bills=billService.getBillsByPage(getServiceContext(), billSearchCriteria);
+		if(bills!=null){
+			for(int i=0;i<bills.size();i++){
+				Bill bill=bills.get(i);
+				simpleBarChart.put(JUtils.format(bill.getBillTime()), bill.getGoodType(), bill.getMoney(),bill.getGoodTypeName());
+			}
+		}
+		simpleBarChart.sort();
+		setAttribute("barChart", simpleBarChart);
+		return "/WEB-INF/jsp/bill/view-chart-bill.jsp";
+		
+	}
 	
 }

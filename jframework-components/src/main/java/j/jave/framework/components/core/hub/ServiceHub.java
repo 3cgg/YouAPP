@@ -15,13 +15,13 @@ import java.util.HashMap;
 public class ServiceHub {
 
 	public static class StandardServiceInterfaces{
-		public static final Class LOGIN_ACCESS_SERVICE=LoginAccessService.class; 
-		public static final Class MEMCACHED_DIST_SERVICE=JMemcachedDistService.class;
+		public static final Class<LoginAccessService> LOGIN_ACCESS_SERVICE=LoginAccessService.class; 
+		public static final Class<JMemcachedDistService> MEMCACHED_DIST_SERVICE=JMemcachedDistService.class;
 	}
 	
 	private static HashMap<Class<? extends Service>, ServiceFactory<? extends Service>> services=new HashMap<Class<? extends Service>, ServiceFactory<? extends Service>>();
 	
-	public  static <T> T getService(Class<T> clazz){
+	public  <T> T getService(Class<T> clazz){
 		return (T) services.get(clazz).getService();
 	}
 	

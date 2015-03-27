@@ -35,8 +35,8 @@ public class LoginAccessServiceImpl implements LoginAccessService {
 		if(JUtils.isNullOrEmpty(password)){
 			throw new ServiceException("密码不能为空");
 		}
-		String encryptPassword=APPCipher.get().encrypt(password);
-		User user= userService.getUserByNameAndPassword(name, encryptPassword);
+		String encryptPassword=APPCipher.get().encrypt(password.trim());
+		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
 		if(user!=null) return  JUtils.unique()+"-"+name; 
 		return "";
 	}
@@ -77,14 +77,15 @@ public class LoginAccessServiceImpl implements LoginAccessService {
 			throw new ServiceException("两次输入的密码不一样");
 		}
 		
-		User dbUser=userService.getUserByName(context, user.getUserName());
+		User dbUser=userService.getUserByName(context, user.getUserName().trim());
 		if(dbUser!=null){
 			throw new ServiceException("用户已经存在");
 		}
 		
-		String passwrod=user.getPassword();
+		String passwrod=user.getPassword().trim();
 		String encriptPassword=APPCipher.get().encrypt(passwrod);
 		user.setPassword(encriptPassword);
+		user.setUserName(user.getUserName().trim());
 		userService.saveUser(context, user);  // with encrypted password 
 	}
 	
@@ -100,4 +101,21 @@ public class LoginAccessServiceImpl implements LoginAccessService {
 		}
 		return ticket;
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see j.jave.framework.components.login.service.LoginAccessService#authorize(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean authorize(String resource, String name) {
+		
+		if("zhongjin".equals(name)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
 }

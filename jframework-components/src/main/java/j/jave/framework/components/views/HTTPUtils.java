@@ -42,4 +42,26 @@ public class HTTPUtils {
 		return appUrlPath;
 	}
 	
+	private static final String YOUAPP_SESSION_USER_KEY="youAPPSessionUser";
+	
+	private static final String YOUAPP_HTTP_CONTEXT_KEY="youAPPHttpContext";
+	
+	public static final HTTPContext getHttpContext(HttpServletRequest request){
+		return (HTTPContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
+	}
+	
+	public static final void setHttpContext(HttpServletRequest request,HTTPContext httpContext ){
+		request.setAttribute(YOUAPP_HTTP_CONTEXT_KEY, httpContext);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

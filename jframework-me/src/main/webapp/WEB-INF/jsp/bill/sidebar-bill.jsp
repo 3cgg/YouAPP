@@ -8,7 +8,9 @@
 	                <li class="active"><a href="javascript:void(0)" 
 	                	onclick='httpGET("/bill.billaction/toRecordBill")'
 	                ><i class="fa fa-circle-o"></i> 录入</a></li>
-	                
+	                <li><a href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toViewChart")'
+	                ><i class="fa fa-circle-o"></i> 账单构成</a></li>
 	                <li><a href="javascript:void(0)" 
 	                onclick='httpGET("/bill.billaction/toViewAllBill")'
 	                ><i class="fa fa-circle-o"></i> 记录集</a></li>

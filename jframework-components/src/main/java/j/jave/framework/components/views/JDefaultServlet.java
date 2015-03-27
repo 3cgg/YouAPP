@@ -3,6 +3,7 @@
  */
 package j.jave.framework.components.views;
 
+import j.jave.framework.components.core.context.SpringContext;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.hub.ServiceHub;
 import j.jave.framework.components.core.hub.ServiceHub.StandardServiceInterfaces;
@@ -65,11 +66,12 @@ public class JDefaultServlet  extends HttpServlet {
 	/* (non-Javadoc)
 	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
 	 */
-	@SuppressWarnings({ "static-access", "unchecked" })
+	@SuppressWarnings({ "static-access"})
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		applicationContext=ContextLoaderListener.getCurrentWebApplicationContext();
-		jMemcachedDist=(JMemcachedDistService)ServiceHub.get().getService(StandardServiceInterfaces.MEMCACHED_DIST_SERVICE);
+		SpringContext.get().setApplicationContext(ContextLoaderListener.getCurrentWebApplicationContext()); 
+		jMemcachedDist=ServiceHub.get().getService(StandardServiceInterfaces.MEMCACHED_DIST_SERVICE);
 		applicationContext.getBean("fileDistServiceImpl",FileDistService.class);
 		super.init(config);
 	}
@@ -160,6 +162,7 @@ public class JDefaultServlet  extends HttpServlet {
 			if(String.class.isInstance(navigate)){  // its forward to JSP. 
 				String expectJsp=(String)navigate;
 				if(expectJsp.endsWith(".jsp")){
+					HTTPUtils.setHttpContext(req, httpContext);
 					req.getRequestDispatcher(expectJsp).forward(req, resp); 
 				}
 			}

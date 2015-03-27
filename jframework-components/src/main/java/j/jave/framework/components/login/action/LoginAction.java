@@ -3,6 +3,7 @@ package j.jave.framework.components.login.action;
 import j.jave.framework.components.core.context.ServiceContext;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.components.login.model.UserSearchCriteria;
 import j.jave.framework.components.login.model.UserTracker;
 import j.jave.framework.components.login.service.LoginAccessService;
 import j.jave.framework.components.login.service.UserService;
@@ -10,6 +11,7 @@ import j.jave.framework.components.login.service.UserTrackerService;
 import j.jave.framework.components.login.view.TimeLineGroup;
 import j.jave.framework.components.login.view.TimelineView;
 import j.jave.framework.components.memcached.JMemcachedDistService;
+import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.views.HTTPAction;
 import j.jave.framework.components.views.HTTPContext;
 import j.jave.framework.components.weight.model.Weight;
@@ -33,6 +35,8 @@ import org.springframework.stereotype.Controller;
 public class LoginAction extends HTTPAction {
 	
 	private User user;
+	
+	private UserSearchCriteria userSearchCriteria;
 	
 	@Autowired
 	private LoginAccessService loginAccessService;
@@ -181,5 +185,44 @@ public class LoginAction extends HTTPAction {
 		getTimeline();
 		return "/WEB-INF/jsp/login/tracker.jsp";
 	}
+	
+	public String toViewAllUser() throws Exception{
+		return getUsersWithsCondition();
+	}
+	
+	public String getUsersWithsCondition(){
+		if(userSearchCriteria==null){
+			userSearchCriteria=new UserSearchCriteria();
+		}
+		List<User> users=userService.getUsersByPage(getServiceContext(), userSearchCriteria);
+		setAttribute("users", users);
+		setAttribute("userSearchCriteria", userSearchCriteria);
+		return "/WEB-INF/jsp/login/view-all-user.jsp";
+	}
+	
+	
+	public String deleteUser(){
+		userService.delete(getServiceContext(), getParameter("id")); 
+		setSuccessMessage(DELETE_SUCCESS);
+		return getUsersWithsCondition();
+	}
+	
+	public String toViewUser() throws Exception {
+		
+		String id=getParameter("id");
+		User user= userService.getUserById(getServiceContext(), id);
+		if(user!=null){
+			setAttribute("user", user);
+		}
+		return "/WEB-INF/jsp/login/view-user.jsp"; 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

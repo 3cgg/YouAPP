@@ -69,6 +69,22 @@
 		<servlet-name>JDefaultServlet</servlet-name>
 		<url-pattern>/service/dispatch/*</url-pattern>
 	</servlet-mapping>
-
-
+	
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://github.com/jinwanmei/YouAPP</taglib-uri>
+			<taglib-location>/WEB-INF/tld/AccessTag.tld</taglib-location>
+		</taglib>
+	
+	</jsp-config>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </web-app>

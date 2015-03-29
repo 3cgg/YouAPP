@@ -6,5 +6,7 @@ This project is based on the bootstrap(http://getbootstrap.com/) <br/>
 
 Already add Android, for a test sample to do the same thing as the website. <br/>
 And because of the CSS issue, will end up here. Then do android developing on the project if i study more CSS skill , experience. <br/>
-Now will have physical training in the free time.  <br/>
+
+# How TO Build 
+You need install maven in your computer, then go the root to run "mvn clean install" . the war file uner jframework-me directory can be deploy. or you can start the project using Jetty through running JettyServerHelper Class .  Also note : you need change the default ip address in the youapp.js file. Now you can get the sample running. 
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.58"
+        android:gravity="top" >
+
+        
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130px"
+            android:layout_centerHorizontal="true"
+            android:ems="20"
+            android:inputType="textEmailAddress" >
+            <requestFocus />
+        </EditText>
+        
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/userName"
+            android:layout_marginTop="150px"
+            android:layout_centerHorizontal="true"
+            android:ems="20"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/password"
+            android:layout_alignRight="@+id/password"
+            android:layout_alignTop="@+id/password"
+            android:layout_marginTop="150px"
+            android:text="@string/submit" />
+
+    </RelativeLayout>
+
+</LinearLayout>

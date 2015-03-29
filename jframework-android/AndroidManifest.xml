@@ -1,0 +1,39 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="j.jave.framework.android"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
+
+    <supports-screens  android:resizeable="true" ></supports-screens>
+    
+    <uses-permission  android:name="android.permission.INTERNET"/>
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.YouAPPThem" 
+        >
+        
+        <activity android:name="j.jave.framework.android.activity.LoginActivity" 
+             android:logo="@drawable/youapp"
+             android:label="@string/app_name"
+             >
+            <intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+        </activity>
+        
+        
+        <activity android:name="j.jave.framework.android.activity.DialogActivity"></activity>
+        
+    </application>
+    
+    
+    
+
+</manifest>

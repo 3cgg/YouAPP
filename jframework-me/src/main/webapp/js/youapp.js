@@ -1,6 +1,6 @@
 
 
-var serviceHost = "http://192.168.0.102:8686/youapp/service/dispatch";
+var serviceHost = "http://192.168.0.102:8686/youapp/web/service/dispatch";
 
 
 function success_jsonpCallback(data) {

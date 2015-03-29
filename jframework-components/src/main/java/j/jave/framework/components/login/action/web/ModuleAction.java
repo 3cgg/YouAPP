@@ -1,4 +1,4 @@
-package j.jave.framework.components.login.action;
+package j.jave.framework.components.login.action.web;
 
 import j.jave.framework.components.views.HTTPAction;
 

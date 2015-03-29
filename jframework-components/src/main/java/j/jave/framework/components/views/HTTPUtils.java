@@ -54,7 +54,13 @@ public class HTTPUtils {
 		request.setAttribute(YOUAPP_HTTP_CONTEXT_KEY, httpContext);
 	}
 	
-	
+	public static final String getTicket(HttpServletRequest request){
+		String ticket=CookieUtils.getValue(request, ViewConstants.TICKET);
+		if(ticket==null){
+			ticket=request.getParameter(ViewConstants.TICKET);
+		}
+		return ticket;
+	}
 	
 	
 	

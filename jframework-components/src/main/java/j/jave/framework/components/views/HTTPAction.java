@@ -4,7 +4,7 @@ import j.jave.framework.components.core.context.ServiceContext;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.utils.JUtils;
 
-public class HTTPAction implements Action {
+public abstract class HTTPAction implements Action {
 	
 	protected HTTPContext httpContext;
 	
@@ -44,32 +44,12 @@ public class HTTPAction implements Action {
 		return httpContext.getUser();
 	}
 	
-	
-	protected String navigate(String action) {
-		setAttribute("url", action); 
-		return "/WEB-INF/jsp/navigate.jsp";
-	}
-	
-	protected String error(String message) {
-		setAttribute("message", message); 
-		return "/WEB-INF/jsp/error.jsp";
-	}
-	
-	protected String warning(String message) {
-		setAttribute("message", message); 
-		return "/WEB-INF/jsp/warning.jsp";
-	}
-	
-	protected String success(String message) {
-		setAttribute("message", message); 
-		return "/WEB-INF/jsp/success.jsp";
-	}
-	
 	protected ServiceContext getServiceContext(){
 		ServiceContext context=new ServiceContext();
 		context.setUser(getSessionUser());
 		return context;
 	}
+	
 	protected void setSuccessMessage(String message){
 		if(JUtils.isNullOrEmpty(message)){
 			message="操作成功";

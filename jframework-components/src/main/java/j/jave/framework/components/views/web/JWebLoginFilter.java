@@ -1,9 +1,11 @@
-package j.jave.framework.components.views;
+package j.jave.framework.components.views.web;
 
 import j.jave.framework.components.core.hub.ServiceHub;
 import j.jave.framework.components.core.hub.ServiceHub.StandardServiceInterfaces;
 import j.jave.framework.components.login.service.LoginAccessService;
 import j.jave.framework.components.memcached.JMemcachedDistService;
+import j.jave.framework.components.views.HTTPContext;
+import j.jave.framework.components.views.HTTPUtils;
 import j.jave.framework.utils.JUtils;
 
 import java.io.IOException;
@@ -20,12 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class JLoginFilter implements Filter  {
+public class JWebLoginFilter implements Filter  {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JLoginFilter.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(JWebLoginFilter.class);
 	
 	/**
-	 * "/service/dispatch/*" pattern configured in web.xml . 
+	 * "/web/service/dispatch/*" pattern configured in web.xml . 
 	 */
 	private String serviceServletPath="/default";
 	
@@ -76,7 +78,7 @@ public class JLoginFilter implements Filter  {
 				return ;
 			}
 			
-			String clientTicket=CookieUtils.getValue(req, "ticket");
+			String clientTicket=HTTPUtils.getTicket(req);
 			boolean isLogin=false;
 			if(JUtils.isNullOrEmpty(clientTicket)){ // no login.
 				isLogin=false;

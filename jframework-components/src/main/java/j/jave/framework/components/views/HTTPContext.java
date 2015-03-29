@@ -109,6 +109,14 @@ public class HTTPContext implements Serializable {
 	public String getClient(){
 		return HTTPUtils.getClient(request);
 	}
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public HttpServletResponse getResponse() {
+		return response;
+	}
 	
 	
 	

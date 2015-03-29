@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">YouAPP</string>
+	<string name="hello">Hello World, HelloWorld!</string>
+	<string name="submit">Submit</string>
+	
+</resources>

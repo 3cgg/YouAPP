@@ -1,4 +1,4 @@
-package j.jave.framework.components.views;
+package j.jave.framework.components.views.web;
 
 import j.jave.framework.utils.JUtils;
 
@@ -13,10 +13,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 
-public class JDefaultFilter implements Filter  {
+public class JWebDefaultFilter implements Filter  {
 
 	/**
-	 * "/service/dispatch/*" pattern configured in web.xml . 
+	 * "/web/service/dispatch/*" pattern configured in web.xml . 
 	 */
 	private String serviceServletPath="/default";
 	

@@ -1,4 +1,4 @@
-package j.jave.framework.components.login.action;
+package j.jave.framework.components.login.action.web;
 
 import j.jave.framework.components.core.context.ServiceContext;
 import j.jave.framework.components.core.exception.ServiceException;
@@ -11,9 +11,8 @@ import j.jave.framework.components.login.service.UserTrackerService;
 import j.jave.framework.components.login.view.TimeLineGroup;
 import j.jave.framework.components.login.view.TimelineView;
 import j.jave.framework.components.memcached.JMemcachedDistService;
-import j.jave.framework.components.param.model.Param;
-import j.jave.framework.components.views.HTTPAction;
 import j.jave.framework.components.views.HTTPContext;
+import j.jave.framework.components.views.web.JSPAction;
 import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.service.WeightService;
 import j.jave.framework.security.APPCipher;
@@ -32,7 +31,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="login.loginaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class LoginAction extends HTTPAction {
+public class LoginAction extends JSPAction {
 	
 	private User user;
 	

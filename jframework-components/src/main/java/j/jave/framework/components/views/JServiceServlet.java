@@ -47,9 +47,9 @@ import org.springframework.web.context.ContextLoaderListener;
  * @author Administrator
  *
  */
-public class JDefaultServlet  extends HttpServlet {
+public abstract class JServiceServlet  extends HttpServlet {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultServlet.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(JServiceServlet.class);
 	
 	private static ApplicationContext applicationContext=null;
 	
@@ -57,7 +57,7 @@ public class JDefaultServlet  extends HttpServlet {
 	
 	private static FileDistService fileDistService=null;
 	
-	public JDefaultServlet() {
+	public JServiceServlet() {
 		System.out.println("in  constructor DefaultJettyServlet() ");
 	}
 	
@@ -87,13 +87,14 @@ public class JDefaultServlet  extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		HTTPContext httpContext=new HTTPContext();
 		try{
 			
 			String contextPath=req.getContextPath()+req.getServletPath();
 			String target=req.getRequestURI().substring(contextPath.length());
 			
-			String uniqueName=CookieUtils.getValue(req, "ticket");
-			HTTPContext httpContext=new HTTPContext();
+			String uniqueName=HTTPUtils.getTicket(req);
+			
 			httpContext.setRequest(req);
 			httpContext.setResponse(resp);
 			httpContext.setTicket(uniqueName);
@@ -159,41 +160,27 @@ public class JDefaultServlet  extends HttpServlet {
 			
 			Object navigate=JReflect.invoke(object, methodName, new Object[]{});
 			
-			if(String.class.isInstance(navigate)){  // its forward to JSP. 
-				String expectJsp=(String)navigate;
-				if(expectJsp.endsWith(".jsp")){
-					HTTPUtils.setHttpContext(req, httpContext);
-					req.getRequestDispatcher(expectJsp).forward(req, resp); 
-				}
-			}
+			handlerNavigate(req, resp,httpContext, navigate);
 			
 			System.out.println("time is :"+new Date().getTime());
 		}
 		catch(ServiceException e){
-			req.setAttribute("message", e.getMessage());
-			req.getRequestDispatcher("/WEB-INF/jsp/warning.jsp").forward(req, resp); 
+			handlerServiceExcepion(req, resp, httpContext, e);
 		}
 		catch(Exception e){
-			Throwable exp=e;
-			while(exp.getCause()!=null){
-				exp=exp.getCause();
-			}
-			
-			if(!ServiceException.class.isInstance(exp)){
-				LOGGER.error(e.getMessage(), e); 
-			}
-			
-			req.setAttribute("message", exp.getMessage());
-			String expectJsp="/WEB-INF/jsp/error.jsp";
-			if(ServiceException.class.isInstance(exp)){
-				expectJsp="/WEB-INF/jsp/warning.jsp";
-			}
-			req.getRequestDispatcher(expectJsp).forward(req, resp); 
+			handlerExcepion(req, resp,httpContext,  e);
 		}finally{
 			resp.setContentType("text/html;charset=UTF-8");
 		}
 		
 	}
+	
+	protected abstract void handlerNavigate(HttpServletRequest request,HttpServletResponse response,
+			HTTPContext httpContext,Object navigate) throws Exception;
+	
+	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,ServiceException exception);
+	
+	protected abstract void handlerExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,Exception exception);
 	
 	/* (non-Javadoc)
 	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)

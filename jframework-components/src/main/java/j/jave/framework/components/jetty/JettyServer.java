@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.jetty;
 
-import j.jave.framework.components.views.JDefaultServlet;
+import j.jave.framework.components.views.web.JWebServiceServlet;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
@@ -36,7 +36,7 @@ public class JettyServer {
         // IMPORTANT:
         // This is a raw Servlet, not a Servlet that has been configured
         // through a web.xml @WebServlet annotation, or anything similar.
-        handler.addServletWithMapping(JDefaultServlet.class, "/youapp");
+        handler.addServletWithMapping(JWebServiceServlet.class, "/youapp");
  
         // Start things up!
         server.start();

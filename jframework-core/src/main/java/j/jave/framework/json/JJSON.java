@@ -52,6 +52,20 @@ public class JJSON {
 			throw new RuntimeException(e);
 		} 
 	}  
+	
+	/**
+	 * Parse a string to Object . 
+	 * @param string
+	 * @param typeReference
+	 * @return
+	 */
+	public <T> T parse(String string, TypeReference<T> typeReference){
+		try {
+			return mapper.readValue(string, typeReference);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}  
 
 	/**
 	 * format object to string

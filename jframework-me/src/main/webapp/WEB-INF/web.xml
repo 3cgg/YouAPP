@@ -33,42 +33,53 @@
 	</filter-mapping>
 
 	<filter>
-		<filter-name>JDefaultFilter</filter-name>
-		<filter-class>j.jave.framework.components.views.JDefaultFilter</filter-class>
+		<filter-name>JWebDefaultFilter</filter-name>
+		<filter-class>j.jave.framework.components.views.web.JWebDefaultFilter</filter-class>
 		<init-param>
 			<param-name>serviceServletPath</param-name>
-			<param-value>/service/dispatch/*</param-value>
+			<param-value>/web/service/dispatch/*</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>JDefaultFilter</filter-name>
+		<filter-name>JWebDefaultFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
 	<filter>
-		<filter-name>JLoginFilter</filter-name>
-		<filter-class>j.jave.framework.components.views.JLoginFilter</filter-class>
+		<filter-name>JWebLoginFilter</filter-name>
+		<filter-class>j.jave.framework.components.views.web.JWebLoginFilter</filter-class>
 		<init-param>
 			<param-name>serviceServletPath</param-name>
-			<param-value>/service/dispatch/*</param-value>
+			<param-value>/web/service/dispatch/*</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>JLoginFilter</filter-name>
-		<url-pattern>/service/dispatch/*</url-pattern>
+		<filter-name>JWebLoginFilter</filter-name>
+		<url-pattern>/web/service/dispatch/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	
 	
 	<servlet>
-		<servlet-name>JDefaultServlet</servlet-name>
-		<servlet-class>j.jave.framework.components.views.JDefaultServlet</servlet-class>
+		<servlet-name>JWebServiceServlet</servlet-name>
+		<servlet-class>j.jave.framework.components.views.web.JWebServiceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>JDefaultServlet</servlet-name>
-		<url-pattern>/service/dispatch/*</url-pattern>
+		<servlet-name>JWebServiceServlet</servlet-name>
+		<url-pattern>/web/service/dispatch/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>JMobileServiceServlet</servlet-name>
+		<servlet-class>j.jave.framework.components.views.mobile.JMobileServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JMobileServiceServlet</servlet-name>
+		<url-pattern>/mobile/service/dispatch/*</url-pattern>
+	</servlet-mapping>
+	
+	
 	
 	<jsp-config>
 		<taglib>

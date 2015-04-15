@@ -115,6 +115,13 @@
 					<include>**/*.xml</include>
 					<include>**/*.sql</include>
 					<include>**/*.tld</include>
+					<include>**/*.jsp</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.*</include>
 				</includes>
 			</resource>
 		</resources>
@@ -128,6 +135,18 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <version>2.4</version>
+				<configuration>					
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+					</archive>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 
@@ -137,7 +156,10 @@
 		<module>jframework-hibernate</module>
 		<module>jframework-mybatis</module>
 		<module>jframework-bootstrap</module>
-		<module>jframework-components</module>
+		<module>jframework-components-support</module>
+		<module>jframework-components-core</module>
+		<module>jframework-components-bill</module>
+		<module>jframework-components-weight</module>
 		<module>jframework-me</module>
 	</modules>
 

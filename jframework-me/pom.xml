@@ -23,10 +23,42 @@
 
 		<dependency>
 			<groupId>j.jave.framework</groupId>
-			<artifactId>jframework-components</artifactId>
+			<artifactId>jframework-components-bill</artifactId>
 			<version>${j.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-components-weight</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+		
+		<!-- j/jave/framework/components/login/**/*.* -->
 
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency> 
+		<dependency>
+
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		
 	</dependencies>
 	
 	

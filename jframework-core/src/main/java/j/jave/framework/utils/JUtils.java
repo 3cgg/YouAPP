@@ -345,8 +345,8 @@ public class JUtils {
 	 * @param timestamp
 	 * @return 
 	 */
-	public static String format(Timestamp timestamp){
-		return new SimpleDateFormat("yyyy-MM-dd").format(timestamp) ;
+	public static String format(Date date){
+		return new SimpleDateFormat("yyyy-MM-dd").format(date) ;
 	}
 
 	/**
@@ -433,6 +433,15 @@ public class JUtils {
 			return 0;
 		}else{
 			return Long.valueOf(value).longValue();
+		}
+	}
+	
+	public static String toString(Object object){
+		if(object==null){
+			return "";
+		}
+		else{
+			return String.valueOf(object);
 		}
 	}
 	

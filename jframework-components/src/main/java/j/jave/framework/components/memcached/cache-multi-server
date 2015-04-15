@@ -1,4 +1,0 @@
-sc create "cache-a" start= auto binPath= "D:\java_\memcached\memcached.exe -d runservice -m 32 -p 11220 -l 127.0.0.1" DisplayName= "Memcached Server1"
-sc create "cache-b" start= auto binPath= "D:\java_\memcached\memcached.exe -d runservice -m 32 -p 11221 -l 127.0.0.1" DisplayName= "Memcached Server2"
-sc create "cache-c" start= auto binPath= "D:\java_\memcached\memcached.exe -d runservice -m 32 -p 11222 -l 127.0.0.1" DisplayName= "Memcached Server3"
-sc create "cache-d" start= auto binPath= "D:\java_\memcached\memcached.exe -d runservice -m 32 -p 11223 -l 127.0.0.1" DisplayName= "Memcached Server4"

@@ -3,7 +3,7 @@
  */
 package j.jave.framework.me;
 
-import j.jave.framework.components.views.web.JWebServiceServlet;
+import j.jave.framework.components.web.jsp.JJSPServiceServlet;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -29,7 +29,11 @@ public class JettyServerHelper {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String webApp="D:/java_/JFramework/trunk/jframework-me/src/main/webapp";
+//		String webApp="D:\\java_\\so\\sources\\trunk\\jframework-me\\target\\jframework-me-1.0.war";
+		
+//		String webApp="D:/java_/so/sources/trunk/jframework-me/src/main/webapp";
+		String webApp="D:/java_/JFramework1.1/trunk/jframework-me/src/main/webapp";
+		
 		String serverDirectory="D:/java_/server-directory";
 		
 		 // Setup Threadpool
@@ -121,7 +125,7 @@ public class JettyServerHelper {
         // IMPORTANT:
         // This is a raw Servlet, not a Servlet that has been configured
         // through a web.xml @WebServlet annotation, or anything similar.
-        handler.addServletWithMapping(JWebServiceServlet.class, "/*");
+        handler.addServletWithMapping(JJSPServiceServlet.class, "/*");
  
         // Start things up!
         server.start();

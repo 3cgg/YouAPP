@@ -3,19 +3,15 @@ package j.jave.framework.http;
 import j.jave.framework.utils.JUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.apache.http.HttpHost;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 
 /**
@@ -36,43 +32,49 @@ public class JHttpPost extends JHttp<JHttpPost> {
 	}
 	
 	public Object post(String url) throws IOException{
-		HttpClientBuilder httpClientBuilder = HttpClients.custom();
-		if(proxyHost!=null){
-			HttpHost proxy = new HttpHost(proxyHost,proxyPort);
-			DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-			httpClientBuilder.setRoutePlanner(routePlanner);
+		return execute(url);
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see j.jave.framework.http.JHttp#getHttpType()
+	 */
+	@Override
+	protected HttpUriRequest getHttpType() {
+		MultipartEntityBuilder multipartEntityBuilder=null;
+		if(params!=null){
+			multipartEntityBuilder=MultipartEntityBuilder.create();
+			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
+				Entry<String, Object> entry =  iterator.next();
+				multipartEntityBuilder.addTextBody(entry.getKey(), JUtils.toString(entry.getValue()));
+			}
+			multipartEntityBuilder.setCharset(Charset.forName("utf-8"));
 		}
-		CloseableHttpClient closeableHttpClient= httpClientBuilder.build();
+		
+		if(files!=null){
+			if(multipartEntityBuilder==null){
+				multipartEntityBuilder=MultipartEntityBuilder.create();
+			}
+			for(int i=0;i<files.size();i++){
+				JHttpFile jHttpFile=files.get(i);
+				multipartEntityBuilder.addBinaryBody(jHttpFile.getAttrName(), jHttpFile.getFileContent(),
+						ContentType.DEFAULT_BINARY, jHttpFile.getFilename());
+			}
+		}
+		
 		HttpPost httpPost = new HttpPost(url);
 		
-		// add entry 
+		if(multipartEntityBuilder!=null){
+			httpPost.setEntity(multipartEntityBuilder.build());
+		}
+		
+		// add entry
 		if(entry!=null){
 			httpPost.setEntity(new ByteArrayEntity(entry));
 		}
 		
-		// add head 
-		if(headers!=null){
-			for (Iterator<Entry<String, String> > iterator = headers.entrySet().iterator(); iterator.hasNext();) {
-				Entry<String, String>  entry =  iterator.next();
-				httpPost.addHeader(entry.getKey(), entry.getValue());
-			}
-		}
-		
-		CloseableHttpResponse response = closeableHttpClient.execute(httpPost);
-		try {
-			StatusLine statusLine=response.getStatusLine();
-			if(statusLine.getStatusCode()==200){
-				InputStream inputStream=response.getEntity().getContent();
-				byte[] bytes=JUtils.getBytes(inputStream);
-				if(responseHandler==null)
-					return stringJResponseHandler.process(bytes);
-				else
-					return responseHandler.process(bytes);
-			} 
-		}finally {
-			response.close();
-		}
-		return null;
+		return httpPost;
 	}
+	
 	
 }

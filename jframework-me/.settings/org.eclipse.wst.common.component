@@ -4,13 +4,22 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="jframework-components-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components/jframework-components">
+        <dependent-module archiveName="jframework-components-bill-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-bill/jframework-components-bill">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-core/jframework-components-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jframework-mybatis-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-mybatis/jframework-mybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jframework-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-core/jframework-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-support-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-support/jframework-components-support">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-weight-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-weight/jframework-components-weight">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="jframework-me"/>

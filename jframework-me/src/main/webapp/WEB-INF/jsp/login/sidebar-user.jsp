@@ -20,5 +20,10 @@
 	                onclick='httpGET("/login.loginaction/toViewAllUser")'
 	                ><i class="fa fa-circle-o"></i> 用户集</a></li>
 	                </youapp:access>
+	                <li><a href="javascript:void(0)" 
+	                onclick='httpGET("/login.loginaction/toUploadImage")'
+	                ><i class="fa fa-circle-o"></i>上传头像</a></li>
+	                
+	                
 	              </ul>
 	            </li>

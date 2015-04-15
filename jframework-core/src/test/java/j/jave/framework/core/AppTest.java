@@ -1,5 +1,11 @@
 package j.jave.framework.core;
 
+import java.io.File;
+import java.util.Properties;
+
+import j.jave.framework.io.JFileResource;
+import j.jave.framework.utils.JFileUtils;
+import j.jave.framework.utils.JPropertiesUtils;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -35,4 +41,22 @@ public class AppTest
     {
         assertTrue( true );
     }
+    
+    public void testPropertiesD(){
+    	Properties properties=JPropertiesUtils.loadProperties(new JFileResource(new File("/jframework-core.properties")));
+    	String value=JPropertiesUtils.getKey("a", properties);
+    	assertNotNull(value);
+    }
+    
+    public void testPropertiesCLASSPATH(){
+    	Properties properties=JPropertiesUtils.loadProperties(new JFileResource(JFileUtils.getFileFromClassPath("jfwramework-core.properties")));
+    	String value=JPropertiesUtils.getKey("a", properties);
+    	assertNotNull(value);
+    }
+    
+    
+    
+    
+    
+    
 }

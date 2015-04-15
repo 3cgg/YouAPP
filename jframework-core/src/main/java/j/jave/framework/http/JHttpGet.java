@@ -3,18 +3,13 @@ package j.jave.framework.http;
 import j.jave.framework.utils.JUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.apache.http.HttpHost;
-import org.apache.http.StatusLine;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.client.methods.HttpUriRequest;
 
 
 /**
@@ -36,38 +31,41 @@ public class JHttpGet extends JHttp<JHttpGet> {
 	}
 	
 	public Object get(String url) throws IOException{
-		HttpClientBuilder httpClientBuilder = HttpClients.custom();
-		if(proxyHost!=null){
-			HttpHost proxy = new HttpHost(proxyHost,proxyPort);
-			DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-			httpClientBuilder.setRoutePlanner(routePlanner);
-		}
-		CloseableHttpClient closeableHttpClient= httpClientBuilder.build();
-		HttpGet httpget = new HttpGet(url);
+		return execute(url);
+	}
+	
+	/* (non-Javadoc)
+	 * @see j.jave.framework.http.JHttp#getHttpType()
+	 */
+	@Override
+	protected HttpUriRequest getHttpType() {
 		
-		// add head
-		if(headers!=null){
-			for (Iterator<Entry<String, String> > iterator = headers.entrySet().iterator(); iterator.hasNext();) {
-				Entry<String, String>  entry =  iterator.next();
-				httpget.addHeader(entry.getKey(), entry.getValue());
+		String url=this.url;
+		if(params!=null){
+			// useless 
+//			List<NameValuePair> nameValuePairs=new ArrayList<NameValuePair>();
+//			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
+//				Entry<String, Object> entry =  iterator.next();
+//				nameValuePairs.add(new BasicNameValuePair(entry.getKey(), JUtils.toString(entry.getValue())));
+//			}
+//			UrlEncodedFormEntity encodedFormEntity=new UrlEncodedFormEntity(nameValuePairs, Charset.forName("utf-8"));
+			String paramString="";
+			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
+				Entry<String, Object> entry =  iterator.next();
+				paramString=paramString+"&"+entry.getKey()+"="+JUtils.toString(entry.getValue());
+			}
+			if(JUtils.isNotNullOrEmpty(paramString)){
+				// remove '&'
+				paramString=paramString.substring(1);
+			}
+			try {
+				url=url+"?"+URLEncoder.encode(paramString, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				// never occurs. 
 			}
 		}
 		
-		CloseableHttpResponse response = closeableHttpClient.execute(httpget);
-		try {
-			StatusLine statusLine=response.getStatusLine();
-			if(statusLine.getStatusCode()==200){
-				InputStream inputStream=response.getEntity().getContent();
-				byte[] bytes=JUtils.getBytes(inputStream);
-				if(responseHandler==null)
-					return stringJResponseHandler.process(bytes);
-				else
-					return responseHandler.process(bytes);
-			} 
-		}finally {
-			response.close();
-		}
-		return null;
+		HttpGet httpGet=new HttpGet(url);
+		return httpGet;
 	}
-	
 }

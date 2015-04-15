@@ -1,12 +1,10 @@
 package test.J.jave.framework.mybatis.unit;
 
-import j.jave.framework.components.core.context.ServiceContext;
-import j.jave.framework.components.core.hub.ServiceFactory;
-import j.jave.framework.components.core.hub.ServiceHub;
-import j.jave.framework.components.core.hub.ServiceHub.StandardServiceInterfaces;
+import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserService;
-import j.jave.framework.components.memcached.JMemcachedDist;
+import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 
 import java.util.Date;
 
@@ -31,7 +29,7 @@ public class UnitTest extends TestCase {
 	
 	public void testSaveUser(){
 		UserService userService= (UserService) applicationContext.getBean("userService");
-		Object obj=ServiceHub.get().getService(StandardServiceInterfaces.MEMCACHED_DIST_SERVICE);
+		Object obj=new ServiceHubDelegate().getService(this,MemcachedService.class);
 				
 		String userName="N"+new Date().getTime();
 		String password="NEVER-AGAIN";
@@ -50,7 +48,7 @@ public class UnitTest extends TestCase {
 			Element element=new Element("pro", "j.jave.framework"+new Date().getTime());
 			cache.put(element);
 			
-			JMemcachedDist jMemcachedDist=  (JMemcachedDist) applicationContext.getBean("simpleJMemcachedDist");
+			MemcachedService jMemcachedDist=new ServiceHubDelegate().getService(this,MemcachedService.class);
 			
 			String key="abcd";
 			

@@ -8,10 +8,9 @@ import j.jave.framework.components.core.autoloader.AbstractSQLDDLLoader;
 import java.util.List;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
-public class ViewsSQLLoader extends AbstractSQLDDLLoader{
+public class ResourceSQLLoader extends AbstractSQLDDLLoader{
 
 	
 	/* (non-Javadoc)
@@ -20,7 +19,7 @@ public class ViewsSQLLoader extends AbstractSQLDDLLoader{
 	@Override
 	public List<String> load() {
 		try{
-			return analyze(ViewsSQLLoader.class.getResource("views.sql").toURI());
+			return analyze(ResourceSQLLoader.class.getResource("resource.sql").toURI());
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}

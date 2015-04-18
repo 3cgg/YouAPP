@@ -3,16 +3,17 @@
  */
 package j.jave.framework.memcached;
 
+import j.jave.framework.support.ObjectLoop;
+
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -23,11 +24,11 @@ import java.util.Map.Entry;
  */
 public class JDefaultMemcachedDisService implements JMemcachedDisService {
 	
-	private LinkedHashMap<Integer, JMemcached> store=new LinkedHashMap<Integer, JMemcached>();
-	private JMemcached firstStoreJMemcached=null;
+	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultMemcachedDisService.class);
+	
+	private ObjectLoop<Integer, JMemcached> store=new ObjectLoop<Integer, JMemcached>();
 
-	private LinkedHashMap<Integer, JMemcached> backupStore=new LinkedHashMap<Integer, JMemcached>();
-	private JMemcached firstBackupStoreJMemcached=null;
+	private ObjectLoop<Integer, JMemcached> backupStore=new ObjectLoop<Integer, JMemcached>();
 	
 	private Object sync=new Object();
 	
@@ -40,12 +41,10 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 		try {
 			synchronized (sync) {
 				if(storeAddes!=null){
-					JMemcached first=produce(store, storeAddes);
-					firstStoreJMemcached=first;
+					produce(store, storeAddes);
 				}
 				if(backupAddes!=null){
-					JMemcached first=produce(backupStore, backupAddes);
-					firstBackupStoreJMemcached=first;
+					produce(backupStore, storeAddes);
 				}
 			}
 		} catch (Exception e) {
@@ -57,12 +56,8 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 	 * return first element. 
 	 * @param store
 	 * @param storeAddes
-	 * @return
 	 */
-	private JMemcached produce(LinkedHashMap<Integer, JMemcached> store,  Map<String, List<String>> storeAddes) {
-		JMemcached first=null;
-		List<Integer> tempIntegers=new ArrayList<Integer>();
-		HashMap<Integer, JMemcached> temp=new HashMap<Integer, JMemcached>();
+	private void produce(ObjectLoop<Integer, JMemcached> store,Map<String, List<String>> storeAddes) {
 		for (Iterator<Entry<String, List<String>>> iterator = storeAddes.entrySet().iterator(); iterator
 				.hasNext();) {
 			Entry<String, List<String>> entry = iterator.next();
@@ -75,23 +70,9 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 				inetSocketAddresses.add(new InetSocketAddress(adds[0], Integer.valueOf(adds[1])));
 			}
 			keyString=keyString.replaceFirst(",", "");
-			System.out.println(" one group("+entry.getKey()+") contains "+keyString);
-			tempIntegers.add(keyString.hashCode());
-			temp.put(keyString.hashCode(), new JMemcached(inetSocketAddresses));
+			LOGGER.info(" one group("+entry.getKey()+") contains "+keyString);
+			store.put(keyString.hashCode(), new JMemcached(inetSocketAddresses));
 		}
-		Collections.sort(tempIntegers,new Comparator<Integer>() {
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o1.compareTo(o2);
-			}
-		});
-		for (Iterator<Integer> iterator = tempIntegers.iterator(); iterator.hasNext();) {
-			Integer integer =  iterator.next();
-			if(first==null)
-				first=temp.get(integer);
-			store.put(integer, temp.get(integer));
-		}
-		return first;
 	}
 	
 	public void set(String key , int expiry, Object value){
@@ -109,37 +90,11 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 
 	
 	private JMemcached getStoreJMemcached(String value) {
-		return getJMemcached(store, value, firstStoreJMemcached);
+		return store.get(value.hashCode());
 	}
 	
 	private JMemcached getBackupJMemcached(String value) {
-		return getJMemcached(backupStore, value, firstBackupStoreJMemcached);
-	}
-	
-	
-	/**
-	 * 基于一致性HASH算法获取 {@link JMemcached }.
-	 * 如果找不到，则返回期待的默认值 {@param defaultJMemcached}
-	 * @param maps
-	 * @param key
-	 * @param defaultJMemcached
-	 * @return
-	 */
-	private JMemcached getJMemcached(LinkedHashMap<Integer, JMemcached> maps , String key,JMemcached defaultJMemcached) {
-		JMemcached jMemcached=null;
-		int hashValue=key.hashCode();
-		for (Iterator<Entry<Integer, JMemcached>> iterator = maps.entrySet().iterator(); iterator.hasNext();) {
-			Entry<Integer, JMemcached> entry = iterator.next();
-			if(entry.getKey()>hashValue){
-				jMemcached=entry.getValue();
-				break;
-			}
-		}
-		
-		if(jMemcached==null){
-			jMemcached=defaultJMemcached;
-		}
-		return jMemcached;
+		return backupStore.get(value.hashCode());
 	}
 	
 	public Object get(String key){

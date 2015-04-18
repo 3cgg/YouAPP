@@ -1,34 +1,48 @@
 package j.jave.framework.components.login.model;
 
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.support.JColumn;
+import j.jave.framework.model.support.JSQLType;
+import j.jave.framework.model.support.JTable;
 
 import java.sql.Timestamp;
 
+/**
+ * 
+ * @author J
+ *
+ */
+@JTable(name="USER_TRACKER")
 public class UserTracker extends JBaseModel {
 
 	/**
 	 * User ID
 	 */
+	@JColumn(name="USERID",type=JSQLType.VARCHAR,length=32)
 	private String userId;
 	
 	/**
 	 * ip from the client 
 	 */
+	@JColumn(name="IP",type=JSQLType.VARCHAR,length=32)
 	private String ip;
 	
 	/**
 	 * user name 
 	 */
+	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
 	/**
 	 * login on the time . 
 	 */
+	@JColumn(name="LOGIN_TIME",type=JSQLType.TIMESTAMP)
 	private Timestamp loginTime;
 	
 	/**
 	 * the client that login from
 	 */
+	@JColumn(name="LOGIN_CLIENT",type=JSQLType.VARCHAR,length=256)
 	private String loginClient;
 
 	public String getUserId() {

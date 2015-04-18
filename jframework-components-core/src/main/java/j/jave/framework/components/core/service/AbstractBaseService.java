@@ -6,6 +6,7 @@ package j.jave.framework.components.core.service;
 import j.jave.framework.components.core.exception.ConcurrentException;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.framework.mybatis.JMapper;
 import j.jave.framework.utils.JUtils;
 
@@ -35,6 +36,10 @@ public abstract class AbstractBaseService {
 		jBaseModel.setVersion(1);
 		jBaseModel.setDeleted("N");
 		jBaseModel.setId(JUtils.unique());
+		
+		// give a chance to do something containing model intercepter
+		new JDefaultModelInvocation(jBaseModel).proceed();
+		
 		jMapper.save(jBaseModel);
 	}
 	
@@ -53,6 +58,9 @@ public abstract class AbstractBaseService {
 	protected void proxyOnUpdate(JMapper jMapper, User authorizer, JBaseModel jBaseModel){
 		jBaseModel.setUpdateId(authorizer.getId());
 		jBaseModel.setUpdateTime(new Timestamp(new Date().getTime()));
+		
+		// give a chance to do something containing model intercepter
+		new JDefaultModelInvocation(jBaseModel).proceed();
 		
 		JBaseModel dbModel=get(jMapper, jBaseModel.getId());
 		if(dbModel.getVersion()!=jBaseModel.getVersion()){

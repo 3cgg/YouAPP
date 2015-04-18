@@ -10,6 +10,7 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -42,8 +43,7 @@ public class UnitTest extends TestCase {
 		user.setPassword(password);
 		try{
 			userService.saveUser(context, user);
-			
-			Cache cache= (Cache) applicationContext.getBean("ehcacheSource");
+			Ehcache cache= (Cache) applicationContext.getBean("ehcacheSource");
 			
 			Element element=new Element("pro", "j.jave.framework"+new Date().getTime());
 			cache.put(element);

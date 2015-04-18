@@ -43,6 +43,10 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 		return object;
 	}
 	
+	protected final <M> M getBeanByName(String beanName,Class<M> clazz){
+		return (M) applicationContext.getBean(beanName,clazz);
+	}
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		getService();

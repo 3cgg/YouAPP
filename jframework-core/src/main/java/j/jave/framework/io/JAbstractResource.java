@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-public abstract class JAbstractResource implements JResource {
+public abstract class JAbstractResource implements JResource ,JOutputStreamSource {
 
+	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	
 	@Override
 	public boolean exists() {
 		try {

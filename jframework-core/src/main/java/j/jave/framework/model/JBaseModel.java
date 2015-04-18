@@ -1,5 +1,8 @@
 package j.jave.framework.model;
 
+import j.jave.framework.model.support.JColumn;
+import j.jave.framework.model.support.JSQLType;
+
 import java.sql.Timestamp;
 
 
@@ -13,36 +16,43 @@ public abstract class JBaseModel implements JModel {
 	/**
 	 * the primary key , uuid 
 	 */
+	@JColumn(name="CREATEID",type=JSQLType.VARCHAR,length=32)
 	private String id;
 	
 	/**
 	 * create user id
 	 */
+	@JColumn(name="ID",type=JSQLType.VARCHAR,length=32)
 	private String createId;
 	
 	/**
 	 * update user id 
 	 */
+	@JColumn(name="UPDATEID",type=JSQLType.VARCHAR,length=32)
 	private String updateId;
 	
 	/**
 	 * create time
 	 */
+	@JColumn(name="CREATETIME",type=JSQLType.TIMESTAMP)
 	private Timestamp createTime;
 	
 	/**
 	 * update time
 	 */
+	@JColumn(name="UPDATETIME",type=JSQLType.TIMESTAMP)
 	private Timestamp updateTime;
 	
 	/**
 	 * marks whether the record is deleted. Value is Y|N
 	 */
+	@JColumn(name="DELETED",type=JSQLType.VARCHAR,length=1)
 	private String deleted;
 	
 	/**
 	 * the property can limit the async operation effectively 
 	 */
+	@JColumn(name="VERSION",type=JSQLType.INT)
 	private int version;
 
 	public String getId() {

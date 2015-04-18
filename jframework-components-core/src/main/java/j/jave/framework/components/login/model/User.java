@@ -4,17 +4,23 @@
 package j.jave.framework.components.login.model;
 
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.support.JColumn;
+import j.jave.framework.model.support.JSQLType;
+import j.jave.framework.model.support.JTable;
 
 /**
  * @author Administrator
  *
  */
+@JTable(name="USERS")
 public class User extends JBaseModel {
-
 	
+	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
+	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
+	
 	
 	private String retypePassword;
 

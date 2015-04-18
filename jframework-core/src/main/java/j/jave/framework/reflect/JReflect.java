@@ -58,6 +58,11 @@ public class JReflect {
 		return !Modifier.isAbstract(modify)&&!Modifier.isInterface(modify)&&!Modifier.isPrivate(modify);
 	}
 	
+	public static boolean isAccessable(Field field){
+		int modify=field.getModifiers();
+		return !Modifier.isPrivate(modify)&&!Modifier.isProtected(modify);
+	}
+	
 	/**
 	 * resolve the type of property "propertyName" in the object . 
 	 * @param object

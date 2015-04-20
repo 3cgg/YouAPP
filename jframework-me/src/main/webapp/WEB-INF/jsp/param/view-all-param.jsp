@@ -55,7 +55,7 @@
 	                      <td>${para.functionId }</td>
 	                      <td>${para.code }</td>
 	                      <td>${para.name }</td>
-	                      <td>${para.desc}</td>
+	                      <td>${para.description}</td>
 	                    </tr>
 	                  </c:forEach>
 	                  

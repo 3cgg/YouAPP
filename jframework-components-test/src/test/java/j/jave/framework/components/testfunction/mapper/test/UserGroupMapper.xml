@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="j.jave.framework.components.login.mapper.UserGroupMapper">
+
+
+<resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
+<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
+<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
+<result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
+<result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
+<result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
+<result column="VERSION" property="version"  jdbcType="INT" />
+</resultMap>
+
+<resultMap id="userGroup"  type="j.jave.framework.components.login.model.UserGroup"  extends="jBaseModel" >
+<result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
+<result column="USERID" property="userId"  jdbcType="VARCHAR" />
+<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+</resultMap>
+
+
+<insert  id="save" parameterType="j.jave.framework.components.login.model.UserGroup">
+insert into USERS_GROUPS
+(
+GROUPID,USERID,DESCRIPTION
+,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)values(
+#{GROUPID},#{USERID},#{DESCRIPTION}
+,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+)
+</insert>
+
+
+<update id="update">
+update USERS_GROUPS
+<set>  
+UPDATEID =#{updateId},UPDATETIME =#{updateTime}
+<if test="groupId!=null">,GROUPID =#{groupId}</if>
+<if test="userId!=null">,USERID =#{userId}</if>
+<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="version!=null">,VERSION =#{version}</if>
+</set>  
+where ID=#{id}
+</update>
+
+
+<delete id="markDeleted" >
+update USERS_GROUPS set DELETED='Y' where ID=#{id}
+</delete>
+
+
+<select id="get"   resultMap="userGroup"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+
+<sql id="selectfor">
+select a.* from USERS_GROUPS a 
+</sql>
+
+</mapper>

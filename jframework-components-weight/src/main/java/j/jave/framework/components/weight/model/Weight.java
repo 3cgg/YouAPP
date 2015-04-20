@@ -1,8 +1,11 @@
 package j.jave.framework.components.weight.model;
 
-import java.sql.Timestamp;
-
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.support.JColumn;
+import j.jave.framework.model.support.JSQLType;
+import j.jave.framework.model.support.JTable;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -10,27 +13,32 @@ import j.jave.framework.model.JBaseModel;
  * @author J
  *
  */
+@JTable(name="WEIGHT")
 public class Weight extends JBaseModel {
 
 	/**
 	 *用户名 
 	 */
+	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
 	/**
 	 * 体重
 	 */
+	@JColumn(name="WEIGHT",type=JSQLType.DOUBLE)
 	private double weight;
 	
 	/**
 	 * 记录时间
 	 */
+	@JColumn(name="WEIGHT",type=JSQLType.TIMESTAMP)
 	private Timestamp recordTime;
 	
 	/**
 	 * 描述
 	 */
-	private String desc;
+	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
+	private String description;
 
 	public String getUserName() {
 		return userName;
@@ -56,13 +64,15 @@ public class Weight extends JBaseModel {
 		this.recordTime = recordTime;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
+	
 	
 	
 }

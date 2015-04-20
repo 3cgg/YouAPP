@@ -50,7 +50,7 @@ public class WeightAction extends JSPAction {
 	public String toViewWeight() throws Exception {
 		
 		String id=getParameter("id");
-		Weight weight= weightService.getWeightById(id);
+		Weight weight= weightService.getWeightById(getServiceContext(),id);
 		if(weight!=null){
 			setAttribute("weight", weight);
 		}

@@ -4,16 +4,16 @@
 package j.jave.framework.components.login.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.UserTracker;
 
 import java.util.List;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
-public interface UserTrackerService {
+public interface UserTrackerService extends Service<UserTracker>{
 
 	/**
 	 * get all trackers what time login, which client login. 

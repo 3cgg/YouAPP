@@ -1,10 +1,11 @@
 package j.jave.framework.components.weight.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.service.AbstractBaseService;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.weight.mapper.WeightMapper;
 import j.jave.framework.components.weight.model.Weight;
+import j.jave.framework.mybatis.JMapper;
 import j.jave.framework.utils.JUtils;
 
 import java.sql.Timestamp;
@@ -15,10 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service(value="weightService")
-public class WeightServiceImpl  extends AbstractBaseService  implements WeightService {
+public class WeightServiceImpl  extends ServiceSupport<Weight>  implements WeightService {
 
 	@Autowired
 	private WeightMapper  weightMapper;
+	
+	@Override
+	protected JMapper<Weight> getMapper() {
+		return weightMapper;
+	}
 	
 	@Override
 	public void saveWeight(ServiceContext context, Weight weight)
@@ -30,23 +36,18 @@ public class WeightServiceImpl  extends AbstractBaseService  implements WeightSe
 		if(weight.getRecordTime()==null){
 			weight.setRecordTime(new Timestamp(new Date().getTime()));
 		}
-		proxyOnSave(weightMapper, context.getUser(), weight);
+		saveOnly(context, weight);
 	}
 
 	@Override
 	public void updateWeight(ServiceContext context, Weight weight)
 			throws ServiceException {
-		proxyOnUpdate(weightMapper, context.getUser(), weight);
+		updateOnly(context, weight);
 	}
 
 	@Override
 	public List<Weight> getWeightByName(ServiceContext context, String userName) {
 		return weightMapper.getWeightByName(userName);
-	}
-
-	@Override
-	public void delete(ServiceContext context, String id) {
-		weightMapper.markDeleted(id);
 	}
 	
 	@Override
@@ -55,7 +56,7 @@ public class WeightServiceImpl  extends AbstractBaseService  implements WeightSe
 	}
 
 	@Override
-	public Weight getWeightById(String id) {
-		return weightMapper.get(id);
+	public Weight getWeightById(ServiceContext context, String id) {
+		return getById(context, id);
 	}
 }

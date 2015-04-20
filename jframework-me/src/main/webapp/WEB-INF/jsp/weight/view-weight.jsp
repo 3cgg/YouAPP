@@ -28,7 +28,7 @@
 	                    <dt>描述</dt>
 	                    <dd>在 ${weight.recordTime} 时录入的，</dd>
 	                    <dd> </dd>
-	                    <dd>${weight.desc}</dd>
+	                    <dd>${weight.description}</dd>
 	                  </dl>
 	                </div><!-- /.box-body -->
 	              </div><!-- /.box -->

@@ -3,17 +3,18 @@
  */
 package j.jave.framework.components.weight.service;
 
-import java.util.List;
-
 import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.weight.model.Weight;
+
+import java.util.List;
 
 /**
  * @author Administrator
  *
  */
-public interface WeightService {
+public interface WeightService extends Service<Weight> {
 	
 	/**
 	 * 
@@ -55,7 +56,7 @@ public interface WeightService {
 	 * @param id
 	 * @return
 	 */
-	public Weight getWeightById(String id);
+	public Weight getWeightById(ServiceContext context, String id);
 	
 	
 	

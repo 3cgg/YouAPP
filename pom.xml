@@ -160,7 +160,11 @@
 		<module>jframework-components-core</module>
 		<module>jframework-components-bill</module>
 		<module>jframework-components-weight</module>
+		<module>jframework-components-tablemanager</module>
 		<module>jframework-me</module>
+		
+		<!-- test module -->
+		<module>jframework-components-test</module>
 	</modules>
 
 </project>

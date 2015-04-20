@@ -45,7 +45,7 @@
 	                    购买的
 	                    </dd>
 	                    <dt>描述</dt>
-	                    <dd>${bill.desc} </dd>
+	                    <dd>${bill.description} </dd>
 	                  </dl>
 	                </div><!-- /.box-body -->
 	              </div><!-- /.box -->

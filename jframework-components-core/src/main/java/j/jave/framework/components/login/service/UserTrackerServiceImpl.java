@@ -1,10 +1,11 @@
 package j.jave.framework.components.login.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.service.AbstractBaseService;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserTrackerMapper;
 import j.jave.framework.components.login.model.UserTracker;
+import j.jave.framework.mybatis.JMapper;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service(value="userTrackerService")
-public class UserTrackerServiceImpl extends AbstractBaseService implements UserTrackerService {
+public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implements UserTrackerService {
 
 	@Autowired
 	private UserTrackerMapper userTrackerMapper;
@@ -28,13 +29,18 @@ public class UserTrackerServiceImpl extends AbstractBaseService implements UserT
 	public void saveUserTracker(ServiceContext context, UserTracker userTracker)
 			throws ServiceException {
 		userTracker.setLoginTime(new Timestamp(new Date().getTime()));
-		proxyOnSave(userTrackerMapper, context.getUser(), userTracker);
+		saveOnly(context, userTracker);
 	}
 
 	@Override
 	public void updateUserTracker(ServiceContext context,
 			UserTracker userTracker) throws ServiceException {
-		proxyOnUpdate(userTrackerMapper, context.getUser(), userTracker);
+		updateOnly(context, userTracker);
+	}
+	
+	@Override
+	protected JMapper<UserTracker> getMapper() {
+		return userTrackerMapper;
 	}
 
 }

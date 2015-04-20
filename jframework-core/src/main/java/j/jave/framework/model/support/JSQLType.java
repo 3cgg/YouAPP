@@ -2,6 +2,6 @@ package j.jave.framework.model.support;
 
 public enum JSQLType  {
 	
-	VARCHAR,TIMESTAMP,INT;
+	VARCHAR,TIMESTAMP,INTEGER,DOUBLE;
 
 }

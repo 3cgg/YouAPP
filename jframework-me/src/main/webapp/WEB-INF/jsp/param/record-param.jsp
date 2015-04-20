@@ -44,7 +44,7 @@
 	                    <div class="form-group">
 	                      <label for="desc">备注</label>
 	                      <textarea  class="form-control" 
-	                      	name="param.desc" rows="3"
+	                      	name="param.description" rows="3"
 	                      	id="desc" placeholder="备注" ></textarea>
 	                    </div>
 	                    

@@ -4,10 +4,11 @@
 package j.jave.framework.components.login.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.service.AbstractBaseService;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="userService")
-public class UserServiceImpl extends AbstractBaseService implements UserService {
+public class UserServiceImpl extends ServiceSupport<User> implements UserService {
 	
 	@Autowired
 	private UserMapper userMapper;
@@ -38,7 +39,7 @@ public class UserServiceImpl extends AbstractBaseService implements UserService 
 	 */
 	@Override
 	public void saveUser(ServiceContext context, User user) throws ServiceException {
-		saveUserOnly(context, user);
+		saveOnly(context, user);
 	}
 	
 	/* (non-Javadoc)
@@ -47,17 +48,9 @@ public class UserServiceImpl extends AbstractBaseService implements UserService 
 	@Override
 	public void updateUser(ServiceContext context, User user)
 			throws ServiceException {
-		updateUserOnly(context, user);
-	}
-
-	
-	private void saveUserOnly(ServiceContext context, User user) {
-		proxyOnSave(userMapper, context.getUser(), user);
+		updateOnly(context, user);
 	}
 		
-	private void updateUserOnly(ServiceContext context, User user) {
-		proxyOnUpdate(userMapper, context.getUser(), user);
-	}
 	
 	@Override
 	public User getUserByName(ServiceContext context, String userName) {
@@ -73,17 +66,22 @@ public class UserServiceImpl extends AbstractBaseService implements UserService 
 		return userMapper.getUsersByPage(user);
 	}
 	
-	
-	@Override
-	public void delete(ServiceContext context, String id) {
-		userMapper.markDeleted(id);
-	}
-	
 	@Override
 	public User getUserById(ServiceContext context, String id) {
-		return userMapper.get(id);
+		return getById(context, id);
 	}
 	
+	@Override
+	protected JMapper<User> getMapper() {
+		return userMapper;
+	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<User> getUsers() {
+		return userMapper.getUsers();
+	}
 
 }

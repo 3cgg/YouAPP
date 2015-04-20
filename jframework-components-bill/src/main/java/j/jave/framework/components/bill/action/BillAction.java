@@ -117,7 +117,7 @@ public class BillAction extends JSPAction {
 		dbBill.setMallCode(bill.getMallCode());
 		dbBill.setMallName(bill.getMallName());
 		dbBill.setUserCode(bill.getUserCode());
-		dbBill.setDesc(bill.getDesc());
+		dbBill.setDescription(bill.getDescription());
 		dbBill.setVersion(bill.getVersion());
 		billService.updateBill(getServiceContext(), dbBill);
 		

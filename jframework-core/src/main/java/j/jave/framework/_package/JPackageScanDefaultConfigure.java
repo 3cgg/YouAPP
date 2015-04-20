@@ -2,14 +2,30 @@ package j.jave.framework._package;
 
 import java.util.regex.Pattern;
 
+/**
+ * default configuration
+ * @author J
+ */
 public class JPackageScanDefaultConfigure implements JPackageScanConfigure {
 
+	/**
+	 * class loader to load class. 
+	 */
 	protected ClassLoader classLoader; 
 	
+	/**
+	 * scan under the package 
+	 */
 	protected String[] includePackages=new String[]{};
 	
+	/**
+	 * scan a class of its name in the collections. 
+	 */
 	protected String[] includeClassNames=new String[]{};
 	
+	/**
+	 * regular expression. 
+	 */
 	protected Pattern[] patterns=new Pattern[]{};
 	
 	public JPackageScanDefaultConfigure(){

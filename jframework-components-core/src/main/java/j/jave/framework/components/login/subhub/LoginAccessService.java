@@ -59,6 +59,15 @@ public interface LoginAccessService  extends JService {
 	 * @param name
 	 * @return
 	 */
-	public boolean authorize(String resource,String name);
+	public boolean authorizeOnUserName(String resource,String name);
+	
+	
+	/**
+	 * check whether the resource is authorized. 
+	 * @param resource
+	 * @param userId
+	 * @return
+	 */
+	public boolean authorizeOnUserId(String resource,String userId);
 	
 }

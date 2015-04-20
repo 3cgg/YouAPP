@@ -4,16 +4,16 @@
 package j.jave.framework.components.param.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.param.model.Param;
 
 import java.util.List;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
-public interface ParamService {
+public interface ParamService extends Service<Param> {
 	
 	/**
 	 * 

@@ -391,6 +391,9 @@ public class MapperXML {
 		stringBuffer.append(RN);
 		stringBuffer.append(getSelectfor());
 		
+		stringBuffer.append(RN);
+		stringBuffer.append(RN);
+		stringBuffer.append("</mapper>");
 		return stringBuffer;
 		
 	}

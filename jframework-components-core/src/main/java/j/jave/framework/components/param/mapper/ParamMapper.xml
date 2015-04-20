@@ -18,7 +18,7 @@
 	<result column="FUNCTIONID" property="functionId" />
 	<result column="CODE" property="code" />
 	<result column="NAME" property="name" />
-	<result column="DESCRIPTION" property="desc" />
+	<result column="DESCRIPTION" property="description" />
 </resultMap>
 
 
@@ -43,7 +43,7 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ,#{functionId}
 ,#{code}
 ,#{name}
-,#{desc}
+,#{description}
 ) 
 </insert>
 
@@ -55,7 +55,7 @@ set UPDATEID=#{updateId}
 ,FUNCTIONID=#{functionId}
 ,CODE=#{code}
 ,NAME=#{name}
-,DESCRIPTION=#{desc}
+,DESCRIPTION=#{description}
 where ID=#{id}
 </update>
 

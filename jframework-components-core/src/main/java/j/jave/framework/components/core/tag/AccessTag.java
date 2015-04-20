@@ -54,7 +54,7 @@ public class AccessTag implements Tag{
 		HttpServletRequest request=(HttpServletRequest) pageContext.getRequest();
 		//String userName=pageContext.get
 		HTTPContext httpContext=HTTPUtils.getHttpContext(request);
-		boolean authorized=loginAccessService.authorize(resource, httpContext.getUser().getUserName());
+		boolean authorized=loginAccessService.authorizeOnUserId(resource, httpContext.getUser().getId());
 		if(!authorized){
 			return SKIP_BODY;
 		}

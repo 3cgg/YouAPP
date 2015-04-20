@@ -41,7 +41,6 @@ public class JDefaultEhcacheService extends JAbstractEhcacheService implements J
 	 */
 	private void initCacheManager(InputStream inputStream){
 		cacheManager=CacheManager.create(inputStream);
-		produceEhcache();
 	}
 	
 	/**

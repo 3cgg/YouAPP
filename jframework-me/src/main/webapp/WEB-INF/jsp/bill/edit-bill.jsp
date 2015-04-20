@@ -110,8 +110,8 @@
 	                    <div class="form-group">
 	                      <label for="desc">备注</label>
 	                      <textarea  class="form-control" 
-	                      	name="bill.desc" rows="3"
-	                      	id="desc" placeholder="备注" >${bill.desc}</textarea>
+	                      	name="bill.description" rows="3"
+	                      	id="desc" placeholder="备注" >${bill.description}</textarea>
 	                    </div>
 	                    
 	                  </div><!-- /.box-body -->

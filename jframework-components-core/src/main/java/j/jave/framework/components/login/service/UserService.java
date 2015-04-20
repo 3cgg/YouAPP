@@ -4,16 +4,16 @@
 package j.jave.framework.components.login.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
 
 import java.util.List;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
-public interface UserService {
+public interface UserService extends Service<User> {
 
 	/**
 	 * get user by name & password 
@@ -57,14 +57,6 @@ public interface UserService {
 	public List<User> getUsersByPage(ServiceContext context, User user) ;
 	
 	/**
-	 * make the record not available
-	 * @param context
-	 * @param id
-	 */
-	public void delete(ServiceContext context, String id);
-	
-	
-	/**
 	 * 
 	 * @param context
 	 * @param id
@@ -72,5 +64,9 @@ public interface UserService {
 	 */
 	public User getUserById(ServiceContext context, String id);
 	
-	
+	/**
+	 * all users (not deleted) .
+	 * @return
+	 */
+	public List<User> getUsers();
 }

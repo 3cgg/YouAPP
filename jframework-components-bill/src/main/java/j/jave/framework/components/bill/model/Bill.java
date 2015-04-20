@@ -4,51 +4,62 @@
 package j.jave.framework.components.bill.model;
 
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.support.JColumn;
+import j.jave.framework.model.support.JSQLType;
+import j.jave.framework.model.support.JTable;
 
 import java.sql.Timestamp;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
+@JTable(name="BILL")
 public class Bill extends JBaseModel {
 	
 	/**
 	 *用户CODE 
 	 */
+	@JColumn(name="USER_CODE",type=JSQLType.VARCHAR,length=32)
 	private String userCode;
 	
+	@JColumn(name="MONEY",type=JSQLType.DOUBLE)
 	private double money;
 	
 	/**
 	 * GOOD_NAME
 	 */
+	@JColumn(name="GOOD_NAME",type=JSQLType.VARCHAR,length=64)
 	private String goodName;
 	
 	/**
 	 * GOOD_TYPE
 	 */
+	@JColumn(name="GOOD_TYPE",type=JSQLType.VARCHAR,length=32)
 	private String goodType;
 	
 	/**
 	 * 购物地址编码
 	 */
+	@JColumn(name="MALL_CODE",type=JSQLType.VARCHAR,length=32)
 	private String mallCode;
 	
 	/**
 	 * 购物地址
 	 */
+	@JColumn(name="MALL_NAME",type=JSQLType.VARCHAR,length=256)
 	private String mallName;
 	
 	/**
 	 * 账单时间
 	 */
+	@JColumn(name="BILL_TIME",type=JSQLType.TIMESTAMP)
 	private Timestamp billTime;
 
 	/**
 	 * optional description 
 	 */
-	private String desc;
+	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
+	private String description;
 
 	
 	/*
@@ -135,12 +146,12 @@ public class Bill extends JBaseModel {
 		this.billTime = billTime;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getGoodName() {

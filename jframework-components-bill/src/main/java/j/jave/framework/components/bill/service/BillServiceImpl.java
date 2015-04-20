@@ -6,8 +6,9 @@ package j.jave.framework.components.bill.service;
 import j.jave.framework.components.bill.mapper.BillMapper;
 import j.jave.framework.components.bill.model.Bill;
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.service.AbstractBaseService;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.service.ServiceSupport;
+import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
 
@@ -19,31 +20,31 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="billService")
-public class BillServiceImpl extends AbstractBaseService implements BillService{
+public class BillServiceImpl extends ServiceSupport<Bill> implements BillService{
 
 	@Autowired
 	private BillMapper billMapper;
 	
 	@Override
+	protected JMapper<Bill> getMapper() {
+		return this.billMapper;
+	}
+	
+	@Override
 	public void saveBill(ServiceContext context, Bill bill)
 			throws ServiceException {
-		proxyOnSave(billMapper, context.getUser(), bill);
+		saveOnly(context, bill);
 	}
 
 	@Override
 	public void updateBill(ServiceContext context, Bill bill)
 			throws ServiceException {
-		proxyOnUpdate(billMapper, context.getUser(), bill);
-	}
-
-	@Override
-	public void delete(ServiceContext context, String id) {
-		billMapper.markDeleted(id);
+		updateOnly(context, bill);
 	}
 
 	@Override
 	public Bill getBillById(ServiceContext context, String id) {
-		return billMapper.get(id);
+		return getById(context, id);
 	}
 
 	@Override

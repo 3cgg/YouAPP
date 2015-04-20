@@ -14,9 +14,12 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * @author Administrator
- *
+ * any service must not extend the class from now , that is deprecated.
+ * now ,you should use the latest service support {@link ServiceSupport }
+ * @see ServiceSupport 
+ * @author J
  */
+@Deprecated
 public abstract class AbstractBaseService {
 
 	

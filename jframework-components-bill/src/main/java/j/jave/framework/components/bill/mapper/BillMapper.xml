@@ -21,7 +21,7 @@
 	<result column="MALL_CODE" property="mallCode" />
 	<result column="MALL_NAME" property="mallName" />
 	<result column="BILL_TIME" property="billTime" />
-	<result column="DESCRIPTION" property="desc" />
+	<result column="DESCRIPTION" property="description" />
 	<result column="GOOD_NAME" property="goodName" />
 	<!--   EXTEND PROPERTIES  -->
 	<result column="MALL_CODE_NAME" property="mallCodeName" />
@@ -58,7 +58,7 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ,#{mallCode}
 ,#{mallName}
 ,#{billTime}
-,#{desc}
+,#{description}
 ,#{goodName}
 ) 
 </insert>
@@ -74,7 +74,7 @@ set UPDATEID=#{updateId}
 ,MALL_CODE =#{mallCode}
 ,MALL_NAME =#{mallName}
 ,BILL_TIME   =#{billTime}
-,DESCRIPTION =#{desc}
+,DESCRIPTION =#{description}
 ,GOOD_NAME=#{goodName}
 where ID=#{id}
 

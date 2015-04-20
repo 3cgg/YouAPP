@@ -36,7 +36,7 @@
 	                    <dt>类别</dt>
 	                    <dd>${youappParam.functionId} </dd>
 	                    <dt>描述</dt>
-	                    <dd>${youappParam.desc} </dd>
+	                    <dd>${youappParam.description} </dd>
 	                  </dl>
 	                </div><!-- /.box-body -->
 	              </div><!-- /.box -->

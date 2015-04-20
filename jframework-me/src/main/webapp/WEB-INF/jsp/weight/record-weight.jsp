@@ -43,7 +43,7 @@
 	                    <div class="form-group">
 	                      <label for="weight-desc">备注</label>
 	                      <textarea  class="form-control" 
-	                      	name="weight.desc" rows="3"
+	                      	name="weight.description" rows="3"
 	                      	id="weight-desc" placeholder="备注" ></textarea>
 	                    </div>
 	                    

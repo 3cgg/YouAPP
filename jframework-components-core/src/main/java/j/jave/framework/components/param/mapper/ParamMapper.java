@@ -4,6 +4,7 @@
 package j.jave.framework.components.param.mapper;
 
 import j.jave.framework.components.param.model.Param;
+import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
 @Component(value="ParamMapper")
+@JModelMapper(component="ParamMapper",name=Param.class)
 public interface ParamMapper extends JMapper<Param> {
 	
 	public List<Param> getParamsByPage(Param param) ;

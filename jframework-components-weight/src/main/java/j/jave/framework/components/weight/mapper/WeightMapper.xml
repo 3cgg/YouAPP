@@ -18,7 +18,7 @@
 	<result column="USERNAME" property="userName" />
 	<result column="WEIGHT" property="weight" />
 	<result column="RECORD_TIME" property="recordTime" />
-	<result column="DESCRIPTION" property="desc" />
+	<result column="DESCRIPTION" property="description" />
 </resultMap>
 
 
@@ -43,7 +43,7 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ,#{userName}
 ,#{weight}
 ,#{recordTime}
-,#{desc}
+,#{description}
 ) 
 </insert>
 

@@ -68,7 +68,7 @@
 	                      	</c:if>
 	                      </td>
 	                      <td>${bill.userCodeName}</td>
-	                      <td>${bill.desc}</td>
+	                      <td>${bill.description}</td>
 	                    </tr>
 	                  </c:forEach>
 	                  

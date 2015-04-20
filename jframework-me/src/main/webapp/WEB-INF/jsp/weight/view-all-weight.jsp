@@ -53,7 +53,7 @@
 	                  >
 	                      <td>${weight.weight }</td>
 	                      <td>${weight.recordTime }</td>
-	                      <td>${weight.desc}</td>
+	                      <td>${weight.description}</td>
 	                    </tr>
 	                  </c:forEach>
 	                  

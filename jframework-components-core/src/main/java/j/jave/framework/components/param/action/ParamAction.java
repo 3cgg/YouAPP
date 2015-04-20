@@ -80,7 +80,7 @@ public class ParamAction extends AbstractAction {
 		dbParam.setName(param.getName());
 		dbParam.setFunctionId(param.getFunctionId());
 		dbParam.setCode(param.getCode());
-		dbParam.setDesc(param.getDesc());
+		dbParam.setDescription(param.getDescription());
 		dbParam.setVersion(param.getVersion());
 		paramService.updateParam(getServiceContext(), dbParam);
 		setAttribute("youappParam", paramService.getParamById(getServiceContext(), dbParam.getId())); 

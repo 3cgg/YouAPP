@@ -2,7 +2,6 @@ package j.jave.framework._package;
 
 import j.jave.framework.reflect.JReflect;
 
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -34,6 +33,26 @@ public class JPackageResolve {
 					if(JReflect.isNewInstanceable(clazz)){  // filter "interface , abstract "
 						classes.add(clazz);
 					}
+				}
+			}
+		}
+		return classes;
+	}
+	
+	/**
+	 * get sub-class , which may be interface , abstract ...
+	 * @param packageScan
+	 * @param sup
+	 * @return
+	 */
+	public Set<Class<?>> getSubClass(JPackageScan packageScan,Class<?> sup){
+		Set<Class<?>> clazzes=packageScan.scan();
+		Set<Class<?>> classes=new HashSet<Class<?>>();
+		if(clazzes!=null){
+			for (Iterator<Class<?>> iterator = clazzes.iterator(); iterator.hasNext();) {
+				Class<?> clazz = iterator.next();
+				if(sup.isAssignableFrom(clazz)&&sup!=clazz){
+					classes.add(clazz);
 				}
 			}
 		}

@@ -16,13 +16,13 @@ public abstract class JBaseModel implements JModel {
 	/**
 	 * the primary key , uuid 
 	 */
-	@JColumn(name="CREATEID",type=JSQLType.VARCHAR,length=32)
+	@JColumn(name="ID",type=JSQLType.VARCHAR,length=32)
 	private String id;
 	
 	/**
 	 * create user id
 	 */
-	@JColumn(name="ID",type=JSQLType.VARCHAR,length=32)
+	@JColumn(name="CREATEID",type=JSQLType.VARCHAR,length=32)
 	private String createId;
 	
 	/**
@@ -52,7 +52,7 @@ public abstract class JBaseModel implements JModel {
 	/**
 	 * the property can limit the async operation effectively 
 	 */
-	@JColumn(name="VERSION",type=JSQLType.INT)
+	@JColumn(name="VERSION",type=JSQLType.INTEGER)
 	private int version;
 
 	public String getId() {

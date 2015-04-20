@@ -4,10 +4,11 @@
 package j.jave.framework.components.param.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.service.AbstractBaseService;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.param.mapper.ParamMapper;
 import j.jave.framework.components.param.model.Param;
+import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="paramService")
-public class ParamServiceImpl extends AbstractBaseService implements ParamService{
+public class ParamServiceImpl extends ServiceSupport<Param> implements ParamService{
 
 	@Autowired
 	private ParamMapper paramMapper;
@@ -30,7 +31,7 @@ public class ParamServiceImpl extends AbstractBaseService implements ParamServic
 	@Override
 	public void saveParam(ServiceContext context, Param param)
 			throws ServiceException {
-		proxyOnSave(paramMapper, context.getUser(), param);
+		saveOnly(context, param);
 	}
 
 	/* (non-Javadoc)
@@ -39,15 +40,7 @@ public class ParamServiceImpl extends AbstractBaseService implements ParamServic
 	@Override
 	public void updateParam(ServiceContext context, Param param)
 			throws ServiceException {
-		proxyOnUpdate(paramMapper, context.getUser(), param);
-	}
-
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.param.service.ParamService#delete(j.jave.framework.components.core.context.ServiceContext, java.lang.String)
-	 */
-	@Override
-	public void delete(ServiceContext context, String id) {
-		paramMapper.markDeleted(id);
+		updateOnly(context, param);
 	}
 
 	/* (non-Javadoc)
@@ -55,7 +48,7 @@ public class ParamServiceImpl extends AbstractBaseService implements ParamServic
 	 */
 	@Override
 	public Param getParamById(ServiceContext context, String id) {
-		return paramMapper.get(id);
+		return getById(context, id);
 	}
 
 	/* (non-Javadoc)
@@ -86,5 +79,9 @@ public class ParamServiceImpl extends AbstractBaseService implements ParamServic
 		return paramMapper.getParamByFunctionId(functionId);
 	}
 
+	@Override
+	protected JMapper<Param> getMapper() {
+		return this.paramMapper;
+	}
 	
 }

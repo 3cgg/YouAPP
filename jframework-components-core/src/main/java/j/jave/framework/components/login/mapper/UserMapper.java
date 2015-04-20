@@ -4,6 +4,7 @@
 package j.jave.framework.components.login.mapper;
 
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component(value="UserMapper")
+@JModelMapper(name=User.class,component="UserMapper")
 public interface UserMapper extends JMapper<User> {
 
 	public User getUserByNameAndPassword(
@@ -26,5 +28,7 @@ public interface UserMapper extends JMapper<User> {
 			@Param(value="userName")String userName);
 	
 	public List<User> getUsersByPage(User user) ;
+	
+	public List<User> getUsers();
 	
 }

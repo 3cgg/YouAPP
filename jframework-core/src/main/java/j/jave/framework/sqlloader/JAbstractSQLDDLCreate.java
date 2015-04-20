@@ -4,6 +4,7 @@ import j.jave.framework._package.JFileClassPathDefaultScan;
 import j.jave.framework._package.JJARDefaultScan;
 import j.jave.framework._package.JPackageResolve;
 import j.jave.framework.utils.JClassPathUtils;
+import j.jave.framework.utils.JUtils;
 
 import java.io.File;
 import java.sql.Connection;
@@ -123,17 +124,21 @@ public abstract class JAbstractSQLDDLCreate extends JDefaultSQLDDLConfigure impl
 			List<String> ddls) throws SQLException {
 		for (Iterator<String> iterator = ddls.iterator(); iterator.hasNext();) {
 			String sql =  iterator.next();
+			if(JUtils.isNullOrEmpty(sql)) continue;
 			boolean done=false;
 			for (Iterator<String> iterator2 = tables.iterator(); iterator2.hasNext();) {
 				String string =  iterator2.next();
-				if(sql.indexOf(string)!=-1)  {
+				String sqlName=sql.substring(0,sql.indexOf("("));
+				String[] sqls=sqlName.split(" ");
+				String tableName=sqls[sqls.length-1].trim();
+				if(tableName.equalsIgnoreCase(string))  {
 					done=true;
 					break;
 				}
 			}
 			
 			if(!done){
-				System.out.println("processed : "+sql);
+				LOGGER.info("processed : "+sql);
 				stat.execute(sql);
 			}
 		}

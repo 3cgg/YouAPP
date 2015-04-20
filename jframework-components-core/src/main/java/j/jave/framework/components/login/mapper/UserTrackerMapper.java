@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.login.mapper;
 
-import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.model.UserTracker;
+import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
 @Component(value="UserTrackerMapper")
-public interface UserTrackerMapper extends JMapper<User> {
+@JModelMapper(component="UserTrackerMapper",name=UserTracker.class)
+public interface UserTrackerMapper extends JMapper<UserTracker> {
 
 	
 	public List<UserTracker> getUserTrackerByName(

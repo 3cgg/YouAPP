@@ -29,7 +29,7 @@ public class Param extends JBaseModel {
 	/**
 	 * optional description 
 	 */
-	private String desc;
+	private String description;
 
 	public String getFunctionId() {
 		return functionId;
@@ -55,12 +55,14 @@ public class Param extends JBaseModel {
 		this.name = name;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+
+	
 	
 }

@@ -5,6 +5,7 @@ package j.jave.framework.components.bill.service;
 
 import j.jave.framework.components.bill.model.Bill;
 import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Administrator
  *
  */
-public interface BillService {
+public interface BillService extends Service<Bill> {
 	
 	/**
 	 * 

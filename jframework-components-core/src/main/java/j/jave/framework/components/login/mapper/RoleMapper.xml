@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="j.jave.framework.components.login.mapper.RoleMapper">
+
+
+<resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
+<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
+<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
+<result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
+<result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
+<result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
+</resultMap>
+
+<resultMap id="role"  type="j.jave.framework.components.login.model.Role"  extends="jBaseModel" >
+<result column="ROLECODE" property="roleCode"  jdbcType="VARCHAR" />
+<result column="ROLENAME" property="roleName"  jdbcType="VARCHAR" />
+<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+</resultMap>
+
+
+<insert  id="save" parameterType="j.jave.framework.components.login.model.Role">
+insert into ROLES
+(
+ROLECODE,ROLENAME,DESCRIPTION
+,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)values(
+#{ROLECODE},#{ROLENAME},#{DESCRIPTION}
+,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+)
+</insert>
+
+
+<update id="update">
+update ROLES
+<set>  
+UPDATEID =#{updateId},UPDATETIME =#{updateTime}
+<if test="roleCode!=null">,ROLECODE =#{roleCode}</if>
+<if test="roleName!=null">,ROLENAME =#{roleName}</if>
+<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="version!=null">,VERSION =#{version}</if>
+</set>  
+where ID=#{id}
+</update>
+
+
+<delete id="markDeleted" >
+update ROLES set DELETED='Y' where ID=#{id}
+</delete>
+
+
+<select id="get"   resultMap="role"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+
+<sql id="selectfor">
+select a.* from ROLES a 
+</sql>
+
+</mapper>

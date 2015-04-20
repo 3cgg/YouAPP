@@ -14,7 +14,17 @@ public class JFileClassPathDefaultScan extends JAbstractPackageScan implements J
 	public Set<Class<?>> doScan() {
 		try {
 			Set<Class<?>> classes=new HashSet<Class<?>>();
-			loadClassFromFile(classes, file);
+			if(includePackages!=null){
+				for (int i = 0; i < includePackages.length; i++) {
+					String packg=includePackages[i];
+					String packgPath=packg.replace(".", "/");
+					File packFile=new File(file.getPath()+"/"+packgPath);
+					loadClassFromFile(classes, packFile);
+				}
+			}
+			else{
+				loadClassFromFile(classes, file);
+			}
 			return classes;
 		} catch (Exception e) {
 			throw new RuntimeException(e);

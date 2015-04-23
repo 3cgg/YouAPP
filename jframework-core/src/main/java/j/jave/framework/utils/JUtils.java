@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,8 +13,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-
-import org.apache.commons.lang3.StringUtils;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -157,114 +154,7 @@ public class JUtils {
 		}
 	}
 
-	/**
-	 * only for property that is not boolean type.
-	 *
-	 * @param property
-	 * @return
-	 */
-	public static String getterName(String property) {
-		if (StringUtils.isNotEmpty(property)) {
-			return "get" + property.substring(0, 1).toUpperCase()
-					+ property.substring(1);
-		}
-		return null;
-	}
-
-	/**
-	 * for all property whether or not it is boolean type.
-	 *
-	 * @param property
-	 * @return
-	 */
-	public static String setterName(String property) {
-		if (StringUtils.isNotEmpty(property)) {
-			return "set" + property.substring(0, 1).toUpperCase()
-					+ property.substring(1);
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unused")
-	public static Object value(String property, Object model) {
-		try {
-			Class clazz = model.getClass();
-			Method method=null;
-			while (clazz != null) {
-				try {
-					method = clazz.getDeclaredMethod(getterName(property));
-				} catch (NoSuchMethodException e) {
-					clazz = clazz.getSuperclass();
-					continue;
-				}
-				if (method != null) {
-					return method.invoke(model);
-				}
-				clazz = clazz.getSuperclass();
-			}
-
-			if(method==null){
-				throw new RuntimeException("cannot find getter method for property "+property);
-			}
-			return null;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-
-	@SuppressWarnings("unused")
-	public static String set(String property,Object value,Object model) {
-		try {
-			Class clazz = model.getClass();
-			Method method=null;
-			while (clazz != null) {
-				try {
-					String setterName=setterName(property);
-					if(value!=null){
-						method = clazz.getDeclaredMethod(setterName,value.getClass());
-					}
-					else{
-						Method[] methods=clazz.getDeclaredMethods();
-						if(JUtils.hasInArray(methods)){
-							for (int i = 0; i < methods.length; i++) {
-								Method inner=methods[i];
-								if(setterName.equals(inner.getName())){
-									method=inner;
-								}
-
-							}
-						}
-						if(method==null){
-							throw new NoSuchMethodException(setterName);
-						}
-					}
-
-
-				} catch (NoSuchMethodException e) {
-					clazz = clazz.getSuperclass();
-					continue;
-				}
-				if (method != null) {
-					Object obj = method.invoke(model, value);
-					if (obj == null) {
-						return null;
-					} else {
-						return String.valueOf(obj);
-					}
-				}
-				clazz = clazz.getSuperclass();
-			}
-
-			if(method==null){
-				throw new RuntimeException("cannot find setter method for property "+property);
-			}
-			return null;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
+	
 	public static boolean gtEqualNumber(Object before,Object after){
 
 		if(before==null&&after==null) return true;

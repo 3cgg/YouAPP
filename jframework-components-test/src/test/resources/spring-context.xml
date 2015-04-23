@@ -19,6 +19,8 @@
 	<context:annotation-config />
 	<context:component-scan base-package="j"></context:component-scan>
 
+	<context:property-placeholder location="classpath:jramework-db.properties"/>
+	
 	<import resource="spring-mybatis.xml"/>
 	<import resource="spring-ehcache.xml"/>
 	<import resource="spring-memcached.xml"/>

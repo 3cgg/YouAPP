@@ -65,10 +65,10 @@ public class BillAction extends JSPAction {
 	}
 	
 	public String toViewAllBill() throws Exception {
-		Bill bill=new Bill();
+		BillSearchCriteria bill=new BillSearchCriteria();
 		List<Bill> bills=billService.getBillsByPage(getServiceContext(), bill);
 		setAttribute("bills", bills);
-		return "/WEB-INF/jsp/bill/view-all-bill.jsp";
+		return "/WEB-INF/jsp/tablemanager/view-all-tablemanager.jsp";
 	}
 	
 	public String getBillsWithsCondition(){

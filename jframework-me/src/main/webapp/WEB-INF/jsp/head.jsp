@@ -5,6 +5,7 @@
 
 <!-- <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script> -->
 <script src="${pageContext.request.contextPath}/js/jquery-1.11.2.js"></script>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 
@@ -12,6 +13,7 @@
 <!--  may affect the css of alert-warning  -->
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-theme.min.css"> -->
 
+<!--  AdminLTE -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminLTE.min.css">
 <link href="${pageContext.request.contextPath}/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
 	<!-- FontAwesome 4.3.0 -->
@@ -27,6 +29,11 @@
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/js/app.min.js" type="text/javascript"></script>
 
+<!--  Data Tables -->
+<link rel="stylesheet"  href="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.css"  type="text/css" />
+<script src="${pageContext.request.contextPath}/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+    
+<!--  JQuery form -->
 <script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 
 <!-- iCheck -->
@@ -61,6 +68,7 @@
     <link href="${pageContext.request.contextPath}/plugins/morris/morris.css" rel="stylesheet" type="text/css" />
 <!-- Morris.js charts -->
     <script src="${pageContext.request.contextPath}/plugins/morris/raphael-min.js"></script>
+
 <!--  YouAPP css -->
 <script src="${pageContext.request.contextPath}/js/youapp.js"></script>
 <link href="${pageContext.request.contextPath}/css/youapp.css" rel="stylesheet" type="text/css" />   

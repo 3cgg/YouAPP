@@ -24,7 +24,7 @@ public class TableManagerServiceTest extends StandaloneTest {
 		
 		
 		User user=new User();
-		user.setId("bd2713e6ad5d493ab2e25c34f6cd339a");
+		user.setId("ad7394d5900e439ba6670c0ee3d4f5a9");
 		
 		Record record= tableManagerService.getRecord(null, user);
 		

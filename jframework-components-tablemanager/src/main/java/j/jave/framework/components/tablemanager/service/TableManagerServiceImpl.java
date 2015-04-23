@@ -1,16 +1,21 @@
 package j.jave.framework.components.tablemanager.service;
 
 import j.jave.framework._package.JDefaultPackageScan;
+import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.tablemanager.model.Cell;
 import j.jave.framework.components.tablemanager.model.Column;
 import j.jave.framework.components.tablemanager.model.Record;
 import j.jave.framework.components.tablemanager.model.Table;
+import j.jave.framework.components.tablemanager.model.TableSearch;
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.model.support.JTable;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
 
 import java.lang.reflect.Field;
@@ -34,19 +39,19 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 
 	private ApplicationContext applicationContext=null;
 	
-	private boolean loaded=false;
+	private volatile boolean loaded=false;
 	
 	/**
 	 * key :  sub-class of {@link JMapper}
 	 * <p> value : object 
 	 */
-	private Map<Class<?>, JMapper<? extends JBaseModel>> mappersWithMapperClass=new ConcurrentHashMap<Class<?>, JMapper<? extends JBaseModel>>();
+	private Map<Class<?>, JMapper< JBaseModel>> mappersWithMapperClass=new ConcurrentHashMap<Class<?>, JMapper<JBaseModel>>();
 
 	/**
 	 * key :  name of mapping model.
 	 * <p> value : object 
 	 */
-	private Map<String, JMapper<? extends JBaseModel>> mappersWithModelName=new ConcurrentHashMap<String, JMapper<? extends JBaseModel>>();
+	private Map<String, JMapper<JBaseModel>> mappersWithModelName=new ConcurrentHashMap<String, JMapper<JBaseModel>>();
 
 	
 	/**
@@ -77,7 +82,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			if(classes!=null){
 				for (Iterator<Class<?>> iterator = classes.iterator(); iterator.hasNext();) {
 					Class<?> clazz = iterator.next();
-					JModelMapper modelMapper=clazz.getDeclaredAnnotation(JModelMapper.class);
+					JModelMapper modelMapper=clazz.getAnnotation(JModelMapper.class);
 					if(modelMapper!=null){
 						// load mapper 
 						String component=modelMapper.component();
@@ -85,22 +90,22 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 						mappersWithMapperClass.put(clazz, mapper);
 						
 						Class<? extends JBaseModel>  model=modelMapper.name();
-						mappersWithModelName.put(model.getSimpleName(), mapper); 
+						mappersWithModelName.put(model.getName(), mapper); 
 						
 						// load table ... 
-						JTable tableAnnotation=model.getDeclaredAnnotation(JTable.class);
+						JTable tableAnnotation=model.getAnnotation(JTable.class);
 						if(tableAnnotation!=null){
 							
 							// load table
 							Table table=new Table();
 							table.setTableName(tableAnnotation.name());
 							table.setOwner(tableAnnotation.schema());
-							table.setModelName(model.getSimpleName());
+							table.setModelName(model.getName());
 							tables.add(table);
 							
 							//load column 
 							addColumn(model, tableAnnotation.name(), columnsWithTableName);
-							addColumn(model, model.getSimpleName(), columnsWithModelName);
+							addColumn(model, model.getName(), columnsWithModelName);
 							
 							convertColumns(columnsWithModelName, columns);
 						}
@@ -146,7 +151,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 					Column clm=new Column();
 					clm.setColumnName(column.name());
 					clm.setPropertyName(field.getName());
-					clm.setPropertyType(field.getType().getSimpleName());
+					clm.setPropertyType(field.getType().getName());
 					clm.setSqlType(column.type().name());
 					
 					List<Column> inners=columns.get(key);
@@ -167,30 +172,27 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	
 	@Override
 	public List<Table> getTables() {
-		if(!loaded){
-			loadMapper();
-		}
+		init();
+		
 		return tables;
 	}
 
 	@Override
 	public List<Column> getColumnsByTable(ServiceContext serviceContext,
 			String tableName) {
-		if(!loaded){
-			loadMapper();
-		}
+		init();
+		
 		return columnsWithTableName.get(tableName);
 	}
 
 	private String getModelName(JBaseModel model){
-		return model.getClass().getSimpleName();
+		return model.getClass().getName();
 	}
 	
 	@Override
 	public Record getRecord(ServiceContext serviceContext, JBaseModel model) {
-		if(!loaded){
-			loadMapper();
-		}
+		init();
+		
 		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(getModelName(model));
 		JBaseModel baseModel=mapper.get(model.getId());
 		return getRecord(baseModel);
@@ -238,9 +240,25 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	
 	
 	@Override
-	public List<Record> getRecords(ServiceContext serviceContext, JBaseModel model) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Record> getRecords(ServiceContext serviceContext, SearchCriteria model) {
+		
+		if(JPagination.class.isInstance(model)){
+			throw new RuntimeException(model.getClass().getName()+" not supported, as not the sub-clss of "+JPagination.class.getName());
+		}
+		
+		init();
+		
+		TableSearch tableSearch=(TableSearch) model;
+		
+		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(tableSearch.getModelName());
+		
+		List<? extends JBaseModel> models=mapper.getsByPage((JPagination) model);
+		List<Record> records=new ArrayList<Record>();
+		for (int i = 0; i < models.size(); i++) {
+			JBaseModel baseModel=models.get(i);
+			records.add(getRecord(baseModel));
+		}
+		return records;
 	}
 	
 	
@@ -250,4 +268,56 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		this.applicationContext=applicationContext;
 	}
 
+	@Override
+	public Record getRecord(ServiceContext serviceContext, String modelName,
+			String id) {
+		init();
+		
+		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(modelName);
+		JBaseModel baseModel=mapper.get(id);
+		return getRecord(baseModel);
+	}
+	
+	private void init(){
+		if(!loaded){
+			loadMapper();
+		}
+	}
+	
+	@Override
+	public void updateRecord(ServiceContext serviceContext, Record record) throws ServiceException {
+		init();
+		
+		try {
+			String modelName=record.getModelName();
+			JBaseModel model=get(record);
+			JMapper<JBaseModel> mapper=mappersWithModelName.get(modelName);
+			mapper.update( model);
+			
+		} catch (Exception e) {
+			throw new ServiceException(e);
+		}
+	}
+	
+	
+	private JBaseModel get(Record record) throws Exception{
+		String modelName=record.getModelName();
+		Class<?> clazz=Thread.currentThread().getContextClassLoader().loadClass(modelName);
+		Object model=clazz.newInstance();
+		List<Cell> cells=record.getCells();
+		for(int i=0;i<cells.size();i++){
+			Cell cell=cells.get(i);
+			JClassUtils.set(cell.getColumn().getPropertyName(), cell.getObject(), model);
+		}
+		return (JBaseModel) model;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

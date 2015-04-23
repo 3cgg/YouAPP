@@ -1,8 +1,8 @@
 package j.jave.framework.components.core.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -56,8 +56,8 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<T> getByPage(ServiceContext context, SearchCriteria searchCriteria) {
-		return null;
+	public List<T> getsByPage(ServiceContext context, JPagination pagination) {
+		return getMapper().getsByPage(pagination);
 	}
 
 	protected abstract JMapper<T> getMapper();

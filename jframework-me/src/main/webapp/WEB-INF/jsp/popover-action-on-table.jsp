@@ -26,16 +26,34 @@ $(function () {
 				var deleteURL=$this.attr('data-youappDelete');
 				var viewURL=$this.attr('data-youappView');
 				
+				var param=$this.attr('data-youappParam');
+				var extension="";
+				if(param!=null&&param!=""){
+					try{
+						if(param.lastChar()!=')'){
+							// eval function 
+							extension=eval(param);
+						}
+						else{
+							extension=param;
+						}
+					}catch(e){
+						
+					}
+				}
+				var targetParam='id='+recordId
+				+(extension!=null&&extension!='' ? ('&'+extension):'');
+				
 				var $popover=$('#youapp-popover-id');
 				var $view=$popover.find('#youapp-popover-id-view');
 				$view.attr('id',$view.attr('id')+"-"+recordId);
 				$view.attr('onclick', function (){
-					return 'httpGET("'+viewURL+'", "id='+recordId+'")';
+					return 'httpGET("'+viewURL+'", "'+targetParam+'")';
 				});
 				var $delete=$popover.find('#youapp-popover-id-delete');
 				$delete.attr('id',$delete.attr('id')+"-"+recordId);
 				$delete.attr('onclick', function (){
-					return 'deleteRecordWithConfirmOnGTTPGET("'+deleteURL+'", "'+recordId+'")';
+					return 'deleteRecordWithConfirmOnHTTPGET("'+deleteURL+'", "'+targetParam+'")';
 				});
 				return $popover.html();
 			}

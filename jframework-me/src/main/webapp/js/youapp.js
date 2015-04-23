@@ -16,7 +16,7 @@ $.validator.setDefaults({
    }
 });
 
-function deleteRecordWithConfirmOnGTTPGET(url,guid){
+function deleteRecordWithConfirmOnHTTPGET(url,guid){
 	$.confirm({
         text: "你确定删除？",
         confirm: function(button) {
@@ -153,3 +153,9 @@ function analyze(html) {
 	render[1] = content;
 	return render;
 }
+
+
+String.prototype.lastChar=function(){
+	return this.substring(this.length-1);
+}
+

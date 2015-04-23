@@ -41,6 +41,8 @@
 	            <!-- bill -->
 	            <c:import url="bill/sidebar-bill.jsp"></c:import>
 	            
+	            <!-- table manager -->
+	            <c:import url="tablemanager/sidebar-tablemanager.jsp"></c:import>
 			</ul>
 	
 	

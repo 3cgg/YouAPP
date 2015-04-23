@@ -1,7 +1,7 @@
 package j.jave.framework.components.core.service;
 
 import j.jave.framework.components.core.exception.ServiceException;
-import j.jave.framework.components.core.model.SearchCriteria;
+import j.jave.framework.model.JPagination;
 
 import java.util.List;
 
@@ -48,10 +48,10 @@ public interface Service<T> {
 	/**
 	 * get records for pagination.
 	 * @param context
-	 * @param object class implements {@link SearchCriteria}
+	 * @param object class implements {@link JPagination}
 	 * @return
 	 */
-	public List<T> getByPage(ServiceContext context, SearchCriteria searchCriteria) ;
+	public List<T> getsByPage(ServiceContext context, JPagination pagination) ;
 	
 	
 }

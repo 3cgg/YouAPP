@@ -10,7 +10,7 @@ public class Table {
 	private String tableName;
 	
 	/**
-	 * name of mapping model. 
+	 * full class name of mapping model. 
 	 */
 	private String modelName;
 	

@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import j.jave.framework.filedistribute.JFileDisService;
+import j.jave.framework.servicehub.filedistribute.JFileDisService;
 
 /**
  * @author J

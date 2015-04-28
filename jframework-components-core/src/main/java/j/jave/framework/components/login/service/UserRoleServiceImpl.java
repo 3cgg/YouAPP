@@ -8,7 +8,7 @@ import j.jave.framework.mybatis.JMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="userRoleServiceImpl")
+@Service(value="userRoleServiceImpl.transation")
 public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements UserRoleService {
 
 	@Autowired

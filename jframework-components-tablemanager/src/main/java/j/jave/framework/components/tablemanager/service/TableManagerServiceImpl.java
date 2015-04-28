@@ -1,6 +1,5 @@
 package j.jave.framework.components.tablemanager.service;
 
-import j.jave.framework._package.JDefaultPackageScan;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.components.core.service.ServiceContext;
@@ -16,7 +15,7 @@ import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.model.support.JTable;
 import j.jave.framework.mybatis.JMapper;
 import j.jave.framework.reflect.JClassUtils;
-import j.jave.framework.reflect.JReflect;
+import j.jave.framework.support._package.JDefaultPackageScan;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -138,7 +137,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			Field[] fields=superClass.getDeclaredFields();
 			for(int i=0;i<fields.length;i++){
 				Field field=fields[i];
-				if(!JReflect.isAccessable(field)){
+				if(!JClassUtils.isAccessable(field)){
 					field.setAccessible(true);
 				}
 				
@@ -151,7 +150,8 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 					Column clm=new Column();
 					clm.setColumnName(column.name());
 					clm.setPropertyName(field.getName());
-					clm.setPropertyType(field.getType().getName());
+					clm.setPropertyTypeName(field.getType().getName());
+					clm.setPropertyType(field.getType());
 					clm.setSqlType(column.type().name());
 					
 					List<Column> inners=columns.get(key);
@@ -184,6 +184,14 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		
 		return columnsWithTableName.get(tableName);
 	}
+	
+	@Override
+	public List<Column> getColumnsByModelName(ServiceContext serviceContext,
+			String modelName) {
+		init();
+		
+		return columnsWithModelName.get(modelName);
+	}
 
 	private String getModelName(JBaseModel model){
 		return model.getClass().getName();
@@ -209,7 +217,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			Field[] fields=superClass.getDeclaredFields();
 			for(int i=0;i<fields.length;i++){
 				Field field=fields[i];
-				if(!JReflect.isAccessable(field)){
+				if(!JClassUtils.isAccessable(field)){
 					field.setAccessible(true);
 				}
 				
@@ -242,7 +250,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	@Override
 	public List<Record> getRecords(ServiceContext serviceContext, SearchCriteria model) {
 		
-		if(JPagination.class.isInstance(model)){
+		if(!JPagination.class.isInstance(model)){
 			throw new RuntimeException(model.getClass().getName()+" not supported, as not the sub-clss of "+JPagination.class.getName());
 		}
 		

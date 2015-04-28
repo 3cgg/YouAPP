@@ -8,7 +8,7 @@ import j.jave.framework.mybatis.JMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="roleGroupServiceImpl")
+@Service(value="roleGroupServiceImpl.transation")
 public class RoleGroupServiceImpl extends ServiceSupport<RoleGroup> implements RoleGroupService {
 
 	@Autowired

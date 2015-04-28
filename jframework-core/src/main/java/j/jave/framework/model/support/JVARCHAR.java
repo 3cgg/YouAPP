@@ -1,6 +1,6 @@
 package j.jave.framework.model.support;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 /**
  * VARCHAR Delegate 
@@ -23,7 +23,7 @@ public class JVARCHAR extends JAbstractType<String> {
 	@Override
 	public boolean defaultValidate(String object) {
 		boolean valid=true;
-		if(JUtils.isNullOrEmpty(object)) return true;
+		if(JStringUtils.isNullOrEmpty(object)) return true;
 		valid= object.trim().length()<=length;
 		if(!valid){
 			invalidMessage.append("exceed the length["+length+"]");

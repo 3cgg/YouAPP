@@ -14,7 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="userTrackerService")
+@Service(value="userTrackerService.transation")
 public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implements UserTrackerService {
 
 	@Autowired

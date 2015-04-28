@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.ehcache.JDefaultEhcacheService;
-import j.jave.framework.ehcache.JDefaultEhcacheServiceConfiguration;
-import j.jave.framework.ehcache.JEhcacheServiceConfigure;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.servicehub.ehcache.JDefaultEhcacheService;
+import j.jave.framework.servicehub.ehcache.JDefaultEhcacheServiceConfiguration;
+import j.jave.framework.servicehub.ehcache.JEhcacheServiceConfigure;
+import j.jave.framework.utils.JStringUtils;
 
 /**
  * @author J
@@ -38,7 +38,7 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 		if(BeanSupportEhcacheServiceConfigure.class.isInstance(ehcacheServiceConfigure)){
 			BeanSupportEhcacheServiceConfigure springHolder=(BeanSupportEhcacheServiceConfigure) ehcacheServiceConfigure;
 			String beanName=springHolder.getEhcacheBeanName();
-			if(JUtils.isNotNullOrEmpty(beanName)){
+			if(JStringUtils.isNotNullOrEmpty(beanName)){
 				Object bean=getBeanByName(beanName,Object.class);
 				if(FactoryBean.class.isInstance(bean)){
 					// its factory bean.

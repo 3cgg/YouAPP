@@ -6,7 +6,8 @@ import j.jave.framework.components.web.jsp.JSPAction;
 import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.model.WeightSearchCriteria;
 import j.jave.framework.components.weight.service.WeightService;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JDateUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class WeightAction extends JSPAction {
 			for (Iterator<Weight> iterator = weights.iterator(); iterator.hasNext();) {
 				Weight weight =  iterator.next();
 				SimpleLineChart lineChart=new SimpleLineChart();
-				lineChart.setXvalue(JUtils.formatWithSeconds(weight.getRecordTime()));
+				lineChart.setXvalue(JDateUtils.formatWithSeconds(weight.getRecordTime()));
 				lineChart.setYvalue(weight.getWeight());
 				lineCharts.add(lineChart);
 			}
@@ -81,11 +82,10 @@ public class WeightAction extends JSPAction {
 	}
 	
 	public String getWeightsWithsCondition(){
-		
-		Weight weight=new Weight();
 		String latestMonth=getParameter("lastetMonth");
 		Calendar calendar=Calendar.getInstance();
-		calendar.add(Calendar.MONTH, -1*Integer.valueOf(JUtils.isNullOrEmpty(latestMonth)?"1":latestMonth));
+		calendar.add(Calendar.MONTH, -1*Integer.valueOf(JStringUtils.isNullOrEmpty(latestMonth)?"1":latestMonth));
+		WeightSearchCriteria weight=new WeightSearchCriteria();
 		weight.setRecordTime(new Timestamp(calendar.getTime().getTime()));
 		weight.setUserName(getSessionUser().getUserName());
 		List<Weight> weights=weightService.getWeightsByPage(getServiceContext(), weight);

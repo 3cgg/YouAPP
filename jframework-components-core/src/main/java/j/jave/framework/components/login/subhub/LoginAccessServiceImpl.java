@@ -17,8 +17,9 @@ import j.jave.framework.components.resource.service.ResourceGroupService;
 import j.jave.framework.components.resource.service.ResourceRoleService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
-import j.jave.framework.security.JAPPCipher;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.support.security.JAPPCipher;
+import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,16 +67,16 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	@Override
 	public String validate(String name, String password)
 			throws ServiceException {
-		if(JUtils.isNullOrEmpty(name)){
+		if(JStringUtils.isNullOrEmpty(name)){
 			throw new ServiceException("用户名不能为空");
 		}
 		
-		if(JUtils.isNullOrEmpty(password)){
+		if(JStringUtils.isNullOrEmpty(password)){
 			throw new ServiceException("密码不能为空");
 		}
 		String encryptPassword=JAPPCipher.get().encrypt(password.trim());
 		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
-		if(user!=null) return  JUtils.unique()+"-"+name; 
+		if(user!=null) return  JUniqueUtils.unique()+"-"+name; 
 		return "";
 	}
 	
@@ -103,11 +104,11 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	@Override
 	public void register(ServiceContext context,User user) throws ServiceException {
 		
-		if(JUtils.isNullOrEmpty(user.getUserName())){
+		if(JStringUtils.isNullOrEmpty(user.getUserName())){
 			throw new ServiceException("用户名不能为空");
 		}
 		
-		if(JUtils.isNullOrEmpty(user.getPassword())){
+		if(JStringUtils.isNullOrEmpty(user.getPassword())){
 			throw new ServiceException("密码不能为空");
 		}		
 		
@@ -134,7 +135,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	@Override
 	public String login(String name, String password) throws ServiceException {
 		String ticket=validate(name, password);
-		if(JUtils.isNullOrEmpty(ticket)){
+		if(JStringUtils.isNullOrEmpty(ticket)){
 			throw new ServiceException("用户名或者密码不正确");
 		}
 		return ticket;

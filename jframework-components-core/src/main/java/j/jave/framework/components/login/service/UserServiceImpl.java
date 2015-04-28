@@ -8,6 +8,7 @@ import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  *
  */
-@Service(value="userService")
+@Service(value="userService.transation")
 public class UserServiceImpl extends ServiceSupport<User> implements UserService {
 	
 	@Autowired
@@ -62,8 +63,8 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	 * @see j.jave.framework.components.login.service.UserService#getUsersByPage(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
 	 */
 	@Override
-	public List<User> getUsersByPage(ServiceContext context, User user) {
-		return userMapper.getUsersByPage(user);
+	public List<User> getUsersByPage(ServiceContext context, JPagination pagination) {
+		return userMapper.getUsersByPage(pagination);
 	}
 	
 	@Override

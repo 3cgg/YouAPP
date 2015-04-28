@@ -58,7 +58,12 @@ select * from USER_TRACKER where DELETED='N' and USERNAME=#{userName} order by L
 </select>
 
 
-
+<select id="getsByPage"  resultMap="userTracker"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from USER_TRACKER 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
 
 
 </mapper>

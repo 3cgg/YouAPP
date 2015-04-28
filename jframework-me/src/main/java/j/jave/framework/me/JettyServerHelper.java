@@ -31,8 +31,8 @@ public class JettyServerHelper {
 		
 //		String webApp="D:\\java_\\so\\sources\\trunk\\jframework-me\\target\\jframework-me-1.0.war";
 		
-//		String webApp="D:/java_/so/sources/trunk/jframework-me/src/main/webapp";
-		String webApp="D:/java_/JFramework1.1/trunk/jframework-me/src/main/webapp";
+		String webApp="D:/java_/so/sources/trunk/jframework-me/src/main/webapp";
+//		String webApp="D:/java_/JFramework1.1/trunk/jframework-me/src/main/webapp";
 		
 		String serverDirectory="D:/java_/server-directory";
 		

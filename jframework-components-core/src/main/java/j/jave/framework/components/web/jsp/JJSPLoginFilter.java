@@ -5,7 +5,7 @@ import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.utils.HTTPUtils;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 
@@ -83,7 +83,7 @@ public class JJSPLoginFilter implements Filter  {
 			
 			String clientTicket=HTTPUtils.getTicket(req);
 			boolean isLogin=false;
-			if(JUtils.isNullOrEmpty(clientTicket)){ // no login.
+			if(JStringUtils.isNullOrEmpty(clientTicket)){ // no login.
 				isLogin=false;
 			}
 			else{ // check  whether server ticket is invalid. 

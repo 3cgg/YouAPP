@@ -8,7 +8,7 @@ package j.jave.framework.model;
  */
 public class JPage {
 	
-	private int DEFAULT_NUM_PER_PAGE = 10;
+	private int DEFAULT_NUM_PER_PAGE = Integer.MAX_VALUE/10;
 	
 	/**
 	 * 总记录数
@@ -30,6 +30,28 @@ public class JPage {
 	 */
 	private int currentPageNum  = 1;
 	
+	/**
+	 * sort column 
+	 */
+	private String sortColumn;
+	
+	/**
+	 * sort type .
+	 */
+	private String sortType;
+	
+	public String getSortColumn() {
+		return sortColumn;
+	}
+	public void setSortColumn(String sortColumn) {
+		this.sortColumn = sortColumn;
+	}
+	public String getSortType() {
+		return sortType;
+	}
+	public void setSortType(String sortType) {
+		this.sortType = sortType;
+	}
 	public int getTotalRecordNum() {
 		return totalRecordNum;
 	}

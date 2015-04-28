@@ -58,4 +58,11 @@ where a.id=#{param1}
 select a.* from RESOURCES a 
 </sql>
 
+<select id="getsByPage"  resultMap="resource"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from RESOURCES  
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
 </mapper>

@@ -7,6 +7,8 @@ import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.weight.model.Weight;
+import j.jave.framework.components.weight.model.WeightSearchCriteria;
+import j.jave.framework.model.JPagination;
 
 import java.util.List;
 
@@ -49,7 +51,7 @@ public interface WeightService extends Service<Weight> {
 	public void delete(ServiceContext context, String id);
 	
 	
-	public List<Weight> getWeightsByPage(ServiceContext context,Weight weight) ;
+	public List<Weight> getWeightsByPage(ServiceContext context,JPagination pagination) ;
 	
 	/**
 	 * get one .

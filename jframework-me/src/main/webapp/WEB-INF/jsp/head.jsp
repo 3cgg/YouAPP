@@ -14,7 +14,7 @@
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-theme.min.css"> -->
 
 <!--  AdminLTE -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminLTE.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AdminLTE.css">
 <link href="${pageContext.request.contextPath}/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
 	<!-- FontAwesome 4.3.0 -->
     <link href="${pageContext.request.contextPath}/css/font-awesome.css" rel="stylesheet" type="text/css" />
@@ -32,6 +32,7 @@
 <!--  Data Tables -->
 <link rel="stylesheet"  href="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.css"  type="text/css" />
 <script src="${pageContext.request.contextPath}/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     
 <!--  JQuery form -->
 <script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
@@ -70,7 +71,9 @@
     <script src="${pageContext.request.contextPath}/plugins/morris/raphael-min.js"></script>
 
 <!--  YouAPP css -->
+<script src="${pageContext.request.contextPath}/js/youapp-config.js"></script>
 <script src="${pageContext.request.contextPath}/js/youapp.js"></script>
+<script src="${pageContext.request.contextPath}/js/youapp-pagination.js"></script>
 <link href="${pageContext.request.contextPath}/css/youapp.css" rel="stylesheet" type="text/css" />   
 
 

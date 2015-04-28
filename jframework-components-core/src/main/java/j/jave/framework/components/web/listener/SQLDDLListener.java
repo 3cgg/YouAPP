@@ -1,8 +1,8 @@
 package j.jave.framework.components.web.listener;
 
-import j.jave.framework.sqlloader.JSQLDDLConfigure;
-import j.jave.framework.sqlloader.JSQLDDLCreateFactory;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.support.sqlloader.JSQLConfigure;
+import j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory;
+import j.jave.framework.utils.JStringUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 public class SQLDDLListener implements ServletContextListener {
 	private static final Logger LOGGER=LoggerFactory.getLogger(SQLDDLListener.class);
 	
-	private static final String DDL_CREATE_FACTORY="j.jave.framework.sqlloader.JSQLDDLCreateFactory.implementation";
+	private static final String DDL_CREATE_FACTORY="j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.implementation";
 	
-	private static final String DDL_CREATE_FACTORY_PACKAGE="j.jave.framework.sqlloader.JSQLDDLCreateFactory.package";
+	private static final String DDL_CREATE_FACTORY_PACKAGE="j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.package";
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
@@ -24,8 +24,8 @@ public class SQLDDLListener implements ServletContextListener {
 			String packString=sce.getServletContext().getInitParameter(DDL_CREATE_FACTORY_PACKAGE);
 			Class<?> clazz= Thread.currentThread().getContextClassLoader().loadClass(obj);
 			JSQLDDLCreateFactory createFactory=(JSQLDDLCreateFactory) clazz.newInstance();
-			JSQLDDLConfigure configure=(JSQLDDLConfigure) createFactory;
-			if(JUtils.isNotNullOrEmpty(packString)){
+			JSQLConfigure configure=(JSQLConfigure) createFactory;
+			if(JStringUtils.isNotNullOrEmpty(packString)){
 				configure.setPackageName(packString);
 			}
 			createFactory.getObject().create();

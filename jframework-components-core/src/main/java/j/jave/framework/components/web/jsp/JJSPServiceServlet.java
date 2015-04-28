@@ -9,6 +9,7 @@ import j.jave.framework.components.web.servlet.JServiceServlet;
 import j.jave.framework.components.web.utils.HTTPUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * JSP Service Servlet
  * @author J
  */
 public class JJSPServiceServlet  extends JServiceServlet {
@@ -32,6 +34,9 @@ public class JJSPServiceServlet  extends JServiceServlet {
 			if(expectJsp.endsWith(".jsp")){
 				HTTPUtils.setHttpContext(request, httpContext);
 				request.getRequestDispatcher(expectJsp).forward(request, response);
+			}
+			else{
+				response.getOutputStream().write(expectJsp.getBytes(Charset.forName("utf-8")));
 			}
 		}
 	}

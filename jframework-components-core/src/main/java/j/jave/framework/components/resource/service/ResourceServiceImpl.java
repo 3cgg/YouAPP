@@ -8,7 +8,7 @@ import j.jave.framework.mybatis.JMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="resourceServiceImpl")
+@Service(value="resourceServiceImpl.transation")
 public class ResourceServiceImpl extends ServiceSupport<Resource> implements ResourceService {
 
 	@Autowired

@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import j.jave.framework.filedistribute.JDefaultLocalFileDistServiceConfigure;
-import j.jave.framework.filedistribute.JDefaultLocalFilePathStrategy;
+import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistServiceConfigure;
+import j.jave.framework.servicehub.filedistribute.JDefaultLocalFilePathStrategy;
 
 /**
  * @author J

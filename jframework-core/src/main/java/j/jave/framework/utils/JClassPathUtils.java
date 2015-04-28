@@ -9,7 +9,9 @@ public abstract class JClassPathUtils {
 
 	/**
 	 * get all CLASSPATH files. 
-	 * ".class" ,   directory or ".jar"  
+	 * <li>.class</li>
+	 * <li>directory</li>
+	 * <li>.jar</li>
 	 * @return
 	 */
 	public static Set<File> getClassPathFilesFromSystem(){

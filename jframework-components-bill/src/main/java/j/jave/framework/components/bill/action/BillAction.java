@@ -8,7 +8,7 @@ import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.param.service.ParamService;
 import j.jave.framework.components.views.chart.SimpleBarChart;
 import j.jave.framework.components.web.jsp.JSPAction;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JDateUtils;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -68,16 +68,21 @@ public class BillAction extends JSPAction {
 		BillSearchCriteria bill=new BillSearchCriteria();
 		List<Bill> bills=billService.getBillsByPage(getServiceContext(), bill);
 		setAttribute("bills", bills);
-		return "/WEB-INF/jsp/tablemanager/view-all-tablemanager.jsp";
+		return "/WEB-INF/jsp/bill/view-all-bill.jsp";
 	}
 	
 	public String getBillsWithsCondition(){
-		int latestMonth=0;
+		int latestMonth=36;
 		if(billSearchCriteria!=null){
 			latestMonth=billSearchCriteria.getLatestMonth();
 		}
 		Calendar calendar=Calendar.getInstance();
 		calendar.add(Calendar.MONTH, -1*latestMonth);
+		
+		if(billSearchCriteria==null){
+			billSearchCriteria=new BillSearchCriteria();
+		}
+		
 		billSearchCriteria.setBillTime(new Timestamp(calendar.getTime().getTime()));
 		List<Bill> bills=billService.getBillsByPage(getServiceContext(), billSearchCriteria);
 		setAttribute("bills", bills);
@@ -138,7 +143,7 @@ public class BillAction extends JSPAction {
 		if(bills!=null){
 			for(int i=0;i<bills.size();i++){
 				Bill bill=bills.get(i);
-				simpleBarChart.put(JUtils.format(bill.getBillTime()), bill.getGoodType(), bill.getMoney(),bill.getGoodTypeName());
+				simpleBarChart.put(JDateUtils.format(bill.getBillTime()), bill.getGoodType(), bill.getMoney(),bill.getGoodTypeName());
 			}
 		}
 		simpleBarChart.sort();

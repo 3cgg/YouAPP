@@ -8,6 +8,7 @@ import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.param.mapper.ParamMapper;
 import j.jave.framework.components.param.model.Param;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  *
  */
-@Service(value="paramService")
+@Service(value="paramService.transation")
 public class ParamServiceImpl extends ServiceSupport<Param> implements ParamService{
 
 	@Autowired
@@ -55,8 +56,8 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	 * @see j.jave.framework.components.param.service.ParamService#getParamsByPage(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.param.model.Param)
 	 */
 	@Override
-	public List<Param> getParamsByPage(ServiceContext context, Param param) {
-		return paramMapper.getParamsByPage(param);
+	public List<Param> getParamsByPage(ServiceContext context, JPagination pagination) {
+		return paramMapper.getParamsByPage(pagination);
 	}
 
 	/* (non-Javadoc)

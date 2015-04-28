@@ -62,4 +62,11 @@ where a.id=#{param1}
 select a.* from RESOURCES_ROLES a 
 </sql>
 
+<select id="getsByPage"  resultMap="resourceRole"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from RESOURCES_ROLES  
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
 </mapper>

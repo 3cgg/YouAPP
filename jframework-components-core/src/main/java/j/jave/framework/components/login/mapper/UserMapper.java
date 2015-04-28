@@ -4,6 +4,7 @@
 package j.jave.framework.components.login.mapper;
 
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
@@ -27,7 +28,7 @@ public interface UserMapper extends JMapper<User> {
 	public User getUserByName(
 			@Param(value="userName")String userName);
 	
-	public List<User> getUsersByPage(User user) ;
+	public List<User> getUsersByPage(JPagination pagination) ;
 	
 	public List<User> getUsers();
 	

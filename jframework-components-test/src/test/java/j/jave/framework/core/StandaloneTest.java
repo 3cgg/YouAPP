@@ -10,11 +10,11 @@ public class StandaloneTest extends TestCase implements Spring{
 		System.out.println("StandaloneTest loading end ...  ");
 	}
 	
-	public static  <T> T getBean(String beanName,Class<T> clazz){
+	protected   <T> T getBean(String beanName,Class<T> clazz){
 		return applicationContext.getBean(beanName,clazz);
 	}
 	
-	public static Object getBean(String beanName){
+	protected  Object getBean(String beanName){
 		return applicationContext.getBean(beanName);
 	}
 

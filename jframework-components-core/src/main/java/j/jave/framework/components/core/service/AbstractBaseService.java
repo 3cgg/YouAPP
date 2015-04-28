@@ -8,7 +8,7 @@ import j.jave.framework.components.login.model.User;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.framework.mybatis.JMapper;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JUniqueUtils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -38,7 +38,7 @@ public abstract class AbstractBaseService {
 		jBaseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		jBaseModel.setVersion(1);
 		jBaseModel.setDeleted("N");
-		jBaseModel.setId(JUtils.unique());
+		jBaseModel.setId(JUniqueUtils.unique());
 		
 		// give a chance to do something containing model intercepter
 		new JDefaultModelInvocation(jBaseModel).proceed();

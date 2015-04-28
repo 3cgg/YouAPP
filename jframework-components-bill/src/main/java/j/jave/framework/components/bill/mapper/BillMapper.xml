@@ -130,5 +130,11 @@ where a.id=#{param1}
 	order by a.BILL_TIME desc , a.UPDATETIME desc
 </select>
 
+<select id="getsByPage"  resultMap="bill"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from BILL 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
 
 </mapper>

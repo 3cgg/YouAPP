@@ -16,7 +16,9 @@ import j.jave.framework.components.web.utils.CookieUtils;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.io.JFile;
 import j.jave.framework.reflect.JReflect;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JDateUtils;
+import j.jave.framework.utils.JNumberUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,14 +44,15 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 
 /**
- * @author Administrator
- *
+ * do with the request. 
+ * @author J
  */
 public abstract class JServiceServlet  extends HttpServlet {
 
@@ -65,12 +68,6 @@ public abstract class JServiceServlet  extends HttpServlet {
 		System.out.println("in  constructor DefaultJettyServlet() ");
 	}
 	
-	
-	
-	/* (non-Javadoc)
-	 * @see javax.servlet.GenericServlet#init(javax.servlet.ServletConfig)
-	 */
-	@SuppressWarnings({ "static-access"})
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		applicationContext=ContextLoaderListener.getCurrentWebApplicationContext();
@@ -82,11 +79,8 @@ public abstract class JServiceServlet  extends HttpServlet {
 	
 	
 	/**
-	 * process  /应用名/模块名.服务名/方法名?查询参数
-	 * i.e. /youapp/login.loginaction/login?userName='a'&password='b'
-	 */
-	/* (non-Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 * process  /应用名/platform/模块名.服务名/方法名?查询参数
+	 * <p>i.e. /youapp/platform/login.loginaction/login?userName='a'&password='b'
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -103,7 +97,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 			httpContext.setResponse(resp);
 			httpContext.setTicket(uniqueName);
 			
-			if(JUtils.isNullOrEmpty(uniqueName)){
+			if(JStringUtils.isNullOrEmpty(uniqueName)){
 				//mock 用户信息
 				SessionUser user=new SessionUser();
 				String IP=HTTPUtils.getIP(req);
@@ -122,25 +116,25 @@ public abstract class JServiceServlet  extends HttpServlet {
 				httpContext.setUser(context.getUser());
 			}
 			
-			if (JUtils.isNotNullOrEmpty(req.getContentType())
+			if (JStringUtils.isNotNullOrEmpty(req.getContentType())
 					&&req.getContentType().indexOf("multipart/form-data") != -1) { // file
 				Map<String, Object> parameters=new HashMap<String, Object>();
 				httpContext.setParameters(parameters); 
-				DiskFileItemFactory factory = new DiskFileItemFactory();
-				factory.setSizeThreshold(1024 * 8);// 设置8k的缓存空间
-				factory.setRepository(new File("d:/a"));
-				ServletFileUpload upload = new ServletFileUpload(factory);
+//				DiskFileItemFactory factory = new DiskFileItemFactory();
+//				factory.setSizeThreshold(1024 * 8);// 设置8k的缓存空间
+//				factory.setRepository(new File("d:/a"));
+				ServletFileUpload upload = new ServletFileUpload();
 				upload.setHeaderEncoding("UTF-8");// 设置文件名处理中文编码
 				try {
 					FileItemIterator fii = upload.getItemIterator(req);// 使用遍历类
 					while (fii.hasNext()) {
 						FileItemStream fis = fii.next();
 						if (fis.isFormField()) {// FileItemStream同样使用OpenStream获取普通表单的值
-							String value=new String(JUtils.getBytes(fis.openStream()),"utf-8");
+							String value=new String(JStringUtils.getBytes(fis.openStream()),"utf-8");
 							parameters.put(fis.getFieldName(), value);
 						} else {
 							String fileName = fis.getName();
-							byte[] bytes=JUtils.getBytes(fis.openStream());
+							byte[] bytes=JStringUtils.getBytes(fis.openStream());
 							File file=new File(fileName);
 							JFile jFile=new JFile(file);
 							jFile.setFileContent(bytes);
@@ -165,14 +159,20 @@ public abstract class JServiceServlet  extends HttpServlet {
 			
 			Method method=AbstractAction.class.getMethod("setHttpContext", HTTPContext.class);
 			method.invoke(object, httpContext);
-			//fillin attributes associate to the request. 
+			//fill in attributes associate to the request. 
 			set(object, req, httpContext);
 			
+			StopWatch stopWatch=null;
+			if(LOGGER.isDebugEnabled()){
+				stopWatch=new StopWatch();
+				stopWatch.start();
+			}
 			Object navigate=JReflect.invoke(object, methodName, new Object[]{});
-			
+			if(LOGGER.isDebugEnabled()){
+				LOGGER.debug("time of processing request is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
+			}
 			handlerNavigate(req, resp,httpContext, navigate);
-			
-			System.out.println("time is :"+new Date().getTime());
+
 		}
 		catch(ServiceException e){
 			handlerServiceExcepion(req, resp, httpContext, e);
@@ -185,11 +185,34 @@ public abstract class JServiceServlet  extends HttpServlet {
 		
 	}
 	
+	/**
+	 * how to handle navigate
+	 * @param request
+	 * @param response
+	 * @param httpContext
+	 * @param navigate
+	 * @throws Exception
+	 */
 	protected abstract void handlerNavigate(HttpServletRequest request,HttpServletResponse response,
 			HTTPContext httpContext,Object navigate) throws Exception;
 	
+	/**
+	 * how to handle service exception 
+	 * see {@link ServiceException}
+	 * @param request
+	 * @param response
+	 * @param httpContext
+	 * @param exception
+	 */
 	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,ServiceException exception);
 	
+	/**
+	 * how to handle exception . 
+	 * @param request
+	 * @param response
+	 * @param httpContext
+	 * @param exception
+	 */
 	protected abstract void handlerExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,Exception exception);
 	
 	/* (non-Javadoc)
@@ -206,7 +229,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 		String appUrlPath="";
 		String contentPath=request.getContextPath();
 		String url=request.getRequestURL().toString();
-		if(JUtils.isNotNullOrEmpty(contentPath)){
+		if(JStringUtils.isNotNullOrEmpty(contentPath)){
 			appUrlPath= url.substring(0,url.indexOf(contentPath))+contentPath;
 		}
 		else{
@@ -258,22 +281,22 @@ public abstract class JServiceServlet  extends HttpServlet {
 						field.set(target, value);
 					}
 					else if(field.getType()==Double.class||field.getType()==double.class){
-						field.set(target, JUtils.toDouble(value));
+						field.set(target, JNumberUtils.toDouble(value));
 					}
 					else if(field.getType()==Integer.class||field.getType()==int.class){
-						field.set(target, JUtils.toInt(value));
+						field.set(target, JNumberUtils.toInt(value));
 					}
 					else if(field.getType()==Long.class||field.getType()==long.class){
-						field.set(target, JUtils.toLong(value));
+						field.set(target, JNumberUtils.toLong(value));
 					}
 					else if(field.getType()==Timestamp.class){
-						if(JUtils.isNotNullOrEmpty(value)){
-							field.set(target, JUtils.parseTimestamp(value));
+						if(JStringUtils.isNotNullOrEmpty(value)){
+							field.set(target, JDateUtils.parseTimestamp(value));
 						}
 					}
 					else if(field.getType()==Date.class){
-						if(JUtils.isNotNullOrEmpty(value)){
-							field.set(target, JUtils.parseDate(value));
+						if(JStringUtils.isNotNullOrEmpty(value)){
+							field.set(target, JDateUtils.parseDate(value));
 						}
 					}
 				}

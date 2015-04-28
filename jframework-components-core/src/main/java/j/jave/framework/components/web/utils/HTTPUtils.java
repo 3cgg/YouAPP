@@ -2,7 +2,7 @@ package j.jave.framework.components.web.utils;
 
 import j.jave.framework.components.web.ViewConstants;
 import j.jave.framework.components.web.action.HTTPContext;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,7 +29,7 @@ public class HTTPUtils {
 		String appUrlPath="";
 		String contentPath=request.getContextPath();
 		String url=request.getRequestURL().toString();
-		if(JUtils.isNotNullOrEmpty(contentPath)){
+		if(JStringUtils.isNotNullOrEmpty(contentPath)){
 			appUrlPath= url.substring(0,url.indexOf(contentPath))+contentPath;
 		}
 		else{

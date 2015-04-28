@@ -4,6 +4,7 @@
 package j.jave.framework.components.bill.mapper;
 
 import j.jave.framework.components.bill.model.Bill;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
@@ -22,7 +23,7 @@ public interface BillMapper extends JMapper<Bill> {
 	
 	public List<Bill> getBillByUserName(@Param(value="userName")String userName) ;
 	
-	public List<Bill> getBillsByPage(Bill bill);
+	public List<Bill> getBillsByPage(JPagination pagination);
 	
 	
 }

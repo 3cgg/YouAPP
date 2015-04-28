@@ -71,8 +71,11 @@ select * from USERS where id=#{param1}
 select * from USERS where DELETED='N'
 </select>
 
-<select id="getsByPage"  resultMap="user"  parameterType="j.jave.framework.model.JBaseModel">
-    select * from USERS where DELETED='N'
+<select id="getsByPage"  resultMap="user"  parameterType="j.jave.framework.model.JPagination">
+    select * from USERS
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
 </select>
 
 </mapper>

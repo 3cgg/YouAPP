@@ -50,13 +50,16 @@ public class ParamAction extends AbstractAction {
 	}
 	
 	public String toViewAllParam() throws Exception {
-		Param param=new Param();
+		ParamSearchCriteria param=new ParamSearchCriteria();
 		List<Param> params=paramService.getParamsByPage(getServiceContext(), param);
 		setAttribute("params", params);
 		return "/WEB-INF/jsp/param/view-all-param.jsp";
 	}
 	
 	public String getParamsWithsCondition(){
+		if(paramSearchCriteria==null){
+			paramSearchCriteria=new ParamSearchCriteria();
+		}
 		List<Param> params=paramService.getParamsByPage(getServiceContext(), paramSearchCriteria);
 		setAttribute("params", params);
 		return "/WEB-INF/jsp/param/view-all-param.jsp";

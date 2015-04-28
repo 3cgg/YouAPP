@@ -8,7 +8,7 @@ import j.jave.framework.mybatis.JMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="groupServiceImpl")
+@Service(value="groupServiceImpl.transation")
 public class GroupServiceImpl extends ServiceSupport<Group> implements GroupService {
 
 	@Autowired

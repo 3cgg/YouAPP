@@ -90,4 +90,11 @@ select * from PARAM where id=#{param1}
 </select>
 
 
+<select id="getsByPage"  resultMap="param"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from PARAM 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
 </mapper>

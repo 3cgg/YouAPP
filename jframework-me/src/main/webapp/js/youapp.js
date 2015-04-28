@@ -1,8 +1,5 @@
 
 
-var serviceHost = "http://127.0.0.1:8686/youapp/web/service/dispatch";
-
-
 function success_jsonpCallback(data) {
 
 	//alert('success_jsonpCallback-->' + data['status']);
@@ -16,12 +13,12 @@ $.validator.setDefaults({
    }
 });
 
-function deleteRecordWithConfirmOnHTTPGET(url,guid){
+function deleteRecordWithConfirmOnHTTPGET(url,param){
 	$.confirm({
         text: "你确定删除？",
         confirm: function(button) {
             //alert("You just confirmed.");
-            httpGET(url, 'id='+guid); 
+            httpGET(url, param); 
         },
         cancel: function(button) {
             //alert("You cancelled.");
@@ -33,7 +30,7 @@ function renderXML(xml){
 	var render = analyze(xml);
 	var ac=render[0];
 	if('url'==ac){
-		window.location.href=serviceHost+render[1];
+		window.location.href=_GLOBAL_serviceHost+render[1];
 	}
 	else if('youapp-error'==ac){
 		$('#' + render[0]).html(render[1]);
@@ -64,8 +61,7 @@ function renderXML(xml){
 	
 }
 
-function action(url, param) {
-	var a = window.location;
+function action(url, param,fnSuccess,fnError) {
 	$.ajax({
 		type : "get",
 		async : true,
@@ -74,39 +70,92 @@ function action(url, param) {
 		data : param,
 		//jsonp: "callbackKey", 
 		//jsonpCallback:'success_jsonpCallback', 
-		success : function(xml) {
+		success : fnSuccess,
+		error : fnError
+	});
+}
+
+function POST(url, param,fnSuccess,fnError) {
+	
+	if(typeof(fnSuccess)=="undefined"){
+		fnSuccess=function(xml) {
 			try {
 				renderXML(xml);
 			} catch (Exception) {
 				//alert('error');
 			}
-		},
-		error : function(data) {
-			//alert('fail');
-		}
+		};
+	};
+	
+	if(typeof(fnError)=="undefined"){
+		fnError=function(data) {
+			alert(data);
+		};
+	};
+	
+	$.ajax({
+		type : "post",
+		async : true,
+		url : _GLOBAL_serviceHost +url, //?html=&service=
+		//dataType : "jsonp", 
+		data : param,
+		//jsonp: "callbackKey", 
+		//jsonpCallback:'success_jsonpCallback', 
+		success : fnSuccess,
+		error : fnError
 	});
 }
 
-function httpGET(url, parameter) {
-	action(serviceHost + url, parameter);
+function httpGET(url, parameter,fnSuccess,fnError) {
+	
+	if(typeof(fnSuccess)=="undefined"){
+		fnSuccess=function(xml) {
+			try {
+				renderXML(xml);
+			} catch (Exception) {
+				//alert('error');
+			}
+		};
+	};
+	
+	if(typeof(fnError)=="undefined"){
+		fnError=function(data) {
+			alert(data);
+		};
+	};
+	
+	action(_GLOBAL_serviceHost + url, parameter,fnSuccess,fnError);
 }
 
-function httpPOST(url, formId) {
+function httpPOST(url, formId,fnSuccess,fnError) {
+	
+	if(typeof(fnSuccess)=="undefined"){
+		fnSuccess=function(xml) {
+			try {
+				renderXML(xml);
+			} catch (Exception) {
+				//alert('error');
+			}
+		};
+	};
+	
+	if(typeof(fnError)=="undefined"){
+		fnError=function(XmlHttpRequest, textStatus, errorThrown){  
+	         
+	     };
+	};
+	
 	var options = {
 			type: 'POST',  
-            url: serviceHost+url,
-            success:function (xml){
-            	renderXML(xml);
-            },
-			 error: function(XmlHttpRequest, textStatus, errorThrown){  
-		         
-		     } 
+            url: _GLOBAL_serviceHost+url,
+            success:fnSuccess,
+			 error: fnError
         };
 	$('#'+formId).ajaxSubmit(options);
 }
 
 function httpRELOAD(url, parameter){
-	window.location.href=serviceHost+url;
+	window.location.href=_GLOBAL_serviceHost+url;
 	return false;
 }
 
@@ -154,6 +203,9 @@ function analyze(html) {
 	return render;
 }
 
+String.prototype.trim=function (){
+	return $.trim(this);
+}
 
 String.prototype.lastChar=function(){
 	return this.substring(this.length-1);

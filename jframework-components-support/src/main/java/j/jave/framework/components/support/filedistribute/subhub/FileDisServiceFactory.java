@@ -4,9 +4,9 @@
 package j.jave.framework.components.support.filedistribute.subhub;
 
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.filedistribute.JDefaultLocalFileDistService;
-import j.jave.framework.filedistribute.JDefaultLocalFilePathStrategy;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistService;
+import j.jave.framework.servicehub.filedistribute.JDefaultLocalFilePathStrategy;
+import j.jave.framework.utils.JStringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class FileDisServiceFactory extends SpringServiceFactorySupport<FileDisSe
 		JDefaultLocalFileDistService defaultLocalFileDistService=new JDefaultLocalFileDistService();
 		
 		// configure directory which file saves in 
-		if(JUtils.isNotNullOrEmpty(defaultLocalFileDistServiceConfiguration.getLocalDirectory())){
+		if(JStringUtils.isNotNullOrEmpty(defaultLocalFileDistServiceConfiguration.getLocalDirectory())){
 			defaultLocalFileDistService.setLocalDirectory(defaultLocalFileDistServiceConfiguration.getLocalDirectory());
 		}
 		

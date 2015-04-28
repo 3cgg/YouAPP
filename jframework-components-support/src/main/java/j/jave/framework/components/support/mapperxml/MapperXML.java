@@ -4,8 +4,8 @@ import j.jave.framework.io.JFile;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JTable;
-import j.jave.framework.reflect.JReflect;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.reflect.JClassUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class MapperXML {
 		JTable table=model.getAnnotation(JTable.class);
 		String schema=table.schema();
 		tableName = table.name();
-		if(JUtils.isNotNullOrEmpty(schema)){
+		if(JStringUtils.isNotNullOrEmpty(schema)){
 			tableName=schema+"."+tableName;
 		}
 	}
@@ -95,7 +95,7 @@ public class MapperXML {
 			String type=superClass.getName();
 			for(int i=0;i<fields.length;i++){
 				Field field=fields[i];
-				if(!JReflect.isAccessable(field)){
+				if(!JClassUtils.isAccessable(field)){
 					field.setAccessible(true);
 				}
 				
@@ -317,6 +317,22 @@ public class MapperXML {
 		return stringBuffer;
 	}
 	
+	private StringBuffer getGetsByPage(){
+		StringBuffer stringBuffer=new StringBuffer();
+		stringBuffer.append("<select id=\"getsByPage\"   resultMap=\""+getResultMapId()+"\"  parameterType=\"j.jave.framework.model.JPagination\">");
+		stringBuffer.append(RN);
+		stringBuffer.append("select * from "+tableName+"  ");
+		stringBuffer.append(RN);
+		stringBuffer.append("<if test=\"page.sortColumn!=null \">");
+		stringBuffer.append(RN);
+		stringBuffer.append("order by ${page.sortColumn} ${page.sortType}   ");
+		stringBuffer.append(RN);
+		stringBuffer.append("</if>");
+		stringBuffer.append(RN);
+		stringBuffer.append("</select>");
+		return stringBuffer;
+	}
+	
 	private StringBuffer getMarkDeleted(){
 		
 		StringBuffer stringBuffer=new StringBuffer();
@@ -390,6 +406,11 @@ public class MapperXML {
 		stringBuffer.append(RN);
 		stringBuffer.append(RN);
 		stringBuffer.append(getSelectfor());
+		
+		stringBuffer.append(RN);
+		stringBuffer.append(RN);
+		stringBuffer.append(RN);
+		stringBuffer.append(getGetsByPage());
 		
 		stringBuffer.append(RN);
 		stringBuffer.append(RN);

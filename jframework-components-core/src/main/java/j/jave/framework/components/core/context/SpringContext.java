@@ -11,7 +11,7 @@ import org.springframework.context.ApplicationContext;
  */
 public class SpringContext {
 
-	private static ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 	
 	private static SpringContext springContext=null;
 	
@@ -25,12 +25,12 @@ public class SpringContext {
 		return springContext;
 	}
 
-	public static ApplicationContext getApplicationContext() {
+	public  ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}
 
-	public static void setApplicationContext(ApplicationContext applicationContext) {
-		SpringContext.applicationContext = applicationContext;
+	public  void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 	
 	

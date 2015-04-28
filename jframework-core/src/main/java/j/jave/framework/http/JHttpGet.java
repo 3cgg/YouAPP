@@ -1,6 +1,6 @@
 package j.jave.framework.http;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -52,9 +52,9 @@ public class JHttpGet extends JHttp<JHttpGet> {
 			String paramString="";
 			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
 				Entry<String, Object> entry =  iterator.next();
-				paramString=paramString+"&"+entry.getKey()+"="+JUtils.toString(entry.getValue());
+				paramString=paramString+"&"+entry.getKey()+"="+JStringUtils.toString(entry.getValue());
 			}
-			if(JUtils.isNotNullOrEmpty(paramString)){
+			if(JStringUtils.isNotNullOrEmpty(paramString)){
 				// remove '&'
 				paramString=paramString.substring(1);
 			}

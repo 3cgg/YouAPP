@@ -3,7 +3,7 @@ package j.jave.framework.components.web.jsp;
 import j.jave.framework.components.web.action.AbstractAction;
 
 /**
- * 
+ * JSP basic action. 
  * @author J
  */
 public abstract class JSPAction extends AbstractAction {

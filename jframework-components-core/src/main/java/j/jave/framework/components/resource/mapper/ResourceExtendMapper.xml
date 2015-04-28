@@ -59,7 +59,14 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from RESOURCES_EXTEND' a 
+select a.* from RESOURCES_EXTEND  a 
 </sql>
+
+<select id="getsByPage"  resultMap="resourceExtend"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from RESOURCES_EXTEND 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
 
 </mapper>

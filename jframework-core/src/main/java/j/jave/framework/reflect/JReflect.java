@@ -1,8 +1,6 @@
 package j.jave.framework.reflect;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 
 /**
@@ -10,7 +8,7 @@ import java.lang.reflect.Modifier;
  * @author Administrator
  *
  */
-public class JReflect {
+public abstract class JReflect {
 	
 	/**
 	 * invoke the method related object. 
@@ -53,51 +51,5 @@ public class JReflect {
 		return targetMethod.invoke(object, parameters);
 	}
 	
-	public static boolean isNewInstanceable(Class<?> clazz){
-		int modify=clazz.getModifiers();
-		return !Modifier.isAbstract(modify)&&!Modifier.isInterface(modify)&&!Modifier.isPrivate(modify);
-	}
-	
-	public static boolean isAccessable(Field field){
-		int modify=field.getModifiers();
-		return !Modifier.isPrivate(modify)&&!Modifier.isProtected(modify);
-	}
-	
-	/**
-	 * resolve the type of property "propertyName" in the object . 
-	 * @param object
-	 * @param propertyName
-	 * @return
-	 */
-	public static Class<?> getType(Object object,String propertyName){
-		try {
-			Class<?> clazz=object.getClass();
-			Field field=null;
-			while(clazz!=null){
-				try{
-					field=clazz.getDeclaredField(propertyName);
-					if(field!=null){
-						break;
-					}
-				}catch(NoSuchFieldException e ){
-					clazz=clazz.getSuperclass();
-				}
-			}
-			
-			if(field!=null){
-				return field.getType();
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} 
-		return null;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

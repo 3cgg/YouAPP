@@ -60,4 +60,17 @@ where a.id=#{param1}
 select a.* from ROLES a 
 </sql>
 
+<select id="getsByPage"  resultMap="role"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from ROLES 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
+<select id="getRoleByRoleCode"  resultMap="role"  parameterType="java.lang.String">
+	<include refid="selectfor"/>
+	where a.DELETED='Y' and a.ROLECODE=#{roleCode}
+</select>
+
+
 </mapper>

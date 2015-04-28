@@ -31,6 +31,14 @@ public interface TableManagerService {
 	public List<Column> getColumnsByTable(ServiceContext serviceContext, String tableName);
 	
 	/**
+	 * get all columns names of a table
+	 * @param serviceContext
+	 * @param modelName
+	 * @return
+	 */
+	public List<Column> getColumnsByModelName(ServiceContext serviceContext, String modelName);
+	
+	/**
 	 * query one record .
 	 * @param serviceContext
 	 * @param model

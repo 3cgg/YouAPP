@@ -1,6 +1,6 @@
 package j.jave.framework.model.support;
 
-import j.jave.framework.validate.JValidator;
+import j.jave.framework.support.validate.JValidator;
 
 /**
  * 

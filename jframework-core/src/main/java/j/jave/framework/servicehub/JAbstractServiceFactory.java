@@ -3,7 +3,7 @@
  */
 package j.jave.framework.servicehub;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JUniqueUtils;
 
 /**
  * an abstract class : the items below provided:
@@ -21,7 +21,7 @@ public abstract class JAbstractServiceFactory<T extends JService> implements JSe
 
 	@Override
 	public String getUniqueId() {
-		return JUtils.unique();
+		return JUniqueUtils.unique();
 	}
 	@Override
 	public String describer() {

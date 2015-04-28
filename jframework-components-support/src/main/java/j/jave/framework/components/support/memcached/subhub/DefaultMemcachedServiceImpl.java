@@ -1,6 +1,6 @@
 package j.jave.framework.components.support.memcached.subhub;
 
-import j.jave.framework.memcached.JDefaultMemcachedDisService;
+import j.jave.framework.servicehub.memcached.JDefaultMemcachedDisService;
 
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package j.jave.framework.io;
 
 import j.jave.framework.utils.JFileUtils;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class JFile extends JFileResource{
 			return this.fileContent;
 		}
 			try {
-				this.fileContent= JUtils.getBytes(getInputStream());
+				this.fileContent= JStringUtils.getBytes(getInputStream());
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}

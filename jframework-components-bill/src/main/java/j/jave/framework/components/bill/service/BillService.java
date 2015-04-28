@@ -4,9 +4,11 @@
 package j.jave.framework.components.bill.service;
 
 import j.jave.framework.components.bill.model.Bill;
+import j.jave.framework.components.bill.model.BillSearchCriteria;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.model.JPagination;
 
 import java.util.List;
 
@@ -47,7 +49,7 @@ public interface BillService extends Service<Bill> {
 	 */
 	public Bill getBillById(ServiceContext context, String id);
 	
-	public List<Bill> getBillsByPage(ServiceContext context, Bill bill) ;
+	public List<Bill> getBillsByPage(ServiceContext context, JPagination pagination) ;
 	
 	public List<Bill> getBillByUserName(ServiceContext context, String userName);
 	

@@ -25,7 +25,10 @@ public class Column {
 	/**
 	 * property type.
 	 */
-	private String propertyType;
+	private String propertyTypeName;
+	
+	
+	private Class<?> propertyType;
 
 	public String getColumnName() {
 		return columnName;
@@ -51,11 +54,19 @@ public class Column {
 		this.sqlType = sqlType;
 	}
 
-	public String getPropertyType() {
+	public String getPropertyTypeName() {
+		return propertyTypeName;
+	}
+
+	public void setPropertyTypeName(String propertyTypeName) {
+		this.propertyTypeName = propertyTypeName;
+	}
+
+	public Class<?> getPropertyType() {
 		return propertyType;
 	}
 
-	public void setPropertyType(String propertyType) {
+	public void setPropertyType(Class<?> propertyType) {
 		this.propertyType = propertyType;
 	}
 

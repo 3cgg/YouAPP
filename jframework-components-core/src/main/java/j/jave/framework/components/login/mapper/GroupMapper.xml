@@ -60,4 +60,12 @@ where a.id=#{param1}
 select a.* from GROUPS a 
 </sql>
 
+
+<select id="getsByPage"  resultMap="group"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from GROUPS 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
 </mapper>

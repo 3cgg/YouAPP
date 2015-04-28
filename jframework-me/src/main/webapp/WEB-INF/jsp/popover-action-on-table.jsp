@@ -12,7 +12,8 @@
 
 <script type="text/javascript">
 //popover statement begin. 
-$(function () {
+
+var renderPopoverMark=function () {
 	var $tooltipEles=$('.youapp-popover-mark');
 	$tooltipEles.popover(
 		{
@@ -26,11 +27,12 @@ $(function () {
 				var deleteURL=$this.attr('data-youappDelete');
 				var viewURL=$this.attr('data-youappView');
 				
-				var param=$this.attr('data-youappParam');
+				// get parameter extension . via call method or direct string. 
+				var param=$this.attr('data-youappParamExt');
 				var extension="";
-				if(param!=null&&param!=""){
+				if(typeof(param)!="undefined"&&param!=null&&param!=""){
 					try{
-						if(param.lastChar()!=')'){
+						if(param.trim().lastChar()==')'){
 							// eval function 
 							extension=eval(param);
 						}
@@ -44,17 +46,31 @@ $(function () {
 				var targetParam='id='+recordId
 				+(extension!=null&&extension!='' ? ('&'+extension):'');
 				
-				var $popover=$('#youapp-popover-id');
-				var $view=$popover.find('#youapp-popover-id-view');
-				$view.attr('id',$view.attr('id')+"-"+recordId);
-				$view.attr('onclick', function (){
-					return 'httpGET("'+viewURL+'", "'+targetParam+'")';
-				});
-				var $delete=$popover.find('#youapp-popover-id-delete');
-				$delete.attr('id',$delete.attr('id')+"-"+recordId);
-				$delete.attr('onclick', function (){
-					return 'deleteRecordWithConfirmOnHTTPGET("'+deleteURL+'", "'+targetParam+'")';
-				});
+				// clone dom . avoid affect in the qequence.
+				var $popover=$('#youapp-popover-id').clone();
+				
+				if(typeof(viewURL)!="undefined"&&viewURL!=null&&viewURL!=""){
+					var $view=$popover.find('#youapp-popover-id-view');
+					$view.attr('id',$view.attr('id')+"-"+recordId);
+					$view.attr('onclick', function (){
+						return 'httpGET("'+viewURL+'", "'+targetParam+'")';
+					});
+				}
+				else{
+					$popover.find('#youapp-popover-id-view').remove();
+				}
+				
+				if(typeof(deleteURL)!="undefined"&&deleteURL!=null&&deleteURL!=""){
+					var $delete=$popover.find('#youapp-popover-id-delete');
+					$delete.attr('id',$delete.attr('id')+"-"+recordId);
+					$delete.attr('onclick', function (){
+						return 'deleteRecordWithConfirmOnHTTPGET("'+deleteURL+'", "'+targetParam+'")';
+					});
+				}
+				else{
+					$popover.find('#youapp-popover-id-delete').remove();
+				}
+				
 				return $popover.html();
 			}
 			
@@ -81,7 +97,8 @@ $(function () {
 	  $tooltipEles.on('hide.bs.popover', function () {
 		  	var $this=$(this);
 		});
-	});
+	};
+$(renderPopoverMark());
 	// popover statement end. 
 
 </script>

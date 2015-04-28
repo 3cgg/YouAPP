@@ -5,7 +5,7 @@ package j.jave.framework.components.support.ehcache.subhub;
 
 import org.springframework.stereotype.Service;
 
-import j.jave.framework.ehcache.JDefaultEhcacheService;
+import j.jave.framework.servicehub.ehcache.JDefaultEhcacheService;
 
 /**
  * @author J

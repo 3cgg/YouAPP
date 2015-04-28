@@ -5,9 +5,11 @@ package j.jave.framework.components.bill.service;
 
 import j.jave.framework.components.bill.mapper.BillMapper;
 import j.jave.framework.components.bill.model.Bill;
+import j.jave.framework.components.bill.model.BillSearchCriteria;
 import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
+import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  *
  */
-@Service(value="billService")
+@Service(value="billService.transation")
 public class BillServiceImpl extends ServiceSupport<Bill> implements BillService{
 
 	@Autowired
@@ -48,8 +50,8 @@ public class BillServiceImpl extends ServiceSupport<Bill> implements BillService
 	}
 
 	@Override
-	public List<Bill> getBillsByPage(ServiceContext context, Bill bill) {
-		return billMapper.getBillsByPage(bill);
+	public List<Bill> getBillsByPage(ServiceContext context, JPagination pagination) {
+		return billMapper.getBillsByPage(pagination);
 	}
 
 	@Override

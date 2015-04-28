@@ -3,10 +3,15 @@
  */
 package j.jave.framework.reflect;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JCollectionUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -167,7 +172,7 @@ public abstract class JClassUtils {
 					}
 					else{
 						Method[] methods=clazz.getDeclaredMethods();
-						if(JUtils.hasInArray(methods)){
+						if(JCollectionUtils.hasInArray(methods)){
 							for (int i = 0; i < methods.length; i++) {
 								Method inner=methods[i];
 								if(setterName.equals(inner.getName())){
@@ -214,7 +219,7 @@ public abstract class JClassUtils {
 	 */
 	public static Field getField(String property , Object model){
 		if(model==null) return null;
-		if(JUtils.isNullOrEmpty(property)) return null;
+		if(JStringUtils.isNullOrEmpty(property)) return null;
 		Field field=null;
 		Class superClass=model.getClass();
 		while(superClass!=null){
@@ -254,6 +259,111 @@ public abstract class JClassUtils {
 		}
 		return null;
 	}
+	
+	/**
+	 * get all methods , includes those methods in the {@link Object}
+	 * @param clazz
+	 * @param deep
+	 * @return
+	 */
+	public static List<Method> getMethods(Class<?> clazz,boolean deep,int... modifiers){
+		List<Method> methods=new ArrayList<Method>();
+		Class<?> superClass=clazz;
+		
+		if(modifiers!=null&&modifiers.length==0&&modifiers[0]==Modifier.PUBLIC){
+			if(deep){
+				Collections.addAll(methods, superClass.getMethods());
+				return methods;
+			}
+		}
+		
+		while(superClass!=null){
+			Method[] meds=superClass.getDeclaredMethods();
+			for(int i=0;i<meds.length;i++){
+				Method method=meds[i];
+				boolean exists=false;
+				if(modifiers!=null&&modifiers.length>0){
+					for(int mdf=0;mdf<modifiers.length;mdf++){
+						if(method.getModifiers()==modifiers[mdf]){
+							exists=true;
+							break;
+						}
+					}
+				}
+				
+				if(exists){
+					methods.add(method);
+				}
+			}
+			
+			if(deep){ // deep scanning
+				superClass=superClass.getSuperclass();
+			}
+			else{
+				superClass=null; // break;
+			}
+		}
+		return methods;
+	}
+	
+	
+	
+	/**
+	 * resolve the type of property "propertyName" in the object . 
+	 * @param object
+	 * @param propertyName
+	 * @return
+	 */
+	public static Class<?> getType(Object object,String propertyName){
+		try {
+			Class<?> clazz=object.getClass();
+			Field field=null;
+			while(clazz!=null){
+				try{
+					field=clazz.getDeclaredField(propertyName);
+					if(field!=null){
+						break;
+					}
+				}catch(NoSuchFieldException e ){
+					clazz=clazz.getSuperclass();
+				}
+			}
+			
+			if(field!=null){
+				return field.getType();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+		return null;
+	}
+	
+	/**
+	 * {@link Modifier} NOT ABSTRACT,INTERFACE OR PRIVATE.
+	 * @param clazz
+	 * @return
+	 */
+	public static boolean isNewInstanceable(Class<?> clazz){
+		int modify=clazz.getModifiers();
+		return !Modifier.isAbstract(modify)&&!Modifier.isInterface(modify)&&!Modifier.isPrivate(modify);
+	}
+	
+	/**
+	 *  {@link Modifier} NOT PROTECTED OR PRIVATE.
+	 * @param field
+	 * @return
+	 */
+	public static boolean isAccessable(Field field){
+		int modify=field.getModifiers();
+		return !Modifier.isPrivate(modify)&&!Modifier.isProtected(modify);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

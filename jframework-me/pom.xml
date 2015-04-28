@@ -31,7 +31,11 @@
 			<artifactId>jframework-components-weight</artifactId>
 			<version>${j.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-components-tablemanager</artifactId>
+			<version>${j.version}</version>
+		</dependency>
 		<!-- j/jave/framework/components/login/**/*.* -->
 
 		<dependency>

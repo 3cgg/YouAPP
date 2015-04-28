@@ -2,8 +2,12 @@ package j.jave.framework.components.web.action;
 
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
+/**
+ * basic action for view.
+ * @author J
+ */
 public abstract class AbstractAction implements Action {
 	
 	protected HTTPContext httpContext;
@@ -51,7 +55,7 @@ public abstract class AbstractAction implements Action {
 	}
 	
 	protected void setSuccessMessage(String message){
-		if(JUtils.isNullOrEmpty(message)){
+		if(JStringUtils.isNullOrEmpty(message)){
 			message="操作成功";
 		}
 		setAttribute("successAlertMessage", message);

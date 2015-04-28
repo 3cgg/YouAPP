@@ -1,6 +1,6 @@
 package j.jave.framework.http;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -143,7 +143,7 @@ public abstract class JHttp <T extends JHttp<?>>{
 			if(statusLine.getStatusCode()==200){
 				InputStream inputStream=response.getEntity().getContent();
 				try{
-					byte[] bytes=JUtils.getBytes(inputStream);
+					byte[] bytes=JStringUtils.getBytes(inputStream);
 					if(responseHandler==null)
 						return stringJResponseHandler.process(bytes);
 					else

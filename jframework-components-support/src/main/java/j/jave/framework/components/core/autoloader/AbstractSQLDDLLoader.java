@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.core.autoloader;
 
-import j.jave.framework.sqlloader.JSQLDDLLoader;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.support.sqlloader.ddl.JSQLDDLLoader;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,40 +27,51 @@ public abstract class AbstractSQLDDLLoader implements JSQLDDLLoader{
 
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
+	/**
+	 * default/common format 
+	 * @param uri
+	 * @return
+	 */
 	protected List<String> analyze(URI uri){
+		InputStream imInputStream=null;
 		try {
-			return analyze(uri.toURL().openStream());
-		} catch (IOException e) {
+			imInputStream=uri.toURL().openStream();
+			return analyze(imInputStream);
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
+			throw new RuntimeException(e);
+		}finally{
+			if(imInputStream!=null){
+				try {
+					imInputStream.close();
+				} catch (IOException e) {
+					LOGGER.error(e.getMessage(), e);
+					throw new RuntimeException(e);
+				}
+			}
 		}
-		return null;
 	}
 	
-	private List<String> analyze(InputStream inputStream){
+	private List<String> analyze(InputStream inputStream) throws Exception{
 		List<String> sqls=new ArrayList<String>();
-		try{
-			String contentUTF8=new String(JUtils.getBytes(inputStream),"utf-8");
-			String[] lines=contentUTF8.split("\r\n");
-			StringBuffer stringBuffer=new StringBuffer();
-			for (int i = 0; i < lines.length; i++) {
-				String line=lines[i];
-				if(line.startsWith("--")&&line.endsWith("--")){
-					sqls.add(stringBuffer.toString());
-					stringBuffer=new StringBuffer();
-				}
-				String to=line;
-				if(line.indexOf("--")!=-1){
-					to=line.substring(0,line.indexOf("--"));
-				}
-				stringBuffer.append(to);
-			}
-			
-			if(!"".equals(stringBuffer.toString())){
+		String contentUTF8=new String(JStringUtils.getBytes(inputStream),"utf-8");
+		String[] lines=contentUTF8.split("\r\n");
+		StringBuffer stringBuffer=new StringBuffer();
+		for (int i = 0; i < lines.length; i++) {
+			String line=lines[i];
+			if(line.startsWith("--")&&line.endsWith("--")){
 				sqls.add(stringBuffer.toString());
+				stringBuffer=new StringBuffer();
 			}
-			
-		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
+			String to=line;
+			if(line.indexOf("--")!=-1){
+				to=line.substring(0,line.indexOf("--"));
+			}
+			stringBuffer.append(to);
+		}
+		
+		if(!"".equals(stringBuffer.toString())){
+			sqls.add(stringBuffer.toString());
 		}
 		return sqls;
 	}
@@ -101,18 +112,5 @@ public abstract class AbstractSQLDDLLoader implements JSQLDDLLoader{
 		}
 		return sqls;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		String path="file:\\D:\\java_\\so\\sources\\trunk\\jframework-me\\target\\jframework-me-1.0\\WEB-INF\\lib\\jframework-components-bill-1.0.jar!\\j\\jave\\framework\\components\\bill\\sql\\bill.sql".replace("\\", "/");
-		URI uri=new URI(path);
-		
-		System.out.println(uri.getScheme());
-		System.out.println(uri.getSchemeSpecificPart());
-		
-		System.out.println(new RandomAccessFile(new File(path.replace("file:/", "")), "r"));
-		System.out.println("o");
-		System.out.println(new RandomAccessFile(new File(path), "r"));
-	}
-	
 	
 }

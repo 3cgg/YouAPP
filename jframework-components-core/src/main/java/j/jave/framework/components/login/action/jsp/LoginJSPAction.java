@@ -14,8 +14,9 @@ import j.jave.framework.components.login.view.TimelineView;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.jsp.JSPAction;
-import j.jave.framework.security.JAPPCipher;
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.support.security.JAPPCipher;
+import j.jave.framework.utils.JDateUtils;
+import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class LoginJSPAction extends JSPAction {
 			for (Iterator<UserTracker> iterator = userTrackers.iterator(); iterator
 					.hasNext();) {
 				UserTracker userTracker = (UserTracker) iterator.next();
-				String date=JUtils.format(userTracker.getLoginTime());
+				String date=JDateUtils.format(userTracker.getLoginTime());
 				if(!date.equals(doDate)){
 					// new group 
 					doTimeLineGroup=new TimeLineGroup();
@@ -83,7 +84,7 @@ public class LoginJSPAction extends JSPAction {
 				String header=userTracker.getLoginClient();
 				timelineView.setHeader(header);
 				//fillin timeoffset
-				timelineView.setTimeOffset(JUtils.getTimeOffset(userTracker.getLoginTime()));
+				timelineView.setTimeOffset(JDateUtils.getTimeOffset(userTracker.getLoginTime()));
 				doTimeLineGroup.getTimelineViews().add(timelineView);
 			}
 		}
@@ -161,7 +162,7 @@ public class LoginJSPAction extends JSPAction {
 		ServiceContext context=new ServiceContext();
 		context.setUser(getSessionUser());
 		loginAccessService.register(context, user);
-		loginLogic(user, JUtils.unique()+"-"+user.getUserName());
+		loginLogic(user, JUniqueUtils.unique()+"-"+user.getUserName());
 		setAttribute("user", user);
 		logTracker();
 		return navigate( "/login.loginaction/index");

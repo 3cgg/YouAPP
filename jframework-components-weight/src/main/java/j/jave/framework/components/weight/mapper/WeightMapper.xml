@@ -68,5 +68,11 @@ select * from WEIGHT where DELETED='N' and USERNAME=#{userName} order by RECORD_
 	order by RECORD_TIME desc 
 </select>
 
+<select id="getsByPage"  resultMap="weight"  parameterType="j.jave.framework.model.JBaseModel">
+    select * from WEIGHT 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
 
 </mapper>

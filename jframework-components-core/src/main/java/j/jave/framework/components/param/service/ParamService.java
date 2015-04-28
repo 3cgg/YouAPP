@@ -7,6 +7,7 @@ import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.param.model.Param;
+import j.jave.framework.model.JPagination;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public interface ParamService extends Service<Param> {
 	 */
 	public Param getParamById(ServiceContext context, String id);
 	
-	public List<Param> getParamsByPage(ServiceContext context, Param param) ;
+	public List<Param> getParamsByPage(ServiceContext context, JPagination pagination) ;
 	
 	public Param getParamByFunctionIdAndCode(ServiceContext context, String functionId,String code);
 	

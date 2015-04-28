@@ -15,19 +15,37 @@
 	 </listener-class>
 	 </listener>
 	 
+	 <!--  DDL  -->
 	<context-param>  
-        <param-name>j.jave.framework.sqlloader.JSQLDDLCreateFactory.implementation</param-name>  
-        <param-value>j.jave.framework.sqlloader.PropertiesSQLDDLCreateFactory
+        <param-name>j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.implementation</param-name>  
+        <param-value>j.jave.framework.support.sqlloader.ddl.PropertiesSQLDDLCreateFactory
         </param-value>  
     </context-param> 
     <context-param>  
-        <param-name>j.jave.framework.sqlloader.JSQLDDLCreateFactory.package</param-name>  
+        <param-name>j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.package</param-name>  
         <param-value>j.jave.framework.components</param-value>  
     </context-param> 
 	<listener>  
 	 <listener-class>j.jave.framework.components.web.listener.SQLDDLListener
 	 </listener-class>
 	 </listener>
+	 
+	 <!--  DML  -->
+	 <context-param>  
+        <param-name>j.jave.framework.support.sqlloader.dml.JSQLDMLCreateFactory.implementation</param-name>  
+        <param-value>j.jave.framework.support.sqlloader.dml.PropertiesSQLDMLCreateFactory
+        </param-value>  
+    </context-param> 
+    <context-param>  
+        <param-name>j.jave.framework.support.sqlloader.dml.JSQLDMLCreateFactory.package</param-name>  
+        <param-value>j.jave.framework.components</param-value>  
+    </context-param> 
+	<listener>  
+	 <listener-class>j.jave.framework.components.web.listener.SQLDMLListener
+	 </listener-class>
+	 </listener>
+	 
+	 
 
 	<filter>
 		<filter-name>encodingFilter</filter-name>
@@ -98,7 +116,7 @@
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://github.com/jinwanmei/YouAPP</taglib-uri>
-			<taglib-location>/WEB-INF/tld/AccessTag.tld</taglib-location>
+			<taglib-location>/WEB-INF/tld/YouAPPTag.tld</taglib-location>
 		</taglib>
 	
 	</jsp-config>

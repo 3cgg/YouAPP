@@ -5,7 +5,7 @@ import j.jave.framework.model.support.JFieldValidator;
 import j.jave.framework.model.support.JSQLAnnotationConvert;
 import j.jave.framework.model.support.JTYPE;
 import j.jave.framework.model.support.JTable;
-import j.jave.framework.reflect.JReflect;
+import j.jave.framework.reflect.JClassUtils;
 
 import java.lang.reflect.Field;
 
@@ -46,7 +46,7 @@ public class JModelValidatorIntercepter<T> implements JModelIntercepter<T> {
 			Field[] fields=superClass.getDeclaredFields();
 			for(int i=0;i<fields.length;i++){
 				Field field=fields[i];
-				if(!JReflect.isAccessable(field)){
+				if(!JClassUtils.isAccessable(field)){
 					field.setAccessible(true);
 				}
 				

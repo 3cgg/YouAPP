@@ -7,6 +7,7 @@ import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.model.JPagination;
 
 import java.util.List;
 
@@ -51,10 +52,10 @@ public interface UserService extends Service<User> {
 	/**
 	 * search user 
 	 * @param context
-	 * @param user
+	 * @param pagination
 	 * @return
 	 */
-	public List<User> getUsersByPage(ServiceContext context, User user) ;
+	public List<User> getUsersByPage(ServiceContext context, JPagination pagination) ;
 	
 	/**
 	 * 

@@ -1,6 +1,6 @@
 package j.jave.framework.http;
 
-import j.jave.framework.utils.JUtils;
+import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -46,7 +46,7 @@ public class JHttpPost extends JHttp<JHttpPost> {
 			multipartEntityBuilder=MultipartEntityBuilder.create();
 			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
 				Entry<String, Object> entry =  iterator.next();
-				multipartEntityBuilder.addTextBody(entry.getKey(), JUtils.toString(entry.getValue()));
+				multipartEntityBuilder.addTextBody(entry.getKey(), JStringUtils.toString(entry.getValue()));
 			}
 			multipartEntityBuilder.setCharset(Charset.forName("utf-8"));
 		}

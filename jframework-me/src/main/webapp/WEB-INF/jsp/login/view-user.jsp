@@ -4,13 +4,26 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            User
-	            <small>View</small>
+	            用户
+	            <small>
+	            <!-- <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/login.loginaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	                 -->
+	            </small>
 	          </h1>
+	          <!-- 
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-	            <li class="active">User</li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/login.loginaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li class="active">历史账单</li>
 	          </ol>
+	           -->
 	        </section>
 	        
 	        

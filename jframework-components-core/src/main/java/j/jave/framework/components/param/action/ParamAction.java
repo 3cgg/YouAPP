@@ -91,4 +91,19 @@ public class ParamAction extends AbstractAction {
 		return "/WEB-INF/jsp/param/edit-param.jsp";
 	}
 	
+	
+	public String toNavigate(){
+		return "/WEB-INF/jsp/param/navigate-param.jsp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

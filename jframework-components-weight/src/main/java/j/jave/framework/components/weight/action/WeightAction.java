@@ -103,4 +103,16 @@ public class WeightAction extends JSPAction {
 		return getWeightsWithsCondition();
 	}
 	
+	
+	public String toNavigate(){
+		return "/WEB-INF/jsp/weight/navigate-weight.jsp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

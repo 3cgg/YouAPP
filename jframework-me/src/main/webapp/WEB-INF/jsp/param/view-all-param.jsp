@@ -6,12 +6,22 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            系统参数管理
-	            <small>系统参数集</small>
+	            参数集
+	            <small>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/param.paramaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
-	            <li class="active">系统参数集</li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/param.paramaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li class="active">参数集</li>
 	          </ol>
 	        </section>
 	        
@@ -44,7 +54,7 @@
 	                      <th>类别</th>
 	                      <th>编码</th>
 	                      <th>名称</th>
-	                      <th>描述</th>
+	                      <th class="hidden-xs-max-480px">描述</th>
 	                    </tr>
 	                  <c:forEach items="${params }" var="para">
 	                  <tr id="${para.id }"  style="cursor: pointer;" 
@@ -55,7 +65,7 @@
 	                      <td>${para.functionId }</td>
 	                      <td>${para.code }</td>
 	                      <td>${para.name }</td>
-	                      <td>${para.description}</td>
+	                      <td class="hidden-xs-max-480px">${para.description}</td>
 	                    </tr>
 	                  </c:forEach>
 	                  

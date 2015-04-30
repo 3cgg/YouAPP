@@ -6,12 +6,21 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            系统参数管理
-	            <small>修改</small>
+	            参数修改
+	            <small>
+	            <a href="javascript:void(0)" 
+	            	onclick='httpGET("/param.paramaction/toViewParam","id=${youappParam.id}")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
-	            <li class="active">系统参数修改</li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                 onclick='httpGET("/param.paramaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li class="active">修改</li>
 	          </ol>
 	        </section>
 	        

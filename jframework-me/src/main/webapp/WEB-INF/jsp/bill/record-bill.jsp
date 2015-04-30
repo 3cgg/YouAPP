@@ -6,11 +6,18 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            账单管理
-	            <small>录入</small>
+	            账单录入
+	            <a href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
 	            <li class="active">账单录入</li>
 	          </ol>
 	        </section>
@@ -112,7 +119,7 @@
 	<script type="text/javascript">
 	
 	$(function (){
-		$("#billTime").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+		$("#billTime").inputmask("yyyy-mm-dd hh:mm:ss");
 	});
 	
 		$(function (){
@@ -132,6 +139,13 @@
 					   return "OTHERS"==$('#mallCode').val();
 				   },
 				   maxlength:256
+			   },
+			   "bill.billTime":{
+				   required: true,
+				   youappdate:{
+					   format:"yyyy-mm-dd hh:mm:ss"
+				   },
+				   date:true
 			   },
 			   'bill.desc': {
 				   required: false,

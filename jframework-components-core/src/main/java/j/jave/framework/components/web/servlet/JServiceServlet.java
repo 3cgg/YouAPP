@@ -15,19 +15,16 @@ import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.utils.CookieUtils;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.io.JFile;
+import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
 import j.jave.framework.utils.JDateUtils;
-import j.jave.framework.utils.JNumberUtils;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +39,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -244,77 +240,6 @@ public abstract class JServiceServlet  extends HttpServlet {
 		return appUrlPath;
 	}
 	
-	
-	private void set(Object obj,String nameLink,Object valueObject) throws Exception{
-		
-		if(nameLink.indexOf(".")==-1 ) return ;  // no need fillin automatically 
-		
-		String[] names=new String[]{nameLink};
-		if(nameLink.indexOf(".")!=-1){
-			names=nameLink.split("[.]");
-		}
-		Object target=obj; 
-		for (int i = 0; i < names.length; i++) {
-			String name=names[i];
-			Class superClass=target.getClass();
-			Field field=null;
-			while(superClass!=null&&field==null){
-				try{
-					field=superClass.getDeclaredField(name);
-				}catch(NoSuchFieldException e){
-					superClass=superClass.getSuperclass();
-				}
-			}
-			
-			if(field==null){
-				throw new RuntimeException("["+name+"] attribute not found in "+target.getClass().getName());
-			}
-			
-			field.setAccessible(true);
-			if(i==names.length-1){  // the last one .  set value
-				if(List.class.isInstance(valueObject)){ 
-					field.set(target, valueObject);
-				}
-				else{
-					String value=String.valueOf(valueObject);
-					if(field.getType()==String.class){
-						field.set(target, value);
-					}
-					else if(field.getType()==Double.class||field.getType()==double.class){
-						field.set(target, JNumberUtils.toDouble(value));
-					}
-					else if(field.getType()==Integer.class||field.getType()==int.class){
-						field.set(target, JNumberUtils.toInt(value));
-					}
-					else if(field.getType()==Long.class||field.getType()==long.class){
-						field.set(target, JNumberUtils.toLong(value));
-					}
-					else if(field.getType()==Timestamp.class){
-						if(JStringUtils.isNotNullOrEmpty(value)){
-							field.set(target, JDateUtils.parseTimestamp(value));
-						}
-					}
-					else if(field.getType()==Date.class){
-						if(JStringUtils.isNotNullOrEmpty(value)){
-							field.set(target, JDateUtils.parseDate(value));
-						}
-					}
-				}
-			}
-			else{  
-				Object attributeObject=field.get(target);
-				if(attributeObject==null){
-					Object temp=field.getType().newInstance();
-					field.set(target, temp);
-					target=temp;
-				}
-				else{
-					target=attributeObject;
-				}
-			}
-		}
-	}
-	
 	private void set(Object obj, HttpServletRequest req, HTTPContext httpContext) throws Exception {
 		Enumeration<String> parameterNames=  req.getParameterNames();
 		while(parameterNames.hasMoreElements()){
@@ -328,11 +253,11 @@ public abstract class JServiceServlet  extends HttpServlet {
 						String valueNoType=values[i];
 						valuesObject.add(valueNoType);
 					}
-					set(obj, name, valuesObject);
+					JClassUtils.set(obj, name, valuesObject);
 				}
 			}
 			else{
-				set(obj, name, value);
+				JClassUtils.set(obj, name, value);
 			}
 		}
 	}

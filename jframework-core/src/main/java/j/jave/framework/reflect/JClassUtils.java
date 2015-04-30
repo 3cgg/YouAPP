@@ -4,13 +4,17 @@
 package j.jave.framework.reflect;
 
 import j.jave.framework.utils.JCollectionUtils;
+import j.jave.framework.utils.JDateUtils;
+import j.jave.framework.utils.JNumberUtils;
 import j.jave.framework.utils.JStringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -359,10 +363,84 @@ public abstract class JClassUtils {
 	}
 	
 	
-	
-	
-	
-	
+	/**
+	 * scan all property in the {@param obj} to match the first property name.
+	 * set {@code valueObject} to target object {@code obj } via the direction of properties link by "."  , i.e. "user.userName","user.password".
+	 * <p>note: any list property in any property not supported. 
+	 * @param obj target object.
+	 * @param nameLink  link by "."  , i.e. "user.userName","user.password".
+	 * @param valueObject  value set 
+	 * @throws Exception
+	 */
+	public static void set(Object obj,String nameLink,Object valueObject) throws Exception{
+		
+		if(nameLink.indexOf(".")==-1 ) return ;  // no need fill in automatically 
+		
+		String[] names=new String[]{nameLink};
+		if(nameLink.indexOf(".")!=-1){
+			names=nameLink.split("[.]");
+		}
+		Object target=obj; 
+		for (int i = 0; i < names.length; i++) {
+			String name=names[i];
+			Class<?> superClass=target.getClass();
+			Field field=null;
+			while(superClass!=null&&field==null){
+				try{
+					field=superClass.getDeclaredField(name);
+				}catch(NoSuchFieldException e){
+					superClass=superClass.getSuperclass();
+				}
+			}
+			
+			if(field==null){
+				throw new RuntimeException("["+name+"] attribute not found in "+target.getClass().getName());
+			}
+			
+			field.setAccessible(true);
+			if(i==names.length-1){  // the last one .  set value
+				if(List.class.isInstance(valueObject)){ 
+					field.set(target, valueObject);
+				}
+				else{
+					String value=String.valueOf(valueObject);
+					if(field.getType()==String.class){
+						field.set(target, value);
+					}
+					else if(field.getType()==Double.class||field.getType()==double.class){
+						field.set(target, JNumberUtils.toDouble(value));
+					}
+					else if(field.getType()==Integer.class||field.getType()==int.class){
+						field.set(target, JNumberUtils.toInt(value));
+					}
+					else if(field.getType()==Long.class||field.getType()==long.class){
+						field.set(target, JNumberUtils.toLong(value));
+					}
+					else if(field.getType()==Timestamp.class){
+						if(JStringUtils.isNotNullOrEmpty(value)){
+							field.set(target, JDateUtils.parseTimestampWithSeconds(value));
+						}
+					}
+					else if(field.getType()==Date.class){
+						if(JStringUtils.isNotNullOrEmpty(value)){
+							field.set(target, JDateUtils.parseDate(value));
+						}
+					}
+				}
+			}
+			else{  
+				Object attributeObject=field.get(target);
+				if(attributeObject==null){
+					Object temp=field.getType().newInstance();
+					field.set(target, temp);
+					target=temp;
+				}
+				else{
+					target=attributeObject;
+				}
+			}
+		}
+	}
 	
 	
 	

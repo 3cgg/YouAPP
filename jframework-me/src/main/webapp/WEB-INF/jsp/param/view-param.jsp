@@ -4,11 +4,25 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            系统参数管理
-	            <small>View</small>
+	            参数信息
+	            <small>
+	            <a href="javascript:void(0)" 
+	                onclick='httpGET("/param.paramaction/toViewAllParam")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                 onclick='httpGET("/param.paramaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li >
+	            <a href="javascript:void(0)" 
+	                onclick='httpGET("/param.paramaction/toViewAllParam")'
+	                >参数集</a>
+	            </li>
 	            <li class="active">View</li>
 	          </ol>
 	        </section>

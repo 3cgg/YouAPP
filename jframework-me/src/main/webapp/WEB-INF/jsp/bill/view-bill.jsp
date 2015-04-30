@@ -5,11 +5,25 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            账单管理
-	            <small>View</small>
+	            账单信息
+	            <small>
+	            <a href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toViewAllBill")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                 onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li >
+	            <a href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toViewAllBill")'
+	                >历史账单</a>
+	            </li>
 	            <li class="active">View</li>
 	          </ol>
 	        </section>

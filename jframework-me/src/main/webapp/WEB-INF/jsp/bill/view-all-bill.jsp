@@ -6,11 +6,21 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            账单管理
-	            <small>历史账单</small>
+	            账单记录
+	            <small>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
 	            <li class="active">历史账单</li>
 	          </ol>
 	        </section>
@@ -44,10 +54,10 @@
 	                      <th>金额（￥）</th>
 	                      <th>商品名称</th>
 	                      <th>商品类型</th>
-	                      <th>购物时间</th>
-	                      <th>购物地址</th>
-	                      <th>购物人</th>
-	                      <th>备注</th>
+	                      <th class="hidden-xs-max-480px">购物时间</th>
+	                      <th class="hidden-xs-max-480px">购物地址</th>
+	                      <th class="hidden-xs-max-480px">购物人</th>
+	                      <th class="hidden-xs-max-480px">备注</th>
 	                    </tr>
 	                  <c:forEach items="${ bills }" var="bill">
 	                  <tr id="${bill.id }"  style="cursor: pointer;" 
@@ -58,8 +68,8 @@
 	                      <td>${bill.money }</td>
 	                      <td>${bill.goodName }</td>
 	                      <td>${bill.goodTypeName }</td>
-	                      <td>${bill.billTime }</td>
-	                      <td>
+	                      <td class="hidden-xs-max-480px">${bill.billTime }</td>
+	                      <td class="hidden-xs-max-480px">
 	                      	<c:if test="${bill.mallCode=='OTHERS' }">
 	                      		${bill.mallName}
 	                      	</c:if>
@@ -67,8 +77,8 @@
 	                      		${bill.mallCodeName}
 	                      	</c:if>
 	                      </td>
-	                      <td>${bill.userCodeName}</td>
-	                      <td>${bill.description}</td>
+	                      <td class="hidden-xs-max-480px">${bill.userCodeName}</td>
+	                      <td class="hidden-xs-max-480px">${bill.description}</td>
 	                    </tr>
 	                  </c:forEach>
 	                  

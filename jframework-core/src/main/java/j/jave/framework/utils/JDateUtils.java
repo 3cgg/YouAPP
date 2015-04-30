@@ -146,4 +146,18 @@ public abstract class JDateUtils {
 	}
 	
 	
+	/**
+	 * parse the date of the form "yyyy-MM-dd HH:mm:ss"
+	 * @param date
+	 * @return {@link Timestamp}
+	 * @throws Exception 
+	 */
+	public static Timestamp parseTimestampWithSeconds(String date) {
+		try {
+			return new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date).getTime());
+		} catch (ParseException e) {
+			throw new UtilException(e); 
+		}
+	}
+	
 }

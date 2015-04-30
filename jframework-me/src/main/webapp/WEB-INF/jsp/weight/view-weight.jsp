@@ -4,12 +4,22 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            Weight
-	            <small>View</small>
+	            体重信息
+	            <small>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-	            <li class="active">Weight</li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li class="active">体重信息</li>
 	          </ol>
 	        </section>
 	        

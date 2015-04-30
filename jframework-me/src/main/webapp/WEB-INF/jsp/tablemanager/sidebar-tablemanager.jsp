@@ -8,7 +8,7 @@
     </youapp:servletRenderContext>
 <li class="treeview">
 	              <a href="#">
-	                <i class="fa fa-dashboard"></i> <span>Table Manager</span> <i class="fa fa-angle-left pull-right"></i>
+	                <i class="fa fa-database"></i> <span>Table Manager</span> <i class="fa fa-angle-left pull-right"></i>
 	              </a>
 	              <ul class="treeview-menu">
 	              

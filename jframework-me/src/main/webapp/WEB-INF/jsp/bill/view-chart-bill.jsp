@@ -6,11 +6,21 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            账单
-	            <small>账单构成</small>
+	            账单构成
+	            <small>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
 	            <li class="active">账单构成</li>
 	          </ol>
 	        </section>

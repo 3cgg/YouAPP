@@ -152,4 +152,24 @@ public class BillAction extends JSPAction {
 		
 	}
 	
+	
+	public String toNavigate(){
+		
+		
+		return "/WEB-INF/jsp/bill/navigate-bill.jsp";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

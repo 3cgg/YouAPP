@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * collect and expose method information. 
  * @author J
  */
-public interface JMethodInfoProvider <T>{
+public interface JMethodInfoProvider <T> extends JProvider{
 
 	public static interface JMethodInfo<T>{
 		/**

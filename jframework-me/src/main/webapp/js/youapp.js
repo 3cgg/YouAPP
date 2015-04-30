@@ -1,4 +1,27 @@
 
+// initialize date validator of default date format "yyyy-mm-dd hh:mm:ss"
+$(
+		$.validator.addMethod("youappdate", function(value, element, params) {
+			var valid=false;
+			if("yyyy-mm-dd hh:mm:ss"==params["format"]){
+			 valid=/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])[ ](0?[0-9]|[12][0-9])[:](0?[0-9]|[1-5][0-9])[:](0?[0-9]|[1-5][0-9])$/.test( value );
+			}
+			return valid;
+			}, $.validator.format("the date format must be yyyy-mm-dd hh:mm:ss"))
+);
+
+//initialize default date format mask "yyyy-mm-dd hh:mm:ss"
+$(
+		$.extend($.inputmask.defaults.aliases, {
+			'yyyy-mm-dd hh:mm:ss': {
+			mask: "y-1-2 h:s:s",
+			        placeholder: "yyyy-mm-dd 00:00:00",
+			        separator: '-',
+			        alias: "yyyy/mm/dd"
+			}
+			})		
+);
+
 
 function success_jsonpCallback(data) {
 

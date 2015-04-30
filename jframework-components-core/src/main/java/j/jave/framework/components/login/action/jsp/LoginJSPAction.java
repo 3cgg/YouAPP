@@ -228,6 +228,10 @@ public class LoginJSPAction extends JSPAction {
 	} 
 	
 	
+	public String toNavigate(){
+		return "/WEB-INF/jsp/login/navigate-login.jsp";
+	}
+	
 	
 	
 	

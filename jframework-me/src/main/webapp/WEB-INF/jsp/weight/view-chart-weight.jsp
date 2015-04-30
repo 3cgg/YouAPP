@@ -6,12 +6,22 @@
 		<!-- Content Header (Page header) -->
 	        <section class="content-header">
 	          <h1>
-	            体重
-	            <small>历史记录</small>
+	            体重趋势图
+	            <small>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                ><i class=" fa ion-ios-undo"></i></a>
+	            </small>
 	          </h1>
 	          <ol class="breadcrumb">
-	            <li><a href="#"><i class="fa fa-dashboard"></i> 应用</a></li>
-	            <li class="active">体重历史记录</li>
+	            <li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
+	            <li class="active">体重趋势图</li>
 	          </ol>
 	        </section>
 	        

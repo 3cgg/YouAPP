@@ -2,7 +2,7 @@
     pageEncoding="utf-8"%>
 <li class="treeview">
 	              <a href="#">
-	                <i class="fa fa-dashboard"></i> <span>体重管理</span> <i class="fa fa-angle-left pull-right"></i>
+	                <i class="fa fa-heart"></i> <span>体重管理</span> <i class="fa fa-angle-left pull-right"></i>
 	              </a>
 	              <ul class="treeview-menu">
 	                <li class="active"><a href="javascript:void(0)" 

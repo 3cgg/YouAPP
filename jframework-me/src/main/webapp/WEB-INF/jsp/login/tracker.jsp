@@ -7,7 +7,12 @@
 			我的痕迹 <small>Login</small>
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li>
+	            <a 
+	            	href="javascript:void(0)" 
+	                 onclick='httpGET("/login.moduleaction/modules")'
+	                ><i class=" fa ion-android-laptop"></i> 应用</a>
+	            </li>
 			<li class="active">我的痕迹</li>
 		</ol>
 	</section>

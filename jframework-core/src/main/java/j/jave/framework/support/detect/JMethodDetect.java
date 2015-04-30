@@ -33,7 +33,8 @@ public class JMethodDetect<T> extends JPackageScanDefaultConfiguration
 	public static interface JMethodFilter{
 		
 		/**
-		 * do with the method or not, 
+		 * do with the method or not,  then method can be done next if false.
+		 * skip the method if true.
 		 * @param method method signature information.
 		 * @param classIncudeMethod class information which includes the method above
 		 * @return
@@ -41,11 +42,18 @@ public class JMethodDetect<T> extends JPackageScanDefaultConfiguration
 		boolean filter(Method method,Class<?> classIncudeMethod);
 		
 		/**
-		 * do with the class or not, 
+		 * do with the class or not, then class can be done next if false.
+		 * skip the class if true.
 		 * @param clazz
 		 * @return
 		 */
 		boolean filter(Class<?> clazz);
+		
+		/**
+		 * scan all methods whose modify is in the scope of , then do filter using {@code filter(Method method,Class<?> classIncudeMethod)}
+		 * @return
+		 */
+		int[] methodModifiers();
 		
 	}
 	
@@ -58,6 +66,11 @@ public class JMethodDetect<T> extends JPackageScanDefaultConfiguration
 		public boolean filter(java.lang.Class<?> clazz) {
 			return false;
 		};
+		
+		@Override
+		public int[] methodModifiers() {
+			return new int[]{Modifier.PUBLIC,Modifier.PROTECTED,Modifier.PRIVATE};
+		}
 	};
 	
 	private JMethodInfo<T> methodInfo;
@@ -185,7 +198,7 @@ public class JMethodDetect<T> extends JPackageScanDefaultConfiguration
 			for (Iterator<Class<?>>  iterator = classes.iterator(); iterator.hasNext();) {
 				Class<?> clazz = iterator.next();
 				if(!methodFilter.filter(clazz)){
-					List<Method> methods=JClassUtils.getMethods(clazz, true, Modifier.PUBLIC);
+					List<Method> methods=JClassUtils.getMethods(clazz, true, methodFilter.methodModifiers());
 					for(int i=0;i<methods.size();i++){
 						Method method=methods.get(i);
 						if(!methodFilter.filter(method, clazz)){

@@ -33,3 +33,46 @@
 }
 
 
+
+@media (max-width: 480px){
+	.inner .inner-head {
+	display: none ;
+	}
+	.inner .inner-content {
+	
+	}
+	
+	.hidden-xs-max-480px{
+		display: none ;
+	}
+	
+}
+
+
+
+
+
+
+.youapp-box-icon {
+border-top-left-radius: 2px;
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
+border-bottom-left-radius: 2px;
+display: block;
+float: left;
+height: 90px;
+width: 90px;
+text-align: center;
+font-size: 45px;
+line-height: 90px;
+background: rgba(0, 0, 0, 0.2);
+font-size: 14px;
+text-align: center;
+
+}
+
+
+
+
+
+

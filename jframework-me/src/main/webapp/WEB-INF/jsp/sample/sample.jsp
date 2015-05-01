@@ -5,7 +5,7 @@
 <a 
 href="javascript:void(0)" 
 class="btn btn-default btn-flat"
-			onclick='httpGET("/login.loginaction/profile")'
+			onclick='GET("/login.loginaction/profile")'
 			>Profile</a>
 			    
     

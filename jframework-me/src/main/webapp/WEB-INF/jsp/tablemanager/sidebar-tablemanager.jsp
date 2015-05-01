@@ -15,7 +15,7 @@
 	              <c:forEach items="${items }" var="item"  varStatus="ind">
 	              
 	               <li><a href="javascript:void(0)" 
-	                onclick='httpGET("${item.url }","${item.param}")'
+	                onclick='GET("${item.url }","${item.param}")'
 	                ><i class="fa fa-circle-o"></i>${item.label }</a></li>
 	                
 	              </c:forEach>

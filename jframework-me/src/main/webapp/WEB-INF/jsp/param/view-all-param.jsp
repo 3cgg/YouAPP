@@ -10,7 +10,7 @@
 	            <small>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/param.paramaction/toNavigate")'
+	                onclick='GET("/param.paramaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/param.paramaction/toNavigate")'
+	                onclick='GET("/param.paramaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">参数集</li>
@@ -90,7 +90,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/param.paramaction/getParamsWithsCondition', form.id);
+				  submitPOST('/param.paramaction/getParamsWithsCondition', form.id);
 		        },
 		    	errorPlacement:warningMessageAlert
 			    });

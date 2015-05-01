@@ -27,12 +27,12 @@
 	<li class="user-footer">
 		<div class="pull-left">
 			<a href="javascript:void(0)" class="btn btn-default btn-flat"
-			onclick='httpGET("/login.loginaction/profile")'
+			onclick='GET("/login.loginaction/profile")'
 			>Profile</a>
 		</div>
 		<div class="pull-right">
 			<a href="javascript:void(0)" class="btn btn-default btn-flat"
-			onclick='httpGET("/login.loginaction/loginout")'
+			onclick='GET("/login.loginaction/loginout")'
 			>Sign out</a>
 		</div>
 	</li>

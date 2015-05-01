@@ -8,7 +8,7 @@
 	            <small>
 	            <!-- <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/login.loginaction/toNavigate")'
+	                onclick='GET("/login.loginaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	                 -->
 	            </small>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/login.loginaction/toNavigate")'
+	                onclick='GET("/login.loginaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">历史账单</li>

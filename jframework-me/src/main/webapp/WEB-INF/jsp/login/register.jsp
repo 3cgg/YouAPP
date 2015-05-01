@@ -84,7 +84,7 @@
 					  }
 					},
 				  submitHandler:function(form){
-					  httpPOST('/login.loginaction/register', form.id);
+					  submitPOST('/login.loginaction/register', form.id);
 			        } 
 			    });
 			});

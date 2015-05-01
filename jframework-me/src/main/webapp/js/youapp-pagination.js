@@ -1,3 +1,6 @@
+
+// add additional property "sortColumn" for order by function.
+
 (function (){
 	
 	var YouAPPDataTable=function (initsettings){
@@ -38,7 +41,13 @@
 		    	 for(var i=0;i< aoData.length;i++){
 		    		 var obj=aoData[i];
 		    		 if("iSortCol_0"==obj.name){
+		    			 
+		    			 if(columns[obj.value].sortColumn!==undefined){
+		    				 sortColumn=columns[obj.value].sortColumn ;
+		    			 }
+		    			 else{
 		    			 sortColumn=columns[obj.value].mData ;
+		    			 }
 		    		 }
 		    		 if("sSortDir_0"==obj.name){
 		    			 sortType=obj.value ;
@@ -49,10 +58,10 @@
 		    	 },
 		     "fnServerData":function (sUrl, aoData, fnCallback, oSettings ){
 		   	  	
-		    	 httpGET(sUrl, aoData, 
+		    	 GET(sUrl, aoData, 
 						function(json){
-					
-							fnCallback($.parseJSON(json));
+		    		 		// the value passed is already JSON .
+							fnCallback(json);
 							
 						});
 		     },
@@ -82,7 +91,7 @@
  		    	 $(nRow).attr("id",aData.ID);
  		    	 
  		    	 //callback
- 		    	 var youappfnCreatedRow=settings.fnCreatedRow;
+ 		    	 var youappfnCreatedRow=settings.youappfnCreatedRow;
  		    	 if(typeof(youappfnCreatedRow)!="undefined"&&typeof(youappfnCreatedRow)=="function"){
  		    		 try{
  		    			youappfnCreatedRow( nRow, aData, iDataIndex ) ;
@@ -101,7 +110,7 @@
 				    	 }
 				    	 
 				    	 //callback 
-				    	 var youappfnDrawCallback=settings.fnDrawCallback;
+				    	 var youappfnDrawCallback=settings.youappfnDrawCallback;
 		 		    	 if(typeof(youappfnDrawCallback)!="undefined"&&typeof(youappfnDrawCallback)=="function"){
 		 		    		 try{
 		 		    			youappfnDrawCallback( oSettings );
@@ -186,12 +195,12 @@
 	                          /**
 	                           * callback when row created.
 	                           */
-	                          "fnCreatedRow":function( nRow, aData, iDataIndex ){},
+	                          "youappfnCreatedRow":function( nRow, aData, iDataIndex ){},
 	                          
 	                          /**
 	                           * callback when table drawed. 
 	                           */
-							  "fnDrawCallback":function( oSettings ){}
+							  "youappfnDrawCallback":function( oSettings ){}
 						};
 
 	$.fn.youappDataTable = YouAPPDataTable;

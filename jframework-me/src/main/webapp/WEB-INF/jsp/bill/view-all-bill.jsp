@@ -10,7 +10,7 @@
 	            <small>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">历史账单</li>
@@ -105,7 +105,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/bill.billaction/getBillsWithsCondition', form.id);
+				  submitPOST('/bill.billaction/getBillsWithsCondition', form.id);
 		        },
 		    	errorPlacement:warningMessageAlert
 			    });

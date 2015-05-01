@@ -247,7 +247,7 @@
 							<span class="time"><i class="fa fa-clock-o"></i>  ${ timeline.timeOffset}</span>
 							<h3 class="timeline-header no-border">
 								<a href="javascript:void(0)" 
-								onclick='httpGET("${timeline.highlightPath}")'
+								onclick='GET("${timeline.highlightPath}")'
 								>${timeline.highlightContent}</a> ${timeline.header }
 							</h3>
 						</div>

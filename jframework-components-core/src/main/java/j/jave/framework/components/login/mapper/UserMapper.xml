@@ -63,7 +63,10 @@ select * from USERS where id=#{param1}
 	<if test="userName !=null and userName !=''">
 		and USERNAME like CONCAT('%',  #{userName} ,'%')  
 	</if>
-	order by USERNAME desc ,UPDATETIME desc
+	order by 
+	<if test="page.sortColumn !=null and page.sortColumn !=''">
+		${page.sortColumn} ${page.sortType}    ,
+	</if> UPDATETIME desc
 </select>
 
 

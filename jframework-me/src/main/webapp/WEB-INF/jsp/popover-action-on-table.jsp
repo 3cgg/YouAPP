@@ -53,7 +53,7 @@ var renderPopoverMark=function () {
 					var $view=$popover.find('#youapp-popover-id-view');
 					$view.attr('id',$view.attr('id')+"-"+recordId);
 					$view.attr('onclick', function (){
-						return 'httpGET("'+viewURL+'", "'+targetParam+'")';
+						return 'GET("'+viewURL+'", "'+targetParam+'")';
 					});
 				}
 				else{

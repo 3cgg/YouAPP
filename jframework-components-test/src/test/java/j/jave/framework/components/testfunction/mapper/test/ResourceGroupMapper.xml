@@ -4,13 +4,13 @@
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
-<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
-<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
 <result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
 <result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
 <result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
-<result column="VERSION" property="version"  jdbcType="INT" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
 <resultMap id="resourceGroup"  type="j.jave.framework.components.resource.model.ResourceGroup"  extends="jBaseModel" >
@@ -25,10 +25,10 @@
 insert into RESOURCES_GROUPS
 (
 RESOURCEID,GROUPID,DESCRIPTION,ENABLE
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{RESOURCEID},#{GROUPID},#{DESCRIPTION},#{ENABLE}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{resourceId},#{groupId},#{description},#{enable}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
@@ -61,5 +61,13 @@ where a.id=#{param1}
 <sql id="selectfor">
 select a.* from RESOURCES_GROUPS a 
 </sql>
+
+
+<select id="getsByPage"   resultMap="resourceGroup"  parameterType="j.jave.framework.model.JPagination">
+select * from RESOURCES_GROUPS  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
+</select>
 
 </mapper>

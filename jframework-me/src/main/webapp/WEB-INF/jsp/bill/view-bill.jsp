@@ -8,7 +8,7 @@
 	            账单信息
 	            <small>
 	            <a href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toViewAllBill")'
+	                onclick='GET("/bill.billaction/toViewAllBill")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -16,12 +16,12 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                 onclick='httpGET("/bill.billaction/toNavigate")'
+	                 onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li >
 	            <a href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toViewAllBill")'
+	                onclick='GET("/bill.billaction/toViewAllBill")'
 	                >历史账单</a>
 	            </li>
 	            <li class="active">View</li>
@@ -35,7 +35,7 @@
 		        <div class="box box-solid">
 	                <div class="box-header with-border">
 	                <a   href="javascript:void(0)"  class="youapp-edit" 
-	                	onclick='httpGET("/bill.billaction/toEditBill","id=${bill.id}")'
+	                	onclick='GET("/bill.billaction/toEditBill","id=${bill.id}")'
 	                >
 						<i class="fa fa-edit"></i>
 					</a>

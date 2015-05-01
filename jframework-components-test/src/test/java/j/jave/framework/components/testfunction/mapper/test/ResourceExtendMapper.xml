@@ -4,13 +4,13 @@
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
-<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
-<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
 <result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
 <result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
 <result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
-<result column="VERSION" property="version"  jdbcType="INT" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
 <resultMap id="resourceExtend"  type="j.jave.framework.components.resource.model.ResourceExtend"  extends="jBaseModel" >
@@ -22,19 +22,19 @@
 
 
 <insert  id="save" parameterType="j.jave.framework.components.resource.model.ResourceExtend">
-insert into RESOURCES_EXTEND'
+insert into RESOURCES_EXTEND
 (
 RESOURCEID,URL,ACTION,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{RESOURCEID},#{URL},#{ACTION},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{resourceId},#{url},#{action},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
 
 <update id="update">
-update RESOURCES_EXTEND'
+update RESOURCES_EXTEND
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
@@ -48,7 +48,7 @@ where ID=#{id}
 
 
 <delete id="markDeleted" >
-update RESOURCES_EXTEND' set DELETED='Y' where ID=#{id}
+update RESOURCES_EXTEND set DELETED='Y' where ID=#{id}
 </delete>
 
 
@@ -59,7 +59,15 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from RESOURCES_EXTEND' a 
+select a.* from RESOURCES_EXTEND a 
 </sql>
+
+
+<select id="getsByPage"   resultMap="resourceExtend"  parameterType="j.jave.framework.model.JPagination">
+select * from RESOURCES_EXTEND  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
+</select>
 
 </mapper>

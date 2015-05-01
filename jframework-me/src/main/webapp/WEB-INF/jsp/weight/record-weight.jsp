@@ -10,7 +10,7 @@
 	            <small>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">体重录入</li>
@@ -46,7 +46,7 @@
 		                      </div>
 		                      <input id="record-time" type="text" 
 		                      name="weight.recordTime" 
-		                      class="form-control" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask/>
+		                      class="form-control"  />
 		                    </div><!-- /.input group -->
 	                    </div>
 	                    
@@ -69,7 +69,7 @@
 	<script type="text/javascript">
 	
 		$(function (){
-			$("#record-time").inputmask("yyyy-mm-dd", {"placeholder": "yyyy-mm-dd"});
+			$("#record-time").inputmask("yyyy-mm-dd hh:mm:ss", {"placeholder": "yyyy-mm-dd hh:mm:ss"});
 		});
 		
 		$(function (){
@@ -79,10 +79,17 @@
 				   required: true,
 				   number:true,
 				   max:100
+			   },
+			   "weight.recordTime":{
+				   required: true,
+				   youappdate:{
+					   format:"yyyy-mm-dd hh:mm:ss"
+				   },
+				   date:true
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/weight.weightaction/recordWeight', form.id);
+				  submitPOST('/weight.weightaction/recordWeight', form.id);
 		        } 
 			    });
 		});

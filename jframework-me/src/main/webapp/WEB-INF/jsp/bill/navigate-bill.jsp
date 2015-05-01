@@ -13,7 +13,7 @@
               <div class="info-box">
                <a  
 					href="javascript:void(0)" 
-	                onclick='httpGET("/login.moduleaction/modules")'
+	                onclick='GET("/login.moduleaction/modules")'
                >
                 <span class="info-box-icon bg-red"><i class="fa fa-reply"></i></span>
                 </a>
@@ -28,7 +28,7 @@
               <div class="info-box">
               <a 
 					href="javascript:void(0)" 
-					onclick='httpGET("/bill.billaction/toRecordBill")'
+					onclick='GET("/bill.billaction/toRecordBill")'
               >
                 <span class="info-box-icon bg-aqua"><i class="fa ion-plus"></i></span>
                 </a>
@@ -42,7 +42,7 @@
               <div class="info-box">
               <a 
               		href="javascript:void(0)" 
-					onclick='httpGET("/bill.billaction/toViewChart")'
+					onclick='GET("/bill.billaction/toViewChart")'
               >
                 <span class="info-box-icon bg-green"><i class="fa fa-pie-chart"></i></span>
                 </a>
@@ -56,7 +56,7 @@
               <div class="info-box">
               <a 
               		href="javascript:void(0)" 
-					onclick='httpGET("/bill.billaction/toViewAllBill")'
+					onclick='GET("/bill.billaction/toViewAllBill")'
               >
                 <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
                </a>

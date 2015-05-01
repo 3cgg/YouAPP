@@ -22,6 +22,27 @@ public class UserRole extends JBaseModel {
 	
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
+	
+	
+	private User user=new User();
+	
+	private Role role=new Role();
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public String getRoleId() {
 		return roleId;

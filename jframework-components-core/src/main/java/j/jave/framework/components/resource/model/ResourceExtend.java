@@ -5,7 +5,7 @@ import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JSQLType;
 import j.jave.framework.model.support.JTable;
 
-@JTable(name="RESOURCES_EXTEND'")
+@JTable(name="RESOURCES_EXTEND")
 public class ResourceExtend extends JBaseModel {
 	
 	/**

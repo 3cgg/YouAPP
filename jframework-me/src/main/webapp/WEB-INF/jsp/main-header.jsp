@@ -3,7 +3,7 @@
 <div id="youapp-main-header">
 <header class="main-header">
  <!-- Logo -->
-        <a href="index2.html" class="logo"><b>You</b>APP</a>
+        <a href="#" class="logo"><b>You</b>APP</a>
 <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

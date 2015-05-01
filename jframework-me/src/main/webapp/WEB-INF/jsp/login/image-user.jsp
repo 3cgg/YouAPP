@@ -47,7 +47,7 @@
 		   }
 		  },
 		  submitHandler:function(form){
-			  httpPOST('/login.loginaction/uploadImage', form.id);
+			  submitPOST('/login.loginaction/uploadImage', form.id);
 	        } 
 		    });
 	});

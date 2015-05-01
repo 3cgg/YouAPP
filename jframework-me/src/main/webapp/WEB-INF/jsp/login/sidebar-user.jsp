@@ -10,18 +10,18 @@
 	                
 	                <!-- 
 	                <li class="active"><a href="javascript:void(0)" 
-	                	onclick='httpGET("/login.loginaction/toCreateUser")'
+	                	onclick='GET("/login.loginaction/toCreateUser")'
 	                ><i class="fa fa-circle-o"></i> Create User</a></li> -->
 	                <li><a href="javascript:void(0)" 
-	                onclick='httpGET("/login.loginaction/profile")'
+	                onclick='GET("/login.loginaction/profile")'
 	                ><i class="fa fa-circle-o"></i> Profile</a></li>
 	                <youapp:access  resource="/login.loginaction/toViewAllUser">
 	                <li><a href="javascript:void(0)" 
-	                onclick='httpGET("/login.loginaction/toViewAllUser")'
+	                onclick='GET("/login.loginaction/toViewAllUser")'
 	                ><i class="fa fa-circle-o"></i> 用户集</a></li>
 	                </youapp:access>
 	                <li><a href="javascript:void(0)" 
-	                onclick='httpGET("/login.loginaction/toUploadImage")'
+	                onclick='GET("/login.loginaction/toUploadImage")'
 	                ><i class="fa fa-circle-o"></i>上传头像</a></li>
 	                
 	                

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.framework.components.login.mapper.RoleGroupMapper">
+<mapper namespace="j.jave.framework.components.login.mapper.UserMapper">
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
@@ -13,32 +13,30 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="roleGroup"  type="j.jave.framework.components.login.model.RoleGroup"  extends="jBaseModel" >
-<result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
-<result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
-<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+<resultMap id="user"  type="j.jave.framework.components.login.model.User"  extends="jBaseModel" >
+<result column="USERNAME" property="userName"  jdbcType="VARCHAR" />
+<result column="PASSWORD" property="password"  jdbcType="VARCHAR" />
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.framework.components.login.model.RoleGroup">
-insert into ROLES_GROUPS
+<insert  id="save" parameterType="j.jave.framework.components.login.model.User">
+insert into USERS
 (
-ROLEID,GROUPID,DESCRIPTION
+USERNAME,PASSWORD
 ,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{roleId},#{groupId},#{description}
+#{userName},#{password}
 ,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
 
 <update id="update">
-update ROLES_GROUPS
+update USERS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
-<if test="roleId!=null">,ROLEID =#{roleId}</if>
-<if test="groupId!=null">,GROUPID =#{groupId}</if>
-<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="userName!=null">,USERNAME =#{userName}</if>
+<if test="password!=null">,PASSWORD =#{password}</if>
 <if test="version!=null">,VERSION =#{version}</if>
 </set>  
 where ID=#{id}
@@ -46,23 +44,23 @@ where ID=#{id}
 
 
 <delete id="markDeleted" >
-update ROLES_GROUPS set DELETED='Y' where ID=#{id}
+update USERS set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="roleGroup"  >
+<select id="get"   resultMap="user"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
 
 
 <sql id="selectfor">
-select a.* from ROLES_GROUPS a 
+select a.* from USERS a 
 </sql>
 
 
-<select id="getsByPage"   resultMap="roleGroup"  parameterType="j.jave.framework.model.JPagination">
-select * from ROLES_GROUPS  
+<select id="getsByPage"   resultMap="user"  parameterType="j.jave.framework.model.JPagination">
+select * from USERS  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   
 </if>

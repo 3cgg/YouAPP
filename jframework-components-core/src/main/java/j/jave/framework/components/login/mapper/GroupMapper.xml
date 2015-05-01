@@ -4,8 +4,8 @@
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
-<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
-<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
 <result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
 <result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
@@ -24,10 +24,10 @@
 insert into GROUPS
 (
 GROUPCODE,GROUPNAME,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{GROUPCODE},#{GROUPNAME},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{groupCode},#{groupName},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 

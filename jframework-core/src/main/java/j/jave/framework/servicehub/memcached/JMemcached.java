@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.spy.memcached.MemcachedClient;
+import net.spy.memcached.OperationTimeoutException;
 
 /**
  * 	delegate to {@link MemcachedClient} 
@@ -52,7 +53,11 @@ public class JMemcached {
 	}
 	
 	public Object get(String key){
-		return memcachedClient.get(key);
+		try{
+			return memcachedClient.get(key);
+		}catch(OperationTimeoutException e){
+			return null;
+		}
 	}
 
 	public void add(String key , int expiry, Object value){

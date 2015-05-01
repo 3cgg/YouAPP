@@ -54,7 +54,7 @@
 
 	<script type="text/javascript">
 		function execute(){
-			httpPOST('/login.loginaction/createUser', 'createUserForm');
+			submitPOST('/login.loginaction/createUser', 'createUserForm');
 		}
 	</script>
 

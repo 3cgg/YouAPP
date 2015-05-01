@@ -235,7 +235,7 @@ public class MapperXML {
 			}
 			itemBuffer.append(
 					(i==0?"":",")
-					+"#{"+column.name+"}");
+					+"#{"+column.property+"}");
 		}
 		stringBuffer.append(RN);
 		stringBuffer.append(itemBuffer);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.framework.components.login.mapper.RoleGroupMapper">
+<mapper namespace="j.jave.framework.components.resource.mapper.ResourceMapper">
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
@@ -13,31 +13,29 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="roleGroup"  type="j.jave.framework.components.login.model.RoleGroup"  extends="jBaseModel" >
-<result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
-<result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
+<resultMap id="resource"  type="j.jave.framework.components.resource.model.Resource"  extends="jBaseModel" >
+<result column="URL" property="url"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.framework.components.login.model.RoleGroup">
-insert into ROLES_GROUPS
+<insert  id="save" parameterType="j.jave.framework.components.resource.model.Resource">
+insert into RESOURCES
 (
-ROLEID,GROUPID,DESCRIPTION
+URL,DESCRIPTION
 ,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{roleId},#{groupId},#{description}
+#{url},#{description}
 ,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
 
 <update id="update">
-update ROLES_GROUPS
+update RESOURCES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
-<if test="roleId!=null">,ROLEID =#{roleId}</if>
-<if test="groupId!=null">,GROUPID =#{groupId}</if>
+<if test="url!=null">,URL =#{url}</if>
 <if test="description!=null">,DESCRIPTION =#{description}</if>
 <if test="version!=null">,VERSION =#{version}</if>
 </set>  
@@ -46,23 +44,23 @@ where ID=#{id}
 
 
 <delete id="markDeleted" >
-update ROLES_GROUPS set DELETED='Y' where ID=#{id}
+update RESOURCES set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="roleGroup"  >
+<select id="get"   resultMap="resource"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
 
 
 <sql id="selectfor">
-select a.* from ROLES_GROUPS a 
+select a.* from RESOURCES a 
 </sql>
 
 
-<select id="getsByPage"   resultMap="roleGroup"  parameterType="j.jave.framework.model.JPagination">
-select * from ROLES_GROUPS  
+<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.framework.model.JPagination">
+select * from RESOURCES  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   
 </if>

@@ -8,14 +8,14 @@
 	          <h1>
 	            账单录入
 	            <a href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	          </h1>
 	          <ol class="breadcrumb">
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">账单录入</li>
@@ -153,7 +153,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/bill.billaction/recordBill', form.id);
+				  submitPOST('/bill.billaction/recordBill', form.id);
 		        } 
 			    });
 		});

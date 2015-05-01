@@ -4,8 +4,8 @@
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
-<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
-<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
 <result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
 <result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
@@ -24,10 +24,10 @@
 insert into ROLES
 (
 ROLECODE,ROLENAME,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{ROLECODE},#{ROLENAME},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{roleCode},#{roleName},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
@@ -69,8 +69,22 @@ select a.* from ROLES a
 
 <select id="getRoleByRoleCode"  resultMap="role"  parameterType="java.lang.String">
 	<include refid="selectfor"/>
-	where a.DELETED='Y' and a.ROLECODE=#{roleCode}
+	where a.DELETED='N' and a.ROLECODE=#{roleCode}
 </select>
 
+
+<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="java.lang.String">
+	<include refid="selectfor"/>
+	where a.DELETED='N'
+	<if test="roleName !=null and roleName !=''">
+		and ROLENAME like CONCAT('%',  #{roleName} ,'%')  
+	</if>
+</select>
+
+
+<select id="getAllRoles"  resultMap="role"  parameterType="java.lang.String">
+	<include refid="selectfor"/>
+	where a.DELETED='N' 
+</select>
 
 </mapper>

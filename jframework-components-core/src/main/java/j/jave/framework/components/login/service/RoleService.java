@@ -1,8 +1,11 @@
 package j.jave.framework.components.login.service;
 
+import java.util.List;
+
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.Role;
+import j.jave.framework.model.JPagination;
 
 public interface RoleService extends Service<Role> {
 
@@ -31,5 +34,26 @@ public interface RoleService extends Service<Role> {
 	 * @return
 	 */
 	Role getDefaultRole(ServiceContext serviceContext);
+	
+	
+	/**
+	 * GET ALL ROLES ACCORDING TO 'ROLE NAME'
+	 * @param serviceContext
+	 * @param pagination
+	 * @return
+	 */
+	List<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,JPagination pagination);
+	
+	/**
+	 * GET ALL ROLES.
+	 * @param serviceContext
+	 * @return
+	 */
+	List<Role> getAllRoles(ServiceContext serviceContext);
+	
+	
+	
+	
+	
 	
 }

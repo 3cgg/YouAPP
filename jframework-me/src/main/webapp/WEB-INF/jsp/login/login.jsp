@@ -65,7 +65,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/login.loginaction/login', form.id);
+				  submitPOST('/login.loginaction/login', form.id);
 		        } 
 			    });
 		});

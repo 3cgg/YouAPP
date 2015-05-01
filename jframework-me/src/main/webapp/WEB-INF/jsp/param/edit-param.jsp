@@ -9,7 +9,7 @@
 	            参数修改
 	            <small>
 	            <a href="javascript:void(0)" 
-	            	onclick='httpGET("/param.paramaction/toViewParam","id=${youappParam.id}")'
+	            	onclick='GET("/param.paramaction/toViewParam","id=${youappParam.id}")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -17,7 +17,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                 onclick='httpGET("/param.paramaction/toNavigate")'
+	                 onclick='GET("/param.paramaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">修改</li>
@@ -92,7 +92,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/param.paramaction/editParam', form.id);
+				  submitPOST('/param.paramaction/editParam', form.id);
 		        } 
 			    });
 		});

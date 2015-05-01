@@ -9,7 +9,7 @@
 	            账单修改
 	            <small>
 	            	<a href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toViewBill","id=${bill.id}")'
+	                onclick='GET("/bill.billaction/toViewBill","id=${bill.id}")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -17,7 +17,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">账单修改</li>
@@ -175,7 +175,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/bill.billaction/editBill', form.id);
+				  submitPOST('/bill.billaction/editBill', form.id);
 		        } 
 			    });
 		});

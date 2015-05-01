@@ -7,7 +7,7 @@
 	            参数信息
 	            <small>
 	            <a href="javascript:void(0)" 
-	                onclick='httpGET("/param.paramaction/toViewAllParam")'
+	                onclick='GET("/param.paramaction/toViewAllParam")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -15,12 +15,12 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                 onclick='httpGET("/param.paramaction/toNavigate")'
+	                 onclick='GET("/param.paramaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li >
 	            <a href="javascript:void(0)" 
-	                onclick='httpGET("/param.paramaction/toViewAllParam")'
+	                onclick='GET("/param.paramaction/toViewAllParam")'
 	                >参数集</a>
 	            </li>
 	            <li class="active">View</li>
@@ -34,7 +34,7 @@
 		        <div class="box box-solid">
 	                <div class="box-header with-border">
 	                <a   href="javascript:void(0)"  class="youapp-edit" 
-	                	onclick='httpGET("/param.paramaction/toEditParam","id=${youappParam.id}")'
+	                	onclick='GET("/param.paramaction/toEditParam","id=${youappParam.id}")'
 	                >
 						<i class="fa fa-edit"></i>
 					</a>

@@ -10,7 +10,7 @@
 	            <small>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">历史记录</li>
@@ -89,7 +89,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/weight.weightaction/getWeightsWithsCondition', form.id);
+				  submitPOST('/weight.weightaction/getWeightsWithsCondition', form.id);
 		        },
 		    	errorPlacement:warningMessageAlert
 			    });

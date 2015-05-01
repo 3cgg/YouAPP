@@ -10,7 +10,7 @@
 	            <small>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
@@ -18,7 +18,7 @@
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
 	            <li class="active">体重趋势图</li>

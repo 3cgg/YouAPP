@@ -6,11 +6,11 @@
 	              </a>
 	              <ul class="treeview-menu">
 	                <li class="active"><a href="javascript:void(0)" 
-	                	onclick='httpGET("/param.paramaction/toRecordParam")'
+	                	onclick='GET("/param.paramaction/toRecordParam")'
 	                ><i class="fa fa-circle-o"></i> 录入</a></li>
 	                
 	                <li><a href="javascript:void(0)" 
-	                onclick='httpGET("/param.paramaction/toViewAllParam")'
+	                onclick='GET("/param.paramaction/toViewAllParam")'
 	                ><i class="fa fa-circle-o"></i> 记录集</a></li>
 	              </ul>
 	            </li>

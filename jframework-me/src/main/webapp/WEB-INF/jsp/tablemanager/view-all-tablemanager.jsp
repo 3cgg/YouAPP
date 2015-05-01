@@ -66,7 +66,7 @@ $(function (){
 	   }
 	  },
 	  submitHandler:function(form){
-		  httpPOST('/bill.billaction/getBillsWithsCondition', form.id);
+		  submitPOST('/bill.billaction/getBillsWithsCondition', form.id);
        },
    	errorPlacement:warningMessageAlert
 	    });

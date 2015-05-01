@@ -8,10 +8,10 @@
 	              </a>
 	              <ul class="treeview-menu">
 	                <li class="active"><a href="javascript:void(0)" 
-	                	onclick='httpGET("/login.loginaction/tracker")'
+	                	onclick='GET("/login.loginaction/tracker")'
 	                ><i class="fa fa-circle-o"></i> 我的痕迹</a></li>
 	                <li><a href="javascript:void(0)" 
-	                onclick='httpGET("/login.moduleaction/modules")'
+	                onclick='GET("/login.moduleaction/modules")'
 	                ><i class="fa fa-circle-o"></i> 应用</a></li>
 	              </ul>
 	            </li>

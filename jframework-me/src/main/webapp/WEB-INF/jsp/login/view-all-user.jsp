@@ -79,7 +79,7 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				  httpPOST('/login.loginaction/getUsersWithsCondition', form.id);
+				  submitPOST('/login.loginaction/getUsersWithsCondition', form.id);
 		        },
 		    	errorPlacement:warningMessageAlert
 			    });

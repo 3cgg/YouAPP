@@ -1,20 +1,28 @@
 package j.jave.framework.components.tablemanager.ext;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import j.jave.framework.components.core.context.SpringContext;
 import j.jave.framework.components.core.jsp.ServletRenderContext;
 import j.jave.framework.components.core.menu.Item;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.service.TableManagerService;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TableManagerServletRenderContext implements ServletRenderContext {
 
+	private static final Logger LOGGER=LoggerFactory.getLogger(TableManagerServletRenderContext.class);
+	
 	@Override
 	public void changeRenderContext(HttpServletRequest request) {
+		
+		LOGGER.info("inital "+TableManagerServletRenderContext.class.getName());
+		
 		TableManagerService tableManagerService=SpringContext.get().getApplicationContext().getBean("tableManagerServiceImpl", TableManagerService.class);
 		List<Item> items=new ArrayList<Item>();
 		List<Table> tables= tableManagerService.getTables();
@@ -26,9 +34,13 @@ public class TableManagerServletRenderContext implements ServletRenderContext {
 				item.setUrl("/tablemanager.tablemanageraction/toViewRecords");
 				item.setParam("modelName="+table.getModelName());
 				items.add(item);
+				
+				LOGGER.info(" table load... "+table.getTableName());
 			}
 		}
 		request.setAttribute("items", items);
+		
+		LOGGER.info(" table count : "+items.size());
 	}
 
 }

@@ -4,8 +4,8 @@
 
 
 <resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
-<result column="CREATEID" property="id"  jdbcType="VARCHAR" />
-<result column="ID" property="createId"  jdbcType="VARCHAR" />
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
 <result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
 <result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
@@ -17,6 +17,12 @@
 <result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
 <result column="USERID" property="userId"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+
+
+<result column="USERNAME" property="user.userName"  jdbcType="VARCHAR" />
+<result column="ROLENAME" property="role.roleName"  jdbcType="VARCHAR" />
+<result column="ROLECODE" property="role.roleCode"  jdbcType="VARCHAR" />
+
 </resultMap>
 
 
@@ -24,10 +30,10 @@
 insert into USERS_ROLES
 (
 ROLEID,USERID,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{ROLEID},#{USERID},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{roleId},#{userId},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
@@ -57,7 +63,9 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from USERS_ROLES a 
+select a.*, b.USERNAME USERNAME, c.ROLENAME ROLENAME from USERS_ROLES a
+LEFT JOIN USERS b on a.USERID=b.ID
+LEFT JOIN ROLES c on a. ROLEID=c.ID
 </sql>
 
 <select id="getsByPage"  resultMap="userRole"  parameterType="j.jave.framework.model.JBaseModel">
@@ -65,6 +73,24 @@ select a.* from USERS_ROLES a
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
     </if>
+</select>
+
+
+<select id="getUserRolesByUserId"  resultMap="userRole"  parameterType="java.lang.String">
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    <if test="userId!=null  and userId!='' ">
+    	and a.USERID=#{userId}
+    </if>
+    
+</select>
+
+<select id="countOnUserIdAndRoleId" resultType="int">
+    select count(1) from USERS_ROLES a  where a.DELETED='N' and  a.USERID=#{userId} and a.ROLEID=#{roleId}
+</select>
+
+<select id="getUserRoleOnUserIdAndRoleId"  resultMap="userRole" >
+    select a.*  from USERS_ROLES a  where a.DELETED='N'  and   a.USERID=#{userId} and a.ROLEID=#{roleId}
 </select>
 
 </mapper>

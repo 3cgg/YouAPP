@@ -21,7 +21,7 @@
 	        		<input type="text"  name="age" />
 	        		<input type ="file" name ="posterUrlUploadPath"  id ="posterUrlUploadPath"
 	        		  title ="uploadImage" />  
-	        		<input type="button"  value='Commit'   onclick='httpPOST("/login.loginaction/view","form1")' />
+	        		<input type="button"  value='Commit'   onclick='submitPOST("/login.loginaction/view","form1")' />
 	        	</form>
 	        </section>
 

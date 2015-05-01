@@ -41,7 +41,7 @@ function deleteRecordWithConfirmOnHTTPGET(url,param){
         text: "你确定删除？",
         confirm: function(button) {
             //alert("You just confirmed.");
-            httpGET(url, param); 
+            GET(url, param); 
         },
         cancel: function(button) {
             //alert("You cancelled.");
@@ -49,8 +49,8 @@ function deleteRecordWithConfirmOnHTTPGET(url,param){
     });
 };
 
-function renderXML(xml){
-	var render = analyze(xml);
+function renderXML(render){
+	
 	var ac=render[0];
 	if('url'==ac){
 		window.location.href=_GLOBAL_serviceHost+render[1];
@@ -84,30 +84,27 @@ function renderXML(xml){
 	
 }
 
-function action(url, param,fnSuccess,fnError) {
-	$.ajax({
-		type : "get",
-		async : true,
-		url : url, //?html=&service=
-		//dataType : "jsonp", 
-		data : param,
-		//jsonp: "callbackKey", 
-		//jsonpCallback:'success_jsonpCallback', 
-		success : fnSuccess,
-		error : fnError
-	});
-}
-
 function POST(url, param,fnSuccess,fnError) {
 	
 	if(typeof(fnSuccess)=="undefined"){
-		fnSuccess=function(xml) {
+		fnSuccess=function(render) {
 			try {
-				renderXML(xml);
+				renderXML(render);
 			} catch (Exception) {
 				//alert('error');
 			}
 		};
+	}
+	// add method proxy on request method.
+	var customfnSuccess=fnSuccess;
+	fnSuccess=function proxyOnCallback(reponse){
+		var result = analyze(reponse);
+		if(result.type=="XML"){
+			renderXML(result.data);
+		}
+		else{
+			customfnSuccess(result.data);
+		}
 	};
 	
 	if(typeof(fnError)=="undefined"){
@@ -129,16 +126,29 @@ function POST(url, param,fnSuccess,fnError) {
 	});
 }
 
-function httpGET(url, parameter,fnSuccess,fnError) {
+
+
+function GET(url, parameter,fnSuccess,fnError) {
 	
 	if(typeof(fnSuccess)=="undefined"){
-		fnSuccess=function(xml) {
+		fnSuccess=function(render) {
 			try {
-				renderXML(xml);
+				renderXML(render);
 			} catch (Exception) {
 				//alert('error');
 			}
 		};
+	}
+	// add method proxy on request method.
+	var customfnSuccess=fnSuccess;
+	fnSuccess=function proxyOnCallback(reponse){
+		var result = analyze(reponse);
+		if(result.type=="XML"){
+			renderXML(result.data);
+		}
+		else{
+			customfnSuccess(result.data);
+		}
 	};
 	
 	if(typeof(fnError)=="undefined"){
@@ -146,20 +156,42 @@ function httpGET(url, parameter,fnSuccess,fnError) {
 			alert(data);
 		};
 	};
+
+	$.ajax({
+		type : "get",
+		async : true,
+		url : _GLOBAL_serviceHost + url, //?html=&service=
+		//dataType : "jsonp", 
+		data : parameter,
+		//jsonp: "callbackKey", 
+		//jsonpCallback:'success_jsonpCallback', 
+		success : fnSuccess,
+		error : fnError
+	});
 	
-	action(_GLOBAL_serviceHost + url, parameter,fnSuccess,fnError);
 }
 
-function httpPOST(url, formId,fnSuccess,fnError) {
+function submitPOST(url, formId,fnSuccess,fnError) {
 	
 	if(typeof(fnSuccess)=="undefined"){
-		fnSuccess=function(xml) {
+		fnSuccess=function(render) {
 			try {
-				renderXML(xml);
-			} catch (Exception) {
+				renderXML(render);
+			} catch (e ) {
 				//alert('error');
 			}
 		};
+	}
+	// add method proxy on request method.
+	var customfnSuccess=fnSuccess;
+	fnSuccess=function proxyOnCallback(reponse){
+		var result = analyze(reponse);
+		if(result.type=="XML"){
+			renderXML(result.data);
+		}
+		else{
+			customfnSuccess(result.data);
+		}
 	};
 	
 	if(typeof(fnError)=="undefined"){
@@ -182,8 +214,21 @@ function httpRELOAD(url, parameter){
 	return false;
 }
 
+function Result(){
+	this.type; // JSON, XML 
+	this.data;
+}
 
 function analyze(html) {
+	var result=new Result();
+	try{
+	 var data=$.parseJSON(html)
+	 result.type="JSON";
+	 result.data=data;
+	 return result;
+	}catch(e){
+		;
+	}
 	var s = html;
 	var render = new Array(2);
 	var targetDiv = '';
@@ -223,7 +268,10 @@ function analyze(html) {
 	//alert('content='+content);
 	render[0] = targetDiv;
 	render[1] = content;
-	return render;
+	
+	result.type="XML";
+	result.data=render;
+	return result;
 }
 
 String.prototype.trim=function (){

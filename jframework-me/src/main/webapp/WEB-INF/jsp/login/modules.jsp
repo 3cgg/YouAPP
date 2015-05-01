@@ -29,7 +29,7 @@
                 </div>
                 <a
                 	href="javascript:void(0)" 
-	                onclick='httpGET("/bill.billaction/toNavigate")'
+	                onclick='GET("/bill.billaction/toNavigate")'
                   class="small-box-footer"
                 
                 > More info<i class="fa fa-arrow-circle-right"></i></a>
@@ -64,7 +64,7 @@
                 </div>
                 <a
                 	href="javascript:void(0)" 
-	                onclick='httpGET("/weight.weightaction/toNavigate")'
+	                onclick='GET("/weight.weightaction/toNavigate")'
                 	class="small-box-footer"
                 >More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
@@ -83,11 +83,32 @@
                 
                 <a
                 	href="javascript:void(0)" 
-                	onclick='httpGET("/param.paramaction/toNavigate")'
+                	onclick='GET("/param.paramaction/toNavigate")'
                 	class="small-box-footer"
                 	>More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+            
+            
+            <div class="col-lg-3 col-xs-3">
+              <!-- small box -->
+              <div class="small-box bg-red">
+                <div class="inner">
+                 <h3 class="inner-head">权限</h3>
+                  <p class="inner-content">权限管理</p>
+                </div>
+                <div class="icon">
+                  <i class="ion  ion-android-settings"></i>
+                </div>
+                
+                <a
+                	href="javascript:void(0)" 
+                	onclick='GET("/login.loginaction/toNavigate")'
+                	class="small-box-footer"
+                	>More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+            
           </div><!-- /.row -->
           
           

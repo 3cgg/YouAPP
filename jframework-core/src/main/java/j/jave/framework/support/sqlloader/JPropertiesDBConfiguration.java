@@ -7,7 +7,7 @@ package j.jave.framework.support.sqlloader;
  * DB configuration in the properties. 
  * @author J
  */
-public interface PropertiesDBConfiguration {
+public interface JPropertiesDBConfiguration {
 
 	String URL="jframework.database.url";
 	String DRIVER="jframework.database.driver";

@@ -85,6 +85,26 @@ public class JJSON {
 			throw new RuntimeException(e);
 		} 
 	}
+	
+	/**
+	 * format object via call the method {@code serializableJSONObject} in the class {@link JJSONObject}
+	 * @param jsonObject
+	 * @return
+	 */
+	public String format(JJSONObject<?> jsonObject){
+		try {
+			ByteArrayOutputStream out=new ByteArrayOutputStream();
+			mapper.writeValue(out, jsonObject.serializableJSONObject());
+			return out.toString("UTF-8");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
+	
+	
+	
+	
+	
 
 	
 }

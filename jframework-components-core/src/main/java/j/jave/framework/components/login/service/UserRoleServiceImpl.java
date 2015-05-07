@@ -2,12 +2,12 @@ package j.jave.framework.components.login.service;
 
 import java.util.List;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserRoleMapper;
 import j.jave.framework.components.login.model.UserRole;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.utils.JUniqueUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +32,9 @@ public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements Use
 	
 	@Override
 	public void bingUserRole(ServiceContext serviceContext, String userId,
-			String roleId) throws ServiceException {
+			String roleId) throws JServiceException {
 		if(isBing(serviceContext, userId, roleId)){
-			throw new ServiceException("the user had already the role.");
+			throw new JServiceException("the user had already the role.");
 		}
 		
 		UserRole userRole=new UserRole();
@@ -46,11 +46,11 @@ public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements Use
 	
 	@Override
 	public void unbingUserRole(ServiceContext serviceContext, String userId,
-			String roleId) throws ServiceException {
+			String roleId) throws JServiceException {
 		
 		UserRole userRole=getUserRoleOnUserIdAndRoleId(serviceContext, userId, roleId);
 		if(userRole==null){
-			throw new ServiceException("the user doesnot have the role.");
+			throw new JServiceException("the user doesnot have the role.");
 		}
 		delete(serviceContext, userRole.getId());
 	}

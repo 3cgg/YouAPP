@@ -3,11 +3,11 @@
  */
 package j.jave.framework.components.login.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.model.JPagination;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -28,18 +28,18 @@ public interface UserService extends Service<User> {
 	 * 
 	 * @param context 
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void saveUser(ServiceContext context, User user) throws ServiceException;
+	public void saveUser(ServiceContext context, User user) throws JServiceException;
 	
 	
 	/**
 	 * 
 	 * @param context
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void updateUser(ServiceContext context, User user) throws ServiceException;
+	public void updateUser(ServiceContext context, User user) throws JServiceException;
 	
 	/**
 	 * get user by name 

@@ -3,12 +3,12 @@
  */
 package j.jave.framework.components.weight.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.model.WeightSearchCriteria;
 import j.jave.framework.model.JPagination;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -22,18 +22,18 @@ public interface WeightService extends Service<Weight> {
 	 * 
 	 * @param context 
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void saveWeight(ServiceContext context, Weight weight) throws ServiceException;
+	public void saveWeight(ServiceContext context, Weight weight) throws JServiceException;
 	
 	
 	/**
 	 * 
 	 * @param context
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void updateWeight(ServiceContext context, Weight weight) throws ServiceException;
+	public void updateWeight(ServiceContext context, Weight weight) throws JServiceException;
 	
 	/**
 	 * all weight associated to the user. 

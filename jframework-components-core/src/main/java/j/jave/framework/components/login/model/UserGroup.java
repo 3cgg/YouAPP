@@ -23,6 +23,10 @@ public class UserGroup extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 	
+	private User user=new User();
+	
+	private Group group=new Group();
+	
 	public String getGroupId() {
 		return groupId;
 	}
@@ -47,5 +51,20 @@ public class UserGroup extends JBaseModel {
 		this.description = description;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
 	
 }

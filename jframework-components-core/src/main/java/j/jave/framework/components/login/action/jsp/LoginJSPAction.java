@@ -1,35 +1,40 @@
 package j.jave.framework.components.login.action.jsp;
 
-import j.jave.framework.components.core.exception.ServiceException;
+import j.jave.framework.components.core.model.JQueryDataTablePage;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
+import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.components.login.model.RoleSearchCriteria;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.components.login.model.UserGroup;
 import j.jave.framework.components.login.model.UserRole;
 import j.jave.framework.components.login.model.UserSearchCriteria;
 import j.jave.framework.components.login.model.UserTracker;
+import j.jave.framework.components.login.service.GroupService;
 import j.jave.framework.components.login.service.RoleService;
+import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.login.service.UserTrackerService;
 import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.login.view.TimeLineGroup;
 import j.jave.framework.components.login.view.TimelineView;
+import j.jave.framework.components.memory.ResourceCachedRefreshEvent;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.jsp.JSPAction;
+import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.json.JJSON;
-import j.jave.framework.model.JPage;
+import j.jave.framework.listener.JAPPEvent;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support.security.JAPPCipher;
 import j.jave.framework.utils.JDateUtils;
 import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -41,7 +46,9 @@ import org.springframework.stereotype.Controller;
 @Controller(value="login.loginaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class LoginJSPAction extends JSPAction {
-	
+
+	private static final long serialVersionUID = 4299587930782979586L;
+
 	private User user;
 	
 	private UserSearchCriteria userSearchCriteria;
@@ -55,7 +62,7 @@ public class LoginJSPAction extends JSPAction {
 	private UserService userService;
 	
 	private MemcachedService jMemcachedDistService=
-			new ServiceHubDelegate().getService(this,MemcachedService.class);
+			ServiceHubDelegate.get().getService(this,MemcachedService.class);
 	
 	@Autowired
 	private UserTrackerService userTrackerService;
@@ -64,7 +71,13 @@ public class LoginJSPAction extends JSPAction {
 	private RoleService roleService;
 	
 	@Autowired
+	private GroupService groupService;
+	
+	@Autowired
 	private UserRoleService userRoleService;
+	
+	@Autowired
+	private UserGroupService userGroupService;
 	
 	/**
 	 * the unique entrance to APP. 
@@ -108,7 +121,7 @@ public class LoginJSPAction extends JSPAction {
 		setAttribute("timelineGroups", timeLineGroups);
 	}
 
-	private void logTracker() throws ServiceException {
+	private void logTracker() throws JServiceException {
 		UserTracker userTracker=new UserTracker();
 		User sessionUser=getSessionUser();
 		userTracker.setUserId(sessionUser.getId());
@@ -213,9 +226,10 @@ public class LoginJSPAction extends JSPAction {
 	
 	
 	public String deleteUser(){
-		userService.delete(getServiceContext(), getParameter("id")); 
-		setSuccessMessage(DELETE_SUCCESS);
-		return getUsersWithsCondition();
+//		userService.delete(getServiceContext(), getParameter("id")); 
+//		setSuccessMessage(DELETE_SUCCESS);
+//		return getUsersWithsCondition();
+		throw new JOperationNotSupportedException("User Delete Not Supported!");
 	}
 	
 	public String toViewUser() throws Exception {
@@ -252,62 +266,36 @@ public class LoginJSPAction extends JSPAction {
 	public String toUserAuthorized(){
 		List<Role> roles =roleService.getAllRoles(getServiceContext());
 		setAttribute("roles", roles);
+		
+		List<Group> groups =groupService.getAllGroups(getServiceContext());
+		setAttribute("groups", groups);
+//		return navigate("/login.loginaction/testtoUserAuthorized");
+//		return getTestPage("/WEB-INF/jsp/login/user-authorized.jsp");
 		return "/WEB-INF/jsp/login/user-authorized.jsp";
 	}
 	
 	
 	public String getAllUsers(){
 		
-		String sEcho=getParameter("sEcho");
-		int iDisplayStart=Integer.parseInt(getParameter("iDisplayStart"));
-		int iDisplayLength=Integer.parseInt(getParameter("iDisplayLength"));
-		
-		JPage page=new JPage();
-		page.setPageSize(iDisplayLength);
-		int pageNum=iDisplayStart/iDisplayLength;
-		page.setCurrentPageNum(pageNum+1);
-		
-		page.setSortColumn(getParameter("sortColumn"));
-		page.setSortType(getParameter("sortType"));
-		
+		ServiceHubDelegate.get().addDelayEvent(new ResourceCachedRefreshEvent(this, JAPPEvent.HIGEST));
+
+		JQueryDataTablePage page=parseJPage();
 		userSearchCriteria.setPage(page);
 		List<User> users=userService.getUsersByPage(getServiceContext(), userSearchCriteria);
-		Map<String, Object> pagination=new HashMap<String, Object>();
+		page.setAaData(users);
+		return JJSON.get().format(page); 
 		
-		pagination.put("iTotalRecords", page.getTotalRecordNum());
-		pagination.put("sEcho",sEcho); 
-		pagination.put("iTotalDisplayRecords", page.getTotalRecordNum());
-		pagination.put("aaData", users);
-		
-		return JJSON.get().format(pagination); 
 	}
 	
 	
 	
 	public String getAllRoles(){
 		
-		String sEcho=getParameter("sEcho");
-		int iDisplayStart=Integer.parseInt(getParameter("iDisplayStart"));
-		int iDisplayLength=Integer.parseInt(getParameter("iDisplayLength"));
-		
-		JPage page=new JPage();
-		page.setPageSize(iDisplayLength);
-		int pageNum=iDisplayStart/iDisplayLength;
-		page.setCurrentPageNum(pageNum+1);
-		
-		page.setSortColumn(getParameter("sortColumn"));
-		page.setSortType(getParameter("sortType"));
-		
+		JQueryDataTablePage page=parseJPage();
 		roleSearchCriteria.setPage(page);
 		List<Role> roles=roleService.getRoleByRoleNameByPage(getServiceContext(), roleSearchCriteria);
-		Map<String, Object> pagination=new HashMap<String, Object>();
-		
-		pagination.put("iTotalRecords", page.getTotalRecordNum());
-		pagination.put("sEcho",sEcho); 
-		pagination.put("iTotalDisplayRecords", page.getTotalRecordNum());
-		pagination.put("aaData", roles);
-		
-		return JJSON.get().format(pagination); 
+		page.setAaData(roles);
+		return JJSON.get().format(page); 
 	}
 	
 	
@@ -333,6 +321,30 @@ public class LoginJSPAction extends JSPAction {
 		userRoleService.unbingUserRole(getServiceContext(), userId, roleId);
 		List<UserRole> userRoles= userRoleService.getUserRolesByUserId(getServiceContext(), userId);
 		return JJSON.get().format(userRoles); 
+		
+	}
+	
+	public String getUserGroup(){
+		String userId=getParameter("userId");
+		List<UserGroup> userRoles= userGroupService.getUserGroupsByUserId(getServiceContext(), userId);
+		return JJSON.get().format(userRoles); 
+	}
+	
+	public String bingUserOnGroup() throws Exception{
+		String userId=getParameter("userId").trim();
+		String groupId=getParameter("groupId").trim();
+		userGroupService.bingUserGroup(getServiceContext(), userId, groupId);
+
+		List<UserGroup> userGroups= userGroupService.getUserGroupsByUserId(getServiceContext(), userId);
+		return JJSON.get().format(userGroups); 
+	}
+	
+	public String unbingUserOnGroup() throws Exception{
+		String userId=getParameter("userId").trim();
+		String groupId=getParameter("groupId").trim();
+		userGroupService.unbingUserGroup(getServiceContext(), userId, groupId);
+		List<UserGroup> userGroups= userGroupService.getUserGroupsByUserId(getServiceContext(), userId);
+		return JJSON.get().format(userGroups); 
 		
 	}
 	

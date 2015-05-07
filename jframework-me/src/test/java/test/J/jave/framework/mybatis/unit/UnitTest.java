@@ -30,7 +30,7 @@ public class UnitTest extends TestCase {
 	
 	public void testSaveUser(){
 		UserService userService= (UserService) applicationContext.getBean("userService");
-		Object obj=new ServiceHubDelegate().getService(this,MemcachedService.class);
+		Object obj=ServiceHubDelegate.get().getService(this,MemcachedService.class);
 				
 		String userName="N"+new Date().getTime();
 		String password="NEVER-AGAIN";
@@ -48,7 +48,7 @@ public class UnitTest extends TestCase {
 			Element element=new Element("pro", "j.jave.framework"+new Date().getTime());
 			cache.put(element);
 			
-			MemcachedService jMemcachedDist=new ServiceHubDelegate().getService(this,MemcachedService.class);
+			MemcachedService jMemcachedDist=ServiceHubDelegate.get().getService(this,MemcachedService.class);
 			
 			String key="abcd";
 			

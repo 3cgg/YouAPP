@@ -30,7 +30,7 @@ public abstract class JStringUtils {
 			}
 		} catch (IOException e) {
 			LOGGER.warn("", e);
-			throw new UtilException(e);
+			throw new JUtilException(e);
 		}
 	    return output.toByteArray();
 	}
@@ -73,7 +73,7 @@ public abstract class JStringUtils {
 			return new BASE64Decoder().decodeBuffer(string);
 		} catch (IOException e) {
 			LOGGER.warn("", e);
-			throw new UtilException(e);
+			throw new JUtilException(e);
 		}
 	}
 	

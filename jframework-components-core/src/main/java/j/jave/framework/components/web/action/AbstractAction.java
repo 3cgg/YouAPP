@@ -2,6 +2,8 @@ package j.jave.framework.components.web.action;
 
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.exception.JOperationNotSupportedException;
+import j.jave.framework.model.JPage;
 import j.jave.framework.utils.JStringUtils;
 
 /**
@@ -60,5 +62,15 @@ public abstract class AbstractAction implements Action {
 		}
 		setAttribute("successAlertMessage", message);
 	}
+	
+	/**
+	 * sub-class should implements the method.
+	 * @return
+	 */
+	protected JPage parseJPage(){
+		throw new JOperationNotSupportedException("Not supported,check if the sub-class implements the method.");
+	} 
+	
+	
 	
 }

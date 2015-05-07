@@ -1,22 +1,22 @@
 /**
  * 
  */
-package j.jave.framework.components.core.exception;
+package j.jave.framework.servicehub.exception;
 
 /**
  * any service provider can throw the exception to notify any exception occurs , 
  * that indicates the service is error.  
  * @author J
  */
-public class ServiceException extends Exception {
+public class JServiceException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public ServiceException(String message){
+	public JServiceException(String message){
 		super(message);
 	}
 	
-	public ServiceException(Exception e){
+	public JServiceException(Exception e){
 		super(e);
 	}
 	

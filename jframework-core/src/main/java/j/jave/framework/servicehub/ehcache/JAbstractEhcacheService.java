@@ -3,7 +3,7 @@
  */
 package j.jave.framework.servicehub.ehcache;
 
-import j.jave.framework.support.ObjectLoop;
+import j.jave.framework.support.JObjectLoop;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
@@ -18,10 +18,10 @@ public abstract class JAbstractEhcacheService implements JEhcacheService {
 
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
-	protected ObjectLoop<Integer, Ehcache> ehcaches=new ObjectLoop<Integer, Ehcache>();
+	protected JObjectLoop<Integer, Ehcache> ehcaches=new JObjectLoop<Integer, Ehcache>();
 
-	/* (non-Javadoc)
-	 * @see j.jave.framework.ehcache.JEhcacheService#put(java.lang.String, java.lang.Object)
+	/**
+	 * {@inheritDoc }
 	 */
 	@Override
 	public Object put(String key, Object object) {
@@ -31,6 +31,18 @@ public abstract class JAbstractEhcacheService implements JEhcacheService {
 		cache.put(element);
 		return pre;
 	}
+	
+	/**
+	 * {@inheritDoc }
+	 */
+	@Override
+	public Object remove(String key) {
+		Ehcache cache=getEhcache(key);
+		Object pre=cache.get(key);
+		cache.remove(key);
+		return pre;
+	}
+	
 	/**
 	 * delegate to the object {@link Ehcache}
 	 * @param key
@@ -40,8 +52,8 @@ public abstract class JAbstractEhcacheService implements JEhcacheService {
 		return ehcaches.get(key.hashCode());
 	}
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.ehcache.JEhcacheService#get(java.lang.String)
+	/**
+	 * {@inheritDoc }
 	 */
 	@Override
 	public Object get(String key) {

@@ -61,11 +61,41 @@ select a.* from GROUPS a
 </sql>
 
 
-<select id="getsByPage"  resultMap="group"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="group"  parameterType="j.jave.framework.model.JPagination">
     select * from GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
     </if>
 </select>
+
+
+<select id="getGroupByGroupCode"  resultMap="group"  parameterType="java.lang.String">
+	<include refid="selectfor"/>
+	where a.DELETED='N' and a.GROUPCODE=#{groupCode}
+</select>
+
+
+<select id="getGroupByGroupNameByPage"  resultMap="group"  parameterType="j.jave.framework.model.JPagination">
+	<include refid="selectfor"/>
+	where a.DELETED='N'
+	<if test="groupName !=null and groupName !=''">
+		and GROUPNAME like CONCAT('%',  #{groupName} ,'%')  
+	</if>
+</select>
+
+
+<select id="getAllGroups"  resultMap="group"  parameterType="java.lang.String">
+	<include refid="selectfor"/>
+	where a.DELETED='N' 
+</select>
+
+
+
+
+
+
+
+
+
 
 </mapper>

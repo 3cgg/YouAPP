@@ -62,8 +62,8 @@ public class JJSPLoginFilter implements Filter  {
 		}
 		
 		tempPath=filterConfig.getInitParameter("serviceLoginPath");
-		memcachedService=new ServiceHubDelegate().getService(this,MemcachedService.class);
-		loginAccessService=new ServiceHubDelegate().getService(this,LoginAccessService.class);
+		memcachedService=ServiceHubDelegate.get().getService(this,MemcachedService.class);
+		loginAccessService=ServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	}
 
 	@Override

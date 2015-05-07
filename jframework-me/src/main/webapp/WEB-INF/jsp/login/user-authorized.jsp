@@ -57,7 +57,7 @@
 	            
 	            <div class="col-md-12  youapp-box "  >
 	            <div class="col-md-12   "  >
-	            	<span id="userName"></span>
+	            	<span name="userName"></span>
 	            	<input  type="hidden"  id="userId"  />
 	            </div>
 		            <div class="col-md-5">
@@ -99,25 +99,48 @@
 		            </div>
 	            </div>
 	            
-	            <div class="col-md-12">
 	            
+	            <div class="col-md-12  youapp-box "  >
+	            <div class="col-md-12   "  >
+	            	<span name="userName"></span>
 	            </div>
-	            
-	            
-	            <!--  
-	            <div class="col-md-12">
-	            <div class="box box-solid">
-		            <div class="box-header with-border">
-							用户（用户名）组	            
+		            <div class="col-md-5">
+		            <div class="form-group">
+                      <label>用户所属组</label>
+                      <select id="userGroups"  class="form-control"  size="8"  onclick="onOff('groupDeleteIcon','groupAddIcon')">
+                      </select>
+                    </div>
 		            </div>
-		            <div class="box-body ">
-		            	
-		            	
+		            <div class="col-md-2" style=" text-align: center;  margin-top: 30px">
 		            
+			            <ul class="nav nav-list">
+			            <li  >
+			            <a id="groupDeleteIcon"   
+			            	href="javascript:void(0)" 
+	               			 onclick='removeUserGroup(this)'
+			            class="ion-close-circled" style="font-size: 32px;" >
+			            </a>	
+			            </li>
+			            <li  >
+			            <a  id="groupAddIcon" 
+			            	href="javascript:void(0)" 
+	               			 onclick='addUserGroup(this)'
+			            	class=" ion-arrow-left-a" style="font-size: 32px;" >
+			            </a>	
+			            </li>
+			            </ul>
+		            </div>
+		            <div class="col-md-5">
+		            <div class="form-group">
+                      <label>所有组</label>
+                      <select id="allGroups"  class="form-control"  size="8"  onclick="onOff('groupAddIcon','groupDeleteIcon')"  >
+                        <c:forEach items="${groups }" var="group">
+                        	<option label="${group.groupName }"   value=" ${group.id }"   >
+                        </c:forEach>
+                      </select>
+                    </div>
 		            </div>
 	            </div>
-	            </div>
-	             -->
 		        
 	            </div><!-- ./col -->
 	            
@@ -128,49 +151,65 @@
 	            
 	        </section>
 
+
 <script type="text/javascript">
 $(
-	function (){
-		
-		$('#tableinfo').youappDataTable({
-				id:"userinfo",
-				columns:[
-						{ "mData": "userName","sTitle":"用户名称","sortColumn":"USERNAME"}
-						,{ "mData": "createTime","sTitle":"注册时间","sortColumn":"CREATETIME"}
-				   ],
-				serverParams:function(){
-					return [
-							{ "name":"userSearchCriteria.userName","value":""}
-			                  ];
-				},
-			  	url:"/login.loginaction/getAllUsers",
-			  	isPopover:false,
-			  	pageSize:6,
-			  	youappfnCreatedRow:function( nRow, aData, iDataIndex ){
-			  		$(nRow).on("click",function (){
-			  			GET("/login.loginaction/getUserRole", "userId="+aData.id, 
-			  					function(json){
-			  						loadUserRoles(json);
-			  						$('#userName').text(aData.userName);
-			  						$('#userId').val(aData.id);
-			  						$('#roleDeleteIcon, #roleAddIcon').css("cursor","not-allowed").attr("disabled",true);
-			  						//$('#roleAddIcon').css("cursor","not-allowed").attr("disabled",true);
-			  					});
-			  			
-			  		}).addClass("youapp-hand");
-	            },
-		});
-		
-	}		
-		
-);
+		function (){
+			
+			$('#tableinfo').youappDataTable({
+					id:"userinfo",
+					columns:[
+							{ "mData": "userName","sTitle":"用户名称","sortColumn":"USERNAME"}
+							,{ "mData": "createTime","sTitle":"注册时间","sortColumn":"CREATETIME"}
+					   ],
+					serverParams:function(){
+						return [
+								{ "name":"userSearchCriteria.userName","value":""}
+				                  ];
+					},
+				  	url:"/login.loginaction/getAllUsers",
+				  	isPopover:false,
+				  	pageSize:6,
+				  	youappfnCreatedRow:function( nRow, aData, iDataIndex ){
+				  		$(nRow).on("click",function (){
+				  			
+				  			$('span[name="userName"]').text(aData.userName);
+	  						$('#userId').val(aData.id);
+				  			
+				  			GET("/login.loginaction/getUserRole", "userId="+aData.id, 
+				  					function(json){
+				  						loadUserRoles(json);
+				  						$('#roleDeleteIcon, #roleAddIcon').css("cursor","not-allowed").attr("disabled",true);
+				  						//$('#roleAddIcon').css("cursor","not-allowed").attr("disabled",true);
+				  					});
+				  			
+				  			GET("/login.loginaction/getUserGroup", "userId="+aData.id, 
+				  					function(json){
+				  						loadUserGroups(json);
+				  						$('#groupDeleteIcon, #groupAddIcon').css("cursor","not-allowed").attr("disabled",true);
+				  						//$('#roleAddIcon').css("cursor","not-allowed").attr("disabled",true);
+				  					});
+				  			
+				  			
+				  		}).addClass("youapp-hand");
+		            },
+			});
+			
+		}		
+			
+	);
 
 
-function onOff(onId, offId){
-	$('#'+onId).css("cursor","pointer").attr("disabled",false);
-	$('#'+offId).css("cursor","not-allowed").attr("disabled",true);
-}
+	function onOff(onId, offId){
+		$('#'+onId).css("cursor","pointer").attr("disabled",false);
+		$('#'+offId).css("cursor","not-allowed").attr("disabled",true);
+	}
 
+
+</script>
+
+<!--  Role below -->
+<script type="text/javascript">
 
 function loadUserRoles(userRoles){
 	
@@ -219,5 +258,58 @@ function removeUserRole(obj){
 
 
 </script>
+
+
+<!--  Goup below  -->
+
+<script type="text/javascript">
+
+function loadUserGroups(userGroups){
+	
+	var $userGroups=$('#userGroups');
+	var options="";
+	for(var i=0;i<userGroups.length;i++){
+		var userGroup=userGroups[i];
+		//user user-group primary key +"|"+group id
+		options=options+"<option value='"+userGroup.id+"|"+userGroup.groupId+"' label='"+userGroup.group.groupName+"' />"
+	}
+	$userGroups.html(options);
+}
+
+function addUserGroup(obj){
+	
+	if($(obj).attr('disabled')!==undefined &&$(obj).attr('disabled')=="disabled"){
+		return ;
+	}
+	var $allGroups=$('#allGroups');
+	var $userId=$('#userId');
+	if($allGroups.val()!=null&&$userId.val()!=null&&$userId.val()!=""){
+	GET("/login.loginaction/bingUserOnGroup", "groupId="+$allGroups.val()+"&userId="+$userId.val(), 
+				function(json){
+					loadUserGroups(json);
+				});
+	}
+}
+
+function removeUserGroup(obj){
+	if($(obj).attr('disabled')!==undefined &&$(obj).attr('disabled')=="disabled"){
+		return ;
+	}
+	var $userGroups=$('#userGroups');
+	
+	if($userGroups.val()!=null){
+		var $userId=$('#userId');
+		GET("/login.loginaction/unbingUserOnGroup", "groupId="+$userGroups.val().split("|")[1]+"&userId="+$userId.val(), 
+					function(json){
+						loadUserGroups(json);
+					});
+	}
+	
+}
+
+
+
+</script>
+
 
 </div>

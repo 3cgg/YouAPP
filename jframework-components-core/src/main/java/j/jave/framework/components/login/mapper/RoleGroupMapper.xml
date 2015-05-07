@@ -60,11 +60,35 @@ where a.id=#{param1}
 select a.* from ROLES_GROUPS a 
 </sql>
 
-<select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.framework.model.JPagination">
     select * from ROLES_GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
     </if>
 </select>
+
+
+<select id="countOnUserIdAndGroupId" resultType="int">
+    select count(1) from ROLES_GROUPS a  where a.DELETED='N' and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+</select>
+
+<select id="getUserGroupOnUserIdAndGroupId"  resultMap="roleGroup" >
+    select a.*  from ROLES_GROUPS a  where a.DELETED='N'  and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+</select>
+
+<select id="getRoleGroupsOnRoleIdOrGroupId"  resultMap="roleGroup" >
+    select a.*  from ROLES_GROUPS a  where a.DELETED='N'  
+    
+    <if test="roleId!=null  and roleId!=''">
+    	and  a.ROLEID=#{roleId} 
+    </if>
+    
+    <if test="groupId!=null  and groupId!=''">
+    	and a.GROUPID=#{groupId}
+    </if>
+    
+</select>
+
+
 
 </mapper>

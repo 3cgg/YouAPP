@@ -1,6 +1,5 @@
 package j.jave.framework.components.login.action.mobile;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.model.UserSearchCriteria;
@@ -13,6 +12,7 @@ import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.mobile.MobileAction;
 import j.jave.framework.components.web.mobile.MobileResult;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -34,12 +34,12 @@ public class LoginMobileAction extends MobileAction {
 	private UserService userService;
 	
 	private MemcachedService jMemcachedDistService=
-			new ServiceHubDelegate().getService(this,MemcachedService.class);
+			ServiceHubDelegate.get().getService(this,MemcachedService.class);
 	
 	@Autowired
 	private UserTrackerService userTrackerService;
 	
-	public MobileResult login() throws ServiceException{
+	public MobileResult login() throws JServiceException{
 		MobileResult mobileResult=new MobileResult();
 		String username=user.getUserName(); 
 		String password=user.getPassword();
@@ -65,7 +65,7 @@ public class LoginMobileAction extends MobileAction {
 		//setCookie("ticket", uniqueKey,-1); invalid for mobile app. 
 	}
 	
-	private void logTracker() throws ServiceException {
+	private void logTracker() throws JServiceException {
 		UserTracker userTracker=new UserTracker();
 		User sessionUser=getSessionUser();
 		userTracker.setUserId(sessionUser.getId());

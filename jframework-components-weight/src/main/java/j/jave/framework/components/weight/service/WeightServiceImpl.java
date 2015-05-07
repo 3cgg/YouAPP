@@ -1,6 +1,5 @@
 package j.jave.framework.components.weight.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.weight.mapper.WeightMapper;
@@ -8,6 +7,7 @@ import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.model.WeightSearchCriteria;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.utils.JStringUtils;
 
 import java.sql.Timestamp;
@@ -30,7 +30,7 @@ public class WeightServiceImpl  extends ServiceSupport<Weight>  implements Weigh
 	
 	@Override
 	public void saveWeight(ServiceContext context, Weight weight)
-			throws ServiceException {
+			throws JServiceException {
 		if(JStringUtils.isNullOrEmpty(weight.getUserName())){
 			// DEFAULT TO LOGIN USER
 			weight.setUserName(context.getUser().getUserName());
@@ -43,7 +43,7 @@ public class WeightServiceImpl  extends ServiceSupport<Weight>  implements Weigh
 
 	@Override
 	public void updateWeight(ServiceContext context, Weight weight)
-			throws ServiceException {
+			throws JServiceException {
 		updateOnly(context, weight);
 	}
 

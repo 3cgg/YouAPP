@@ -16,6 +16,11 @@
 <resultMap id="resource"  type="j.jave.framework.components.resource.model.Resource"  extends="jBaseModel" >
 <result column="URL" property="url"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_RESOURCEID" property="resourceExtend.resourceId"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_URL" property="resourceExtend.url"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_ACTION" property="resourceExtend.action"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_CACHED" property="resourceExtend.cached"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_DESCRIPTION" property="resourceExtend.description"  jdbcType="VARCHAR" />
 </resultMap>
 
 
@@ -23,10 +28,10 @@
 insert into RESOURCES
 (
 URL,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{URL},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{url},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
@@ -55,14 +60,27 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from RESOURCES a 
+select a.* 
+, b.RESOURCEID RESOURCES_EXTEND_RESOURCEID  
+,b.URL RESOURCES_EXTEND_URL
+,b.ACTION RESOURCES_EXTEND_ACTION
+,b.DESCRIPTION RESOURCES_EXTEND_DESCRIPTION 
+,b.CACHED RESOURCES_EXTEND_CACHED 
+from RESOURCES a
+left join RESOURCES_EXTEND b on a.ID=b.RESOURCEID
 </sql>
 
-<select id="getsByPage"  resultMap="resource"  parameterType="j.jave.framework.model.JBaseModel">
-    select * from RESOURCES  
-    <if test="page.sortColumn!=null ">
-    	order by ${page.sortColumn} ${page.sortType}    
-    </if>
+
+<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.framework.model.JPagination">
+select * from RESOURCES  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
+</select>
+
+<select id="getResources"   resultMap="resource"  >
+<include refid="selectfor"></include> 
+where a.DELETED='N' 
 </select>
 
 </mapper>

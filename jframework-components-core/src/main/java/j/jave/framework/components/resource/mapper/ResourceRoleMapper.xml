@@ -25,10 +25,10 @@
 insert into RESOURCES_ROLES
 (
 RESOURCEID,ROLEID,ENABLE,DESCRIPTION
-,CREATEID,ID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 )values(
-#{RESOURCEID},#{ROLEID},#{ENABLE},#{DESCRIPTION}
-,#{CREATEID},#{ID},#{UPDATEID},#{CREATETIME},#{UPDATETIME},#{DELETED},#{VERSION}
+#{resourceId},#{roleId},#{enable},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
 )
 </insert>
 
@@ -62,11 +62,12 @@ where a.id=#{param1}
 select a.* from RESOURCES_ROLES a 
 </sql>
 
-<select id="getsByPage"  resultMap="resourceRole"  parameterType="j.jave.framework.model.JBaseModel">
-    select * from RESOURCES_ROLES  
-    <if test="page.sortColumn!=null ">
-    	order by ${page.sortColumn} ${page.sortType}    
-    </if>
+
+<select id="getsByPage"   resultMap="resourceRole"  parameterType="j.jave.framework.model.JPagination">
+select * from RESOURCES_ROLES  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
 </select>
 
 </mapper>

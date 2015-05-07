@@ -4,7 +4,6 @@
 package j.jave.framework.components.web.servlet;
 
 import j.jave.framework.components.core.context.SpringContext;
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.view.SessionUser;
 import j.jave.framework.components.support.filedistribute.subhub.FileDisService;
@@ -17,6 +16,7 @@ import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.io.JFile;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.utils.JDateUtils;
 import j.jave.framework.utils.JStringUtils;
 
@@ -68,8 +68,8 @@ public abstract class JServiceServlet  extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		applicationContext=ContextLoaderListener.getCurrentWebApplicationContext();
 		SpringContext.get().setApplicationContext(ContextLoaderListener.getCurrentWebApplicationContext()); 
-		memcachedService=new ServiceHubDelegate().getService(this,MemcachedService.class);
-		fileDistService=new ServiceHubDelegate().getService(this,FileDisService.class);
+		memcachedService=ServiceHubDelegate.get().getService(this,MemcachedService.class);
+		fileDistService=ServiceHubDelegate.get().getService(this,FileDisService.class);
 		super.init(config);
 	}
 	
@@ -170,7 +170,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 			handlerNavigate(req, resp,httpContext, navigate);
 
 		}
-		catch(ServiceException e){
+		catch(JServiceException e){
 			handlerServiceExcepion(req, resp, httpContext, e);
 		}
 		catch(Exception e){
@@ -194,13 +194,13 @@ public abstract class JServiceServlet  extends HttpServlet {
 	
 	/**
 	 * how to handle service exception 
-	 * see {@link ServiceException}
+	 * see {@link JServiceException}
 	 * @param request
 	 * @param response
 	 * @param httpContext
 	 * @param exception
 	 */
-	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,ServiceException exception);
+	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,JServiceException exception);
 	
 	/**
 	 * how to handle exception . 

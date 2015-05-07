@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.login.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.UserTracker;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -26,18 +26,18 @@ public interface UserTrackerService extends Service<UserTracker>{
 	 * 
 	 * @param context 
 	 * @param userTracker
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void saveUserTracker(ServiceContext context, UserTracker userTracker) throws ServiceException;
+	public void saveUserTracker(ServiceContext context, UserTracker userTracker) throws JServiceException;
 	
 	
 	/**
 	 * 
 	 * @param context
 	 * @param userTracker
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void updateUserTracker(ServiceContext context, UserTracker userTracker) throws ServiceException;
+	public void updateUserTracker(ServiceContext context, UserTracker userTracker) throws JServiceException;
 	
 
 	

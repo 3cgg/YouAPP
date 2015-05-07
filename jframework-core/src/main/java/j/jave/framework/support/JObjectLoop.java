@@ -13,7 +13,7 @@ import java.util.Map;
  * Object loop style. link self.
  * @author J
  */
-public class ObjectLoop<M extends Comparable<M>,T> {
+public class JObjectLoop<M extends Comparable<M>,T> {
 
 	private HashMap<M, T> objects=new HashMap<M, T>();
 	

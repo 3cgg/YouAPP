@@ -3,11 +3,11 @@
  */
 package j.jave.framework.components.param.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.model.JPagination;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -20,18 +20,18 @@ public interface ParamService extends Service<Param> {
 	 * 
 	 * @param context 
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void saveParam(ServiceContext context, Param param) throws ServiceException;
+	public void saveParam(ServiceContext context, Param param) throws JServiceException;
 	
 	
 	/**
 	 * 
 	 * @param context
 	 * @param user
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void updateParam(ServiceContext context, Param param) throws ServiceException;
+	public void updateParam(ServiceContext context, Param param) throws JServiceException;
 	
 	/**
 	 * make the record not available

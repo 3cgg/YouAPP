@@ -1,8 +1,8 @@
-package j.jave.framework.support.sqlloader.dml;
+package j.jave.framework.support.sqlloader.ddl;
 
 import j.jave.framework.io.JClassRootPathResolver;
 import j.jave.framework.io.JFileResource;
-import j.jave.framework.support.sqlloader.PropertiesDBConfiguration;
+import j.jave.framework.support.sqlloader.JPropertiesDBConfiguration;
 import j.jave.framework.utils.JPropertiesUtils;
 import j.jave.framework.utils.JStringUtils;
 
@@ -13,12 +13,12 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PropertiesSQLDMLCreateFactory extends JAbstractSQLDMLCreateFactory implements PropertiesDBConfiguration{
+public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory implements JPropertiesDBConfiguration{
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(PropertiesSQLDMLCreateFactory.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(JPropertiesSQLDDLCreateFactory.class);
 	
 	@Override
-	public JSQLDMLCreate getObject() {
+	public JSQLDDLCreate getObject() {
 		try {
 			URI path=new JClassRootPathResolver("jramework-db.properties").resolver();
 			Properties properties= JPropertiesUtils.loadProperties(new JFileResource(new File(path)));
@@ -29,12 +29,12 @@ public class PropertiesSQLDMLCreateFactory extends JAbstractSQLDMLCreateFactory 
 			String ddlAuto=JPropertiesUtils.getKey(DDL_AOTU, properties);
 			
 			if(!AUTO.equals(ddlAuto)){
-				return new JEmptySQLDMLCreate(driver, url, userName, password);
+				return new JEmptySQLDDLCreate(driver, url, userName, password);
 			}
 			
 			if(driver!=null&&H2.equals(driver.trim())){
 				// h2
-				JH2DBSQLDMLCreate h2=new JH2DBSQLDMLCreate(driver, url, userName, password);
+				JH2DBSQLDDLCreate h2=new JH2DBSQLDDLCreate(driver, url, userName, password);
 				if(JStringUtils.isNotNullOrEmpty(jarName)){
 					h2.setJarName(jarName);
 				}

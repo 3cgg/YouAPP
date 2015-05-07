@@ -1,6 +1,5 @@
 package j.jave.framework.components.tablemanager.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.tablemanager.model.Cell;
@@ -15,6 +14,7 @@ import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.model.support.JTable;
 import j.jave.framework.mybatis.JMapper;
 import j.jave.framework.reflect.JClassUtils;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support._package.JDefaultPackageScan;
 
 import java.lang.reflect.Field;
@@ -293,7 +293,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 	
 	@Override
-	public void updateRecord(ServiceContext serviceContext, Record record) throws ServiceException {
+	public void updateRecord(ServiceContext serviceContext, Record record) throws JServiceException {
 		init();
 		
 		try {
@@ -303,7 +303,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			mapper.update( model);
 			
 		} catch (Exception e) {
-			throw new ServiceException(e);
+			throw new JServiceException(e);
 		}
 	}
 	

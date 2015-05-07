@@ -3,13 +3,13 @@
  */
 package j.jave.framework.components.param.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.param.mapper.ParamMapper;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	 */
 	@Override
 	public void saveParam(ServiceContext context, Param param)
-			throws ServiceException {
+			throws JServiceException {
 		saveOnly(context, param);
 	}
 
@@ -40,7 +40,7 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	 */
 	@Override
 	public void updateParam(ServiceContext context, Param param)
-			throws ServiceException {
+			throws JServiceException {
 		updateOnly(context, param);
 	}
 

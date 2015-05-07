@@ -143,7 +143,10 @@ function GET(url, parameter,fnSuccess,fnError) {
 	var customfnSuccess=fnSuccess;
 	fnSuccess=function proxyOnCallback(reponse){
 		var result = analyze(reponse);
-		if(result.type=="XML"){
+		if(result.type=="WHOLE-HTML"){
+			$(window.document).html(result.data);
+		}
+		else if(result.type=="XML"){
 			renderXML(result.data);
 		}
 		else{
@@ -215,7 +218,7 @@ function httpRELOAD(url, parameter){
 }
 
 function Result(){
-	this.type; // JSON, XML 
+	this.type; // JSON, XML or WHOLE-HTML
 	this.data;
 }
 
@@ -229,6 +232,14 @@ function analyze(html) {
 	}catch(e){
 		;
 	}
+	
+	if(isWholeHTML(html)){
+		result.type="WHOLE-HTML";
+		result.data=html;
+		return result;
+	}
+	
+	
 	var s = html;
 	var render = new Array(2);
 	var targetDiv = '';
@@ -274,11 +285,32 @@ function analyze(html) {
 	return result;
 }
 
+function isWholeHTML(html){
+	return /<html[ ]*>/gi.test(html) 
+				&& (/<\/html[ ]*>/gi.test(html))
+				&& (/<\/html[ ]*>/gi.test(html))
+				&& (/<body.*\s*>$/gim.test(html)) 
+				&& (/<\/body[ ]*>/gi.test(html));
+}
+
+
+
 String.prototype.trim=function (){
 	return $.trim(this);
 }
 
 String.prototype.lastChar=function(){
 	return this.substring(this.length-1);
+}
+
+String.prototype.trimStartWith=function(chr){
+	var matches=false;
+	var temp=this.trim();
+	if(temp.length>0){
+		if(temp.charAt(0)==chr){
+			matches=true;
+		}
+	}
+	return matches;
 }
 

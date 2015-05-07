@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.core.service;
 
-import j.jave.framework.components.core.exception.ConcurrentException;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.exception.JConcurrentException;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.framework.mybatis.JMapper;
@@ -67,12 +67,12 @@ public abstract class AbstractBaseService {
 		
 		JBaseModel dbModel=get(jMapper, jBaseModel.getId());
 		if(dbModel.getVersion()!=jBaseModel.getVersion()){
-			throw new ConcurrentException("version chaged , db verion is "+dbModel.getVersion()
+			throw new JConcurrentException("version chaged , db verion is "+dbModel.getVersion()
 					+" , but current version is  "+jBaseModel.getVersion());
 		}
 		jBaseModel.setVersion(jBaseModel.getVersion()+1);
 		int affect=jMapper.update(jBaseModel);
-		if(affect==0) throw new ConcurrentException(
+		if(affect==0) throw new JConcurrentException(
 				"record conflict on "+jBaseModel.getId()+" of "+jBaseModel.getClass().getName());
 		System.out.println(affect);
 	}

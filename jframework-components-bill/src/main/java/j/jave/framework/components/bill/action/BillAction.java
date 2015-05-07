@@ -3,11 +3,11 @@ package j.jave.framework.components.bill.action;
 import j.jave.framework.components.bill.model.Bill;
 import j.jave.framework.components.bill.model.BillSearchCriteria;
 import j.jave.framework.components.bill.service.BillService;
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.param.service.ParamService;
 import j.jave.framework.components.views.chart.SimpleBarChart;
 import j.jave.framework.components.web.jsp.JSPAction;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.utils.JDateUtils;
 
 import java.sql.Timestamp;
@@ -113,7 +113,7 @@ public class BillAction extends JSPAction {
 		setAttribute("userNameCodes", userNameCodes);
 	}
 	
-	public String editBill() throws ServiceException{
+	public String editBill() throws JServiceException{
 		Bill dbBill=billService.getBillById(getServiceContext(), bill.getId());
 		dbBill.setMoney(bill.getMoney());
 		dbBill.setGoodName(bill.getGoodName());
@@ -133,7 +133,7 @@ public class BillAction extends JSPAction {
 		
 	}
 	
-	public String toViewChart () throws ServiceException{
+	public String toViewChart () throws JServiceException{
 		
 		if(billSearchCriteria==null){
 			billSearchCriteria=new BillSearchCriteria();

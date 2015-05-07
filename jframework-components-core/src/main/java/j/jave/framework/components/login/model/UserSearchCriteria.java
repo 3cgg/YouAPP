@@ -8,12 +8,13 @@ import j.jave.framework.model.JPage;
 import j.jave.framework.model.JPagination;
 
 /**
- * @author Administrator
- *
+ * @author J
  */
 public class UserSearchCriteria extends User implements SearchCriteria , JPagination{
 
-	private JPage page;
+	private static final long serialVersionUID = 6216852161796720737L;
+
+	private JPage page=new JPage();
 	
 	@Override
 	public void setPage(JPage page) {

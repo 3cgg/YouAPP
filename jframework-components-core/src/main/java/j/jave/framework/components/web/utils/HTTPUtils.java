@@ -64,8 +64,18 @@ public class HTTPUtils {
 		return ticket;
 	}
 	
+	/**
+	 * check whether the request is a resource , i.e.  JS , CSS or image.
+	 * @param request
+	 * @return
+	 */
+	public static boolean isResource(HttpServletRequest request){
+		return false;
+	}
 	
-	
+	public static String getPathInfo(HttpServletRequest request){
+		return request.getPathInfo();
+	}
 	
 	
 	

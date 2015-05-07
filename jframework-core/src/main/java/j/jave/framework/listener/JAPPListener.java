@@ -3,7 +3,7 @@ package j.jave.framework.listener;
 import java.util.EventListener;
 
 /**
- * template for all listener. 
+ * basic listener which all listeners should extend, provides the boundary to other system.
  * @author J
  * @param <T> implementations {@link JAPPEvent}
  */

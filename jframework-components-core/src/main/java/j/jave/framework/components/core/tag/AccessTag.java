@@ -26,7 +26,7 @@ public class AccessTag implements Tag{
 	 private String resource;
 	
 	 private LoginAccessService loginAccessService=
-			 new ServiceHubDelegate().getService(this,LoginAccessService.class);
+			 ServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	 
 	public String getResource() {
 		return resource;

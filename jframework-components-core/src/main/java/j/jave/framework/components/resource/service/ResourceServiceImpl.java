@@ -1,5 +1,7 @@
 package j.jave.framework.components.resource.service;
 
+import java.util.List;
+
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.resource.mapper.ResourceMapper;
 import j.jave.framework.components.resource.model.Resource;
@@ -19,6 +21,9 @@ public class ResourceServiceImpl extends ServiceSupport<Resource> implements Res
 		return this.resourceMapper;
 	}
 	
-	
+	@Override
+	public List<Resource> getResources() {
+		return resourceMapper.getResources();
+	}
 	
 }

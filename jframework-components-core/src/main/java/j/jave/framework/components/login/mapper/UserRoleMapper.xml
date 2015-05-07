@@ -68,7 +68,7 @@ LEFT JOIN USERS b on a.USERID=b.ID
 LEFT JOIN ROLES c on a. ROLEID=c.ID
 </sql>
 
-<select id="getsByPage"  resultMap="userRole"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="userRole"  parameterType="j.jave.framework.model.JPagination">
     select * from USERS_ROLES 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

@@ -49,13 +49,13 @@ public abstract class JJARUtils {
 			}
 			return classes;
 		} catch (IOException e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}finally{
 			if(file!=null){
 				try {
 					file.close();
 				} catch (IOException e) {
-					throw new UtilException(e); 
+					throw new JUtilException(e); 
 				}
 			}
 		}

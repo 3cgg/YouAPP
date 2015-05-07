@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.mobile;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.servlet.JServiceServlet;
 import j.jave.framework.json.JJSON;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +34,7 @@ public class JMobileServiceServlet  extends JServiceServlet {
 	@Override
 	protected void handlerServiceExcepion(HttpServletRequest request,
 			HttpServletResponse response, HTTPContext httpContext,
-			ServiceException exception) {
+			JServiceException exception) {
 		try{
 			MobileResult mobileResult=new MobileResult();
 			mobileResult.setStatus("0");
@@ -56,8 +56,8 @@ public class JMobileServiceServlet  extends JServiceServlet {
 				exp=exp.getCause();
 			}
 			
-			if(ServiceException.class.isInstance(exp)){
-				handlerServiceExcepion(request, response, httpContext, (ServiceException) exp);
+			if(JServiceException.class.isInstance(exp)){
+				handlerServiceExcepion(request, response, httpContext, (JServiceException) exp);
 			}
 			else{
 				MobileResult mobileResult=new MobileResult();

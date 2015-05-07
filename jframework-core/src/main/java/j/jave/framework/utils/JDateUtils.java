@@ -127,7 +127,7 @@ public abstract class JDateUtils {
 		try {
 			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
 		} catch (ParseException e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	
@@ -141,7 +141,7 @@ public abstract class JDateUtils {
 		try {
 			return new Timestamp(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime());
 		} catch (ParseException e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	
@@ -156,7 +156,7 @@ public abstract class JDateUtils {
 		try {
 			return new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date).getTime());
 		} catch (ParseException e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	

@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.jsp;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.servlet.JServiceServlet;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -44,7 +44,7 @@ public class JJSPServiceServlet  extends JServiceServlet {
 	@Override
 	protected void handlerServiceExcepion(HttpServletRequest request,
 			HttpServletResponse response, HTTPContext httpContext,
-			ServiceException exception) {
+			JServiceException exception) {
 		try{
 			request.setAttribute("message", exception.getMessage());
 			request.getRequestDispatcher("/WEB-INF/jsp/warning.jsp").forward(request, response); 
@@ -66,13 +66,13 @@ public class JJSPServiceServlet  extends JServiceServlet {
 				exp=exp.getCause();
 			}
 			
-			if(!ServiceException.class.isInstance(exp)){
+			if(!JServiceException.class.isInstance(exp)){
 				LOGGER.error(exception.getMessage(), exception); 
 			}
 			
 			request.setAttribute("message", exp.getMessage());
 			String expectJsp="/WEB-INF/jsp/error.jsp";
-			if(ServiceException.class.isInstance(exp)){
+			if(JServiceException.class.isInstance(exp)){
 				expectJsp="/WEB-INF/jsp/warning.jsp";
 			}
 			request.getRequestDispatcher(expectJsp).forward(request, response); 

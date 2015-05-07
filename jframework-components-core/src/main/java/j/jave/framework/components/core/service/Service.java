@@ -1,7 +1,7 @@
 package j.jave.framework.components.core.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.model.JPagination;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -17,17 +17,17 @@ public interface Service<T> {
 	 * insert record . not include other business. 
 	 * @param context
 	 * @param object
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void saveOnly(ServiceContext context, T object) throws ServiceException;
+	public void saveOnly(ServiceContext context, T object) throws JServiceException;
 	
 	/**
 	 * update record . not include other business. 
 	 * @param context
 	 * @param object
-	 * @throws ServiceException
+	 * @throws JServiceException
 	 */
-	public void updateOnly(ServiceContext context, T object) throws ServiceException;
+	public void updateOnly(ServiceContext context, T object) throws JServiceException;
 
 	/**
 	 * make the record not available

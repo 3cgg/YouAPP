@@ -27,7 +27,7 @@ public abstract class JNumberUtils {
 			double afterValue=Double.valueOf(String.valueOf(after));
 			return beforeValue>=afterValue;
 		}catch (Exception e) {
-			throw new UtilException(e);
+			throw new JUtilException(e);
 		}
 	}
 	
@@ -50,7 +50,7 @@ public abstract class JNumberUtils {
 			double afterValue=Double.valueOf(String.valueOf(after));
 			return beforeValue<=afterValue;
 		}catch (Exception e) {
-			throw new UtilException(e);
+			throw new JUtilException(e);
 		}
 	}
 	

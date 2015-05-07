@@ -1,12 +1,12 @@
 package j.jave.framework.components.tablemanager.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.tablemanager.model.Column;
 import j.jave.framework.components.tablemanager.model.Record;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.model.JBaseModel;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -67,7 +67,7 @@ public interface TableManagerService {
 	 * @param serviceContext
 	 * @param record
 	 */
-	public void updateRecord(ServiceContext serviceContext,Record record) throws ServiceException;
+	public void updateRecord(ServiceContext serviceContext,Record record) throws JServiceException;
 	
 	
 	

@@ -21,6 +21,18 @@ public class Resource extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 
+	
+	private ResourceExtend resourceExtend=new ResourceExtend();
+
+	public ResourceExtend getResourceExtend() {
+		return resourceExtend;
+	}
+
+
+	public void setResourceExtend(ResourceExtend resourceExtend) {
+		this.resourceExtend = resourceExtend;
+	}
+
 
 	public String getUrl() {
 		return url;

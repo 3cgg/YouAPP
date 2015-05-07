@@ -5,10 +5,8 @@ package j.jave.framework.components.login.subhub;
 
 import j.jave.framework.components.authorize.resource.model.ResourceAuthorized;
 import j.jave.framework.components.authorize.resource.service.ResourceAuthorizedService;
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
-import j.jave.framework.components.login.ehcache.ResourceIO;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
@@ -17,6 +15,8 @@ import j.jave.framework.components.resource.service.ResourceGroupService;
 import j.jave.framework.components.resource.service.ResourceRoleService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
+import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support.security.JAPPCipher;
 import j.jave.framework.utils.JStringUtils;
 import j.jave.framework.utils.JUniqueUtils;
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="loginAccessService")
-public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,EhcacheServiceSupport{
+public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemoryCacheIO ,EhcacheServiceSupport{
 
 	private static final String RESOURCE_AUTHORIZED_KEY="j.jave.framework.components.login.ehcache.user.resource.authorized";
 	
@@ -66,13 +66,13 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	 */
 	@Override
 	public String validate(String name, String password)
-			throws ServiceException {
+			throws JServiceException {
 		if(JStringUtils.isNullOrEmpty(name)){
-			throw new ServiceException("用户名不能为空");
+			throw new JServiceException("用户名不能为空");
 		}
 		
 		if(JStringUtils.isNullOrEmpty(password)){
-			throw new ServiceException("密码不能为空");
+			throw new JServiceException("密码不能为空");
 		}
 		String encryptPassword=JAPPCipher.get().encrypt(password.trim());
 		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
@@ -82,7 +82,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	
 	
 	@Override
-	public boolean isNeedLoginRole(String url) throws ServiceException {
+	public boolean isNeedLoginRole(String url) throws JServiceException {
 		if("/login.loginaction/toRegister".equals(url)){
 			return false;
 		}
@@ -102,23 +102,23 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	 * @see j.jave.framework.components.login.LoginAccessService#register(j.jave.framework.components.login.model.User)
 	 */
 	@Override
-	public void register(ServiceContext context,User user) throws ServiceException {
+	public void register(ServiceContext context,User user) throws JServiceException {
 		
 		if(JStringUtils.isNullOrEmpty(user.getUserName())){
-			throw new ServiceException("用户名不能为空");
+			throw new JServiceException("用户名不能为空");
 		}
 		
 		if(JStringUtils.isNullOrEmpty(user.getPassword())){
-			throw new ServiceException("密码不能为空");
+			throw new JServiceException("密码不能为空");
 		}		
 		
 		if(!user.getPassword().equals(user.getRetypePassword())){
-			throw new ServiceException("两次输入的密码不一样");
+			throw new JServiceException("两次输入的密码不一样");
 		}
 		
 		User dbUser=userService.getUserByName(context, user.getUserName().trim());
 		if(dbUser!=null){
-			throw new ServiceException("用户已经存在");
+			throw new JServiceException("用户已经存在");
 		}
 		
 		String passwrod=user.getPassword().trim();
@@ -129,22 +129,16 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.LoginAccessService#login(java.lang.String, java.lang.String)
-	 */
 	@Override
-	public String login(String name, String password) throws ServiceException {
+	public String login(String name, String password) throws JServiceException {
 		String ticket=validate(name, password);
 		if(JStringUtils.isNullOrEmpty(ticket)){
-			throw new ServiceException("用户名或者密码不正确");
+			throw new JServiceException("用户名或者密码不正确");
 		}
 		return ticket;
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.LoginAccessService#authorize(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean authorizeOnUserName(String resource, String name) {
 		
@@ -156,9 +150,9 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	
 	@Override
 	public boolean authorizeOnUserId(String resource, String userId) {
-		Map<String, List<String>> resources=(Map<String, List<String>>) getEhcacheService().get(RESOURCE_AUTHORIZED_KEY);
+		Map<String, List<String>> resources=get();
 		if(resources==null){
-			resources=(Map<String, List<String>>) set();
+			resources= set();
 		}
 		List<String> urls= resources.get(userId);
 		if(urls==null||urls.isEmpty()||!urls.contains(resource)){
@@ -171,7 +165,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object set() {
+	public Map<String, List<String>> set() {
 		
 		Map<String, List<String>> resources=new HashMap<String, List<String>>();
 		List<User> users=userService.getUsers();
@@ -194,10 +188,16 @@ public class LoginAccessServiceImpl implements LoginAccessService ,ResourceIO ,E
 		return resources;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, List<String>> get() {
+		return (Map<String, List<String>>) getEhcacheService().get(RESOURCE_AUTHORIZED_KEY);
+	}
+	
 	@Override
 	public EhcacheService getEhcacheService() {
 		if(ehcacheService==null){
-			ehcacheService=new ServiceHubDelegate().getService(this, EhcacheService.class);
+			ehcacheService=ServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
 	}

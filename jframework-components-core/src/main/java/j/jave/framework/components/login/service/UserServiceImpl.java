@@ -3,13 +3,13 @@
  */
 package j.jave.framework.components.login.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	 * @see j.jave.framework.components.login.service.UserService#save(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
 	 */
 	@Override
-	public void saveUser(ServiceContext context, User user) throws ServiceException {
+	public void saveUser(ServiceContext context, User user) throws JServiceException {
 		saveOnly(context, user);
 	}
 	
@@ -48,7 +48,7 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	 */
 	@Override
 	public void updateUser(ServiceContext context, User user)
-			throws ServiceException {
+			throws JServiceException {
 		updateOnly(context, user);
 	}
 		

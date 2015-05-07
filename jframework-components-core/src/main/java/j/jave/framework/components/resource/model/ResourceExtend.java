@@ -27,10 +27,24 @@ public class ResourceExtend extends JBaseModel {
 	private String action;
 	
 	/**
+	 * cached the resource. 
+	 */
+	@JColumn(name="CACHED",type=JSQLType.VARCHAR,length=1)
+	private String cached;
+	
+	/**
 	 * description. 
 	 */
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
+	
+	public String getCached() {
+		return cached;
+	}
+
+	public void setCached(String cached) {
+		this.cached = cached;
+	}
 
 	public String getResourceId() {
 		return resourceId;

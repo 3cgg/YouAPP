@@ -62,7 +62,7 @@ public abstract class JFileUtils {
 			return new File(url.toURI());
 		} catch (URISyntaxException e) {
 			LOGGER.error(fileName+"not exists in  "+classPath, e);
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	
@@ -76,7 +76,7 @@ public abstract class JFileUtils {
 			return new File(pathResolver.resolver());
 		} catch (Exception e) {
 			LOGGER.error(pathResolver.getDescription()+"not exists ", e);
-			throw new UtilException(e);  
+			throw new JUtilException(e);  
 		}
 	}
 	
@@ -107,7 +107,7 @@ public abstract class JFileUtils {
 				}
 			}
 		} catch (Exception e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	
@@ -139,7 +139,7 @@ public abstract class JFileUtils {
 			}
 			return bos.toByteArray();
 		} catch (Exception e) {
-			throw new UtilException(e); 
+			throw new JUtilException(e); 
 		}
 	}
 	

@@ -1,11 +1,11 @@
 package j.jave.framework.components.login.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserTrackerMapper;
 import j.jave.framework.components.login.model.UserTracker;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -27,14 +27,14 @@ public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implemen
 
 	@Override
 	public void saveUserTracker(ServiceContext context, UserTracker userTracker)
-			throws ServiceException {
+			throws JServiceException {
 		userTracker.setLoginTime(new Timestamp(new Date().getTime()));
 		saveOnly(context, userTracker);
 	}
 
 	@Override
 	public void updateUserTracker(ServiceContext context,
-			UserTracker userTracker) throws ServiceException {
+			UserTracker userTracker) throws JServiceException {
 		updateOnly(context, userTracker);
 	}
 	

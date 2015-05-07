@@ -50,7 +50,7 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		getService();
-		new ServiceHubDelegate().register(this, registClass, this);
+		ServiceHubDelegate.get().register(this, registClass, this);
 		LOGGER.info("register service :["+registClass.getName()+"]");
 	}
 

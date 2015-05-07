@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class HTTPContext implements Serializable {
 
+	private static final long serialVersionUID = -3949287782520790723L;
+
 	private String ticket;
 
 	private User user;

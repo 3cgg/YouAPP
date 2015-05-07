@@ -3,7 +3,7 @@
  */
 package j.jave.framework.servicehub.memcached;
 
-import j.jave.framework.support.ObjectLoop;
+import j.jave.framework.support.JObjectLoop;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultMemcachedDisService.class);
 	
-	private ObjectLoop<Integer, JMemcached> store=new ObjectLoop<Integer, JMemcached>();
+	private JObjectLoop<Integer, JMemcached> store=new JObjectLoop<Integer, JMemcached>();
 
-	private ObjectLoop<Integer, JMemcached> backupStore=new ObjectLoop<Integer, JMemcached>();
+	private JObjectLoop<Integer, JMemcached> backupStore=new JObjectLoop<Integer, JMemcached>();
 	
 	private Object sync=new Object();
 	
@@ -57,7 +57,7 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 	 * @param store
 	 * @param storeAddes
 	 */
-	private void produce(ObjectLoop<Integer, JMemcached> store,Map<String, List<String>> storeAddes) {
+	private void produce(JObjectLoop<Integer, JMemcached> store,Map<String, List<String>> storeAddes) {
 		for (Iterator<Entry<String, List<String>>> iterator = storeAddes.entrySet().iterator(); iterator
 				.hasNext();) {
 			Entry<String, List<String>> entry = iterator.next();

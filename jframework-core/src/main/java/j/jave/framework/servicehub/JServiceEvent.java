@@ -9,7 +9,9 @@ import j.jave.framework.listener.JAPPEvent;
  * service event.
  * @author J
  */
-public class JServiceEvent extends JAPPEvent {
+public class JServiceEvent extends JAPPEvent<JServiceEvent> {
+
+	private static final long serialVersionUID = -5902817626685017563L;
 
 	enum TYPE{
 		GET,REGISTER

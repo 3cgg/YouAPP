@@ -443,5 +443,63 @@ public abstract class JClassUtils {
 	}
 	
 	
+	/**
+	 * get all interfaces extended by the class or super class. 
+	 * @param object on the parameter go through all extended interfaces.
+	 * @param superInterface Determines if the class or interface represented by this param {@code superInterface}
+	 * is either a superclass or superinterface of, the class or interface represented by the specified interfaces extended by the param {@code object}
+	 * @return  empty returned , if no any extended interfaces 
+	 */
+	public static List<Class<?>> getAllInterfaces(Object object,Class<?> superInterface){
+		return getAllInterfaces(object.getClass(), superInterface);
+	}
+	
+	/**
+	 * get all interfaces extended by the class or super class. 
+	 * @param clazz on the parameter go through all extended interfaces.
+	 * @param superInterface Determines if the class or interface represented by this param {@code superInterface}
+	 * is either a superclass or superinterface of, the class or interface represented by the specified interfaces extended by the param {@code clazz}
+	 * @return empty returned , if no any extended interfaces 
+	 */
+	public static List<Class<?>> getAllInterfaces(Class<?> clazz,Class<?> superInterface){
+		List<Class<?>> classes=new ArrayList<Class<?>>();
+		Class<?> superClass=clazz;
+		while(superClass!=null&&superClass!=Object.class){
+			Class<?>[] clazzes= superClass.getInterfaces();
+			if (clazzes.length>0) {
+				for(int i=0;i<clazzes.length;i++){
+					Class<?> interfaceClass=clazzes[i];
+					getAllInterfaces(interfaceClass, superInterface, classes); 
+				}
+			}
+			superClass=superClass.getSuperclass();
+		}
+		return classes;
+	}
+	
+	/**
+	 * call by {@link #getAllInterfaces(Object, Class)}
+	 * @param clazz  interface . note that not class.
+	 * @param superInterface
+	 * @param classes
+	 */
+	private static void getAllInterfaces(Class<?> clazz,Class<?> superInterface,List<Class<?>> classes){
+		if(clazz!=null){
+			if(superInterface!=null){
+				if(superInterface.isAssignableFrom(clazz)&&superInterface!=clazz){
+					classes.add(clazz);
+				}
+			}
+			else{
+				classes.add(clazz);
+			}
+			Class<?>[] clazzes= clazz.getInterfaces();
+			for(int i=0;i<clazzes.length;i++){
+				Class<?> cls=clazzes[i];
+				getAllInterfaces(cls, superInterface, classes);
+			}
+		}
+	}
+	
 	
 }

@@ -1,9 +1,9 @@
 package j.jave.framework.components.core.service;
 
-import j.jave.framework.components.core.exception.ServiceException;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public void saveOnly(ServiceContext context, T object)
-			throws ServiceException {
+			throws JServiceException {
 		proxyOnSave(getMapper(), context.getUser(), object);
 	}
 
@@ -32,7 +32,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public void updateOnly(ServiceContext context, T object)
-			throws ServiceException {
+			throws JServiceException {
 		proxyOnUpdate(getMapper(), context.getUser(), object);
 	}
 

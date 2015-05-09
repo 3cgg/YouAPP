@@ -1,6 +1,10 @@
 package j.jave.framework.components.support.memcached.subhub;
 
 import j.jave.framework.servicehub.memcached.JDefaultMemcachedDisService;
+import j.jave.framework.servicehub.memcached.JMemcachedDisAddEvent;
+import j.jave.framework.servicehub.memcached.JMemcachedDisDeleteEvent;
+import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
+import j.jave.framework.servicehub.memcached.JMemcachedDisSetEvent;
 
 import org.springframework.stereotype.Service;
 
@@ -15,8 +19,8 @@ public class DefaultMemcachedServiceImpl implements MemcachedService {
 	}
 	
 	@Override
-	public void set(String key, int expiry, Object value) {
-		defaultMemcachedDisService.set(key, expiry, value);
+	public Object set(String key, int expiry, Object value) {
+		return defaultMemcachedDisService.set(key, expiry, value);
 	}
 
 	@Override
@@ -32,5 +36,27 @@ public class DefaultMemcachedServiceImpl implements MemcachedService {
 	@Override
 	public void delete(String key) {
 		defaultMemcachedDisService.delete(key);
+	}
+	
+	@Override
+	public Object trigger(JMemcachedDisGetEvent event) {
+		return get(event.getKey());
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisSetEvent event) {
+		return set(event.getKey(), event.getExpiry(), event.getValue());
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisDeleteEvent event) {
+		delete(event.getKey());
+		return true;
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisAddEvent event) {
+		add(event.getKey(), event.getExpiry(), event.getValue());
+		return true;
 	}
 }

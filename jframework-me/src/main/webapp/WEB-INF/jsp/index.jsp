@@ -18,7 +18,7 @@
 	
 			<c:import url="sidebar.jsp"></c:import>
 			
-			<div class="content-wrapper">
+			<div class="content-wrapper" >
 				<c:import url="login/tracker.jsp"></c:import>
 			</div>
 			<c:import url="footer.jsp"></c:import>

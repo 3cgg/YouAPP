@@ -33,12 +33,27 @@
                 <span class="info-box-icon ion-android-settings"></span>
                 </a>
                 <div class="info-box-content">
-                  <span class="info-box-text">权限管理</span>
+                  <span class="info-box-text">用户权限管理</span>
                   <span class="info-box-number"></span>
                 </div><!-- /.info-box-content -->
               </div><!-- /.info-box -->
             </div><!-- /.col -->
             
+            
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="info-box">
+              <a 
+					href="javascript:void(0)" 
+					onclick='GET("/resource.resourceaction/toResourceManager")'
+              >
+                <span class="info-box-icon ion-android-settings bg-green"></span>
+                </a>
+                <div class="info-box-content">
+                  <span class="info-box-text">资源管理</span>
+                  <span class="info-box-number"></span>
+                </div><!-- /.info-box-content -->
+              </div><!-- /.info-box -->
+            </div><!-- /.col -->
             
           </div><!-- /.row -->         
 					

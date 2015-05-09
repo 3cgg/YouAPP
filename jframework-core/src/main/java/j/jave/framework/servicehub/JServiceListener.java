@@ -10,11 +10,10 @@ import j.jave.framework.servicehub.JServiceEvent.TYPE;
  * listener on the {@link JServiceEvent}.
  * @author J
  */
-public class JServiceListener implements JAPPListener<JServiceEvent> {
+public class JServiceListener implements JAPPListener {
 	
 	private JServiceHub serviceHub=JServiceHub.get();
 	
-	@Override
 	public Object trigger(JServiceEvent event) {
 		Object obj=null;
 		if(TYPE.REGISTER==event.getType()){

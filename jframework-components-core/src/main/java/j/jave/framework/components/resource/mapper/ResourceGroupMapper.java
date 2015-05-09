@@ -7,6 +7,9 @@ import j.jave.framework.components.resource.model.ResourceGroup;
 import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,5 +20,11 @@ import org.springframework.stereotype.Component;
 @JModelMapper(component="ResourceGroupMapper",name=ResourceGroup.class)
 public interface ResourceGroupMapper extends JMapper<ResourceGroup> {
 
+	List<ResourceGroup> getResourceGroupsByResourceId(@Param(value="resourceId")String resourceId);
+	
+	int countOnResourceIdAndGroupId(@Param(value="resourceId")String resourceId,@Param(value="groupId")String groupId);
+	
+	ResourceGroup getResourceGroupOnResourceIdAndGroupId(@Param(value="resourceId")String resourceId,@Param(value="groupId")String groupId);
+	
 	
 }

@@ -48,12 +48,16 @@ public class JMemcached {
 	}
 	
 	
-	public void set(String key , int expiry, Object value){
+	public Object set(String key , int expiry, Object value){
+		
+		Object pre=memcachedClient.get(key);
 		memcachedClient.set(key, expiry, value);
+		return pre;
 	}
 	
 	public Object get(String key){
 		try{
+			
 			return memcachedClient.get(key);
 		}catch(OperationTimeoutException e){
 			return null;
@@ -61,6 +65,7 @@ public class JMemcached {
 	}
 
 	public void add(String key , int expiry, Object value){
+		
 		memcachedClient.add(key, expiry, value);
 	}
 	

@@ -35,10 +35,17 @@ public class ResourceDetect implements JResourceDetect<JMethodInfoProvider<Resou
 		@Override
 		public boolean filter(Method method, Class<?> classIncudeMethod) {
 			boolean isFilter=false;
-			// if static method.
-			isFilter=Modifier.isStatic(method.getModifiers())
-					||Modifier.isNative(method.getModifiers())
-					;
+			
+			// if represent by Controller.
+			Controller controller=method.getDeclaringClass().getAnnotation(Controller.class);
+			isFilter=controller==null;
+			
+			if(!isFilter){
+				// if static method.
+				isFilter=Modifier.isStatic(method.getModifiers())
+						||Modifier.isNative(method.getModifiers())
+						;
+			}
 			
 			return isFilter;
 		}

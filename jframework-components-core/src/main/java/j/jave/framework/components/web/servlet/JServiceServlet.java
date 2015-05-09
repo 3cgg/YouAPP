@@ -4,10 +4,7 @@
 package j.jave.framework.components.web.servlet;
 
 import j.jave.framework.components.core.context.SpringContext;
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.view.SessionUser;
-import j.jave.framework.components.support.filedistribute.subhub.FileDisService;
-import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.ViewConstants;
 import j.jave.framework.components.web.action.AbstractAction;
 import j.jave.framework.components.web.action.HTTPContext;
@@ -16,13 +13,17 @@ import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.io.JFile;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
+import j.jave.framework.servicehub.filedistribute.JFileDisStoreEvent;
+import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
 import j.jave.framework.utils.JDateUtils;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -56,9 +57,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 	
 	private static ApplicationContext applicationContext=null;
 	
-	private static MemcachedService memcachedService= null;
-	
-	private static FileDisService fileDistService=null;
+	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
 	public JServiceServlet() {
 		System.out.println("in  constructor DefaultJettyServlet() ");
@@ -68,8 +67,6 @@ public abstract class JServiceServlet  extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		applicationContext=ContextLoaderListener.getCurrentWebApplicationContext();
 		SpringContext.get().setApplicationContext(ContextLoaderListener.getCurrentWebApplicationContext()); 
-		memcachedService=ServiceHubDelegate.get().getService(this,MemcachedService.class);
-		fileDistService=ServiceHubDelegate.get().getService(this,FileDisService.class);
 		super.init(config);
 	}
 	
@@ -103,7 +100,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 			}
 			else{
 				// 从会话缓存中获取信息
-				HTTPContext context=(HTTPContext)memcachedService.get(uniqueName);
+				HTTPContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), HTTPContext.class);
 				if(context==null){
 					CookieUtils.deleteCookie(req, resp, CookieUtils.getCookie(req, ViewConstants.TICKET));
 					resp.sendRedirect(getAppUrlPath(req));
@@ -135,7 +132,7 @@ public abstract class JServiceServlet  extends HttpServlet {
 							JFile jFile=new JFile(file);
 							jFile.setFileContent(bytes);
 							
-							URL url=fileDistService.distribute(jFile).toURL();
+							URL url=serviceHubDelegate.addImmediateEvent(new JFileDisStoreEvent(this, jFile),URI.class).toURL();
 							parameters.put(fis.getFieldName(), url.toString());
 						}
 					}
@@ -165,15 +162,24 @@ public abstract class JServiceServlet  extends HttpServlet {
 			}
 			Object navigate=JReflect.invoke(object, methodName, new Object[]{});
 			if(LOGGER.isDebugEnabled()){
-				LOGGER.debug("time of processing request is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
+				try{
+					LOGGER.debug("time of processing request is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
+				}catch(Exception e){
+					LOGGER.error("error to get time.");
+				}
 			}
 			handlerNavigate(req, resp,httpContext, navigate);
 
+			if(LOGGER.isDebugEnabled()){
+				LOGGER.debug("the response is OK!");
+			}
 		}
 		catch(JServiceException e){
+			LOGGER.error(e.getMessage(),e);
 			handlerServiceExcepion(req, resp, httpContext, e);
 		}
 		catch(Exception e){
+			LOGGER.error(e.getMessage(),e);
 			handlerExcepion(req, resp,httpContext,  e);
 		}finally{
 			resp.setContentType("text/html;charset=UTF-8");

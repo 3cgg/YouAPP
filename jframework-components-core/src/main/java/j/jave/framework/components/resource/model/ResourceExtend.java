@@ -38,6 +38,16 @@ public class ResourceExtend extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 	
+	private Resource resource;
+	
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
+
 	public String getCached() {
 		return cached;
 	}

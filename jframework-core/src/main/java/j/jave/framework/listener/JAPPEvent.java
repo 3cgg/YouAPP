@@ -1,6 +1,5 @@
 package j.jave.framework.listener;
 
-import j.jave.framework.servicehub.JServiceEventProcessor;
 import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.EventObject;
@@ -8,7 +7,7 @@ import java.util.EventObject;
 /**
  * basic event object. 
  * when you want to know the event how to execute, what listener process or the result the event get, you can use unique.
- * the unique can be found how to be use in the {@link JServiceEventProcessor}
+ * the unique can be found how to be use in the <code>JServiceEventProcessor</code>
  * @author J
  */
 public class JAPPEvent<T extends JAPPEvent<T>> extends EventObject implements Comparable<T>{

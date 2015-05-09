@@ -26,7 +26,7 @@ public interface JMethodInfoProvider <T> extends JProvider{
 	}
 	
 	/**
-	 * get Method Info. ANY expected value from {@link JMethodInfo}
+	 * get Method Info. ANY expected value of {@link JMethodInfo}
 	 * @return
 	 */
 	public List<T> getMethodInfos() ;
@@ -34,7 +34,7 @@ public interface JMethodInfoProvider <T> extends JProvider{
 	/**
 	 * 
 	 * KEY : class type . 
-	 * VALUE : ANY expected value from {@link JMethodInfo}.
+	 * VALUE : ANY expected value of {@link JMethodInfo}.
 	 * @return
 	 */
 	public Map<Class<?>, List<T>> getClassMethodInfos() ;

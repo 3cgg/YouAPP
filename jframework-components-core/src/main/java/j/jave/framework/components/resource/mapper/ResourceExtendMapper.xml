@@ -72,4 +72,17 @@ order by ${page.sortColumn} ${page.sortType}
 </if>
 </select>
 
+
+
+<delete id="updateCached" >
+update RESOURCES_EXTEND set CACHED=#{cached} where ID=#{id}
+</delete>
+
+
+<select id="getResourceExtendOnResourceId"  resultMap="resourceExtend" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} 
+</select>
+
+
 </mapper>

@@ -1,10 +1,10 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.memory.MemoryCachedService;
 import j.jave.framework.components.memory.response.subhub.ResponseCachedResource;
 import j.jave.framework.components.memory.response.subhub.ResponseEncacheMemoryCacheService;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class MemoryHTMLFilter implements Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		requestResourceMemoryCacheService=ServiceHubDelegate.get().getService(this,ResponseEncacheMemoryCacheService.class);
+		requestResourceMemoryCacheService=JServiceHubDelegate.get().getService(this,ResponseEncacheMemoryCacheService.class);
 	}
 	
 		

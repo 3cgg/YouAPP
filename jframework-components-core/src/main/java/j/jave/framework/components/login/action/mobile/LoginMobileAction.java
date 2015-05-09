@@ -1,6 +1,5 @@
 package j.jave.framework.components.login.action.mobile;
 
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.model.UserSearchCriteria;
 import j.jave.framework.components.login.model.UserTracker;
@@ -12,6 +11,7 @@ import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.mobile.MobileAction;
 import j.jave.framework.components.web.mobile.MobileResult;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class LoginMobileAction extends MobileAction {
 	private UserService userService;
 	
 	private MemcachedService jMemcachedDistService=
-			ServiceHubDelegate.get().getService(this,MemcachedService.class);
+			JServiceHubDelegate.get().getService(this,MemcachedService.class);
 	
 	@Autowired
 	private UserTrackerService userTrackerService;

@@ -6,7 +6,6 @@ package j.jave.framework.components.login.subhub;
 import j.jave.framework.components.authorize.resource.model.ResourceAuthorized;
 import j.jave.framework.components.authorize.resource.service.ResourceAuthorizedService;
 import j.jave.framework.components.core.service.ServiceContext;
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
@@ -16,6 +15,7 @@ import j.jave.framework.components.resource.service.ResourceRoleService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support.security.JAPPCipher;
 import j.jave.framework.utils.JStringUtils;
@@ -197,7 +197,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemory
 	@Override
 	public EhcacheService getEhcacheService() {
 		if(ehcacheService==null){
-			ehcacheService=ServiceHubDelegate.get().getService(this, EhcacheService.class);
+			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
 	}

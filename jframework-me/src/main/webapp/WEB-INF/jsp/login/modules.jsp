@@ -94,8 +94,8 @@
               <!-- small box -->
               <div class="small-box bg-red">
                 <div class="inner">
-                 <h3 class="inner-head">权限</h3>
-                  <p class="inner-content">权限管理</p>
+                 <h3 class="inner-head">权资</h3>
+                  <p class="inner-content">权资管理</p>
                 </div>
                 <div class="icon">
                   <i class="ion  ion-android-settings"></i>

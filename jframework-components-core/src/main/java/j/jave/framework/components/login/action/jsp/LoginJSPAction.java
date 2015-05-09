@@ -2,7 +2,6 @@ package j.jave.framework.components.login.action.jsp;
 
 import j.jave.framework.components.core.model.JQueryDataTablePage;
 import j.jave.framework.components.core.service.ServiceContext;
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.components.login.model.RoleSearchCriteria;
@@ -27,6 +26,7 @@ import j.jave.framework.components.web.jsp.JSPAction;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.listener.JAPPEvent;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support.security.JAPPCipher;
 import j.jave.framework.utils.JDateUtils;
@@ -62,7 +62,7 @@ public class LoginJSPAction extends JSPAction {
 	private UserService userService;
 	
 	private MemcachedService jMemcachedDistService=
-			ServiceHubDelegate.get().getService(this,MemcachedService.class);
+			JServiceHubDelegate.get().getService(this,MemcachedService.class);
 	
 	@Autowired
 	private UserTrackerService userTrackerService;
@@ -277,7 +277,7 @@ public class LoginJSPAction extends JSPAction {
 	
 	public String getAllUsers(){
 		
-		ServiceHubDelegate.get().addDelayEvent(new ResourceCachedRefreshEvent(this, JAPPEvent.HIGEST));
+		JServiceHubDelegate.get().addDelayEvent(new ResourceCachedRefreshEvent(this, JAPPEvent.HIGEST));
 
 		JQueryDataTablePage page=parseJPage();
 		userSearchCriteria.setPage(page);

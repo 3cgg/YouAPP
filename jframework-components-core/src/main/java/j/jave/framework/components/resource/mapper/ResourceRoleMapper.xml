@@ -18,6 +18,9 @@
 <result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
 <result column="ENABLE" property="enable"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+
+<result column="ROLENAME" property="role.roleName"  jdbcType="VARCHAR" />
+<result column="URL" property="resource.url"  jdbcType="VARCHAR" />
 </resultMap>
 
 
@@ -59,7 +62,12 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from RESOURCES_ROLES a 
+select a.*,
+b.ROLENAME ROLENAME,
+c.URL URL
+from RESOURCES_ROLES a 
+left join ROLES b on a.ROLEID=b.ID
+left join RESOURCES c on a.RESOURCEID=c.ID
 </sql>
 
 
@@ -69,5 +77,35 @@ select * from RESOURCES_ROLES
 order by ${page.sortColumn} ${page.sortType}   
 </if>
 </select>
+
+
+
+<select id="getResourceRolesByResourceId"  resultMap="resourceRole"  parameterType="java.lang.String">
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    <if test="resourceId !=null  and resourceId !='' ">
+    	and a.RESOURCEID=#{resourceId}
+    </if>
+    
+</select>
+
+<select id="countOnResourceIdAndRoleId" resultType="int">
+    select count(1) from RESOURCES_ROLES a  where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
+</select>
+
+<select id="getResourceRoleOnResourceIdAndRoleId"  resultMap="resourceRole" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
+</select>
+
+
+
+
+
+
+
+
+
+
 
 </mapper>

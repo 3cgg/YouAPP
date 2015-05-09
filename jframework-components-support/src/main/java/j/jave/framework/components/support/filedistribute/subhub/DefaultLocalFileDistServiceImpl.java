@@ -4,8 +4,9 @@
 package j.jave.framework.components.support.filedistribute.subhub;
 
 import j.jave.framework.io.JFile;
-import j.jave.framework.servicehub.JServiceException;
+import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistService;
+import j.jave.framework.servicehub.filedistribute.JFileDisStoreEvent;
 
 import java.net.URI;
 
@@ -19,9 +20,6 @@ public class DefaultLocalFileDistServiceImpl implements FileDisService {
 
 	private JDefaultLocalFileDistService defaultLocalFileDistService;
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.filedistribute.JFileDisService#distribute(j.jave.framework.io.JFile)
-	 */
 	@Override
 	public URI distribute(JFile file) throws JServiceException {
 		return defaultLocalFileDistService.distribute(file);
@@ -34,4 +32,11 @@ public class DefaultLocalFileDistServiceImpl implements FileDisService {
 			JDefaultLocalFileDistService defaultLocalFileDistService) {
 		this.defaultLocalFileDistService = defaultLocalFileDistService;
 	}
+	
+	@Override
+	public Object trigger(JFileDisStoreEvent event) {
+		return defaultLocalFileDistService.trigger(event);
+	}
+	
+	
 }

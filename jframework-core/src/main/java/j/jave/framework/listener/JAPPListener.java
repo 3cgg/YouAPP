@@ -4,16 +4,13 @@ import java.util.EventListener;
 
 /**
  * basic listener which all listeners should extend, provides the boundary to other system.
+ * all sub-class should can be called on the below method
+ *<p><strong>public Object trigger(JAPPEvent event)</strong>;
+ *<p>
  * @author J
- * @param <T> implementations {@link JAPPEvent}
  */
-public interface JAPPListener<T> extends EventListener {
+public interface JAPPListener extends EventListener {
 
-	/**
-	 * return expected object if . 
-	 * @param event
-	 * @return
-	 */
-	public Object trigger(T event);
+
 	
 }

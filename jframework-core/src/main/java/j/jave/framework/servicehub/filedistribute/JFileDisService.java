@@ -5,7 +5,7 @@ package j.jave.framework.servicehub.filedistribute;
 
 import j.jave.framework.io.JFile;
 import j.jave.framework.servicehub.JService;
-import j.jave.framework.servicehub.JServiceException;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.net.URI;
 
@@ -13,7 +13,7 @@ import java.net.URI;
  * distribute the file to remote or local location. 
  * @author J
  */
-public interface JFileDisService extends JService{
+public interface JFileDisService extends JService , JFileDisStoreListener{
 
 	/**
 	 * return A URI target to the file. 

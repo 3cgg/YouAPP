@@ -6,7 +6,6 @@ package j.jave.framework.servicehub;
 import j.jave.framework.listener.JAPPEvent;
 import j.jave.framework.support.JPriorityBlockingQueue;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -14,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * event processor center. all event must be processes by this processor. 
  * @author J
  */
-public class JServiceEventProcessor {
+class JServiceEventProcessor {
 
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
@@ -52,8 +52,10 @@ public class JServiceEventProcessor {
 	/**
 	 * KEY: UNIQUE VALUE. it's the value of property <code>unique</code> of {@code JAPPEvent}
 	 * <p>VALUE:  the future task that delegate the event by multiple threads. 
+	 * <p>about the collection we can consider to store all data in the file system whose active time after executed by thread is long, 
+	 * void the OutOfMemory.. 
 	 */
-	private final static Map<String, FutureTask<Object>> eventFutureTasks=new ConcurrentHashMap<String, FutureTask<Object>>(256);
+	private final static ConcurrentHashMap<String, FutureTask<Object>> eventFutureTasks=new ConcurrentHashMap<String, FutureTask<Object>>(256);
 	
 	Runnable findListener=new Runnable() {
 		
@@ -88,15 +90,32 @@ public class JServiceEventProcessor {
 						
 					}
 				}
-			}catch(Exception e){
-				LOGGER.error("Event Main Thread occurs an exception by : ",e);
-				// resume the thread. 
+			}catch(InterruptedException e){
+				LOGGER.error("Interrupted by any thread: ",e);
+				LOGGER.info("Resume the thread. ");
+				// resume the task. 
 				daemon.execute(findListener);
+			}
+			catch(Exception e){
+				LOGGER.error("Event Main Thread occurs an exception by : ",e);
+				LOGGER.info("Resume the thread. ");
+				// resume the task. 
+				daemon.execute(findListener);
+			}
+			catch(Throwable e){
+				LOGGER.error("Event Main Thread occurs an exception by : ",e);
+				LOGGER.info("Resume the thread. ");
+				throw e;
 			}
 		}
 	};
 	
-	private ExecutorService daemon=Executors.newFixedThreadPool(1);
+	private ExecutorService daemon=Executors.newFixedThreadPool(1,new ThreadFactory() {
+		@Override
+		public Thread newThread(Runnable r) {
+			return new Thread(r, "Event Main Thread.");
+		}
+	});
 	{
 		daemon.execute(findListener);
 	}
@@ -119,7 +138,9 @@ public class JServiceEventProcessor {
 		}
 		
 		try {
-			return futureTask.get(wait, TimeUnit.SECONDS);
+			Object object= futureTask.get(wait, TimeUnit.SECONDS);
+			eventFutureTasks.remove(eventUnique);
+			return object;
 		} catch (InterruptedException e) {
 			throw new JEventExecutionException(e);
 		}
@@ -132,11 +153,20 @@ public class JServiceEventProcessor {
 	}
 	
 	/**
-	 * put the event in the event queue.
+	 * put the event in the event queue, can release the thread, i.e. asynchronous
 	 * @param event
 	 */
-	public void addEvent(JAPPEvent<?> event){
+	public void addDelayEvent(JAPPEvent<?> event){
 		eventQueue.offer(event);
+	}
+	
+	/**
+	 * execute the event immediately, need block the thread. i.e. synchronized.
+	 * @param event
+	 * @return Object[] , all listener returned. at least an empty object array if no listener found.
+	 */
+	public Object[] addImmediateEvent(JAPPEvent<?> event){
+		return serviceHub.executeEventOnListener(event);
 	}
 	
 }

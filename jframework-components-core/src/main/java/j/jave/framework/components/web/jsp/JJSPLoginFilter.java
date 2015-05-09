@@ -1,10 +1,10 @@
 package j.jave.framework.components.web.jsp;
 
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
@@ -62,8 +62,8 @@ public class JJSPLoginFilter implements Filter  {
 		}
 		
 		tempPath=filterConfig.getInitParameter("serviceLoginPath");
-		memcachedService=ServiceHubDelegate.get().getService(this,MemcachedService.class);
-		loginAccessService=ServiceHubDelegate.get().getService(this,LoginAccessService.class);
+		memcachedService=JServiceHubDelegate.get().getService(this,MemcachedService.class);
+		loginAccessService=JServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	}
 
 	@Override

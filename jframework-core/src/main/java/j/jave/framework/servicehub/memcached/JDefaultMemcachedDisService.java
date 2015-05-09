@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author J
  *
  */
-public class JDefaultMemcachedDisService implements JMemcachedDisService {
+public class JDefaultMemcachedDisService implements JMemcachedDisService{
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultMemcachedDisService.class);
 	
@@ -75,17 +75,17 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 		}
 	}
 	
-	public void set(String key , int expiry, Object value){
-		
+	public Object set(String key , int expiry, Object value){
+		Object object=null;
 		JMemcached jMemcached=null;
 		jMemcached = getStoreJMemcached(key);
 		if(jMemcached!=null)
-			jMemcached.set(key, expiry, value);
+			object=jMemcached.set(key, expiry, value);
 		
 		jMemcached = getBackupJMemcached(key);
 		if(jMemcached!=null)
 			jMemcached.set(key, expiry, value);
-		
+		return object;
 	}
 
 	
@@ -138,6 +138,28 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService {
 		jMemcached = getBackupJMemcached(key);
 		if(jMemcached!=null)
 		jMemcached.delete(key);
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisGetEvent event) {
+		return get(event.getKey());
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisSetEvent event) {
+		return set(event.getKey(), event.getExpiry(), event.getValue());
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisDeleteEvent event) {
+		delete(event.getKey());
+		return true;
+	}
+
+	@Override
+	public Object trigger(JMemcachedDisAddEvent event) {
+		add(event.getKey(), event.getExpiry(), event.getValue());
+		return true;
 	}
 
 	

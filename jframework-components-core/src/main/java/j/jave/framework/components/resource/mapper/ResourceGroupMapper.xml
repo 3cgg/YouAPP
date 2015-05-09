@@ -18,6 +18,11 @@
 <result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
 <result column="ENABLE" property="enable"  jdbcType="VARCHAR" />
+
+<result column="GROUPNAME" property="group.groupName"  jdbcType="VARCHAR" />
+<result column="GROUPCODE" property="group.groupCode"  jdbcType="VARCHAR" />
+<result column="URL" property="resource.url"  jdbcType="VARCHAR" />
+
 </resultMap>
 
 
@@ -59,7 +64,13 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from RESOURCES_GROUPS a 
+select a.* ,
+b.GROUPNAME GROUPNAME,
+b.GROUPCODE GROUPCODE,
+c.URL URL
+from RESOURCES_GROUPS a 
+left join GROUPS b on a.GROUPID=b.ID
+left join RESOURCES c on a.RESOURCEID=c.ID
 </sql>
 
 
@@ -69,5 +80,29 @@ select * from RESOURCES_GROUPS
 order by ${page.sortColumn} ${page.sortType}   
 </if>
 </select>
+
+
+
+<select id="getResourceGroupsByResourceId"  resultMap="resourceGroup"  parameterType="java.lang.String">
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    <if test="resourceId !=null  and resourceId !='' ">
+    	and a.RESOURCEID=#{resourceId}
+    </if>
+    
+</select>
+
+<select id="countOnResourceIdAndGroupId" resultType="int">
+    select count(1) from RESOURCES_GROUPS a  where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
+</select>
+
+<select id="getResourceGroupOnResourceIdAndGroupId"  resultMap="resourceGroup" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
+</select>
+
+
+
+
 
 </mapper>

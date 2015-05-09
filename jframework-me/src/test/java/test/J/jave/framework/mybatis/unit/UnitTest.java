@@ -1,10 +1,10 @@
 package test.J.jave.framework.mybatis.unit;
 
 import j.jave.framework.components.core.service.ServiceContext;
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ public class UnitTest extends TestCase {
 	
 	public void testSaveUser(){
 		UserService userService= (UserService) applicationContext.getBean("userService");
-		Object obj=ServiceHubDelegate.get().getService(this,MemcachedService.class);
+		Object obj=JServiceHubDelegate.get().getService(this,MemcachedService.class);
 				
 		String userName="N"+new Date().getTime();
 		String password="NEVER-AGAIN";
@@ -48,7 +48,7 @@ public class UnitTest extends TestCase {
 			Element element=new Element("pro", "j.jave.framework"+new Date().getTime());
 			cache.put(element);
 			
-			MemcachedService jMemcachedDist=ServiceHubDelegate.get().getService(this,MemcachedService.class);
+			MemcachedService jMemcachedDist=JServiceHubDelegate.get().getService(this,MemcachedService.class);
 			
 			String key="abcd";
 			

@@ -6,6 +6,7 @@ package j.jave.framework.servicehub;
 import j.jave.framework.listener.JAPPEvent;
 import j.jave.framework.listener.JAPPListener;
 import j.jave.framework.reflect.JClassUtils;
+import j.jave.framework.reflect.JReflect;
 import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
@@ -49,19 +50,11 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 	/**
 	 * find all listeners on the event, then trigger one by one
 	 * @param event
-	 * @return <code>Object[]</code> , all listener returned. 
+	 * @return <code>Object[]</code> , all listener returned. at least an empty object array if no listener found.
 	 */ 
 	public Object[] executeEventOnListener(JAPPEvent<?> event){
 		Object[] objects=new Object[]{};
 		try{
-			// inner event, that initializes listenerServices property.
-			if(JServiceListenerDetectEvent.class.isAssignableFrom(event.getClass())){
-				objects=new Object[1];
-				objects[0]=trigger((JServiceListenerDetectEvent) event);
-				return objects;
-			}
-			
-			
 			Class<?> eventClass=event.getClass();
 			JListenerOnEvent eventListener= eventClass.getAnnotation(JListenerOnEvent.class);
 			if(eventListener==null){
@@ -74,8 +67,8 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 				objects=new Object[serviceClasses.size()];
 				for(int i=0;i<serviceClasses.size();i++){
 					Class<?> serviceClass=serviceClasses.get(i);
-					JAPPListener<JAPPEvent<?>> listener=(JAPPListener<JAPPEvent<?>>) getService(serviceClass);
-					objects[i]=listener.trigger(event);
+					JAPPListener listener=(JAPPListener) getService(serviceClass);
+					objects[i]=JReflect.invoke(listener, "trigger", new Class<?>[]{event.getClass()},new Object[]{event});
 				}
 			}
 		}catch(Exception e){
@@ -93,7 +86,7 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 	public void register(Class<?> clazz,JServiceFactory<?> serviceFactory){
 		synchronized (sync) {
 			services.put(clazz, serviceFactory);
-			JServiceEventProcessor.get().addEvent(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
+			trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
 		}
 	}
 	

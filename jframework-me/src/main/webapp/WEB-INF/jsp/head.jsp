@@ -9,6 +9,9 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-switch.css">
+
 <!-- Optional theme -->
 <!--  may affect the css of alert-warning  -->
 <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-theme.min.css"> -->
@@ -25,6 +28,9 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/respond.min.js"></script>
+
+<!-- Bootstrap Switch JS -->
+<script src="${pageContext.request.contextPath}/js/bootstrap-switch.js"></script>
 
 <!-- AdminLTE App -->
 <script src="${pageContext.request.contextPath}/js/app.min.js" type="text/javascript"></script>

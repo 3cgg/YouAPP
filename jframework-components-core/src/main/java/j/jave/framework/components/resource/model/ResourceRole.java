@@ -1,5 +1,6 @@
 package j.jave.framework.components.resource.model;
 
+import j.jave.framework.components.login.model.Role;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JSQLType;
@@ -31,6 +32,26 @@ public class ResourceRole extends JBaseModel {
 	 */
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
+	
+	private Role role;
+	
+	private Resource resource;
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 
 	public String getResourceId() {
 		return resourceId;

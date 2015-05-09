@@ -1,5 +1,6 @@
 package j.jave.framework.components.resource.model;
 
+import j.jave.framework.components.login.model.Group;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JSQLType;
@@ -32,6 +33,27 @@ public class ResourceGroup extends JBaseModel {
 	@JColumn(name="ENABLE",type=JSQLType.VARCHAR,length=1)
 	private String enable;
 	
+	
+	private Resource resource;
+	
+	private Group group;
+	
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
 	public String getResourceId() {
 		return resourceId;
 	}

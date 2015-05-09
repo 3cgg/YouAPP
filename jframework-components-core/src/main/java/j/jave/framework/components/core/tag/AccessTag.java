@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.core.tag;
 
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -26,7 +26,7 @@ public class AccessTag implements Tag{
 	 private String resource;
 	
 	 private LoginAccessService loginAccessService=
-			 ServiceHubDelegate.get().getService(this,LoginAccessService.class);
+			 JServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	 
 	public String getResource() {
 		return resource;

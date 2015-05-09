@@ -51,5 +51,22 @@ public abstract class JReflect {
 		return targetMethod.invoke(object, parameters);
 	}
 	
+	
+	/**
+	 * invoke the method that whose method parameter type .
+	 * @param object
+	 * @param methodName
+	 * @param parameterTypes  the order is the same as @param parameters.
+	 * @param parameters
+	 * @return
+	 * @throws Exception
+	 */
+	public static Object invoke(Object object, String methodName,Class<?>[] parameterTypes,Object[] parameters) throws Exception {
+		Class<?> clazz=object.getClass();
+		Method targetMethod=clazz.getMethod(methodName, parameterTypes);
+		if(targetMethod==null) throw new RuntimeException("Method ["+methodName+"] not found.");			
+		return targetMethod.invoke(object, parameters);
+	}
+	
 
 }

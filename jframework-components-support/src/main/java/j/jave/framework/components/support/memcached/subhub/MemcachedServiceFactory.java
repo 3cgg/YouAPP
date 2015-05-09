@@ -23,14 +23,24 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 	@Autowired(required=false)
 	private DefaultMemcachedServiceConfiguration defaultMemcachedServiceConfiguration;
 	
+	private MemcachedService memcachedService;
+	
+	private Object sync=new Object();
+	
 	@Override
 	public MemcachedService getService() {
-		DefaultMemcachedServiceImpl memcachedService=  (DefaultMemcachedServiceImpl) getBeanByName("defaultMemcachedServiceImpl"); 
-		if(defaultMemcachedServiceConfiguration!=null){
-			JDefaultMemcachedDisService defaultMemcachedDisService=
-					new JDefaultMemcachedDisService(defaultMemcachedServiceConfiguration.getStoreAddes(),
-							defaultMemcachedServiceConfiguration.getBackupAddes());
-			memcachedService.setDefaultMemcachedDisService(defaultMemcachedDisService);
+		
+		if(memcachedService==null){
+			synchronized (sync) {
+				DefaultMemcachedServiceImpl memcachedService=  (DefaultMemcachedServiceImpl) getBeanByName("defaultMemcachedServiceImpl"); 
+				if(defaultMemcachedServiceConfiguration!=null){
+					JDefaultMemcachedDisService defaultMemcachedDisService=
+							new JDefaultMemcachedDisService(defaultMemcachedServiceConfiguration.getStoreAddes(),
+									defaultMemcachedServiceConfiguration.getBackupAddes());
+					memcachedService.setDefaultMemcachedDisService(defaultMemcachedDisService);
+				}
+				this.memcachedService=memcachedService;
+			}
 		}
 		return memcachedService;
 	}

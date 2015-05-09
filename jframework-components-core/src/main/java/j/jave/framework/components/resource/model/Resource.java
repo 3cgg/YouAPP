@@ -22,7 +22,7 @@ public class Resource extends JBaseModel {
 	private String description;
 
 	
-	private ResourceExtend resourceExtend=new ResourceExtend();
+	private ResourceExtend resourceExtend;
 
 	public ResourceExtend getResourceExtend() {
 		return resourceExtend;

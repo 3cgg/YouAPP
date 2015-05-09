@@ -3,6 +3,7 @@ package j.jave.framework.components.core.servicehub;
 import j.jave.framework.servicehub.JAbstractServiceFactory;
 import j.jave.framework.servicehub.JService;
 import j.jave.framework.servicehub.JServiceFactory;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		getService();
-		ServiceHubDelegate.get().register(this, registClass, this);
+		JServiceHubDelegate.get().register(this, registClass, this);
 		LOGGER.info("register service :["+registClass.getName()+"]");
 	}
 

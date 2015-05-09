@@ -9,7 +9,8 @@ import j.jave.framework.listener.JAPPListener;
  * @author J
  */
 @JEventOnListener(name=JServiceListenerDetectEvent.class)
-interface JServiceListenerDetectListener extends JAPPListener<JServiceListenerDetectEvent> {
+interface JServiceListenerDetectListener extends JAPPListener {
 	
-
+	public Object trigger(JServiceListenerDetectEvent event) ;
+	
 }

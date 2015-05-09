@@ -24,33 +24,44 @@ public class FileDisServiceFactory extends SpringServiceFactorySupport<FileDisSe
 	@Autowired(required=false)
 	private DefaultLocalFileDistServiceConfiguration defaultLocalFileDistServiceConfiguration;
 	
+	private FileDisService fileDisService;
+	
+	private Object sync=new Object();
+	
 	@Override
 	public FileDisService getService() {
-		DefaultLocalFileDistServiceImpl defaultLocalFileDistServiceImpl=  (DefaultLocalFileDistServiceImpl) getBeanByName("defaultLocalFileDistServiceImpl"); 
 		
-		if(defaultLocalFileDistServiceConfiguration==null){
-			defaultLocalFileDistServiceConfiguration=new DefaultLocalFileDistServiceConfiguration();
-			LOGGER.info("use default local fle distribute configuration."); 
+		if(fileDisService==null){
+			synchronized (sync) {
+				DefaultLocalFileDistServiceImpl defaultLocalFileDistServiceImpl=  (DefaultLocalFileDistServiceImpl) getBeanByName("defaultLocalFileDistServiceImpl"); 
+				
+				if(defaultLocalFileDistServiceConfiguration==null){
+					defaultLocalFileDistServiceConfiguration=new DefaultLocalFileDistServiceConfiguration();
+					LOGGER.info("use default local fle distribute configuration."); 
+				}
+				
+				JDefaultLocalFileDistService defaultLocalFileDistService=new JDefaultLocalFileDistService();
+				
+				// configure directory which file saves in 
+				if(JStringUtils.isNotNullOrEmpty(defaultLocalFileDistServiceConfiguration.getLocalDirectory())){
+					defaultLocalFileDistService.setLocalDirectory(defaultLocalFileDistServiceConfiguration.getLocalDirectory());
+				}
+				
+				// configure the strategy where to locate the file.
+				if(defaultLocalFileDistServiceConfiguration.getDefaultLocalFilePathStrategy()!=null){
+					defaultLocalFileDistService.setJDefaultLocalFilePathStrategy(defaultLocalFileDistServiceConfiguration.getDefaultLocalFilePathStrategy());
+				}
+				else{
+					defaultLocalFileDistService.setJDefaultLocalFilePathStrategy(new JDefaultLocalFilePathStrategy());
+				}
+				
+				defaultLocalFileDistServiceImpl.setDefaultLocalFileDistService(defaultLocalFileDistService);
+					
+				this.fileDisService= defaultLocalFileDistServiceImpl;
+			}
 		}
+		return fileDisService;
 		
-		JDefaultLocalFileDistService defaultLocalFileDistService=new JDefaultLocalFileDistService();
-		
-		// configure directory which file saves in 
-		if(JStringUtils.isNotNullOrEmpty(defaultLocalFileDistServiceConfiguration.getLocalDirectory())){
-			defaultLocalFileDistService.setLocalDirectory(defaultLocalFileDistServiceConfiguration.getLocalDirectory());
-		}
-		
-		// configure the strategy where to locate the file.
-		if(defaultLocalFileDistServiceConfiguration.getDefaultLocalFilePathStrategy()!=null){
-			defaultLocalFileDistService.setJDefaultLocalFilePathStrategy(defaultLocalFileDistServiceConfiguration.getDefaultLocalFilePathStrategy());
-		}
-		else{
-			defaultLocalFileDistService.setJDefaultLocalFilePathStrategy(new JDefaultLocalFilePathStrategy());
-		}
-		
-		defaultLocalFileDistServiceImpl.setDefaultLocalFileDistService(defaultLocalFileDistService);
-			
-		return defaultLocalFileDistServiceImpl;
 	}
 	
 	@Override

@@ -3,14 +3,15 @@
  */
 package j.jave.framework.components.memory.response.subhub;
 
-import j.jave.framework.components.core.servicehub.ServiceHubDelegate;
 import j.jave.framework.components.memory.ResourceCachedRefreshEvent;
 import j.jave.framework.components.resource.model.Resource;
+import j.jave.framework.components.resource.model.ResourceExtend;
 import j.jave.framework.components.resource.service.ResourceService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.io.memory.JDynamicMemoryCacheIO;
 import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ResponseEncacheMemoryCacheServiceImpl implements ResponseEncacheMem
 	@Override
 	public EhcacheService getEhcacheService() {
 		if(ehcacheService==null){
-			ehcacheService=ServiceHubDelegate.get().getService(this, EhcacheService.class);
+			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
 	}
@@ -90,8 +91,11 @@ public class ResponseEncacheMemoryCacheServiceImpl implements ResponseEncacheMem
 		if(resources!=null){
 			for(int i=0;i<resources.size();i++){
 				Resource resource=resources.get(i);
-				if(Y.equals(resource.getResourceExtend().getCached())){
-					map.put(resource.getUrl(), Y);
+				ResourceExtend resourceExtend=resource.getResourceExtend();
+				if(resourceExtend!=null){
+					if(Y.equals(resource.getResourceExtend().getCached())){
+						map.put(resource.getUrl(), Y);
+					}
 				}
 			}
 		}

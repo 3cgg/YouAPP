@@ -83,4 +83,9 @@ order by ${page.sortColumn} ${page.sortType}
 where a.DELETED='N' 
 </select>
 
+<select id="getResourceByURL"   resultMap="resource"  >
+<include refid="selectfor"></include> 
+where a.DELETED='N' and a.URL=#{url}
+</select>
+
 </mapper>

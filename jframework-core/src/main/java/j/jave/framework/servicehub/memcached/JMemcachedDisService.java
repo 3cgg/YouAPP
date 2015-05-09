@@ -8,15 +8,16 @@ import j.jave.framework.servicehub.JService;
  * @author J
  *
  */
-public interface JMemcachedDisService extends JService {
+public interface JMemcachedDisService extends JService,JMemcachedDisAddListener ,JMemcachedDisDeleteListener,JMemcachedDisSetListener,JMemcachedDisGetListener {
 	
 	/**
 	 * put value to  remote cache
 	 * @param key
 	 * @param expiry
 	 * @param value
+	 * @return previous value before setting.
 	 */
-	public void set(String key , int expiry, Object value) ;
+	public Object set(String key , int expiry, Object value) ;
 	
 	/**
 	 * get value from  remote cache

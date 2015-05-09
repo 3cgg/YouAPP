@@ -49,10 +49,10 @@ public class JJSPServiceServlet  extends JServiceServlet {
 			request.setAttribute("message", exception.getMessage());
 			request.getRequestDispatcher("/WEB-INF/jsp/warning.jsp").forward(request, response); 
 		}catch(IOException e){
-			
+			LOGGER.error(e.getMessage(),e);
 		}
 		catch(ServletException e){
-			
+			LOGGER.error(e.getMessage(),e);
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class JJSPServiceServlet  extends JServiceServlet {
 			}
 			request.getRequestDispatcher(expectJsp).forward(request, response); 
 		}catch(Exception e){
-			
+			LOGGER.error(e.getMessage(),e);
 		}
 	}
 	

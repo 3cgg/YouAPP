@@ -4,7 +4,8 @@
 package j.jave.framework.servicehub.filedistribute;
 
 import j.jave.framework.io.JFile;
-import j.jave.framework.servicehub.JServiceException;
+import j.jave.framework.servicehub.JEventExecutionException;
+import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * thread safety . 
  * @author J
  */
-public class JDefaultLocalFileDistService implements JFileDisService, JDefaultLocalFileDistServiceConfigure{
+public class JDefaultLocalFileDistService implements JFileDisService, JDefaultLocalFileDistServiceConfigure, JFileDisStoreListener{
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultLocalFileDistService.class);
 	
@@ -63,10 +64,6 @@ public class JDefaultLocalFileDistService implements JFileDisService, JDefaultLo
 		}
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.file.service.FileDistService#distribute(j.jave.framework.components.file.model.FileDist)
-	 */
 	@Override
 	public URI distribute(JFile file) throws JServiceException{
 		try {
@@ -88,20 +85,23 @@ public class JDefaultLocalFileDistService implements JFileDisService, JDefaultLo
 	}
 
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.filedistribute.JDefaultLocalFileDistServiceConfigure#setJDefaultLocalFilePathStrategy(j.jave.framework.filedistribute.JDefaultLocalFilePathStrategy)
-	 */
 	@Override
 	public void setJDefaultLocalFilePathStrategy(
 			JDefaultLocalFilePathStrategy defaultLocalFilePathStrategy) {	
 		this.defaultLocalFilePathStrategy=defaultLocalFilePathStrategy;
 	}
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.filedistribute.JDefaultLocalFileDistServiceConfigure#setLocalDirectory(java.lang.String)
-	 */
 	@Override
 	public void setLocalDirectory(String localDirectory) {
 		this.localDirectory=localDirectory;
+	}
+	
+	@Override
+	public Object trigger(JFileDisStoreEvent event) {
+		try {
+			return distribute(event.getFile());
+		} catch (JServiceException e) {
+			throw new JEventExecutionException(e);
+		}
 	}
 }

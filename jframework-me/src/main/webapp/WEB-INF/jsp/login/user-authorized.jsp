@@ -92,7 +92,7 @@
                       <label>角色集</label>
                       <select id="allRoles"  class="form-control"  size="8"  onclick="onOff('roleAddIcon','roleDeleteIcon')"  >
                         <c:forEach items="${roles }" var="role">
-                        	<option label="${role.roleName }"   value=" ${role.id }"   >
+                        	<option  value=" ${role.id }"   >${role.roleName }</option>
                         </c:forEach>
                       </select>
                     </div>
@@ -135,7 +135,7 @@
                       <label>所有组</label>
                       <select id="allGroups"  class="form-control"  size="8"  onclick="onOff('groupAddIcon','groupDeleteIcon')"  >
                         <c:forEach items="${groups }" var="group">
-                        	<option label="${group.groupName }"   value=" ${group.id }"   >
+                        	<option   value=" ${group.id }"   >${group.groupName }</option>
                         </c:forEach>
                       </select>
                     </div>
@@ -218,7 +218,7 @@ function loadUserRoles(userRoles){
 	for(var i=0;i<userRoles.length;i++){
 		var userRole=userRoles[i];
 		//user role primary key +"|"+role id
-		options=options+"<option value='"+userRole.id+"|"+userRole.roleId+"' label='"+userRole.role.roleName+"' />"
+		options=options+"<option value='"+userRole.id+"|"+userRole.roleId+"' >"+userRole.role.roleName+"</option>"
 	}
 	$userRoles.html(options);
 	
@@ -271,7 +271,7 @@ function loadUserGroups(userGroups){
 	for(var i=0;i<userGroups.length;i++){
 		var userGroup=userGroups[i];
 		//user user-group primary key +"|"+group id
-		options=options+"<option value='"+userGroup.id+"|"+userGroup.groupId+"' label='"+userGroup.group.groupName+"' />"
+		options=options+"<option value='"+userGroup.id+"|"+userGroup.groupId+"' >"+userGroup.group.groupName+"</option> "
 	}
 	$userGroups.html(options);
 }

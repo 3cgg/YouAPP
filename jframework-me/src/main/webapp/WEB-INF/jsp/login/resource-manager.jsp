@@ -36,7 +36,7 @@
                       <label>模块</label>
 	                <select id="moduleNames"  class="form-control"  size="1" >
                         <c:forEach items="${moduleNames }" var="moduleName">
-                        	<option label="${moduleName }"   value=" ${moduleName}"   >
+                        	<option   value=" ${moduleName}"   >${moduleName }</option>
                         </c:forEach>
                       </select>
                       </div>
@@ -101,7 +101,7 @@
                       <label>角色集</label>
                       <select id="allRoles"  class="form-control"  size="8"  onclick="onOff('roleAddIcon','roleDeleteIcon')"  >
                         <c:forEach items="${roles }" var="role">
-                        	<option label="${role.roleName }"   value=" ${role.id }"   >
+                        	<option   value=" ${role.id }"   >${role.roleName }</option>
                         </c:forEach>
                       </select>
                     </div>
@@ -144,7 +144,7 @@
                       <label>所有组</label>
                       <select id="allGroups"  class="form-control"  size="8"  onclick="onOff('groupAddIcon','groupDeleteIcon')"  >
                         <c:forEach items="${groups }" var="group">
-                        	<option label="${group.groupName }"   value=" ${group.id }"   >
+                        	<option  value=" ${group.id }"   >${group.groupName }</option>
                         </c:forEach>
                       </select>
                     </div>
@@ -229,7 +229,7 @@ function loadModulePaths(resourcePaths){
 	var options="";
 	for(var i=0;i<resourcePaths.length;i++){
 		var path=resourcePaths[i];
-		options=options+"<option value='"+path+"' label='"+path+"' />"
+		options=options+"<option value='"+path+"' >"+path+"</option>"
 	}
 	$modulePaths.html(options);
 	
@@ -242,7 +242,7 @@ function loadResourceRoles(resourceRoles){
 	for(var i=0;i<resourceRoles.length;i++){
 		var resourceRole=resourceRoles[i];
 		//user role primary key +"|"+role id
-		options=options+"<option value='"+resourceRole.id+"|"+resourceRole.roleId+"' label='"+resourceRole.role.roleName+"' />"
+		options=options+"<option value='"+resourceRole.id+"|"+resourceRole.roleId+"' >"+resourceRole.role.roleName+"</option>"
 	}
 	$resourceRoles.html(options);
 	
@@ -295,7 +295,7 @@ function loadResourceGroups(resourceGroups){
 	for(var i=0;i<resourceGroups.length;i++){
 		var resourceGroup=resourceGroups[i];
 		//user user-group primary key +"|"+group id
-		options=options+"<option value='"+resourceGroup.id+"|"+resourceGroup.groupId+"' label='"+resourceGroup.group.groupName+"' />"
+		options=options+"<option value='"+resourceGroup.id+"|"+resourceGroup.groupId+"' >"+resourceGroup.group.groupName+"</option>"
 	}
 	$resourceGroups.html(options);
 }

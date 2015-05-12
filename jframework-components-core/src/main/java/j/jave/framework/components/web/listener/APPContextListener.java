@@ -9,6 +9,12 @@ import javax.servlet.ServletContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * initial the context of the APP. the is the major context listener, <strong> Note that it's mandatory for the APP.</strong>  including 
+ * <p>1. put all jars in the WEB-INF/lib in the class path of the property "java.class.path"
+ * <p>1. put all classes in the WEB-INF/classes in the class path of the property "java.class.path"
+ * @author J
+ */
 public class APPContextListener implements ServletContextListener {
 	private static final Logger LOGGER=LoggerFactory.getLogger(APPContextListener.class);
 	
@@ -30,8 +36,10 @@ public class APPContextListener implements ServletContextListener {
 					}
 				}
 			}
-			LOGGER.info("JARS ADDED : "+stringBuffer.toString());
-			System.setProperty("java.class.path", javaClassPath+";"+stringBuffer.toString());
+			LOGGER.info("Jars [WEB-INF/lib] added : "+stringBuffer.toString());
+			String classes= sce.getServletContext().getRealPath("WEB-INF/classes");
+			LOGGER.info("Classes [WEB-INF/classes] added : "+stringBuffer.toString());
+			System.setProperty("java.class.path", javaClassPath+";"+stringBuffer.toString()+";"+classes);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 		}

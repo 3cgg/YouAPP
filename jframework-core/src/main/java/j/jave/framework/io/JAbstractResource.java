@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
-public abstract class JAbstractResource implements JResource ,JOutputStreamSource {
+public abstract class JAbstractResource implements JResource {
 
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	

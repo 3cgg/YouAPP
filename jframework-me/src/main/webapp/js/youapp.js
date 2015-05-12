@@ -36,12 +36,12 @@ $.validator.setDefaults({
    }
 });
 
-function deleteRecordWithConfirmOnHTTPGET(url,param){
+function deleteRecordWithConfirmOnHTTPGET(url,param,fnSuccess,fnError){
 	$.confirm({
         text: "你确定删除？",
         confirm: function(button) {
             //alert("You just confirmed.");
-            GET(url, param); 
+            GET(url, param,fnSuccess,fnError); 
         },
         cancel: function(button) {
             //alert("You cancelled.");
@@ -312,5 +312,15 @@ String.prototype.trimStartWith=function(chr){
 		}
 	}
 	return matches;
+}
+
+function Console(message){
+	try{
+		if(console){
+			console.log(message)
+		}
+	}catch(e){
+		
+	}
 }
 

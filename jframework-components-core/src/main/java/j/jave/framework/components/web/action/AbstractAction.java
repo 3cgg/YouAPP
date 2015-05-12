@@ -7,12 +7,17 @@ import j.jave.framework.model.JPage;
 import j.jave.framework.utils.JStringUtils;
 
 /**
- * basic action for view.
+ * basic action for view controller.
  * @author J
  */
 public abstract class AbstractAction implements Action {
 	
 	protected HTTPContext httpContext;
+	
+	/**
+	 * {@link #setHttpContext(HTTPContext)}
+	 */
+	public static final String httpContextCallBackName="setHttpContext";
 	
 	public static final String CREATE_SUCCESS="保存成功";
 	public static final String DELETE_SUCCESS="删除成功";

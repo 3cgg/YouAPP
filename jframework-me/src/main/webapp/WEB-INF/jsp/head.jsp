@@ -7,7 +7,7 @@
 <script src="${pageContext.request.contextPath}/js/jquery-1.11.2.js"></script>
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-switch.css">
@@ -39,7 +39,7 @@
 <link rel="stylesheet"  href="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.css"  type="text/css" />
 <script src="${pageContext.request.contextPath}/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-    
+    <script src="${pageContext.request.contextPath}/plugins/datatables/dataTables.bootstrap.youapp.js" type="text/javascript"></script>
 <!--  JQuery form -->
 <script src="${pageContext.request.contextPath}/js/jquery.form.js"></script>
 

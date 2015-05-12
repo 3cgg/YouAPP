@@ -2,7 +2,6 @@ package j.jave.framework.io;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +12,7 @@ import java.io.InputStream;
  * @author J
  *
  */
-public class JFileResource extends JAbstractResource {
+public class JFileResource extends JAbstractResource implements JOutputStreamSource {
 
 	private final File file;
 	

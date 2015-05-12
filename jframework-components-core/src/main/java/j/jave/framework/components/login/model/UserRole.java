@@ -24,9 +24,9 @@ public class UserRole extends JBaseModel {
 	private String description;
 	
 	
-	private User user=new User();
+	private User user;
 	
-	private Role role=new Role();
+	private Role role;
 	
 	public User getUser() {
 		return user;

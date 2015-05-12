@@ -1,6 +1,6 @@
 package j.jave.framework.components.tablemanager.ext;
 
-import j.jave.framework.components.core.context.SpringContext;
+import j.jave.framework.components.core.context.SpringContextSupport;
 import j.jave.framework.components.core.jsp.ServletRenderContext;
 import j.jave.framework.components.core.menu.Item;
 import j.jave.framework.components.tablemanager.model.Table;
@@ -23,7 +23,7 @@ public class TableManagerServletRenderContext implements ServletRenderContext {
 		
 		LOGGER.info("inital "+TableManagerServletRenderContext.class.getName());
 		
-		TableManagerService tableManagerService=SpringContext.get().getApplicationContext().getBean("tableManagerServiceImpl", TableManagerService.class);
+		TableManagerService tableManagerService=SpringContextSupport.getApplicationContext().getBean("tableManagerServiceImpl", TableManagerService.class);
 		List<Item> items=new ArrayList<Item>();
 		List<Table> tables= tableManagerService.getTables();
 		if(tables!=null){

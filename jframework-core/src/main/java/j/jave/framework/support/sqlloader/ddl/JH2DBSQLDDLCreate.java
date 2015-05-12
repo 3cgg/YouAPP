@@ -7,6 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * H2 SQL DDL Create Implementation.
+ * @author J
+ */
 public class JH2DBSQLDDLCreate extends JAbstractSQLDDLCreate {
 
 	public JH2DBSQLDDLCreate(String className,String url, String user, String password) {

@@ -70,6 +70,8 @@ public abstract class AbstractBaseService {
 			throw new JConcurrentException("version chaged , db verion is "+dbModel.getVersion()
 					+" , but current version is  "+jBaseModel.getVersion());
 		}
+		jBaseModel.setCreateTime(dbModel.getCreateTime());
+		jBaseModel.setCreateId(dbModel.getCreateId());
 		jBaseModel.setVersion(jBaseModel.getVersion()+1);
 		int affect=jMapper.update(jBaseModel);
 		if(affect==0) throw new JConcurrentException(

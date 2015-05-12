@@ -72,7 +72,9 @@ from RESOURCES_GROUPS a
 left join GROUPS b on a.GROUPID=b.ID
 left join RESOURCES c on a.RESOURCEID=c.ID
 </sql>
-
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
+</sql>
 
 <select id="getsByPage"   resultMap="resourceGroup"  parameterType="j.jave.framework.model.JPagination">
 select * from RESOURCES_GROUPS  
@@ -86,6 +88,7 @@ order by ${page.sortColumn} ${page.sortType}
 <select id="getResourceGroupsByResourceId"  resultMap="resourceGroup"  parameterType="java.lang.String">
     <include refid="selectfor"></include>
     where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
     <if test="resourceId !=null  and resourceId !='' ">
     	and a.RESOURCEID=#{resourceId}
     </if>
@@ -93,12 +96,20 @@ order by ${page.sortColumn} ${page.sortType}
 </select>
 
 <select id="countOnResourceIdAndGroupId" resultType="int">
-    select count(1) from RESOURCES_GROUPS a  where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
+    select count(1) 
+    from RESOURCES_GROUPS a 
+	left join GROUPS b on a.GROUPID=b.ID
+	left join RESOURCES c on a.RESOURCEID=c.ID
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
 </select>
 
 <select id="getResourceGroupOnResourceIdAndGroupId"  resultMap="resourceGroup" >
     <include refid="selectfor"></include>
-    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.RESOURCEID=#{resourceId} and a.GROUPID=#{groupId}
 </select>
 
 

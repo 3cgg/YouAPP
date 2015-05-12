@@ -4,8 +4,9 @@
 package j.jave.framework.support.sqlloader;
 
 /**
+ * the uniform SQL configuration interface.
+ * i.e. package name , jar name etc. 
  * @author J
- *
  */
 public interface JSQLConfigure {
 

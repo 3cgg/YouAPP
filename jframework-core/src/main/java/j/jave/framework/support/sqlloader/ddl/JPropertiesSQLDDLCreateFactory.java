@@ -1,38 +1,44 @@
 package j.jave.framework.support.sqlloader.ddl;
 
-import j.jave.framework.io.JClassRootPathResolver;
-import j.jave.framework.io.JFileResource;
 import j.jave.framework.support.sqlloader.JPropertiesDBConfiguration;
-import j.jave.framework.utils.JPropertiesUtils;
+import j.jave.framework.support.sqlloader.JPropertiesDBConfigure;
+import j.jave.framework.support.sqlloader.JSQLLoaderException;
 import j.jave.framework.utils.JStringUtils;
 
-import java.io.File;
-import java.net.URI;
-import java.util.Properties;
+import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory implements JPropertiesDBConfiguration{
+
+/**
+ * create concrete <code>JSQLDDLCreate</code> object from properties.
+ * see {@link JPropertiesDBConfigure} to know some property-value. 
+ * @author J
+ * @see JH2DBSQLDDLCreate
+ * @see JPropertiesDBConfigure
+ */
+public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory implements JPropertiesDBConfigure{
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JPropertiesSQLDDLCreateFactory.class);
 	
 	@Override
 	public JSQLDDLCreate getObject() {
 		try {
-			URI path=new JClassRootPathResolver("jramework-db.properties").resolver();
-			Properties properties= JPropertiesUtils.loadProperties(new JFileResource(new File(path)));
-			String driver=JPropertiesUtils.getKey(DRIVER, properties);
-			String url=JPropertiesUtils.getKey(URL, properties);
-			String userName=JPropertiesUtils.getKey(USER_NAME, properties);
-			String password=JPropertiesUtils.getKey(PASSWORD, properties);
-			String ddlAuto=JPropertiesUtils.getKey(DDL_AOTU, properties);
 			
-			if(!AUTO.equals(ddlAuto)){
+			JPropertiesDBConfiguration configuration= parse(null);
+			String driver=configuration.getDriver();
+			String url=configuration.getUrl();
+			String userName=configuration.getUserName();
+			String password=configuration.getPassword();
+			boolean auto=configuration.isAuto();
+			String dialect=configuration.getDialect();
+			
+			if(!auto){
 				return new JEmptySQLDDLCreate(driver, url, userName, password);
 			}
 			
-			if(driver!=null&&H2.equals(driver.trim())){
+			if(dialect!=null&&H2.equals(dialect.trim())){
 				// h2
 				JH2DBSQLDDLCreate h2=new JH2DBSQLDDLCreate(driver, url, userName, password);
 				if(JStringUtils.isNotNullOrEmpty(jarName)){
@@ -46,8 +52,14 @@ public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory
 			
 		} catch (Exception e) {
 			LOGGER.error("in create ddl sql creating factory", e);
+			throw new JSQLLoaderException(e);
 		}
 		return null;
+	}
+
+	@Override
+	public JPropertiesDBConfiguration parse(InputStream inputStream) {
+		return new JPropertiesDBConfiguration().parse(inputStream);
 	}
 
 }

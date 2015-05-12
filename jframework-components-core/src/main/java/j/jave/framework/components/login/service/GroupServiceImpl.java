@@ -6,6 +6,8 @@ import j.jave.framework.components.login.mapper.GroupMapper;
 import j.jave.framework.components.login.model.Group;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
+import j.jave.framework.servicehub.exception.JServiceException;
+import j.jave.framework.utils.JStringUtils;
 
 import java.util.List;
 
@@ -53,6 +55,93 @@ public class GroupServiceImpl extends ServiceSupport<Group> implements GroupServ
 		return groupMapper.getAllGroups();
 	}
 	
+	
+	@Override
+	public void saveGroup(ServiceContext context, Group group)
+			throws JServiceException {
+		
+		validateGroupCode(group);
+		
+		if(exists(context, group)){
+			throw new JServiceException("group code ["+group.getGroupCode()+"] already has exist.");
+		}
+		saveOnly(context, group);
+	}
+	
+	@Override
+	public boolean exists(ServiceContext context, Group group)
+			throws JServiceException {
+		if(group==null){
+			throw new IllegalArgumentException("role argument is null");
+		}
+		boolean exists=false;
+		Group dbGroup=getGroupByGroupCode(context, group.getGroupCode());
+		// new created.
+		if(JStringUtils.isNullOrEmpty(group.getId())){
+			exists= dbGroup!=null;
+		}
+		else{
+			// updated status.
+			if(dbGroup!=null){
+				// if it's self
+				exists=!group.getId().equals(dbGroup.getId());
+			}
+			else{
+				exists=false;
+			}
+		}
+		return exists;
+	}
+	
+	private void validateGroupCode(Group group) throws JServiceException{
+		
+		String code=group.getGroupCode();
+		
+		if(JStringUtils.isNullOrEmpty(code)){
+			throw new IllegalArgumentException("group code  is null"); 
+		}
+		code=code.trim();
+		
+		if(ADMIN_CODE.equalsIgnoreCase(code)){
+			throw new JServiceException("group code ["+ADMIN_CODE+"] is initialized by system.please change...");
+		}
+		
+		if(DEFAULT_CODE.equalsIgnoreCase(code)){
+			throw new JServiceException("group code ["+DEFAULT_CODE+"] is initialized by system.please change...");
+		}
+	}
+	
+	@Override
+	public void updateGroup(ServiceContext context, Group group)
+			throws JServiceException {
+		
+		validateGroupCode(group);
+		
+		if(JStringUtils.isNullOrEmpty(group.getId())){
+			throw new IllegalArgumentException("the primary property id of group is null.");
+		}
+		
+		if(exists(context, group)){
+			throw new JServiceException("group code ["+group.getGroupCode()+"] already has exist.");
+		}
+		updateOnly(context, group);
+	}
+	
+	@Override
+	public void deleteGroup(ServiceContext context, Group group)
+			throws JServiceException {
+		
+		if(JStringUtils.isNullOrEmpty(group.getId())){
+			throw new IllegalArgumentException("the primary property id of group is null.");
+		}
+		
+		if(JStringUtils.isNullOrEmpty(group.getGroupCode())){
+			group.setGroupCode(getById(context, group.getId()).getGroupCode());
+		}
+		
+		validateGroupCode(group);
+		delete(context, group.getId());
+	}
 	
 	
 }

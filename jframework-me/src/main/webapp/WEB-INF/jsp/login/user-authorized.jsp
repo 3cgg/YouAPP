@@ -13,7 +13,7 @@
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
-	          <!-- 
+	          
 	          <ol class="breadcrumb">
 	            <li>
 	            <a 
@@ -21,37 +21,25 @@
 	                onclick='GET("/login.loginaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
-	            <li class="active">历史账单</li>
+	            <li class="active">授权</li>
 	          </ol>
-	           -->
+	           
 	        </section>
 	        
 	        
 	         <!-- Main content -->
 	        <section class="content">
 	        
-	        <div class="col-md-4">
-		        <div class="box box-solid">
-	                <div class="box-header with-border">
-	                <!-- 
-	                  <form id="weightSearchForm">
-	                    <div class="input-group">
-	                      <input type="text" name="lastetMonth" class="form-control input-sm pull-right" style="width: 120px;" 
-	                      placeholder="用户名"  />
-	                      <div class="input-group-btn">
-	                        <button type="submit" class="btn btn-sm btn-default"  style="font-size: 18px;"><i class="fa fa-search"></i></button>
-	                      </div>
-	                    </div>
-	                    </form>
-	                     -->
-	                </div><!-- /.box-header -->
-	                <div class="box-body">
-	                	<table id="userinfo" class="table table-bordered table-hover">
+	        <div class="col-md-4 ">
+	        	<div  class="col-md-12  youapp-box">
+		        	
+	                <div class="form-group">
+	                      <label>用户</label>
+	                      <table id="userinfo" class="table table-bordered table-hover">
 	                	</table>
-	                </div><!-- /.box-body -->
-	              </div><!-- /.box -->
+                    </div>
+                   </div> 
 	            </div><!-- ./col -->
-	            
 	            
 	            <div class="col-md-8">
 	            
@@ -193,6 +181,7 @@ $(
 				  			
 				  		}).addClass("youapp-hand");
 		            },
+		            "youppNavigateNum":1
 			});
 			
 		}		

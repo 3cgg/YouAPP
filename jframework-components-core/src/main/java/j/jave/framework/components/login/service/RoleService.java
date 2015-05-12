@@ -1,11 +1,12 @@
 package j.jave.framework.components.login.service;
 
-import java.util.List;
-
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.model.JPagination;
+import j.jave.framework.servicehub.exception.JServiceException;
+
+import java.util.List;
 
 public interface RoleService extends Service<Role> {
 
@@ -52,8 +53,42 @@ public interface RoleService extends Service<Role> {
 	List<Role> getAllRoles(ServiceContext serviceContext);
 	
 	
+	/**
+	 * add new role, together with validation , including but not restrict 
+	 * <p>1. role code must be unique.
+	 * @param context 
+	 * @param role
+	 * @throws JServiceException
+	 */
+	void saveRole(ServiceContext context, Role role) throws JServiceException;
 	
+	/**
+	 * check if the role is existing, including but not restrict 
+	 * <p> 1. role code must be unique.
+	 * <p>the method consider the role is updated (primary id is not null )or new created (id is null),
+	 * <strong>Note that the primary id( id property ) is the indicator.</strong> 
+	 * @param context
+	 * @param role
+	 * @return
+	 * @throws JServiceException
+	 */
+	boolean exists(ServiceContext context, Role role) throws JServiceException;
 	
+	/**
+	 * update the role , together with validation, including not restrict:
+	 * <p>1. role code must be unique.
+	 * @param context
+	 * @param role
+	 * @throws JServiceException
+	 */
+	void updateRole(ServiceContext context, Role role)throws JServiceException;
 	
+	/**
+	 * delete the role, together with potential validations. 
+	 * @param context
+	 * @param role
+	 * @throws JServiceException
+	 */
+	void deleteRole(ServiceContext context, Role role)throws JServiceException;
 	
 }

@@ -22,6 +22,26 @@ public class RoleGroup extends JBaseModel {
 	
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
+	
+	private Role role;
+	
+	private Group group;
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Group getGroup() {
+		return group;
+	}
+
+	public void setGroup(Group group) {
+		this.group = group;
+	}
 
 	public String getRoleId() {
 		return roleId;

@@ -17,6 +17,13 @@
 <result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
 <result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+
+<result column="ROLECODE" property="role.roleCode"  jdbcType="VARCHAR" />
+<result column="ROLENAME" property="role.roleName"  jdbcType="VARCHAR" />
+
+<result column="GROUPCODE" property="group.groupCode"  jdbcType="VARCHAR" />
+<result column="GROUPNAME" property="group.groupName"  jdbcType="VARCHAR" />
+
 </resultMap>
 
 
@@ -57,7 +64,17 @@ where a.id=#{param1}
 
 
 <sql id="selectfor">
-select a.* from ROLES_GROUPS a 
+select a.* ,
+b.ROLECODE ROLECODE,
+b.ROLENAME ROLENAME,
+c.GROUPCODE GROUPCODE,
+c.GROUPNAME GROUPNAME
+from ROLES_GROUPS a 
+left join ROLES b on a.ROLEID=b.ID
+left join GROUPS c on a.GROUPID=c.ID
+</sql>
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
 <select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.framework.model.JPagination">
@@ -68,17 +85,27 @@ select a.* from ROLES_GROUPS a
 </select>
 
 
-<select id="countOnUserIdAndGroupId" resultType="int">
-    select count(1) from ROLES_GROUPS a  where a.DELETED='N' and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+<select id="countOnRoleIdAndGroupId" resultType="int">
+    select count(1)  
+    from ROLES_GROUPS a 
+	left join ROLES b on a.ROLEID=b.ID
+	left join GROUPS c on a.GROUPID=c.ID
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
 </select>
 
-<select id="getUserGroupOnUserIdAndGroupId"  resultMap="roleGroup" >
-    select a.*  from ROLES_GROUPS a  where a.DELETED='N'  and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+<select id="getRoleGroupOnRoleIdAndGroupId"  resultMap="roleGroup" >
+    <include refid="selectfor"/>  
+    where a.DELETED='N'  
+    and <include refid="associationFilter"></include>
+    and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
 </select>
 
 <select id="getRoleGroupsOnRoleIdOrGroupId"  resultMap="roleGroup" >
-    select a.*  from ROLES_GROUPS a  where a.DELETED='N'  
-    
+     <include refid="selectfor"/>    
+     where a.DELETED='N'  
+     and <include refid="associationFilter"></include>
     <if test="roleId!=null  and roleId!=''">
     	and  a.ROLEID=#{roleId} 
     </if>

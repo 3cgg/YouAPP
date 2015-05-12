@@ -67,7 +67,9 @@ from USERS_GROUPS a
 LEFT JOIN USERS b on a.USERID=b.ID
 LEFT JOIN GROUPS c on a. GROUPID=c.ID
 </sql>
-
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
+</sql>
 
 <select id="getsByPage"  resultMap="userGroup"  parameterType="j.jave.framework.model.JPagination">
     select * from USERS_GROUPS 
@@ -79,6 +81,7 @@ LEFT JOIN GROUPS c on a. GROUPID=c.ID
 <select id="getUserGroupsByUserId"  resultMap="userGroup"  parameterType="java.lang.String">
     <include refid="selectfor"></include>
     where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
     <if test="userId!=null  and userId!='' ">
     	and a.USERID=#{userId}
     </if>
@@ -86,11 +89,20 @@ LEFT JOIN GROUPS c on a. GROUPID=c.ID
 </select>
 
 <select id="countOnUserIdAndGroupId" resultType="int">
-    select count(1) from USERS_GROUPS a  where a.DELETED='N' and  a.USERID=#{userId} and a.GROUPID=#{groupId}
+    select count(1) 
+    from USERS_GROUPS a
+	LEFT JOIN USERS b on a.USERID=b.ID
+	LEFT JOIN GROUPS c on a. GROUPID=c.ID
+    where a.DELETED='N'
+    and <include refid="associationFilter"></include>
+    and  a.USERID=#{userId} and a.GROUPID=#{groupId}
 </select>
 
 <select id="getUserGroupOnUserIdAndGroupId"  resultMap="userGroup" >
-    select a.*  from USERS_GROUPS a  where a.DELETED='N'  and   a.USERID=#{userId} and a.GROUPID=#{groupId}
+    <include refid="selectfor"></include>  
+    where a.DELETED='N'  
+    and <include refid="associationFilter"></include>
+    and   a.USERID=#{userId} and a.GROUPID=#{groupId}
 </select>
 
 

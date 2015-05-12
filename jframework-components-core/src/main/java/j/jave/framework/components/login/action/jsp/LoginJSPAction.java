@@ -4,6 +4,7 @@ import j.jave.framework.components.core.model.JQueryDataTablePage;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
+import j.jave.framework.components.login.model.RoleGroup;
 import j.jave.framework.components.login.model.RoleSearchCriteria;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.model.UserGroup;
@@ -11,6 +12,7 @@ import j.jave.framework.components.login.model.UserRole;
 import j.jave.framework.components.login.model.UserSearchCriteria;
 import j.jave.framework.components.login.model.UserTracker;
 import j.jave.framework.components.login.service.GroupService;
+import j.jave.framework.components.login.service.RoleGroupService;
 import j.jave.framework.components.login.service.RoleService;
 import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
@@ -78,6 +80,13 @@ public class LoginJSPAction extends JSPAction {
 	
 	@Autowired
 	private UserGroupService userGroupService;
+	
+	@Autowired
+	private RoleGroupService roleGroupService;
+	
+	private Role role;
+	
+	private Group group;
 	
 	/**
 	 * the unique entrance to APP. 
@@ -349,6 +358,151 @@ public class LoginJSPAction extends JSPAction {
 	}
 	
 	
+	public String toRoleAllocationOnGroup(){
+		List<Role> roles =roleService.getAllRoles(getServiceContext());
+		setAttribute("roles", roles);
+		
+		List<Group> groups =groupService.getAllGroups(getServiceContext());
+		setAttribute("groups", groups);
+//		return navigate("/login.loginaction/testtoUserAuthorized");
+//		return getTestPage("/WEB-INF/jsp/login/user-authorized.jsp");
+		return "/WEB-INF/jsp/login/role-allocation-on-group.jsp";
+	}
+	
+	
+	public String getRoleGroupByRole(){
+		String roleId=getParameter("roleId").trim();
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByRoleId(getServiceContext(), roleId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	
+	public String bingRoleOnGroup() throws Exception{
+		String groupId=getParameter("groupId").trim();
+		String roleId=getParameter("roleId").trim();
+		roleGroupService.bingRoleGroup(getServiceContext(), roleId, groupId);
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByRoleId(getServiceContext(), roleId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	public String unbingRoleOnGroup() throws Exception{
+		String groupId=getParameter("groupId").trim();
+		String roleId=getParameter("roleId").trim();
+		roleGroupService.unbingRoleGroup(getServiceContext(), roleId, groupId);
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByRoleId(getServiceContext(), roleId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	
+	public String toGroupAllocationOnRole(){
+		List<Role> roles =roleService.getAllRoles(getServiceContext());
+		setAttribute("roles", roles);
+		
+		List<Group> groups =groupService.getAllGroups(getServiceContext());
+		setAttribute("groups", groups);
+//		return navigate("/login.loginaction/testtoUserAuthorized");
+//		return getTestPage("/WEB-INF/jsp/login/user-authorized.jsp");
+		return "/WEB-INF/jsp/login/group-allocation-on-role.jsp";
+	}
+	
+	public String getGroupRoleByGroup(){
+		String groupId=getParameter("groupId").trim();
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByGroupId(getServiceContext(), groupId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	
+	public String bingGroupOnRole() throws Exception{
+		String groupId=getParameter("groupId").trim();
+		String roleId=getParameter("roleId").trim();
+		roleGroupService.bingRoleGroup(getServiceContext(), roleId, groupId);
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByGroupId(getServiceContext(), groupId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	public String unbingGroupOnRole() throws Exception{
+		String groupId=getParameter("groupId").trim();
+		String roleId=getParameter("roleId").trim();
+		roleGroupService.unbingRoleGroup(getServiceContext(), roleId, groupId);
+		List<RoleGroup> roleGroups= roleGroupService.getRoleGroupsByGroupId(getServiceContext(), groupId);
+		return JJSON.get().format(roleGroups); 
+	}
+	
+	
+	
+	public String toAddNewRole(){
+		return "/WEB-INF/jsp/login/role-new-add.jsp";
+	}
+
+	public String addNewRole() throws Exception{
+		roleService.saveRole(getServiceContext(), role);
+		setSuccessMessage(CREATE_SUCCESS);
+		return "/WEB-INF/jsp/login/role-new-add.jsp";
+	}
+	
+	
+	public String toEditRole(){
+		String roleId=getParameter("roleId").trim();
+		
+		Role role=roleService.getById(getServiceContext(), roleId);
+		setAttribute("role", role);
+		return "/WEB-INF/jsp/login/role-edit.jsp";
+	}
+	
+	public String editRole() throws Exception{
+		roleService.updateRole(getServiceContext(), role);
+		Role dbRole=roleService.getById(getServiceContext(), role.getId());
+		setAttribute("role", dbRole);
+		setSuccessMessage(EDIT_SUCCESS);
+		return "/WEB-INF/jsp/login/role-edit.jsp"; 
+	}
+	
+	public String deleteRole() throws Exception{
+		String roleId=getParameter("roleId").trim();
+		Role role=new Role();
+		role.setId(roleId); 
+		roleService.deleteRole(getServiceContext(), role);
+		List<Role> roles =roleService.getAllRoles(getServiceContext());
+		return JJSON.get().format(roles); 
+	}
+	
+	
+	
+	public String toAddNewGroup(){
+		return "/WEB-INF/jsp/login/group-new-add.jsp";
+	}
+
+	public String addNewGroup() throws Exception{
+		groupService.saveGroup(getServiceContext(), group);
+		setSuccessMessage(CREATE_SUCCESS);
+		return "/WEB-INF/jsp/login/group-new-add.jsp";
+	}
+	
+	
+	public String toEditGroup(){
+		String groupId=getParameter("groupId").trim();
+		
+		Group group=groupService.getById(getServiceContext(), groupId);
+		setAttribute("group", group);
+		return "/WEB-INF/jsp/login/group-edit.jsp";
+	}
+	
+	public String editGroup() throws Exception{
+		groupService.updateGroup(getServiceContext(), group);
+		Group dbGroup=groupService.getById(getServiceContext(), group.getId());
+		setAttribute("group", dbGroup);
+		setSuccessMessage(EDIT_SUCCESS);
+		return "/WEB-INF/jsp/login/group-edit.jsp"; 
+	}
+	
+	public String deleteGroup() throws Exception{
+		String groupId=getParameter("groupId").trim();
+		Group group=new Group();
+		group.setId(groupId);
+		groupService.deleteGroup(getServiceContext(), group);
+		List<Group> groups =groupService.getAllGroups(getServiceContext());
+		return JJSON.get().format(groups); 
+	}
 	
 	
 }

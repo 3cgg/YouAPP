@@ -34,7 +34,7 @@
 			<name>Nexus Repository For J</name>
 			<url>http://localhost:8081/nexus/content/groups/public</url>
 		</repository>
-		  -->
+		 -->
 	</repositories>
 
 	<dependencies>

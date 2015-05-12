@@ -4,8 +4,8 @@
 package j.jave.framework.support.sqlloader;
 
 /**
- * @author Administrator
- *
+ * default SQL configuration.
+ * @author J
  */
 public abstract class JDefaultSQLConfigure implements JSQLConfigure {
 	
@@ -13,9 +13,6 @@ public abstract class JDefaultSQLConfigure implements JSQLConfigure {
 	
 	protected String jarName="jframework-components";
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.sqlloader.JSQLDDLConfigure#setPackageName(java.lang.String)
-	 */
 	@Override
 	public void setPackageName(String packageName) {
 		if(packageName!=null){
@@ -23,9 +20,6 @@ public abstract class JDefaultSQLConfigure implements JSQLConfigure {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see j.jave.framework.sqlloader.JSQLDDLConfigure#setJarName(java.lang.String)
-	 */
 	@Override
 	public void setJarName(String jarName) {
 		if(jarName!=null){

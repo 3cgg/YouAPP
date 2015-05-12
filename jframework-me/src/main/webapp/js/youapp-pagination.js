@@ -6,9 +6,11 @@
 	var YouAPPDataTable=function (initsettings){
 		
 		var settings=$.extend({},YouAPPDataTable.settings,initsettings);
+		
 		var columns=settings.columns;
 		function _yinit(){
 			$('#'+settings.id).dataTable({
+			"_youppNavigateNum":settings.youppNavigateNum,
 		     "bPaginate": true,
 		     "bLengthChange" : false,// 显示每行记录数
 		     "bFilter" : true,// 搜索栏
@@ -200,7 +202,12 @@
 	                          /**
 	                           * callback when table drawed. 
 	                           */
-							  "youappfnDrawCallback":function( oSettings ){}
+							  "youappfnDrawCallback":function( oSettings ){},
+							  
+							  /**
+							   * the number to suggest how many navigate links .
+							   */
+							  "youppNavigateNum":5
 						};
 
 	$.fn.youappDataTable = YouAPPDataTable;

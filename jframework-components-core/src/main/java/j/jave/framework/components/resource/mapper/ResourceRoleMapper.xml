@@ -69,7 +69,9 @@ from RESOURCES_ROLES a
 left join ROLES b on a.ROLEID=b.ID
 left join RESOURCES c on a.RESOURCEID=c.ID
 </sql>
-
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
+</sql>
 
 <select id="getsByPage"   resultMap="resourceRole"  parameterType="j.jave.framework.model.JPagination">
 select * from RESOURCES_ROLES  
@@ -83,6 +85,7 @@ order by ${page.sortColumn} ${page.sortType}
 <select id="getResourceRolesByResourceId"  resultMap="resourceRole"  parameterType="java.lang.String">
     <include refid="selectfor"></include>
     where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
     <if test="resourceId !=null  and resourceId !='' ">
     	and a.RESOURCEID=#{resourceId}
     </if>
@@ -90,12 +93,20 @@ order by ${page.sortColumn} ${page.sortType}
 </select>
 
 <select id="countOnResourceIdAndRoleId" resultType="int">
-    select count(1) from RESOURCES_ROLES a  where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
+    select count(1) 
+    from RESOURCES_ROLES a 
+	left join ROLES b on a.ROLEID=b.ID
+	left join RESOURCES c on a.RESOURCEID=c.ID
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
 </select>
 
 <select id="getResourceRoleOnResourceIdAndRoleId"  resultMap="resourceRole" >
     <include refid="selectfor"></include>
-    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.RESOURCEID=#{resourceId} and a.ROLEID=#{roleId}
 </select>
 
 

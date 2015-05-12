@@ -67,6 +67,9 @@ select a.*, b.USERNAME USERNAME, c.ROLENAME ROLENAME from USERS_ROLES a
 LEFT JOIN USERS b on a.USERID=b.ID
 LEFT JOIN ROLES c on a. ROLEID=c.ID
 </sql>
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
+</sql>
 
 <select id="getsByPage"  resultMap="userRole"  parameterType="j.jave.framework.model.JPagination">
     select * from USERS_ROLES 
@@ -79,6 +82,7 @@ LEFT JOIN ROLES c on a. ROLEID=c.ID
 <select id="getUserRolesByUserId"  resultMap="userRole"  parameterType="java.lang.String">
     <include refid="selectfor"></include>
     where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
     <if test="userId!=null  and userId!='' ">
     	and a.USERID=#{userId}
     </if>
@@ -86,11 +90,20 @@ LEFT JOIN ROLES c on a. ROLEID=c.ID
 </select>
 
 <select id="countOnUserIdAndRoleId" resultType="int">
-    select count(1) from USERS_ROLES a  where a.DELETED='N' and  a.USERID=#{userId} and a.ROLEID=#{roleId}
+    select count(1) 
+    from USERS_ROLES a
+	LEFT JOIN USERS b on a.USERID=b.ID
+	LEFT JOIN ROLES c on a. ROLEID=c.ID
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.USERID=#{userId} and a.ROLEID=#{roleId}
 </select>
 
 <select id="getUserRoleOnUserIdAndRoleId"  resultMap="userRole" >
-    select a.*  from USERS_ROLES a  where a.DELETED='N'  and   a.USERID=#{userId} and a.ROLEID=#{roleId}
+    <include refid="selectfor"></include>  
+    where a.DELETED='N'  
+    and <include refid="associationFilter"></include>
+    and   a.USERID=#{userId} and a.ROLEID=#{roleId}
 </select>
 
 </mapper>

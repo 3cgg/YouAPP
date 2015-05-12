@@ -2,7 +2,6 @@ package j.jave.framework.support.sqlloader.dml;
 
 import j.jave.framework.support.sqlloader.JAbstractSQLCreate;
 
-import java.util.Iterator;
 import java.util.Set;
 
 /**

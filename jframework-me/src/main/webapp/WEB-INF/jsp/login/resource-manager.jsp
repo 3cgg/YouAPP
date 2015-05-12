@@ -13,17 +13,17 @@
 	                ><i class=" fa ion-ios-undo"></i></a>
 	            </small>
 	          </h1>
-	          <!-- 
+	           
 	          <ol class="breadcrumb">
 	            <li>
 	            <a 
 	            	href="javascript:void(0)" 
-	                onclick='GET("/resource.resourceaction/toNavigate")'
+	                onclick='GET("/login.loginaction/toNavigate")'
 	                ><i class=" fa ion-android-laptop"></i> 应用</a>
 	            </li>
-	            <li class="active">历史账单</li>
+	            <li class="active">资源管理</li>
 	          </ol>
-	           -->
+	           
 	        </section>
 	        
 	        
@@ -184,7 +184,7 @@ $(
 				
 				GET("/resource.resourceaction/getExtensionOnResource", "path="+$(this).val(), 
 						function(json){
-							console.log(this); 
+							Console(this); 
 							if(json!=null){
 								$('#cachedIndicater').iCheck("check").iCheck("disable");
 								$("#cached").bootstrapSwitch("disabled",false);
@@ -378,9 +378,9 @@ $(function init(){
 	);
 	
 	$('#cached').on('switchChange.bootstrapSwitch', function(event, state) {
-		  console.log(this); // DOM element
-		  console.log(event); // jQuery event
-		  console.log(state); // true | false
+		  Console(this); // DOM element
+		  Console(event); // jQuery event
+		  Console(state); // true | false
 		  
 		  var $path=$('#path');
 		  if($path.val()!=null&&$path.val()!=""){

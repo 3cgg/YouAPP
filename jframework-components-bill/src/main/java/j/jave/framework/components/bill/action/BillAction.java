@@ -3,10 +3,10 @@ package j.jave.framework.components.bill.action;
 import j.jave.framework.components.bill.model.Bill;
 import j.jave.framework.components.bill.model.BillSearchCriteria;
 import j.jave.framework.components.bill.service.BillService;
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.param.service.ParamService;
 import j.jave.framework.components.views.chart.SimpleBarChart;
-import j.jave.framework.components.web.jsp.JSPAction;
 import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.utils.JDateUtils;
 
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="bill.billaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class BillAction extends JSPAction {
+public class BillAction extends JSPActionSupport {
 	
 	private Bill  bill;
 	

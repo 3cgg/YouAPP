@@ -1,12 +1,12 @@
 package j.jave.framework.components.tablemanager.service;
 
-import j.jave.framework.components.core.model.SearchCriteria;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.tablemanager.model.Cell;
 import j.jave.framework.components.tablemanager.model.Column;
 import j.jave.framework.components.tablemanager.model.Record;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.model.TableSearch;
+import j.jave.framework.components.web.model.SearchCriteria;
 import j.jave.framework.model.JBaseModel;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.model.support.JColumn;

@@ -1,7 +1,8 @@
 package j.jave.framework.components.login.action.jsp;
 
-import j.jave.framework.components.core.model.JQueryDataTablePage;
+import j.jave.framework.components.core.model.SessionUserInfo;
 import j.jave.framework.components.core.service.ServiceContext;
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.components.login.model.RoleGroup;
@@ -18,13 +19,14 @@ import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.login.service.UserTrackerService;
-import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.login.view.TimeLineGroup;
 import j.jave.framework.components.login.view.TimelineView;
-import j.jave.framework.components.memory.ResourceCachedRefreshEvent;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
-import j.jave.framework.components.web.jsp.JSPAction;
+import j.jave.framework.components.web.model.JQueryDataTablePage;
+import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
+import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
+import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.listener.JAPPEvent;
@@ -47,7 +49,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="login.loginaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class LoginJSPAction extends JSPAction {
+public class LoginJSPAction extends JSPActionSupport {
 
 	private static final long serialVersionUID = 4299587930782979586L;
 
@@ -132,7 +134,7 @@ public class LoginJSPAction extends JSPAction {
 
 	private void logTracker() throws JServiceException {
 		UserTracker userTracker=new UserTracker();
-		User sessionUser=getSessionUser();
+		SessionUser sessionUser=getSessionUser();
 		userTracker.setUserId(sessionUser.getId());
 		userTracker.setUserName(sessionUser.getUserName());
 		userTracker.setIp(httpContext.getIP());
@@ -158,20 +160,20 @@ public class LoginJSPAction extends JSPAction {
 	private void loginLogic(User loginUser, String unique) {
 		String uniqueKey="ticket-"+unique;
 		HTTPContext httpContext=new HTTPContext();
-		User user=new User();
-		user.setUserName(loginUser.getUserName());
-		user.setId(loginUser.getId()); 
-		httpContext.setUser(user);
+		SessionUserInfo sessionUserInfo=new SessionUserInfo();
+		sessionUserInfo.setUserName(loginUser.getUserName());
+		sessionUserInfo.setId(loginUser.getId()); 
+		httpContext.setUser(sessionUserInfo);
 		httpContext.setTicket(uniqueKey);
 		jMemcachedDistService.set(uniqueKey, 0, httpContext);
 		
-		this.httpContext.setUser(loginUser); 
+		this.httpContext.setUser(sessionUserInfo); 
 		
 		setCookie("ticket", uniqueKey,-1);
 	}
 	
 	public String profile(){
-		User sessionUser=getSessionUser();
+		SessionUser sessionUser=getSessionUser();
 		User dbUser=userService.getUserByName(null, sessionUser.getUserName());
 		setAttribute("user", dbUser);
 		return "/WEB-INF/jsp/login/view-user.jsp";
@@ -186,7 +188,7 @@ public class LoginJSPAction extends JSPAction {
 		String encriptPassword=JAPPCipher.get().encrypt(passwrod);
 		user.setPassword(encriptPassword);
 		ServiceContext context=new ServiceContext();
-		context.setUser(getSessionUser());
+		context.setUser((User) getSessionUser());
 		userService.saveUser(context, user);
 		setAttribute("user", user);
 		return "/WEB-INF/jsp/login/view-user.jsp";
@@ -199,8 +201,8 @@ public class LoginJSPAction extends JSPAction {
 	public String register() throws Exception {
 		
 		ServiceContext context=new ServiceContext();
-		context.setUser(getSessionUser());
-		loginAccessService.register(context, user);
+		context.setUser((User) getSessionUser());
+		userService.register(context, user);
 		loginLogic(user, JUniqueUtils.unique()+"-"+user.getUserName());
 		setAttribute("user", user);
 		logTracker();
@@ -253,14 +255,14 @@ public class LoginJSPAction extends JSPAction {
 	
 	
 	public String toUploadImage(){
-		User sessionUser=getSessionUser();
+		SessionUser sessionUser=getSessionUser();
 		User dbUser=userService.getUserByName(null, sessionUser.getUserName());
 		setAttribute("user", dbUser);
 		return "/WEB-INF/jsp/login/image-user.jsp";
 	}
 	
 	public String uploadImage(){
-		User sessionUser=getSessionUser();
+		SessionUser sessionUser=getSessionUser();
 		User dbUser=userService.getUserByName(null, sessionUser.getUserName());
 		setAttribute("user", dbUser);
 		setSuccessMessage(EDIT_SUCCESS);

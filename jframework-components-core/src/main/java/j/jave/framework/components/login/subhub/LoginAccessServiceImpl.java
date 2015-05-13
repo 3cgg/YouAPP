@@ -5,7 +5,6 @@ package j.jave.framework.components.login.subhub;
 
 import j.jave.framework.components.authorize.resource.model.ResourceAuthorized;
 import j.jave.framework.components.authorize.resource.service.ResourceAuthorizedService;
-import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
@@ -14,6 +13,7 @@ import j.jave.framework.components.resource.service.ResourceGroupService;
 import j.jave.framework.components.resource.service.ResourceRoleService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
+import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.io.memory.JStaticMemoryCacheIO;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
@@ -101,32 +101,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemory
 	/* (non-Javadoc)
 	 * @see j.jave.framework.components.login.LoginAccessService#register(j.jave.framework.components.login.model.User)
 	 */
-	@Override
-	public void register(ServiceContext context,User user) throws JServiceException {
-		
-		if(JStringUtils.isNullOrEmpty(user.getUserName())){
-			throw new JServiceException("用户名不能为空");
-		}
-		
-		if(JStringUtils.isNullOrEmpty(user.getPassword())){
-			throw new JServiceException("密码不能为空");
-		}		
-		
-		if(!user.getPassword().equals(user.getRetypePassword())){
-			throw new JServiceException("两次输入的密码不一样");
-		}
-		
-		User dbUser=userService.getUserByName(context, user.getUserName().trim());
-		if(dbUser!=null){
-			throw new JServiceException("用户已经存在");
-		}
-		
-		String passwrod=user.getPassword().trim();
-		String encriptPassword=JAPPCipher.get().encrypt(passwrod);
-		user.setPassword(encriptPassword);
-		user.setUserName(user.getUserName().trim());
-		userService.saveUser(context, user);  // with encrypted password 
-	}
+	
 	
 	
 	@Override

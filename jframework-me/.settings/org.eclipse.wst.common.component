@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="jframework-me">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
@@ -8,6 +9,9 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jframework-components-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-core/jframework-components-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-web-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-web/jframework-components-web">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="jframework-mybatis-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-mybatis/jframework-mybatis">

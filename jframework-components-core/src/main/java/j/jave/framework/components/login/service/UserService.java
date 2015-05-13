@@ -70,4 +70,13 @@ public interface UserService extends Service<User> {
 	 * @return
 	 */
 	public List<User> getUsers();
+	
+	/**
+	 * register a user from views. its a component that wraps the logic related. 
+	 * @param context
+	 * @param user
+	 * @throws JServiceException
+	 */
+	public void register(ServiceContext context,User user) throws JServiceException;
+	
 }

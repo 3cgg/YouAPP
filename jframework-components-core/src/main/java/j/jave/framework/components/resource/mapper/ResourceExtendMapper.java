@@ -3,6 +3,8 @@
  */
 package j.jave.framework.components.resource.mapper;
 
+import java.util.List;
+
 import j.jave.framework.components.resource.model.ResourceExtend;
 import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
@@ -22,4 +24,5 @@ public interface ResourceExtendMapper extends JMapper<ResourceExtend> {
 	
 	ResourceExtend getResourceExtendOnResourceId(@Param(value="resourceId")String resourceId);
 	
+	List<ResourceExtend> getAllResourceExtends();
 }

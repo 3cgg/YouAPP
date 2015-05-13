@@ -3,7 +3,7 @@
  */
 package j.jave.framework.core;
 
-import j.jave.framework.components.login.subhub.LoginAccessService;
+import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.io.memory.JStaticMemoryCacheIO;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import junit.framework.Assert;

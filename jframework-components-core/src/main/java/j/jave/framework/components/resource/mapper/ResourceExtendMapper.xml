@@ -62,6 +62,10 @@ where a.id=#{param1}
 
 <sql id="selectfor">
 select a.* from RESOURCES_EXTEND a 
+left join RESOURCES b on a.RESOURCEID=b.ID
+</sql>
+<sql id="associationFilter">
+    (b.DELETED='N' ) 
 </sql>
 
 
@@ -81,8 +85,16 @@ update RESOURCES_EXTEND set CACHED=#{cached} where ID=#{id}
 
 <select id="getResourceExtendOnResourceId"  resultMap="resourceExtend" >
     <include refid="selectfor"></include>
-    where a.DELETED='N' and  a.RESOURCEID=#{resourceId} 
+    where a.DELETED='N' 
+    and <include refid="associationFilter"/>
+    and  a.RESOURCEID=#{resourceId} 
 </select>
 
+
+<select id="getAllResourceExtends"  resultMap="resourceExtend" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    and <include refid="associationFilter"/>
+</select>
 
 </mapper>

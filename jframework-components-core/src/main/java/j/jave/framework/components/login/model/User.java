@@ -13,7 +13,7 @@ import j.jave.framework.model.support.JTable;
  *
  */
 @JTable(name="USERS")
-public class User extends JBaseModel {
+public class User extends JBaseModel{
 	
 	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;

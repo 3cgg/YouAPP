@@ -159,6 +159,7 @@
 		<module>jframework-mybatis</module>
 		<module>jframework-bootstrap</module>
 		<module>jframework-components-support</module>
+		<module>jframework-components-web</module>
 		<module>jframework-components-core</module>
 		<module>jframework-components-bill</module>
 		<module>jframework-components-weight</module>

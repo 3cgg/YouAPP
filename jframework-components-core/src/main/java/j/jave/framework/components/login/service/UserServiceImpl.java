@@ -10,6 +10,8 @@ import j.jave.framework.components.login.model.User;
 import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
 import j.jave.framework.servicehub.exception.JServiceException;
+import j.jave.framework.support.security.JAPPCipher;
+import j.jave.framework.utils.JStringUtils;
 
 import java.util.List;
 
@@ -26,26 +28,17 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	@Autowired
 	private UserMapper userMapper;
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.UserService#getUserByNameAndPassword(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public User getUserByNameAndPassword(String userName, String password) {
 		return userMapper.getUserByNameAndPassword(userName, password);
 	}
 	
 		
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.UserService#save(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
-	 */
 	@Override
 	public void saveUser(ServiceContext context, User user) throws JServiceException {
 		saveOnly(context, user);
 	}
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.UserService#updateUser(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
-	 */
 	@Override
 	public void updateUser(ServiceContext context, User user)
 			throws JServiceException {
@@ -59,9 +52,6 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.service.UserService#getUsersByPage(j.jave.framework.components.core.context.ServiceContext, j.jave.framework.components.login.model.User)
-	 */
 	@Override
 	public List<User> getUsersByPage(ServiceContext context, JPagination pagination) {
 		return userMapper.getUsersByPage(pagination);
@@ -85,4 +75,31 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 		return userMapper.getUsers();
 	}
 
+	
+	@Override
+	public void register(ServiceContext context,User user) throws JServiceException {
+		
+		if(JStringUtils.isNullOrEmpty(user.getUserName())){
+			throw new JServiceException("用户名不能为空");
+		}
+		
+		if(JStringUtils.isNullOrEmpty(user.getPassword())){
+			throw new JServiceException("密码不能为空");
+		}		
+		
+		if(!user.getPassword().equals(user.getRetypePassword())){
+			throw new JServiceException("两次输入的密码不一样");
+		}
+		
+		User dbUser=getUserByName(context, user.getUserName().trim());
+		if(dbUser!=null){
+			throw new JServiceException("用户已经存在");
+		}
+		
+		String passwrod=user.getPassword().trim();
+		String encriptPassword=JAPPCipher.get().encrypt(passwrod);
+		user.setPassword(encriptPassword);
+		user.setUserName(user.getUserName().trim());
+		saveUser(context, user);  // with encrypted password 
+	}
 }

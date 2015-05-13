@@ -1,9 +1,9 @@
 package j.jave.framework.components.param.action;
 
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.param.model.Param;
 import j.jave.framework.components.param.model.ParamSearchCriteria;
 import j.jave.framework.components.param.service.ParamService;
-import j.jave.framework.components.web.action.AbstractAction;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="param.paramaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ParamAction extends AbstractAction {
+public class ParamAction extends JSPActionSupport {
 	
 	private Param  param;
 	

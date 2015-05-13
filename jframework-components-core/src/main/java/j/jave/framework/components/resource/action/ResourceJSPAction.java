@@ -1,10 +1,10 @@
 package j.jave.framework.components.resource.action;
 
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.components.login.service.GroupService;
 import j.jave.framework.components.login.service.RoleService;
-import j.jave.framework.components.memory.ResourceCachedRefreshEvent;
 import j.jave.framework.components.resource.model.Resource;
 import j.jave.framework.components.resource.model.ResourceExtend;
 import j.jave.framework.components.resource.model.ResourceGroup;
@@ -17,7 +17,7 @@ import j.jave.framework.components.resource.support.ResourceDetect;
 import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
-import j.jave.framework.components.web.jsp.JSPAction;
+import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.io.memory.JStaticMemoryCacheIO;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.JServiceHubDelegate;
@@ -39,7 +39,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="resource.resourceaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ResourceJSPAction extends JSPAction implements JStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,EhcacheServiceSupport{
+public class ResourceJSPAction extends JSPActionSupport implements JStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,EhcacheServiceSupport{
 	
 	@Autowired
 	private ResourceService resourceService;

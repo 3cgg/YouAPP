@@ -1,8 +1,8 @@
 package j.jave.framework.components.weight.action;
 
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.views.chart.SimpleLineChart;
-import j.jave.framework.components.web.jsp.JSPAction;
 import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.model.WeightSearchCriteria;
 import j.jave.framework.components.weight.service.WeightService;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="weight.weightaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class WeightAction extends JSPAction {
+public class WeightAction extends JSPActionSupport {
 	
 	private Weight  weight;
 	

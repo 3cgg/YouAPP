@@ -1,15 +1,17 @@
 package j.jave.framework.components.login.action.mobile;
 
+import j.jave.framework.components.core.model.SessionUserInfo;
+import j.jave.framework.components.core.support.AndroidActionSupport;
 import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.model.UserSearchCriteria;
 import j.jave.framework.components.login.model.UserTracker;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.login.service.UserTrackerService;
-import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
-import j.jave.framework.components.web.mobile.MobileAction;
 import j.jave.framework.components.web.mobile.MobileResult;
+import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
+import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="mobile.login.loginaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class LoginMobileAction extends MobileAction {
+public class LoginMobileAction extends AndroidActionSupport {
 
 	private User user;
 	
@@ -54,20 +56,19 @@ public class LoginMobileAction extends MobileAction {
 	private void loginLogic(User loginUser, String unique) {
 		String uniqueKey="ticket-"+unique;
 		HTTPContext httpContext=new HTTPContext();
-		User user=new User();
-		user.setUserName(loginUser.getUserName());
-		user.setId(loginUser.getId()); 
-		httpContext.setUser(user);
+		SessionUserInfo sessionUserInfo=new SessionUserInfo();
+		sessionUserInfo.setUserName(loginUser.getUserName());
+		sessionUserInfo.setId(loginUser.getId()); 
+		httpContext.setUser(sessionUserInfo);
 		httpContext.setTicket(uniqueKey);
 		jMemcachedDistService.set(uniqueKey, 0, httpContext);
-		
-		this.httpContext.setUser(loginUser); 
+		this.httpContext.setUser(sessionUserInfo); 
 		//setCookie("ticket", uniqueKey,-1); invalid for mobile app. 
 	}
 	
 	private void logTracker() throws JServiceException {
 		UserTracker userTracker=new UserTracker();
-		User sessionUser=getSessionUser();
+		SessionUser sessionUser=getSessionUser();
 		userTracker.setUserId(sessionUser.getId());
 		userTracker.setUserName(sessionUser.getUserName());
 		userTracker.setIp(httpContext.getIP());

@@ -1,12 +1,12 @@
 package j.jave.framework.components.tablemanager.action;
 
+import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.tablemanager.model.Cell;
 import j.jave.framework.components.tablemanager.model.Column;
 import j.jave.framework.components.tablemanager.model.Record;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.model.TableSearch;
 import j.jave.framework.components.tablemanager.service.TableManagerService;
-import j.jave.framework.components.web.jsp.JSPAction;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.model.JPage;
 import j.jave.framework.utils.JDateUtils;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="tablemanager.tablemanageraction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class TableManagerAction extends JSPAction {
+public class TableManagerAction extends JSPActionSupport {
 
 	@Autowired
 	private TableManagerService tableManagerService;

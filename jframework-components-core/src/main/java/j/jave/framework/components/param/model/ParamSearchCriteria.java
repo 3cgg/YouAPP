@@ -1,6 +1,6 @@
 package j.jave.framework.components.param.model;
 
-import j.jave.framework.components.core.model.SearchCriteria;
+import j.jave.framework.components.web.model.SearchCriteria;
 import j.jave.framework.model.JPage;
 import j.jave.framework.model.JPagination;
 

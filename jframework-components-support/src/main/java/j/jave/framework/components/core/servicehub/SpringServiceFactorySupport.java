@@ -67,7 +67,7 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	 */
 	@Override
 	public T getService() {
-		throw new RuntimeException("you should extend this class.");
+		throw new RuntimeException("you should override the method.");
 	}
 	
 }

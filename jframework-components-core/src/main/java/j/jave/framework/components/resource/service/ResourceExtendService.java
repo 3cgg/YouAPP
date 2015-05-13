@@ -1,5 +1,7 @@
 package j.jave.framework.components.resource.service;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import j.jave.framework.components.core.service.Service;
@@ -51,5 +53,13 @@ public interface ResourceExtendService extends Service<ResourceExtend> {
 	 * @return
 	 */
 	ResourceExtend getResourceExtendOnResourceId(ServiceContext context,String resourceId);
+	
+	/**
+	 * get all active resource extends , i.e.  DELETE='N' 
+	 * Note the resource related to is also active.
+	 * @param context
+	 * @return
+	 */
+	List<ResourceExtend> getAllResourceExtends(ServiceContext context);
 	
 }

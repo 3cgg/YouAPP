@@ -20,7 +20,10 @@ public abstract class JClassPathUtils {
 		String javaClassPath=(String) properties.get("java.class.path");
 		String[] paths=javaClassPath.split(";");
 		for(int i=0;i<paths.length;i++){
-			classPaths.add(new File(paths[i]));
+			String path=paths[i];
+			if(JStringUtils.isNotNullOrEmpty(path)){
+				classPaths.add(new File(path));
+			}
 		}
 		return classPaths;
 	}

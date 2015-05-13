@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>j.jave</groupId>
+		<artifactId>framework</artifactId>
+		<version>0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>j.jave.framework</groupId>
+	<artifactId>jframework-components-web</artifactId>
+	<version>${j.version}</version>
+	<packaging>jar</packaging>
+
+	<name>jframework-components-web</name>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-mybatis</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-components-support</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+
+		<!-- j/jave/framework/components/login/**/*.* -->
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency> 
+		<dependency>
+
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		
+		<dependency>
+	<groupId>javax.el</groupId>
+	<artifactId>javax.el-api</artifactId>
+	<version>3.0.0</version>
+</dependency>
+	
+	<dependency>
+	<groupId>commons-fileupload</groupId>
+	<artifactId>commons-fileupload</artifactId>
+	<version>1.3.1</version>
+</dependency>
+
+	</dependencies>
+
+
+</project>

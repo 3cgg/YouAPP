@@ -4,6 +4,7 @@
 package j.jave.framework.components.login.subhub;
 
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
+import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 
 import org.springframework.stereotype.Service;
 

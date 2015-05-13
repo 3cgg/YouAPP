@@ -1,5 +1,7 @@
 package j.jave.framework.components.resource.service;
 
+import java.util.List;
+
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.resource.mapper.ResourceExtendMapper;
@@ -117,6 +119,11 @@ public class ResourceExtendServiceImpl extends ServiceSupport<ResourceExtend> im
 	public ResourceExtend getResourceExtendOnResourceId(ServiceContext context,
 			String resourceId) {
 		return resourceExtendMapper.getResourceExtendOnResourceId(resourceId);
+	}
+
+	@Override
+	public List<ResourceExtend> getAllResourceExtends(ServiceContext context) {
+		return resourceExtendMapper.getAllResourceExtends();
 	}
 	
 	

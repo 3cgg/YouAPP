@@ -1,10 +1,10 @@
 package j.jave.framework.components.tablemanager.ext;
 
 import j.jave.framework.components.core.context.SpringContextSupport;
-import j.jave.framework.components.core.jsp.ServletRenderContext;
-import j.jave.framework.components.core.menu.Item;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.service.TableManagerService;
+import j.jave.framework.components.views.menu.Item;
+import j.jave.framework.components.web.jsp.ServletRenderContext;
 
 import java.util.ArrayList;
 import java.util.List;

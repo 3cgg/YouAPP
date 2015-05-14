@@ -9,12 +9,16 @@ import j.jave.framework.components.login.model.User;
 import j.jave.framework.components.login.service.UserGroupService;
 import j.jave.framework.components.login.service.UserRoleService;
 import j.jave.framework.components.login.service.UserService;
+import j.jave.framework.components.resource.model.Resource;
 import j.jave.framework.components.resource.service.ResourceGroupService;
 import j.jave.framework.components.resource.service.ResourceRoleService;
+import j.jave.framework.components.resource.service.ResourceService;
+import j.jave.framework.components.resource.support.ResourceDetect;
+import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.support.security.JAPPCipher;
@@ -34,7 +38,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="loginAccessService")
-public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemoryCacheIO ,EhcacheServiceSupport{
+public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStaticMemoryCacheIO ,EhcacheServiceSupport{
 
 	private static final String RESOURCE_AUTHORIZED_KEY="j.jave.framework.components.login.ehcache.user.resource.authorized";
 	
@@ -56,14 +60,16 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemory
 	@Autowired
 	private ResourceAuthorizedService resourceAuthorizedService;
 	
+	@Autowired
+	private ResourceService resourceService;
+	
+	private ResourceDetect resourceDetect=new ResourceDetect();
+	
 	/**
 	 * cache service . 
 	 */
 	private EhcacheService ehcacheService=null;;
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.UserAccessService#validate(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public String validate(String name, String password)
 			throws JServiceException {
@@ -98,12 +104,6 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemory
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see j.jave.framework.components.login.LoginAccessService#register(j.jave.framework.components.login.model.User)
-	 */
-	
-	
-	
 	@Override
 	public String login(String name, String password) throws JServiceException {
 		String ticket=validate(name, password);
@@ -176,4 +176,55 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JStaticMemory
 		}
 		return ehcacheService;
 	}
+	
+	@Override
+	public boolean isValidResource(String resource) {
+		List<String> resources=getResources();
+		if(resources!=null){
+			return resources.contains(resource);
+		}
+		return true;
+	}
+
+
+	@Override
+	public List<String> setResources() {
+		List<Resource> resources= resourceService.getResources();
+		List<String> paths=new ArrayList<String>(256);
+		if(resources!=null){
+			for(int i=0;i<resources.size();i++){
+				Resource resource=resources.get(i);
+				String path=resource.getUrl();
+				if(JStringUtils.isNotNullOrEmpty(path)){
+					paths.add(path);
+				}
+			}
+		}
+		
+		
+		List<ResourceInfo> resourceInfos= resourceDetect.detect().getMethodInfos();
+		if(resourceInfos!=null){
+			for(int i=0;i<resourceInfos.size();i++){
+				ResourceInfo resourceInfo=resourceInfos.get(i);
+				String path=resourceInfo.getPath();
+				if(JStringUtils.isNotNullOrEmpty(path)&&!paths.contains(path)){
+					paths.add(path);
+				}
+			}
+		}
+		getEhcacheService().put(JResourceStaticMemoryCacheIO_KEY, paths);
+		return paths;
+	}
+
+	@Override
+	public List<String> getResources() {
+		Object paths= getEhcacheService().get(JResourceStaticMemoryCacheIO_KEY);
+		if(paths==null){
+			paths=setResources();
+		}
+		return (List<String>) paths;
+	}
+	
+	
+	
 }

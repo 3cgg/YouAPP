@@ -18,7 +18,7 @@ import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
-import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.utils.JStringUtils;
@@ -39,7 +39,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="resource.resourceaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ResourceJSPAction extends JSPActionSupport implements JStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,EhcacheServiceSupport{
+public class ResourceJSPAction extends JSPActionSupport implements JSingleStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,EhcacheServiceSupport{
 	
 	@Autowired
 	private ResourceService resourceService;

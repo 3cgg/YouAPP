@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * Support all services registered in the spring container. 
- * override the method {@method getService} to expose the self. 
+ * <p><strong>override the method {@link #getService()} to expose the self.</strong> 
  * @author J
  * @param <T> the name service expose.  A full class name. 
  */
@@ -67,7 +67,7 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	 */
 	@Override
 	public T getService() {
-		throw new RuntimeException("you should override the method.");
+		throw new RuntimeException("override the method to provide concrete service.");
 	}
 	
 }

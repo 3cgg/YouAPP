@@ -2,14 +2,17 @@ package j.jave.framework.components.web.jsp;
 
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.multi.platform.filter.APPFilterConfig;
+import j.jave.framework.components.web.multi.platform.filter.APPFilterConfigResolve;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
+import j.jave.framework.components.web.subhub.servlet.config.ServletConfigService;
+import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -22,10 +25,36 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
+ * the filter is only for JSP view , i.e. generally it's for the request sent from the <strong>browser client</strong>.
+ * for any other platforms such as Android or IOS, from which the request never be intercepted. 
+ * as so , you need be aware of the <strong>&lt;url-pattern></strong> , and
+ * <strong>Note that some request based on servlet path need be forward. so you must configure servlet path ( {@link APPFilterConfig#SERVICE_ON_SERVLET_PATH} ),
+ * <pre>
+ * &lt;init-param>
+ *			&lt;param-name>serviceServletPath&lt;/param-name>
+ *			&lt;param-value>/web/service/dispatch/*&lt;/param-value>
+ *		&lt;/init-param>
+ * </pre>
+ *  see APPFilterConfig</strong>
+ *A sample below shown :<pre> &lt;filter>
+ *		&lt;filter-name>JWebLoginFilter&lt;/filter-name>
+ *		&lt;filter-class>j.jave.framework.components.web.jsp.JJSPLoginFilter&lt;/filter-class>
+ *		&lt;init-param>
+ *			&lt;param-name>serviceServletPath&lt;/param-name>
+ *			&lt;param-value>/web/service/dispatch/*&lt;/param-value>
+ *		&lt;/init-param>
+ *	&lt;/filter>
+ *	&lt;filter-mapping>
+ *		&lt;filter-name>JWebLoginFilter&lt;/filter-name>
+ *		&lt;url-pattern>/web/service/dispatch/*&lt;/url-pattern>
+ *		&lt;dispatcher>FORWARD&lt;/dispatcher>
+ *		&lt;dispatcher>REQUEST&lt;/dispatcher>
+ *	&lt;/filter-mapping>
+ *</pre>
  * @author J
- *
+ * @see {@link APPFilterConfig}
  */
-public class JJSPLoginFilter implements Filter  {
+public class JJSPLoginFilter implements JFilter ,APPFilterConfig {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JJSPLoginFilter.class);
 	
@@ -34,36 +63,26 @@ public class JJSPLoginFilter implements Filter  {
 	 */
 	private String serviceServletPath="/default";
 	
-	/**
-	 * default "/login.loginaction/login"
-	 */
-	private String serviceLoginPath="/login.loginaction/login";
+	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
-	private String serviceToLoginPath="/login.loginaction/toLogin";
-	
-	private MemcachedService memcachedService= null;
+	private MemcachedService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedService.class);;
 	
 	private LoginAccessService loginAccessService= JServiceHubDelegate.get().getService(this, LoginAccessService.class);
 	
+	
+	/**
+	 * default "/login.loginaction/login"
+	 */
+	private String serviceLoginPath=servletConfigService.getLoginPath();
+	
+	private String serviceToLoginPath=servletConfigService.getToLoginPath();
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		String tempPath=filterConfig.getInitParameter("serviceServletPath");
-		if(tempPath!=null){
-			tempPath=tempPath.trim();
-			if(tempPath.endsWith("/*")){
-				this.serviceServletPath=tempPath.substring(0, tempPath.length()-2);
-			}
-			else if(tempPath.endsWith("/")){
-				this.serviceServletPath=tempPath.substring(0, tempPath.length()-1);
-			}
-			else {
-				this.serviceServletPath=tempPath;
-			}
+		String serviceServletPath=new APPFilterConfigResolve().resolveServiceOnServletPath(filterConfig);
+		if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
+			this.serviceServletPath=serviceServletPath;
 		}
-		
-		tempPath=filterConfig.getInitParameter("serviceLoginPath");
-		memcachedService=JServiceHubDelegate.get().getService(this,MemcachedService.class);
-		loginAccessService=JServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	}
 
 	@Override

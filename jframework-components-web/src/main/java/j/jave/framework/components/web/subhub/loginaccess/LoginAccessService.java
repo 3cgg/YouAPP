@@ -11,7 +11,7 @@ import j.jave.framework.servicehub.exception.JServiceException;
  * any permit or deny function focus on the system global scope need put in this class. 
  * @author J
  */
-public interface LoginAccessService  extends JService {
+public interface LoginAccessService  extends JService ,JResourceStaticMemoryCacheIO {
 	
 	/**
 	 * if its valid user, return an unique string. 
@@ -58,5 +58,14 @@ public interface LoginAccessService  extends JService {
 	 * @return
 	 */
 	public boolean authorizeOnUserId(String resource,String userId);
+	
+	
+	/**
+	 * check whether the resource is valid. i.e. the resource can be mapping to some action extends AbstractAction
+	 * @param resource
+	 * @return true if the resource can map, otherwise false.
+	 */
+	public boolean isValidResource(String resource);
+	
 	
 }

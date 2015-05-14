@@ -8,6 +8,7 @@ import j.jave.framework.components.web.action.ActionExecutor;
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUserGetEvent;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
+import j.jave.framework.components.web.support.JServlet;
 import j.jave.framework.components.web.utils.CookieUtils;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
@@ -39,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * @see ActionExecutor#execute(HTTPContext)
  */
 @SuppressWarnings("serial")
-public abstract class JServiceServlet  extends HttpServlet {
+public abstract class JServiceServlet  extends JServlet {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JServiceServlet.class);
 	

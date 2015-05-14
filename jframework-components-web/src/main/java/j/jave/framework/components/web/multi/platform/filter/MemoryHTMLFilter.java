@@ -3,12 +3,12 @@ package j.jave.framework.components.web.multi.platform.filter;
 import j.jave.framework.components.web.subhub.resourcecached.MemoryCachedService;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseCachedResource;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseEhcacheMemoryCacheService;
+import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * filter on all request , check if the response need be stored into memory.
  * @author J
  */
-public class MemoryHTMLFilter implements Filter{
+public class MemoryHTMLFilter implements JFilter{
 
 	MemoryCachedService<ResponseCachedResource> requestResourceMemoryCacheService;
 	

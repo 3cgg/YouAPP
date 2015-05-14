@@ -2,6 +2,7 @@ package j.jave.framework.components.web.multi.platform.filter;
 
 import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
+import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * the filter is following from JJSPLoginFilter
  * @author J
  */
-public class AccessFilter implements Filter{
+public class AccessFilter implements JFilter{
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(AccessFilter.class);
 	

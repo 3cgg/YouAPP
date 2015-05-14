@@ -4,7 +4,7 @@
 package j.jave.framework.core;
 
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import junit.framework.Assert;
 
@@ -17,7 +17,7 @@ public class LoginAccessTest extends StandaloneTest {
 			JServiceHubDelegate.get().getService(this, LoginAccessService.class);
 	
 	public void testResourceIO(){
-		JStaticMemoryCacheIO resourceIO=(JStaticMemoryCacheIO) loginAccessService;
+		JSingleStaticMemoryCacheIO resourceIO=(JSingleStaticMemoryCacheIO) loginAccessService;
 		resourceIO.set();
 		System.out.println("OK!");
 		Assert.assertTrue(true);

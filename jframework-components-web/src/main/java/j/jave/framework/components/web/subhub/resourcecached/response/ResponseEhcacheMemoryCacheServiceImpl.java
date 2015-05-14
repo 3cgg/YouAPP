@@ -9,8 +9,8 @@ import j.jave.framework.components.web.subhub.resourcecached.ResourceCached;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedService;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedServiceGetEvent;
-import j.jave.framework.io.memory.JDynamicMemoryCacheIO;
-import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.io.memory.JSingleDynamicMemoryCacheIO;
+import j.jave.framework.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
  * @author J
  */
 @Service(value="responseEncacheMemoryCacheServiceImpl")
-public class ResponseEhcacheMemoryCacheServiceImpl implements ResponseEhcacheMemoryCacheService, JDynamicMemoryCacheIO,EhcacheServiceSupport ,JStaticMemoryCacheIO{
+public class ResponseEhcacheMemoryCacheServiceImpl implements ResponseEhcacheMemoryCacheService, JSingleDynamicMemoryCacheIO,EhcacheServiceSupport ,JSingleStaticMemoryCacheIO{
 
 	/**
 	 * cache service . 

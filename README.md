@@ -12,4 +12,5 @@ And because of the CSS issue, will end up here. Then do android developing on th
 # How TO Build 
 You need install maven in your computer, then go the root to run "mvn clean install" . the war file uner jframework-me directory can be deploy. or you can start the project using Jetty through running JettyServerHelper Class .  Also note : you need change the default ip address in the youapp-config.js file. Now you can get the sample running. 
 
-#2015-05-01 ， 第一个试用版本，暂停更新。 
+#2015-05-01 ， 第一个试用版本 
+#2015-05-15 ,  第二个试用版本，比较稳定了

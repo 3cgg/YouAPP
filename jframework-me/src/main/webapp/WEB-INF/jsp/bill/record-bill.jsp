@@ -134,9 +134,14 @@
 				   required: true,
 				   maxlength:64
 			   },
+			   'bill.goodType': {
+				   required: true,
+				   maxlength:32
+			   },
 			   'bill.mallName': {
 				   required: function (){
-					   return "OTHERS"==$('#mallCode').val();
+					   Console(this);
+					   return $('#mallCode').val()==null||$('#mallCode').val()==""||"OTHERS"==$('#mallCode').val();
 				   },
 				   maxlength:256
 			   },

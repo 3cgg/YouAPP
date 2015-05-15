@@ -324,3 +324,17 @@ function Console(message){
 	}
 }
 
+function GETDownload(url, param){
+	window.open(_GLOBAL_serviceHost + url+"?"+param);
+}
+
+
+
+
+
+
+
+
+
+
+

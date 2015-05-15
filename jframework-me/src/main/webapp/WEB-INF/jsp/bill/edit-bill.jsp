@@ -158,7 +158,7 @@
 			   },
 			   'bill.mallName': {
 				   required: function (){
-					   return "OTHERS"==$('#mallCode').val();
+					   return $('#mallCode').val()==null||$('#mallCode').val()==""||"OTHERS"==$('#mallCode').val();
 				   },
 				   maxlength:256
 			   },

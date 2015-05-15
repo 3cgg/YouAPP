@@ -91,8 +91,9 @@ public class JJSPLoginFilter implements JFilter ,APPFilterConfig {
 		
 		try{
 			HttpServletRequest req=(HttpServletRequest) request;
-			String target=HTTPUtils.getPathInfo(req);
 			
+			// common resource , if path info is null or empty never intercepted by custom servlet.
+			String target=HTTPUtils.getPathInfo(req);
 			if(!loginAccessService.isNeedLoginRole(target)){
 				// 资源不需要登录权限
 				chain.doFilter(request, response);

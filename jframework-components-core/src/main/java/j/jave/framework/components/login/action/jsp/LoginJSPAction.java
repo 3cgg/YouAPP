@@ -27,13 +27,16 @@ import j.jave.framework.components.web.model.JQueryDataTablePage;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
+import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.listener.JAPPEvent;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
+import j.jave.framework.support.qrcode.JQRCode;
 import j.jave.framework.support.security.JAPPCipher;
 import j.jave.framework.utils.JDateUtils;
+import j.jave.framework.utils.JStringUtils;
 import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
@@ -176,6 +179,23 @@ public class LoginJSPAction extends JSPActionSupport {
 		SessionUser sessionUser=getSessionUser();
 		User dbUser=userService.getUserByName(null, sessionUser.getUserName());
 		setAttribute("user", dbUser);
+		
+		List<UserRole> userRoles= userRoleService.getUserRolesByUserId(getServiceContext(), dbUser.getId());
+		String roleInfo="";
+		if(userRoles!=null&&!userRoles.isEmpty()){
+			for(int i=0;i<userRoles.size();i++){
+				UserRole userRole=userRoles.get(i);
+				roleInfo=roleInfo+";"+userRole.getRole().getRoleName();
+			}
+		}
+		
+		if(JStringUtils.isNotNullOrEmpty(roleInfo)){
+			roleInfo=roleInfo.replaceFirst(";", "");
+		}
+		
+		String userInfo=HTTPUtils.getAppUrlPath(getHttpContext().getRequest());
+		byte[] bytes=JQRCode.createQRCode(userInfo);
+		setAttribute("qrcode", JStringUtils.bytestoBASE64String(bytes));
 		return "/WEB-INF/jsp/login/view-user.jsp";
 	}
 	

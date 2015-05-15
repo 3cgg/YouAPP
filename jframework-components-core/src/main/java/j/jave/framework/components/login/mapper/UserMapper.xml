@@ -17,6 +17,11 @@
 <resultMap type="j.jave.framework.components.login.model.User" id="user"  extends="base" >
 	<result column="USERNAME" property="userName" />
 	<result column="PASSWORD" property="password" />
+	
+	<result column="USERIMAGE" property="userExtend.userImage" />
+	<result column="USEREXTEND_ID" property="userExtend.id" />
+	<result column="NATURENAME" property="userExtend.natureName" />
+	
 </resultMap>
 
 
@@ -43,13 +48,32 @@ USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 	update USERS set DELETED='Y' where ID=#{id}
 </delete>
 
+<sql id="selectfor">
+select a.*,
+b.ID USEREXTEND_ID,
+b.USERIMAGE USERIMAGE,
+b.NATURENAME NATURENAME
+from USERS a
+left join USERS_EXTEND b on b.USERID=a.ID and b.DELETED='N' 
+</sql>
+<sql id="associationFilter">
+    ( true ) 
+</sql>
+
+
 <select id="getUserByNameAndPassword"  resultMap="user"  >
-select * from USERS where DELETED='N' and USERNAME=#{userName} and PASSWORD=#{password}
+<include refid="selectfor"/>
+where a.DELETED='N' 
+and <include refid="associationFilter"/>
+and a.USERNAME=#{userName} and a.PASSWORD=#{password}
 </select>
 
 
 <select id="getUserByName"  resultMap="user"  >
-select * from USERS where DELETED='N' and USERNAME=#{userName}
+<include refid="selectfor"/>
+where a.DELETED='N' 
+and <include refid="associationFilter"/>
+and a.USERNAME=#{userName}
 </select>
 
 

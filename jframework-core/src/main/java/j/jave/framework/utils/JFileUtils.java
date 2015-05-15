@@ -42,7 +42,7 @@ public abstract class JFileUtils {
 		if(dotIndex==-1){
 			return "";
 		}
-		return name.substring(name.lastIndexOf('.'));
+		return name.substring(dotIndex+1);
 	}
 	
 	/**

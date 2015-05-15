@@ -1,16 +1,19 @@
 /**
  * 
  */
-package j.jave.framework.components.web.servlet;
+package j.jave.framework.components.web.multi.platform.servlet;
 
 import j.jave.framework.components.web.ViewConstants;
 import j.jave.framework.components.web.action.ActionExecutor;
 import j.jave.framework.components.web.action.HTTPContext;
-import j.jave.framework.components.web.subhub.sessionuser.SessionUserGetEvent;
+import j.jave.framework.components.web.jsp.JJSPServiceServlet;
+import j.jave.framework.components.web.mobile.JMobileServiceServlet;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
+import j.jave.framework.components.web.subhub.sessionuser.SessionUserGetEvent;
 import j.jave.framework.components.web.support.JServlet;
 import j.jave.framework.components.web.utils.CookieUtils;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.io.JFile;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
@@ -21,7 +24,6 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,9 +37,13 @@ import org.slf4j.LoggerFactory;
  *  the different parts are described below:
  *  <p>protocol://host:port/app-context-path(if existing)/servlet-context-path(if existing)/action-bean-name(mandatory)/action-method(mandatory)?query-string
  *	<p>we first construct HTTP Context , then in which the request executed by ActionExecutor .
+ *  the servlet also test the object from ActionExecutor is File(see {@link JFile}) or not, if true the response will be for downloading file,
+ *  Note that we check that according to {@link JFile} ,but not any byte array {@link byte[]}. 
  * @author J
  * @see HTTPContext
  * @see ActionExecutor#execute(HTTPContext)
+ * @see JJSPServiceServlet
+ * @see JMobileServiceServlet
  */
 @SuppressWarnings("serial")
 public abstract class JServiceServlet  extends JServlet {
@@ -100,7 +106,17 @@ public abstract class JServiceServlet  extends JServlet {
 			httpContext.setTargetPath(target);
 			Object navigate=ActionExecutor.newSingleExecutor().execute(httpContext);
 			
-			handlerNavigate(req, resp,httpContext, navigate);
+			// if response for download.
+			if(JFile.class.isInstance(navigate)){
+				JFile file=(JFile)navigate;
+				resp.setContentType("application/" + file.getFileExtension());
+				resp.setContentLength((int) file.contentLength());
+				resp.setHeader("Content-Disposition", "attachment;filename="+ file.getExpectedFullFileName()); 
+				resp.getOutputStream().write(file.getFileContent());
+			}
+			else{
+				handlerNavigate(req, resp,httpContext, navigate);
+			}
 
 			if(LOGGER.isDebugEnabled()){
 				LOGGER.debug("the response of "+req.getRequestURL()+"[DispathType:"+req.getDispatcherType().name()+"] is OK!");
@@ -114,7 +130,9 @@ public abstract class JServiceServlet  extends JServlet {
 			LOGGER.error(e.getMessage(),e);
 			handlerExcepion(req, resp,httpContext,  e);
 		}finally{
-			resp.setContentType("text/html;charset=UTF-8");
+			if(JStringUtils.isNullOrEmpty(resp.getContentType())){
+				resp.setContentType("text/html;charset=UTF-8");
+			}
 		}
 		
 	}

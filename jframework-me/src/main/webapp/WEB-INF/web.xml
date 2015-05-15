@@ -16,7 +16,7 @@
 	 </listener>
 	 
 	<listener>
-	    <listener-class>j.jave.framework.components.web.listener.APPContextListener</listener-class>
+	    <listener-class>j.jave.framework.components.web.multi.platform.listener.APPContextListener</listener-class>
 	</listener>
 	 
 	 <!--  DDL  -->
@@ -30,7 +30,7 @@
         <param-value>j.jave.framework.components</param-value>  
     </context-param> 
 	<listener>  
-	 <listener-class>j.jave.framework.components.web.listener.SQLDDLListener
+	 <listener-class>j.jave.framework.components.web.multi.platform.listener.SQLDDLListener
 	 </listener-class>
 	 </listener>
 	 
@@ -45,7 +45,7 @@
         <param-value>j.jave.framework.components</param-value>  
     </context-param> 
 	<listener>  
-	 <listener-class>j.jave.framework.components.web.listener.SQLDMLListener
+	 <listener-class>j.jave.framework.components.web.multi.platform.listener.SQLDMLListener
 	 </listener-class>
 	 </listener>
 	 
@@ -77,7 +77,7 @@
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<!-- JJSPValidPathFilter -->
+	<!-- JValidPathFilter -->
 	<filter>
 		<filter-name>JValidPathFilter</filter-name>
 		<filter-class>j.jave.framework.components.web.multi.platform.filter.JValidPathFilter</filter-class>
@@ -99,23 +99,21 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>JJSPLoginFilter</filter-name>
-		<servlet-name>JJSPServiceServlet</servlet-name>
-		<url-pattern>/web/service/dispatch/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
 	
 	<!-- AccessFilter -->
 	<filter>
-		<filter-name>AccessFilter</filter-name>
-		<filter-class>j.jave.framework.components.web.multi.platform.filter.AccessFilter</filter-class>
+		<filter-name>ResourceAccessFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.multi.platform.filter.ResourceAccessFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>AccessFilter</filter-name>
+		<filter-name>ResourceAccessFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 	
 	

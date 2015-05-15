@@ -4,7 +4,7 @@ import j.jave.framework.components.core.context.SpringContextSupport;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.service.TableManagerService;
 import j.jave.framework.components.views.menu.Item;
-import j.jave.framework.components.web.jsp.ServletRenderContext;
+import j.jave.framework.components.web.multi.platform.scope.ServletRenderContext;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,6 +3,7 @@ package j.jave.framework.components.testfunction.mapper.test;
 import j.jave.framework.components.login.mapper.GroupMapper;
 import j.jave.framework.components.login.mapper.RoleGroupMapper;
 import j.jave.framework.components.login.mapper.RoleMapper;
+import j.jave.framework.components.login.mapper.UserExtendMapper;
 import j.jave.framework.components.login.mapper.UserGroupMapper;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.mapper.UserRoleMapper;
@@ -10,6 +11,7 @@ import j.jave.framework.components.login.model.Group;
 import j.jave.framework.components.login.model.Role;
 import j.jave.framework.components.login.model.RoleGroup;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.components.login.model.UserExtend;
 import j.jave.framework.components.login.model.UserGroup;
 import j.jave.framework.components.login.model.UserRole;
 import j.jave.framework.components.resource.mapper.ResourceExtendMapper;
@@ -52,6 +54,8 @@ public class ResourceMapperTest extends AbstractMapperTest {
 			put(ResourceExtendMapper.class, ResourceExtend.class);
 			put(ResourceRoleMapper.class, ResourceRole.class);
 			put(ResourceGroupMapper.class, ResourceGroup.class);
+			
+			put(UserExtendMapper.class, UserExtend.class);
 			
 		}
 		

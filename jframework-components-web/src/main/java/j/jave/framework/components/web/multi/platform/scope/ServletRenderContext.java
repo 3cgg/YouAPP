@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.framework.components.web.jsp;
+package j.jave.framework.components.web.multi.platform.scope;
 
 import javax.servlet.http.HttpServletRequest;
 

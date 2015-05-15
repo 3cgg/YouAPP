@@ -193,4 +193,12 @@ public abstract class JHttp <T extends JHttp<?>>{
 		return  (T) this;
 	}
 	
+	
+	/**
+	 * set custom response handler, now default handler is String Handler, get the string format of response.
+	 * @param responseHandler the responseHandler to set
+	 */
+	public void setResponseHandler(JResponseHandler<?> responseHandler) {
+		this.responseHandler = responseHandler;
+	}
 }

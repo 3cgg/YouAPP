@@ -4,13 +4,13 @@ import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -22,12 +22,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
  * filter on all request , check if the request is authorized on the end-user.
- * the filter is following from JJSPLoginFilter
+ * the filter may follow from JJSPLoginFilter, but the filter also intercept those request from mobile platform such as Android, IOS
+ * <p> Common resource such as  Javascript , CSS or Image etc never be intercepted. 
+ * So recommend configure the filter mapping using sample below:
+ * <pre>
+ * &lt;filter-mapping>
+		&lt;filter-name>ResourceAccessFilter&lt;/filter-name>
+		&lt;servlet-name>JJSPServiceServlet&lt;/servlet-name>
+		&lt;servlet-name>JMobileServiceServlet&lt;/servlet-name>
+		&lt;dispatcher>FORWARD&lt;/dispatcher>
+		&lt;dispatcher>REQUEST&lt;/dispatcher>
+		&lt;dispatcher>INCLUDE&lt;/dispatcher>
+	&lt;/filter-mapping>    
  * @author J
  */
-public class AccessFilter implements JFilter{
+public class ResourceAccessFilter implements JFilter{
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(AccessFilter.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(ResourceAccessFilter.class);
 	
 	private LoginAccessService loginAccessService=JServiceHubDelegate.get().getService(this,LoginAccessService.class);
 	
@@ -44,35 +55,36 @@ public class AccessFilter implements JFilter{
 		
 		try{
 			HttpServletRequest req=(HttpServletRequest) request;
+			
+			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String pathInfo=HTTPUtils.getPathInfo(req);
-			
-			// common resource , never intercepted by servlet. 
-			if(JStringUtils.isNullOrEmpty(pathInfo)){
-				chain.doFilter(request, response);
-				return ;
-			}
-			
-			String clientTicket=HTTPUtils.getTicket(req);
-			
+			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限
 				chain.doFilter(request, response);
 				return ;
 			}
 			
-			// IF LOGINED.
+			String clientTicket=HTTPUtils.getTicket(req);
+			
+			// IF LOGINED, need check whether has an access to the resource
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
 				HTTPContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), HTTPContext.class);
 				if(context!=null){
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getId());
 					authorized=true;
 					if(!authorized){
-						response.getOutputStream().write("have no access to the resource.".getBytes("utf-8")); 
+						FilterResponse filterResponse=FilterResponse.newNoAccess();
+						filterResponse.setObject("have no access to the resource.");
+						response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
 						return ;
 					}
 				}
 				else{
-					throw new ServletException("login user information miss.");
+					FilterResponse filterResponse=FilterResponse.newNoLogin();
+					filterResponse.setObject("login user information [ticket:"+clientTicket+"] miss.");
+					response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+					return ;
 				}
 			}
 			chain.doFilter(request, response);
@@ -84,7 +96,6 @@ public class AccessFilter implements JFilter{
 	
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 	

@@ -34,9 +34,10 @@
 
 	                  <div class="box-footer">
 	                    <button type="submit" class="btn btn-primary" >Submit</button>
+	                    <button type="button" class="btn btn-primary"  onclick="donwload();">Download</button>
 	                  </div>
                 </form>
-		
+				
 	        </section>
 
 	<script type="text/javascript">
@@ -47,10 +48,16 @@
 		   }
 		  },
 		  submitHandler:function(form){
-			  submitPOST('/login.loginaction/uploadImage', form.id);
+			  submitPOST('/user.useraction/uploadImage', form.id);
 	        } 
 		    });
 	});
 	</script>
-
+	<script type="text/javascript">
+	
+	function donwload(){
+		GETDownload("/user.useraction/downloadImage");
+	}
+	
+	</script>
 </div>

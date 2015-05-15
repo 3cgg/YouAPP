@@ -89,6 +89,10 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 	
 	@Override
 	public boolean isNeedLoginRole(String url) throws JServiceException {
+		
+		if(JStringUtils.isNullOrEmpty(url)){
+			return false;
+		}
 		if("/login.loginaction/toRegister".equals(url)){
 			return false;
 		}

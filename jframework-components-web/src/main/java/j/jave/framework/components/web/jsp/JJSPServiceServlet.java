@@ -4,7 +4,7 @@
 package j.jave.framework.components.web.jsp;
 
 import j.jave.framework.components.web.action.HTTPContext;
-import j.jave.framework.components.web.servlet.JServiceServlet;
+import j.jave.framework.components.web.multi.platform.servlet.JServiceServlet;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.servicehub.exception.JServiceException;
 

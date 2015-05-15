@@ -3,8 +3,10 @@ package j.jave.framework.io;
 import j.jave.framework.utils.JFileUtils;
 import j.jave.framework.utils.JStringUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -86,4 +88,32 @@ public class JFile extends JFileResource{
 		this.fileContent = fileContent;
 	}
 	
+	
+	/**
+	 * if the file exists, return the content length of the file, otherwise return the byte array length of attribute {@link #fileContent}
+	 */
+	@Override
+	public long contentLength() throws IOException {
+		if(exists()){
+			return super.contentLength();
+		}
+		else{
+			return fileContent.length;
+		}
+	}
+	
+	/**
+	 * if the file exists, return the input stream of the file, otherwise return the byte array wrapper of attribute attribute {@link #fileContent}
+	 * @see ByteArrayInputStream
+	 * @return ByteArrayInputStream of the {@link #fileContent}
+	 */
+	@Override
+	public InputStream getInputStream() throws IOException {
+		if(exists()){
+			return super.getInputStream();
+		}
+		else{
+			return new ByteArrayInputStream(fileContent);
+		}
+	}
 }

@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.web.jsp.tag;
 
-import j.jave.framework.components.web.jsp.ServletRenderContext;
+import j.jave.framework.components.web.multi.platform.scope.ServletRenderContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;

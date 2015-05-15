@@ -24,7 +24,8 @@ public interface LoginAccessService  extends JService ,JResourceStaticMemoryCach
 	public String validate(String name,String password) throws JServiceException;
 	
 	/**
-	 * return true if need login , else return false. 
+	 * return true if need login , else return false,
+	 * always true if the argument is null or empty .
 	 * @param url
 	 * @return
 	 * @throws JServiceException

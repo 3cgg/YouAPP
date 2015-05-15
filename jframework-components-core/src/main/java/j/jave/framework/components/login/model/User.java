@@ -21,8 +21,17 @@ public class User extends JBaseModel{
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
 	
-	
 	private String retypePassword;
+	
+	private UserExtend userExtend;
+
+	public UserExtend getUserExtend() {
+		return userExtend;
+	}
+
+	public void setUserExtend(UserExtend userExtend) {
+		this.userExtend = userExtend;
+	}
 
 	public String getRetypePassword() {
 		return retypePassword;

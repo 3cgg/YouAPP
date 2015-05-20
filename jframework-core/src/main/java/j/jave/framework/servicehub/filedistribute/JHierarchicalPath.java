@@ -42,7 +42,7 @@ public class JHierarchicalPath {
 	}
 	
 	public String getFileExtension() {
-		return file.getFileExtension();
+		return "."+file.getFileExtension();
 	}
 	
 }

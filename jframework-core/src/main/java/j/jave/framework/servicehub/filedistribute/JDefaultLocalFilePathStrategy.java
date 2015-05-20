@@ -3,6 +3,7 @@
  */
 package j.jave.framework.servicehub.filedistribute;
 
+import j.jave.framework.io.JFile;
 import j.jave.framework.support.validate.JFileExtensionValidator;
 import j.jave.framework.support.validate.JFileNameValidator;
 import j.jave.framework.support.validate.JValidator;
@@ -22,11 +23,41 @@ import java.util.Date;
  *<li>date(2014-04-15)/filetype(txt)/{0}</li>, every placeholder only contains one hundred files. 
  *<li>date(2014-04-15)/filetype(txt)/{0}/targetfile</li>
  * @author J
+ * @see JHierarchicalPath
  */
-public class JDefaultLocalFilePathStrategy {
+public class JDefaultLocalFilePathStrategy implements JLocalFilePathStrategy {
 
+	private String localDirectory;
 	
-	public URI resolveURI(JHierarchicalPath hierarchicalPath) {
+	public JDefaultLocalFilePathStrategy(String localDirectory) {
+		this.localDirectory=localDirectory;
+	}
+	
+	public JDefaultLocalFilePathStrategy(){
+	}
+	
+	/**
+	 * @param localDirectory the localDirectory to set
+	 */
+	public void setLocalDirectory(String localDirectory) {
+		this.localDirectory = localDirectory;
+	}
+	
+	/**
+	 * @return the localDirectory
+	 */
+	public String getLocalDirectory() {
+		return localDirectory;
+	}
+	
+	@Override
+	public URI resolveURI(JFile file) {
+		JHierarchicalPath hierarchicalPath= new JHierarchicalPath(file);
+		hierarchicalPath.setRoot(localDirectory);
+		return resolveURI(hierarchicalPath);
+	}
+	
+	private URI resolveURI(JHierarchicalPath hierarchicalPath) {
 		String root=hierarchicalPath.getRoot();
 		String extensionWithDot=hierarchicalPath.getFileExtension();
 

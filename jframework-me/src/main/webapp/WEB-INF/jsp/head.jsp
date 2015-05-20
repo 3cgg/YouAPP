@@ -76,6 +76,16 @@
 <!-- Morris.js charts -->
     <script src="${pageContext.request.contextPath}/plugins/morris/raphael-min.js"></script>
 
+
+<!--  JSON2.JS -->
+<script src="${pageContext.request.contextPath}/js/json2.js"></script>
+
+<!-- Cookie -->
+<script src="${pageContext.request.contextPath}/js/jquery.cookie.js"></script>
+
+<!--  plupload -->
+<script src="${pageContext.request.contextPath}/plugins/plupload/plupload.full.min.js" type="text/javascript"></script>
+
 <!--  YouAPP css -->
 <script src="${pageContext.request.contextPath}/js/youapp-config.js"></script>
 <script src="${pageContext.request.contextPath}/js/youapp.js"></script>

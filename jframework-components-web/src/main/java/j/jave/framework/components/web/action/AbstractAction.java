@@ -5,11 +5,16 @@ import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.model.JPage;
 import j.jave.framework.utils.JStringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * basic action for view controller.
  * @author J
  */
 public abstract class AbstractAction implements Action {
+	
+	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
 	protected HTTPContext httpContext;
 	

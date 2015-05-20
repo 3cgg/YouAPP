@@ -1,6 +1,7 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
 import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.multi.platform.support.FilterResponse;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.HTTPUtils;

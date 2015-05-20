@@ -3,13 +3,17 @@
  */
 package j.jave.framework.components.web.action;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import j.jave.framework.components.core.context.SpringContextSupport;
+import j.jave.framework.components.web.multi.platform.support.JLinkedRequestSupport;
 import j.jave.framework.components.web.utils.HTTPUtils;
 import j.jave.framework.reflect.JReflect;
 import j.jave.framework.utils.JDateUtils;
+
+import java.util.Map;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -34,6 +38,28 @@ public class ActionExecutor {
 			LOGGER.debug("path processing : "+targetPath);
 		}
 		
+		HttpServletRequest req=httpContext.getRequest();
+		boolean isLinkedRequest=false;
+		if(req!=null){
+			// if the request content type is "multipart/form-data"
+			if(HTTPUtils.isFileContextType(req)){
+				Map<String, Object> parameterValues=HTTPUtils.doWithRequestParameterWithFileAttached(req);
+				httpContext.setParameters(parameterValues);
+			}
+			DispatcherType dispatcherType= req.getDispatcherType();
+			if(dispatcherType==DispatcherType.REQUEST){
+				
+				if(JLinkedRequestSupport.isLinked(req)){
+					isLinkedRequest=true;
+					JLinkedRequestSupport linkedRequestSupport=new JLinkedRequestSupport(req);
+					String allParameters=linkedRequestSupport.get();
+					Map params= HTTPUtils.parseQueryString(HTTPUtils.decode(allParameters));
+					httpContext.setParameters(params);
+				}
+				
+			}
+		}
+		
 		// resolve the path , then invoke the target method. 
 	    // the path like /login.loginaction/toLogin
 		
@@ -52,7 +78,13 @@ public class ActionExecutor {
 			HTTPUtils.set(object, httpContext);
 		}
 		else{
-			HTTPUtils.set(object, httpContext.getRequest(), httpContext);
+			
+			if(isLinkedRequest){
+				HTTPUtils.set(object, httpContext);
+			}
+			else{
+				HTTPUtils.set(object, httpContext.getRequest(), httpContext);
+			}
 		}
 		StopWatch stopWatch=null;
 		if(LOGGER.isDebugEnabled()){

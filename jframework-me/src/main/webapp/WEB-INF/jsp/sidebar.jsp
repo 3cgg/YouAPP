@@ -30,6 +30,9 @@
 			<ul class="sidebar-menu">
 				<li class="header">MAIN NAVIGATION</li>
 				
+				<!-- test -->
+				<c:import url="sample/sidebar-sample.jsp"></c:import>
+				
 				<!--  dashboard  -->
 				<c:import url="sidebar-dashboard.jsp"></c:import>
 	            <!--  user  -->

@@ -1,5 +1,6 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
+import j.jave.framework.components.web.multi.platform.support.MemoryResponseWrapper;
 import j.jave.framework.components.web.subhub.resourcecached.MemoryCachedService;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseCachedResource;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseEhcacheMemoryCacheService;

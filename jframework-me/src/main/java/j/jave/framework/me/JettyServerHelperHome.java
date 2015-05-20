@@ -33,7 +33,7 @@ public class JettyServerHelperHome {
 		
 //		String webApp="D:/java_/so/sources/trunk/jframework-me/src/main/webapp";
 		String webApp="D:/java_/JFramework1.1/trunk/jframework-me/src/main/webapp";
-		
+		String crossdomain="D:/java_/JFramework1.1/trunk/jframework-me/src/main/crossdomain";
 		String serverDirectory="D:/java_/server-directory";
 		
 		 // Setup Threadpool
@@ -75,6 +75,9 @@ public class JettyServerHelperHome {
         
         WebAppContext webAppContext=new WebAppContext(webApp, "/youapp");
         contexts.addHandler(webAppContext);
+        
+        WebAppContext crossdomainApp=new WebAppContext(crossdomain, "/");
+        contexts.addHandler(crossdomainApp);
         
 //        ServletContextHandler jspHandler = new ServletContextHandler(
 //                ServletContextHandler.SESSIONS);

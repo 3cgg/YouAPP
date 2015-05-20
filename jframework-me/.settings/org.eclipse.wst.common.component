@@ -29,6 +29,9 @@
         <dependent-module archiveName="jframework-components-tablemanager-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-tablemanager/jframework-components-tablemanager">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="jframework-components-test-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-test/jframework-components-test">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="jframework-me"/>
         <property name="java-output-path" value="/jframework-me/target/classes"/>
     </wb-module>

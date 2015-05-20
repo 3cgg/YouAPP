@@ -10,12 +10,13 @@
   
     <div class="register-box">
       <div class="register-logo">
-        <a href="../../index2.html"><b>You</b>APP</a>
+        <b>You</b>APP
       </div>
 
       <div class="register-box-body">
         <p class="login-box-msg">Register a new membership</p>
         <form id ="registerForm" method="post">
+        <c:import url="../message-alert.jsp"></c:import>
           <!-- 
           <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="Full name"/>
@@ -44,7 +45,7 @@
             <div class="col-xs-8">    
               <div class="checkbox icheck">
                 <label>
-                  <input type="checkbox"> I agree to the <a href="#">terms</a>
+                  <input type="checkbox"  id="agreeCheck"> I agree to the <a href="#">terms</a>
                 </label>
               </div>                        
             </div><!-- /.col -->
@@ -84,7 +85,14 @@
 					  }
 					},
 				  submitHandler:function(form){
-					  submitPOST('/login.loginaction/register', form.id);
+					  Console(this);
+					  var isAgree=$('#agreeCheck').iCheckVal();
+					  if("on"==isAgree||"true"==isAgree||true==isAgree){
+						  submitPOST('/login.loginaction/register', form.id);
+					  }
+					  else{
+						  alertWarningMessage("please agree the items above.");
+					  }
 			        } 
 			    });
 			});

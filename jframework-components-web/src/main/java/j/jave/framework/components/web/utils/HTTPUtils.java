@@ -5,13 +5,17 @@ import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.io.JFile;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
-import j.jave.framework.servicehub.filedistribute.JFileDisStoreEvent;
+import j.jave.framework.servicehub.filedistribute.JFileDistStoreEvent;
 import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.utils.JUtilException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -108,15 +112,17 @@ public abstract class HTTPUtils {
 	}
 	
 	/**
-	 * get ticket from cookie. 
-	 * key is {@link ViewConstants #TICKET}
+	 * get ticket from cookie or request parameter of query string,
+	 * get from cookie first , then from query parameter.
+	 * <p>key of cookieis {@link ViewConstants #TICKET}
+	 * <p>query parameter key is  {@link ViewConstants #TICKET_QUERY_PARAMETER}
 	 * @param request
 	 * @return
 	 */
 	public static final String getTicket(HttpServletRequest request){
 		String ticket=CookieUtils.getValue(request, ViewConstants.TICKET);
 		if(ticket==null){
-			ticket=request.getParameter(ViewConstants.TICKET);
+			ticket=request.getParameter(ViewConstants.TICKET_QUERY_PARAMETER);
 		}
 		return ticket;
 	}
@@ -284,7 +290,7 @@ public abstract class HTTPUtils {
 						JFile jFile=new JFile(file);
 						jFile.setFileContent(bytes);
 						
-						URL url=JServiceHubDelegate.get().addImmediateEvent(new JFileDisStoreEvent(request, jFile),URI.class).toURL();
+						URL url=JServiceHubDelegate.get().addImmediateEvent(new JFileDistStoreEvent(request, jFile),URI.class).toURL();
 						parameters.put(fis.getFieldName(), url.toString());
 					}
 				}
@@ -295,6 +301,56 @@ public abstract class HTTPUtils {
 			}
 		}
 		return parameters;
+	}
+	
+	
+	/**
+	 * decode the query string
+	 * @param queryString
+	 * @return
+	 */
+	public static String decode(String queryString){
+		try {
+			return URLDecoder.decode(queryString,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new JUtilException(e);
+		}
+	}
+	
+	/**
+	 * decode the query string
+	 * @param queryString
+	 * @return
+	 */
+	public static String encode(String queryString){
+		try {
+			return URLEncoder.encode(queryString,"utf-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new JUtilException(e);
+		}
+	}
+	
+	/**
+	 * parse query string to map instance.
+	 * @param queryString
+	 * @return
+	 */
+	public static  Map<String, String> parseQueryString(String queryString){
+		Map<String, String> params=new HashMap<String, String>();
+		String[] parameters=queryString.split("&");
+		if(parameters!=null){
+			for(int i=0;i<parameters.length;i++){
+				String param=parameters[i];
+				if(JStringUtils.isNotNullOrEmpty(param)){
+					String[] keyValue=param.split("=");
+					if(keyValue.length!=2){
+						throw new JUtilException("query parameter is invalid."+queryString);
+					}
+					params.put(keyValue[0], keyValue[1]);
+				}
+			}
+		}
+		return params;
 	}
 	
 	

@@ -20,7 +20,6 @@ import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -94,12 +93,6 @@ public abstract class JServiceServlet  extends JServlet {
 					return ;
 				}
 				httpContext.setUser(context.getUser());
-			}
-			
-			// if the request content type is "multipart/form-data"
-			if(HTTPUtils.isFileContextType(req)){
-				 Map<String, Object> parameterValues=HTTPUtils.doWithRequestParameterWithFileAttached(req);
-				 httpContext.setParameters(parameterValues);
 			}
 			
 			String target=HTTPUtils.getPathInfo(req);

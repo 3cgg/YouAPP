@@ -161,25 +161,37 @@ public class LoginJSPAction extends JSPActionSupport {
 
 
 	private void loginLogic(User loginUser, String unique) {
-		String uniqueKey="ticket-"+unique;
 		HTTPContext httpContext=new HTTPContext();
 		SessionUserInfo sessionUserInfo=new SessionUserInfo();
 		sessionUserInfo.setUserName(loginUser.getUserName());
 		sessionUserInfo.setId(loginUser.getId()); 
 		httpContext.setUser(sessionUserInfo);
-		httpContext.setTicket(uniqueKey);
-		jMemcachedDistService.set(uniqueKey, 0, httpContext);
+		httpContext.setTicket(unique);
+		jMemcachedDistService.set(unique, 0, httpContext);
 		
 		this.httpContext.setUser(sessionUserInfo); 
+		String remember=getParameter("remember");
 		
-		setCookie("ticket", uniqueKey,-1);
+		//remember case
+		if(JStringUtils.isNotNullOrEmpty(remember)&&("on".equals(remember)||"true".equals(remember))){
+			setCookie("ticket", unique, 60*60*24*7);
+		}
+		else{
+			setCookie("ticket", unique,-1);
+		}
+		
 	}
 	
 	public String profile(){
 		SessionUser sessionUser=getSessionUser();
 		User dbUser=userService.getUserByName(null, sessionUser.getUserName());
 		setAttribute("user", dbUser);
-		
+		byte[] bytes = getQRCode(dbUser);
+		setAttribute("qrcode", JStringUtils.bytestoBASE64String(bytes));
+		return "/WEB-INF/jsp/login/view-user.jsp";
+	}
+
+	private byte[] getQRCode(User dbUser) {
 		List<UserRole> userRoles= userRoleService.getUserRolesByUserId(getServiceContext(), dbUser.getId());
 		String roleInfo="";
 		if(userRoles!=null&&!userRoles.isEmpty()){
@@ -195,8 +207,7 @@ public class LoginJSPAction extends JSPActionSupport {
 		
 		String userInfo=HTTPUtils.getAppUrlPath(getHttpContext().getRequest());
 		byte[] bytes=JQRCode.createQRCode(userInfo);
-		setAttribute("qrcode", JStringUtils.bytestoBASE64String(bytes));
-		return "/WEB-INF/jsp/login/view-user.jsp";
+		return bytes;
 	}
 	
 	public String toCreateUser(){
@@ -269,6 +280,8 @@ public class LoginJSPAction extends JSPActionSupport {
 		User user= userService.getUserById(getServiceContext(), id);
 		if(user!=null){
 			setAttribute("user", user);
+			byte[] bytes = getQRCode(user);
+			setAttribute("qrcode", JStringUtils.bytestoBASE64String(bytes));
 		}
 		return "/WEB-INF/jsp/login/view-user.jsp"; 
 	}

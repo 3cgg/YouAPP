@@ -1,6 +1,9 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
 import j.jave.framework.components.web.multi.platform.servlet.JServiceServlet;
+import j.jave.framework.components.web.multi.platform.support.APPFilterConfig;
+import j.jave.framework.components.web.multi.platform.support.APPFilterConfigResolve;
+import j.jave.framework.components.web.multi.platform.support.FilterResponse;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.servlet.config.ServletConfigService;
 import j.jave.framework.components.web.support.JFilter;

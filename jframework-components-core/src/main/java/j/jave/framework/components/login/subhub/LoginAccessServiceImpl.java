@@ -82,7 +82,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 		}
 		String encryptPassword=JAPPCipher.get().encrypt(password.trim());
 		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
-		if(user!=null) return  JUniqueUtils.unique()+"-"+name; 
+		if(user!=null) return  JUniqueUtils.unique(); 
 		return "";
 	}
 	

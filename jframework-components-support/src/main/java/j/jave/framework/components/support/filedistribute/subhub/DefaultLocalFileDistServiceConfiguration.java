@@ -3,43 +3,52 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistServiceConfigure;
 import j.jave.framework.servicehub.filedistribute.JDefaultLocalFilePathStrategy;
+import j.jave.framework.servicehub.filedistribute.JLocalFileDistServiceConfigure;
+import j.jave.framework.servicehub.filedistribute.JLocalFilePathStrategy;
 
 /**
  * @author J
  */
 public class DefaultLocalFileDistServiceConfiguration implements
-		JDefaultLocalFileDistServiceConfigure {
+		JLocalFileDistServiceConfigure {
 
 	private String localDirectory="D:/java_/server-directory/file" ;
 
-	private  JDefaultLocalFilePathStrategy jDefaultLocalFilePathStrategy=new JDefaultLocalFilePathStrategy();
+	private int fixedThreadCount;
 	
-	/* (non-Javadoc)
-	 * @see j.jave.framework.filedistribute.JDefaultLocalFileDistServiceConfigure#setLocalDirectory(java.lang.String)
-	 */
-	@Override
+	private  JLocalFilePathStrategy localFilePathStrategy=new JDefaultLocalFilePathStrategy(localDirectory);
+	
 	public void setLocalDirectory(String localDirectory) {
 		this.localDirectory=localDirectory;
 	}
-
-	/* (non-Javadoc)
-	 * @see j.jave.framework.filedistribute.JDefaultLocalFileDistServiceConfigure#setJDefaultLocalFilePathStrategy(j.jave.framework.filedistribute.JDefaultLocalFilePathStrategy)
-	 */
-	@Override
-	public void setJDefaultLocalFilePathStrategy(
-			JDefaultLocalFilePathStrategy defaultLocalFilePathStrategy) {
-		this.jDefaultLocalFilePathStrategy=defaultLocalFilePathStrategy;
-	}
-
+	
 	public String getLocalDirectory() {
 		return localDirectory;
 	}
 
-	public JDefaultLocalFilePathStrategy getDefaultLocalFilePathStrategy() {
-		return jDefaultLocalFilePathStrategy;
+	@Override
+	public void setLocalFilePathStrategy(
+			JLocalFilePathStrategy localFilePathStrategy) {	
+		this.localFilePathStrategy=localFilePathStrategy;
 	}
+	@Override
+	public JLocalFilePathStrategy getLocalFilePathStrategy() {
+		return localFilePathStrategy;
+	}
+
+	@Override
+	public void setFixedThreadCount(int fixedThreadCount) {
+		this.fixedThreadCount=fixedThreadCount;
+	}
+
+	@Override
+	public int getFixedThreadCount() {
+		return this.fixedThreadCount;
+	}
+
+
+	
 
 	
 }

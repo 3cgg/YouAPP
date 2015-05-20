@@ -14,3 +14,5 @@ You need install maven in your computer, then go the root to run "mvn clean inst
 
 #2015-05-01 ， 第一个试用版本 
 #2015-05-15 ,  第二个试用版本，比较稳定了
+#2015-05-20 , Add linked request and cross-domain file upload. 
+Till now, the project/framework is better and better... :)

@@ -13,6 +13,8 @@ But because of the CSS issue of Android platform,the progress ends up here.May c
 To install maven in your computer, then go the root of the project to run "mvn clean install" . the war file under the jframework-me/target directory is for deploying.Or you can setup the project through running JettyServerHelper Class via Jetty.Also note:change the default ip address of endpoint of receiving HTTP request in the youapp-config.js file. 
 Now you can get the sample run. 
 
+#2015-05-22 , A stable version. :)
+不搞啦
 #2015-05-20 , Add linked request and cross-domain file upload. 
 Up till now, the project/framework is better and better... :)
 #2015-05-15 第二个试用版本，比较稳定了

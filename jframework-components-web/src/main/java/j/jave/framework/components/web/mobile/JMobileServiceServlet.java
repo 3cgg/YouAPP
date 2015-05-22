@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.web.mobile;
 
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.multi.platform.servlet.JServiceServlet;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.exception.JServiceException;
@@ -24,7 +24,7 @@ public class JMobileServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerNavigate(HttpServletRequest request,
-			HttpServletResponse response,HTTPContext httpContext, Object navigate) throws Exception {
+			HttpServletResponse response,JHttpContext httpContext, Object navigate) throws Exception {
 		MobileResult mobileResult=(MobileResult)navigate;
 		mobileResult.setStatus("1");
 		String out=JJSON.get().format(mobileResult);
@@ -33,7 +33,7 @@ public class JMobileServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerServiceExcepion(HttpServletRequest request,
-			HttpServletResponse response, HTTPContext httpContext,
+			HttpServletResponse response, JHttpContext httpContext,
 			JServiceException exception) {
 		try{
 			MobileResult mobileResult=new MobileResult();
@@ -48,7 +48,7 @@ public class JMobileServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerExcepion(HttpServletRequest request,
-			HttpServletResponse response, HTTPContext httpContext,
+			HttpServletResponse response, JHttpContext httpContext,
 			Exception exception) {
 		try{
 			Throwable exp=exception;

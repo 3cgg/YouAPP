@@ -1,13 +1,13 @@
 package j.jave.framework.components.web.jsp;
 
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.multi.platform.support.APPFilterConfig;
 import j.jave.framework.components.web.multi.platform.support.APPFilterConfigResolve;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.servlet.config.ServletConfigService;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.utils.JStringUtils;
 
@@ -93,20 +93,20 @@ public class JJSPLoginFilter implements JFilter ,APPFilterConfig {
 			HttpServletRequest req=(HttpServletRequest) request;
 			
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String target=HTTPUtils.getPathInfo(req);
+			String target=JHttpUtils.getPathInfo(req);
 			if(!loginAccessService.isNeedLoginRole(target)){
 				// 资源不需要登录权限
 				chain.doFilter(request, response);
 				return ;
 			}
 			
-			String clientTicket=HTTPUtils.getTicket(req);
+			String clientTicket=JHttpUtils.getTicket(req);
 			boolean isLogin=false;
 			if(JStringUtils.isNullOrEmpty(clientTicket)){ // no login.
 				isLogin=false;
 			}
 			else{ // check  whether server ticket is invalid. 
-				HTTPContext serverTicket=(HTTPContext) memcachedService.get(clientTicket);
+				JHttpContext serverTicket=(JHttpContext) memcachedService.get(clientTicket);
 				if(serverTicket==null){
 					isLogin=false;
 				}
@@ -119,7 +119,7 @@ public class JJSPLoginFilter implements JFilter ,APPFilterConfig {
 			}
 			else{ // 已经登录
 				if(serviceLoginPath.equals(target)){  // 不能重复登录
-					req.getRequestDispatcher(HTTPUtils.getAppUrlPath(req)).forward(req, response);
+					req.getRequestDispatcher(JHttpUtils.getAppUrlPath(req)).forward(req, response);
 				}
 				else{
 					chain.doFilter(request, response);

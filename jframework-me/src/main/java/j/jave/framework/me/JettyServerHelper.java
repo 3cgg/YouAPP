@@ -33,7 +33,7 @@ public class JettyServerHelper {
 		
 		String webApp="D:/java_/so/sources/trunk/jframework-me/src/main/webapp";
 //		String webApp="D:/java_/JFramework1.1/trunk/jframework-me/src/main/webapp";
-		String crossdomain="D:/java_/JFramework1.1/trunk/jframework-me/src/main/crossdomain";
+		String crossdomain="D:/java_/so/sources/trunk/jframework-me/src/main/crossdomain";
 		String serverDirectory="D:/java_/server-directory";
 		
 		 // Setup Threadpool

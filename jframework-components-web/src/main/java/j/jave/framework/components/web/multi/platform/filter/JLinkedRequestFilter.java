@@ -19,8 +19,19 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
+ * The filter is purpose for processing the case of the one request is part of the whole request.
+ *  i.e. the original request is larger for requesting only once.
+ *  The filter is only for GET request, the filter should only intercept the dispatch type of DispatcherType.REQUEST
+ * <strong>Note the order of filters is important for how to processing a request.</strong>
+ * The filter is designed following by MemoryHTMLFilter. 
+ * <p> What request is a part of link ones, the query string must contain the one or all of the below parameters:
+ * <pre>
+ * 1. {@link JLinkedRequestSupport#linkedUniqueKey} mandatory
+ * 2. {@link JLinkedRequestSupport#linkedOrderKey} optional
+ * </pre>
+ * see  JLinkedRequestSupport for detail.
  * @author J
+ * @see JLinkedRequestSupport
  */
 public class JLinkedRequestFilter implements JFilter ,APPFilterConfig  {
 	
@@ -37,12 +48,17 @@ public class JLinkedRequestFilter implements JFilter ,APPFilterConfig  {
 		DispatcherType dispatcherType= req.getDispatcherType();
 		
 		// check if the request is linked.
-		if(dispatcherType==DispatcherType.REQUEST&&JStringUtils.isNotNullOrEmpty(req.getPathInfo())){
+		if(dispatcherType==DispatcherType.REQUEST
+				&&JStringUtils.isNotNullOrEmpty(req.getPathInfo())
+				&&"GET".equals(req.getMethod())){
 			
 			if(JLinkedRequestSupport.isLinked(req)){
 				
 				//the request part of the linked ends 
 				if(JLinkedRequestSupport.isEnd(req)){
+					//PUT linked parameters in to request scope.
+					JLinkedRequestSupport linkedRequestSupport=new JLinkedRequestSupport(req);
+					linkedRequestSupport.setLinkedParameters();
 					chain.doFilter(request, response);
 				} 
 				else{

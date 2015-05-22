@@ -3,9 +3,9 @@
  */
 package j.jave.framework.components.web.jsp;
 
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.multi.platform.servlet.JServiceServlet;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.io.IOException;
@@ -28,11 +28,11 @@ public class JJSPServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerNavigate(HttpServletRequest request,
-			HttpServletResponse response,HTTPContext httpContext, Object navigate) throws Exception {
+			HttpServletResponse response,JHttpContext httpContext, Object navigate) throws Exception {
 		if(String.class.isInstance(navigate)){  // its forward to JSP. 
 			String expectJsp=(String)navigate;
 			if(expectJsp.endsWith(".jsp")){
-				HTTPUtils.setHttpContext(request, httpContext);
+				JHttpUtils.setHttpContext(request, httpContext);
 				request.getRequestDispatcher(expectJsp).forward(request, response);
 			}
 			else{
@@ -43,7 +43,7 @@ public class JJSPServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerServiceExcepion(HttpServletRequest request,
-			HttpServletResponse response, HTTPContext httpContext,
+			HttpServletResponse response, JHttpContext httpContext,
 			JServiceException exception) {
 		try{
 			request.setAttribute("message", exception.getMessage());
@@ -58,7 +58,7 @@ public class JJSPServiceServlet  extends JServiceServlet {
 	
 	@Override
 	protected void handlerExcepion(HttpServletRequest request,
-			HttpServletResponse response, HTTPContext httpContext,
+			HttpServletResponse response, JHttpContext httpContext,
 			Exception exception) {
 		try{
 			Throwable exp=exception;

@@ -1,10 +1,10 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.multi.platform.support.FilterResponse;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.memcached.JMemcachedDisGetEvent;
@@ -58,7 +58,7 @@ public class ResourceAccessFilter implements JFilter{
 			HttpServletRequest req=(HttpServletRequest) request;
 			
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String pathInfo=HTTPUtils.getPathInfo(req);
+			String pathInfo=JHttpUtils.getPathInfo(req);
 			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限
@@ -66,11 +66,11 @@ public class ResourceAccessFilter implements JFilter{
 				return ;
 			}
 			
-			String clientTicket=HTTPUtils.getTicket(req);
+			String clientTicket=JHttpUtils.getTicket(req);
 			
 			// IF LOGINED, need check whether has an access to the resource
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
-				HTTPContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), HTTPContext.class);
+				JHttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), JHttpContext.class);
 				if(context!=null){
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getId());
 					authorized=true;

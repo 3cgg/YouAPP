@@ -52,7 +52,7 @@ public class JettyServerHelperHome {
         http_config.setSecureScheme("https");
         http_config.setSecurePort(8443);
         http_config.setOutputBufferSize(32768);
-        http_config.setRequestHeaderSize(8192);
+        http_config.setRequestHeaderSize(81920000);
         http_config.setResponseHeaderSize(8192);
         http_config.setSendServerVersion(true);
         http_config.setSendDateHeader(false);

@@ -5,14 +5,14 @@ package j.jave.framework.components.web.multi.platform.servlet;
 
 import j.jave.framework.components.web.ViewConstants;
 import j.jave.framework.components.web.action.ActionExecutor;
-import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.jsp.JJSPServiceServlet;
 import j.jave.framework.components.web.mobile.JMobileServiceServlet;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUserGetEvent;
 import j.jave.framework.components.web.support.JServlet;
-import j.jave.framework.components.web.utils.CookieUtils;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JCookieUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.io.JFile;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
@@ -39,8 +39,8 @@ import org.slf4j.LoggerFactory;
  *  the servlet also test the object from ActionExecutor is File(see {@link JFile}) or not, if true the response will be for downloading file,
  *  Note that we check that according to {@link JFile} ,but not any byte array {@link byte[]}. 
  * @author J
- * @see HTTPContext
- * @see ActionExecutor#execute(HTTPContext)
+ * @see JHttpContext
+ * @see ActionExecutor#execute(JHttpContext)
  * @see JJSPServiceServlet
  * @see JMobileServiceServlet
  */
@@ -68,34 +68,32 @@ public abstract class JServiceServlet  extends JServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		HTTPContext httpContext=new HTTPContext();
+		JHttpContext httpContext=new JHttpContext(req,resp);
 		try{
 			
-			String uniqueName=HTTPUtils.getTicket(req);
-			httpContext.setRequest(req);
-			httpContext.setResponse(resp);
+			String uniqueName=JHttpUtils.getTicket(req);
 			httpContext.setTicket(uniqueName);
 			
 			if(JStringUtils.isNullOrEmpty(uniqueName)){
 				//mock 用户信息
 				SessionUser user=serviceHubDelegate.addImmediateEvent(new SessionUserGetEvent(this), SessionUser.class);
-				String IP=HTTPUtils.getIP(req);
+				String IP=JHttpUtils.getIP(req);
 				user.setUserName(IP);
 				user.setId(IP);
 				httpContext.setUser(user);
 			}
 			else{
 				// 从会话缓存中获取信息
-				HTTPContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), HTTPContext.class);
+				JHttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), JHttpContext.class);
 				if(context==null){
-					CookieUtils.deleteCookie(req, resp, CookieUtils.getCookie(req, ViewConstants.TICKET));
-					resp.sendRedirect(HTTPUtils.getAppUrlPath(req));
+					JCookieUtils.deleteCookie(req, resp, JCookieUtils.getCookie(req, ViewConstants.TICKET));
+					resp.sendRedirect(JHttpUtils.getAppUrlPath(req));
 					return ;
 				}
 				httpContext.setUser(context.getUser());
 			}
 			
-			String target=HTTPUtils.getPathInfo(req);
+			String target=JHttpUtils.getPathInfo(req);
 			httpContext.setTargetPath(target);
 			Object navigate=ActionExecutor.newSingleExecutor().execute(httpContext);
 			
@@ -140,7 +138,7 @@ public abstract class JServiceServlet  extends JServlet {
 	 * @throws Exception
 	 */
 	protected abstract void handlerNavigate(HttpServletRequest request,HttpServletResponse response,
-			HTTPContext httpContext,Object navigate) throws Exception;
+			JHttpContext httpContext,Object navigate) throws Exception;
 	
 	/**
 	 * how to handle service exception . the method is the end statement by the request. what is means the output stream 
@@ -151,7 +149,7 @@ public abstract class JServiceServlet  extends JServlet {
 	 * @param httpContext
 	 * @param exception
 	 */
-	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,JServiceException exception);
+	protected abstract void handlerServiceExcepion(HttpServletRequest request,HttpServletResponse response,JHttpContext httpContext,JServiceException exception);
 	
 	/**
 	 * how to handle exception .  the method is the end statement by the request. what is means the output stream 
@@ -161,7 +159,7 @@ public abstract class JServiceServlet  extends JServlet {
 	 * @param httpContext
 	 * @param exception
 	 */
-	protected abstract void handlerExcepion(HttpServletRequest request,HttpServletResponse response,HTTPContext httpContext,Exception exception);
+	protected abstract void handlerExcepion(HttpServletRequest request,HttpServletResponse response,JHttpContext httpContext,Exception exception);
 	
 	
 	

@@ -1,5 +1,6 @@
 package j.jave.framework.components.web.action;
 
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.model.JPage;
@@ -16,10 +17,10 @@ public abstract class AbstractAction implements Action {
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
-	protected HTTPContext httpContext;
+	protected JHttpContext httpContext;
 	
 	/**
-	 * {@link #setHttpContext(HTTPContext)}
+	 * {@link #setHttpContext(JHttpContext)}
 	 */
 	public static final String httpContextCallBackName="setHttpContext";
 	
@@ -27,11 +28,11 @@ public abstract class AbstractAction implements Action {
 	public static final String DELETE_SUCCESS="删除成功";
 	public static final String EDIT_SUCCESS="更新成功";
 
-	public HTTPContext getHttpContext() {
+	public JHttpContext getHttpContext() {
 		return httpContext;
 	}
 
-	public void setHttpContext(HTTPContext httpContext) {
+	public void setHttpContext(JHttpContext httpContext) {
 		this.httpContext = httpContext;
 	}
 	

@@ -22,12 +22,12 @@ import j.jave.framework.components.login.service.UserTrackerService;
 import j.jave.framework.components.login.view.TimeLineGroup;
 import j.jave.framework.components.login.view.TimelineView;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.model.JQueryDataTablePage;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.listener.JAPPEvent;
@@ -161,7 +161,7 @@ public class LoginJSPAction extends JSPActionSupport {
 
 
 	private void loginLogic(User loginUser, String unique) {
-		HTTPContext httpContext=new HTTPContext();
+		JHttpContext httpContext=new JHttpContext();
 		SessionUserInfo sessionUserInfo=new SessionUserInfo();
 		sessionUserInfo.setUserName(loginUser.getUserName());
 		sessionUserInfo.setId(loginUser.getId()); 
@@ -205,7 +205,7 @@ public class LoginJSPAction extends JSPActionSupport {
 			roleInfo=roleInfo.replaceFirst(";", "");
 		}
 		
-		String userInfo=HTTPUtils.getAppUrlPath(getHttpContext().getRequest());
+		String userInfo=JHttpUtils.getAppUrlPath(getHttpContext().getRequest());
 		byte[] bytes=JQRCode.createQRCode(userInfo);
 		return bytes;
 	}

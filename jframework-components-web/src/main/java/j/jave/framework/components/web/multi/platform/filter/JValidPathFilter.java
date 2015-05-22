@@ -9,7 +9,7 @@ import j.jave.framework.components.web.subhub.servlet.config.ServletConfigServic
 import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.support.JServletContext;
 import j.jave.framework.components.web.support.JServletDetect;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.json.JJSON;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.utils.JStringUtils;
@@ -107,7 +107,7 @@ public class JValidPathFilter implements JFilter ,APPFilterConfig  {
 			}
 		}
 		
-		String path=HTTPUtils.getPathInfo(req);
+		String path=JHttpUtils.getPathInfo(req);
 		if(JStringUtils.isNotNullOrEmpty(path)){
 			boolean validPath=loginAccessService.isValidResource(path);
 			if(!validPath){

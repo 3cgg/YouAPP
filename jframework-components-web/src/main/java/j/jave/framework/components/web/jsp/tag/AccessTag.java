@@ -3,9 +3,9 @@
  */
 package j.jave.framework.components.web.jsp.tag;
 
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +52,7 @@ public class AccessTag implements Tag{
 
 		HttpServletRequest request=(HttpServletRequest) pageContext.getRequest();
 		//String userName=pageContext.get
-		HTTPContext httpContext=HTTPUtils.getHttpContext(request);
+		JHttpContext httpContext=JHttpUtils.getHttpContext(request);
 		boolean authorized=loginAccessService.authorizeOnUserId(resource, httpContext.getUser().getId());
 		if(!authorized){
 			return SKIP_BODY;

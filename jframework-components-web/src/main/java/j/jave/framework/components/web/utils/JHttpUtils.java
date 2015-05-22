@@ -1,7 +1,8 @@
 package j.jave.framework.components.web.utils;
 
 import j.jave.framework.components.web.ViewConstants;
-import j.jave.framework.components.web.action.HTTPContext;
+import j.jave.framework.components.web.model.JHttpContext;
+import j.jave.framework.components.web.multi.platform.support.JLinkedRequestSupport;
 import j.jave.framework.io.JFile;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
@@ -22,7 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItemIterator;
@@ -37,9 +40,9 @@ import org.slf4j.LoggerFactory;
  * HTTP Utilization
  * @author J
  */
-public abstract class HTTPUtils {
+public abstract class JHttpUtils {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(HTTPUtils.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(JHttpUtils.class);
 
 	/**
 	 * get remote client IP address.
@@ -93,21 +96,21 @@ public abstract class HTTPUtils {
 	
 	
 	/**
-	 * get {@link HTTPContext} from HTTP Request Scope.
+	 * get {@link JHttpContext} from HTTP Request Scope.
 	 * @param request
 	 * @return
 	 */
-	public static final HTTPContext getHttpContext(HttpServletRequest request){
-		return (HTTPContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
+	public static final JHttpContext getHttpContext(HttpServletRequest request){
+		return (JHttpContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
 	}
 	
 	
 	/**
-	 * put the {@link HTTPContext} to HTTP Request Scope.
+	 * put the {@link JHttpContext} to HTTP Request Scope.
 	 * @param request
 	 * @param httpContext
 	 */
-	public static final void setHttpContext(HttpServletRequest request,HTTPContext httpContext ){
+	public static final void setHttpContext(HttpServletRequest request,JHttpContext httpContext ){
 		request.setAttribute(YOUAPP_HTTP_CONTEXT_KEY, httpContext);
 	}
 	
@@ -120,7 +123,7 @@ public abstract class HTTPUtils {
 	 * @return
 	 */
 	public static final String getTicket(HttpServletRequest request){
-		String ticket=CookieUtils.getValue(request, ViewConstants.TICKET);
+		String ticket=JCookieUtils.getValue(request, ViewConstants.TICKET);
 		if(ticket==null){
 			ticket=request.getParameter(ViewConstants.TICKET_QUERY_PARAMETER);
 		}
@@ -157,15 +160,16 @@ public abstract class HTTPUtils {
 	
 	
 	/**
-	 * set the object properties with the HTTP context , or request parameter. the {@param  httpContext}
-	 *  is higher than {@param request} parameter.
+	 * set the object properties with the parameter keys of request query string,  
+	 * the value of parameter is ordering by the {@link  JHttpContext#getParameter(String)}
+	 *  , {@link HttpServletRequest#getParameter(String)} .
 	 * @param obj
 	 * @param request  if {@param httpContext}  does not contains the parameter, then get. <strong>{mandatory}</strong>
 	 * @param httpContext  get value first.  <strong>{optional}</strong> 
 	 * @throws Exception
 	 * @see {@link JClassUtils#set}
 	 */
-	public static void set(Object obj, HttpServletRequest request, HTTPContext httpContext) throws Exception {
+	public static void set(Object obj, HttpServletRequest request, JHttpContext httpContext) throws Exception {
 		if(request==null){
 			throw new IllegalArgumentException("parameter request is null");
 		}
@@ -218,36 +222,34 @@ public abstract class HTTPUtils {
 	}
 	
 	/**
-	 * set the object properties with the HTTP Context. 
+	 * set the object properties in the set of {@link JHttpContext#getParameters()}. 
 	 * @param obj
 	 * @param httpContext  <strong>argument is mandatory</strong>
 	 * @throws Exception
 	 */
-	public static void set(Object obj, HTTPContext httpContext) throws Exception {
+	public static void set(Object obj, JHttpContext httpContext) throws Exception {
 		if(httpContext==null){
 			throw new IllegalArgumentException("parameter httpContext is null");
 		}
-		Iterator<String> parameterNames=  httpContext.getParameters().keySet().iterator();;
-		while(parameterNames.hasNext()){
-			String name=parameterNames.next();
-			String value=httpContext.getParameter(name);;
-			if(value==null){
-				String[] values=httpContext.getParameterValues(name);
-				if(values!=null){
-					List<String> valuesObject=new ArrayList<String>();
-					for (int i = 0; i < values.length; i++) {
-						String valueNoType=values[i];
-						valuesObject.add(valueNoType);
-					}
-					JClassUtils.set(obj, name, valuesObject);
-				}
-			}
-			else{
-				JClassUtils.set(obj, name, value);
-			}
-		}
+		Map<String, Object> params=httpContext.getParameters();
+		set(obj, params); 
 	}
 	
+	/**
+	 * set the object properties from the map.
+	 * @param obj
+	 * @param params
+	 * @throws Exception
+	 */
+	public static void set(Object obj, Map<String, Object> params) throws Exception {
+		Iterator<Entry<String,Object>> parameterNames=  params.entrySet().iterator();;
+		while(parameterNames.hasNext()){
+			Entry<String,Object> param=parameterNames.next();
+			String name=param.getKey();
+			Object value= param.getValue();
+			JClassUtils.set(obj, name, value);
+		}
+	}
 	
 	/**
 	 * check if the context type is "multipart/form-data" , i.e. file upload...
@@ -352,6 +354,110 @@ public abstract class HTTPUtils {
 		}
 		return params;
 	}
+	
+	/**
+	 * put additional attributes in the request scope, these attributes are only added by framework. 
+	 * all ones should be in the only one map with the constraint key {@link JHttpContext#ADDITIONAL_PARAM_KEY}
+	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
+	 * @param request
+	 * @param key
+	 * @param attributes
+	 * @return
+	 */
+	public static Object setAdditionalAttributesInRequestScope(HttpServletRequest request,String key,Object attributes){
+		Object previous=null;
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(JHttpContext.ADDITIONAL_PARAM_KEY);
+		if(object==null){
+			object=new HashMap<String, Object>();
+			object.put(key, attributes);
+			request.setAttribute(JHttpContext.ADDITIONAL_PARAM_KEY, object);
+			previous=attributes;
+		}
+		else{
+			previous=object.put(key, attributes);
+		}
+		return previous;
+	}
+	
+	/**
+	 * get additional attributes in the request scope.these attributes are only used by framework. 
+	 * all ones should be in the only one map with the constraint key {@link JHttpContext#ADDITIONAL_PARAM_KEY}
+	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
+	 * @param request
+	 * @param key
+	 * @param attributes
+	 * @return
+	 */
+	public static Object getAdditionalAttributesInRequestScope(HttpServletRequest request,String key){
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(JHttpContext.ADDITIONAL_PARAM_KEY);
+		if(object==null){
+			return null;
+		}
+		else{
+			return object.get(key);
+		}
+	}
+	
+	public static boolean isRequestTypeAndGET(HttpServletRequest request){
+		return request.getDispatcherType()==DispatcherType.REQUEST
+				&&"GET".equals(request.getMethod());
+	}
+	
+	/**
+	 * get parameter value from query string part.
+	 * @param request
+	 * @param key
+	 * @return
+	 */
+	public static String getParameter(HttpServletRequest request,String key) {
+		
+		if(request==null) return null;
+		String value = null;
+		if(JLinkedRequestSupport.isLinked(request)){
+			value=JLinkedRequestSupport.getParameter(request, key);
+		}
+		else{
+			value = request.getParameter(key);
+		}
+		return value;
+	}
+	
+	/**
+	 * get parameter values from query string part.
+	 * @param request
+	 * @param key
+	 * @return
+	 */
+	public static String[] getParameterValues(HttpServletRequest request,String key) {
+		if(request==null) return null;
+		String[] values = null;
+		if(JLinkedRequestSupport.isLinked(request)){
+			values=JLinkedRequestSupport.getParameterValues(request, key);
+		}
+		else{
+			values = request.getParameterValues(key);
+		}
+		return values;
+	}
+	
+	/**
+	 * parse the parameter in the query string or posted form data.
+	 * @param request
+	 * @return
+	 */
+	public static Map<String, Object> parseRequestParameters(HttpServletRequest request){
+		Map<String, Object> params=new HashMap<String, Object>();
+		Map<String, String[]> paramMap =  request.getParameterMap();
+		for (Iterator<Entry<String, String[]>> iterator = paramMap.entrySet().iterator(); iterator.hasNext();) {
+			Entry<String, String[]> entry =  iterator.next();
+			String[] values=entry.getValue();
+			params.put(entry.getKey(), values.length==1?values[0]:values);
+		}
+		return params;
+	}
+	
+	
+	
 	
 	
 }

@@ -8,11 +8,11 @@ import j.jave.framework.components.login.model.UserTracker;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.login.service.UserTrackerService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
-import j.jave.framework.components.web.action.HTTPContext;
 import j.jave.framework.components.web.mobile.MobileResult;
+import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 import j.jave.framework.servicehub.exception.JServiceException;
 
@@ -55,7 +55,7 @@ public class LoginMobileAction extends AndroidActionSupport {
 	
 	private void loginLogic(User loginUser, String unique) {
 		String uniqueKey="ticket-"+unique;
-		HTTPContext httpContext=new HTTPContext();
+		JHttpContext httpContext=new JHttpContext();
 		SessionUserInfo sessionUserInfo=new SessionUserInfo();
 		sessionUserInfo.setUserName(loginUser.getUserName());
 		sessionUserInfo.setId(loginUser.getId()); 
@@ -78,7 +78,7 @@ public class LoginMobileAction extends AndroidActionSupport {
 	
 	public MobileResult loginout() throws Exception  {
 		MobileResult mobileResult=new MobileResult();
-		String ticket=HTTPUtils.getTicket(httpContext.getRequest());
+		String ticket=JHttpUtils.getTicket(httpContext.getRequest());
 		jMemcachedDistService.delete(ticket);
 		//deleteCookie("ticket");  invalid for mobile app.  
 		return mobileResult;

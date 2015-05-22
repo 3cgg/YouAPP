@@ -5,7 +5,7 @@ import j.jave.framework.components.web.subhub.resourcecached.MemoryCachedService
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseCachedResource;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseEhcacheMemoryCacheService;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.components.web.utils.HTTPUtils;
+import j.jave.framework.components.web.utils.JHttpUtils;
 import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.io.IOException;
@@ -18,8 +18,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 /**
- * filter on all request , check if the response need be stored into memory.
+ * Filter on all requests, check if the response need be stored into memory or not.
+ * The decider is {@link MemoryCachedService#isNeedCache(String)},
  * @author J
+ * @see MemoryCachedService
  */
 public class MemoryHTMLFilter implements JFilter{
 
@@ -36,7 +38,7 @@ public class MemoryHTMLFilter implements JFilter{
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest httpServletRequest=(HttpServletRequest) request;
-		String path=HTTPUtils.getPathInfo(httpServletRequest);
+		String path=JHttpUtils.getPathInfo(httpServletRequest);
 		//check if cached.
 		if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
 			ResponseCachedResource responseCachedResource=requestResourceMemoryCacheService.get(path);

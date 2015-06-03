@@ -3,7 +3,9 @@
  */
 package j.jave.framework.servicehub.filedistribute;
 
+import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.io.JFile;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.servicehub.JEventExecutionException;
 import j.jave.framework.servicehub.exception.JServiceException;
 
@@ -13,9 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JDefaultLocalFileDistService implements JFileDistService, JFileDistStoreListener{
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultLocalFileDistService.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDefaultLocalFileDistService.class);
 	
 	private static int DEFAULT_FIXED_THREAD_COUNT=10;
 	

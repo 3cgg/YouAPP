@@ -86,14 +86,14 @@ public class JValidPathFilter implements JFilter ,APPFilterConfig  {
 		if(servletContext!=null){
 			String servletPath=req.getServletPath();
 			
-			//forward to entrance view page, if request root resource, note it's extend to browser
+			//forward to login view page, if request root resource, note it's extend to browser
 			if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
 				String entranceViewPath="";
 				if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
-					entranceViewPath=serviceServletPath+servletConfigService.getEntranceViewPath();
+					entranceViewPath=serviceServletPath+servletConfigService.getToLoginPath();
 				}
 				else {
-					entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getEntranceViewPath();
+					entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
 				}
 				req.getRequestDispatcher(entranceViewPath).forward(request, response);
 				return ;

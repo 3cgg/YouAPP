@@ -102,9 +102,12 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 		else if("/login.loginaction/login".equals(url)){
 			return false;
 		}
-		else if("/login.loginaction/toLogin".equals(url)){
+		else if("/mobile.login.loginaction/login".equals(url)){
 			return false;
 		}
+//		else if("/login.loginaction/toLogin".equals(url)){
+//			return false;
+//		}
 		return true;
 	}
 

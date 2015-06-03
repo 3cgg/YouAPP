@@ -1,18 +1,16 @@
 package j.jave.framework.utils;
 
+import j.jave.framework.base64.JBase64Factory;
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 public abstract class JStringUtils {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JStringUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JStringUtils.class);
 	
 	/**
 	 * extract all bytes from the {@link InputStream}. 	
@@ -58,7 +56,7 @@ public abstract class JStringUtils {
 	 * @return
 	 */
 	public static String bytestoBASE64String(byte[] bytes) {
-		return new BASE64Encoder().encode(bytes);
+		return JBase64Factory.getBase64().encodeBase64String(bytes);
 	}
 
 	/**
@@ -70,8 +68,8 @@ public abstract class JStringUtils {
 	 */
 	public static byte[] base64stringtobytes(String string) {
 		try {
-			return new BASE64Decoder().decodeBuffer(string);
-		} catch (IOException e) {
+			return JBase64Factory.getBase64().decodeBase64(string);
+		} catch (Exception e) {
 			LOGGER.warn("", e);
 			throw new JUtilException(e);
 		}

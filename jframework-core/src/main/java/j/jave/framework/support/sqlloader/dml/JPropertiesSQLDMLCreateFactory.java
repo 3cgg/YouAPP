@@ -1,14 +1,13 @@
 package j.jave.framework.support.sqlloader.dml;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.support.sqlloader.JPropertiesDBConfiguration;
 import j.jave.framework.support.sqlloader.JPropertiesDBConfigure;
 import j.jave.framework.support.sqlloader.JSQLLoaderException;
 import j.jave.framework.utils.JStringUtils;
 
 import java.io.InputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * create concrete <code>JSQLDMLCreate</code> object from properties.
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JPropertiesSQLDMLCreateFactory extends JAbstractSQLDMLCreateFactory implements JPropertiesDBConfigure{
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JPropertiesSQLDMLCreateFactory.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JPropertiesSQLDMLCreateFactory.class);
 	
 	@Override
 	public JSQLDMLCreate getObject() {

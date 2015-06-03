@@ -1,4 +1,4 @@
-package j.jave.framework.android.activity;
+package j.jave.framework.android.model;
 
 public class MobileResult {
 	

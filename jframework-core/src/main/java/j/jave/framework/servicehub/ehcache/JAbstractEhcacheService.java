@@ -3,12 +3,11 @@
  */
 package j.jave.framework.servicehub.ehcache;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.support.JObjectLoop;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * super-class . 
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class JAbstractEhcacheService implements JEhcacheService {
 
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	protected JObjectLoop<Integer, Ehcache> ehcaches=new JObjectLoop<Integer, Ehcache>();
 

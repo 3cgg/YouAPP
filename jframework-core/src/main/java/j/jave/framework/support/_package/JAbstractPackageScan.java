@@ -1,5 +1,8 @@
 package j.jave.framework.support._package;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,12 +10,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class JAbstractPackageScan extends JPackageScanDefaultConfiguration implements JPackageScan{
 	
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	protected final File file;
 	

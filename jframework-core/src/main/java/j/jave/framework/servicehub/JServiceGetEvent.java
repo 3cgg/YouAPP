@@ -3,7 +3,6 @@
  */
 package j.jave.framework.servicehub;
 
-import j.jave.framework.servicehub.JServiceEvent.TYPE;
 
 /**
  * service get event object. 

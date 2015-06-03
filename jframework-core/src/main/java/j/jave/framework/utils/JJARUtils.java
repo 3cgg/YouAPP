@@ -3,6 +3,9 @@
  */
 package j.jave.framework.utils;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -11,14 +14,11 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author J
  */
 public abstract class JJARUtils {
-	private static final Logger LOGGER=LoggerFactory.getLogger(JJARUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JJARUtils.class);
 	
 	/**
 	 * load all classes in the package defined by {@param packageName} via the {@link ClassLoader} 

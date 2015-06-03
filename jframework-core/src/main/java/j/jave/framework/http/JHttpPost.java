@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -19,7 +19,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
  * @author Administrator
  *
  */
-public class JHttpPost extends JHttp<JHttpPost> {
+ class JHttpPost extends JHttp<JHttpPost> {
 	
 	/**
 	 * url must be set by "setUrl" method . 
@@ -40,7 +40,7 @@ public class JHttpPost extends JHttp<JHttpPost> {
 	 * @see j.jave.framework.http.JHttp#getHttpType()
 	 */
 	@Override
-	protected HttpUriRequest getHttpType() {
+	protected HttpRequestBase getHttpType() {
 		MultipartEntityBuilder multipartEntityBuilder=null;
 		if(params!=null){
 			multipartEntityBuilder=MultipartEntityBuilder.create();

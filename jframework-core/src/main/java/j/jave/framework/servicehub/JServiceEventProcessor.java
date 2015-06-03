@@ -3,7 +3,9 @@
  */
 package j.jave.framework.servicehub;
 
+import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.listener.JAPPEvent;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.support.JPriorityBlockingQueue;
 
 import java.util.concurrent.Callable;
@@ -17,9 +19,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * event processor center. all event must be processes by this processor. 
@@ -27,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 class JServiceEventProcessor {
 
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	private JServiceHub serviceHub=JServiceHub.get();
 	

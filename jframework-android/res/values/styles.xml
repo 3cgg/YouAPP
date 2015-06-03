@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>  
+<resources xmlns:android="http://schemas.android.com/apk/res/android">  
     <style name="dialog" parent="@android:style/Theme.Dialog">  
          <item name="android:windowFrame">@null</item>  
         <item name="android:windowIsFloating">true</item>  
@@ -23,5 +23,76 @@
      <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>  
     <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>  
 </style>  
+
+    
+    <style name="radio_tab">  
+	    <item name="android:layout_height">wrap_content</item>  
+	    <item name="android:layout_width">match_parent</item>  
+	    <item name="android:layout_weight">1</item>  
+	    <item name="android:gravity">center</item>  
+	    <item name="android:textSize">14sp</item>  
+	    <item name="android:paddingTop">8dip</item>  
+	    <item name="android:paddingBottom">4dip</item>  
+	    <item name="android:background">@android:color/white</item>  
+	    <item name="android:textColor">@color/a</item>  
+	    <item name="android:button">@null</item>
+	</style>  
+    
+    <style name="radio_checked" >
+        <item name="android:background">@color/gray</item> 
+    </style>
+    
+    <style  name="tab_style">
+        <item name="android:gravity">center</item>  
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">@color/lavender</item>
+        <!-- 
+        <item name="android:paddingLeft">10dp</item> 
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+         -->
+    </style>
+    
+    <style  name="tab_item_style">
+        <item name="android:gravity">center</item>  
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_width">80dp</item>
+        <!-- <item name="android:background">@android:color/transparent</item> -->
+    </style>
+    
+    
+    <style  name="text_style" >
+        <item name="android:background">@drawable/text_selector</item>
+        <item name="android:width">240dp</item>
+        <item name="android:padding">10dp</item>        
+        <item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+    </style>
+    
+    <style name="button_style">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:width">240dp</item>
+		<item name="android:padding">10dp</item>        
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+    </style>
+    
+    <style name="button_img_style">
+        <item name="android:background">@drawable/button_selector</item>
+    </style>
+    
+    <style name="button_style_with_border">
+        <item name="android:background">@drawable/button_selector_with_border</item>
+        <item name="android:width">240dp</item>
+		<item name="android:padding">10dp</item>        
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+    </style>
+    
+    <style name="return_layout">
+        <item name="android:height">8dp</item>
+        <item name="android:background">@drawable/gradient_bg</item>
+    </style>
     
 </resources>  

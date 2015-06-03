@@ -501,5 +501,13 @@ public abstract class JClassUtils {
 		}
 	}
 	
+	/**
+	 * check whether the argument is class type of not. 
+	 * @param obj
+	 * @return
+	 */
+	public static boolean isClass(Object obj){
+		return Class.class.isInstance(obj);
+	}
 	
 }

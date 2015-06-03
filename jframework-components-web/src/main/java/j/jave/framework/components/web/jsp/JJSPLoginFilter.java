@@ -1,27 +1,16 @@
 package j.jave.framework.components.web.jsp;
 
-import j.jave.framework.components.support.memcached.subhub.MemcachedService;
-import j.jave.framework.components.web.model.JHttpContext;
+import j.jave.framework.components.web.multi.platform.filter.JLoginFilter;
 import j.jave.framework.components.web.multi.platform.support.APPFilterConfig;
-import j.jave.framework.components.web.multi.platform.support.APPFilterConfigResolve;
-import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.components.web.subhub.servlet.config.ServletConfigService;
+import j.jave.framework.components.web.multi.platform.support.FilterResponse;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.servicehub.JServiceHubDelegate;
-import j.jave.framework.utils.JStringUtils;
-
-import java.io.IOException;
+import j.jave.framework.json.JJSON;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -54,86 +43,41 @@ import org.slf4j.LoggerFactory;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JJSPLoginFilter implements JFilter ,APPFilterConfig {
-
-	private static final Logger LOGGER=LoggerFactory.getLogger(JJSPLoginFilter.class);
-	
-	/**
-	 * "/web/service/dispatch/*" pattern configured in web.xml . 
-	 */
-	private String serviceServletPath="/default";
-	
-	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
-	
-	private MemcachedService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedService.class);;
-	
-	private LoginAccessService loginAccessService= JServiceHubDelegate.get().getService(this, LoginAccessService.class);
-	
-	
-	/**
-	 * default "/login.loginaction/login"
-	 */
-	private String serviceLoginPath=servletConfigService.getLoginPath();
+public class JJSPLoginFilter extends JLoginFilter implements JFilter ,APPFilterConfig {
 	
 	private String serviceToLoginPath=servletConfigService.getToLoginPath();
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		String serviceServletPath=new APPFilterConfigResolve().resolveServiceOnServletPath(filterConfig);
-		if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
-			this.serviceServletPath=serviceServletPath;
-		}
+		super.init(filterConfig);
+		//add below 
 	}
-
+	
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		
-		try{
-			HttpServletRequest req=(HttpServletRequest) request;
-			
-			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String target=JHttpUtils.getPathInfo(req);
-			if(!loginAccessService.isNeedLoginRole(target)){
-				// 资源不需要登录权限
-				chain.doFilter(request, response);
-				return ;
-			}
-			
-			String clientTicket=JHttpUtils.getTicket(req);
-			boolean isLogin=false;
-			if(JStringUtils.isNullOrEmpty(clientTicket)){ // no login.
-				isLogin=false;
-			}
-			else{ // check  whether server ticket is invalid. 
-				JHttpContext serverTicket=(JHttpContext) memcachedService.get(clientTicket);
-				if(serverTicket==null){
-					isLogin=false;
-				}
-				else{
-					isLogin=true;
-				}
-			}
-			if(!isLogin){ // 没有登录， 跳转到登录页面
-				req.getRequestDispatcher(this.serviceServletPath+serviceToLoginPath).forward(req, response);
-			}
-			else{ // 已经登录
-				if(serviceLoginPath.equals(target)){  // 不能重复登录
-					req.getRequestDispatcher(JHttpUtils.getAppUrlPath(req)).forward(req, response);
-				}
-				else{
-					chain.doFilter(request, response);
-				}
-			}
-		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e); 
-			throw new ServletException(e);
-		}
+	protected void handlerNoLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		request.setAttribute("url", serviceToLoginPath); 
+		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
 	}
-
+	
+	@Override
+	protected void handlerDuplicateLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
+		response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+	}
+	
+	@Override
+	protected void handlerToLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
+	}
+	
 	@Override
 	public void destroy() {
+		//add above
 		
+		super.destroy();
 	}
 
 }

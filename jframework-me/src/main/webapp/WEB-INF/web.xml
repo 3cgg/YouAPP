@@ -103,14 +103,22 @@
 	<filter>
 		<filter-name>JJSPLoginFilter</filter-name>
 		<filter-class>j.jave.framework.components.web.jsp.JJSPLoginFilter</filter-class>
-		<init-param>
-			<param-name>serviceServletPath</param-name>
-			<param-value>/web/service/dispatch/*</param-value>
-		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>JJSPLoginFilter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>JJSPServiceServlet</servlet-name>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- JMobileLoginFilter -->
+	<filter>
+		<filter-name>JMobileLoginFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.mobile.JMobileLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JMobileLoginFilter</filter-name>
+		<servlet-name>JMobileServiceServlet</servlet-name>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>

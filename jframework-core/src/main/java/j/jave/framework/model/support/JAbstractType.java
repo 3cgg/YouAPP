@@ -1,6 +1,5 @@
 package j.jave.framework.model.support;
 
-import j.jave.framework.utils.JStringUtils;
 
 
 /**

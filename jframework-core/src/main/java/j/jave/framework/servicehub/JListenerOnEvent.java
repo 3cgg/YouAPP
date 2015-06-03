@@ -3,13 +3,13 @@
  */
 package j.jave.framework.servicehub;
 
+import j.jave.framework.listener.JAPPEvent;
+import j.jave.framework.listener.JAPPListener;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import j.jave.framework.listener.JAPPEvent;
-import j.jave.framework.listener.JAPPListener;
 
 /**
  * the annotation uses to make the program know what listener listener on what event. 

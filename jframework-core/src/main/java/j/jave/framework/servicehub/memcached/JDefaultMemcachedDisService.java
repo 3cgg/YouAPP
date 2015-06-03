@@ -3,6 +3,8 @@
  */
 package j.jave.framework.servicehub.memcached;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.support.JObjectLoop;
 
 import java.net.InetSocketAddress;
@@ -11,9 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -24,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JDefaultMemcachedDisService implements JMemcachedDisService{
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JDefaultMemcachedDisService.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDefaultMemcachedDisService.class);
 	
 	private JObjectLoop<Integer, JMemcached> store=new JObjectLoop<Integer, JMemcached>();
 

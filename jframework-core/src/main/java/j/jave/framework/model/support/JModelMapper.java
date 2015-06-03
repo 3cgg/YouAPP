@@ -1,11 +1,11 @@
 package j.jave.framework.model.support;
 
+import j.jave.framework.model.JBaseModel;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import j.jave.framework.model.JBaseModel;
 
 /**
  * which model the mapper supports.

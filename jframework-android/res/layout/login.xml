@@ -2,46 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="0.58"
-        android:gravity="top" >
-
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        >
+        <j.jave.framework.android.ui.components.circleimage.CircleImageView
+	    xmlns:app="http://schemas.android.com/apk/res-auto"
+	    android:id="@+id/profile_image"
+	    android:layout_width="120dp"
+	    android:layout_height="120dp"
+	    android:src="@drawable/me"
+	    app:border_width="1dp"
+	    app:border_color="@color/yelgre"
+	    />
         
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+         >
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+         >
+
         <EditText
             android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="130px"
-            android:layout_centerHorizontal="true"
-            android:ems="20"
-            android:inputType="textEmailAddress" >
+            android:inputType="textEmailAddress" 
+			style="@style/text_style"
+			android:hint="User Name"
+            >
             <requestFocus />
         </EditText>
-        
+
         <EditText
             android:id="@+id/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/userName"
-            android:layout_marginTop="150px"
-            android:layout_centerHorizontal="true"
-            android:ems="20"
-            android:inputType="textPassword" />
+            android:inputType="textPassword" 
+            style="@style/text_style"
+            android:layout_marginTop="10dp"
+            android:hint="Password"
+            />
 
         <Button
             android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/password"
-            android:layout_alignRight="@+id/password"
-            android:layout_alignTop="@+id/password"
-            android:layout_marginTop="150px"
-            android:text="@string/submit" />
-
-    </RelativeLayout>
-
+            android:text="@string/login" 
+            android:layout_marginTop="10dp"
+            style="@style/button_style"
+            />
+    </LinearLayout>
+	
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|bottom"
+        android:paddingBottom="10dp"
+        >
+    
+        <Button 
+            android:text="Register"
+        	android:padding="10dp"
+        	style="@style/button_style_with_border"
+        	android:width="100dp"
+            />
+        
+        </LinearLayout>
 </LinearLayout>

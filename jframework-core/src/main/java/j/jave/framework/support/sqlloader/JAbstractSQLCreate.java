@@ -1,5 +1,7 @@
 package j.jave.framework.support.sqlloader;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.support._package.JFileClassPathDefaultScan;
 import j.jave.framework.support._package.JJARDefaultScan;
 import j.jave.framework.support._package.JPackageResolve;
@@ -23,9 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * basic class to execute SQL. 
  * extract common method. 
@@ -34,7 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements JSQLDDLCreate {
 
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	private final String className;
 	private final String url;

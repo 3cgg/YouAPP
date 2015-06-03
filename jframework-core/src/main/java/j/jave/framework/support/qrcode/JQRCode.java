@@ -3,6 +3,9 @@
  */
 package j.jave.framework.support.qrcode;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -12,9 +15,6 @@ import java.io.InputStream;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -39,7 +39,7 @@ public class JQRCode {
 	
 	public static final int SIZE=256;
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JQRCode.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JQRCode.class);
 
 	
 	/**

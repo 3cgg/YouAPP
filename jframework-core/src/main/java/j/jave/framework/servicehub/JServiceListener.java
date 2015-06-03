@@ -21,6 +21,14 @@ public class JServiceListener implements JAPPListener {
 		}
 		else if(TYPE.GET==event.getType()){
 			obj=serviceHub.getService(event.getServiceName());
+			
+			// scan the application to detect all potential services factories. 
+//			if(obj==null){
+//				JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
+//				if(!serviceFactoryManager.isScanRegistered){
+//					serviceFactoryManager.registerAllServices();
+//				}
+//			}
 		}
 		return obj;
 	}

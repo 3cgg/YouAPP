@@ -1,6 +1,8 @@
 package j.jave.framework.utils;
 
+import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.io.JPathResolver;
+import j.jave.framework.logging.JLoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,12 +11,9 @@ import java.io.FileOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class JFileUtils {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JFileUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JFileUtils.class);
 	
 	/**
 	 * return file name without extension . i.e

@@ -3,8 +3,10 @@
  */
 package j.jave.framework.servicehub;
 
+import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.listener.JAPPEvent;
 import j.jave.framework.listener.JAPPListener;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
 import j.jave.framework.utils.JUniqueUtils;
@@ -14,9 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * service hub. auto-loading all the implementations {@link JServiceFactory}
  * @author J
@@ -24,7 +23,7 @@ import org.slf4j.LoggerFactory;
 class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceFactory<JServiceHub>  {
 	
 	
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	/**
 	 * KEY: service. implements <code>JService</code>
@@ -80,7 +79,11 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 	
 	@SuppressWarnings("unchecked")
 	public  <T> T getService(Class<T> clazz){
-		return (T) services.get(clazz).getService();
+		JServiceFactory<?> serviceFactory=services.get(clazz);
+		if(serviceFactory!=null){
+			return (T) serviceFactory.getService();
+		}
+		return null;
 	}
 	
 	public void register(Class<?> clazz,JServiceFactory<?> serviceFactory){

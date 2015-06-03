@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- pressed -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <gradient android:angle="270" android:endColor="#ff8c00" android:startColor="#ff8c00" />
+		    <corners android:radius="5dp" />
+		    <stroke
+		        android:dashWidth="20dp"
+		        android:dashGap="2dp"
+		        android:width="1dp"
+		        android:color="@color/white" />
+		    <padding
+		        android:left="10dp"
+		        android:top="10dp"
+		        android:right="10dp"
+		        android:bottom="10dp"/><!-- 各方向的间隔 -->
+        </shape>
+        
+        </item>
+    
+    <!-- default -->
+    <item>
+        <shape >
+            <solid android:color="@android:color/transparent" /> 
+		    <corners android:radius="5dp" />
+		    <stroke
+		        android:dashWidth="20dp"
+		        android:dashGap="2dp"
+		        android:width="1dp"
+		        android:color="@color/white" />
+		    <padding
+		        android:left="10dp"
+		        android:top="10dp"
+		        android:right="10dp"
+		        android:bottom="10dp"/><!-- 各方向的间隔 -->
+        
+        </shape>
+	</item>
+
+</selector>

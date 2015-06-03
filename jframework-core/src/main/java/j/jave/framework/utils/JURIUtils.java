@@ -3,21 +3,21 @@
  */
 package j.jave.framework.utils;
 
-import j.jave.framework.http.JHttpGet;
+import j.jave.framework.extension.http.JHttpBase;
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.http.JHttpFactory;
 import j.jave.framework.http.JResponseHandler;
+import j.jave.framework.logging.JLoggerFactory;
 
 import java.io.File;
 import java.net.URI;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author J
  */
 public abstract class JURIUtils {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JURIUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JURIUtils.class);
 	
 	private static final String SCHEMA_HTTP="http";
 	private static final String SCHEMA_FILE="file";
@@ -37,7 +37,7 @@ public abstract class JURIUtils {
 				bytes=JFileUtils.getBytes(new File(uri));
 			}
 			else if(SCHEMA_HTTP.equalsIgnoreCase(schema)){
-				JHttpGet httpGet=new JHttpGet();
+				JHttpBase<?> httpGet=JHttpFactory.getHttpGet();
 				httpGet.setResponseHandler(new JResponseHandler<byte[]>(){
 					@Override
 					public byte[] process(byte[] bytes)
@@ -45,7 +45,7 @@ public abstract class JURIUtils {
 						return bytes;
 					}
 				});
-				bytes= (byte[]) httpGet.get(uriString);
+				bytes= (byte[]) httpGet.execute(uriString);
 			}
 			return bytes;
 		}catch(Exception e){

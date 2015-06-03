@@ -1,17 +1,19 @@
 package j.jave.framework.utils;
 
+import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.io.JResource;
 import j.jave.framework.io.JResourceException;
+import j.jave.framework.logging.JLoggerFactory;
 
 import java.io.IOException;
+import java.util.Map.Entry;
+import java.util.Iterator;
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Set;
 
 public abstract class JPropertiesUtils {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JPropertiesUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JPropertiesUtils.class);
 	
 	/**
 	 * load properties from resource 
@@ -45,7 +47,23 @@ public abstract class JPropertiesUtils {
 		}
 	}
 	
+	public static interface Process{
+		public void process(Object key,Object value,Properties properties) throws Exception;
+	}
 	
+	/**
+	 * do with all the properties(key-value form) in the properties.
+	 * @param properties
+	 * @param process
+	 */
+	public static void each(Properties properties,Process process) throws Exception{
+		Set<Entry<Object, Object>> sets= properties.entrySet();
+		for (Iterator<Entry<Object, Object>> iterator = sets.iterator(); iterator
+				.hasNext();) {
+			Entry<Object, Object> entry = iterator.next();
+			process.process(entry.getKey(), entry.getValue(), properties);
+		}
+	}
 	
 	
 	

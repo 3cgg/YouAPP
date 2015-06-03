@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     
-    <style parent="@android:style/Theme.Light"  name="Theme.YouAPPThem">
+    <style parent="@android:style/Theme.NoTitleBar.Fullscreen"  name="Theme.YouAPPThem">
+        
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">13.0sp</item>
+        <item name="android:textColor" >@color/black</item>
         
     </style>
     

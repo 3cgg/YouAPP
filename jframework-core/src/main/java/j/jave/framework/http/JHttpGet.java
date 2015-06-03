@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpRequestBase;
 
 
 /**
@@ -17,7 +17,7 @@ import org.apache.http.client.methods.HttpUriRequest;
  * @author Administrator
  *
  */
-public class JHttpGet extends JHttp<JHttpGet> {
+class JHttpGet extends JHttp<JHttpGet> {
 	
 	
 	/**
@@ -38,7 +38,7 @@ public class JHttpGet extends JHttp<JHttpGet> {
 	 * @see j.jave.framework.http.JHttp#getHttpType()
 	 */
 	@Override
-	protected HttpUriRequest getHttpType() {
+	protected HttpRequestBase getHttpType() {
 		
 		String url=this.url;
 		if(params!=null){

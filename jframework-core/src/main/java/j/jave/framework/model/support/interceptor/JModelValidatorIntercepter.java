@@ -1,5 +1,7 @@
 package j.jave.framework.model.support.interceptor;
 
+import j.jave.framework.extension.logger.JLogger;
+import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.model.support.JColumn;
 import j.jave.framework.model.support.JFieldValidator;
 import j.jave.framework.model.support.JSQLAnnotationConvert;
@@ -9,9 +11,6 @@ import j.jave.framework.reflect.JClassUtils;
 
 import java.lang.reflect.Field;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * 
  * @author J
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JModelValidatorIntercepter<T> implements JModelIntercepter<T> {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JModelValidatorIntercepter.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JModelValidatorIntercepter.class);
 	
 	/**
 	 * the entity that maps to a concrete table, with annotaion 

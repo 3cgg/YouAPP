@@ -14,7 +14,8 @@ public class FilterResponse {
 		static final String NO_LOGIN="NO_LOGIN";
 		static final String NO_ACCESS="NO_ACCESS";
 		static final String INVALID_PATH="INVALID_RESOURCE";
-		static final String MULTI_REQUEST="MULTI_REQUEST";
+		static final String LINKED_REQUEST="LINKED_REQUEST";
+		static final String DUPLICATE_LOGIN="DUPLICATE_LOGIN";
 	}
 	
 	public static FilterResponse newInvalidPath(){
@@ -35,9 +36,15 @@ public class FilterResponse {
 		return filterResponse;
 	}
 	
-	public static FilterResponse newMultiRequest(){
+	public static FilterResponse newLinkedRequest(){
 		FilterResponse filterResponse=new FilterResponse();
-		filterResponse.setKey(KEY.MULTI_REQUEST);
+		filterResponse.setKey(KEY.LINKED_REQUEST);
+		return filterResponse;
+	}
+	
+	public static FilterResponse newDuplicateLogin(){
+		FilterResponse filterResponse=new FilterResponse();
+		filterResponse.setKey(KEY.DUPLICATE_LOGIN);
 		return filterResponse;
 	}
 	

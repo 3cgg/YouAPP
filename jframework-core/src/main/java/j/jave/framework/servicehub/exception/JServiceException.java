@@ -10,8 +10,6 @@ package j.jave.framework.servicehub.exception;
  */
 public class JServiceException extends Exception {
 
-	private static final long serialVersionUID = 1L;
-
 	public JServiceException(String message){
 		super(message);
 	}

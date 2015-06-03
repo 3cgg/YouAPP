@@ -1,4 +1,10 @@
-
+$.ajaxSetup({ 
+  statusCode : {
+    400 : function () {
+      window.location = "/";
+    }
+  }
+});
 // initialize date validator of default date format "yyyy-mm-dd hh:mm:ss"
 $(
 		$.validator.addMethod("youappdate", function(value, element, params) {

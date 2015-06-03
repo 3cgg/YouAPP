@@ -13,23 +13,31 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.YouAPPThem" 
         >
         
-        <activity android:name="j.jave.framework.android.activity.LoginActivity" 
-             android:logo="@drawable/youapp"
-             android:label="@string/app_name"
-             >
+        <activity android:name="j.jave.framework.android.components.EntranceActivity" >
             <intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
+            
         </activity>
+            
         
+        <activity android:name="j.jave.framework.android.components.core.LoginActivity"  ></activity>
         
-        <activity android:name="j.jave.framework.android.activity.DialogActivity"></activity>
+        <activity android:name="j.jave.framework.android.components.core.DialogActivity"></activity>
+        
+        <activity android:name="j.jave.framework.android.activity.BgActivity"></activity>
+        
+        <activity android:name="j.jave.framework.android.activity.tab.TabFragment"></activity>
+        
+        <activity android:name="j.jave.framework.android.components.core.MainActivity"></activity>
+        
+        <activity android:name="j.jave.framework.android.components.demo.DemoMain"></activity>
         
     </application>
     

@@ -22,9 +22,9 @@ public class EntranceActivity extends AbstractBaseActivity {
 		new AsyncTask<Object, Integer, Object>() {
 			protected Object doInBackground(Object... params) {
 				int time=0;
-				JContext.get().setLoggerFactory(JAndroidLoggerFactory.class);
-				JContext.get().setBase64Factory(JAndroidBase64Factory.class);
-				JContext.get().setHttpFactory(JAndroidHttpFactory.get());
+				JContext.get().getLoggerFactoryProvider().setLoggerFactory(JAndroidLoggerFactory.class);
+				JContext.get().getBase64FactoryProvider().setBase64Factory(JAndroidBase64Factory.class);
+				JContext.get().getHttpFactoryProvider().setHttpFactory(JAndroidHttpFactory.get());
 				while(time<3){
 					try {
 						Thread.sleep(1000);

@@ -4,7 +4,9 @@
 package j.jave.framework.utils;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author J
@@ -58,6 +60,25 @@ public abstract class JCollectionUtils {
 			return false;
 		else
 			return bytes.length > 0;
+	}
+	
+	public static interface Callback<K,V>{
+		void process(K key,V value) throws Exception;
+	}
+	
+	/**
+	 * quickly iterator elements of map.
+	 * @param map null is the same as empty
+	 * @param callback
+	 * @throws Exception
+	 */
+	public  static <K,V> void each(Map<K, V> map, Callback<K, V> callback) throws Exception{
+		if(hasInMap(map)){
+			for (Iterator<Entry<K, V>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+				Entry<K, V> entry =  iterator.next();
+				callback.process(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 	
 }

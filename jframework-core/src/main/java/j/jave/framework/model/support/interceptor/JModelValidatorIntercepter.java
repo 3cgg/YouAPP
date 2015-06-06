@@ -38,7 +38,7 @@ public class JModelValidatorIntercepter<T> implements JModelIntercepter<T> {
 		Class<?> superClass=object.getClass();
 		JTable table=superClass.getAnnotation(JTable.class);
 		if(table==null){
-			return object;
+			return modelInvocation.proceed();
 		}
 		boolean valid=true;
 		while(superClass!=null){
@@ -78,7 +78,7 @@ public class JModelValidatorIntercepter<T> implements JModelIntercepter<T> {
 			throw new RuntimeException(invalidMessage.toString());
 		}
 		
-		return object;
+		return modelInvocation.proceed();
 	}
 
 

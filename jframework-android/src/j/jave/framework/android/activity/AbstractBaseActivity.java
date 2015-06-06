@@ -95,7 +95,7 @@ public abstract class AbstractBaseActivity extends Activity {
 				}
 			}
 		};
-		timer.schedule(task, 2*1000);
+		timer.schedule(task, 1*1000);
 	}
 
 	protected interface AlertCallback{

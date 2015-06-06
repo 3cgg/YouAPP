@@ -168,4 +168,11 @@ class JServiceEventProcessor {
 		return serviceHub.executeEventOnListener(event);
 	}
 	
+	public JService getService(JServiceGetEvent event){
+		return serviceHub.trigger(event);
+	}
+	
+	public void registerService(JServiceRegisterEvent event){
+		serviceHub.trigger(event);
+	}
 }

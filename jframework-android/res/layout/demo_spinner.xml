@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/demo_spinner"
+    >
+    
+    <include layout="@layout/return_layout"/>
+    
+    <TextView 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:text="demo_spinner_default"
+        />
+    
+    <Spinner
+            android:id="@+id/demo_spinner_default"
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+            android:entries="@array/degrees"
+            android:prompt="@string/prompt"
+            />
+   
+    <TextView 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:text="demo_spinner_load_from_resource"
+        />
+    <Spinner
+            android:id="@+id/demo_spinner_load_from_resource"
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+            />
+   
+    <TextView 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:text="demo_spinner_load_from_program"
+        />
+    <Spinner
+            android:id="@+id/demo_spinner_load_from_program"
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:spinnerMode="dropdown"
+    		android:background="@color/yellow"
+            />
+    
+    <TextView 
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        android:text="demo_spinner_simple_adapter"
+        />
+    <Spinner
+            android:id="@+id/demo_spinner_simple_adapter"
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:spinnerMode="dropdown"
+            />
+
+</LinearLayout>

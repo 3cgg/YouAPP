@@ -39,6 +39,10 @@
         
         <activity android:name="j.jave.framework.android.components.demo.DemoMain"></activity>
         
+        <activity android:name="j.jave.framework.android.components.demo.DemoToast"></activity>
+        
+        <activity android:name="j.jave.framework.android.components.demo.DemoSpinner"></activity>
+        
     </application>
     
     

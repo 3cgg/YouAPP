@@ -1,0 +1,12 @@
+<resources>
+
+    <string-array name="degrees">
+        <item>Junior</item>
+        <item>Senior</item>
+        <item>Colleage</item>
+        <item>Bachelor</item>
+    </string-array>
+
+    <string name="prompt">prompt</string>
+    
+</resources>

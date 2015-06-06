@@ -9,6 +9,14 @@ import j.jave.framework.listener.JAPPListener;
 import j.jave.framework.logging.JLoggerFactory;
 import j.jave.framework.reflect.JClassUtils;
 import j.jave.framework.reflect.JReflect;
+import j.jave.framework.servicehub.eventlistener.JServiceInstallEvent;
+import j.jave.framework.servicehub.eventlistener.JServiceInstallListener;
+import j.jave.framework.servicehub.eventlistener.JServiceListenerDisableEvent;
+import j.jave.framework.servicehub.eventlistener.JServiceListenerDisableListener;
+import j.jave.framework.servicehub.eventlistener.JServiceListenerEnableEvent;
+import j.jave.framework.servicehub.eventlistener.JServiceListenerEnableListener;
+import j.jave.framework.servicehub.eventlistener.JServiceUninstallEvent;
+import j.jave.framework.servicehub.eventlistener.JServiceUninstallListener;
 import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
@@ -20,7 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * service hub. auto-loading all the implementations {@link JServiceFactory}
  * @author J
  */
-class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceFactory<JServiceHub>  {
+class JServiceHub implements JService  ,JServiceFactory<JServiceHub>,JServiceListenerDetectListener,
+JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener,JServiceListenerDisableListener
+,JServiceGetListener ,JServiceRegisterListener{
 	
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
@@ -59,15 +69,31 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 			if(eventListener==null){
 				throw new IllegalStateException(eventClass.getName()+"must be modified by annotaion @JEventListener");
 			}
-			
-			List<Class<?>> serviceClasses= listenerServices.get(eventListener.name());
+			Class<? extends JAPPListener>  runningListener=eventListener.name();
+			List<Class<?>> serviceClasses= listenerServices.get(runningListener);
 			
 			if(!serviceClasses.isEmpty()){
 				objects=new Object[serviceClasses.size()];
+				boolean received=false;
 				for(int i=0;i<serviceClasses.size();i++){
 					Class<?> serviceClass=serviceClasses.get(i);
-					JAPPListener listener=(JAPPListener) getService(serviceClass);
-					objects[i]=JReflect.invoke(listener, "trigger", new Class<?>[]{event.getClass()},new Object[]{event});
+					if(serviceHubManager.isEnable(serviceClass, runningListener)){
+						received=true;
+						JAPPListener listener=null;
+						if(JServiceInstallListener.class==runningListener){
+							listener=(JAPPListener)services.get(serviceClass).getService();
+						}
+						else{
+							listener=(JAPPListener) getService(serviceClass);
+						}
+						LOGGER.info("{ "+listener.getClass().getName()+" service } listenered on the event : "
+								+event.getUnique()+"-|-"+event.getClass().getName());
+						objects[i]=JReflect.invoke(listener, "trigger", new Class<?>[]{event.getClass()},new Object[]{event});
+					}
+				}
+				if(!received){
+					LOGGER.info("no any service listeners on the event : "
+							+event.getUnique()+"-|-"+event.getClass().getName());
 				}
 			}
 		}catch(Exception e){
@@ -77,18 +103,38 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 	}
 	
 	
+	/**
+	 * get service, if the service gets lost , thrown some exception.
+	 * @param clazz
+	 * @return
+	 * @see JServiceHubManager
+	 */
 	@SuppressWarnings("unchecked")
 	public  <T> T getService(Class<T> clazz){
+		T service=null;
 		JServiceFactory<?> serviceFactory=services.get(clazz);
 		if(serviceFactory!=null){
-			return (T) serviceFactory.getService();
+			// check if the service is active, the service may be disable if it is uninstalled.
+			if(serviceHubManager.isActive(clazz)){
+				service= (T) serviceFactory.getService();
+			}
+			else if(serviceHubManager.isUninstall(clazz)){
+				throw new JServiceStatusException("service is uninstalled.");
+			}
+			else{
+				throw new JServiceStatusException("service is inactive.");
+			}
 		}
-		return null;
+		else{
+			throw new JServiceStatusException("service is missing in the system.");
+		}
+		return service;
 	}
 	
 	public void register(Class<?> clazz,JServiceFactory<?> serviceFactory){
 		synchronized (sync) {
 			services.put(clazz, serviceFactory);
+			serviceHubManager.addNewService(clazz);
 			trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
 		}
 	}
@@ -148,7 +194,124 @@ class JServiceHub implements JService ,JServiceListenerDetectListener ,JServiceF
 		return "Service Hub , contains all services provided by the platform.";
 	}
 	
+	@Override
+	public Object trigger(JServiceInstallEvent event) {
+		serviceHubManager.installService(event.getServiceClass());
+		return true;
+	}
+	
+	@Override
+	public Object trigger(JServiceUninstallEvent event) {
+		serviceHubManager.uninstallService(event.getServiceClass());
+		return true;
+	}
+	
+	@Override
+	public Object trigger(JServiceListenerEnableEvent event) {
+		serviceHubManager.enableServiceListener(event.getServiceClass(), event.getListener());
+		return true;
+	}
+	@Override
+	public Object trigger(JServiceListenerDisableEvent event) {
+		serviceHubManager.disableServiceListener(event.getServiceClass(), event.getListener());
+		return true;
+	}
+	
+	@SuppressWarnings("serial")
+	class JServiceStatusException extends RuntimeException {
+
+		public JServiceStatusException(String message){
+			super(message);
+		}
+		
+		public JServiceStatusException(Exception e){
+			super(e);
+		}
+	}
+
+	
+	private JServiceHubManager serviceHubManager=new JServiceHubManager();
+	
+	class JServiceHubManager{
+		
+		Map<Class<?>, ServiceControlModel> serviceControlModels=new ConcurrentHashMap<Class<?>, ServiceControlModel>();
+
+		class ServiceControlModel{
+			boolean active=true;
+			boolean install=true;
+			List<Class<? extends JAPPListener>> disabled=new ArrayList<Class<? extends JAPPListener>>(6);
+		}
+		
+		boolean addNewService(Class<?> service){
+			ServiceControlModel serviceControlModel=new ServiceControlModel();
+			serviceControlModels.put(service, serviceControlModel);
+			return true;
+		}
+		
+		boolean uninstallService(Class<?> service){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			serviceControlModel.install=false;
+			serviceControlModel.active=false;
+			serviceControlModel.disabled=new ArrayList<Class<? extends JAPPListener>>();
+			return true;
+		}
+		
+		boolean installService(Class<?> service){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			serviceControlModel.install=true;
+			serviceControlModel.active=true;
+			return true;
+		}
+		
+		
+		boolean disableServiceListener(Class<?> service,Class<? extends JAPPListener> listener){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			serviceControlModel.disabled.add(listener);
+			return true;
+		}
+		
+		boolean enableServiceListener(Class<?> service,Class<? extends JAPPListener> listener){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			serviceControlModel.disabled.remove(listener);
+			return true;
+		}
+		
+		boolean isActive(Class<?> service){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			return serviceControlModel.active;
+		}
+
+		boolean isInstall(Class<?> service){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			return serviceControlModel.install;
+		}
+		
+		boolean isUninstall(Class<?> service){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			return !serviceControlModel.install;
+		}
+		
+		boolean isEnable(Class<?> service,Class<? extends JAPPListener> listener){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			return !serviceControlModel.disabled.contains(listener);
+		}
+		
+		boolean isDisable(Class<?> service,Class<? extends JAPPListener> listener){
+			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
+			return serviceControlModel.disabled.contains(listener);
+		}
+		
+	}
 	
 	
+	@Override
+	public JService trigger(JServiceGetEvent event) {
+		return (JService) getService(event.getServiceName());
+	}
+	
+	@Override
+	public void trigger(JServiceRegisterEvent event) {
+		register(event.getServiceName(), event.getServiceFactory());
+	}
 	
 }

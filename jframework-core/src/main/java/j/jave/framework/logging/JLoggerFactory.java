@@ -17,7 +17,7 @@ public class JLoggerFactory {
 				if(loggerFactory==null){
 					try {
 						
-						Object obj=JContext.get().getLoggerFactory();
+						Object obj=JContext.get().getLoggerFactoryProvider().getLoggerFactory();
 						if(obj==null){
 							loggerFactory=JSL4JLoggerFactory.get();
 						}

@@ -16,7 +16,7 @@ public class JHttpFactory {
 			synchronized (JIHttpFactory.class) {
 				if(httpFactory==null){
 					try {
-						Object obj=JContext.get().getHttpFactory();
+						Object obj=JContext.get().getHttpFactoryProvider().getHttpFactory();
 						if(obj==null){
 							httpFactory=JDefaultHttpFactory.get();
 						}

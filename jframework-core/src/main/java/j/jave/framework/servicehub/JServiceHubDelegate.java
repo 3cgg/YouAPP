@@ -34,7 +34,7 @@ public class JServiceHubDelegate {
 	 */
 	public void register(Object object,Class<?> serviceName,JServiceFactory<?> serviceFactory){
 		JServiceRegisterEvent registerEvent=new JServiceRegisterEvent(object, serviceName, serviceFactory);
-		new JServiceListener().trigger(registerEvent);
+		serviceEventProcessor.registerService(registerEvent);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class JServiceHubDelegate {
 	@SuppressWarnings("unchecked")
 	public  <T> T getService(Object object,Class<T> clazz){
 		JServiceGetEvent getEvent=new JServiceGetEvent(object, clazz);
-		return (T) new JServiceListener().trigger(getEvent);
+		return (T) serviceEventProcessor.getService(getEvent);
 	}
 	
 	/**

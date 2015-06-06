@@ -155,6 +155,7 @@
 
 	<modules>
 		<module>jframework-core</module>
+		<module>jframework-unit-dev</module>
 		<module>jframework-hibernate</module>
 		<module>jframework-mybatis</module>
 		<module>jframework-bootstrap</module>

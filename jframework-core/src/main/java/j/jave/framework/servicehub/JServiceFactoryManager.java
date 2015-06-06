@@ -27,7 +27,7 @@ import java.util.Set;
  * @author J
  *
  */
-public final class JServiceFactoryManager {
+public final class JServiceFactoryManager{
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	// the collection contains those services that is services.properties.
@@ -84,6 +84,14 @@ public final class JServiceFactoryManager {
 		}catch(Exception e){
 			throw new JInitializationException(e);
 		}
+	}
+	
+	public static interface JServiceMetaProvider {
+
+		public abstract void addServiceMeta(ServiceMeta serviceMeta);
+
+		public abstract List<ServiceMeta> getServiceMetas();
+
 	}
 	
 	public static class ServiceMeta{
@@ -168,7 +176,7 @@ public final class JServiceFactoryManager {
 				}
 				
 				//scan context of JContext#getServiceMetas()
-				List<ServiceMeta> serviceMetas= JContext.get().getServiceMetas();
+				List<ServiceMeta> serviceMetas= JContext.get().getServiceMetaProvider().getServiceMetas();
 				if(JCollectionUtils.hasInCollect(serviceMetas)){
 					for(int i=0;i<serviceMetas.size();i++){
 						ServiceMeta serviceMeta=serviceMetas.get(i);
@@ -185,5 +193,19 @@ public final class JServiceFactoryManager {
 			}
 		}
 	}
+	
+	/**
+	 * add more services factories that can be registered in service hub later. 
+	 * generally,call the method during the application setup, and 
+	 * before the method {@link #registerAllServices()}
+	 * @param serviceMeta
+	 */
+	public  void initServiceMeta(ServiceMeta serviceMeta){
+		JContext.get().getServiceMetaProvider().addServiceMeta(serviceMeta);
+	}
+	
+	
+	
+	
 	
 }

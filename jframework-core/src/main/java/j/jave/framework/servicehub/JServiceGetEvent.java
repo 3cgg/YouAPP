@@ -3,25 +3,28 @@
  */
 package j.jave.framework.servicehub;
 
+import j.jave.framework.listener.JAPPEvent;
+
 
 /**
  * service get event object. 
  * @author J
  */
-public class JServiceGetEvent extends JServiceEvent {
+@JListenerOnEvent(name=JServiceGetListener.class)
+class JServiceGetEvent extends JAPPEvent<JServiceGetEvent> {
 
-	public JServiceGetEvent(Object source) {
-		super(source);
-		init();
-	}
-
+	private final Class<?> serviceName;
+	
 	public JServiceGetEvent(Object source,Class<?> serviceName) {
-		super(source);
-		setServiceName(serviceName);
-		init();
+		super(source, HIGEST);
+		this.serviceName=serviceName;
 	}
 	
-	private void init(){
-		this.type=TYPE.GET;
+	public Class<?> getServiceName() {
+		return serviceName;
 	}
+
+	
+	
+
 }

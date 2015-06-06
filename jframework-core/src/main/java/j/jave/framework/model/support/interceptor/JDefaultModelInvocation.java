@@ -30,15 +30,20 @@ public class JDefaultModelInvocation<T> implements JModelInvocation<T>{
 		modelInterceptors.add(new JModelValidatorIntercepter<T>(object));
 	}
 	
+	private int currentInterceptorIndex = -1;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public T proceed() {
-		for(int i=0;i<modelInterceptors.size();i++){
-			modelInterceptors.get(i).intercept(this);
+		
+		if (this.currentInterceptorIndex == this.modelInterceptors.size() - 1) {
+			return object;
 		}
-		return object;
+		JModelIntercepter<T> interceptor =
+				this.modelInterceptors.get(++this.currentInterceptorIndex);
+		return interceptor.intercept(this);
 	}
 	
 }

@@ -16,7 +16,7 @@ public class JBase64Factory {
 			synchronized (JBase64Factory.class) {
 				if(base64Factory==null){
 					try {
-						Object obj=JContext.get().getBase64Factory();
+						Object obj=JContext.get().getBase64FactoryProvider().getBase64Factory();
 						if(obj==null){
 							base64Factory=JApachBase64Factory.get();
 						}

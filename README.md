@@ -19,4 +19,7 @@ Now you can get the sample run.
 Up till now, the project/framework is better and better... :)
 #2015-05-15 第二个试用版本，比较稳定了
 #2015-05-01 第一个试用版本 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master

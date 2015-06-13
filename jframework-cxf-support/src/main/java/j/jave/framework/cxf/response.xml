@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+	<soap:Header>
+		<hi_return xmlns="http://j.jave.framework.cxf/">Hello 00</hi_return>
+	</soap:Header>
+	<soap:Body>
+		<ns1:sayHi_operationNameResponse
+			xmlns:ns1="http://j.jave.framework.cxf/"></ns1:sayHi_operationNameResponse>
+	</soap:Body>
+</soap:Envelope>

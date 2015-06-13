@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.type.TypeReference;
 
 
@@ -19,6 +21,7 @@ public class JJSON {
 	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 	{
 		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
 	}
 	private static JJSON json=new JJSON();
 	

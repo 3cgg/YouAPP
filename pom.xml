@@ -156,6 +156,9 @@
 	<modules>
 		<module>jframework-core</module>
 		<module>jframework-unit-dev</module>
+		<module>jframework-cxf-support</module>
+		<module>jframework-zookeeper-support</module>
+		<module>jframework-redis-support</module>
 		<module>jframework-hibernate</module>
 		<module>jframework-mybatis</module>
 		<module>jframework-bootstrap</module>

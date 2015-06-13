@@ -5,24 +5,26 @@ package j.jave.framework.servicehub;
 
 import j.jave.framework.extension.logger.JLogger;
 import j.jave.framework.listener.JAPPEvent;
+import j.jave.framework.listener.JAPPEventOperator;
 import j.jave.framework.logging.JLoggerFactory;
-import j.jave.framework.support.JPriorityBlockingQueue;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 
 /**
  * event processor center. all event must be processes by this processor. 
+ * And the class also provide the mechanism that manager the processing of how to process the event and the related callback.
+ * A event is sent to the event queue incoming named as {@link JEventQueueIN} ,
+ * then processed here to sent to the next one named as {@link JEventQueueProcessing},
+ * then to sent to the last one named as {@link JEventQueueOUT}, 
+ * the last one scan the linked queue and find those completed event then check if the callback needed, if true setup a new TASK to send
+ * to the executor called {@code ThreadPoolExecutor}.  
+ * In the future the event processing can add persistence mechanism.
  * @author J
+ * @see JEventQueueIN
+ * @see JEventQueueProcessing
+ * @see JEventQueueOUT
+ * @see JEventQueuePipeChain
  */
 class JServiceEventProcessor {
 
@@ -30,11 +32,6 @@ class JServiceEventProcessor {
 	
 	private JServiceHub serviceHub=JServiceHub.get();
 	
-	/**
-	 * event queue holds some events that can be sent to a certain {@link JService}.
-	 */
-	private final JPriorityBlockingQueue<JAPPEvent<?>> eventQueue=new JPriorityBlockingQueue<JAPPEvent<?>>();
-
 	private static JServiceEventProcessor eventProcessor=null;
 	
 	private JServiceEventProcessor(){}
@@ -47,80 +44,12 @@ class JServiceEventProcessor {
 		}
 		return eventProcessor;
 	}
+
+	private JEventQueuePipeChain eventQueuePipeChain=new JEventQueuePipeChain();
 	
-	/**
-	 * KEY: UNIQUE VALUE. it's the value of property <code>unique</code> of {@code JAPPEvent}
-	 * <p>VALUE:  the future task that delegate the event by multiple threads. 
-	 * <p>about the collection we can consider to store all data in the file system whose active time after executed by thread is long, 
-	 * void the OutOfMemory.. 
+	/*
+	 * others begin
 	 */
-	private final static ConcurrentHashMap<String, FutureTask<Object>> eventFutureTasks=new ConcurrentHashMap<String, FutureTask<Object>>(256);
-	
-	Runnable findListener=new Runnable() {
-		
-		@Override
-		public void run() {
-			try{
-				while(true){
-					
-					//sleep 1 second.
-					Thread.sleep(1000);
-					
-					if(eventQueue.size()>0){
-						
-						// do with the 20 head elements in the EventQueue every 1 second.
-						for(int i=0;i<20;i++){
-							if(eventQueue.size()>0){
-								final JAPPEvent<?> event= eventQueue.poll();
-								
-								FutureTask<Object> futureTask=new FutureTask<Object>(new Callable<Object>() {
-									@Override
-									public Object call() throws Exception {
-										return serviceHub.executeEventOnListener(event);
-									}
-								}); 
-								// put the future task in the map to make the program have a chance to get the result by the task later,
-								eventFutureTasks.put(event.getUnique(), futureTask);
-								// sent to thread executor.
-								eventExecutor.execute(futureTask);
-							}
-						}
-						
-						
-					}
-				}
-			}catch(InterruptedException e){
-				LOGGER.error("Interrupted by any thread: ",e);
-				LOGGER.info("Resume the thread. ");
-				// resume the task. 
-				daemon.execute(findListener);
-			}
-			catch(Exception e){
-				LOGGER.error("Event Main Thread occurs an exception by : ",e);
-				LOGGER.info("Resume the thread. ");
-				// resume the task. 
-				daemon.execute(findListener);
-			}
-			catch(Throwable e){
-				LOGGER.error("Event Main Thread occurs an exception by : ",e);
-				LOGGER.info("Resume the thread. ");
-				throw e;
-			}
-		}
-	};
-	
-	private ExecutorService daemon=Executors.newFixedThreadPool(1,new ThreadFactory() {
-		@Override
-		public Thread newThread(Runnable r) {
-			return new Thread(r, "Event Main Thread.");
-		}
-	});
-	{
-		daemon.execute(findListener);
-	}
-	
-	private ScheduledThreadPoolExecutor eventExecutor=new ScheduledThreadPoolExecutor(10);
-	
 	
 	/**
 	 * get event result.
@@ -130,24 +59,22 @@ class JServiceEventProcessor {
 	 * @throws JEventExecutionException
 	 * @throws TimeoutException
 	 */
-	public static Object getEventResult(String eventUnique,long wait) throws JEventExecutionException,TimeoutException{
-		FutureTask<Object> futureTask=eventFutureTasks.get(eventUnique);
-		if(futureTask==null){
-			return null;
-		}
-		
-		try {
-			Object object= futureTask.get(wait, TimeUnit.SECONDS);
-			eventFutureTasks.remove(eventUnique);
-			return object;
-		} catch (InterruptedException e) {
-			throw new JEventExecutionException(e);
-		}
-		catch ( ExecutionException e) {
-			throw new JEventExecutionException(e.getCause());
-		}
-		catch (TimeoutException e) {
-			throw e;
+	public Object getEventResult(String eventUnique,long wait) throws JEventExecutionException{
+		try{
+			return eventQueuePipeChain.getEventResult(eventUnique);
+		}catch(Exception e){
+			if(wait>0){
+				try {
+					Thread.sleep(wait*1000);
+				} catch (InterruptedException e1) {
+					LOGGER.info(e1.getMessage(), e1);
+				}
+				return getEventResult(eventUnique, 0);
+			}
+			else{
+				throw new JEventExecutionException(JEventExecutionException.EVENT_NOT_COMPLETE,
+						"event is still not executed completely, or please check you pass correct unique id ! please wait.");
+			}
 		}
 	}
 	
@@ -156,8 +83,50 @@ class JServiceEventProcessor {
 	 * @param event
 	 */
 	public void addDelayEvent(JAPPEvent<?> event){
-		eventQueue.offer(event);
+		addDelayEvent(event, null, false);
 	}
+	
+	/**
+	 * put the event in the event queue, can release the thread, i.e. asynchronous
+	 * the method is the same as {@link #addDelayEvent(JAPPEvent, JAsyncCallback, override)} with the override parameter default true
+	 * @param event
+	 * @param asyncCallback 
+	 */
+	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback){
+		addDelayEvent(event, asyncCallback, true);
+	}
+	
+	/**
+	 * put the event in the event queue, can release the thread, i.e. asynchronous
+	 * @param event
+	 * @param asyncCallback 
+	 * @param override if override the predefined callback if any.
+	 */
+	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
+		
+		//clear the callback chain.
+		JAPPEventOperator.clearAttachedAsyncCallbackChain(event);
+		
+		if(override){
+			//put the custom callback.
+			if(asyncCallback!=null){
+				JAPPEventOperator.addAttachedAsyncCallback(event, asyncCallback);
+			}
+		}
+		else{
+			// put predefined callback into the callback chain.
+			if(event.getAsyncCallback()!=null){
+				JAPPEventOperator.addAttachedAsyncCallback(event, event.getAsyncCallback());
+			}
+			
+			//put the custom callback.
+			if(asyncCallback!=null){
+				JAPPEventOperator.addAttachedAsyncCallback(event, asyncCallback);
+			}
+		}
+		eventQueuePipeChain.addAPPEvent(event);
+	}
+	
 	
 	/**
 	 * execute the event immediately, need block the thread. i.e. synchronized.

@@ -72,7 +72,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			Class<? extends JAPPListener>  runningListener=eventListener.name();
 			List<Class<?>> serviceClasses= listenerServices.get(runningListener);
 			
-			if(!serviceClasses.isEmpty()){
+			if(serviceClasses!=null&&!serviceClasses.isEmpty()){
 				objects=new Object[serviceClasses.size()];
 				boolean received=false;
 				for(int i=0;i<serviceClasses.size();i++){

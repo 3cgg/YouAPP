@@ -10,7 +10,11 @@ import j.jave.framework.utils.JUniqueUtils;
  * <li>1. default name.</li>
  * <li>2. default unique identification</li>
  * <li>3. default describer .</li>
+ * <pre>the two service factory support including <code>JServiceFactorySupport</code> &  <code>SpringServiceFactorySupport</code>.
+ * Any concrete service factory should extend from items above.
  * @author J
+ * @see JServiceFactorySupport
+ * @see SpringServiceFactorySupport
  */
 public abstract class JAbstractServiceFactory<T extends JService> implements JServiceFactory<T> {
 

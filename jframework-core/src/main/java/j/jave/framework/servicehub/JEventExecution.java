@@ -29,7 +29,7 @@ public class JEventExecution implements Comparable<JEventExecution> {
 	
 	/**
 	 * the asynchronous task is created according to the {@link #persitenceTask},
-	 * if the {@link JPersitenceTask#isVoid()} returns false,the future {@link FutureTask} is created,else {@link Runnable} is created,for example
+	 * if the {@link JPersistenceTask#isVoid()} returns false,the future {@link FutureTask} is created,else {@link Runnable} is created,for example
 	 * <pre>{@code
 	 * final JPersitenceTask persitenceTask=new JPersitenceExecuteEventOnListenerTask(execution);
 	 * 
@@ -40,14 +40,14 @@ public class JEventExecution implements Comparable<JEventExecution> {
 	 *	});
 	 *} 
 	 *</pre>
-	 *@see JPersitenceTask#getRunnable()
+	 *@see JPersistenceTask#getRunnable()
 	 */
 	private transient Runnable futureTask;
 	
 	/**
 	 * has chance to do the event again.
 	 */
-	private JPersitenceTask persitenceTask;
+	private JPersistenceTask persitenceTask;
 	
 	private boolean processed;
 	
@@ -133,11 +133,11 @@ public class JEventExecution implements Comparable<JEventExecution> {
 		return this.event.getPriority()-o.getEvent().getPriority();
 	}
 
-	public JPersitenceTask getPersitenceTask() {
+	public JPersistenceTask getPersitenceTask() {
 		return persitenceTask;
 	}
 
-	public void setPersitenceTask(JPersitenceTask persitenceTask) {
+	public void setPersitenceTask(JPersistenceTask persitenceTask) {
 		this.persitenceTask = persitenceTask;
 	}
 

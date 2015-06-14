@@ -1,23 +1,24 @@
 package j.jave.framework.servicehub;
 
 import j.jave.framework.servicehub.JEventExecution.Phase;
-import j.jave.framework.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.framework.support.JQueueDistributeProcessor;
+import j.jave.framework.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.AbstractQueue;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class JEventQueueProcessing extends JEventQueuePipe{
+public class JEventQueueProcessingPipe extends JEventQueuePipe{
 	
 	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
 	{
-		config.setName("EventQueueProcessing");
+		config.setName("JEventQueueProcessingPipe");
 	}
 	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
 	=new JQueueDistributeProcessor<JEventExecution>(new LinkedBlockingQueue<JEventExecution>(),config);
 	{
-		queueDistributeProcessor.setHandler(new JQueueDistributeProcessor.Handler<JEventExecution>() {
+		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
@@ -39,8 +40,8 @@ public class JEventQueueProcessing extends JEventQueuePipe{
 			}
 
 			@Override
-			public Runnable taskProvided(final JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
+			public JPersistenceTask persistenceTask(JEventExecution execution,
+					AbstractQueue<JEventExecution> executions) {
 				LOGGER.debug("event is processed completely!");
 				return null;
 			}
@@ -48,7 +49,7 @@ public class JEventQueueProcessing extends JEventQueuePipe{
 			@Override
 			public void postProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
-				next().addEventExecution(execution);
+				handoff(execution);
 			}
 			
 		});

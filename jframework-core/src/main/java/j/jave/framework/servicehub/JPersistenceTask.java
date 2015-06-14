@@ -4,14 +4,22 @@ import java.io.Serializable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
+
+/**
+ * the persistence task be populated in {@link JEventExecution#setPersitenceTask(JPersistenceTask)}, the can be called 
+ * later while getting from the persistence repository. the is the part of supporting persistence mechanism.
+ * {@link #getRunnable()} can provide some runnable.
+ * <strong>the sub-class must be accessed from outer.</strong> i.e. it means the class must be <strong>public</strong> modify.
+ * @author J
+ */
 @SuppressWarnings("serial")
-public abstract class JPersitenceTask implements Serializable{
+public abstract class JPersistenceTask implements Serializable{
 
 	public static final String VOID="void";
 	
 	protected final JEventExecution eventExecution;
 	
-	public JPersitenceTask(JEventExecution eventExecution){
+	public JPersistenceTask(JEventExecution eventExecution){
 		this.eventExecution=eventExecution;
 	}
 	
@@ -30,6 +38,10 @@ public abstract class JPersitenceTask implements Serializable{
 	public abstract boolean isVoid();
 	
 	
+	/**
+	 * for service executor.
+	 * @return
+	 */
 	public final Runnable getRunnable(){
 		Runnable runnable=null;
 		if(isVoid()){

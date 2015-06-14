@@ -1,10 +1,18 @@
 package j.jave.framework.temp.test.service;
 
-import j.jave.framework.servicehub.JAbstractServiceFactory;
+import j.jave.framework.servicehub.JServiceFactorySupport;
 
-public class TestServiceFactory extends JAbstractServiceFactory<TestService> {
+public class TestServiceFactory extends JServiceFactorySupport<TestService> {
 
-	private TestService testService=new TestServiceImpl();;
+	public TestServiceFactory(Class<TestService> registClass) {
+		super(registClass);
+	}
+	
+	public TestServiceFactory() {
+		this(TestService.class);
+	}
+
+	private TestService testService=new TestServiceImpl();
 	
 	@Override
 	public TestService getService() {

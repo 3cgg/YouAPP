@@ -1,10 +1,14 @@
 package j.jave.framework.temp.test.service;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
+import j.jave.framework.context.JContext;
+import j.jave.framework.context.JContext.EventQueuePipeProvider;
 import j.jave.framework.servicehub.JAsyncCallback;
 import j.jave.framework.servicehub.JEventExecution;
+import j.jave.framework.servicehub.JEventQueuePipe;
+import j.jave.framework.servicehub.JEventQueuePipeChain.JEventQueuePipeInfo;
 import j.jave.framework.servicehub.JServiceHubDelegate;
+
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class A {
 
@@ -13,7 +17,31 @@ public class A {
 	 */
 	private static ScheduledThreadPoolExecutor eventExecutor=new ScheduledThreadPoolExecutor(10);
 	
+	public static class B extends JEventQueuePipe{
+		@Override
+		public void addEventExecution(JEventExecution eventExecution) {
+			System.out.println(" in B...............");
+			handoff(eventExecution);
+		}
+	} 
+	
+	
+	public static class C extends JEventQueuePipe{
+		@Override
+		public void addEventExecution(JEventExecution eventExecution) {
+			System.out.println(" in C...............");
+			handoff(eventExecution);
+		}
+	} 
+	
 	public static void main(String[] args) throws InterruptedException {
+		
+	
+		EventQueuePipeProvider eventQueuePipeProvider=  JContext.get().getEventQueuePipeProvider();
+		eventQueuePipeProvider.addEventQueuePipe(new JEventQueuePipeInfo(C.class, 2));
+		eventQueuePipeProvider.addEventQueuePipe(new JEventQueuePipeInfo(B.class, 1));
+		
+		
 		final A a=new A();
 		final JServiceHubDelegate serviceHubDelegate= JServiceHubDelegate.get();
 		serviceHubDelegate.register(a, TestService.class, new TestServiceFactory());

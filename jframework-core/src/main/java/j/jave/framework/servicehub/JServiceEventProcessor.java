@@ -14,16 +14,16 @@ import java.util.concurrent.TimeoutException;
 /**
  * event processor center. all event must be processes by this processor. 
  * And the class also provide the mechanism that manager the processing of how to process the event and the related callback.
- * A event is sent to the event queue incoming named as {@link JEventQueueIN} ,
- * then processed here to sent to the next one named as {@link JEventQueueProcessing},
- * then to sent to the last one named as {@link JEventQueueOUT}, 
+ * A event is sent to the event queue incoming named as {@link JEventQueueINPipe} ,
+ * then processed here to sent to the next one named as {@link JEventQueueProcessingPipe},
+ * then to sent to the last one named as {@link JEventQueueOUTPipe}, 
  * the last one scan the linked queue and find those completed event then check if the callback needed, if true setup a new TASK to send
  * to the executor called {@code ThreadPoolExecutor}.  
  * In the future the event processing can add persistence mechanism.
  * @author J
- * @see JEventQueueIN
- * @see JEventQueueProcessing
- * @see JEventQueueOUT
+ * @see JEventQueueINPipe
+ * @see JEventQueueProcessingPipe
+ * @see JEventQueueOUTPipe
  * @see JEventQueuePipeChain
  */
 class JServiceEventProcessor {

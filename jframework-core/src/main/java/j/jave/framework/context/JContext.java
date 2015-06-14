@@ -6,8 +6,11 @@ import j.jave.framework.extension.http.JHttpFactoryProvider;
 import j.jave.framework.extension.http.JIHttpFactory;
 import j.jave.framework.extension.logger.JILoggerFactory;
 import j.jave.framework.extension.logger.JLoggerFactoryProvider;
+import j.jave.framework.servicehub.JEventQueuePipeChain.JEventQueuePipeInfo;
+import j.jave.framework.servicehub.JEventQueuePipeChain.JEventQueuePipeProvider;
 import j.jave.framework.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import j.jave.framework.servicehub.JServiceFactoryManager.ServiceMeta;
+import j.jave.framework.support.JPriorityBlockingQueue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,6 +124,29 @@ public class JContext extends HashMap<String, Object> {
 		}
 	}
 	
+	public class EventQueuePipeProvider implements JEventQueuePipeProvider{
+		
+		private final List<JEventQueuePipeInfo> repo=new ArrayList<JEventQueuePipeInfo>(6);
+		
+		@Override
+		public void addEventQueuePipe(JEventQueuePipeInfo eventQueuePipeInfo) {
+			repo.add(eventQueuePipeInfo);
+		}
+
+		@Override
+		public JPriorityBlockingQueue<JEventQueuePipeInfo> getEventQueuePipes() {
+			
+			JPriorityBlockingQueue<JEventQueuePipeInfo> out=new JPriorityBlockingQueue<JEventQueuePipeInfo>();
+			for(int i=0;i<repo.size();i++){
+				JEventQueuePipeInfo eventQueuePipeInfo= repo.get(i);
+				out.offer(eventQueuePipeInfo);
+			}
+			return out;
+		}
+		
+	}
+	
+	
 	private HttpFactoryProvider httpFactoryProvider=new HttpFactoryProvider();
 	
 	private Base64FactoryProvider base64FactoryProvider=new Base64FactoryProvider();
@@ -129,6 +155,12 @@ public class JContext extends HashMap<String, Object> {
 	
 	private ServiceMetaProvider serviceMetaProvider=new ServiceMetaProvider();
 
+	private EventQueuePipeProvider eventQueuePipeProvider=new EventQueuePipeProvider();
+	
+	public EventQueuePipeProvider getEventQueuePipeProvider() {
+		return eventQueuePipeProvider;
+	}
+	
 	public HttpFactoryProvider getHttpFactoryProvider() {
 		return httpFactoryProvider;
 	}

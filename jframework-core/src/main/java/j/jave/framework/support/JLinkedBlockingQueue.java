@@ -15,6 +15,14 @@ public class JLinkedBlockingQueue<T> extends AbstractQueue<T> {
 
 	private LinkedBlockingQueue<T> blockingQueue=new LinkedBlockingQueue<T>();
 
+	public JLinkedBlockingQueue(){
+		blockingQueue=new LinkedBlockingQueue<T>();
+	}
+	
+	public JLinkedBlockingQueue(int capacity){
+		blockingQueue=new LinkedBlockingQueue<T>(capacity);
+	}
+	
 	@Override
 	public boolean offer(T e) {
 		return blockingQueue.offer(e);

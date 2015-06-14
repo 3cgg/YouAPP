@@ -1,46 +1,45 @@
 package j.jave.framework.servicehub;
 
 import j.jave.framework.servicehub.JEventExecution.Phase;
-import j.jave.framework.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.framework.support.JQueueDistributeProcessor;
+import j.jave.framework.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.framework.utils.JCollectionUtils;
 
 import java.util.AbstractQueue;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JEventQueueOUT extends JEventQueuePipe {
+public class JEventQueueOUTPipe extends JEventQueuePipe {
 	
 	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
 	{
-		config.setName("EventQueueOUT");
+		config.setName("JEventQueueOUTPipe");
 	}
 	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
 	=new JQueueDistributeProcessor<JEventExecution>(new LinkedBlockingQueue<JEventExecution>(),config);
 	{
-		queueDistributeProcessor.setHandler(new JQueueDistributeProcessor.Handler<JEventExecution>() {
+		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
 
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
 				return false;
 			}
-
+			
 			@Override
-			public Runnable taskProvided(final JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
-				final JPersitenceEventAsyncCallbackTask eventAsyncCallbackTask=new JPersitenceEventAsyncCallbackTask(execution);
-				execution.setPersitenceTask(eventAsyncCallbackTask);
-				Runnable runnable=eventAsyncCallbackTask.getRunnable();
-				execution.setFutureTask(runnable);
+			public JPersistenceTask persistenceTask(JEventExecution execution,
+					AbstractQueue<JEventExecution> executions) {
+				final JPersistenceEventAsyncCallbackTask eventAsyncCallbackTask=new JPersistenceEventAsyncCallbackTask(execution);
 				execution.setPhase(Phase.EVENT_CALLBACK_ING);
-				return runnable;
+				return eventAsyncCallbackTask;
 			}
 
 			@Override
 			public void postProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
 				execution.setPhase(Phase.EVENT_CALLBACK_DONE);
-				next().addEventExecution(execution);
+				handoff(execution);
 			}
 			
 		});
@@ -65,7 +64,12 @@ public class JEventQueueOUT extends JEventQueuePipe {
 	 */
 	final ConcurrentHashMap<String, JEventExecution> waitForGets=new ConcurrentHashMap<String, JEventExecution>();
 
-	
+	/**
+	 * get result, if the result is still not calculated, a exception of <code>JEventExecutionException.EVENT_NOT_COMPLETE</code> thrown.
+	 * @param eventUnique
+	 * @return
+	 * @throws JEventExecutionException
+	 */
 	Object getEventResult(String eventUnique) throws JEventExecutionException{
 		if(waitForGets.containsKey(eventUnique)){
 			JEventExecution eventExecution= waitForGets.get(eventUnique);
@@ -74,5 +78,30 @@ public class JEventQueueOUT extends JEventQueuePipe {
 		}
 		throw new JEventExecutionException(JEventExecutionException.EVENT_NOT_COMPLETE,
 				"event is still not executed completely! please wait.");
+	}
+	
+	@SuppressWarnings("serial")
+	public static class JPersistenceEventAsyncCallbackTask extends JPersistenceTask{
+		
+		public JPersistenceEventAsyncCallbackTask(
+				JEventExecution eventExecution) {
+			super(eventExecution);
+		}
+
+		@Override
+		public Object execute() {
+			List<JAsyncCallback> asyncCallbacks=eventExecution.getAsyncCallbackChain();
+			if(JCollectionUtils.hasInCollect(asyncCallbacks)){
+				for(int i=0;i<asyncCallbacks.size();i++){
+					eventExecution.setCurrentCallbackIndex(i);
+					asyncCallbacks.get(i).callback((Object[]) eventExecution.getResult(),eventExecution);
+				}
+			}
+			return VOID;
+		}
+		@Override
+		public boolean isVoid() {
+			return true;
+		}
 	}
 }

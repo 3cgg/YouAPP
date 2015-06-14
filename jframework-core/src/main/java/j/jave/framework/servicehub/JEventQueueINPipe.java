@@ -3,22 +3,29 @@ package j.jave.framework.servicehub;
 import j.jave.framework.exception.JOperationNotSupportedException;
 import j.jave.framework.listener.JAPPEvent;
 import j.jave.framework.servicehub.JEventExecution.Phase;
-import j.jave.framework.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.framework.support.JPriorityBlockingQueue;
+import j.jave.framework.support.JQueueDistributeProcessor;
+import j.jave.framework.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.AbstractQueue;
 
-public class JEventQueueIN extends JEventQueuePipe{
+/**
+ * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
+ * default the event pipe is the first element in the {@link JEventQueuePipeChain}.
+ * the pipe does not support {@link #addEventExecution(JEventExecution)}.
+ * @author J
+ */
+public class JEventQueueINPipe extends JEventQueuePipe{
 
 
 	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
 	{
-		config.setName("EventQueueIN");
+		config.setName("JEventQueueINPipe");
 	}
 	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
 	=new JQueueDistributeProcessor<JEventExecution>(new JPriorityBlockingQueue<JEventExecution>(),config);
 	{
-		queueDistributeProcessor.setHandler(new JQueueDistributeProcessor.Handler<JEventExecution>() {
+		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
 
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
@@ -27,19 +34,16 @@ public class JEventQueueIN extends JEventQueuePipe{
 			}
 
 			@Override
-			public Runnable taskProvided(final JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
-				final JPersitenceTask persitenceTask=new JPersitenceExecuteEventOnListenerTask(execution);
-				Runnable futureTask=persitenceTask.getRunnable();
-				execution.setFutureTask(futureTask);
-				execution.setPersitenceTask(persitenceTask); 
-				return futureTask;
+			public JPersistenceTask persistenceTask(JEventExecution execution,
+					AbstractQueue<JEventExecution> executions) {
+				final JPersistenceTask persitenceTask=new JPersistenceExecuteEventOnListenerTask(execution);
+				return persitenceTask;
 			}
-
+			
 			@Override
 			public void postProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
-				next().addEventExecution(execution);
+				handoff(execution);
 			}
 			
 		});
@@ -60,4 +64,22 @@ public class JEventQueueIN extends JEventQueuePipe{
 		
 	}
 
+	@SuppressWarnings("serial")
+	public static class JPersistenceExecuteEventOnListenerTask extends JPersistenceTask{
+		
+		public JPersistenceExecuteEventOnListenerTask(JEventExecution eventExecution){
+			super(eventExecution);
+		}
+		
+		public Object execute() {
+			return JServiceHub.get().executeEventOnListener(eventExecution.getEvent());
+		}
+		
+		@Override
+		public boolean isVoid() {
+			return false;
+		}
+		
+	}
+	
 }

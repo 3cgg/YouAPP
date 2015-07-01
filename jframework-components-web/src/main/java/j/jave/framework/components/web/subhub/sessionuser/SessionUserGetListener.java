@@ -3,9 +3,9 @@
  */
 package j.jave.framework.components.web.subhub.sessionuser;
 
-import j.jave.framework.listener.JAPPListener;
-import j.jave.framework.servicehub.JEventOnListener;
-import j.jave.framework.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.eventdriven.servicehub.JAPPListener;
+import j.jave.framework.commons.eventdriven.servicehub.JEventOnListener;
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 
 /**
  * any sub-class implementation can provide the SessionUserService .

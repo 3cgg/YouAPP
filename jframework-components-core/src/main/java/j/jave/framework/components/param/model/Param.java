@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.param.model;
 
-import j.jave.framework.model.JBaseModel;
-import j.jave.framework.model.support.JColumn;
-import j.jave.framework.model.support.JSQLType;
-import j.jave.framework.model.support.JTable;
+import j.jave.framework.commons.model.JBaseModel;
+import j.jave.framework.commons.model.support.JColumn;
+import j.jave.framework.commons.model.support.JSQLType;
+import j.jave.framework.commons.model.support.JTable;
 
 /**
  * @author Administrator

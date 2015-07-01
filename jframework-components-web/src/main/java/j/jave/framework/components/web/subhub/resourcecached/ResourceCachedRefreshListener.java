@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.web.subhub.resourcecached;
 
-import j.jave.framework.listener.JAPPListener;
-import j.jave.framework.servicehub.JEventOnListener;
+import j.jave.framework.commons.eventdriven.servicehub.JAPPListener;
+import j.jave.framework.commons.eventdriven.servicehub.JEventOnListener;
 
 /**
  * @author J

@@ -3,15 +3,18 @@
  */
 package j.jave.framework.components.web.action;
 
+import j.jave.framework.commons.reflect.JReflect;
+import j.jave.framework.commons.utils.JDateUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.context.SpringContextSupport;
+import j.jave.framework.components.multi.version.JComponentVersionSpringApplicationSupport;
 import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.reflect.JReflect;
-import j.jave.framework.utils.JDateUtils;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 
 /**
  * to find target action , then execute method.  
@@ -31,17 +34,38 @@ public class ActionExecutor {
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("path processing : "+targetPath);
 		}
-
+		
 		// resolve the path , then invoke the target method. 
-	    // the path like /login.loginaction/toLogin
+	    // the path like /app/component/version/login.loginaction/toLogin
 		
 		String serviceName="";;
 		String methodName="";
 		if(targetPath.startsWith("/")) targetPath=targetPath.substring(1);
 		String[] targets=targetPath.split("/");
-		serviceName=targets[0];
-		methodName=targets[1];
-		AbstractAction object=(AbstractAction) SpringContextSupport.getApplicationContext().getBean(serviceName);
+		String component =null;
+		//compatible with previous
+		if(targets.length==2){
+			serviceName=targets[0];
+			methodName=targets[1];
+		}
+		// for multi-version of component
+		else if(targets.length==5){
+			String appName=targets[0];
+			String componentName=targets[1];
+			int version=Integer.parseInt(targets[2]);
+			component= JComponentVersionSpringApplicationSupport.unique(appName, componentName, version);
+			serviceName=targets[3];
+			methodName=targets[4];
+		}
+		//resolve spring application , support multi-version of component.
+		ApplicationContext applicationContext = null;
+		if (JStringUtils.isNotNullOrEmpty(component)) {
+			applicationContext = JComponentVersionSpringApplicationSupport.getApplicationContext(component);
+		} else {
+			applicationContext = SpringContextSupport.getApplicationContext();
+		}
+		
+		AbstractAction object=(AbstractAction) applicationContext.getBean(serviceName);
 		
 		// set HTTP context constructed above.
 		object.setHttpContext(httpContext);

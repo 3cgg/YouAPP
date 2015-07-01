@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.web.subhub.loginaccess;
 
-import j.jave.framework.servicehub.JService;
-import j.jave.framework.servicehub.exception.JServiceException;
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.service.JService;
 
 /**
  * the interface contains all ability of controlling if the end-user can access the system or not. 

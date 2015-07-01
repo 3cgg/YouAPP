@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.core.autoloader;
 
-import j.jave.framework.support.sqlloader.dml.JSQLDMLLoader;
-import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.commons.sqlloader.dml.JSQLDMLLoader;
+import j.jave.framework.commons.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

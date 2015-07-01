@@ -3,10 +3,9 @@
  */
 package j.jave.framework.components.weight.mapper;
 
+import j.jave.framework.commons.model.JPagination;
+import j.jave.framework.commons.model.support.JModelMapper;
 import j.jave.framework.components.weight.model.Weight;
-import j.jave.framework.components.weight.model.WeightSearchCriteria;
-import j.jave.framework.model.JPagination;
-import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;

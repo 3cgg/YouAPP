@@ -1,12 +1,12 @@
 package j.jave.framework.components.support.mapperxml;
 
-import j.jave.framework.io.JFile;
-import j.jave.framework.model.JBaseModel;
-import j.jave.framework.model.JPagination;
-import j.jave.framework.model.support.JColumn;
-import j.jave.framework.model.support.JTable;
-import j.jave.framework.reflect.JClassUtils;
-import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.commons.io.JFile;
+import j.jave.framework.commons.model.JBaseModel;
+import j.jave.framework.commons.model.JPagination;
+import j.jave.framework.commons.model.support.JColumn;
+import j.jave.framework.commons.model.support.JTable;
+import j.jave.framework.commons.reflect.JClassUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

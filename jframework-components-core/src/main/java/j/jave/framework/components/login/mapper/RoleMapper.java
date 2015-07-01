@@ -3,12 +3,12 @@
  */
 package j.jave.framework.components.login.mapper;
 
-import java.util.List;
-
+import j.jave.framework.commons.model.JPagination;
+import j.jave.framework.commons.model.support.JModelMapper;
 import j.jave.framework.components.login.model.Role;
-import j.jave.framework.model.JPagination;
-import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
+
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;

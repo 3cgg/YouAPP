@@ -3,7 +3,7 @@
 <mapper namespace="j.jave.framework.components.login.mapper.UserExtendMapper">
 
 
-<resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
+<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
 <result column="ID" property="id"  jdbcType="VARCHAR" />
 <result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
@@ -68,21 +68,21 @@ left join USERS b on b.ID=a.USERID
 </sql>
 
 
-<select id="getsByPage"   resultMap="userExtend"  parameterType="j.jave.framework.model.JPagination">
+<select id="getsByPage"   resultMap="userExtend"  parameterType="j.jave.framework.commons.model.JPagination">
 select * from USERS_EXTEND  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   
 </if>
 </select>
 
-<select id="getUserExtendByUserId"  resultMap="userExtend"  parameterType="j.jave.framework.model.JPagination">
+<select id="getUserExtendByUserId"  resultMap="userExtend"  parameterType="j.jave.framework.commons.model.JPagination">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	and <include refid="associationFilter"/>
 	and a.USERID=#{userId}
 </select>
 
-<select id="getUserExtendByNatureName"  resultMap="userExtend"  parameterType="j.jave.framework.model.JPagination">
+<select id="getUserExtendByNatureName"  resultMap="userExtend"  parameterType="j.jave.framework.commons.model.JPagination">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	and <include refid="associationFilter"/>

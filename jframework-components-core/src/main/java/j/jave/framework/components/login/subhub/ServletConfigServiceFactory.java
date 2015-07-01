@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.login.subhub;
 
-import org.springframework.stereotype.Service;
-
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
 import j.jave.framework.components.web.subhub.servlet.config.ServletConfigService;
+
+import org.springframework.stereotype.Service;
 
 /**
  * @author J

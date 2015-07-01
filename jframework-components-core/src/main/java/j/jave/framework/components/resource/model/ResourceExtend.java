@@ -1,10 +1,10 @@
 package j.jave.framework.components.resource.model;
 
+import j.jave.framework.commons.model.JBaseModel;
+import j.jave.framework.commons.model.support.JColumn;
+import j.jave.framework.commons.model.support.JSQLType;
+import j.jave.framework.commons.model.support.JTable;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCached;
-import j.jave.framework.model.JBaseModel;
-import j.jave.framework.model.support.JColumn;
-import j.jave.framework.model.support.JSQLType;
-import j.jave.framework.model.support.JTable;
 
 @JTable(name="RESOURCES_EXTEND")
 public class ResourceExtend extends JBaseModel implements ResourceCached{

@@ -3,6 +3,12 @@
  */
 package j.jave.framework.components.login.subhub;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.io.memory.JSingleStaticMemoryCacheIO;
+import j.jave.framework.commons.security.JDESedeCipher;
+import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.commons.utils.JUniqueUtils;
 import j.jave.framework.components.authorize.resource.model.ResourceAuthorized;
 import j.jave.framework.components.authorize.resource.service.ResourceAuthorizedService;
 import j.jave.framework.components.login.model.User;
@@ -18,12 +24,6 @@ import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.io.memory.JSingleStaticMemoryCacheIO;
-import j.jave.framework.servicehub.JServiceHubDelegate;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.support.security.JAPPCipher;
-import j.jave.framework.utils.JStringUtils;
-import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 		if(JStringUtils.isNullOrEmpty(password)){
 			throw new JServiceException("密码不能为空");
 		}
-		String encryptPassword=JAPPCipher.get().encrypt(password.trim());
+		String encryptPassword=JDESedeCipher.get().encrypt(password.trim());
 		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
 		if(user!=null) return  JUniqueUtils.unique(); 
 		return "";

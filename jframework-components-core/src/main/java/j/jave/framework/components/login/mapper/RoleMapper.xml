@@ -3,7 +3,7 @@
 <mapper namespace="j.jave.framework.components.login.mapper.RoleMapper">
 
 
-<resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
+<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
 <result column="ID" property="id"  jdbcType="VARCHAR" />
 <result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
@@ -60,7 +60,7 @@ where a.id=#{param1}
 select a.* from ROLES a 
 </sql>
 
-<select id="getsByPage"  resultMap="role"  parameterType="j.jave.framework.model.JPagination">
+<select id="getsByPage"  resultMap="role"  parameterType="j.jave.framework.commons.model.JPagination">
     select * from ROLES 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
@@ -73,7 +73,7 @@ select a.* from ROLES a
 </select>
 
 
-<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.framework.model.JPagination">
+<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.framework.commons.model.JPagination">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	<if test="roleName !=null and roleName !=''">

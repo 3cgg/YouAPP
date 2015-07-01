@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.web.support;
 
-import j.jave.framework.io.memory.JStaticMemoryCacheIO;
+import j.jave.framework.commons.io.memory.JStaticMemoryCacheIO;
 
 /**
  * 

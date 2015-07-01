@@ -1,11 +1,11 @@
 package j.jave.framework.components.resource.support;
 
+import j.jave.framework.commons.support.detect.JMethodDetect;
+import j.jave.framework.commons.support.detect.JMethodDetect.JMethodFilter;
+import j.jave.framework.commons.support.detect.JMethodInfoProvider;
+import j.jave.framework.commons.support.detect.JMethodInfoProvider.JMethodInfo;
+import j.jave.framework.commons.support.detect.JResourceDetect;
 import j.jave.framework.components.web.action.Action;
-import j.jave.framework.support.detect.JMethodDetect;
-import j.jave.framework.support.detect.JMethodDetect.JMethodFilter;
-import j.jave.framework.support.detect.JMethodInfoProvider;
-import j.jave.framework.support.detect.JMethodInfoProvider.JMethodInfo;
-import j.jave.framework.support.detect.JResourceDetect;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

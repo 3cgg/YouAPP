@@ -3,11 +3,11 @@
  */
 package j.jave.framework.components.support.ehcache.subhub;
 
+import j.jave.framework.commons.ehcache.JDefaultEhcacheService;
+import j.jave.framework.commons.ehcache.JDefaultEhcacheServiceConfiguration;
+import j.jave.framework.commons.ehcache.JEhcacheServiceConfigure;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.servicehub.ehcache.JDefaultEhcacheService;
-import j.jave.framework.servicehub.ehcache.JDefaultEhcacheServiceConfiguration;
-import j.jave.framework.servicehub.ehcache.JEhcacheServiceConfigure;
-import j.jave.framework.utils.JStringUtils;
 import net.sf.ehcache.Ehcache;
 
 import org.springframework.beans.factory.FactoryBean;

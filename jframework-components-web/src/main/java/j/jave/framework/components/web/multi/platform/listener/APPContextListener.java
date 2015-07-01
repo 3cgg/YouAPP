@@ -1,6 +1,6 @@
 package j.jave.framework.components.web.multi.platform.listener;
 
-import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 
 import java.io.File;
 import java.util.Properties;
@@ -32,7 +32,7 @@ public class APPContextListener implements ServletContextListener {
 		try{
 			Properties properties=System.getProperties();
 			String javaClassPath=(String) properties.get("java.class.path");
-			String webLib= sce.getServletContext().getRealPath("WEB-INF/lib");
+			String webLib= sce.getServletContext().getRealPath("/WEB-INF/lib");
 			LOGGER.info("WEB LIB PATH : "+webLib );
 			File libFile=new File(webLib);
 			StringBuffer libStringBuffer=new StringBuffer();

@@ -1,12 +1,12 @@
 package j.jave.framework.components.web.model;
 
+import j.jave.framework.commons.utils.JCollectionUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.web.action.ActionExecutor;
 import j.jave.framework.components.web.multi.platform.support.JLinkedRequestSupport;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.utils.JCookieUtils;
 import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.utils.JCollectionUtils;
-import j.jave.framework.utils.JStringUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;

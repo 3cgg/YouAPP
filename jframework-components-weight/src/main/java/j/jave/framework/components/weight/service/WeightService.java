@@ -3,12 +3,11 @@
  */
 package j.jave.framework.components.weight.service;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.model.JPagination;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.weight.model.Weight;
-import j.jave.framework.components.weight.model.WeightSearchCriteria;
-import j.jave.framework.model.JPagination;
-import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 

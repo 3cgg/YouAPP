@@ -1,9 +1,9 @@
 package j.jave.framework.components.core.servicehub;
 
-import j.jave.framework.servicehub.JAbstractServiceFactory;
-import j.jave.framework.servicehub.JService;
-import j.jave.framework.servicehub.JServiceFactory;
-import j.jave.framework.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.eventdriven.servicehub.JAbstractServiceFactory;
+import j.jave.framework.commons.eventdriven.servicehub.JServiceFactory;
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.service.JService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

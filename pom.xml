@@ -38,75 +38,12 @@
 	</repositories>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>jta</artifactId>
-			<version>${jta.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.8.4</version>
-		</dependency>
-
-
-		<dependency>
-			<groupId>aopalliance</groupId>
-			<artifactId>aopalliance</artifactId>
-			<version>1.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>${h2.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.2</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -154,24 +91,50 @@
 
 
 	<modules>
-		<module>jframework-core</module>
-		<module>jframework-unit-dev</module>
-		<module>jframework-cxf-support</module>
-		<module>jframework-zookeeper-support</module>
-		<module>jframework-redis-support</module>
-		<module>jframework-hibernate</module>
-		<module>jframework-mybatis</module>
-		<module>jframework-bootstrap</module>
+	
+		<!-- commons , basic java code -->
+		<module>jframework-commons-independency</module>
+		<module>jframework-commons-http</module>
+		<module>jframework-commons-json</module>
+		<module>jframework-commons-security</module>
+		<module>jframework-commons-eventdriven</module>
+		<module>jframework-commons-ehcache</module>
+		<module>jframework-commons-memcached</module>
+		<module>jframework-commons-filedistribute</module>
+		<module>jframework-commons-qrcode</module>
+		<module>jframework-commons-sqlautoloader</module>
+		<module>jframework-commons-commonsmanager</module>
+		<module>jframework-commons-taskdriven</module>
+		
+		<!-- components -->
+		<module>jframework-components-underlying-javacode</module>
 		<module>jframework-components-support</module>
+		<module>jframework-components-multi-version-support</module>
 		<module>jframework-components-web</module>
 		<module>jframework-components-core</module>
 		<module>jframework-components-bill</module>
 		<module>jframework-components-weight</module>
 		<module>jframework-components-tablemanager</module>
-		<module>jframework-me</module>
+		<module>jframework-components-runtime-load</module>
+		<module>jframework-components-sample</module>
+		
+		<!-- war -->
+		<module>jframework-youapp-war</module>
+		<module>jframework-youapp-war-jetty</module>
+		<module>jframework-youapp-war-tomcat</module>
+		
+		<!-- support -->
+		<module>jframework-support-cxf</module>
+		<module>jframework-support-zookeeper</module>
+		<module>jframework-support-redis</module>
+		<module>jframework-support-hibernate</module>
+		<module>jframework-support-mybatis</module>
+		<module>jframework-support-bootstrap</module>
+		<module>jframework-support-cas4</module>
+		<module>jframework-support-cas4-tomcat</module>
 		
 		<!-- test module -->
-		<module>jframework-components-test</module>
+		<module>jframework-support-test-all-modules</module>
 	</modules>
 
 </project>

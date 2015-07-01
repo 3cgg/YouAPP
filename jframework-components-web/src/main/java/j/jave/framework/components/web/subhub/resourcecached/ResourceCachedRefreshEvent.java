@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.web.subhub.resourcecached;
 
-import j.jave.framework.listener.JAPPEvent;
-import j.jave.framework.servicehub.JListenerOnEvent;
+import j.jave.framework.commons.eventdriven.servicehub.JAPPEvent;
+import j.jave.framework.commons.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * event generated for notifying to refresh cached.

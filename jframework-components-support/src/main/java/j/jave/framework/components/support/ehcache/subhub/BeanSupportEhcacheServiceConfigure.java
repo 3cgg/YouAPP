@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.support.ehcache.subhub;
 
-import j.jave.framework.servicehub.ehcache.JEhcacheServiceConfigure;
+import j.jave.framework.commons.ehcache.JEhcacheServiceConfigure;
 
 /**
  * @author Administrator

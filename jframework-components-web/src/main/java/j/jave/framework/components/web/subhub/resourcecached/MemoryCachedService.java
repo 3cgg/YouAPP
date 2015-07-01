@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.web.subhub.resourcecached;
 
-import j.jave.framework.servicehub.JService;
+import j.jave.framework.commons.service.JService;
 
 
 /**

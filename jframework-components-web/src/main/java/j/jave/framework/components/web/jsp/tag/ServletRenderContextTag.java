@@ -3,6 +3,7 @@
  */
 package j.jave.framework.components.web.jsp.tag;
 
+import j.jave.framework.commons.reflect.JClassUtils;
 import j.jave.framework.components.web.multi.platform.scope.ServletRenderContext;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +45,7 @@ public class ServletRenderContextTag implements Tag{
 	public int doStartTag() throws JspException {
 		try{
 			HttpServletRequest request=(HttpServletRequest) pageContext.getRequest();
-			ServletRenderContext context=(ServletRenderContext) Thread.currentThread().getContextClassLoader().loadClass(className).newInstance();
+			ServletRenderContext context=(ServletRenderContext) JClassUtils.load(className, Thread.currentThread().getContextClassLoader()).newInstance();
 			context.changeRenderContext(request);
 		}catch(Exception e){
 			throw new JspException(e);

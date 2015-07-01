@@ -3,7 +3,7 @@
 
 <mapper namespace="j.jave.framework.components.login.mapper.UserTrackerMapper" >
 
-<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+<resultMap id="base"  type="j.jave.framework.commons.model.JBaseModel" >
 		<result column="ID" property="id" />
 		<result column="CREATEID" property="createId" />
 		<result column="UPDATEID" property="updateId" />
@@ -58,7 +58,7 @@ select * from USER_TRACKER where DELETED='N' and USERNAME=#{userName} order by L
 </select>
 
 
-<select id="getsByPage"  resultMap="userTracker"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="userTracker"  parameterType="j.jave.framework.commons.model.JBaseModel">
     select * from USER_TRACKER 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

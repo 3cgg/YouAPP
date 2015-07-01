@@ -1,5 +1,15 @@
 package j.jave.framework.components.login.action.jsp;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.eventdriven.servicehub.JAPPEvent;
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.exception.JOperationNotSupportedException;
+import j.jave.framework.commons.json.JJSON;
+import j.jave.framework.commons.qrcode.JQRCode;
+import j.jave.framework.commons.security.JDESedeCipher;
+import j.jave.framework.commons.utils.JDateUtils;
+import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.commons.utils.JUniqueUtils;
 import j.jave.framework.components.core.model.SessionUserInfo;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.support.JSPActionSupport;
@@ -28,16 +38,6 @@ import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.exception.JOperationNotSupportedException;
-import j.jave.framework.json.JJSON;
-import j.jave.framework.listener.JAPPEvent;
-import j.jave.framework.servicehub.JServiceHubDelegate;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.support.qrcode.JQRCode;
-import j.jave.framework.support.security.JAPPCipher;
-import j.jave.framework.utils.JDateUtils;
-import j.jave.framework.utils.JStringUtils;
-import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -216,7 +216,7 @@ public class LoginJSPAction extends JSPActionSupport {
 	
 	public String createUser() throws Exception {
 		String passwrod=user.getPassword();
-		String encriptPassword=JAPPCipher.get().encrypt(passwrod);
+		String encriptPassword=JDESedeCipher.get().encrypt(passwrod);
 		user.setPassword(encriptPassword);
 		ServiceContext context=new ServiceContext();
 		context.setUser((User) getSessionUser());

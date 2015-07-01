@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import j.jave.framework.servicehub.filedistribute.JFileDistService;
+import j.jave.framework.commons.filedistribute.JFileDistService;
 
 /**
  * File Distribute Service Provider.

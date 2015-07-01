@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import j.jave.framework.io.JFile;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistService;
-import j.jave.framework.servicehub.filedistribute.JFileDistStoreEvent;
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.filedistribute.JDefaultLocalFileDistService;
+import j.jave.framework.commons.filedistribute.eventdriven.JFileDistStoreEvent;
+import j.jave.framework.commons.io.JFile;
 
 import java.net.URI;
 

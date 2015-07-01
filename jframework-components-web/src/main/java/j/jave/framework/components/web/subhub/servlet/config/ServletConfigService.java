@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.subhub.servlet.config;
 
+import j.jave.framework.commons.service.JService;
 import j.jave.framework.components.web.jsp.JJSPLoginFilter;
 import j.jave.framework.components.web.multi.platform.filter.JValidPathFilter;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
-import j.jave.framework.servicehub.JService;
 
 /**
  * the interface to make the rule of what common configuration to configure,

@@ -1,10 +1,10 @@
 package j.jave.framework.components.web.mobile;
 
+import j.jave.framework.commons.json.JJSON;
 import j.jave.framework.components.web.multi.platform.filter.JLoginFilter;
 import j.jave.framework.components.web.multi.platform.support.APPFilterConfig;
 import j.jave.framework.components.web.multi.platform.support.FilterResponse;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.json.JJSON;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

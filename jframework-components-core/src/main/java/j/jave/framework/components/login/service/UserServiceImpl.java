@@ -3,15 +3,15 @@
  */
 package j.jave.framework.components.login.service;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.model.JPagination;
+import j.jave.framework.commons.security.JDESedeCipher;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.model.User;
-import j.jave.framework.model.JPagination;
 import j.jave.framework.mybatis.JMapper;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.support.security.JAPPCipher;
-import j.jave.framework.utils.JStringUtils;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 		}
 		
 		String passwrod=user.getPassword().trim();
-		String encriptPassword=JAPPCipher.get().encrypt(passwrod);
+		String encriptPassword=JDESedeCipher.get().encrypt(passwrod);
 		user.setPassword(encriptPassword);
 		user.setUserName(user.getUserName().trim());
 		saveUser(context, user);  // with encrypted password 

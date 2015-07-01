@@ -1,10 +1,11 @@
 package j.jave.framework.components.web.multi.platform.listener;
 
-import j.jave.framework.exception.JInitializationException;
-import j.jave.framework.support.sqlloader.JSQLConfigure;
-import j.jave.framework.support.sqlloader.ddl.JPropertiesSQLDDLCreateFactory;
-import j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory;
-import j.jave.framework.utils.JStringUtils;
+import j.jave.framework.commons.exception.JInitializationException;
+import j.jave.framework.commons.reflect.JClassUtils;
+import j.jave.framework.commons.sqlloader.JSQLConfigure;
+import j.jave.framework.commons.sqlloader.ddl.JPropertiesSQLDDLCreateFactory;
+import j.jave.framework.commons.sqlloader.ddl.JSQLDDLCreateFactory;
+import j.jave.framework.commons.utils.JStringUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -37,7 +38,7 @@ public class SQLDDLListener implements ServletContextListener {
 			String packString=sce.getServletContext().getInitParameter(DDL_CREATE_FACTORY_PACKAGE);
 			Class<?> clazz=null;
 			if(JStringUtils.isNotNullOrEmpty(obj)){
-				clazz= Thread.currentThread().getContextClassLoader().loadClass(obj);
+				clazz= JClassUtils.load(obj, Thread.currentThread().getContextClassLoader());
 			}
 			else{
 				clazz=JPropertiesSQLDDLCreateFactory.class;

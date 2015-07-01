@@ -3,13 +3,13 @@
  */
 package j.jave.framework.components.support.filedistribute.subhub;
 
-import java.io.File;
-
+import j.jave.framework.commons.filedistribute.JDefaultLocalFileDistService;
+import j.jave.framework.commons.filedistribute.JDefaultLocalFilePathStrategy;
+import j.jave.framework.commons.filedistribute.JLocalFilePathStrategy;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.servicehub.filedistribute.JDefaultLocalFileDistService;
-import j.jave.framework.servicehub.filedistribute.JDefaultLocalFilePathStrategy;
-import j.jave.framework.servicehub.filedistribute.JLocalFilePathStrategy;
-import j.jave.framework.utils.JStringUtils;
+
+import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

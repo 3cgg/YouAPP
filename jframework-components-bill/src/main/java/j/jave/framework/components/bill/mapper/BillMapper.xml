@@ -4,7 +4,7 @@
 <mapper namespace="j.jave.framework.components.bill.mapper.BillMapper">
 
 
-<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+<resultMap id="base"  type="j.jave.framework.commons.model.JBaseModel" >
 		<result column="ID" property="id" />
 		<result column="CREATEID" property="createId" />
 		<result column="UPDATEID" property="updateId" />
@@ -102,7 +102,7 @@ where a.id=#{param1}
 	where a.DELETED='N' and a.USERNAME = #{userName} 
 </select>
 
-<select id="getBillsByPage"  resultMap="bill"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getBillsByPage"  resultMap="bill"  parameterType="j.jave.framework.commons.model.JBaseModel">
 	<include refid="selectfor"></include>
 	 where a.DELETED='N' 
 	<if test="userCode !=null and userCode !=''">
@@ -130,7 +130,7 @@ where a.id=#{param1}
 	order by a.BILL_TIME desc , a.UPDATETIME desc
 </select>
 
-<select id="getsByPage"  resultMap="bill"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="bill"  parameterType="j.jave.framework.commons.model.JBaseModel">
     select * from BILL 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

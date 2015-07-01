@@ -1,12 +1,12 @@
 package j.jave.framework.components.login.service;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.utils.JUniqueUtils;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.RoleGroupMapper;
 import j.jave.framework.components.login.model.RoleGroup;
 import j.jave.framework.mybatis.JMapper;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.utils.JUniqueUtils;
 
 import java.util.List;
 

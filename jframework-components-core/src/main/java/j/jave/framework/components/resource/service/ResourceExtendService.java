@@ -1,13 +1,11 @@
 package j.jave.framework.components.resource.service;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.resource.model.ResourceExtend;
-import j.jave.framework.servicehub.exception.JServiceException;
+
+import java.util.List;
 
 public interface ResourceExtendService extends Service<ResourceExtend> {
 

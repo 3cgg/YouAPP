@@ -1,13 +1,13 @@
 package j.jave.framework.components.weight.action;
 
+import j.jave.framework.commons.utils.JDateUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.support.JSPActionSupport;
 import j.jave.framework.components.login.service.UserService;
 import j.jave.framework.components.views.chart.SimpleLineChart;
 import j.jave.framework.components.weight.model.Weight;
 import j.jave.framework.components.weight.model.WeightSearchCriteria;
 import j.jave.framework.components.weight.service.WeightService;
-import j.jave.framework.utils.JDateUtils;
-import j.jave.framework.utils.JStringUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

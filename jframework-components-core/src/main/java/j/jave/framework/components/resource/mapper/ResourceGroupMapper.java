@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.resource.mapper;
 
+import j.jave.framework.commons.model.support.JModelMapper;
 import j.jave.framework.components.resource.model.ResourceGroup;
-import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package j.jave.framework.components.bill.model;
 
+import j.jave.framework.commons.model.JPage;
+import j.jave.framework.commons.model.JPagination;
 import j.jave.framework.components.web.model.SearchCriteria;
-import j.jave.framework.model.JPage;
-import j.jave.framework.model.JPagination;
 
 public class BillSearchCriteria extends Bill implements SearchCriteria ,JPagination {
 

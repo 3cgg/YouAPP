@@ -1,12 +1,12 @@
 package j.jave.framework.components.web.multi.platform.filter;
 
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.components.web.multi.platform.support.MemoryResponseWrapper;
 import j.jave.framework.components.web.subhub.resourcecached.MemoryCachedService;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseCachedResource;
 import j.jave.framework.components.web.subhub.resourcecached.response.ResponseEhcacheMemoryCacheService;
 import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.servicehub.JServiceHubDelegate;
 
 import java.io.IOException;
 

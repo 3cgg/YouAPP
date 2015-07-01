@@ -1,5 +1,13 @@
 package j.jave.framework.components.tablemanager.service;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
+import j.jave.framework.commons.model.JBaseModel;
+import j.jave.framework.commons.model.JPagination;
+import j.jave.framework.commons.model.support.JColumn;
+import j.jave.framework.commons.model.support.JModelMapper;
+import j.jave.framework.commons.model.support.JTable;
+import j.jave.framework.commons.reflect.JClassUtils;
+import j.jave.framework.commons.support._package.JDefaultClassesScanner;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.tablemanager.model.Cell;
 import j.jave.framework.components.tablemanager.model.Column;
@@ -7,15 +15,7 @@ import j.jave.framework.components.tablemanager.model.Record;
 import j.jave.framework.components.tablemanager.model.Table;
 import j.jave.framework.components.tablemanager.model.TableSearch;
 import j.jave.framework.components.web.model.SearchCriteria;
-import j.jave.framework.model.JBaseModel;
-import j.jave.framework.model.JPagination;
-import j.jave.framework.model.support.JColumn;
-import j.jave.framework.model.support.JModelMapper;
-import j.jave.framework.model.support.JTable;
 import j.jave.framework.mybatis.JMapper;
-import j.jave.framework.reflect.JClassUtils;
-import j.jave.framework.servicehub.exception.JServiceException;
-import j.jave.framework.support._package.JDefaultPackageScan;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	private synchronized void loadMapper(){
 		if(!loaded){
 			// get all mappers 
-			JDefaultPackageScan defaultPackageScan= new JDefaultPackageScan(JMapper.class);
+			JDefaultClassesScanner defaultPackageScan= new JDefaultClassesScanner(JMapper.class);
 			defaultPackageScan.setIncludePackages(new String[]{"j"});
 			Set<Class<?>> classes=defaultPackageScan.scan();
 			if(classes!=null){
@@ -310,7 +310,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	
 	private JBaseModel get(Record record) throws Exception{
 		String modelName=record.getModelName();
-		Class<?> clazz=Thread.currentThread().getContextClassLoader().loadClass(modelName);
+		Class<?> clazz=JClassUtils.load(modelName, Thread.currentThread().getContextClassLoader());
 		Object model=clazz.newInstance();
 		List<Cell> cells=record.getCells();
 		for(int i=0;i<cells.size();i++){

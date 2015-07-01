@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.login.mapper;
 
+import j.jave.framework.commons.model.support.JModelMapper;
 import j.jave.framework.components.login.model.UserExtend;
-import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import org.apache.ibatis.annotations.Param;

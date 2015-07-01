@@ -3,9 +3,10 @@
  */
 package j.jave.framework.components.web.support;
 
+import j.jave.framework.commons.exception.JInitializationException;
+import j.jave.framework.commons.reflect.JClassUtils;
+import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.web.jsp.JJSPServiceServlet;
-import j.jave.framework.exception.JInitializationException;
-import j.jave.framework.utils.JStringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -75,7 +76,7 @@ public class JServletContext {
 		
 			String filterClassNameDeclared=filterRegistration.getClassName();
 			ClassLoader classLoader= Thread.currentThread().getContextClassLoader();
-			Class<?> clazz=classLoader.loadClass(filterClassNameDeclared);
+			Class<?> clazz=JClassUtils.load(filterClassNameDeclared, classLoader);
 			boolean filter=false;
 			//first
 			filter=filterFilter.filter(clazz);
@@ -110,7 +111,7 @@ public class JServletContext {
 		
 			String servletClassNameDeclared=servletRegistration.getClassName();
 			ClassLoader classLoader= Thread.currentThread().getContextClassLoader();
-			Class<?> clazz=classLoader.loadClass(servletClassNameDeclared);
+			Class<?> clazz=JClassUtils.load(servletClassNameDeclared, classLoader);
 			boolean filter=false;
 			//first
 			filter=servletFilter.filter(clazz);

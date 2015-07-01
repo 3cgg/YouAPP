@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.support;
 
+import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.framework.commons.support.detect.JResourceDetect;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
-import j.jave.framework.servicehub.JServiceHubDelegate;
-import j.jave.framework.support.detect.JResourceDetect;
 
 import java.util.Iterator;
 import java.util.Map;

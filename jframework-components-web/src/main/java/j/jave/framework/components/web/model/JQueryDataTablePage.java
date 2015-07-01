@@ -3,9 +3,9 @@
  */
 package j.jave.framework.components.web.model;
 
-import j.jave.framework.exception.JOperationNotSupportedException;
-import j.jave.framework.json.JJSONObject;
-import j.jave.framework.model.JPage;
+import j.jave.framework.commons.exception.JOperationNotSupportedException;
+import j.jave.framework.commons.json.JJSONObject;
+import j.jave.framework.commons.model.JPage;
 
 import java.util.HashMap;
 import java.util.List;

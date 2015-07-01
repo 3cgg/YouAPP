@@ -4,7 +4,7 @@
 <mapper namespace="j.jave.framework.components.weight.mapper.WeightMapper">
 
 
-<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+<resultMap id="base"  type="j.jave.framework.commons.model.JBaseModel" >
 		<result column="ID" property="id" />
 		<result column="CREATEID" property="createId" />
 		<result column="UPDATEID" property="updateId" />
@@ -60,7 +60,7 @@ select * from WEIGHT where DELETED='N' and USERNAME=#{userName} order by RECORD_
 	update WEIGHT set DELETED='Y' where ID=#{id}
 </delete>
 
-<select id="getWeightsByPage"  resultMap="weight"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getWeightsByPage"  resultMap="weight"  parameterType="j.jave.framework.commons.model.JBaseModel">
 	select * from WEIGHT where DELETED='N' and USERNAME=#{userName}
 	<if test="recordTime!=null and recordTime!=''">
 		and RECORD_TIME &gt; #{recordTime}
@@ -68,7 +68,7 @@ select * from WEIGHT where DELETED='N' and USERNAME=#{userName} order by RECORD_
 	order by RECORD_TIME desc 
 </select>
 
-<select id="getsByPage"  resultMap="weight"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="weight"  parameterType="j.jave.framework.commons.model.JBaseModel">
     select * from WEIGHT 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

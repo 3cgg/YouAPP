@@ -4,7 +4,6 @@
 package j.jave.framework.components.login.subhub;
 
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUserService;
 
 import org.springframework.stereotype.Service;

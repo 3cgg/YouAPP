@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.login.mapper;
 
+import j.jave.framework.commons.model.support.JModelMapper;
 import j.jave.framework.components.login.model.UserTracker;
-import j.jave.framework.model.support.JModelMapper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;

@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.model;
 
+import j.jave.framework.commons.model.JPage;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import j.jave.framework.model.JPage;
 
 /**
  * @author J

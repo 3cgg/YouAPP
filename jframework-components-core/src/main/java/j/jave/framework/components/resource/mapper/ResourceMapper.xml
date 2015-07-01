@@ -3,7 +3,7 @@
 <mapper namespace="j.jave.framework.components.resource.mapper.ResourceMapper">
 
 
-<resultMap id="jBaseModel"  type="j.jave.framework.model.JBaseModel"   >
+<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
 <result column="ID" property="id"  jdbcType="VARCHAR" />
 <result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
@@ -71,7 +71,7 @@ left join RESOURCES_EXTEND b on a.ID=b.RESOURCEID
 </sql>
 
 
-<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.framework.model.JPagination">
+<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.framework.commons.model.JPagination">
 select * from RESOURCES  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

@@ -3,8 +3,8 @@
  */
 package j.jave.framework.components.support.memcached.subhub;
 
+import j.jave.framework.commons.memcached.JDefaultMemcachedDisService;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
-import j.jave.framework.servicehub.memcached.JDefaultMemcachedDisService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

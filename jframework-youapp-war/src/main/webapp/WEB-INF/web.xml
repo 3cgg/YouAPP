@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="youapp"  version="3.0"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+
+	<context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>classpath:spring-context.xml
+        </param-value>  
+    </context-param> 
+
+	<listener>  
+	 <listener-class>org.springframework.web.context.ContextLoaderListener
+	 </listener-class>
+	 </listener>
+	 
+	<listener>
+	    <listener-class>j.jave.framework.components.web.multi.platform.listener.APPContextListener</listener-class>
+	</listener>
+	 
+	 <!--  DDL  -->
+	<context-param>  
+        <param-name>j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.implementation</param-name>  
+        <param-value>j.jave.framework.commons.sqlloader.ddl.JPropertiesSQLDDLCreateFactory
+        </param-value>  
+    </context-param> 
+    <context-param>  
+        <param-name>j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.package</param-name>  
+        <param-value>j.jave.framework.components</param-value>  
+    </context-param> 
+	<listener>  
+	 <listener-class>j.jave.framework.components.web.multi.platform.listener.SQLDDLListener
+	 </listener-class>
+	 </listener>
+	 
+	 <!--  DML  -->
+	 <context-param>  
+        <param-name>j.jave.framework.support.sqlloader.dml.JSQLDMLCreateFactory.implementation</param-name>  
+        <param-value>j.jave.framework.commons.sqlloader.dml.JPropertiesSQLDMLCreateFactory
+        </param-value>  
+    </context-param> 
+    <context-param>  
+        <param-name>j.jave.framework.support.sqlloader.dml.JSQLDMLCreateFactory.package</param-name>  
+        <param-value>j.jave.framework.components</param-value>  
+    </context-param> 
+	<listener>  
+	 <listener-class>j.jave.framework.components.web.multi.platform.listener.SQLDMLListener
+	 </listener-class>
+	 </listener>
+	 
+	 <!-- CharacterEncodingFilter -->
+	 <filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	 
+	 <!-- MemoryHTMLFilter -->
+	<filter>
+	    <filter-name>MemoryHTMLFilter</filter-name>
+	    <filter-class>j.jave.framework.components.web.multi.platform.filter.MemoryHTMLFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>MemoryHTMLFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- JValidPathFilter -->
+	<filter>
+		<filter-name>JValidPathFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.multi.platform.filter.JValidPathFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JValidPathFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- JLinkedRequestFilter -->
+	<filter>
+		<filter-name>JLinkedRequestFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.multi.platform.filter.JLinkedRequestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JLinkedRequestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- JJSPLoginFilter -->
+	<filter>
+		<filter-name>JJSPLoginFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.jsp.JJSPLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JJSPLoginFilter</filter-name>
+		<servlet-name>JJSPServiceServlet</servlet-name>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- JMobileLoginFilter -->
+	<filter>
+		<filter-name>JMobileLoginFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.mobile.JMobileLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>JMobileLoginFilter</filter-name>
+		<servlet-name>JMobileServiceServlet</servlet-name>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	<!-- AccessFilter -->
+	<filter>
+		<filter-name>ResourceAccessFilter</filter-name>
+		<filter-class>j.jave.framework.components.web.multi.platform.filter.ResourceAccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ResourceAccessFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	
+	
+	<servlet>
+		<servlet-name>JJSPServiceServlet</servlet-name>
+		<servlet-class>j.jave.framework.components.web.jsp.JJSPServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JJSPServiceServlet</servlet-name>
+		<url-pattern>/web/service/dispatch/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>JMobileServiceServlet</servlet-name>
+		<servlet-class>j.jave.framework.components.web.mobile.JMobileServiceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JMobileServiceServlet</servlet-name>
+		<url-pattern>/mobile/service/dispatch/*</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://github.com/jinwanmei/YouAPP</taglib-uri>
+			<taglib-location>/WEB-INF/tld/YouAPPTag.tld</taglib-location>
+		</taglib>
+	
+	</jsp-config>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</web-app>

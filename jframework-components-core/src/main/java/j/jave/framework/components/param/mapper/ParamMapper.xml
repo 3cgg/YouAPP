@@ -4,7 +4,7 @@
 <mapper namespace="j.jave.framework.components.param.mapper.ParamMapper">
 
 
-<resultMap id="base"  type="j.jave.framework.model.JBaseModel" >
+<resultMap id="base"  type="j.jave.framework.commons.model.JBaseModel" >
 		<result column="ID" property="id" />
 		<result column="CREATEID" property="createId" />
 		<result column="UPDATEID" property="updateId" />
@@ -75,7 +75,7 @@ select * from PARAM where id=#{param1}
 	select * from PARAM where DELETED='N' and FUNCTIONID = #{functionId} 
 </select>
 
-<select id="getParamsByPage"  resultMap="param"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getParamsByPage"  resultMap="param"  parameterType="j.jave.framework.commons.model.JBaseModel">
 	select * from PARAM where DELETED='N' 
 	<if test="functionId!=null and functionId!=''">
 		and FUNCTIONID = #{functionId}
@@ -90,7 +90,7 @@ select * from PARAM where id=#{param1}
 </select>
 
 
-<select id="getsByPage"  resultMap="param"  parameterType="j.jave.framework.model.JBaseModel">
+<select id="getsByPage"  resultMap="param"  parameterType="j.jave.framework.commons.model.JBaseModel">
     select * from PARAM 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

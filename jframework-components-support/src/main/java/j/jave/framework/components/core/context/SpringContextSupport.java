@@ -3,6 +3,11 @@
  */
 package j.jave.framework.components.core.context;
 
+import j.jave.framework.commons.utils.JCollectionUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -15,15 +20,41 @@ import org.springframework.stereotype.Service;
  */
 @Service("SpringContextSupport-Get-Bean-Not-Supported")
 public class SpringContextSupport implements ApplicationContextAware {
-
+	
+	/**
+	 * platform application context. 
+	 */
 	private static ApplicationContext applicationContext;
 
-	public static  ApplicationContext getApplicationContext() {
+	public static  ApplicationContext getApplicationContext(String... unique) {
+		
+		if(JCollectionUtils.hasInArray(unique)){
+			return getApplicationContext(unique[0]);
+		}
 		return applicationContext;
 	}
 
 	public  void setApplicationContext(ApplicationContext applicationContext) {
 		SpringContextSupport.applicationContext = applicationContext;
 	}
+	
+	/**
+	 * KEY : consist of  app:component : version 
+	 * VALUE : Application Context
+	 */
+	private static Map<String, ApplicationContext> applicationContexts=new ConcurrentHashMap<String, ApplicationContext>();
+	
+	public static  ApplicationContext getApplicationContext(String unique) {
+		return applicationContexts.get(unique);
+	}
+	
+	public static void setApplicationContext(ApplicationContext applicationContext,String unique) {
+		applicationContexts.put(unique, applicationContext);
+	}
+	
+	public static void removeApplicationContext(String unique){
+		applicationContexts.remove(unique);
+	}
+	
 	
 }

@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.web.subhub.sessionuser;
 
-import j.jave.framework.servicehub.JService;
+import j.jave.framework.commons.service.JService;
 
 /**
  * the interface to new SessionUser.

@@ -1,9 +1,9 @@
 package j.jave.framework.components.resource.service;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
 import j.jave.framework.components.core.service.Service;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.resource.model.Resource;
-import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.util.List;
 

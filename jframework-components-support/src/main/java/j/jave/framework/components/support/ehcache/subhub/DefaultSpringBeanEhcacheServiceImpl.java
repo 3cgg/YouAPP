@@ -3,7 +3,7 @@
  */
 package j.jave.framework.components.support.ehcache.subhub;
 
-import j.jave.framework.servicehub.ehcache.JAbstractEhcacheService;
+import j.jave.framework.commons.ehcache.JAbstractEhcacheService;
 import net.sf.ehcache.Ehcache;
 
 import org.springframework.stereotype.Service;

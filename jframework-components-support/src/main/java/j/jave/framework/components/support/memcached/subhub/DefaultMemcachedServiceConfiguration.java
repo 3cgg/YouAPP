@@ -1,6 +1,6 @@
 package j.jave.framework.components.support.memcached.subhub;
 
-import j.jave.framework.servicehub.memcached.JDefaultMemcachedDisServiceConfigure;
+import j.jave.framework.commons.memcached.JDefaultMemcachedDisServiceConfigure;
 
 import java.util.List;
 import java.util.Map;

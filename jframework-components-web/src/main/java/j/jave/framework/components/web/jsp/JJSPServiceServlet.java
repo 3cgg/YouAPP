@@ -3,10 +3,10 @@
  */
 package j.jave.framework.components.web.jsp;
 
+import j.jave.framework.commons.eventdriven.exception.JServiceException;
 import j.jave.framework.components.web.model.JHttpContext;
 import j.jave.framework.components.web.multi.platform.servlet.JServiceServlet;
 import j.jave.framework.components.web.utils.JHttpUtils;
-import j.jave.framework.servicehub.exception.JServiceException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

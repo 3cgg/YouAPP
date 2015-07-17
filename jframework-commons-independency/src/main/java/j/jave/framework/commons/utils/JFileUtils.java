@@ -1,5 +1,6 @@
 package j.jave.framework.commons.utils;
 
+import j.jave.framework.commons.io.JClassRootPathResolver;
 import j.jave.framework.commons.io.JPathResolver;
 import j.jave.framework.commons.logging.JLogger;
 import j.jave.framework.commons.logging.JLoggerFactory;
@@ -45,7 +46,7 @@ public abstract class JFileUtils {
 	}
 	
 	/**
-	 * 
+	 * replaced by new class named {@link JClassRootPathResolver}
 	 * @param fileName
 	 * @return
 	 */

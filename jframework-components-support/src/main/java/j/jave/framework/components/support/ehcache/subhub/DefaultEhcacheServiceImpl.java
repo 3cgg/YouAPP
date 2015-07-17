@@ -38,4 +38,14 @@ public class DefaultEhcacheServiceImpl implements EhcacheService {
 		this.defaultEhcacheService = defaultEhcacheService;
 	}
 
+	@Override
+	public Object putNeverExpired(String key, Object object) {
+		return defaultEhcacheService.putNeverExpired(key, object);
+	}
+
+	@Override
+	public boolean contains(String key) {
+		return defaultEhcacheService.contains(key);
+	}
+
 }

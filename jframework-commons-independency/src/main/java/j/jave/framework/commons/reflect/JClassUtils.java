@@ -227,12 +227,13 @@ public abstract class JClassUtils {
 		while(superClass!=null){
 			try {
 				field=superClass.getDeclaredField(property);
+				if(field!=null) break;
 			} catch (NoSuchFieldException e) {
+				superClass=superClass.getSuperclass();
 				continue;
 			} catch (SecurityException e) {
-				throw new RuntimeException(e);
+				throw e;
 			}
-			superClass=superClass.getSuperclass();
 		}
 		return field;
 	}
@@ -272,7 +273,7 @@ public abstract class JClassUtils {
 		List<Method> methods=new ArrayList<Method>();
 		Class<?> superClass=clazz;
 		
-		if(modifiers!=null&&modifiers.length==0&&modifiers[0]==Modifier.PUBLIC){
+		if(modifiers!=null&&modifiers.length==1&&modifiers[0]==Modifier.PUBLIC){
 			if(deep){
 				Collections.addAll(methods, superClass.getMethods());
 				return methods;
@@ -508,9 +509,23 @@ public abstract class JClassUtils {
 		return Class.class.isInstance(obj);
 	}
 	
-	public static Class<?> load(String className,ClassLoader classLoader){
+	@SuppressWarnings("unchecked")
+	public static <T> Class<T> load(String className,ClassLoader classLoader){
 		try {
-			return classLoader.loadClass(className);
+			if(classLoader==null){
+				classLoader=Thread.currentThread().getContextClassLoader();
+			}
+			return (Class<T>) classLoader.loadClass(className);
+		} catch (ClassNotFoundException e) {
+			throw new JClassException(e) ;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> Class<T> load(String className){
+		try {
+			ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
+			return (Class<T>) classLoader.loadClass(className);
 		} catch (ClassNotFoundException e) {
 			throw new JClassException(e) ;
 		}
@@ -540,5 +555,57 @@ public abstract class JClassUtils {
 	public static boolean isAssignable(Class<?> superClass,Class<?> testClass){
 		return isAssignable(superClass, testClass, false);
 	}
+	
+	
+	/**
+	 * get all fields , includes those fields in the {@link Object}
+	 * @param clazz
+	 * @param deep
+	 * @param modifiers  , to filter the method modify is between 
+	 * @return
+	 */
+	public static List<Field> getFields(Class<?> clazz,boolean deep,int... modifiers){
+		List<Field> fields=new ArrayList<Field>();
+		Class<?> superClass=clazz;
+		
+		if(modifiers!=null&&modifiers.length==0&&modifiers[0]==Modifier.PUBLIC){
+			if(deep){
+				Collections.addAll(fields, superClass.getFields());
+				return fields;
+			}
+		}
+		
+		while(superClass!=null){
+			Field[] feds=superClass.getDeclaredFields();
+			for(int i=0;i<feds.length;i++){
+				Field field=feds[i];
+				if(!isAccessable(field)){
+					field.setAccessible(true);
+				}
+				boolean exists=false;
+				if(modifiers!=null&&modifiers.length>0){
+					for(int mdf=0;mdf<modifiers.length;mdf++){
+						if(field.getModifiers()==modifiers[mdf]){
+							exists=true;
+							break;
+						}
+					}
+				}
+				
+				if(exists){
+					fields.add(field);
+				}
+			}
+			
+			if(deep){ // deep scanning
+				superClass=superClass.getSuperclass();
+			}
+			else{
+				superClass=null; // break;
+			}
+		}
+		return fields;
+	}
+	
 	
 }

@@ -107,8 +107,13 @@ public abstract class JBaseModel implements JModel {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(Integer version) {
 		this.version = version;
+	}
+	
+	@Override
+	public JBaseModel clone() throws CloneNotSupportedException {
+		return (JBaseModel) super.clone();
 	}
 	
 }

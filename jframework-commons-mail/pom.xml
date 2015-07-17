@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+	
+<parent>
+  	 <groupId>j.jave</groupId>
+	  <artifactId>framework</artifactId>
+	  <version>0.0</version>
+	  <relativePath>../pom.xml</relativePath>
+  </parent>
+	 
+  <groupId>j.jave.framework</groupId>
+  <artifactId>jframework-commons-mail</artifactId>
+  <version>${j.version}</version>
+  <packaging>jar</packaging>
+
+  <name>jframework-commons-mail</name>
+
+  <dependencies>
+  
+  	<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-commons-independency</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-commons-security</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+  	
+  	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>javax.mail-api</artifactId>
+		<version>1.5.3</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.5.3</version>
+	</dependency>
+  
+  
+  </dependencies>
+</project>

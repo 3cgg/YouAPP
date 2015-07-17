@@ -18,6 +18,11 @@
 
   <dependencies>
   
+  <dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-commons-independency</artifactId>
+			<version>${j.version}</version>
+		</dependency>
   	
   <dependency>
 	<groupId>org.codehaus.jackson</groupId>

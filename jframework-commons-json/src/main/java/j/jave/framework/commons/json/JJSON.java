@@ -1,5 +1,10 @@
 package j.jave.framework.commons.json;
 
+import j.jave.framework.commons.utils.JAssert;
+import j.jave.framework.commons.utils.JCollectionUtils;
+import j.jave.framework.commons.utils.JPropertiesUtils;
+import j.jave.framework.commons.utils.JStringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -19,15 +24,47 @@ public class JJSON {
 	
 	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 	{
-		mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+		//always default
 		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
 	}
-	private static JJSON json=new JJSON();
+	private static JJSON json;
 	
 	private JJSON(){}
 	
+	/**
+	 * a default JSON returned,the JSON use default configuration in the commons-json.properties under the class path,
+	 * the method in the level of the platform scope.
+	 * @return
+	 */
 	public static final JJSON get(){
+		if(json==null){
+			synchronized (JJSON.class) {
+				if(json==null){
+					json=new JJSON();
+					String dateFormat=JPropertiesUtils.getKey("j.jave.framework.commons.json.JJSONConfig.dateFormat", "commons-json.properties");
+					if(JStringUtils.isNullOrEmpty(dateFormat)){
+						dateFormat="yyyy-MM-dd HH:mm:ss";
+					}
+					json.mapper.setDateFormat(new SimpleDateFormat(dateFormat));
+				}
+			}
+		}
 		return json;
+	}
+	
+	/**
+	 * use the passed configuration to construct a JSON utilization,the method is only temporally to fit with your requirement,
+	 * must not be used in the platform scope. 
+	 * @param config
+	 * @return
+	 */
+	public static JJSON getJSON(JJSONConfig config){
+		JJSON configJson=new JJSON();
+		String dateFormat=config.getDateFormat();
+		if(JStringUtils.isNotNullOrEmpty(dateFormat)){
+			configJson.mapper.setDateFormat(new SimpleDateFormat(dateFormat));
+		}
+		return configJson;
 	}
 	
 	/**
@@ -74,9 +111,11 @@ public class JJSON {
 
 	/**
 	 * format object to string
+	 * <strong>Replace by {@link #formatObject(Object)} due to any potential implicit invoke.</strong>
 	 * @param object
 	 * @return
 	 */
+	@Deprecated
 	public String format(Object object){
 		try {
 			ByteArrayOutputStream out=new ByteArrayOutputStream();
@@ -89,10 +128,35 @@ public class JJSON {
 	}
 	
 	/**
-	 * format object via call the method {@code serializableJSONObject} in the class {@link JJSONObject}
+	 * format object via call the method {@code serializableJSONObject} in the class {@link JJSONObject}.
+	 * <strong>Replace by {@link #formatJSONObject(JJSONObject)} due to any potential implicit invoke.</strong>
+	 * @param jsonObject
+	 * @param self whether serialize the object self or not, if true,as same as {@link JJSON#format(Object)}
+	 * @return
+	 */
+	@Deprecated
+	public String format(JJSONObject<?> jsonObject,Boolean ... self){
+		try {
+			JAssert.state(JCollectionUtils.hasInArray(self)&&self.length==1, "only one true / false is supported.");
+			boolean isSelf=false;
+			if(JCollectionUtils.hasInArray(self)){
+				isSelf=self[0];
+			}
+			ByteArrayOutputStream out=new ByteArrayOutputStream();
+			mapper.writeValue(out, isSelf?jsonObject:jsonObject.serializableJSONObject());
+			return out.toString("UTF-8");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
+	
+	/**
+	 * format object via call the method {@code serializableJSONObject} in the class {@link JJSONObject}.
+	 * <strong>Replace by {@link #formatJSONObject(JJSONObject)} due to any potential implicit invoke.</strong>
 	 * @param jsonObject
 	 * @return
 	 */
+	@Deprecated
 	public String format(JJSONObject<?> jsonObject){
 		try {
 			ByteArrayOutputStream out=new ByteArrayOutputStream();
@@ -103,10 +167,37 @@ public class JJSON {
 		} 
 	}
 	
+	/**
+	 * format object returned by the method {@link JJSONObject#serializableJSONObject()}
+	 * @param jsonObject
+	 * @return
+	 */
+	public String formatJSONObject(JJSONObject<?> jsonObject){
+		try {
+			ByteArrayOutputStream out=new ByteArrayOutputStream();
+			mapper.writeValue(out, jsonObject.serializableJSONObject());
+			return out.toString("UTF-8");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
 	
-	
-	
+	/**
+	 * format object to string
+	 * @param object
+	 * @return
+	 */
+	public String formatObject(Object object){
+		try {
+			ByteArrayOutputStream out=new ByteArrayOutputStream();
+			mapper.writeValue(out, object);
+			return out.toString("UTF-8");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
+	}
 	
 
 	
-}
+}	
+

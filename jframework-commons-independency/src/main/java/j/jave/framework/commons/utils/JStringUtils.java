@@ -131,7 +131,7 @@ public abstract class JStringUtils {
 	}
 	
 	/**
-	 * convert {@param object} to string, empety returned if the object is null . 
+	 * convert {@param object} to string, empty returned if the object is null . 
 	 * @see String.valueOf() 
 	 * @param object
 	 * @return

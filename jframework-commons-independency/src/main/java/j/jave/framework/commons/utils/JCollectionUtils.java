@@ -66,6 +66,10 @@ public abstract class JCollectionUtils {
 		void process(K key,V value) throws Exception;
 	}
 	
+	public static interface CollectionCallback<T>{
+		void process(T value) throws Exception;
+	}
+	
 	/**
 	 * quickly iterator elements of map.
 	 * @param map null is the same as empty
@@ -81,4 +85,21 @@ public abstract class JCollectionUtils {
 		}
 	}
 	
+	public static  <T>  void each(Collection<T> collection, Callback<T, T> callback) throws Exception{
+		if(hasInCollect(collection)){
+			for (Iterator<T> iterator = collection.iterator(); iterator.hasNext();) {
+				T object=  iterator.next();
+				callback.process(object, object);
+			}
+		}
+	}
+	
+	public static  <T>  void each(Collection<T> collection, CollectionCallback<T> callback) throws Exception{
+		if(hasInCollect(collection)){
+			for (Iterator<T> iterator = collection.iterator(); iterator.hasNext();) {
+				T object=  iterator.next();
+				callback.process(object);
+			}
+		}
+	}
 }

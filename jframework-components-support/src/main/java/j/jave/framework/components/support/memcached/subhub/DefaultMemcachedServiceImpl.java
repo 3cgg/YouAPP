@@ -59,4 +59,19 @@ public class DefaultMemcachedServiceImpl implements MemcachedService {
 		add(event.getKey(), event.getExpiry(), event.getValue());
 		return true;
 	}
+
+	@Override
+	public Object putNeverExpired(String key, Object object) {
+		return defaultMemcachedDisService.putNeverExpired(key, object);
+	}
+
+	@Override
+	public Object remove(String key) {
+		return defaultMemcachedDisService.remove(key);
+	}
+
+	@Override
+	public boolean contains(String key) {
+		return defaultMemcachedDisService.contains(key);
+	}
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<models TYPE="test.j.jave.framework.commons.xmldb.User" NAME="USER"
+	V="3">
+	<model ID="8de576f014e849d79711aea53e454d04">
+		<field name="USERNAME" value="z" />
+		<field name="PASSWORD" value="5ONuMAjM+1M=" />
+		<field name="CREATEID" value="SYSTEM" />
+		<field name="UPDATEID" value="SYSTEM" />
+		<field name="CREATETIME" value="2015-06-18 17:18:47.0" />
+		<field name="UPDATETIME" value="2015-06-18 17:18:47.0" />
+		<field name="DELETED" value="N" />
+		<field name="VERSION" value="0" />
+	</model>
+	<model ID="8de576f014e849d79700aea53e454d04">
+		<field name="USERNAME" value="zhongjin modify" />
+		<field name="PASSWORD" value="5ONuMAjM+1M=" />
+		<field name="CREATEID" value="SYSTEM" />
+		<field name="UPDATEID" value="SYSTEM" />
+		<field name="CREATETIME" value="2015-06-18 17:18:47.0" />
+		<field name="UPDATETIME" value="2015-06-18 17:18:47.0" />
+		<field name="DELETED" value="N" />
+		<field name="VERSION" value="1" />
+	</model>
+</models>

@@ -64,5 +64,18 @@ public abstract class JAbstractEhcacheService implements JEhcacheService {
 		return null;
 	}
 	
+	@Override
+	public Object putNeverExpired(String key, Object object) {
+		Ehcache cache=getEhcache(key);
+		Object pre=cache.get(key);
+		Element element=new Element(key, object);
+		cache.put(element);
+		return pre;
+	}
 	
+	@Override
+	public boolean contains(String key) {
+		Ehcache cache=getEhcache(key);
+		return cache.isKeyInCache(key);
+	}
 }

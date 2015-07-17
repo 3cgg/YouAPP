@@ -3,7 +3,6 @@
  */
 package j.jave.framework.components.web.model;
 
-import j.jave.framework.commons.exception.JOperationNotSupportedException;
 import j.jave.framework.commons.json.JJSONObject;
 import j.jave.framework.commons.model.JPage;
 
@@ -112,12 +111,5 @@ public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String
 		pagination.put(AADATA, aaData);
 		return pagination;
 	}
-
-	@Override
-	public void readJSONObject(Map<String, Object> serializableJSONObject) {
-		throw new JOperationNotSupportedException(" JQuery DataTable Model not supports converting JSON Object.");
-	}
-	
-	
 	
 }

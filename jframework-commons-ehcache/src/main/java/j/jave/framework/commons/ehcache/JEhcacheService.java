@@ -3,12 +3,12 @@
  */
 package j.jave.framework.commons.ehcache;
 
-import j.jave.framework.commons.service.JService;
+import j.jave.framework.commons.service.JCacheService;
 
 /**
  * @author J
  */
-public interface JEhcacheService extends JService {
+public interface JEhcacheService extends JCacheService {
 
 	/**
 	 * put object into cache.

@@ -53,8 +53,8 @@ public final class JServiceFactoryManager{
 							String serviceImpl=((String) value).trim();
 							if(!items.containsKey(serviceType)){
 								items.put(serviceType, serviceImpl);
-								staticDefinedServiceFactories.add((Class<? extends JServiceFactorySupport<? extends JService>>) 
-										JClassUtils.load(serviceImpl, classLoader));
+								Class<? extends JServiceFactorySupport<? extends JService>> clazz=JClassUtils.load(serviceImpl, classLoader);
+								staticDefinedServiceFactories.add(clazz);
 							}
 						}
 					});
@@ -76,8 +76,8 @@ public final class JServiceFactoryManager{
 								String serviceImpl=((String) value).trim();
 								if(!items.containsKey(serviceType)){
 									items.put(serviceType, serviceImpl);
-									staticDefinedServiceFactories.add((Class<? extends JServiceFactorySupport<? extends JService>>)
-											JClassUtils.load(serviceImpl, classLoader));
+									Class<? extends JServiceFactorySupport<? extends JService>> clazz=JClassUtils.load(serviceImpl, classLoader);
+									staticDefinedServiceFactories.add(clazz);
 								}
 							}
 						});

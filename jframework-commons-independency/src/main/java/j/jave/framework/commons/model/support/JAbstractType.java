@@ -1,5 +1,8 @@
 package j.jave.framework.commons.model.support;
 
+import j.jave.framework.commons.logging.JLogger;
+import j.jave.framework.commons.logging.JLoggerFactory;
+
 
 
 /**
@@ -8,8 +11,10 @@ package j.jave.framework.commons.model.support;
  *
  * @param <T>
  */
-public abstract class JAbstractType<T> implements JTYPE<T> , JFieldValidator<T> {
+public abstract class JAbstractType<T> implements JTYPE<T> , JFieldValidator<T> ,JFieldValueConvert {
 
+	protected JLogger logger=JLoggerFactory.getLogger(getClass());
+	
 	protected final JSQLType sqlType;
 	
 	protected final StringBuffer invalidMessage=new StringBuffer();

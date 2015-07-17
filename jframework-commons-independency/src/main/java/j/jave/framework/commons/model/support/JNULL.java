@@ -1,5 +1,7 @@
 package j.jave.framework.commons.model.support;
 
+import j.jave.framework.commons.exception.JOperationNotSupportedException;
+
 
 /**
  * support the case of SQL TYPE not found  
@@ -22,6 +24,11 @@ public class JNULL extends JAbstractType<String> {
 		return true;
 	}
 
+	
+	@Override
+	public Object convert(String string) {
+		throw new JOperationNotSupportedException(JNULL.class.getName()+" doesnot support conver.");
+	}
 	
 
 }

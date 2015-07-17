@@ -20,7 +20,7 @@ public abstract class JURIUtils {
 	
 	private static final String SCHEMA_HTTP="http";
 	private static final String SCHEMA_FILE="file";
-	
+	private static final String SLASH="/";
 	
 	/**
 	 * get byte array from the URI.  test if the URI can convert to URL, or File System. 
@@ -50,6 +50,23 @@ public abstract class JURIUtils {
 			throw new JUtilException(e);
 		}
 	}
+	
+	/**
+	 * create a new path with the base and input path
+	 * @param baseDir
+	 * @param path
+	 * @return
+	 */
+	public static String append(String baseDir,String path){
+		String trimBaseDir=baseDir.trim();
+		if(trimBaseDir.endsWith(SLASH)){
+			return trimBaseDir+path;
+		}
+		else{
+			return trimBaseDir+SLASH+path;
+		}
+	}
+	
 	
 	
 }

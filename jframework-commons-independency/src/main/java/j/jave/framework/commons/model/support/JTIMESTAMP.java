@@ -1,5 +1,10 @@
 package j.jave.framework.commons.model.support;
 
+import j.jave.framework.commons.exception.JFormatException;
+import j.jave.framework.commons.utils.JDateUtils;
+import j.jave.framework.commons.utils.JStringUtils;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -23,4 +28,35 @@ public class JTIMESTAMP extends JAbstractType<Date> {
 	}
 
 
+	@Override
+	public Timestamp convert(String string) {
+		if(JStringUtils.isNotNullOrEmpty(string)){
+			return parseTimestamp(string);
+		}
+		return null;
+	}
+	
+	
+	private Timestamp parseTimestamp(String defaultV) {
+		Timestamp timestamp=null;
+		try{
+			timestamp=JDateUtils.parseTimestampWithSeconds(defaultV);
+		}catch(Exception e){
+			logger.info(e.getMessage(), e);
+		}
+		
+		if(timestamp==null){
+			try{
+				timestamp=JDateUtils.parseTimestampWithSeconds(defaultV,JDateUtils.ddMMyyyyHHmmss);
+			}catch(Exception e){
+				logger.info(e.getMessage(), e);
+			}
+		}
+		
+		if(timestamp==null){
+			throw new JFormatException("canot format timestamp via default strategy");
+		}
+		return timestamp;
+	}
+	
 }

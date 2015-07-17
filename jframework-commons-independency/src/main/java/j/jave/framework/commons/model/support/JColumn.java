@@ -22,4 +22,5 @@ public @interface JColumn {
 	
 	boolean nullable() default true;
 
+	String defaultValue() default ""; 
 }

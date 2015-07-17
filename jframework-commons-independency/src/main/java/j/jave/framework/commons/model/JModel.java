@@ -8,6 +8,6 @@ import java.io.Serializable;
  * @author Administrator
  *
  */
-public interface JModel extends Serializable  {
+public interface JModel extends Serializable  , Cloneable {
 
 }

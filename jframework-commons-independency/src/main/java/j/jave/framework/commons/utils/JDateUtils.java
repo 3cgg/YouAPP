@@ -3,6 +3,9 @@
  */
 package j.jave.framework.commons.utils;
 
+import j.jave.framework.commons.logging.JLogger;
+import j.jave.framework.commons.logging.JLoggerFactory;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +16,10 @@ import java.util.Date;
  * @author J
  */
 public abstract class JDateUtils {
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDateUtils.class);
 
+	public static final String ddMMyyyyHHmmss="dd/MM/yyyy HH:mm:ss";
 	
 	/**
 	 * format {@link Date} in the form of "yyyy-MM-dd".
@@ -153,9 +159,20 @@ public abstract class JDateUtils {
 	 * @throws Exception 
 	 */
 	public static Timestamp parseTimestampWithSeconds(String date) {
+		return parseTimestampWithSeconds(date, "yyyy-MM-dd HH:mm:ss");
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param timeformat pass string format
+	 * @return
+	 */
+	public static Timestamp parseTimestampWithSeconds(String date,String timeformat) {
 		try {
-			return new Timestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date).getTime());
+			return new Timestamp(new SimpleDateFormat(timeformat).parse(date).getTime());
 		} catch (ParseException e) {
+			LOGGER.error("date format : "+timeformat);
 			throw new JUtilException(e); 
 		}
 	}

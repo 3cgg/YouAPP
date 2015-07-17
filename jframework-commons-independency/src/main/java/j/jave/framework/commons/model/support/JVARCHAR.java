@@ -26,11 +26,16 @@ public class JVARCHAR extends JAbstractType<String> {
 		if(JStringUtils.isNullOrEmpty(object)) return true;
 		valid= object.trim().length()<=length;
 		if(!valid){
-			invalidMessage.append("exceed the length["+length+"]");
+			invalidMessage.append(object+", exceed the length["+length+"]");
 		}
 		return valid;
 	}
 
+	
+	@Override
+	public Object convert(String string) {
+		return string;
+	}
 	
 
 }

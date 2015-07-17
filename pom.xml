@@ -105,7 +105,7 @@
 		<module>jframework-commons-sqlautoloader</module>
 		<module>jframework-commons-commonsmanager</module>
 		<module>jframework-commons-taskdriven</module>
-		
+		<module>jframework-commons-xmldb</module>
 		<!-- components -->
 		<module>jframework-components-underlying-javacode</module>
 		<module>jframework-components-support</module>

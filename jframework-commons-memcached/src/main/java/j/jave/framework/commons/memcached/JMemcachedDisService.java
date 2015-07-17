@@ -4,7 +4,7 @@ import j.jave.framework.commons.memcached.eventdriven.JMemcachedDisAddListener;
 import j.jave.framework.commons.memcached.eventdriven.JMemcachedDisDeleteListener;
 import j.jave.framework.commons.memcached.eventdriven.JMemcachedDisGetListener;
 import j.jave.framework.commons.memcached.eventdriven.JMemcachedDisSetListener;
-import j.jave.framework.commons.service.JService;
+import j.jave.framework.commons.service.JCacheService;
 
 
 /**
@@ -12,7 +12,7 @@ import j.jave.framework.commons.service.JService;
  * @author J
  *
  */
-public interface JMemcachedDisService extends JService,JMemcachedDisAddListener ,JMemcachedDisDeleteListener,JMemcachedDisSetListener,JMemcachedDisGetListener {
+public interface JMemcachedDisService extends JCacheService,JMemcachedDisAddListener ,JMemcachedDisDeleteListener,JMemcachedDisSetListener,JMemcachedDisGetListener {
 	
 	/**
 	 * put value to  remote cache

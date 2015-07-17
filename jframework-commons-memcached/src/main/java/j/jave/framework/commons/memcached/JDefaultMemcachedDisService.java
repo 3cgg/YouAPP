@@ -165,6 +165,25 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService{
 		return true;
 	}
 
+	@Override
+	public Object putNeverExpired(String key, Object object) {
+		Object pre=get(key);
+		add(key, Integer.MAX_VALUE, object);
+		return pre;
+	}
+
+	@Override
+	public Object remove(String key) {
+		Object object=get(key);
+		delete(key);
+		return object;
+	}
+
+	@Override
+	public boolean contains(String key) {
+		return get(key)!=null;
+	}
+
 	
 	
 	

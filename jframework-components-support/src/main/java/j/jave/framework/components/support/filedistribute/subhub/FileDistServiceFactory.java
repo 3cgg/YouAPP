@@ -5,6 +5,7 @@ package j.jave.framework.components.support.filedistribute.subhub;
 
 import j.jave.framework.commons.filedistribute.JDefaultLocalFileDistService;
 import j.jave.framework.commons.filedistribute.JDefaultLocalFilePathStrategy;
+import j.jave.framework.commons.filedistribute.JFileDistServiceAware;
 import j.jave.framework.commons.filedistribute.JLocalFilePathStrategy;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
@@ -36,7 +37,7 @@ public class FileDistServiceFactory extends SpringServiceFactorySupport<FileDist
 		
 		if(fileDisService==null){
 			synchronized (sync) {
-				DefaultLocalFileDistServiceImpl defaultLocalFileDistServiceImpl=  (DefaultLocalFileDistServiceImpl) getBeanByName("defaultLocalFileDistServiceImpl"); 
+				JFileDistServiceAware defaultLocalFileDistServiceImpl=  (JFileDistServiceAware) getBeanByName("defaultLocalFileDistServiceImpl"); 
 				
 				if(localFileDistServiceConfig==null){
 					localFileDistServiceConfig=new DefaultLocalFileDistServiceConfiguration();
@@ -59,8 +60,8 @@ public class FileDistServiceFactory extends SpringServiceFactorySupport<FileDist
 				}
 				
 				JDefaultLocalFileDistService defaultLocalFileDistService=JDefaultLocalFileDistService .newLocalFileDistService(localFileDistServiceConfig);
-				defaultLocalFileDistServiceImpl.setDefaultLocalFileDistService(defaultLocalFileDistService);
-				this.fileDisService= defaultLocalFileDistServiceImpl;
+				defaultLocalFileDistServiceImpl.setFileDistService(defaultLocalFileDistService);
+				this.fileDisService= (FileDistService) defaultLocalFileDistServiceImpl;
 			}
 		}
 		return fileDisService;

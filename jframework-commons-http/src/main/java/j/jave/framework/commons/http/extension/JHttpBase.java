@@ -30,7 +30,9 @@ public abstract class JHttpBase <T extends JHttpBase<T>>{
 	
 	protected int timeout=3000;
 	
-	protected int socketTimeout=3000;
+	protected int socketTimeout=30000;
+	
+	protected int retry=3;
 	
 	/**
 	 * highest priority, it will  override the "params" or "files". 
@@ -151,6 +153,10 @@ public abstract class JHttpBase <T extends JHttpBase<T>>{
 		return this;
 	}
 	
+	public JHttpBase<T>  setRetry(int retry) {
+		this.retry = retry;
+		return this;
+	}
 	
 	
 }

@@ -4,6 +4,7 @@
 package j.jave.framework.components.support.memcached.subhub;
 
 import j.jave.framework.commons.memcached.JDefaultMemcachedDisService;
+import j.jave.framework.commons.memcached.JMemcachedDisServiceAware;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +33,14 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 		
 		if(memcachedService==null){
 			synchronized (sync) {
-				DefaultMemcachedServiceImpl memcachedService=  (DefaultMemcachedServiceImpl) getBeanByName("defaultMemcachedServiceImpl"); 
+				JMemcachedDisServiceAware memcachedService=  (JMemcachedDisServiceAware) getBeanByName("defaultMemcachedServiceImpl"); 
 				if(defaultMemcachedServiceConfiguration!=null){
 					JDefaultMemcachedDisService defaultMemcachedDisService=
 							new JDefaultMemcachedDisService(defaultMemcachedServiceConfiguration.getStoreAddes(),
 									defaultMemcachedServiceConfiguration.getBackupAddes());
-					memcachedService.setDefaultMemcachedDisService(defaultMemcachedDisService);
+					memcachedService.setMemcachedDisService(defaultMemcachedDisService);
 				}
-				this.memcachedService=memcachedService;
+				this.memcachedService=(MemcachedService) memcachedService;
 			}
 		}
 		return memcachedService;

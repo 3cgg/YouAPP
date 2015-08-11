@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,14 +78,15 @@ public class ResourceAccessFilter implements JFilter{
 					if(!authorized){
 						FilterResponse filterResponse=FilterResponse.newNoAccess();
 						filterResponse.setObject("have no access to the resource.");
-						response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 						return ;
 					}
 				}
 				else{
 					FilterResponse filterResponse=FilterResponse.newNoLogin();
-					filterResponse.setObject("login user information [ticket:"+clientTicket+"] miss.");
-					response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+					filterResponse.setObject("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
+					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+					JHttpUtils.removeTicket(req, (HttpServletResponse) response);
 					return ;
 				}
 			}

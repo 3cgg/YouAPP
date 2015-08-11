@@ -77,6 +77,12 @@
 			<artifactId>jframework-commons-sqlautoloader</artifactId>
 			<version>${j.version}</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>j.jave.framework</groupId>
+			<artifactId>jframework-inner-support-ws-client</artifactId>
+			<version>${j.version}</version>
+		</dependency>
+		
 	</dependencies>
 </project>

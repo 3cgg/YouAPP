@@ -5,12 +5,12 @@ package j.jave.framework.components.login.service;
 
 import j.jave.framework.commons.eventdriven.exception.JServiceException;
 import j.jave.framework.commons.model.JPagination;
-import j.jave.framework.commons.security.JDESedeCipher;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.service.ServiceContext;
 import j.jave.framework.components.core.service.ServiceSupport;
 import j.jave.framework.components.login.mapper.UserMapper;
 import j.jave.framework.components.login.model.User;
+import j.jave.framework.inner.support.rs.JRSSecurityHelper;
 import j.jave.framework.mybatis.JMapper;
 
 import java.util.List;
@@ -97,7 +97,12 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 		}
 		
 		String passwrod=user.getPassword().trim();
-		String encriptPassword=JDESedeCipher.get().encrypt(passwrod);
+		String encriptPassword=null;
+		try {
+			encriptPassword = JRSSecurityHelper.encryptOnDESede(passwrod);
+		} catch (Exception e) {
+			throw new JServiceException(e);
+		}
 		user.setPassword(encriptPassword);
 		user.setUserName(user.getUserName().trim());
 		saveUser(context, user);  // with encrypted password 

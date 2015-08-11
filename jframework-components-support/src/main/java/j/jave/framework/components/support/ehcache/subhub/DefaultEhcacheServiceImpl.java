@@ -4,6 +4,8 @@
 package j.jave.framework.components.support.ehcache.subhub;
 
 import j.jave.framework.commons.ehcache.JDefaultEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author J
  */
 @Service(value="defaultEhcacheServiceImpl")
-public class DefaultEhcacheServiceImpl implements EhcacheService {
+public class DefaultEhcacheServiceImpl implements EhcacheService,JEhcacheServiceAware {
 
 	private JDefaultEhcacheService defaultEhcacheService;
 	
@@ -30,12 +32,14 @@ public class DefaultEhcacheServiceImpl implements EhcacheService {
 		return defaultEhcacheService.remove(key);
 	}
 	
-	/**
-	 * @param defaultEhcacheService the defaultEhcacheService to set
-	 */
-	public void setDefaultEhcacheService(
-			JDefaultEhcacheService defaultEhcacheService) {
-		this.defaultEhcacheService = defaultEhcacheService;
+	@Override
+	public void setEhcacheService(JEhcacheService ehcacheService) {
+		this.defaultEhcacheService = (JDefaultEhcacheService) ehcacheService;
+	}
+	
+	@Override
+	public JEhcacheService getEhcacheService() {
+		return this.defaultEhcacheService;
 	}
 
 	@Override

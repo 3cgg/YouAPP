@@ -20,7 +20,7 @@
 
 		<dependency>
 			<groupId>j.jave.framework</groupId>
-			<artifactId>jframework-commons-independency</artifactId>
+			<artifactId>jframework-commons-eventdriven</artifactId>
 			<version>${j.version}</version>
 		</dependency>
 

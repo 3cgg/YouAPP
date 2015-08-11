@@ -6,7 +6,6 @@ import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.exception.JOperationNotSupportedException;
 import j.jave.framework.commons.json.JJSON;
 import j.jave.framework.commons.qrcode.JQRCode;
-import j.jave.framework.commons.security.JDESedeCipher;
 import j.jave.framework.commons.utils.JDateUtils;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.commons.utils.JUniqueUtils;
@@ -38,6 +37,7 @@ import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.utils.JHttpUtils;
+import j.jave.framework.inner.support.rs.JRSSecurityHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -216,7 +216,7 @@ public class LoginJSPAction extends JSPActionSupport {
 	
 	public String createUser() throws Exception {
 		String passwrod=user.getPassword();
-		String encriptPassword=JDESedeCipher.get().encrypt(passwrod);
+		String encriptPassword= JRSSecurityHelper.encryptOnDESede(passwrod);
 		user.setPassword(encriptPassword);
 		ServiceContext context=new ServiceContext();
 		context.setUser((User) getSessionUser());

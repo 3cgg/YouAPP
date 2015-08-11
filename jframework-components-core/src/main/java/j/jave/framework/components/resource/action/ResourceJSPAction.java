@@ -1,5 +1,7 @@
 package j.jave.framework.components.resource.action;
 
+import j.jave.framework.commons.ehcache.JEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.commons.json.JJSON;
@@ -20,7 +22,6 @@ import j.jave.framework.components.resource.service.ResourceService;
 import j.jave.framework.components.resource.support.ResourceDetect;
 import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
-import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller(value="resource.resourceaction")
 @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ResourceJSPAction extends JSPActionSupport implements JSingleStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,EhcacheServiceSupport{
+public class ResourceJSPAction extends JSPActionSupport implements JSingleStaticMemoryCacheIO<Map<String, List<ResourceInfo>>> ,JEhcacheServiceAware{
 	
 	@Autowired
 	private ResourceService resourceService;
@@ -168,6 +169,11 @@ public class ResourceJSPAction extends JSPActionSupport implements JSingleStatic
 			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
+	}
+	
+	@Override
+	public void setEhcacheService(JEhcacheService ehcacheService) {
+		this.ehcacheService=(EhcacheService) ehcacheService;
 	}
 	
 	private static final String RESOURCE_CACHED_KEY="j.jave.framework.components.resource.resource.method.info";

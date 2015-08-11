@@ -9,8 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 public abstract class JFileUtils {
 	
@@ -46,24 +44,12 @@ public abstract class JFileUtils {
 	}
 	
 	/**
-	 * replaced by new class named {@link JClassRootPathResolver}
+	 * as same as {@link #getFile(JPathResolver)} with parameter {@link JClassRootPathResolver}
 	 * @param fileName
 	 * @return
 	 */
-	@Deprecated
 	public static File getFileFromClassPath(String fileName){
-		String classPath=Thread.currentThread().getContextClassLoader().getResource("").toString();
-		try {
-			URL url=Thread.currentThread().getContextClassLoader().getResource(fileName);
-			if(url==null){
-				LOGGER.warn(fileName+" not exists in  "+classPath);
-				return null;
-			}
-			return new File(url.toURI());
-		} catch (URISyntaxException e) {
-			LOGGER.error(fileName+"not exists in  "+classPath, e);
-			throw new JUtilException(e); 
-		}
+		return getFile(new JClassRootPathResolver(fileName)); 
 	}
 	
 	/**

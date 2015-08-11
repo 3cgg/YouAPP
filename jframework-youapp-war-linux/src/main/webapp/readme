@@ -1,0 +1,19 @@
+1. you need install memcached (listen on 11220)
+command :  memcached -d -m 32 -p 11220 -u root 
+or memcached -d -m 32 -p 11221 -u root 
+
+2. you need start up WS server service, including security service ,  another WSserver war.
+
+3. start up itself.
+
+
+append:
+before installing memcached, check if the libevent is already installed, otherwise install 
+(1) yum install libevent,  and  yum install libevent-devel
+(2) tar zvxf memcached-x.x.x.tar.gz
+(3) ./configure [-with-libevent=/usr/libevent/] [-prefix=/usr/local/memcached]
+	make
+	make install
+
+
+

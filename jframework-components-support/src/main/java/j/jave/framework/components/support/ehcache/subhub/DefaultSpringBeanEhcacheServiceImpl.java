@@ -24,13 +24,14 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  */
 @Service(value="defaultSpringBeanEhcacheServiceImpl")
-public class DefaultSpringBeanEhcacheServiceImpl extends JAbstractEhcacheService implements EhcacheService {
+public class DefaultSpringBeanEhcacheServiceImpl extends JAbstractEhcacheService implements EhcacheService ,SpringEhcacheAware{
 	
 	
 	
 	private static final String DEFAULT_CACHE_NAME="THE NAME IS NOT MISSING.";
 	
-	public void put(Ehcache cache){
+	@Override
+	public void putEhcache(Ehcache cache){
 		ehcaches.put(DEFAULT_CACHE_NAME.hashCode(), cache);
 	}
 

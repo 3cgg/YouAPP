@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jframework-me">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <dependent-module archiveName="jframework-inner-support-ws-security-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-inner-support-ws-security/jframework-inner-support-ws-security">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-support-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-support/jframework-components-support">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-components-underlying-javacode-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-underlying-javacode/jframework-components-underlying-javacode">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-ehcache-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-ehcache/jframework-commons-ehcache">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-eventdriven-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-eventdriven/jframework-commons-eventdriven">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-filedistribute-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-filedistribute/jframework-commons-filedistribute">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-http-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-http/jframework-commons-http">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-memcached-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-memcached/jframework-commons-memcached">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-qrcode-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-qrcode/jframework-commons-qrcode">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-security-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-security/jframework-commons-security">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-sqlautoloader-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-sqlautoloader/jframework-commons-sqlautoloader">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-inner-support-ws-client-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-inner-support-ws-client/jframework-inner-support-ws-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-support-cxf-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-support-cxf/jframework-support-cxf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-independency-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-independency/jframework-commons-independency">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jframework-commons-json-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-json/jframework-commons-json">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/jframework-inner-support-ws-war/target/classes"/>
+        <property name="context-root" value="wsservice"/>
+    </wb-module>
+</project-modules>

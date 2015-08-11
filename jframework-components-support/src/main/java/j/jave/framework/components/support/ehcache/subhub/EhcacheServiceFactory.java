@@ -5,6 +5,7 @@ package j.jave.framework.components.support.ehcache.subhub;
 
 import j.jave.framework.commons.ehcache.JDefaultEhcacheService;
 import j.jave.framework.commons.ehcache.JDefaultEhcacheServiceConfiguration;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 import j.jave.framework.commons.ehcache.JEhcacheServiceConfigure;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.components.core.servicehub.SpringServiceFactorySupport;
@@ -59,10 +60,10 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 								throw new RuntimeException(e);
 							}
 							
-							DefaultSpringBeanEhcacheServiceImpl defaultSpringBeanEhcacheServiceImpl=
-									getBeanByName("defaultSpringBeanEhcacheServiceImpl", DefaultSpringBeanEhcacheServiceImpl.class);
-							defaultSpringBeanEhcacheServiceImpl.put(cache);
-							return defaultSpringBeanEhcacheServiceImpl;
+							SpringEhcacheAware defaultSpringBeanEhcacheServiceImpl=
+									getBeanByName("defaultSpringBeanEhcacheServiceImpl", SpringEhcacheAware.class);
+							defaultSpringBeanEhcacheServiceImpl.putEhcache(cache);
+							return (EhcacheService) defaultSpringBeanEhcacheServiceImpl;
 						}
 						else{
 							LOGGER.info("cache bean found:"+bean.getClass().getName());
@@ -74,12 +75,12 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 					}
 				}
 				// use default .
-				DefaultEhcacheServiceImpl defaultEhcacheServiceImpl=
-						getBeanByName("defaultEhcacheServiceImpl", DefaultEhcacheServiceImpl.class);
+				JEhcacheServiceAware defaultEhcacheServiceImpl=
+						getBeanByName("defaultEhcacheServiceImpl", JEhcacheServiceAware.class);
 				JDefaultEhcacheService defaultEhcacheService=new JDefaultEhcacheService(ehcacheServiceConfigure);
-				defaultEhcacheServiceImpl.setDefaultEhcacheService(defaultEhcacheService);
+				defaultEhcacheServiceImpl.setEhcacheService(defaultEhcacheService);
 				
-				this.ehcacheService= defaultEhcacheServiceImpl;
+				this.ehcacheService= (EhcacheService) defaultEhcacheServiceImpl;
 			}
 		}
 		return ehcacheService;

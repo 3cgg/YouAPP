@@ -3,11 +3,12 @@
  */
 package j.jave.framework.components.web.subhub.resourcecached.response;
 
+import j.jave.framework.commons.ehcache.JEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.io.memory.JSingleDynamicMemoryCacheIO;
 import j.jave.framework.commons.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
-import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCached;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedRefreshEvent;
 import j.jave.framework.components.web.subhub.resourcecached.ResourceCachedService;
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
  * @author J
  */
 @Service(value="responseEncacheMemoryCacheServiceImpl")
-public class ResponseEhcacheMemoryCacheServiceImpl implements ResponseEhcacheMemoryCacheService, JSingleDynamicMemoryCacheIO,EhcacheServiceSupport ,JSingleStaticMemoryCacheIO{
+public class ResponseEhcacheMemoryCacheServiceImpl implements ResponseEhcacheMemoryCacheService, JSingleDynamicMemoryCacheIO,JEhcacheServiceAware ,JSingleStaticMemoryCacheIO{
 
 	/**
 	 * cache service . 
@@ -36,6 +37,11 @@ public class ResponseEhcacheMemoryCacheServiceImpl implements ResponseEhcacheMem
 			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
+	}
+	
+	@Override
+	public void setEhcacheService(JEhcacheService ehcacheService) {
+		this.ehcacheService=(EhcacheService) ehcacheService;
 	}
 	
 	@Override

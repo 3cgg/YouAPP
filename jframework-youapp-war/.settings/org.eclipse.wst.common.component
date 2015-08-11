@@ -49,6 +49,9 @@
         <dependent-module archiveName="jframework-commons-sqlautoloader-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-sqlautoloader/jframework-commons-sqlautoloader">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="jframework-inner-support-ws-client-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-inner-support-ws-client/jframework-inner-support-ws-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="jframework-support-mybatis-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-support-mybatis/jframework-support-mybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>

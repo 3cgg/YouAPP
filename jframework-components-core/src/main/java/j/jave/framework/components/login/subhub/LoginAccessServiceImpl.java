@@ -3,10 +3,11 @@
  */
 package j.jave.framework.components.login.subhub;
 
+import j.jave.framework.commons.ehcache.JEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 import j.jave.framework.commons.eventdriven.exception.JServiceException;
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.io.memory.JSingleStaticMemoryCacheIO;
-import j.jave.framework.commons.security.JDESedeCipher;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.commons.utils.JUniqueUtils;
 import j.jave.framework.components.authorize.resource.model.ResourceAuthorized;
@@ -22,8 +23,8 @@ import j.jave.framework.components.resource.service.ResourceService;
 import j.jave.framework.components.resource.support.ResourceDetect;
 import j.jave.framework.components.resource.support.ResourceInfo;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
-import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 import j.jave.framework.components.web.subhub.loginaccess.LoginAccessService;
+import j.jave.framework.inner.support.rs.JRSSecurityHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service(value="loginAccessService")
-public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStaticMemoryCacheIO ,EhcacheServiceSupport{
+public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStaticMemoryCacheIO<Map<String, List<String>>> ,JEhcacheServiceAware{
 
 	private static final String RESOURCE_AUTHORIZED_KEY="j.jave.framework.components.login.ehcache.user.resource.authorized";
 	
@@ -80,7 +81,12 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 		if(JStringUtils.isNullOrEmpty(password)){
 			throw new JServiceException("密码不能为空");
 		}
-		String encryptPassword=JDESedeCipher.get().encrypt(password.trim());
+		String encryptPassword=null;
+		try {
+			encryptPassword = JRSSecurityHelper.encryptOnDESede(password.trim());
+		} catch (Exception e) {
+			throw new JServiceException(e);
+		}
 		User user= userService.getUserByNameAndPassword(name.trim(), encryptPassword);
 		if(user!=null) return  JUniqueUtils.unique(); 
 		return "";
@@ -185,6 +191,11 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 	}
 	
 	@Override
+	public void setEhcacheService(JEhcacheService ehcacheService) {
+		this.ehcacheService=(EhcacheService) ehcacheService;
+	}
+	
+	@Override
 	public boolean isValidResource(String resource) {
 		List<String> resources=getResources();
 		if(resources!=null){
@@ -223,6 +234,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 		return paths;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getResources() {
 		Object paths= getEhcacheService().get(JResourceStaticMemoryCacheIO_KEY);

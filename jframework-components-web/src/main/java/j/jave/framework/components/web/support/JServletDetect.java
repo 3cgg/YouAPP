@@ -3,10 +3,11 @@
  */
 package j.jave.framework.components.web.support;
 
+import j.jave.framework.commons.ehcache.JEhcacheService;
+import j.jave.framework.commons.ehcache.JEhcacheServiceAware;
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.support.detect.JResourceDetect;
 import j.jave.framework.components.support.ehcache.subhub.EhcacheService;
-import j.jave.framework.components.support.ehcache.subhub.EhcacheServiceSupport;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author J
  * @see JServletContext 
  */
-public class JServletDetect implements JResourceDetect<JServletProvider> , JServletProvider , JServletStaticMemoryCacheIO ,EhcacheServiceSupport {
+public class JServletDetect implements JResourceDetect<JServletProvider> , JServletProvider , JServletStaticMemoryCacheIO ,JEhcacheServiceAware {
 
 	private final HttpServletRequest request;
 	
@@ -40,6 +41,11 @@ public class JServletDetect implements JResourceDetect<JServletProvider> , JServ
 			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 		}
 		return ehcacheService;
+	}
+	
+	@Override
+	public void setEhcacheService(JEhcacheService ehcacheService) {
+		this.ehcacheService=(EhcacheService) ehcacheService;
 	}
 	
 

@@ -26,7 +26,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
@@ -129,6 +131,20 @@ public abstract class JHttpUtils {
 		}
 		return ticket;
 	}
+	
+	/**
+	 * remove ticket from the cookie context
+	 * @param request
+	 * @param response
+	 */
+	public static final void removeTicket(HttpServletRequest request,HttpServletResponse response){
+		
+		Cookie cookie=JCookieUtils.getCookie(request, ViewConstants.TICKET);
+		if(cookie!=null){
+			JCookieUtils.deleteCookie(request, response, cookie);
+		}
+	}
+	
 	
 	/**
 	 * check whether the request is a resource , i.e.  JS , CSS or image.

@@ -14,7 +14,7 @@ import javax.crypto.spec.IvParameterSpec;
  * @author J
  *
  */
-public class JDESedeCipher {
+class JDESedeCipher {
 
 	private final static String DESEDE = "DESede";
 	private final static byte[] algorithmprama = { 9, 99, 88, 1, -1, -88, -99, -9 };

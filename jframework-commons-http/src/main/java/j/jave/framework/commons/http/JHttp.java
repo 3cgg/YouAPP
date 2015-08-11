@@ -35,6 +35,7 @@ public abstract class JHttp <T extends JHttp<T>> extends JHttpBase<T>{
 	 * @throws IOException
 	 */
 	public Object execute(String url) throws IOException{
+		setUrl(url);
 		HttpClientBuilder httpClientBuilder = getHttpClientBuilder();
 		CloseableHttpClient closeableHttpClient= httpClientBuilder.build();
 		
@@ -53,8 +54,21 @@ public abstract class JHttp <T extends JHttp<T>> extends JHttpBase<T>{
 				httpUriRequest.addHeader(entry.getKey(), entry.getValue());
 			}
 		}
+		CloseableHttpResponse response =null;
 		
-		CloseableHttpResponse response = closeableHttpClient.execute(httpUriRequest);
+		int retryed=-1;
+		while(retryed++<retry){
+			try{
+				response = closeableHttpClient.execute(httpUriRequest);
+				break;
+			}catch(java.net.SocketTimeoutException e ){
+				if(retryed>=retry){
+					throw e;
+				}
+				continue;
+			}
+		}
+		
 		try {
 			StatusLine statusLine=response.getStatusLine();
 			if(statusLine.getStatusCode()==200){

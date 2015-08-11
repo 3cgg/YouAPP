@@ -1,4 +1,4 @@
-#YouAPP(http://youapp.xicp.net:32964/youapp/)
+#YouAPP(本机（Windows + Tomcat + Apache） http://youapp.xicp.net:32964/youapp/) （阿里云（CentOS + Tomcat + Apache ）： http://112.74.207.134:8888/youapp）
 #TEL 186-0512-6585
 # QQ 908501590
 贾中进的私人项目-公开源代码<br/>

@@ -1,6 +1,13 @@
 package j.jave.framework.tkdd;
 
+import j.jave.framework.commons.auth.JAuthUtils;
+import j.jave.framework.commons.auth.JCredentials;
+import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JUniqueUtils;
+
+import java.util.Set;
+
+import javax.security.auth.Subject;
 
 
 @SuppressWarnings("serial")
@@ -27,10 +34,9 @@ public abstract class JDefaultTaskMetadata implements JTaskMetadata {
 	protected String describer;
 	
 	/**
-	 * may be different one for each instance. 
-	 * it is always null if the metadata is not snapshot,or the metadata is the root.
+	 * may be different one for each meta data instance. 
 	 */
-	protected JTaskMetadata owner=null;
+	protected Subject owner=null;
 	
 	@Override
 	public String name() {
@@ -63,7 +69,7 @@ public abstract class JDefaultTaskMetadata implements JTaskMetadata {
 	}
 
 	@Override
-	public JTaskMetadata owner() {
+	public Subject owner() {
 		return this.owner;
 	}
 
@@ -83,7 +89,7 @@ public abstract class JDefaultTaskMetadata implements JTaskMetadata {
 
 	public abstract void setDescriber(String describer) ;
 
-	public void setOwner(JTaskMetadata owner) {
+	public void setOwner(Subject owner) {
 		this.owner = owner;
 	}
 	
@@ -99,5 +105,23 @@ public abstract class JDefaultTaskMetadata implements JTaskMetadata {
 	public void setSnapshotId(String snapshotId) {
 		this.snapshotId = snapshotId;
 	}
+	
+	@Override
+	public boolean authorize(Subject subject) {
+		if(owner==null) return true; // anyone the task never belong to.
+		Set<JCredentials> holdCredentials= owner.getPrivateCredentials(JCredentials.class);
+		if(!JCollectionUtils.hasInCollect(holdCredentials)) return  true;  // never need authetication
+		JCredentials holdCredential=holdCredentials.iterator().next(); // only one 
+		if(subject==null) return false; // not provide an entity for the access.
+		Set<JCredentials> providedCredentials= subject.getPrivateCredentials(JCredentials.class);
+		if(!JCollectionUtils.hasInCollect(providedCredentials)) return false; // never hold credential
+		JCredentials providedCredential=providedCredentials.iterator().next(); // only one 
+		
+		if(JAuthUtils.matchesAccess(holdCredential, providedCredential))  return true; // credential matches 
+		
+		return false;
+	}
+	
+	
 	
 }

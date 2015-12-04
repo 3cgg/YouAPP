@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="conf"/>
+	<classpathentry kind="src" path="src/plugin/protocol-httpclient/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-regex-filter/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-html/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-tika/src/java"/>
+	<classpathentry kind="src" path="src/plugin/urlfilter-regex/src/java"/>
+	<classpathentry kind="src" path="src/plugin/scoring-opic/src/java"/>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/plugin/protocol-test/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-http/src/java"/>
+	<classpathentry kind="src" path="src/plugin/protocol-http/src/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=apache-nutch-1.10&amp;ivyXmlPath=ivy%2Fivy.xml&amp;confs=*&amp;ivySettingsPath=ivy%2Fivysettings.xml&amp;loadSettingsOnDemand=true&amp;ivyUserDir=D%3A%5Cjava_%5Civyrespository&amp;propertyFiles=&amp;acceptedTypes=jar%2Cbundle%2Cejb%2Cmaven-plugin&amp;alphaOrder=false&amp;resolveInWorkspace=false&amp;transitiveResolve=true&amp;readOSGiMetadata=false&amp;retrievedClasspath=false&amp;sourceTypes=source&amp;javadocTypes=javadoc&amp;sourceSuffixes=-source%2C-sources%2C-src&amp;javadocSuffixes=-javadoc%2C-javadocs%2C-doc%2C-docs&amp;mapIfOnlyOneSource=true&amp;mapIfOnlyOneJavadoc=false"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/apache-nutch-lib"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

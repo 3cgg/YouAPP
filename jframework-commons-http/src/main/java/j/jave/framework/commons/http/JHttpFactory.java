@@ -60,5 +60,11 @@ public class JHttpFactory {
 		return getHttpFactory().getHttpGet();
 	}
 	
+	public static JHttpBase<?> getHttpPut(){
+		return getHttpFactory().getHttpPut();
+	}
 	
+	public static JHttpBase<?> getHttpDelete(){
+		return getHttpFactory().getHttpDelete();
+	}
 }

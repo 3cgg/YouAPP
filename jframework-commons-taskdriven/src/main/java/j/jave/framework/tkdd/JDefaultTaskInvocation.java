@@ -1,5 +1,9 @@
 package j.jave.framework.tkdd;
 
+import j.jave.framework.tkdd.interceptor.JTaskAuthorizeInterceptor;
+import j.jave.framework.tkdd.interceptor.JTaskContextProcessorInterceptor;
+import j.jave.framework.tkdd.interceptor.JTaskStatusInterceptor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +34,7 @@ public class JDefaultTaskInvocation<T extends JTask> implements JTaskInvocation<
 	private void init(){
 		taskInterceptors.add(new JTaskContextProcessorInterceptor<T>(object,context));
 		taskInterceptors.add(new JTaskStatusInterceptor<T>(object,context));
+		taskInterceptors.add(new JTaskAuthorizeInterceptor<T>(object,context));
 	}
 	
 	public void addTaskInterceptor(JTaskInterceptor<T> taskInterceptor){

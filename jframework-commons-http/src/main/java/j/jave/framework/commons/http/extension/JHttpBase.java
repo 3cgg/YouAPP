@@ -6,6 +6,7 @@ import j.jave.framework.commons.http.JResponseHandler;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,9 +40,24 @@ public abstract class JHttpBase <T extends JHttpBase<T>>{
 	 */
 	protected byte[] entry;
 	
-	protected Map<String, String> headers;
+	protected Map<String, String> headers=new HashMap<String, String>();
 	
 	protected JResponseHandler<?> responseHandler=null;
+	
+	/**
+	 * to indicate whether to encode the URL parameter or not.
+	 */
+	protected boolean encode=true;
+	
+	/**
+	 * to indicate whether to encode the URL parameter or not.
+	 * @param encode
+	 */
+	@SuppressWarnings("unchecked")
+	public T setEncode(boolean encode) {
+		this.encode = encode;
+		return (T) this;
+	}
 	
 	/**
 	 * form parameters for get or post . 
@@ -158,5 +174,18 @@ public abstract class JHttpBase <T extends JHttpBase<T>>{
 		return this;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public T putHead(String key,String value) {
+		headers.put(key, value);
+		return  (T) this;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public T putHeads(Map<String, String> heads) {
+		if(headers!=null){
+			this.headers.putAll(heads);
+		}
+		return  (T) this;
+	}
 	
 }

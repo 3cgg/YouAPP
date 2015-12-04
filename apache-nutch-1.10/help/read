@@ -1,0 +1,7 @@
+remote debugging : 
+% export NUTCH_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:37649"
+% $NUTCH_HOME/bin/nutch parsechecker http://myurl.com/
+
+
+
+nutch readdb  d:/java_/linux/apache-nutch-1.10/data/crawldb -stats -dump  d:/java_/linux/apache-nutch-1.10/data/crawldb_outdir

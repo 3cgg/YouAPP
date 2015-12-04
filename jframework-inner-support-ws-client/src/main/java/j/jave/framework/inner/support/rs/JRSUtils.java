@@ -1,7 +1,5 @@
 package j.jave.framework.inner.support.rs;
 
-import j.jave.framework.inner.support.rs.endpoint.JSecurityServiceEndpoint;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,12 +16,5 @@ public class JRSUtils {
 		}
 		return patternString;
 	}
-
-	public static void main(String[] args) {
-		
-		System.out.println(replace(JSecurityServiceEndpoint.encryptOnDESede, "AAAAAAA","bbbb"));
-		
-	}
-	
 	
 }

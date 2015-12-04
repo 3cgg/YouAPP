@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+ <property>
+    <name>http.agent.name</name>
+    <value>ChinasoSpider</value>
+  </property>
+
+  <property>
+    <name>plugin.folders</name>
+    <value>build/plugins</value>
+  </property>
+
+<!-- 
+  <property>
+    <name>plugin.includes</name>
+    <value>protocol-test|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|indexer-solr|scoring-opic|urlnormalizer-(pass|regex|basic)</value>  // 把原来的protocol-html换成protocol-test
+  </property>
+ -->
+ 
+ <property>
+  <name>db.ignore.internal.links</name>
+  <value>false</value>
+  <description>If true, when adding new links to a page, links from
+  the same host are ignored.  This is an effective way to limit the
+  size of the link database, keeping only the highest quality
+  links.
+  </description>
+</property>
+ 
+ <property>
+  <name>db.ignore.external.links</name>
+  <value>false</value>
+  <description>If true, outlinks leading from a page to external hosts
+  will be ignored. This is an effective way to limit the crawl to include
+  only initially injected hosts, without creating complex URLFilters.
+  </description>
+</property>
+
+
+<!--  GET ALL CONTENT -->
+<property>
+  <name>http.content.limit</name>
+  <value>-1</value>
+  <description>The length limit for downloaded content using the http://
+  protocol, in bytes. If this value is nonnegative (>=0), content longer
+  than it will be truncated; otherwise, no truncation at all. Do not
+  confuse this setting with the file.content.limit setting.
+  </description>
+</property>
+ 
+ 
+ <!--  proxy  -->
+ <property>
+  <name>http.proxy.host</name>
+  <value>localhost</value>
+  <description>The proxy hostname.  If empty, no proxy is used.</description>
+</property>
+
+<property>
+  <name>http.proxy.port</name>
+  <value>58198</value>
+  <description>The proxy port.</description>
+</property>
+ 
+</configuration>

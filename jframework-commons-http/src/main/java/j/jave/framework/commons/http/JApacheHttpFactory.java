@@ -32,6 +32,16 @@ class JApacheHttpFactory implements JIHttpFactory {
 	}
 	
 	@Override
+	public JHttpBase<?> getHttpPut() {
+		return new JHttpPut();
+	}
+	
+	@Override
+	public JHttpBase<?> getHttpDelete() {
+		return new JHttpDelete();
+	}
+	
+	@Override
 	public boolean available() {
 		return true;
 	}

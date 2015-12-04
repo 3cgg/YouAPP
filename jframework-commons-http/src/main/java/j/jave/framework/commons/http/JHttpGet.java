@@ -59,7 +59,9 @@ class JHttpGet extends JHttp<JHttpGet> {
 				paramString=paramString.substring(1);
 			}
 			try {
-				url=url+"?"+URLEncoder.encode(paramString, "utf-8");
+				url=JStringUtils.isNotNullOrEmpty(paramString)?(url+"?"+
+						(encode?URLEncoder.encode(paramString, "utf-8"):paramString)
+						):url;
 			} catch (UnsupportedEncodingException e) {
 				// never occurs. 
 			}

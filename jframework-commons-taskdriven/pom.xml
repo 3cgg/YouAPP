@@ -21,6 +21,12 @@
  	<artifactId>jframework-commons-independency</artifactId>
   	<version>${j.version}</version>
   </dependency>
+  
+  <dependency>
+  	<groupId>j.jave.framework</groupId>
+ 	<artifactId>jframework-commons-security</artifactId>
+  	<version>${j.version}</version>
+  </dependency>
     
   </dependencies>
 </project>

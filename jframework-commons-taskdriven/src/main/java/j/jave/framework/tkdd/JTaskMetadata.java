@@ -1,6 +1,10 @@
 package j.jave.framework.tkdd;
 
+import j.jave.framework.tkdd.role.JOwner;
+
 import java.io.Serializable;
+
+import javax.security.auth.Subject;
 
 public interface JTaskMetadata extends Serializable {
 	
@@ -50,13 +54,27 @@ public interface JTaskMetadata extends Serializable {
 	 */
 	String describer();
 	
+	
 	/**
 	 * the owner that has an access to.
 	 * @return
 	 */
-	JTaskMetadata owner();
+	Subject owner();
 	
-	public void setName(String name) ;
+	/**
+	 * the owner of the task instance, it may be different from each metadata instance.
+	 * @param owner the subject only hold one principal and only credential, if many credentials exists, get first as valid.
+	 */
+	public void setOwner(Subject owner) ;
+	
+	/**
+	 * to check the principle passed is right or not.
+	 * @param subject the subject only hold one principal and only credential , if many credentials exists, get first as valid.
+	 * @return
+	 */
+	boolean authorize(Subject subject);
+	
+	public void setName(String name);
 
 	public void setEnabled(boolean enabled);
 
@@ -65,8 +83,7 @@ public interface JTaskMetadata extends Serializable {
 	public void setUninstalled(boolean uninstalled) ;
 
 	public void setDescriber(String describer);
-
-	public void setOwner(JTaskMetadata owner) ;
 	
+
 
 }

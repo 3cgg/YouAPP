@@ -1,76 +1,112 @@
 package j.jave.framework.tkdd;
 
 import j.jave.framework.commons.support.validate.JSelfValidator;
+import j.jave.framework.tkdd.flow.JFlowContext;
 
 import java.util.HashMap;
 
+import javax.security.auth.Subject;
+
 public class JTaskContext  extends HashMap<Object, Object> implements JSelfValidator{
-	
-	//"0" is the root task.
-	private int currentTaskIndex=-1;
-	
-	private Class<? extends JTask> current;
 	
 	/**
 	 * the linked task start element.
 	 */
-	private Class<? extends JTask> root;
+//	private Class<? extends JTask> root;
 	
-	public JTaskContext(Class<? extends JTask> root) {
-		this.root=root;
+	/**
+	 * set when the task is executing under the flow progress . 
+	 */
+	private JFlowContext flowContext;
+	
+	public JFlowContext getFlowContext() {
+		return flowContext;
 	}
 	
-	public JTaskContext(){}
+//	public JTaskContext(Class<? extends JTask> root) {
+//		this.root=root;
+//	}
+	
+	public JTaskContext(JFlowContext flowContext){
+		//initialize flow context
+		this.flowContext=flowContext;
+	}
+	
+	public JTaskContext(){
+		//initialize flow context
+		this.flowContext=JFlowContext.get();
+	}
 
-	public Class<? extends JTask> getRoot() {
-		return root;
-	}
-	
-	public void setCurrentTaskIndex(int currentTaskIndex) {
-		this.currentTaskIndex = currentTaskIndex;
-	}
-	/**
-	 * "0" is the root task.
-	 * @return
-	 */
-	public int getCurrentTaskIndex() {
-		return currentTaskIndex;
-	}
-	public Class<? extends JTask> getCurrent() {
-		return current;
-	}
-	
-	boolean isRootTask(){
-		return current==root&&currentTaskIndex==0;
-	}
-	
-	/**
-	 * set current running task.
-	 * @param current
-	 */
-	public void setCurrent(Class<? extends JTask> current) {
-		this.current = current;
-	}
+//	public Class<? extends JTask> getRoot() {
+//		return root;
+//	}
+//	
+//	public void setRoot(Class<? extends JTask> root) {
+//		this.root = root;
+//	}
 
 	@Override
 	public boolean validate() {
-		if(getRoot()==null){
-			throw new JTaskExecutionException("the root task of context is null or empty. please set.");
-		}
+//		if(getRoot()==null){
+//			throw new JTaskExecutionException("the root task of context is null or empty. please set.");
+//		}
 		return false;
 	}
 	
 	
-	public void setCustomTaskMetadataSpec(Class<? extends JTask> taskClass,Class<? extends JTaskMetadataSpecInit> taskMetadataSpecInitClass ){
-		put(taskClass, taskMetadataSpecInitClass);
+	@Override
+	public Object get(Object key) {
+		Object object=  null;
+		if(containsKey(key)){
+			object=  super.get(key);
+		}
+		else{
+			//get from flow context
+			object=flowContext.get(key);
+		}
+		return object;
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public Class<? extends JTaskMetadataSpecInit> getCustomTaskMetadataSpec(Class<? extends JTask> taskClass){
-		return (Class<? extends JTaskMetadataSpecInit>) get(taskClass);
+	/**
+	 * get value from the map, including type convertion, predefined default value returned if no existing.
+	 * @param key
+	 * @param defaultValue
+	 * @param clazz
+	 * @return
+	 */
+	public <T> T get(Object key, Object defaultValue , Class<T> clazz) {
+		Object object=  get(key, defaultValue);
+		return object==null?clazz.cast(defaultValue):clazz.cast(object);
 	}
 	
+	/**
+	 * get value from the map, predefined default value returned if no existing.
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public Object get(Object key, Object defaultValue) {
+		Object object=  get(key);
+		return object==null?defaultValue:object;
+	}
+	
+	public Subject getSubject(Class<? extends JTask> taskClazz){
+		JTaskCustomConfig customConfig= (JTaskCustomConfig) get(taskClazz);
+		Subject subject=null;
+		if(customConfig!=null){
+			subject= customConfig.getSubject();
+		}
+		if(subject==null){
+			// get global
+			subject=getSubject();
+		}
+		return subject;
+	}
+	
+	public Subject getSubject(){
+		return (Subject) get(JTKDDConstants.GLOBAL_SUBJECT);
+	}
 	
 	
 	

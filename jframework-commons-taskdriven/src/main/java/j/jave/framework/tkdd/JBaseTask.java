@@ -1,21 +1,49 @@
 package j.jave.framework.tkdd;
 
+import j.jave.framework.tkdd.flow.JFlowContext;
 
-public abstract class JBaseTask implements JTask {
+/**
+ * basic task implementation for simply any new additional task.
+ * @author J
+ *
+ */
+public abstract class JBaseTask implements JTask ,JTaskExecutePostProcessor{
 	
 	private Class<? extends JBaseTask> clazz=this.getClass();
 	
-	protected final JTaskContext taskContext;
+	protected JTaskContext taskContext;
 	
+	/**
+	 * current meta data tied to the task.
+	 */
 	protected JTaskMetadata taskMetadata;
+	
+	protected JTaskScope taskScope;
 	
 	public JBaseTask(JTaskContext taskContext) {
 		this.taskContext=taskContext;
 	}
 	
+	public JBaseTask() {
+	}
+	
 	@Override
-	public Object start() {
-		return JTaskExecutors.newSingleTaskExecutor().execute(this);
+	public final Object start() {
+		setTaskScope(JTaskScope.BEFORE_EXECUTE);
+		postProcessBeforeExecute();
+		setTaskScope(JTaskScope.EXECUTING);
+		Object object= JTaskExecutors.newSingleTaskExecutor().execute(this);
+		setTaskScope(JTaskScope.AFTER_EXECUTE);
+		postProcessAfterExecute();
+		setTaskScope(JTaskScope.COMPELTED);
+		return object;
+	}
+	
+	@Override
+	public final Object start(JFlowContext flowContext) {
+		JTaskContext taskContext=new JTaskContext(flowContext);
+		this.taskContext=taskContext;
+		return start();
 	}
 	
 	/**
@@ -30,16 +58,13 @@ public abstract class JBaseTask implements JTask {
 	public JTaskMetadata getCustomTaskMetadata() {
 		try {
 			//get from custom.
-			Class<? extends JTaskMetadataSpecInit> taskMetadataSpecInitClazz=  taskContext.getCustomTaskMetadataSpec(clazz);
-			if(taskMetadataSpecInitClazz!=null){
-				JTaskMetadataSpecInit taskMetadataSpecInit= taskMetadataSpecInitClazz.newInstance();
+			JTaskMetadataSpecInit taskMetadataSpecInit=  taskContext.getFlowContext().getCustomTaskMetadataSpec(clazz);
+			if(taskMetadataSpecInit!=null){
 				taskMetadata=taskMetadataSpecInit.custom();
 				return taskMetadata;
 			}
 			return null;
-		} catch (InstantiationException e) {
-			throw new JTaskExecutionException(e);
-		} catch (IllegalAccessException e) {
+		} catch (Exception e) {
 			throw new JTaskExecutionException(e);
 		}
 	}
@@ -60,9 +85,9 @@ public abstract class JBaseTask implements JTask {
 	}
 	
 	@Override
-	public JTaskMetadata getSnapshotTaskMetadata() {
+	public JTaskMetadata getSystemDynamicSnapshotTaskMetadata() {
 		
-		JTaskMetadata taskMetadata=getCustomTaskMetadata();
+		JTaskMetadata taskMetadata=JRepo.get().getDynamicSnapshotMetadata(this, taskContext);
 		// get default definition.
 		if (taskMetadata == null) {
 			taskMetadata = getDefineTaskMetadata();
@@ -71,16 +96,24 @@ public abstract class JBaseTask implements JTask {
 	}
 	
 	@Override
+	public JTaskMetadata getCachedTaskMetadata() {
+		return taskMetadata;
+	}
+	
+	@Override
 	public JTaskMetadata getRunningTaskMetadata() {
 
-		//get from local
-		if(taskMetadata!=null) {
-			return taskMetadata;
-		}
+		//get from cache
+		JTaskMetadata taskMetadata=getCachedTaskMetadata();
 
 		//get from custom.
 		if(taskMetadata==null){
 			taskMetadata=getCustomTaskMetadata();
+		}
+		
+		// get from dynamical metadata from repository.
+		if(taskMetadata==null){
+			taskMetadata=getSystemDynamicSnapshotTaskMetadata();
 		}
 		
 		// get default definition.
@@ -88,6 +121,34 @@ public abstract class JBaseTask implements JTask {
 			taskMetadata=getDefineTaskMetadata();
 		}
 		return taskMetadata;
+	}
+	
+	public final JTaskContext getTaskContext() {
+		return taskContext;
+	}
+	
+	
+	/**
+	 * one use to override the method to provide the real functionality.
+	 */
+	@Override
+	public void postProcessBeforeExecute() throws JTaskExecutionException {
+	}
+	
+	/**
+	 * one use to override the method to provide the real functionality.
+	 */
+	@Override
+	public void postProcessAfterExecute() throws JTaskExecutionException {
+	}
+	
+	@Override
+	public JTaskScope getScope() {
+		return this.taskScope;
+	}
+
+	void setTaskScope(JTaskScope taskScope) {
+		this.taskScope = taskScope;
 	}
 	
 }

@@ -3,28 +3,29 @@ package j.jave.framework.tkdd;
 /**
  * @author J
  */
-public interface JTask {
-
-	/**
-	 * notify task framework to ready to process this task.
-	 * @return
-	 */
-	Object start();
+public interface JTask extends JNotifyStart {
 	
 	/**
-	 * actual something that is processed.
+	 * actual something that is processed. delegate the super start method.
 	 * @return
 	 */
-	Object run();
+	Object run() throws JTaskExecutionException;
 	
 	/**
 	 * get running metadata related to the task.
-	 * <p>first check if the local has the metadata
+	 * <p>first check if the local cache has the metadata
 	 * then if the former is null,  call {@link #getCustomTaskMetadata()} , 
+	 * then if the former is null,  call {@link #getSystemDynamicSnapshotTaskMetadata()}
 	 * then if the former is null ,call {@link #getDefineTaskMetadata()}
 	 * @return
 	 */
 	JTaskMetadata getRunningTaskMetadata();
+	
+	/**
+	 * get cached task meta data, which is for active task with exisitng task metadata.
+	 * @return
+	 */
+	JTaskMetadata getCachedTaskMetadata();
 	
 	/**
 	 * get custom metadata related to the task.
@@ -32,14 +33,11 @@ public interface JTask {
 	 */
 	JTaskMetadata getCustomTaskMetadata();
 	
-	
 	/**
-	 * get snapshot metadata related to the task.
-	 * <p>first call {@link #getCustomTaskMetadata()} , 
-	 * then if the former is null ,call {@link #getDefineTaskMetadata()}
+	 * get task metadata from repository, some may be dynamically changed by the system control service any time.
 	 * @return
 	 */
-	JTaskMetadata getSnapshotTaskMetadata();
+	JTaskMetadata getSystemDynamicSnapshotTaskMetadata();
 	
 	/**
 	 * get defined metadata related to the task.
@@ -53,4 +51,9 @@ public interface JTask {
 	 */
 	<T extends JTask> JTaskInvocation<T> getTaskInvocation();
 	
+	/**
+	 * indicate the current scope, i.e. the task is in the initialization , executing or others.
+	 * @return
+	 */
+	JTaskScope getScope();
 }

@@ -1,5 +1,6 @@
 package j.jave.framework.tasks.bill;
 
+import j.jave.framework.commons.logging.JLoggerFactory;
 import j.jave.framework.tkdd.JBaseTask;
 import j.jave.framework.tkdd.JTaskContext;
 import j.jave.framework.tkdd.JTaskMetadataHierarchy;
@@ -16,7 +17,7 @@ public class SearchBillTask extends JBaseTask {
 
 	@Override
 	public Object run() {
-		System.out.println(this.getClass().getName()+taskContext.getRoot());
+		JLoggerFactory.getLogger(this.getClass()).info(this.getClass().getName());
 		return null;
 	}
 

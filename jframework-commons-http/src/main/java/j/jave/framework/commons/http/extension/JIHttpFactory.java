@@ -8,4 +8,7 @@ public interface JIHttpFactory extends JIFactory {
 	
 	JHttpBase<?> getHttpGet();
 	
+	JHttpBase<?> getHttpPut();
+	
+	JHttpBase<?> getHttpDelete();
 }

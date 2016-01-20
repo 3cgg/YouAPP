@@ -155,23 +155,28 @@ public abstract class JHttpBase <T extends JHttpBase<T>>{
 	 * set custom response handler, now default handler is String Handler, get the string format of response.
 	 * @param responseHandler the responseHandler to set
 	 */
-	public void setResponseHandler(JResponseHandler<?> responseHandler) {
+	@SuppressWarnings("unchecked")
+	public T setResponseHandler(JResponseHandler<?> responseHandler) {
 		this.responseHandler = responseHandler;
+		return (T) this;
 	}
 
-	public JHttpBase<T> setTimeout(int timeout) {
+	@SuppressWarnings("unchecked")
+	public T setTimeout(int timeout) {
 		this.timeout = timeout;
-		return this;
+		return (T) this;
 	}
 
-	public JHttpBase<T> setSocketTimeout(int socketTimeout) {
+	@SuppressWarnings("unchecked")
+	public T setSocketTimeout(int socketTimeout) {
 		this.socketTimeout = socketTimeout;
-		return this;
+		return (T) this;
 	}
 	
-	public JHttpBase<T>  setRetry(int retry) {
+	@SuppressWarnings("unchecked")
+	public T  setRetry(int retry) {
 		this.retry = retry;
-		return this;
+		return (T) this;
 	}
 	
 	@SuppressWarnings("unchecked")

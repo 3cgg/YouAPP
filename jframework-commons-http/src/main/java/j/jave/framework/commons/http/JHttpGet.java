@@ -52,19 +52,23 @@ class JHttpGet extends JHttp<JHttpGet> {
 			String paramString="";
 			for (Iterator<Entry<String, Object>>  iterator = params.entrySet().iterator(); iterator.hasNext();) {
 				Entry<String, Object> entry =  iterator.next();
-				paramString=paramString+"&"+entry.getKey()+"="+JStringUtils.toString(entry.getValue());
+				try {
+					String value=JStringUtils.toString(entry.getValue());
+				paramString=paramString+"&"+entry.getKey()+"="+
+						(encode?URLEncoder.encode(value, "utf-8"):value)
+						;
+				} catch (UnsupportedEncodingException e) {
+					// never occurs. 
+					throw new RuntimeException(e);
+				}
 			}
 			if(JStringUtils.isNotNullOrEmpty(paramString)){
 				// remove '&'
 				paramString=paramString.substring(1);
 			}
-			try {
-				url=JStringUtils.isNotNullOrEmpty(paramString)?(url+"?"+
-						(encode?URLEncoder.encode(paramString, "utf-8"):paramString)
-						):url;
-			} catch (UnsupportedEncodingException e) {
-				// never occurs. 
-			}
+			url=JStringUtils.isNotNullOrEmpty(paramString)?
+					(url+"?"+paramString)
+					:url;
 		}
 		
 		HttpGet httpGet=new HttpGet(url);

@@ -1,5 +1,7 @@
 package j.jave.framework.commons.support.treeview;
 
+import j.jave.framework.commons.logging.JLogger;
+import j.jave.framework.commons.logging.JLoggerFactory;
 import j.jave.framework.commons.support.console.JRepresent;
 import j.jave.framework.commons.utils.JAssert;
 
@@ -13,6 +15,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class JTree implements JRepresent{
 
+	private static JLogger LOGGER=JLoggerFactory.getLogger(JTree.class);
+	
+	public static enum Action{
+		DROP,REPORT
+	}
+	
+	private final Action howto;
+	
 	/**
 	 * tree view 
 	 */
@@ -22,6 +32,12 @@ public class JTree implements JRepresent{
 	
 	public JTree(Collection<? extends JTreeStrcture> treeStrctures){
 		this.treeStrctures=treeStrctures;
+		this.howto=Action.REPORT;
+	}
+	
+	public JTree(Collection<? extends JTreeStrcture> treeStrctures,Action howto){
+		this.treeStrctures=treeStrctures;
+		this.howto=howto;
 	}
 	
 	public JTree get(){
@@ -83,12 +99,23 @@ public class JTree implements JRepresent{
 				String parentId=item.getParentId();
 				JTreeNode parentTreeNode=treeNodeMap.get(parentId);
 				
+				boolean expected=parentTreeNode!=null;
+				if(!expected){
+					String message="the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] does not exists.";
+					if(howto==Action.REPORT){
+						JAssert.state(expected, message);
+					}
+					else if(howto==Action.DROP){
+						LOGGER.info(message);
+						continue;
+					}
+				}
+				
 				JAssert.state(parentTreeNode!=null, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] does not exists.");
 				JAssert.state(JTreeElement.class.isInstance(parentTreeNode), "text ["+item.getId()+"] cannot be included in another text (parent) ["+parentId+"]");
 				JTreeElement parentTreeElement=((JTreeElement)parentTreeNode);
 				JTreeNode thisTreeNode=treeNodeMap.get(item.getId());
 				JAssert.state(parentTreeElement!=thisTreeNode, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] is the as self.");
-				
 				JAssert.state(parentTreeElement.getParent()!=thisTreeNode, "the model ["+item.getParentId()+"] and model ["+item.getId()+"] references each other..");
 				
 				thisTreeNode.getNodeConfig().setLevel(parentTreeElement.getNodeConfig().getLevel()+1);
@@ -105,7 +132,7 @@ public class JTree implements JRepresent{
 		
 		return this;
 	}
-
+	
 	@Override
 	public String represent() {
 		

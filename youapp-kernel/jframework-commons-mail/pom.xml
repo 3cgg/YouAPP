@@ -2,16 +2,16 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	
-<parent>
-  	 <groupId>j.jave</groupId>
-	  <artifactId>framework</artifactId>
-	  <version>0.0</version>
-	  <relativePath>../pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>youapp</groupId>
+	  <artifactId>youapp-kernel</artifactId>
+	  <version>2.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 	 
   <groupId>j.jave.framework</groupId>
   <artifactId>jframework-commons-mail</artifactId>
-  <version>${j.version}</version>
+  <version>${kernel.version}</version>
   <packaging>jar</packaging>
 
   <name>jframework-commons-mail</name>

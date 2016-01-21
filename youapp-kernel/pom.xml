@@ -6,7 +6,12 @@
   <packaging>pom</packaging>
   
   
-  
+  <parent>
+		<groupId>j.jave</groupId>
+		<artifactId>framework</artifactId>
+		<version>0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
   
   
   <properties>
@@ -16,6 +21,19 @@
   <modules>
 	
 		<module>jframework-commons-independency</module>
+		<module>jframework-commons-http</module>
+		<module>jframework-commons-json</module>
+		<module>jframework-commons-security</module>
+		<module>jframework-commons-eventdriven</module>
+		<module>jframework-commons-ehcache</module>
+		<module>jframework-commons-memcached</module>
+		<module>jframework-commons-filedistribute</module>
+		<module>jframework-commons-qrcode</module>
+		<module>jframework-commons-sqlautoloader</module>
+		<module>jframework-commons-commonsmanager</module>
+		<module>jframework-commons-taskdriven</module>
+		<module>jframework-commons-xmldb</module>
+		<module>jframework-commons-mail</module>
 	
 	</modules>
 	

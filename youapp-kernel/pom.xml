@@ -20,19 +20,17 @@
 	</properties>
   
   <modules>
-	
-		<module>jframework-commons-independency</module>
-		<module>jframework-commons-http</module>
-		<module>jframework-commons-security</module>
-		<module>jframework-commons-eventdriven</module>
-		<module>jframework-commons-ehcache</module>
-		<module>jframework-commons-memcached</module>
-		<module>jframework-commons-filedistribute</module>
-		<module>jframework-commons-sqlautoloader</module>
-		<module>jframework-commons-commonsmanager</module>
-		<module>jframework-commons-taskdriven</module>
-		<module>jframework-commons-xmldb</module>
-		<module>jframework-commons-mail</module>
+		<module>youapp-kernal-jave</module>
+		<module>youapp-kernal-http</module>
+		<module>youapp-kernal-security</module>
+		<module>youapp-kernal-eventdriven</module>
+		<module>youapp-kernal-ehcache</module>
+		<module>youapp-kernal-memcached</module>
+		<module>youapp-kernal-filedistribute</module>
+		<module>youapp-kernal-sqlautoloader</module>
+		<module>youapp-kernal-taskdriven</module>
+		<module>youapp-kernal-xmldb</module>
+		<module>youapp-kernal-mail</module>
 	
 	</modules>
 	

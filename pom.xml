@@ -66,9 +66,11 @@
 		</resources>
 	
 		<plugins>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -78,7 +80,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-jar-plugin</artifactId>
-		        <version>2.4</version>
+		        <version>2.6</version>
 				<configuration>					
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
@@ -92,37 +94,7 @@
 
 	<modules>
 	
-		<!-- commons , basic java code -->
-		<module>youapp-kernel</module>
-		<!-- components -->
-		<module>jframework-components-underlying-javacode</module>
-		<module>jframework-components-support</module>
-		<module>jframework-components-multi-version-support</module>
-		<module>jframework-components-web</module>
-		<module>jframework-components-core</module>
-		<module>jframework-components-bill</module>
-		<module>jframework-components-weight</module>
-		<module>jframework-components-tablemanager</module>
-		<module>jframework-components-runtime-load</module>
-		<module>jframework-components-sample</module>
 		
-		<!-- war -->
-		<module>jframework-youapp-war</module>
-		<module>jframework-youapp-war-jetty</module>
-		<module>jframework-youapp-war-tomcat</module>
-		
-		<!-- support -->
-		<module>jframework-support-cxf</module>
-		<module>jframework-support-zookeeper</module>
-		<module>jframework-support-redis</module>
-		<module>jframework-support-hibernate</module>
-		<module>jframework-support-mybatis</module>
-		<module>jframework-support-bootstrap</module>
-		<module>jframework-support-cas4</module>
-		<module>jframework-support-cas4-tomcat</module>
-		
-		<!-- test module -->
-		<module>jframework-support-test-all-modules</module>
 	</modules>
 
 </project>

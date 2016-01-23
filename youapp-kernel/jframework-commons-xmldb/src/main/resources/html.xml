@@ -1,7 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title> Java中的JSON - JSON中国 | JSON中文网 </title>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -93,7 +92,7 @@
 					<td colspan="3" class="skyblue center">JSON也可以作为与其他数据交互格式之间进行数据交互的格式.</td>
 				</tr>
 				<tr>
-					<td><a href="java/CDL.java" target="_blank">CDL.java</td>
+					<td><a href="java/CDL.java" target="_blank">CDL.java</a></td>
 					<td><a href="javadoc/org/json/CDL.html" target="_blank">CDL.html</a></td>
 					<td>它提供了一个静态方法, 用来将逗号分隔的列表文本转换为JSONArray, 以及将JSONArray转换为逗号分隔的列表文件. 它可以被大多数数据库、电子表格或者组织者计划所识别.</td>
 				</tr>

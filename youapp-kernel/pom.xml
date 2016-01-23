@@ -8,9 +8,9 @@
   
   
   <parent>
-		<groupId>j.jave</groupId>
-		<artifactId>framework</artifactId>
-		<version>0.0</version>
+		<groupId>youapp</groupId>
+	<artifactId>youapp-global-pom</artifactId>
+	<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
   

@@ -22,9 +22,10 @@
 	<groupId>youapp</groupId>
 	<artifactId>youapp-global-pom</artifactId>
 	<version>0.0.0</version>
-	<name>youapp-global-pom</name>
 	<packaging>pom</packaging>
-
+	
+	<name>youapp-global-pom</name>
+	
 	<url>http://maven.apache.org</url>
 
 	<repositories>

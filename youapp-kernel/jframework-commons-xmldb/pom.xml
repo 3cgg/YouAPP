@@ -1,37 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-	
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>youapp</groupId>
-	  <artifactId>youapp-kernel</artifactId>
-	  <version>2.0.0</version>
+		<artifactId>youapp-kernel</artifactId>
+		<version>2.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	 
-  <groupId>j.jave.framework</groupId>
-  <artifactId>jframework-commons-xmldb</artifactId>
-  <version>${kernel.version}</version>
-  <packaging>jar</packaging>
 
-  <name>jframework-commons-xmldb</name>
+	<groupId>youapp.youapp-kernal</groupId>
+	<artifactId>xmldb</artifactId>
+	<version>${kernel.version}</version>
+	<packaging>jar</packaging>
 
-  <dependencies>
-  
-  	<dependency>
-  	<groupId>j.jave.framework</groupId>
- 	<artifactId>jframework-commons-independency</artifactId>
-  	<version>${j.version}</version>
-  </dependency>
-  
-  <dependency>
-	<groupId>dom4j</groupId>
-	<artifactId>dom4j</artifactId>
-	<version>1.6.1</version>
-</dependency>
-  
-  	
-  
-  
-  </dependencies>
+	<name>youapp.youapp-kernal.xmldb</name>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>jave</artifactId>
+			<version>${kernel.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+
+
+
+	</dependencies>
 </project>

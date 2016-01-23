@@ -4,30 +4,30 @@
 
 	<parent>
 		<groupId>youapp</groupId>
-	  <artifactId>youapp-kernel</artifactId>
-	  <version>2.0.0</version>
+		<artifactId>youapp-kernel</artifactId>
+		<version>2.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>j.jave.framework</groupId>
-	<artifactId>jframework-commons-eventdriven</artifactId>
+	<groupId>youapp.youapp-kernal</groupId>
+	<artifactId>eventdriven</artifactId>
 	<version>${kernel.version}</version>
 	<packaging>jar</packaging>
 
-	<name>jframework-commons-eventdriven</name>
+	<name>youapp.youapp-kernal.eventdriven</name>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>j.jave.framework</groupId>
-			<artifactId>jframework-commons-independency</artifactId>
-			<version>${j.version}</version>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>jave</artifactId>
+			<version>${kernel.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>j.jave.framework</groupId>
-			<artifactId>jframework-commons-json</artifactId>
-			<version>${j.version}</version>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>json</artifactId>
+			<version>${kernel.version}</version>
 		</dependency>
 
 

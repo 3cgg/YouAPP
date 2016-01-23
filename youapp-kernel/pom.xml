@@ -16,7 +16,7 @@
   
   
   <properties>
-		<kernel.version>1.0</kernel.version>
+		<kernel.version>1.0.0</kernel.version>
 	</properties>
   
   <modules>

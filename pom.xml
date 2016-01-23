@@ -19,10 +19,10 @@
 		<jetty.version>9.3.0.M1</jetty.version>
 	</properties>
 
-	<groupId>j.jave</groupId>
-	<artifactId>framework</artifactId>
-	<version>0.0</version>
-	<name>jframework</name>
+	<groupId>youapp</groupId>
+	<artifactId>youapp-global-pom</artifactId>
+	<version>0.0.0</version>
+	<name>youapp-global-pom</name>
 	<packaging>pom</packaging>
 
 	<url>http://maven.apache.org</url>

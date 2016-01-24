@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JWebDataGetterUtil {
 	
-	public static List<JWebDataGetter> get(Class<? extends JWebModel> webModelClass){
+	public static List<JWebDataGetter> get(Class<? extends JWebModel> webModelClass,JCrawlContext crawlContext){
 		try{
 			JWebNodeModel webNodeModel= webModelClass.getAnnotation(JWebNodeModel.class);
 			List<JWebDataGetter> webDataGetters=new ArrayList<JWebDataGetter>();
@@ -19,11 +19,14 @@ public class JWebDataGetterUtil {
 				for (int i = 0; i < getters.length; i++) {
 					String getter=getters[i];
 					if(JWebModelDefProperties.WEB_MODEL_GETTER_SCOPE.equals(getter)){
-						JScopeWebDataGetter scopeWebDataGetter=new JScopeWebDataGetter(webModelClass);
+						JScopeWebDataGetter scopeWebDataGetter=new JScopeWebDataGetter();
+						scopeWebDataGetter.setWebModelClass(webModelClass);
+						scopeWebDataGetter.setCrawlContext(crawlContext);
 						webDataGetters.add(scopeWebDataGetter);
 					}
 					else if(JWebModelDefProperties.WEB_MODEL_GETTER_XPATH.equals(getter)){
-						JXPathWebDataGetter pathWebDataGetter=new JXPathWebDataGetter(webModelClass);
+						JXPathWebDataGetter pathWebDataGetter=new JXPathWebDataGetter(crawlContext);
+						pathWebDataGetter.setCrawlContext(crawlContext);
 						webDataGetters.add(pathWebDataGetter);
 					}
 				}

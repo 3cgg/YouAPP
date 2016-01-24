@@ -6,6 +6,14 @@ import java.util.List;
 
 public interface JWebDataGetter {
 	
-	public List<JWebModel> parser();
+	public List<JWebModel> get();
+	
+	public void setCrawlContext(JCrawlContext crawlContext);
+	
+	public void setWebModelClass(Class<? extends JWebModel> webModelClass);
+	
+	public boolean success();
+	
+	public void execute();
 	
 }

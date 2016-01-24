@@ -1,31 +1,55 @@
 package j.jave.module.crawl.kernel;
 
 import j.jave.module.crawl.def.JWebModel;
+import j.jave.module.crawl.def.JWebModelDefProperties;
 import j.jave.module.crawl.def.JWebNodeFieldValue;
 import j.jave.module.crawl.node.JNodeGetterUtil;
 import j.jave.module.crawl.node.JXPathGetter;
 import j.jave.module.crawl.parser.JNodeValueParserUtil;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Node;
 
 public class JXPathWebDataGetter extends JAbstractWebDataGetter {
 	
-	public JXPathWebDataGetter(Class<? extends JWebModel> webModelClass){
-		super(webModelClass);
+	private int xpathMatchNum;
+	
+	private double xpathMatchRate;
+	
+	private int xpathSum;
+	
+	public JXPathWebDataGetter(JCrawlContext crawlContext){
+		xpathMatchRate=crawlContext.getDouble(JPropertiesKeys.XPATH_MATCH_RATE, 1);
 	}
 	
 	public JXPathWebDataGetter(){
 	}
 	
 	@Override
-	public List<JWebModel> parser() {
+	public void setCrawlContext(JCrawlContext crawlContext) {
+		super.setCrawlContext(crawlContext);
+		xpathMatchRate=crawlContext.getDouble(JPropertiesKeys.XPATH_MATCH_RATE, 1);
+	}
+	
+	@Override
+	public List<JWebModel> get() {
+		return webModels;
+	}
+	
+	@Override
+	public boolean success() {
 		
-		List<JWebModel>  webModels=new ArrayList<JWebModel>();
-		
+		if(exception!=null){
+			success=false;
+			return success;
+		}
+		return xpathMatchNum/xpathSum>xpathMatchRate;
+	}
+	
+	@Override
+	public void execute() {
 		JWebModel webModel=null;
 		Class<?> thisClass= webModelClass;
 		try{
@@ -36,14 +60,21 @@ public class JXPathWebDataGetter extends JAbstractWebDataGetter {
 					JWebNodeFieldValue webNodeFieldValue= method.getAnnotation(JWebNodeFieldValue.class);
 					if(webNodeFieldValue!=null){
 						//process 
+						xpathSum++;
 						String xpath=webNodeFieldValue.xpath();
-						JXPathGetter pathGetter= JNodeGetterUtil.getNodeGetter(JNodeGetterUtil.XPATH_PROTOCOL);
+						if(JWebModelDefProperties.EMPTY.equals(xpath)){
+							continue;
+						}
+						JXPathGetter pathGetter= JNodeGetterUtil.getNodeGetter(
+								JNodeGetterUtil.XPATH_PROTOCOL,crawlContext);
 						List<?> nodes=pathGetter.getNodesByXPath(xpath);
 
 						if(nodes.isEmpty()){ 
 							// process next
 							continue;
 						}
+						
+						xpathMatchNum++;
 						
 						String[] parsers=empty;
 						String parser=webNodeFieldValue.parser();
@@ -67,13 +98,12 @@ public class JXPathWebDataGetter extends JAbstractWebDataGetter {
 			}
 			
 		}catch(Exception e){
-			throw new RuntimeException(e);
+			exception=e;
+			e.printStackTrace();
 		}
 		
 		if(webModel!=null){
 			webModels.add(webModel);
 		}
-		return webModels;
 	}
-
 }

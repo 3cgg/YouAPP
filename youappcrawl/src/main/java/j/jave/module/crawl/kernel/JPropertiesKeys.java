@@ -9,5 +9,7 @@ public class JPropertiesKeys {
 	public static final String NODE_ID_GETTER="crawl.node.id.getter";
 	public static final String NODE_MIXED_GETTER="crawl.node.mixed.getter";
 	
+	public static final String XPATH_MATCH_RATE="crawl.xpath.match.rate";
+	
 	
 }

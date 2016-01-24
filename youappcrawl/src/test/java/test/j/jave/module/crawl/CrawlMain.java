@@ -1,10 +1,13 @@
-package j.jave.module.crawl;
+package test.j.jave.module.crawl;
 
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.htmlunit.HtmlUnitNodeGetter;
 import j.jave.module.crawl.kernel.JCrawlContext;
+import j.jave.module.crawl.kernel.JCrawlExecution;
 import j.jave.module.crawl.kernel.JPropertiesKeys;
 import j.jave.module.crawl.kernel.JScopeWebDataGetter;
+import j.jave.module.crawl.kernel.JWebDataGetter;
+import j.jave.module.crawl.kernel.JWebDataGetterUtil;
 import j.jave.module.crawl.kernel.JXPathWebDataGetter;
 import j.jave.module.crawl.node.JNodeGetter;
 import j.jave.module.crawl.parser.JElementWithSingleTextParser;
@@ -91,24 +94,33 @@ public class CrawlMain {
         	System.out.println("is");
         }
         
-        initializeContext(page);
+        JCrawlContext crawlContext= initializeContext(page);
         
-        JXPathWebDataGetter pathWebDataGetter=new JXPathWebDataGetter(Alert.class);
-        List<JWebModel> webModels=pathWebDataGetter.parser();
+        JXPathWebDataGetter pathWebDataGetter=new JXPathWebDataGetter();
+        pathWebDataGetter.setCrawlContext(crawlContext);
+        pathWebDataGetter.setWebModelClass(Alert.class);
+        List<JWebModel> webModels=pathWebDataGetter.get();
         System.out.println(webModels);
         
-        JScopeWebDataGetter scopeWebDataGetter=new JScopeWebDataGetter(Alert.class);
-        List<JWebModel> webModels2=scopeWebDataGetter.parser();
+        JScopeWebDataGetter scopeWebDataGetter=new JScopeWebDataGetter();
+        scopeWebDataGetter.setCrawlContext(crawlContext);
+        scopeWebDataGetter.setWebModelClass(Alert.class);
+        List<JWebModel> webModels2=scopeWebDataGetter.get();
         System.out.println(webModels2);
         
         page = webClient.getPage("http://www.w3schools.com/tags/tag_table.asp");
         
-        initializeContext(page);
+        crawlContext=initializeContext(page);
         
-        JScopeWebDataGetter scopeWebDataGetterAttr=new JScopeWebDataGetter(Attributes.class);
-        List<JWebModel> attrWebModels=scopeWebDataGetterAttr.parser();
+        JScopeWebDataGetter scopeWebDataGetterAttr=new JScopeWebDataGetter();
+        scopeWebDataGetterAttr.setCrawlContext(crawlContext);
+        scopeWebDataGetterAttr.setWebModelClass(Attributes.class);
+        List<JWebModel> attrWebModels=scopeWebDataGetterAttr.get();
         System.out.println(attrWebModels);
         
+        JCrawlExecution crawlExecution=new JCrawlExecution(Attributes.class, crawlContext);
+        List<JWebModel> attrWebModels2=crawlExecution.execute();
+        System.out.println(attrWebModels2);
         
         
         //ScriptResult scriptResult= page.executeJavaScript("getFunURL()");
@@ -121,7 +133,7 @@ public class CrawlMain {
 	}
 
 
-	private static void initializeContext(HtmlPage page) {
+	private static JCrawlContext initializeContext(HtmlPage page) {
 		JCrawlContext crawlContext=new JCrawlContext();
         JNodeGetter nodeGetter=new HtmlUnitNodeGetter(page);
         crawlContext.put(JPropertiesKeys.NODE_NAME_GETTER, nodeGetter);
@@ -131,6 +143,6 @@ public class CrawlMain {
         crawlContext.put(JPropertiesKeys.NODE_ID_GETTER, nodeGetter);
         crawlContext.put(JPropertiesKeys.NODE_MIXED_GETTER, nodeGetter);
         
-        JCrawlContext.set(crawlContext);
+        return crawlContext;
 	}
 }

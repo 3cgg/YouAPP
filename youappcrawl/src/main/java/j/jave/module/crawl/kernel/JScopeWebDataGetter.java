@@ -12,18 +12,25 @@ import java.util.List;
 import org.w3c.dom.Node;
 
 public class JScopeWebDataGetter extends JAbstractWebDataGetter {
-
-	public JScopeWebDataGetter(Class<? extends JWebModel> webModelClass){
-		super(webModelClass);
-	}
 	
 	public JScopeWebDataGetter(){
 	}
 	
 	@Override
-	public List<JWebModel> parser() {
-		
-		List<JWebModel> webModels=new ArrayList<JWebModel>();
+	public List<JWebModel> get() {
+		return webModels;
+	}
+	
+	@Override
+	public boolean success() {
+		if(exception!=null){
+			success=false;
+		}
+		return success;
+	}
+	
+	@Override
+	public void execute() {
 		Class<? extends JWebModel> thisClass= webModelClass;
 		try{
 			JWebNodeModel webNodeModel= thisClass.getAnnotation(JWebNodeModel.class);
@@ -35,7 +42,8 @@ public class JScopeWebDataGetter extends JAbstractWebDataGetter {
 				if(scopes.length>0){
 					for(int i=0;i<scopes.length;i++){
 						String scope=scopes[i];
-						JMixedGetter mixedGetter=JNodeGetterUtil.getNodeGetter(JNodeGetterUtil.MIXED_PROTOCOL);
+						JMixedGetter mixedGetter=JNodeGetterUtil.getNodeGetter(
+								JNodeGetterUtil.MIXED_PROTOCOL,crawlContext);
 						nodes.addAll(mixedGetter.getNodesByMixed(scope));
 					}
 				}
@@ -73,11 +81,9 @@ public class JScopeWebDataGetter extends JAbstractWebDataGetter {
 				}
 			}
 		}catch(Exception e){
+			exception=e;
 			e.printStackTrace();
-			throw new RuntimeException(e);
 		}
-		
-		return webModels;
 	}
 
 }

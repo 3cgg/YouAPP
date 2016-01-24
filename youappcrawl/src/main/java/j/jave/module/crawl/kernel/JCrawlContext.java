@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class JCrawlContext extends HashMap{
 
+	/*
 	private static final ThreadLocal<JCrawlContext> LOCAL=new ThreadLocal<JCrawlContext>();
 	
 	public static void set(JCrawlContext context){
@@ -20,7 +21,7 @@ public class JCrawlContext extends HashMap{
 	public static JCrawlContext get(){
 		return LOCAL.get();
 	}
-	
+	*/
 	public JXPathGetter getXPathGetter(){
 		return (JXPathGetter) get(JPropertiesKeys.NODE_XPATH_GETTER);
 	}
@@ -43,6 +44,16 @@ public class JCrawlContext extends HashMap{
 	
 	public JMixedGetter getMixedGetter(){
 		return (JMixedGetter) get(JPropertiesKeys.NODE_MIXED_GETTER);
+	}
+	
+	public double getDouble(String key,double defaultValue){
+		Object object=get(key);
+		if(object==null){
+			return defaultValue;
+		}
+		else{
+			return Double.parseDouble((String) object);
+		}
 	}
 	
 }

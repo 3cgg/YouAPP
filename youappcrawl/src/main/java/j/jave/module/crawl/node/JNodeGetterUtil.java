@@ -13,25 +13,25 @@ public class JNodeGetterUtil {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T getNodeGetter(String protocol){
+	public static <T> T getNodeGetter(String protocol,JCrawlContext crawlContext){
 		
 		if(XPATH_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getXPathGetter();
+			return (T) crawlContext.getXPathGetter();
 		}
 		else if(TAG_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getTagNameGetter();
+			return (T) crawlContext.getTagNameGetter();
 		}
 		else if(NAME_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getNameGetter();
+			return (T) crawlContext.getNameGetter();
 		}
 		else if(CLASS_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getClassNameGetter();
+			return (T) crawlContext.getClassNameGetter();
 		}
 		else if(ID_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getClassNameGetter();
+			return (T) crawlContext.getClassNameGetter();
 		}
 		else if(MIXED_PROTOCOL.equals(protocol)){
-			return (T) JCrawlContext.get().getMixedGetter();
+			return (T) crawlContext.getMixedGetter();
 		}
 		return null;
 	}

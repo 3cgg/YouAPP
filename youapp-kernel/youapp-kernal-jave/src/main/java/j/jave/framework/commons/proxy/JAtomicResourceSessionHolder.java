@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 /**
- * the atomic resource session holder, that first search "commons-independency.properties" file to find session provider,
+ * the atomic resource session holder, that first search "commons-jave.properties" file to find session provider,
  * then search all classes under the class path. Note the whole system should only have an unique session provider.
  * @author J
  * @see JAtomicResourceSessionProvide
@@ -34,7 +34,7 @@ public class JAtomicResourceSessionHolder {
 			JAtomicResourceSessionProvide atomicResourceSessionProvided=null;
 			String sessionProviderClass=null;
 			
-			//get from the commons-independency.properties under the class path.
+			//get from the commons-jave.properties under the class path.
 			String sessionProvider=getConfigAtomicResourceSessionProvider();
 			if(JStringUtils.isNotNullOrEmpty(sessionProvider)){
 				sessionProviderClass=sessionProvider;
@@ -72,7 +72,7 @@ public class JAtomicResourceSessionHolder {
 	
 	
 	private static String getConfigAtomicResourceSessionProvider(){
-		return JPropertiesUtils.getKey(ATOMIC_RESOURCE_SESSION_PROVIDER, "commons-independency.properties");
+		return JPropertiesUtils.getKey(ATOMIC_RESOURCE_SESSION_PROVIDER, "commons-jave.properties");
 	}
 	
 	

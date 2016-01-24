@@ -68,6 +68,10 @@ public class JNodeWrapperWalker {
 
     return currentNode;
   }
+  
+  public JNodeWrapper peekNextNode(){
+	  return nodes.peek();
+  }
 
   /**
    * <p>

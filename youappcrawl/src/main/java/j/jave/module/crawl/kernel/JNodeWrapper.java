@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class JNodeWrapper {
 	
@@ -21,6 +22,28 @@ public class JNodeWrapper {
 	
 	public JNodeWrapper(Node node){
 		this.node=node;
+	}
+	
+	public JNodeWrapper(Node node,boolean mapping){
+		this.node=node;
+		if(mapping){
+			initNodeWrapper(node, this);
+		}
+	}
+
+	private void initNodeWrapper(Node node,JNodeWrapper parent){
+		NodeList nodeList= node.getChildNodes();
+		if(nodeList.getLength()>0){
+			for (int i = 0; i < nodeList.getLength(); i++) {
+				Node thisNode=nodeList.item(i);
+				JNodeWrapper thisNodeWrapper=new JNodeWrapper(thisNode);
+				thisNodeWrapper.setParent(parent);
+				thisNodeWrapper.setDeep(parent.getDeep()+1);
+				thisNodeWrapper.setIndex(i);
+				parent.getChildren().add(thisNodeWrapper);
+				initNodeWrapper(thisNode, thisNodeWrapper);
+			}
+		}
 	}
 
 	public List<JNodeWrapper> getChildren() {

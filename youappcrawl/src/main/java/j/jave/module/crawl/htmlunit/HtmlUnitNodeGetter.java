@@ -67,6 +67,16 @@ public class HtmlUnitNodeGetter implements JClassNameGetter, JNameGetter,
 					Node node = (Node) iterator.next();
 					String protocol=keyValue.substring(0, keyValue.indexOf(":"));
 					String value=keyValue.substring(keyValue.indexOf(":")+1);
+					if((protocol==null||protocol.trim().length()==0)
+							||
+							value==null||value.trim().length()==0
+							){
+						continue;
+					}
+					//trim
+					protocol=protocol.trim();
+					value=value.trim();
+					
 					String nodeValueOnProtocol=JWebConstants.EMPTY;
 					if(JNodeGetterUtil.TAG_PROTOCOL.equals(protocol)){
 						nodeValueOnProtocol=node.getNodeName();
@@ -83,8 +93,21 @@ public class HtmlUnitNodeGetter implements JClassNameGetter, JNameGetter,
 					}
 					
 					if(value.length()>0){
-						nodeValueOnProtocol=JWebConstants.SPACE+nodeValueOnProtocol.trim()+JWebConstants.SPACE;
-						value=JWebConstants.SPACE+value.trim()+JWebConstants.SPACE;
+						if("style".equalsIgnoreCase(protocol)){
+							nodeValueOnProtocol=nodeValueOnProtocol.replaceAll(" ", "");
+							nodeValueOnProtocol=nodeValueOnProtocol.replaceAll(":", "|");
+							if(!nodeValueOnProtocol.endsWith(";")){
+								nodeValueOnProtocol=nodeValueOnProtocol+";";
+							}
+							
+							if(!value.endsWith(";")){
+								nodeValueOnProtocol=nodeValueOnProtocol+";";
+							}
+						}
+						else{
+							nodeValueOnProtocol=JWebConstants.SPACE+nodeValueOnProtocol.trim()+JWebConstants.SPACE;
+							value=JWebConstants.SPACE+value+JWebConstants.SPACE;
+						}
 						if(!nodeValueOnProtocol.contains(value)){
 							iterator.remove();
 						}

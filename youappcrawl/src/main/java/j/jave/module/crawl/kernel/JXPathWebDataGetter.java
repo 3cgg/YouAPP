@@ -1,10 +1,11 @@
 package j.jave.module.crawl.kernel;
 
+import j.jave.framework.commons.xml.node.JNodeGetter;
+import j.jave.framework.commons.xml.node.JXPathGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebModelDefProperties;
 import j.jave.module.crawl.def.JWebNodeFieldValue;
 import j.jave.module.crawl.node.JNodeGetterUtil;
-import j.jave.module.crawl.node.JXPathGetter;
 import j.jave.module.crawl.parser.JNodeValueParserUtil;
 
 import java.lang.reflect.Method;
@@ -66,7 +67,7 @@ public class JXPathWebDataGetter extends JAbstractWebDataGetter {
 							continue;
 						}
 						JXPathGetter pathGetter= JNodeGetterUtil.getNodeGetter(
-								JNodeGetterUtil.XPATH_PROTOCOL,crawlContext);
+								JNodeGetter.XPATH_PROTOCOL,crawlContext);
 						List<?> nodes=pathGetter.getNodesByXPath(xpath);
 
 						if(nodes.isEmpty()){ 

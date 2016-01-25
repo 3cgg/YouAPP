@@ -1,8 +1,9 @@
 package j.jave.module.crawl.kernel;
 
+import j.jave.framework.commons.xml.node.JMixedGetter;
+import j.jave.framework.commons.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebNodeModel;
-import j.jave.module.crawl.node.JMixedGetter;
 import j.jave.module.crawl.node.JNodeGetterUtil;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class JScopeWebDataGetter extends JAbstractWebDataGetter {
 					for(int i=0;i<scopes.length;i++){
 						String scope=scopes[i];
 						JMixedGetter mixedGetter=JNodeGetterUtil.getNodeGetter(
-								JNodeGetterUtil.MIXED_PROTOCOL,crawlContext);
+								JNodeGetter.MIXED_PROTOCOL,crawlContext);
 						nodes.addAll(mixedGetter.getNodesByMixed(scope));
 					}
 				}

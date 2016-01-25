@@ -1,13 +1,13 @@
 package test.j.jave.module.crawl;
 
 import j.jave.framework.commons.json.JJSON;
+import j.jave.framework.commons.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.fun.itemarket.MapstoryModel;
 import j.jave.module.crawl.htmlunit.HtmlUnitNodeGetter;
 import j.jave.module.crawl.kernel.JCrawlContext;
 import j.jave.module.crawl.kernel.JCrawlExecution;
 import j.jave.module.crawl.kernel.JPropertiesKeys;
-import j.jave.module.crawl.node.JNodeGetter;
 import j.jave.module.crawl.parser.JElementWithSingleTextParser;
 import j.jave.module.crawl.parser.JNodeValueParser;
 import j.jave.module.crawl.parser.JTextNodeParser;
@@ -46,7 +46,7 @@ public class CrawlItemarket {
         //htmlunit 对css和javascript的支持不好，所以请关闭之
         webClient.getOptions().setJavaScriptEnabled(true);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
-        ProxyConfig proxyConfig=new ProxyConfig("localhost", 50453);
+        ProxyConfig proxyConfig=new ProxyConfig("localhost", 8888);
         webClient.getOptions().setProxyConfig(proxyConfig);
         webClient.getOptions().setCssEnabled(false);
         //获取页面

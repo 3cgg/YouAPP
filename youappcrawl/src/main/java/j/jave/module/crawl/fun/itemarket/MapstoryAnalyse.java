@@ -1,15 +1,14 @@
 package j.jave.module.crawl.fun.itemarket;
 
+import j.jave.framework.commons.xml.util.JNodeWrapper;
+import j.jave.framework.commons.xml.util.JNodeWrapperWalker;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.kernel.JNodeAnalyse;
-import j.jave.module.crawl.kernel.JNodeWrapper;
-import j.jave.module.crawl.kernel.JNodeWrapperWalker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class MapstoryAnalyse implements JNodeAnalyse {
 
@@ -39,27 +38,10 @@ public class MapstoryAnalyse implements JNodeAnalyse {
 	
 	protected JNodeWrapper nodeWrapper;
 	
-	private void initNodeWrapper(Node node,JNodeWrapper parent){
-		NodeList nodeList= node.getChildNodes();
-		if(nodeList.getLength()>0){
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Node thisNode=nodeList.item(i);
-				JNodeWrapper thisNodeWrapper=new JNodeWrapper(thisNode);
-				thisNodeWrapper.setParent(parent);
-				thisNodeWrapper.setDeep(parent.getDeep()+1);
-				thisNodeWrapper.setIndex(i);
-				parent.getChildren().add(thisNodeWrapper);
-				initNodeWrapper(thisNode, thisNodeWrapper);
-			}
-		}
-	}
-	
 	@Override
 	public List<JWebModel> analyse(Node node,
 			Class<? extends JWebModel> webModelClass) {
-		nodeWrapper=new JNodeWrapper(node);
-		initNodeWrapper(node, nodeWrapper);
-		
+		nodeWrapper=new JNodeWrapper(node,true);
 		List<JWebModel> webModels=new ArrayList<JWebModel>();
 		MapstoryModel mapstoryModel=new MapstoryModel();
 		JNodeWrapperWalker nodeWrapperWalker=new JNodeWrapperWalker(nodeWrapper);

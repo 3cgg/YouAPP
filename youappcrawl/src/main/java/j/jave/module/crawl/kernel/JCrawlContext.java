@@ -1,11 +1,11 @@
 package j.jave.module.crawl.kernel;
 
-import j.jave.module.crawl.node.JClassNameGetter;
-import j.jave.module.crawl.node.JIDGetter;
-import j.jave.module.crawl.node.JMixedGetter;
-import j.jave.module.crawl.node.JNameGetter;
-import j.jave.module.crawl.node.JTagNameGetter;
-import j.jave.module.crawl.node.JXPathGetter;
+import j.jave.framework.commons.xml.node.JClassNameGetter;
+import j.jave.framework.commons.xml.node.JIDGetter;
+import j.jave.framework.commons.xml.node.JMixedGetter;
+import j.jave.framework.commons.xml.node.JNameGetter;
+import j.jave.framework.commons.xml.node.JTagNameGetter;
+import j.jave.framework.commons.xml.node.JXPathGetter;
 
 import java.util.HashMap;
 

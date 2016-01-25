@@ -36,7 +36,7 @@ JXPathGetter, JClassNameGetter, JMixedGetter {
 	private String getProtocol(String protocol,String... keyValues){
 		for (int i = 0; i < keyValues.length; i++) {
 			String keyValue=keyValues[i];
-			if(keyValue.startsWith(protocol)){
+			if(keyValue!=null&&keyValue.startsWith(protocol)){
 				keyValues[i]=null;
 				return keyValue;
 			}

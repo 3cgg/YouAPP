@@ -1,5 +1,6 @@
 package j.jave.module.crawl.kernel;
 
+import j.jave.framework.commons.xml.util.JNodeWrapper;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebNodeFieldKey;
 import j.jave.module.crawl.def.JWebNodeModel;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 class JInternalBasicAnalyse implements JNodeAnalyse {
 
@@ -29,27 +29,10 @@ class JInternalBasicAnalyse implements JNodeAnalyse {
 		
 	}
 	
-	private void initNodeWrapper(Node node,JNodeWrapper parent){
-		NodeList nodeList= node.getChildNodes();
-		if(nodeList.getLength()>0){
-			for (int i = 0; i < nodeList.getLength(); i++) {
-				Node thisNode=nodeList.item(i);
-				JNodeWrapper thisNodeWrapper=new JNodeWrapper(thisNode);
-				thisNodeWrapper.setParent(parent);
-				thisNodeWrapper.setDeep(parent.getDeep()+1);
-				thisNodeWrapper.setIndex(i);
-				parent.getChildren().add(thisNodeWrapper);
-				initNodeWrapper(thisNode, thisNodeWrapper);
-			}
-		}
-	}
-	
 	private void init(Node node,Class<? extends JWebModel> webModelClass){
 		this.node=node;
 		this.webModelClass=webModelClass;
-		nodeWrapper=new JNodeWrapper(node);
-		initNodeWrapper(node, nodeWrapper);
-		
+		nodeWrapper=new JNodeWrapper(node,true);
 		Class<?> thisClass= webModelClass;
 		try{
 			webModelClassInfo=new JWebModelClassInfo();

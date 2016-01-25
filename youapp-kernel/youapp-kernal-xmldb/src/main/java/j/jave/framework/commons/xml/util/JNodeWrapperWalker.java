@@ -1,20 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package j.jave.module.crawl.kernel;
+package j.jave.framework.commons.xml.util;
 
 import java.util.List;
 import java.util.Stack;
@@ -23,7 +7,9 @@ public class JNodeWrapperWalker {
 
   // the root node the the stack holding the nodes
   private JNodeWrapper currentNode;
+  
   private List<JNodeWrapper> currentChildren;
+  
   private Stack<JNodeWrapper> nodes;
 
   /**
@@ -114,13 +100,13 @@ public class JNodeWrapperWalker {
   }
   
   	/**
-  	 * the parent must be parent of the current node.
-  	 * @param parent
+  	 * SKIP ALL CHILDREN of the node
+  	 * @param parent the parent must be parent of the current node.
   	 */
-  	public void skipChildrenWithParent(JNodeWrapper parent) {
+  	public void skipAllChildrenAndSelf(JNodeWrapper parent) {
 
   		if(!isMatchParent(currentNode, parent)){
-  			throw new RuntimeException("the arguemnt must be parent of the current node.");
+  			throw new IllegalArgumentException("the arguemnt must be parent of the current node.");
   		}
   		JNodeWrapper thisNodeWrapper=null;
   		while(nodes.size()>0&&(thisNodeWrapper=nodes.peek())!=null){

@@ -1,6 +1,6 @@
 <html>
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"></meta>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title> Java中的JSON - JSON中国 | JSON中文网 </title>
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -46,7 +46,7 @@
 		<div class="line">
 			Java很容易支持JSON数据交换格式. 免费的源代码可以在<a href="https://github.com/douglascrockford/JSON-java" target="_blank">这里</a>下载. <a href="json-license.htm">我们不提供支持和担保</a>. 请自行承担风险. 请不要拿他做坏事. 欢迎提供反馈信息, 谢谢.
 		</div>
-		<div class="line   s">
+		<div class="line">
 			<table align="center">
 				<tr>
 					<td class="skyblue" width="85">源代码</td>
@@ -155,7 +155,8 @@
 			<li><a href="/about.htm">关于我们</a></li>
 			<li class="last"><a href="/links.htm">友情链接</a></li>
 		</ul>
-		<div id="copyright-text">2013 JSON中国(JSON.org.cn) 版权所有
+		<div id="copyright-text">
+			&copy;2013 JSON中国(JSON.org.cn) 版权所有
 		</div>
 	</div>
 </div>

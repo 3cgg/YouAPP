@@ -5,8 +5,8 @@ import j.jave.framework.commons.model.support.detect.JColumnInfo;
 import j.jave.framework.commons.model.support.detect.JModelDetect;
 import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.commons.xml.dom4j.util.JXMLUtils;
 import j.jave.framework.commons.xmldb.JXMLData;
-import j.jave.framework.commons.xmldb.utils.JXMLUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

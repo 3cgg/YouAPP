@@ -1,9 +1,15 @@
-package j.jave.framework.commons.xmldb.ele;
+package j.jave.framework.commons.xml.dom4j;
 
 import j.jave.framework.commons.utils.JAssert;
-import j.jave.framework.commons.xmldb.utils.JAttributeKVFilter;
-import j.jave.framework.commons.xmldb.utils.JElementHandler;
-import j.jave.framework.commons.xmldb.utils.JXMLUtils;
+import j.jave.framework.commons.xml.dom4j.util.JAttributeKVFilter;
+import j.jave.framework.commons.xml.dom4j.util.JElementHandler;
+import j.jave.framework.commons.xml.dom4j.util.JXMLUtils;
+import j.jave.framework.commons.xml.node.JClassNameGetter;
+import j.jave.framework.commons.xml.node.JIDGetter;
+import j.jave.framework.commons.xml.node.JMixedGetter;
+import j.jave.framework.commons.xml.node.JNameGetter;
+import j.jave.framework.commons.xml.node.JTagNameGetter;
+import j.jave.framework.commons.xml.node.JXPathGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,22 +18,22 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-public class JEleObject implements JEleGet{
+public class JDom4jNodeGetter  implements JIDGetter, JNameGetter, JTagNameGetter,
+JXPathGetter, JClassNameGetter, JMixedGetter{
 	
 	private Document document;
 	
 	private Element element;
 	
-	public JEleObject(Document document) {
+	public JDom4jNodeGetter(Document document) {
 		JAssert.notNull("document");
 		this.document=document;
 		
 		// extract root element
 		element=document.getRootElement();
-		
 	}
 	
-	public JEleObject(Element element) {
+	public JDom4jNodeGetter(Element element) {
 		JAssert.notNull("element");
 		this.element=element;
 		
@@ -38,7 +44,7 @@ public class JEleObject implements JEleGet{
 		
 	}
 	
-	public JEleObject(Document includeDocument,Element element) {
+	public JDom4jNodeGetter(Document includeDocument,Element element) {
 		
 		if(element!=null&&includeDocument!=null){
 			JAssert.state(element.getDocument()!=includeDocument, "element nust be relationship with document.");
@@ -59,13 +65,11 @@ public class JEleObject implements JEleGet{
 		}
 	}
 	
-	@Override
 	public Element getEleByUppercaseID(String ID) {
 		return document.elementByID(ID); 
 	}
 	
-	@Override
-	public Element getEleById(final String id) {
+	private Element getEleById(final String id) {
 		
 		//document.elementByID(id);  UPPERCASE ID must exists as attribute in any element.
 		
@@ -85,8 +89,7 @@ public class JEleObject implements JEleGet{
 		return elements.isEmpty()?null:elements.get(0);
 	}
 
-	@Override
-	public List<Element> getElesByName(final String name) {
+	private List<Element> getElesByName(final String name) {
 		final List<Element> elements=new ArrayList<Element>();
 		
 		JXMLUtils.each(element, new JElementHandler() {
@@ -103,8 +106,7 @@ public class JEleObject implements JEleGet{
 		return elements;
 	}
 
-	@Override
-	public List<Element> getElesByTagName(final String tagName) {
+	private List<Element> getElesByTagName(final String tagName) {
 		final List<Element> elements=new ArrayList<Element>();
 		
 		JXMLUtils.each(element, new JElementHandler() {
@@ -120,8 +122,7 @@ public class JEleObject implements JEleGet{
 		return elements;
 	}
 
-	@Override
-	public List<Element> getElesByClassName(String... cssClassNames) {
+	private List<Element> getElesByClassName(String... cssClassNames) {
 
 		final List<Element> elements=new ArrayList<Element>();
 		
@@ -138,6 +139,51 @@ public class JEleObject implements JEleGet{
 				attributeKVFilter
 				);
 		
+		return elements;
+	}
+
+	@Override
+	public List<?> getNodes(String... keyValues) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<?> getNodesByMixed(String mixed) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<?> getNodesByClassName(String... className) {
+		return getElesByClassName(className);
+	}
+
+	@Override
+	public List<?> getNodesByXPath(String xpath) {
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public List<?> getNodesByTagName(String tagName) {
+		return getElesByTagName(tagName);
+	}
+
+	@Override
+	public List<?> getNodesByName(String name) {
+		return getElesByName(name);
+	}
+
+	@Override
+	public List<?> getNodesById(String id) {
+		List<Element> elements=new ArrayList<Element>();
+		Element element=getEleById(id);
+		if(element!=null){
+			elements.add(element);
+		}
 		return elements;
 	}
 

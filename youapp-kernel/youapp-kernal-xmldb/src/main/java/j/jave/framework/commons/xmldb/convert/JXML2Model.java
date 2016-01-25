@@ -8,8 +8,8 @@ import j.jave.framework.commons.reflect.JClassUtils;
 import j.jave.framework.commons.utils.JAssert;
 import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.commons.xml.dom4j.util.JXMLUtils;
 import j.jave.framework.commons.xmldb.JXMLData;
-import j.jave.framework.commons.xmldb.utils.JXMLUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

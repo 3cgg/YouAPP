@@ -1,4 +1,4 @@
-package j.jave.framework.commons.xmldb.convert;
+package j.jave.framework.commons.xml.dom4j.xmldb;
 
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.commons.xmldb.JXMLData;

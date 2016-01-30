@@ -1,7 +1,5 @@
 package test.j.jave.framework.commons.xmldb;
 
-import j.jave.framework.commons.proxy.JAtomicResourceProxy;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

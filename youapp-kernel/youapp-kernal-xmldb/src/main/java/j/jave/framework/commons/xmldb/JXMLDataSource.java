@@ -10,8 +10,7 @@ import j.jave.framework.commons.utils.JAssert;
 import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.commons.utils.JURIUtils;
-import j.jave.framework.commons.xmldb.convert.JModel2XML;
-import j.jave.framework.commons.xmldb.convert.JXML2Model;
+import j.jave.framework.commons.xml.dom4j.xmldb.JDom4jDefaultModelXMLService;
 import j.jave.framework.commons.xmldb.exception.JXMLException;
 
 import java.io.File;
@@ -47,9 +46,7 @@ public class JXMLDataSource {
 	
 	private static Map<String, String> classNameXmlNames=new HashMap<String, String>();
 	
-	private static JXML2Model xml2Model=JXML2Model.get();
-	
-	private static JModel2XML model2xml=JModel2XML.get();
+	private static JModelXMLService modelXMLService=new JDom4jDefaultModelXMLService();
 	
 	/**
 	 * scan all {@link #eventQueue} to pop a highest event to execute.
@@ -95,7 +92,7 @@ public class JXMLDataSource {
 						throws Exception {
 					
 					if(value.isXmlDataChanged()){
-						model2xml.convert(value, new File(new URI(JURIUtils.append(uri, value.getXmlName()+".xml"))));
+						modelXMLService.write(value, new File(new URI(JURIUtils.append(uri, value.getXmlName()+".xml"))));
 						value.setXmlDataChanged(false);
 					}
 					
@@ -133,7 +130,7 @@ public class JXMLDataSource {
 					JFile xmlFile=new JFile(files[i]);
 					JXMLData xmlData=null;
 					try{
-						xmlData= xml2Model.convert(xmlFile.getFile());
+						xmlData= modelXMLService.read(xmlFile.getFile());
 					}catch(Exception e){
 						LOGGER.info("error occurs in the file : "+xmlFile.getFilename());
 						throw e;

@@ -1,4 +1,4 @@
-package j.jave.framework.commons.xmldb.convert;
+package j.jave.framework.commons.xml.dom4j.xmldb;
 
 import j.jave.framework.commons.model.JBaseModel;
 import j.jave.framework.commons.model.support.JSQLJavaTypeHelper;
@@ -9,34 +9,88 @@ import j.jave.framework.commons.utils.JAssert;
 import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JStringUtils;
 import j.jave.framework.commons.xml.dom4j.util.JXMLUtils;
+import j.jave.framework.commons.xmldb.JModelXMLService;
 import j.jave.framework.commons.xmldb.JXMLData;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-public class JXML2Model {
+public class JDom4jDefaultModelXMLService implements JModelXMLService {
 
-	private static JXML2Model xml2Model=new JXML2Model();
-	
-	private JXML2Model(){}
-	
-	public static JXML2Model get(){
-		return xml2Model;
+	JElementHelper elementHelper = JElementHelper.get();
+
+	private JModelDetect modelDetect = JModelDetect.get();
+
+	@SuppressWarnings("unchecked")
+	public Element modelToXML(final JBaseModel model) throws Exception {
+		final Element modelElement = elementHelper.newModelElement(null);
+		elementHelper.addModelElementId(modelElement, model.getId());
+
+		List<JColumnInfo> columnInfos = modelDetect.getColumnInfos(model);
+
+		JCollectionUtils.each(columnInfos, new JCollectionUtils.CollectionCallback<JColumnInfo>() {
+			@Override
+			public void process( JColumnInfo value)throws Exception {
+				if(!"ID".equalsIgnoreCase(value.getName())){
+					Element fieldElement=elementHelper.newFieldElement(modelElement);
+					elementHelper.addFieldName(fieldElement, value.getName());
+					elementHelper.addFieldValue(fieldElement, JStringUtils.toString(value.getField().get(model)));
+				}
+				}
+			});
+		
+		return modelElement;
 	}
 	
-	JElementHelper elementHelper=JElementHelper.get();
-	
-	private JModelDetect modelDetect = JModelDetect.get();
+	@Override
+	public void write(JXMLData xmlData, OutputStream outputStream)
+			throws Exception {
+		Document document=DocumentHelper.createDocument();
+		Element rootElement=elementHelper.createRoot(xmlData);
+		document.add(rootElement);
+		Iterator<JBaseModel> iterator=  xmlData.values().iterator();
+		while(iterator.hasNext()){
+			JBaseModel baseModel=iterator.next();
+			Element modelElement=modelToXML(baseModel);
+			rootElement.add(modelElement);
+		}
+		try{
+			JXMLUtils.write(document, outputStream);
+		}catch(Exception e){
+			throw e;
+		}finally{
+		
+		}
+	}
+
+	@Override
+	public void write(JXMLData xmlData, File file) throws Exception {
+		FileOutputStream fileOutputStream=new FileOutputStream(file);
+		try{
+			write(xmlData, fileOutputStream);
+		}catch(Exception e){
+			throw e;
+		}finally{
+			if(fileOutputStream!=null){
+				fileOutputStream.close();
+			}
+		}
+	}
+
 	
 	@SuppressWarnings("unchecked")
-	JBaseModel convert(final Element modelElement,Class<? extends JBaseModel> clazz) throws Exception{
+	private JBaseModel readFromElement(final Element modelElement,Class<? extends JBaseModel> clazz) throws Exception{
 		if(modelElement==null) return null;
 		
 		final Map<String, String> columnValues=new HashMap<String, String>();
@@ -74,7 +128,7 @@ public class JXML2Model {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JXMLData convert(Document document) throws Exception{
+	private JXMLData readFromDocument(Document document) throws Exception{
 		if(document==null) return null;
 		
 		String type= elementHelper.getDocumentType(document);
@@ -93,16 +147,31 @@ public class JXML2Model {
 		Iterator<Element> modelElements = document.getRootElement().elementIterator();
 		while(modelElements.hasNext()){
 			Class<? extends JBaseModel> clazz=JClassUtils.load(type, Thread.currentThread().getContextClassLoader());
-			JBaseModel baseModel=convert(modelElements.next(), clazz);
+			JBaseModel baseModel=readFromElement(modelElements.next(), clazz);
 			data.put(baseModel.getId(), baseModel);
 		}
 		return data;
 		
 	}
 	
-	
-	public JXMLData convert(File file) throws Exception{
-		return convert(JXMLUtils.loadDocument(new FileInputStream(file)));
+	@Override
+	public JXMLData read(InputStream inputStream) throws Exception {
+		return readFromDocument(JXMLUtils.loadDocument(inputStream));
 	}
-	
+
+	@Override
+	public JXMLData read(File file) throws Exception {
+		
+		FileInputStream fileInputStream=new FileInputStream(file);
+		try{
+			return readFromDocument(JXMLUtils.loadDocument(fileInputStream));
+		}catch(Exception e){
+			throw e;
+		}finally{
+			if(fileInputStream!=null){
+				fileInputStream.close();
+			}
+		}
+	}
+
 }

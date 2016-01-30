@@ -47,8 +47,8 @@ public class CrawlMain {
         WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
         //htmlunit 对css和javascript的支持不好，所以请关闭之
         webClient.getOptions().setJavaScriptEnabled(true);
-        ProxyConfig proxyConfig=new ProxyConfig("localhost", 3213);
-        webClient.getOptions().setProxyConfig(proxyConfig);
+//        ProxyConfig proxyConfig=new ProxyConfig("localhost", 3213);
+//        webClient.getOptions().setProxyConfig(proxyConfig);
         webClient.getOptions().setCssEnabled(false);
         //获取页面
         HtmlPage page = webClient.getPage("http://www.nuomi.com/deal/c86ifosj.html?s=2c8c35060fcec53ac0a7675383e28207");

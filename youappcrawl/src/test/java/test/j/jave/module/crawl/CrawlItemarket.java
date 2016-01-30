@@ -46,8 +46,8 @@ public class CrawlItemarket {
         //htmlunit 对css和javascript的支持不好，所以请关闭之
         webClient.getOptions().setJavaScriptEnabled(true);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
-        ProxyConfig proxyConfig=new ProxyConfig("localhost", 8888);
-        webClient.getOptions().setProxyConfig(proxyConfig);
+//        ProxyConfig proxyConfig=new ProxyConfig("localhost", 8888);
+//        webClient.getOptions().setProxyConfig(proxyConfig);
         webClient.getOptions().setCssEnabled(false);
         //获取页面
         HtmlPage page = webClient.getPage("http://www.itemarket.com/market.asp");

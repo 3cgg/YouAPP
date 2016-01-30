@@ -1,4 +1,4 @@
-package j.jave.framework.commons.xmldb.utils;
+package j.jave.framework.commons.xml.dom4j.util;
 
 import j.jave.framework.commons.utils.JUtilException;
 

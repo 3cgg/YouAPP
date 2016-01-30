@@ -1,15 +1,13 @@
 package test.j.jave.module.crawl;
 
+import j.jave.framework.commons.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.htmlunit.HtmlUnitNodeGetter;
 import j.jave.module.crawl.kernel.JCrawlContext;
 import j.jave.module.crawl.kernel.JCrawlExecution;
 import j.jave.module.crawl.kernel.JPropertiesKeys;
 import j.jave.module.crawl.kernel.JScopeWebDataGetter;
-import j.jave.module.crawl.kernel.JWebDataGetter;
-import j.jave.module.crawl.kernel.JWebDataGetterUtil;
 import j.jave.module.crawl.kernel.JXPathWebDataGetter;
-import j.jave.module.crawl.node.JNodeGetter;
 import j.jave.module.crawl.parser.JElementWithSingleTextParser;
 import j.jave.module.crawl.parser.JNodeValueParser;
 import j.jave.module.crawl.parser.JTextNodeParser;

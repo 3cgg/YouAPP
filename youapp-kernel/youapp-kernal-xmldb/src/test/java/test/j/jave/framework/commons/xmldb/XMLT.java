@@ -1,26 +1,25 @@
 package test.j.jave.framework.commons.xmldb;
 
-import j.jave.framework.commons.xmldb.ele.JEleObject;
-import j.jave.framework.commons.xmldb.utils.JXMLUtils;
+import j.jave.framework.commons.xml.dom4j.JDom4jNodeGetter;
+import j.jave.framework.commons.xml.dom4j.util.JXMLUtils;
 
-import java.io.FileInputStream;
 import java.util.List;
-
-import org.dom4j.Element;
 
 public class XMLT {
 
 	public static void main(String[] args) throws Exception {
 		
-		JEleObject eleOperator=new JEleObject(JXMLUtils.loadDocument(new FileInputStream("D:\\java_\\JFramework1.1\\trunk\\jframework-commons-xmldb\\src\\test\\resources\\html.xml")));
+		JDom4jNodeGetter dom4jNodeGetter=new JDom4jNodeGetter(JXMLUtils.loadDocument(
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("html.xml")
+				));
 		
-		Element element= eleOperator.getEleById("content-wrapper");
+		List<?> element= dom4jNodeGetter.getNodesById("content-wrapper");
 		
-		List<Element> elements1= eleOperator.getElesByName("description");
+		List<?> elements1= dom4jNodeGetter.getNodesByName("description");
 		
-		List<Element> elements2= eleOperator.getElesByTagName("a");
+		List<?> elements2= dom4jNodeGetter.getNodesByTagName("a");
 		
-		List<Element> elements3= eleOperator.getElesByClassName("line");
+		List<?> elements3= dom4jNodeGetter.getNodesByClassName("line");
 		
 		
 		

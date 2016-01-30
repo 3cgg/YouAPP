@@ -37,7 +37,7 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>jave</artifactId>
+			<artifactId>xmldb</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 

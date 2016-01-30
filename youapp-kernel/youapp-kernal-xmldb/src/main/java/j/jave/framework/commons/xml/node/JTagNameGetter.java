@@ -1,4 +1,4 @@
-package j.jave.module.crawl.node;
+package j.jave.framework.commons.xml.node;
 
 import java.util.List;
 

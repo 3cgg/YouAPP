@@ -1,5 +1,7 @@
 package j.jave.module.crawl.kernel;
 
+import j.jave.framework.commons.xml.util.JNodeWrapper;
+import j.jave.framework.commons.xml.util.JNodeWrapperWalker;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebModelDefProperties;
 
@@ -114,7 +116,7 @@ public class JTableAnalyse extends JInternalBasicAnalyse{
 					JWebModelMethodInfo webModelMethodInfo=null;
 					if(containsKey(text)){
 						webModelMethodInfo=getByKey(text);
-						methodInfoIndexs.put(thisNodeWrapper.getIndex(), webModelMethodInfo);
+						methodInfoIndexs.put(thisNodeWrapper.getOffset(), webModelMethodInfo);
 					}
 				}
 			}
@@ -141,7 +143,7 @@ public class JTableAnalyse extends JInternalBasicAnalyse{
 					//filin columns
 					webMethodInfoMap=  getMethodMappings(thisNodeWrapper.getParent());
 					//skip all children under tr or 
-					nodeWrapperWalker.skipChildrenWithParent(thisNodeWrapper.getParent());
+					nodeWrapperWalker.skipAllChildrenAndSelf(thisNodeWrapper.getParent());
 					break;
 				}
 			}
@@ -166,8 +168,8 @@ public class JTableAnalyse extends JInternalBasicAnalyse{
 					||TD.equalsIgnoreCase(nodeName)
 					){
 				String text=node.getTextContent().trim();
-				if(webMethodInfoMap.containsKey(thisNodeWrapper.getIndex())){
-					JWebModelMethodInfo webModelMethodInfo= webMethodInfoMap.get(thisNodeWrapper.getIndex());
+				if(webMethodInfoMap.containsKey(thisNodeWrapper.getOffset())){
+					JWebModelMethodInfo webModelMethodInfo= webMethodInfoMap.get(thisNodeWrapper.getOffset());
 					webModelMethodInfo.getSetMethod().invoke(webModel, text);
 				}
 				//skip children

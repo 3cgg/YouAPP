@@ -1,4 +1,4 @@
-package j.jave.module.crawl.kernel;
+package j.jave.framework.commons.xml.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,19 +6,33 @@ import java.util.List;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * node wrapper
+ * @author JIAZJ
+ *
+ */
 public class JNodeWrapper {
 	
 	private List<JNodeWrapper> children=new ArrayList<JNodeWrapper>();
 	
 	private JNodeWrapper parent;
 	
+	/**
+	 * the deep index in the tree structure , start from zero
+	 */
 	private int deep;
 	
 	private Node node;
 	
+	/**
+	 * whether the node is scanned or not
+	 */
 	private boolean scanned;
 	
-	private int index;
+	/**
+	 * the offset under the parent , start from zero 
+	 */
+	private int offset;
 	
 	public JNodeWrapper(Node node){
 		this.node=node;
@@ -39,7 +53,7 @@ public class JNodeWrapper {
 				JNodeWrapper thisNodeWrapper=new JNodeWrapper(thisNode);
 				thisNodeWrapper.setParent(parent);
 				thisNodeWrapper.setDeep(parent.getDeep()+1);
-				thisNodeWrapper.setIndex(i);
+				thisNodeWrapper.setOffset(i);
 				parent.getChildren().add(thisNodeWrapper);
 				initNodeWrapper(thisNode, thisNodeWrapper);
 			}
@@ -86,14 +100,12 @@ public class JNodeWrapper {
 		this.scanned = scanned;
 	}
 
-	public int getIndex() {
-		return index;
+	public int getOffset() {
+		return offset;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
-	
-	
 	
 }

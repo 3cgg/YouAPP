@@ -18,6 +18,9 @@
 		<jta.version>1.1</jta.version>
 		<jetty.version>9.3.0.M1</jetty.version>
 		<cxf.version>3.1.0</cxf.version>
+		<kernal.version>3.0.0</kernal.version>
+		<platform.version>3.0.0</platform.version>
+		<util.version>3.0.0</util.version>
 	</properties>
 
 	<groupId>youapp</groupId>

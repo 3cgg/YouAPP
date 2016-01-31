@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jframework-me">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <dependent-module archiveName="security-server-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-security-server/youapp-util-security-server">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="components-support-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-components-support/youapp-components-support">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/jframework-inner-support-ws-war/target/classes"/>
+        <property name="context-root" value="wsservice"/>
+    </wb-module>
+</project-modules>

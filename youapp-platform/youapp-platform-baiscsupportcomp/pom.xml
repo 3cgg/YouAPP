@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>youapp</groupId>
+		  <artifactId>youapp-platform</artifactId>
+		  <version>0.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>youapp.youapp-platform</groupId>
+	<artifactId>youapp-platform-baiscsupportcomp</artifactId>
+	<version>${platform.version}</version>
+	<packaging>jar</packaging>
+
+	<name>youapp.youapp-platform.components-support</name>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-jave</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-ehcache</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-memcached</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-filedistribute</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-sqlautoloader</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-security</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>${jta.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
+		
+
+	</dependencies>
+
+
+</project>

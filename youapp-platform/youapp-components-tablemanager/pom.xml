@@ -5,23 +5,23 @@
 	<parent>
 		<groupId>youapp</groupId>
 		  <artifactId>youapp-platform</artifactId>
-		  <version>2.0.0</version>
+		  <version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>j.jave.framework</groupId>
-	<artifactId>jframework-components-tablemanager</artifactId>
-	<version>${j.version}</version>
+	<groupId>youapp.youapp-platform</groupId>
+	<artifactId>components-tablemanager</artifactId>
+	<version>${platform.version}</version>
 	<packaging>jar</packaging>
 
-	<name>jframework-components-tablemanager</name>
+	<name>youapp.youapp-platform.components-tablemanager</name>
 
 	<dependencies>
 
 		<dependency>
-			<groupId>j.jave.framework</groupId>
-			<artifactId>jframework-components-core</artifactId>
-			<version>${j.version}</version>
+			<groupId>youapp.youapp-platform</groupId>
+			<artifactId>components-core</artifactId>
+			<version>${platform.version}</version>
 		</dependency>
 		
 	</dependencies>

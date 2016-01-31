@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>youapp</groupId>
+		<artifactId>youapp-kernal</artifactId>
+		<version>0.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<groupId>youapp.youapp-kernal</groupId>
+	<artifactId>youapp-kernal-http</artifactId>
+	<version>${kernal.version}</version>
+	<packaging>jar</packaging>
+
+	<name>youapp.youapp-kernal.http</name>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>youapp.youapp-kernal</groupId>
+			<artifactId>youapp-kernal-jave</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpclient.version}</version>
+		</dependency>
+
+
+	</dependencies>
+</project>

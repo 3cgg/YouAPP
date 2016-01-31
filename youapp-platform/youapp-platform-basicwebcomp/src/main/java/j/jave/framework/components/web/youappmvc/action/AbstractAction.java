@@ -3,8 +3,8 @@ package j.jave.framework.components.web.youappmvc.action;
 import j.jave.framework.commons.exception.JOperationNotSupportedException;
 import j.jave.framework.commons.model.JPage;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.components.login.subhub.SessionUser;
 import j.jave.framework.components.web.youappmvc.model.JHttpContext;
-import j.jave.framework.components.web.youappmvc.subhub.sessionuser.SessionUser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

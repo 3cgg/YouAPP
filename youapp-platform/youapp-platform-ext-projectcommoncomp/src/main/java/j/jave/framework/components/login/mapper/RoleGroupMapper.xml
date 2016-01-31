@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="j.jave.framework.components.login.mapper.RoleGroupMapper">
+
+
+<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
+<result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
+<result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
+<result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
+<result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
+</resultMap>
+
+<resultMap id="roleGroup"  type="j.jave.framework.components.login.model.RoleGroup"  extends="jBaseModel" >
+<result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
+<result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
+<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+
+<result column="ROLECODE" property="role.roleCode"  jdbcType="VARCHAR" />
+<result column="ROLENAME" property="role.roleName"  jdbcType="VARCHAR" />
+
+<result column="GROUPCODE" property="group.groupCode"  jdbcType="VARCHAR" />
+<result column="GROUPNAME" property="group.groupName"  jdbcType="VARCHAR" />
+
+</resultMap>
+
+
+<insert  id="save" parameterType="j.jave.framework.components.login.model.RoleGroup">
+insert into ROLES_GROUPS
+(
+ROLEID,GROUPID,DESCRIPTION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)values(
+#{roleId},#{groupId},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
+)
+</insert>
+
+
+<update id="update">
+update ROLES_GROUPS
+<set>  
+UPDATEID =#{updateId},UPDATETIME =#{updateTime}
+<if test="roleId!=null">,ROLEID =#{roleId}</if>
+<if test="groupId!=null">,GROUPID =#{groupId}</if>
+<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="version!=null">,VERSION =#{version}</if>
+</set>  
+where ID=#{id}
+</update>
+
+
+<delete id="markDeleted" >
+update ROLES_GROUPS set DELETED='Y' where ID=#{id}
+</delete>
+
+
+<select id="get"   resultMap="roleGroup"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+
+<sql id="selectfor">
+select a.* ,
+b.ROLECODE ROLECODE,
+b.ROLENAME ROLENAME,
+c.GROUPCODE GROUPCODE,
+c.GROUPNAME GROUPNAME
+from ROLES_GROUPS a 
+left join ROLES b on a.ROLEID=b.ID
+left join GROUPS c on a.GROUPID=c.ID
+</sql>
+<sql id="associationFilter">
+    (b.DELETED='N' and c.DELETED='N') 
+</sql>
+
+<select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.framework.commons.model.JPagination">
+    select * from ROLES_GROUPS 
+    <if test="page.sortColumn!=null ">
+    	order by ${page.sortColumn} ${page.sortType}    
+    </if>
+</select>
+
+
+<select id="countOnRoleIdAndGroupId" resultType="int">
+    select count(1)  
+    from ROLES_GROUPS a 
+	left join ROLES b on a.ROLEID=b.ID
+	left join GROUPS c on a.GROUPID=c.ID
+    where a.DELETED='N' 
+    and <include refid="associationFilter"></include>
+    and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+</select>
+
+<select id="getRoleGroupOnRoleIdAndGroupId"  resultMap="roleGroup" >
+    <include refid="selectfor"/>  
+    where a.DELETED='N'  
+    and <include refid="associationFilter"></include>
+    and  a.ROLEID=#{roleId} and a.GROUPID=#{groupId}
+</select>
+
+<select id="getRoleGroupsOnRoleIdOrGroupId"  resultMap="roleGroup" >
+     <include refid="selectfor"/>    
+     where a.DELETED='N'  
+     and <include refid="associationFilter"></include>
+    <if test="roleId!=null  and roleId!=''">
+    	and  a.ROLEID=#{roleId} 
+    </if>
+    
+    <if test="groupId!=null  and groupId!=''">
+    	and a.GROUPID=#{groupId}
+    </if>
+    
+</select>
+
+
+
+</mapper>

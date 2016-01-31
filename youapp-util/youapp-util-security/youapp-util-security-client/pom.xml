@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>youapp.youapp-util.security</groupId>
-	<artifactId>security-client</artifactId>
+	<artifactId>youapp-util-securityclient</artifactId>
 	<version>${util.security.version}</version>
 	<packaging>jar</packaging>
 
@@ -21,7 +21,7 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>http</artifactId>
+			<artifactId>youapp-kernal-http</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		

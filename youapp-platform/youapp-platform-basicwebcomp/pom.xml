@@ -17,11 +17,17 @@
 	<name>youapp.youapp-platform.components-web</name>
 
 	<dependencies>
-
+		
 		<dependency>
 			<groupId>youapp.youapp-platform</groupId>
 			<artifactId>youapp-platform-multiversioncompsupportcomp</artifactId>
 			<version>${platform.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.youapp-util.security</groupId>
+			<artifactId>youapp-util-securityclient</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 
 		<dependency>

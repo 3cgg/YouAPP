@@ -2,10 +2,10 @@ package j.jave.framework.components.web.youappmvc.model;
 
 import j.jave.framework.commons.utils.JCollectionUtils;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.components.login.subhub.SessionUser;
 import j.jave.framework.components.web.util.JCookieUtils;
 import j.jave.framework.components.web.youappmvc.action.ActionExecutor;
 import j.jave.framework.components.web.youappmvc.multi.platform.support.JLinkedRequestSupport;
-import j.jave.framework.components.web.youappmvc.subhub.sessionuser.SessionUser;
 import j.jave.framework.components.web.youappmvc.utils.JHttpUtils;
 
 import java.io.Serializable;

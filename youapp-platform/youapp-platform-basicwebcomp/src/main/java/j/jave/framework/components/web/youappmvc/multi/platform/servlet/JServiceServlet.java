@@ -8,6 +8,8 @@ import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.io.JFile;
 import j.jave.framework.commons.memcached.eventdriven.JMemcachedDisGetEvent;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.components.login.subhub.SessionUser;
+import j.jave.framework.components.login.subhub.SessionUserGetEvent;
 import j.jave.framework.components.web.support.JServlet;
 import j.jave.framework.components.web.util.JCookieUtils;
 import j.jave.framework.components.web.youappmvc.ViewConstants;
@@ -15,8 +17,6 @@ import j.jave.framework.components.web.youappmvc.action.ActionExecutor;
 import j.jave.framework.components.web.youappmvc.jsp.JJSPServiceServlet;
 import j.jave.framework.components.web.youappmvc.mobile.JMobileServiceServlet;
 import j.jave.framework.components.web.youappmvc.model.JHttpContext;
-import j.jave.framework.components.web.youappmvc.subhub.sessionuser.SessionUser;
-import j.jave.framework.components.web.youappmvc.subhub.sessionuser.SessionUserGetEvent;
 import j.jave.framework.components.web.youappmvc.utils.JHttpUtils;
 
 import java.io.IOException;

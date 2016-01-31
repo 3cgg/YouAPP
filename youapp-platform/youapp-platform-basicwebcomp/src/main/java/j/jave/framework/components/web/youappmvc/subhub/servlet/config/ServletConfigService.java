@@ -4,9 +4,9 @@
 package j.jave.framework.components.web.youappmvc.subhub.servlet.config;
 
 import j.jave.framework.commons.service.JService;
+import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.web.youappmvc.jsp.JJSPLoginFilter;
 import j.jave.framework.components.web.youappmvc.multi.platform.filter.JValidPathFilter;
-import j.jave.framework.components.web.youappmvc.subhub.loginaccess.LoginAccessService;
 
 /**
  * the interface to make the rule of what common configuration to configure,

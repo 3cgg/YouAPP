@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="j.jave.framework.components.resource.mapper.ResourceMapper">
+
+
+<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
+<result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
+<result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
+<result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
+<result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
+</resultMap>
+
+<resultMap id="resource"  type="j.jave.framework.components.resource.model.Resource"  extends="jBaseModel" >
+<result column="URL" property="url"  jdbcType="VARCHAR" />
+<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_RESOURCEID" property="resourceExtend.resourceId"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_URL" property="resourceExtend.url"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_ACTION" property="resourceExtend.action"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_CACHED" property="resourceExtend.cached"  jdbcType="VARCHAR" />
+<result column="RESOURCES_EXTEND_DESCRIPTION" property="resourceExtend.description"  jdbcType="VARCHAR" />
+</resultMap>
+
+
+<insert  id="save" parameterType="j.jave.framework.components.resource.model.Resource">
+insert into RESOURCES
+(
+URL,DESCRIPTION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)values(
+#{url},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
+)
+</insert>
+
+
+<update id="update">
+update RESOURCES
+<set>  
+UPDATEID =#{updateId},UPDATETIME =#{updateTime}
+<if test="url!=null">,URL =#{url}</if>
+<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="version!=null">,VERSION =#{version}</if>
+</set>  
+where ID=#{id}
+</update>
+
+
+<delete id="markDeleted" >
+update RESOURCES set DELETED='Y' where ID=#{id}
+</delete>
+
+
+<select id="get"   resultMap="resource"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+
+<sql id="selectfor">
+select a.* 
+, b.RESOURCEID RESOURCES_EXTEND_RESOURCEID  
+,b.URL RESOURCES_EXTEND_URL
+,b.ACTION RESOURCES_EXTEND_ACTION
+,b.DESCRIPTION RESOURCES_EXTEND_DESCRIPTION 
+,b.CACHED RESOURCES_EXTEND_CACHED 
+from RESOURCES a
+left join RESOURCES_EXTEND b on a.ID=b.RESOURCEID
+</sql>
+
+
+<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.framework.commons.model.JPagination">
+select * from RESOURCES  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
+</select>
+
+<select id="getResources"   resultMap="resource"  >
+<include refid="selectfor"></include> 
+where a.DELETED='N' 
+</select>
+
+<select id="getResourceByURL"   resultMap="resource"  >
+<include refid="selectfor"></include> 
+where a.DELETED='N' and a.URL=#{url}
+</select>
+
+</mapper>

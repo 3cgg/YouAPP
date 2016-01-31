@@ -1,11 +1,10 @@
 package j.jave.framework.components.web.youappmvc.multi.platform.filter;
 
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.framework.components.web.cache.response.ResponseCacheModel;
+import j.jave.framework.components.web.cache.response.ResponseEhcacheMemoryCacheService;
 import j.jave.framework.components.web.support.JFilter;
-import j.jave.framework.components.web.youappmvc.multi.platform.support.MemoryResponseWrapper;
-import j.jave.framework.components.web.youappmvc.subhub.resourcecached.MemoryCachedService;
-import j.jave.framework.components.web.youappmvc.subhub.resourcecached.response.ResponseCachedResource;
-import j.jave.framework.components.web.youappmvc.subhub.resourcecached.response.ResponseEhcacheMemoryCacheService;
+import j.jave.framework.components.web.util.MemoryResponseWrapper;
 import j.jave.framework.components.web.youappmvc.utils.JHttpUtils;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MemoryHTMLFilter implements JFilter{
 
-	MemoryCachedService<ResponseCachedResource> requestResourceMemoryCacheService;
+	ResponseEhcacheMemoryCacheService requestResourceMemoryCacheService;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -41,14 +40,14 @@ public class MemoryHTMLFilter implements JFilter{
 		String path=JHttpUtils.getPathInfo(httpServletRequest);
 		//check if cached.
 		if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
-			ResponseCachedResource responseCachedResource=requestResourceMemoryCacheService.get(path);
+			ResponseCacheModel responseCachedResource=requestResourceMemoryCacheService.get(path);
 			if(responseCachedResource==null){
 				MemoryResponseWrapper responseWrapper = new MemoryResponseWrapper((HttpServletResponse)response); 
 				chain.doFilter(request, responseWrapper);
 				byte[] bytes=responseWrapper.getBytes();
 				response.getOutputStream().write(bytes);
 				
-				ResponseCachedResource requestCachedResource=new ResponseCachedResource();
+				ResponseCacheModel requestCachedResource=new ResponseCacheModel();
 				requestCachedResource.setPath(path);
 				requestCachedResource.setBytes(bytes);
 				requestResourceMemoryCacheService.add(requestCachedResource);

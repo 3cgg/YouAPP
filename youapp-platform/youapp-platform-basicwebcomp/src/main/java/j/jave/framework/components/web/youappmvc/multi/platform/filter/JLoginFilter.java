@@ -2,6 +2,7 @@ package j.jave.framework.components.web.youappmvc.multi.platform.filter;
 
 import j.jave.framework.commons.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.framework.commons.utils.JStringUtils;
+import j.jave.framework.components.login.subhub.LoginAccessService;
 import j.jave.framework.components.support.memcached.subhub.MemcachedService;
 import j.jave.framework.components.web.support.JFilter;
 import j.jave.framework.components.web.youappmvc.jsp.JJSPLoginFilter;
@@ -9,7 +10,6 @@ import j.jave.framework.components.web.youappmvc.mobile.JMobileLoginFilter;
 import j.jave.framework.components.web.youappmvc.model.JHttpContext;
 import j.jave.framework.components.web.youappmvc.multi.platform.support.APPFilterConfig;
 import j.jave.framework.components.web.youappmvc.multi.platform.support.APPFilterConfigResolve;
-import j.jave.framework.components.web.youappmvc.subhub.loginaccess.LoginAccessService;
 import j.jave.framework.components.web.youappmvc.subhub.servlet.config.ServletConfigService;
 import j.jave.framework.components.web.youappmvc.utils.JHttpUtils;
 

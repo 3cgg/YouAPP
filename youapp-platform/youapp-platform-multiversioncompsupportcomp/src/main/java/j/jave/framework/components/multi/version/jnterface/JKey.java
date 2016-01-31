@@ -9,6 +9,11 @@ import j.jave.framework.components.multi.version.JComponentVersionSpringApplicat
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Any unique version.
+ * @author J
+ *
+ */
 public abstract class JKey {
 
 	protected int version;

@@ -2,9 +2,9 @@ package test.j.jave.framework.inner.support.rs;
 
 import java.io.File;
 
-import j.jave.framework.commons.io.JFile;
-import j.jave.framework.commons.utils.JFileUtils;
-import j.jave.framework.inner.support.rs.JRSSecurityHelper;
+import j.jave.kernal.jave.io.JFile;
+import j.jave.kernal.jave.utils.JFileUtils;
+import j.jave.securityutil.securityclient.JRSSecurityHelper;
 
 public class A {
 

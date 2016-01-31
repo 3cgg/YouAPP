@@ -1,8 +1,8 @@
 package test.j.jave.framework.commons;
 
-import j.jave.framework.commons.random.JObjectPopulate;
-import j.jave.framework.commons.support.treeview.JTree;
-import j.jave.framework.commons.support.treeview.JTreeStrcture;
+import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.support.treeview.JTree;
+import j.jave.kernal.jave.support.treeview.JTreeStrcture;
 
 import java.util.ArrayList;
 import java.util.Iterator;

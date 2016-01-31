@@ -1,6 +1,6 @@
 package j.jave.module.crawl.node;
 
-import j.jave.framework.commons.xml.node.JNodeGetter;
+import j.jave.kernal.xml.node.JNodeGetter;
 import j.jave.module.crawl.kernel.JCrawlContext;
 
 public class JNodeGetterUtil {

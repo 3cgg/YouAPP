@@ -3,10 +3,10 @@
  */
 package test.j.jave.framework.commons.xmldb;
 
-import j.jave.framework.commons.model.JBaseModel;
-import j.jave.framework.commons.model.support.JColumn;
-import j.jave.framework.commons.model.support.JSQLType;
-import j.jave.framework.commons.model.support.JTable;
+import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.kernal.jave.model.support.JColumn;
+import j.jave.kernal.jave.model.support.JSQLType;
+import j.jave.kernal.jave.model.support.JTable;
 
 /**
  * @author J

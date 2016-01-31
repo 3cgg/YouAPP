@@ -1,12 +1,12 @@
 package test.j.jave.framework.commons.mail;
 
-import j.jave.framework.commons.mail.JCcRecipient;
-import j.jave.framework.commons.mail.JDefaultMailService;
-import j.jave.framework.commons.mail.JMail;
-import j.jave.framework.commons.mail.JMailMessage;
-import j.jave.framework.commons.mail.JSMTPProtocol;
-import j.jave.framework.commons.mail.JToRecipient;
-import j.jave.framework.commons.mail.JUserNamePasswordAuthenticator;
+import j.jave.kernal.mail.JCcRecipient;
+import j.jave.kernal.mail.JDefaultMailService;
+import j.jave.kernal.mail.JMail;
+import j.jave.kernal.mail.JMailMessage;
+import j.jave.kernal.mail.JSMTPProtocol;
+import j.jave.kernal.mail.JToRecipient;
+import j.jave.kernal.mail.JUserNamePasswordAuthenticator;
 
 
 public class A {

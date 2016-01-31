@@ -1,12 +1,12 @@
 package j.jave.module.crawl.htmlunit;
 
-import j.jave.framework.commons.xml.node.JClassNameGetter;
-import j.jave.framework.commons.xml.node.JIDGetter;
-import j.jave.framework.commons.xml.node.JMixedGetter;
-import j.jave.framework.commons.xml.node.JNameGetter;
-import j.jave.framework.commons.xml.node.JTagNameGetter;
-import j.jave.framework.commons.xml.node.JW3CStandardGetter;
-import j.jave.framework.commons.xml.node.JXPathGetter;
+import j.jave.kernal.xml.node.JClassNameGetter;
+import j.jave.kernal.xml.node.JIDGetter;
+import j.jave.kernal.xml.node.JMixedGetter;
+import j.jave.kernal.xml.node.JNameGetter;
+import j.jave.kernal.xml.node.JTagNameGetter;
+import j.jave.kernal.xml.node.JW3CStandardGetter;
+import j.jave.kernal.xml.node.JXPathGetter;
 
 import java.util.ArrayList;
 import java.util.List;

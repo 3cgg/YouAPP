@@ -1,6 +1,6 @@
 package test.j.jave.framework.commons.xmldb;
 
-import j.jave.framework.commons.proxy.JAtomicResourceProxy;
+import j.jave.kernal.jave.proxy.JAtomicResourceProxy;
 
 import java.util.List;
 

@@ -20,5 +20,15 @@
 	<properties>
 		<platform.version>3.0.0</platform.version>
 	</properties>
+	
+	<modules>
+		<module>../youapp-kernal</module>
+		<module>youapp-platform-baiscsupportcomp</module>
+		<module>youapp-platform-ormmybatis</module>
+		<module>youapp-platform-multiversioncompsupportcomp</module>
+		<module>youapp-platform-basicwebcomp</module>
+		<module>../youapp-util/youapp-util-security/youapp-util-security-client</module>
+	</modules>
+
 
 </project>

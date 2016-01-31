@@ -1,0 +1,11 @@
+package j.jave.kernal.jave.extension;
+
+public interface JIFactory {
+
+	/**
+	 * test if the factory is available or not.
+	 * @return
+	 */
+	boolean available();
+	
+}

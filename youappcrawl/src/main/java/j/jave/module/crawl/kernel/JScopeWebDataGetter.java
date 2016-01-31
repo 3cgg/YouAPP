@@ -1,7 +1,7 @@
 package j.jave.module.crawl.kernel;
 
-import j.jave.framework.commons.xml.node.JMixedGetter;
-import j.jave.framework.commons.xml.node.JNodeGetter;
+import j.jave.kernal.xml.node.JMixedGetter;
+import j.jave.kernal.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebNodeModel;
 import j.jave.module.crawl.node.JNodeGetterUtil;

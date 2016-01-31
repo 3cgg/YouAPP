@@ -1,7 +1,7 @@
 package test.j.jave.module.crawl;
 
-import j.jave.framework.commons.json.JJSON;
-import j.jave.framework.commons.xml.node.JNodeGetter;
+import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.fun.itemarket.MapstoryModel;
 import j.jave.module.crawl.htmlunit.HtmlUnitNodeGetter;

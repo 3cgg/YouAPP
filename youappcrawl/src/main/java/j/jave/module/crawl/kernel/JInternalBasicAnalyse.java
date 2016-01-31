@@ -1,6 +1,6 @@
 package j.jave.module.crawl.kernel;
 
-import j.jave.framework.commons.xml.util.JNodeWrapper;
+import j.jave.kernal.xml.util.JNodeWrapper;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebNodeFieldKey;
 import j.jave.module.crawl.def.JWebNodeModel;

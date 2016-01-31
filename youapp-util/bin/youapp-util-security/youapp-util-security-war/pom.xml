@@ -11,8 +11,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-util</groupId>
-	<artifactId>security-war</artifactId>
+	<groupId>youapp.youapp-util.security</groupId>
+	<artifactId>youapp-util-securitywar</artifactId>
 	<version>${util.security.version}</version>
 	<packaging>war</packaging>
 
@@ -22,8 +22,8 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>youapp.youapp-util</groupId>
-			<artifactId>security-server</artifactId>
+			<groupId>youapp.youapp-util.security</groupId>
+			<artifactId>youapp-util-securityserver</artifactId>
 			<version>${util.security.version}</version>
 			<type>jar</type>
 		</dependency>

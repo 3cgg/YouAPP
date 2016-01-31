@@ -37,7 +37,7 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>xmldb</artifactId>
+			<artifactId>youapp-kernal-xmldb</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 

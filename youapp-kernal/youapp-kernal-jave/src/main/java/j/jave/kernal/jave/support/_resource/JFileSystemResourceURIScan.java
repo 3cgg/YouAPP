@@ -30,7 +30,7 @@ public class JFileSystemResourceURIScan extends JAbstractResourceURIScan {
 		
 		URI uri=null;
 		try {
-			uri = pathResolver.resolver();
+			uri = pathResolver.resolve();
 		} catch (Exception e) {
 			throw new JInitializationException(e);
 		}

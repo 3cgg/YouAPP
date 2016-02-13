@@ -40,7 +40,7 @@ public final class JServiceFactoryManager{
 			final ClassLoader classLoader= JServiceFactoryManager.class.getClassLoader();
 			
 			// first get all services from the root file (generally, also as classpath).
-			URI path=new JClassRootPathResolver("services.properties").resolver();
+			URI path=new JClassRootPathResolver("services.properties").resolve();
 			if(path!=null){
 				JFileResource fileResource= new JFileResource(new File(path));
 				if(fileResource.exists()){

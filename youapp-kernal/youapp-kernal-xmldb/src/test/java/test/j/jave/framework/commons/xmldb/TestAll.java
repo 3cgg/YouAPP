@@ -1,9 +1,9 @@
 package test.j.jave.framework.commons.xmldb;
 
 import j.jave.kernal.jave.proxy.JAtomicResourceProxy;
-import j.jave.kernal.xml.dom4j.JDom4jNodeGetter;
-import j.jave.kernal.xml.dom4j.util.JXMLUtils;
-import j.jave.kernal.xmldb.JXMLSession;
+import j.jave.kernal.jave.xml.dom4j.util.JXMLUtils;
+import j.jave.kernal.jave.xml.xmldb.JXMLSession;
+import j.jave.kernal.jave.xml.xmldb.dom4j.JDom4jNodeGetter;
 
 import java.util.List;
 import java.util.Map;

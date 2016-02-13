@@ -16,7 +16,7 @@ public class JClassRootPathResolver implements JPathResolver {
 	}
 	
 	@Override
-	public URI resolver() throws Exception {
+	public URI resolve() throws Exception {
 		String classPath=Thread.currentThread().getContextClassLoader().getResource("").toString();
 		return new URI(classPath+fileName);
 	}

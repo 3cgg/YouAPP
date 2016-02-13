@@ -16,7 +16,7 @@ public interface JPathResolver {
 	 * @return
 	 * @throws Exception
 	 */
-	public URI resolver() throws Exception;
+	public URI resolve() throws Exception;
 	
 	/**
 	 * description 

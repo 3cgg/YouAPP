@@ -1,6 +1,6 @@
 package test.j.jave.module.crawl;
 
-import j.jave.kernal.xml.node.JNodeGetter;
+import j.jave.kernal.jave.xml.node.JNodeGetter;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.htmlunit.HtmlUnitNodeGetter;
 import j.jave.module.crawl.kernel.JCrawlContext;

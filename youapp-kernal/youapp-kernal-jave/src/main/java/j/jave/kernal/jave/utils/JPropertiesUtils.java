@@ -82,7 +82,7 @@ public abstract class JPropertiesUtils {
 	public static String getKey(String key,String propertyFile){
 		try {
 			JClassRootPathResolver classRootPathResolver=new JClassRootPathResolver(propertyFile);
-			File file=new File(classRootPathResolver.resolver());
+			File file=new File(classRootPathResolver.resolve());
 			if(file.exists()){
 				Properties properties=  JPropertiesUtils.loadProperties(new JFile(file));
 				return JPropertiesUtils.getKey(key, properties);

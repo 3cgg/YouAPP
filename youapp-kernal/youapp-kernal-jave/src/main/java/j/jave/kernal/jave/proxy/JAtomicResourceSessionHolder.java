@@ -18,7 +18,7 @@ import java.util.Set;
  * the atomic resource session holder, that first search "commons-jave.properties" file to find session provider,
  * then search all classes under the class path. Note the whole system should only have an unique session provider.
  * @author J
- * @see JAtomicResourceSessionProvide
+ * @see JAtomicResourceSessionProvider
  */
 public class JAtomicResourceSessionHolder {
 
@@ -26,12 +26,12 @@ public class JAtomicResourceSessionHolder {
 	
 	private static final JLogger logger =JLoggerFactory.getLogger(JAtomicResourceSessionHolder.class);
 	
-	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER="j.jave.framework.commons.proxy.JAtomicResourceSessionProvide";
+	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER="youapp.atomic.resource.session.provider";
 	
 	public static JAtomicResourceSession getAtomicResourceSession() throws Exception{
 		
 		if(threadLocal.get()==null){
-			JAtomicResourceSessionProvide atomicResourceSessionProvided=null;
+			JAtomicResourceSessionProvider atomicResourceSessionProvided=null;
 			String sessionProviderClass=null;
 			
 			//get from the commons-jave.properties under the class path.
@@ -41,7 +41,7 @@ public class JAtomicResourceSessionHolder {
 			}
 			
 			if(JStringUtils.isNullOrEmpty(sessionProviderClass)){
-				JDefaultClassesScanner classesScanner=new JDefaultClassesScanner(JAtomicResourceSessionProvide.class);
+				JDefaultClassesScanner classesScanner=new JDefaultClassesScanner(JAtomicResourceSessionProvider.class);
 				Set<Class<?>> classes= classesScanner.scan();
 				
 				if(!JCollectionUtils.hasInCollect(classes)){
@@ -59,11 +59,11 @@ public class JAtomicResourceSessionHolder {
 					logger.info("obscure atomic resource sssion provide implementaion, only one supported in the whole system");
 					throw new JInitializationException("obscure atomic resource sssion provide implementaion, only one supported in the whole system");
 				}
-				atomicResourceSessionProvided=(JAtomicResourceSessionProvide) classes.iterator().next().newInstance();
+				atomicResourceSessionProvided=(JAtomicResourceSessionProvider) classes.iterator().next().newInstance();
 			}
 			else{
 				Class<?> sessionClazz= JClassUtils.load(sessionProviderClass, Thread.currentThread().getContextClassLoader());
-				atomicResourceSessionProvided=(JAtomicResourceSessionProvide) sessionClazz.newInstance();
+				atomicResourceSessionProvided=(JAtomicResourceSessionProvider) sessionClazz.newInstance();
 			}
 			threadLocal.set(atomicResourceSessionProvided.newInstance());
 		}

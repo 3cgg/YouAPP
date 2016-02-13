@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.atomic.resource.session.provider</name>
+  <value>j.jave.kernal.jave.xml.xmldb.JXMLSessionProvider</value>
+  <description>xml session provider</description>
+</property>
+
+<property>
+  <name>youapp.xmldb.url</name>
+  <value>file:/D:/XML-DATA</value>
+  <description>where the xml files store all data.</description>
+</property>
+
+</configuration>

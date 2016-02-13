@@ -59,7 +59,7 @@ public abstract class JFileUtils {
 	 */
 	public static File getFile(JPathResolver pathResolver){
 		try {
-			return new File(pathResolver.resolver());
+			return new File(pathResolver.resolve());
 		} catch (Exception e) {
 			LOGGER.error(pathResolver.getDescription()+"not exists ", e);
 			throw new JUtilException(e);  

@@ -1,5 +1,7 @@
 package j.jave.kernal.jave.proxy;
 
+import j.jave.kernal.jave.JConfiguration;
+import j.jave.kernal.jave.JJaveProperties;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -7,9 +9,9 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JCollectionUtils.Callback;
+import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.kernal.jave.xml.xmldb.JXMLSessionProvider;
 
 import java.util.Set;
 
@@ -26,7 +28,7 @@ public class JAtomicResourceSessionHolder {
 	
 	private static final JLogger logger =JLoggerFactory.getLogger(JAtomicResourceSessionHolder.class);
 	
-	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER="youapp.atomic.resource.session.provider";
+	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER=JJaveProperties.ATOMIC_RESOURCE_SESSION_PROVIDER;
 	
 	public static JAtomicResourceSession getAtomicResourceSession() throws Exception{
 		
@@ -72,7 +74,8 @@ public class JAtomicResourceSessionHolder {
 	
 	
 	private static String getConfigAtomicResourceSessionProvider(){
-		return JPropertiesUtils.getKey(ATOMIC_RESOURCE_SESSION_PROVIDER, "commons-jave.properties");
+		return JConfiguration.get().getString(ATOMIC_RESOURCE_SESSION_PROVIDER,
+				JXMLSessionProvider.class.getName());
 	}
 	
 	

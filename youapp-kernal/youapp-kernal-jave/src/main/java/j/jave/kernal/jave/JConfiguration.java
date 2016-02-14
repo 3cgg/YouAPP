@@ -33,13 +33,21 @@ public class JConfiguration extends HashMap<String, Object>{
 		
 		private JConfig() {
 			try{
+				
+				String defaultXML="youapp-default.xml";
+				File defaultFile=new File(Thread.currentThread().getContextClassLoader().getResource(defaultXML).toURI());
+				if(defaultFile.exists()){
+					loadConfiguration(defaultFile);
+				}
 				File file=new File(Thread.currentThread().getContextClassLoader().getResource("").toURI());
 				if(file.isDirectory()){
 					File[] files=file.listFiles();
-					Pattern pattern=Pattern.compile("^youapp-[a-zA-Z_-0-9]+[.]xml$");
+					Pattern pattern=Pattern.compile("^youapp-[-a-zA-Z_0-9]+[.]xml$");
 					for(int i=0;i<files.length;i++){
 						File file2=files[i];
-						if(pattern.matcher(file2.getName()).matches()){
+						String fileName=file2.getName().replaceAll(" ", "");
+						if(!defaultXML.equalsIgnoreCase(fileName)
+								&&pattern.matcher(fileName).matches()){
 							loadConfiguration(file2);
 						}
 					}
@@ -81,14 +89,9 @@ public class JConfiguration extends HashMap<String, Object>{
 		
 	}
 	
-	public static void main(String[] args) {
-		JConfiguration configuration=new JConfiguration();
-		System.out.println("end");
-	}
-	
-	
+	private final static JConfiguration configuration=new JConfiguration();
 	public static JConfiguration get(){
-		return new JConfiguration();
+		return configuration;
 	}
 	
 	public Object get(String  key, Object defaultValue){

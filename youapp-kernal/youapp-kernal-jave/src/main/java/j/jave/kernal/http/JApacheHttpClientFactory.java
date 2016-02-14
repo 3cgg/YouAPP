@@ -1,6 +1,5 @@
 package j.jave.kernal.http;
 
-import j.jave.kernal.http.extension.JIHttpFactory;
 
 public class JApacheHttpClientFactory implements JIHttpFactory {
 

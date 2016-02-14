@@ -1,6 +1,6 @@
 package test.j.jave.kernal.http;
 
-import j.jave.kernal.http.extension.JHttpFactoryProvider;
+import j.jave.kernal.http.JHttpFactoryProvider;
 import junit.framework.TestCase;
 
 public class TestHttp extends TestCase {

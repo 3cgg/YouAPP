@@ -1,6 +1,5 @@
-package j.jave.kernal.http.extension;
+package j.jave.kernal.http;
 
-import j.jave.kernal.http.JHttpBase;
 import j.jave.kernal.jave.extension.JIFactory;
 
 public interface JIHttpFactory extends JIFactory {

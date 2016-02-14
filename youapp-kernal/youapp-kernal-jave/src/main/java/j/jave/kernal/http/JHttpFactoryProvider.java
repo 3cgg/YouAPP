@@ -1,8 +1,7 @@
-package j.jave.kernal.http.extension;
+package j.jave.kernal.http;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
-import j.jave.kernal.http.JApacheHttpClientFactory;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.extension.JExtensionProvider;
 import j.jave.kernal.jave.logging.JLogger;

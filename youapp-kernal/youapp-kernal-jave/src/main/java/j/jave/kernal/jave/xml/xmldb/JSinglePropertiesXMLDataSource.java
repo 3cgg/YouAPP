@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.xml.xmldb;
 
-import j.jave.kernal.jave.JConfiguration;
-import j.jave.kernal.jave.JJaveProperties;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 
@@ -9,7 +9,7 @@ public class JSinglePropertiesXMLDataSource extends JXMLDataSource {
 
 	private static JSinglePropertiesXMLDataSource singlePropertiesXMLDataSource;
 	
-	private static final String URL_KEY=JJaveProperties.XMLDB_URL;
+	private static final String URL_KEY=JProperties.XMLDB_URL;
 	
 	private JSinglePropertiesXMLDataSource(){}
 	

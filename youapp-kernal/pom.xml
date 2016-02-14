@@ -21,15 +21,10 @@
 
 	<modules>
 		<module>youapp-kernal-jave</module>
-		<module>youapp-kernal-http</module>
-		<module>youapp-kernal-security</module>
-		<module>youapp-kernal-eventdriven</module>
 		<module>youapp-kernal-ehcache</module>
 		<module>youapp-kernal-memcached</module>
-		<module>youapp-kernal-filedistribute</module>
 		<module>youapp-kernal-sqlautoloader</module>
 		<module>youapp-kernal-taskdriven</module>
-		<module>youapp-kernal-xmldb</module>
 		<module>youapp-kernal-mail</module>
 
 	</modules>

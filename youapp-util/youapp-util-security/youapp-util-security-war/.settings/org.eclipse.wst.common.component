@@ -7,12 +7,6 @@
         <dependent-module archiveName="youapp-util-securityserver-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-security-server/youapp-util-security-server">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youapp-kernal-security-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-security/youapp-kernal-security">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-eventdriven-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-eventdriven/youapp-kernal-eventdriven">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="youapp-platform-baiscsupportcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-baiscsupportcomp/youapp-platform-baiscsupportcomp">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -23,9 +17,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-kernal-memcached-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-memcached/youapp-kernal-memcached">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-filedistribute-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-filedistribute/youapp-kernal-filedistribute">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-kernal-sqlautoloader-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-sqlautoloader/youapp-kernal-sqlautoloader">

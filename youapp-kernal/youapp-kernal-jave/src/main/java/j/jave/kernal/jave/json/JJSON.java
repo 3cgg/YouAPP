@@ -1,8 +1,9 @@
 package j.jave.kernal.jave.json;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -41,10 +42,7 @@ public class JJSON {
 			synchronized (JJSON.class) {
 				if(json==null){
 					json=new JJSON();
-					String dateFormat=JPropertiesUtils.getKey("j.jave.framework.commons.json.JJSONConfig.dateFormat", "commons-json.properties");
-					if(JStringUtils.isNullOrEmpty(dateFormat)){
-						dateFormat="yyyy-MM-dd HH:mm:ss";
-					}
+					String dateFormat=JConfiguration.get().getString(JProperties.JSON_DEFAULT_DATE_FORMAT, "yyyy-MM-dd HH:mm:ss");
 					json.mapper.setDateFormat(new SimpleDateFormat(dateFormat));
 				}
 			}

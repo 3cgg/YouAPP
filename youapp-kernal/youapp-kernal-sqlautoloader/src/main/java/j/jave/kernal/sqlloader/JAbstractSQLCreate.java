@@ -161,7 +161,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 		ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
 		Set<Class<?>> classes=new HashSet<Class<?>>();
 		
-		Set<File> files= JClassPathUtils.getClassPathFilesFromSystem();
+		List<File> files= JClassPathUtils.getClassPathFilesFromSystem();
 		for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
 			File classPathFile =  iterator.next();
 			if(classPathFile.exists()){

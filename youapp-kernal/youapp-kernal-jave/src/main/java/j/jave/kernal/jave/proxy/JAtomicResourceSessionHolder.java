@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.proxy;
 
-import j.jave.kernal.jave.JConfiguration;
-import j.jave.kernal.jave.JJaveProperties;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -27,7 +27,7 @@ public class JAtomicResourceSessionHolder {
 	
 	private static final JLogger logger =JLoggerFactory.getLogger(JAtomicResourceSessionHolder.class);
 	
-	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER=JJaveProperties.ATOMIC_RESOURCE_SESSION_PROVIDER;
+	private static final String ATOMIC_RESOURCE_SESSION_PROVIDER=JProperties.ATOMIC_RESOURCE_SESSION_PROVIDER;
 	
 	public static JAtomicResourceSession getAtomicResourceSession() throws Exception{
 		

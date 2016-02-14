@@ -15,4 +15,24 @@
   <description>where the xml files store all data.</description>
 </property>
 
+<property>
+  <name>youapp.security.desede.key</name>
+  <value>jia.zhong.jin</value>
+  <description>the key used to be for DES cipher.</description>
+</property>
+
+<property>
+  <name>youapp.json.default.date.format</name>
+  <value>yyyy-MM-dd HH:mm:ss</value>
+  <description>the default json format.</description>
+</property>
+
+<property>
+  <name>youapp.http.factory</name>
+  <value>j.jave.kernal.http.JApacheHttpClientFactory</value>
+  <description>Apache http-client implement.</description>
+</property>
+
+
+
 </configuration>

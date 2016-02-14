@@ -1,6 +1,6 @@
 package test.j.jave.kernal.jave;
 
-import j.jave.kernal.jave.JConfiguration;
+import j.jave.kernal.JConfiguration;
 
 public class ConfigurationTest {
 

@@ -145,7 +145,7 @@ public class JMailSessionPool {
 			// we get the MD5 value 
 			final StringBuffer data=new StringBuffer();
 			final String split="~~~~~~~~~~";
-			JCollectionUtils.each(elems, new JCollectionUtils.Callback<String, Object>() {
+			JCollectionUtils.each(elems, new JCollectionUtils.EntryCallback<String, Object>() {
 				@Override
 				public void process(String key, Object value) throws Exception {
 					

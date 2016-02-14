@@ -4,9 +4,9 @@ import j.jave.kernal.jave.proxy.JAtomicResourceProxy;
 
 import java.util.List;
 
-public class SameServiceImpl implements SameService{
+public class AtomicSessionCheckServiceImpl implements AtomicSessionCheckService{
 
-UserService  userServiceImpl=JAtomicResourceProxy.proxy(new UserServiceImpl(), UserService.class);
+	UserService  userServiceImpl=JAtomicResourceProxy.proxy(new UserServiceImpl(), UserService.class);
 	
 	UserService  userServiceImpl2=JAtomicResourceProxy.proxy(new UserServiceImpl(), UserService.class);
 	

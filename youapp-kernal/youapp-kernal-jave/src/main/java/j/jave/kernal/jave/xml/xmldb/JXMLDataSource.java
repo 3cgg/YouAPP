@@ -116,6 +116,10 @@ public class JXMLDataSource {
 		try {
 			File file=new File(new URI(uri));
 			
+			if(!file.exists()){
+				throw new IllegalArgumentException("directory not exists : "+uri);
+			}
+			
 			if(!file.isDirectory()){
 				throw new IllegalArgumentException("only accept directory, error uri : "+uri);
 			}
@@ -137,7 +141,7 @@ public class JXMLDataSource {
 					}
 					String name=xmlData.getXmlName();
 					JAssert.state(name.equals(xmlFile.getFileNameNoExtension()), 
-							"the attribute name must be the same as the file name, error : "
+							"the attribute [name] must be the same as the file name, error : "
 									+name+","+xmlFile.getFileNameNoExtension());
 					datas.put(name, xmlData);
 					classNameXmlNames.put(xmlData.getModelClass(), xmlData.getXmlName());
@@ -160,7 +164,7 @@ public class JXMLDataSource {
 	public JBaseModel getModel(String id, Class<?> modelClass){
 		String className=modelClass.getName();
 		String xmlName=classNameXmlNames.get(className);
-		JAssert.state(JStringUtils.isNotNullOrEmpty(xmlName), "xml file not found, error : ");
+		JAssert.state(JStringUtils.isNotNullOrEmpty(xmlName), "xml file not found, error : "+className);
 		JBaseModel baseModel= (JBaseModel) datas.get(xmlName).get(id);
 		try {
 			return baseModel==null?null:(JBaseModel) baseModel.clone();

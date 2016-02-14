@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<models TYPE="test.j.jave.framework.commons.xmldb.User" NAME="USER"
+<models TYPE="test.j.jave.kernal.jave.xml.xmldb.User" NAME="USER"
 	V="2">
 	<model ID="8de576f014e849d79711aea53e454d04">
 		<field name="USERNAME" value="z" />

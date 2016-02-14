@@ -15,7 +15,7 @@ public class TestAll extends TestCase{
 	
 	public void testSameService() throws Exception{
 		
-		SameService  sameService=JAtomicResourceProxy.proxy(new SameServiceImpl(), SameService.class);
+		AtomicSessionCheckService  sameService=JAtomicResourceProxy.proxy(new AtomicSessionCheckServiceImpl(), AtomicSessionCheckService.class);
 		sameService.sameSession();
 		System.out.println("END");
 		

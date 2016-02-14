@@ -9,7 +9,6 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.kernal.jave.utils.JCollectionUtils.Callback;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.xml.xmldb.JXMLSessionProvider;
 
@@ -51,11 +50,11 @@ public class JAtomicResourceSessionHolder {
 				}
 				
 				if(JCollectionUtils.hasInCollect(classes)&&classes.size()>1){
-					JCollectionUtils.each(classes, new Callback<Class<?>,Class<?>>() {
+					JCollectionUtils.each(classes, new JCollectionUtils.CollectionCallback<Class<?>>() {
 						@Override
-						public void process(Class<?> key, Class<?> value)
+						public void process(Class<?> key)
 								throws Exception {
-							logger.info(value.getClass().getName());
+							logger.info(key.getClass().getName());
 						}
 					});
 					logger.info("obscure atomic resource sssion provide implementaion, only one supported in the whole system");

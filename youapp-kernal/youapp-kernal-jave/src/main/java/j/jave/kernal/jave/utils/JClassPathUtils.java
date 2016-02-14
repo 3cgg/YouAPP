@@ -1,9 +1,9 @@
 package j.jave.kernal.jave.utils;
 
 import java.io.File;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 public abstract class JClassPathUtils {
 
@@ -14,8 +14,8 @@ public abstract class JClassPathUtils {
 	 * <li>.jar</li>
 	 * @return
 	 */
-	public static Set<File> getClassPathFilesFromSystem(){
-		Set<File> classPaths=new HashSet<File>();
+	public static List<File> getClassPathFilesFromSystem(){
+		List<File> classPaths=new ArrayList<File>();
 		Properties properties=System.getProperties();
 		String javaClassPath=(String) properties.get("java.class.path");
 		String[] paths=javaClassPath.split(";");

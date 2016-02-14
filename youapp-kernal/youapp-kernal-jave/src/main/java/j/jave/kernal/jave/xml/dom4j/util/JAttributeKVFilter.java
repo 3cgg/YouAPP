@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.xml.dom4j.util;
 
-import j.jave.kernal.jave.utils.JArrays;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class JAttributeKVFilter implements JElementFilter {
 			String splitStr=attr.splitStr;
 			if(splitStr!=null&&!"".equals(splitStr)){
 				String[] valueTexts= valueText.trim().split(splitStr);
-				if(!JArrays.includeIn(valueTexts, attr.attrValues)){
+				if(!JCollectionUtils.includeIn(valueTexts, attr.attrValues)){
 					finalMatches=false;
 					break;
 				}

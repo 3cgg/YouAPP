@@ -62,7 +62,7 @@ public abstract class JCollectionUtils {
 			return bytes.length > 0;
 	}
 	
-	public static interface Callback<K,V>{
+	public static interface EntryCallback<K,V>{
 		void process(K key,V value) throws Exception;
 	}
 	
@@ -76,7 +76,7 @@ public abstract class JCollectionUtils {
 	 * @param callback
 	 * @throws Exception
 	 */
-	public  static <K,V> void each(Map<K, V> map, Callback<K, V> callback) throws Exception{
+	public  static <K,V> void each(Map<K, V> map, EntryCallback<K, V> callback) throws Exception{
 		if(hasInMap(map)){
 			for (Iterator<Entry<K, V>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
 				Entry<K, V> entry =  iterator.next();
@@ -84,16 +84,7 @@ public abstract class JCollectionUtils {
 			}
 		}
 	}
-	
-	public static  <T>  void each(Collection<T> collection, Callback<T, T> callback) throws Exception{
-		if(hasInCollect(collection)){
-			for (Iterator<T> iterator = collection.iterator(); iterator.hasNext();) {
-				T object=  iterator.next();
-				callback.process(object, object);
-			}
-		}
-	}
-	
+
 	public static  <T>  void each(Collection<T> collection, CollectionCallback<T> callback) throws Exception{
 		if(hasInCollect(collection)){
 			for (Iterator<T> iterator = collection.iterator(); iterator.hasNext();) {
@@ -102,4 +93,37 @@ public abstract class JCollectionUtils {
 			}
 		}
 	}
+	
+	/**
+	 * check whether the first set contains all elements in the second set or not.
+	 * @param obj1  only as primitive type, int , long , float,String etc.
+	 * @param obj2  only as primitive type, int , long , float,String etc.
+	 * @return
+	 */
+	public static boolean includeIn(Object[] set,Object[] seeds){
+		
+		if(set==null
+				||seeds==null
+				||set.length==0
+				||seeds.length==0
+				) return false;
+		boolean allIncluded=true;
+		for (int i = 0; i < seeds.length; i++) {
+			Object seed=seeds[i];
+			boolean included=false;
+			for (int j = 0; j < set.length; j++) {
+				Object seedEle=set[j];
+				if((included=seed.equals(seedEle))){
+					break;
+				}
+			}
+			
+			if(!included){
+				allIncluded=false;
+				break;
+			}
+		}
+		return allIncluded; 
+	}
+	
 }

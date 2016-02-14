@@ -40,7 +40,7 @@ public class JXMLSession implements JAtomicResourceSession{
 	public void commit() throws Exception {
 		
 		// do validation before committing to xml data source.
-		JCollectionUtils.each(sessionDatas, new JCollectionUtils.Callback<String, JXMLData>() {
+		JCollectionUtils.each(sessionDatas, new JCollectionUtils.EntryCallback<String, JXMLData>() {
 			@Override
 			public void process(String key, JXMLData value) throws Exception {
 				

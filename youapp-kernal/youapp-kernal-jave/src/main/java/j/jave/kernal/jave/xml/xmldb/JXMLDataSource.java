@@ -86,7 +86,7 @@ public class JXMLDataSource {
 					 break;
 				}
 			}
-			JCollectionUtils.each(datas, new JCollectionUtils.Callback<String, JXMLData>() {
+			JCollectionUtils.each(datas, new JCollectionUtils.EntryCallback<String, JXMLData>() {
 				@Override
 				public void process(String key, JXMLData value)
 						throws Exception {
@@ -202,7 +202,7 @@ public class JXMLDataSource {
 			// do validation under the locking state
 			validate(modified);
 			
-			JCollectionUtils.each(modified, new JCollectionUtils.Callback<String, JXMLData>() {
+			JCollectionUtils.each(modified, new JCollectionUtils.EntryCallback<String, JXMLData>() {
 				@Override
 				public void process(String key, JXMLData value)
 						throws Exception {
@@ -255,7 +255,7 @@ public class JXMLDataSource {
 	
 	
 	private void validate(Map<String, JXMLData>  modified) throws Exception{
-			JCollectionUtils.each(modified, new JCollectionUtils.Callback<String, JXMLData>() {
+			JCollectionUtils.each(modified, new JCollectionUtils.EntryCallback<String, JXMLData>() {
 				@Override
 				public void process(String key, JXMLData value)
 						throws Exception {

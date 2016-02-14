@@ -9,11 +9,14 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 /**
  * @author J
@@ -57,6 +60,51 @@ public abstract class JJARUtils {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * extra the expected jar entries from the specified jar.
+	 * @param jarFile
+	 * @param entryNameRegex the name(path) regex to filter expected ones.
+	 * @return
+	 */
+	public static Set<JarEntry> getJarEntries(String jarFile,String... entryNameRegex){
+		Set<JarEntry> entries=new HashSet<JarEntry>();
+		JarFile file=null;
+		List<Pattern> patterns=new ArrayList<Pattern>(entryNameRegex.length);
+		for(int i=0;i<entryNameRegex.length;i++){
+			patterns.add(Pattern.compile(entryNameRegex[i]));
+		}
+		try {
+			file=new JarFile(jarFile);
+			Enumeration<JarEntry> jarEntries= file.entries();
+			while(jarEntries.hasMoreElements()){
+				JarEntry jarEntry=jarEntries.nextElement();
+				String name=jarEntry.getName();
+				boolean valid=false;
+				for(int i=0;i<patterns.size();i++){
+					if(patterns.get(i).matcher(name).matches()){
+						valid=true;
+						break;
+					}
+				}
+				if(valid){
+					entries.add(jarEntry);
+				}
+			}
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+			throw new JUtilException(e); 
+		}finally{
+			if(file!=null){
+				try {
+					file.close();
+				} catch (IOException e) {
+					throw new JUtilException(e); 
+				}
+			}
+		}
+		return entries;
 	}
 	
 	

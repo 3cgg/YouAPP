@@ -1,8 +1,13 @@
 package j.jave.kernal.jave.support._package;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JClassPathUtils;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +23,8 @@ import java.util.Set;
  * @see {@link JFileSystemDefaultScanner}
  */
 public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration implements JClassesScan , JClassesScanConfig {
+	
+	private static final JLogger LOGGER =JLoggerFactory.getLogger(JDefaultClassesScanner.class);
 	
 	private final Class<?> clazz;
 	
@@ -38,7 +45,29 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 	public JDefaultClassesScanner(Class<?> clazz,Collection<File> files) {
 		this.clazz=clazz;
 		if(files==null){
-			this.files= JClassPathUtils.getClassPathFilesFromSystem();
+			try{
+				this.files= JClassPathUtils.getClassPathFilesFromSystem();
+				
+				// for web
+				URL libUrl=Thread.currentThread().getContextClassLoader().getResource("../lib");
+				LOGGER.info("expected to find [WEB-INF/lib] : "+ (libUrl==null?"NULL":libUrl.toString()));
+				if(libUrl!=null){
+					File file=new File(libUrl.toURI());
+					if(file.isDirectory()){
+						this.files.add(file);
+					}
+				}
+				
+				URI uri=Thread.currentThread().getContextClassLoader().getResource("").toURI();
+				LOGGER.info("expected to find [WEB-INF/classes] : "+ (uri==null?"NULL":uri.toString()));
+				File file=new File(uri);
+				if(file.isDirectory()){
+					this.files.add(file);
+				}
+			}catch(Exception e){
+				
+			}
+			
 		}
 		else{
 			this.files=files;

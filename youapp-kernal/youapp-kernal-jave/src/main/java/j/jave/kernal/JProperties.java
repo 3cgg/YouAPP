@@ -10,5 +10,6 @@ public class JProperties {
 	public static final String HTTP_FACTORY="youapp.http.factory";
 	public static final String BASE64_FACTORY="youapp.base64.factory";
 	public static final String LOGGER_FACTORY="youapp.logger.factory";
+	public static final String SERVICES="youapp.services";
 	
 }

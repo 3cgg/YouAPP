@@ -45,4 +45,14 @@
   <description>Slf4j logging API.</description>
 </property>
 
+<property>
+  <name>youapp.services</name>
+  <value>
+  	A=AF;
+  	B=BF;
+  	C=CF
+  </value>
+  <description>all registered services  in the service hub.</description>
+</property>
+
 </configuration>

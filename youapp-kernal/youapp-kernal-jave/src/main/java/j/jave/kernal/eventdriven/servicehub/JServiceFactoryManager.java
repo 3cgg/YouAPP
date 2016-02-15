@@ -1,27 +1,22 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.eventdriven.exception.JUncheckedServiceException;
 import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.io.JClassRootPathResolver;
-import j.jave.kernal.jave.io.JFileResource;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -32,55 +27,24 @@ import java.util.Set;
 public final class JServiceFactoryManager{
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
-	// the collection contains those services that is services.properties.
+	// the collection contains those services that is in youapp-*.xml.
 	private List<Class<? extends JServiceFactorySupport<? extends JService>>> staticDefinedServiceFactories=new ArrayList<Class<? extends JServiceFactorySupport<? extends JService>>>();
 	{
 		try{
 			final Map<String, String> items=new HashMap<String, String>();
 			final ClassLoader classLoader= JServiceFactoryManager.class.getClassLoader();
-			
-			// first get all services from the root file (generally, also as classpath).
-			URI path=new JClassRootPathResolver("services.properties").resolve();
-			if(path!=null){
-				JFileResource fileResource= new JFileResource(new File(path));
-				if(fileResource.exists()){
-					Properties properties= JPropertiesUtils.loadProperties(new JFileResource(new File(path)));
-					JPropertiesUtils.each(properties, new JPropertiesUtils.Process() {
-						@Override
-						public void process(Object key, Object value,
-								Properties properties) throws Exception {
-							String serviceType=((String) key).trim();
-							String serviceImpl=((String) value).trim();
-							if(!items.containsKey(serviceType)){
-								items.put(serviceType, serviceImpl);
-								Class<? extends JServiceFactorySupport<? extends JService>> clazz=JClassUtils.load(serviceImpl, classLoader);
-								staticDefinedServiceFactories.add(clazz);
-							}
-						}
-					});
-				}
-			}
-			
-			// second , get services from the definition in the framework
-			URL url=JServiceFactoryManager.class.getClassLoader().getResource("services.properties");
-			if(url!=null){
-				if(url!=null){
-					File file=new File(JServiceFactoryManager.class.getClassLoader().getResource("services.properties").toURI());
-					if(file.exists()){
-						Properties properties= JPropertiesUtils.loadProperties(new JFileResource(file));
-						JPropertiesUtils.each(properties, new JPropertiesUtils.Process() {
-							@Override
-							public void process(Object key, Object value,
-									Properties properties) throws Exception {
-								String serviceType=((String) key).trim();
-								String serviceImpl=((String) value).trim();
-								if(!items.containsKey(serviceType)){
-									items.put(serviceType, serviceImpl);
-									Class<? extends JServiceFactorySupport<? extends JService>> clazz=JClassUtils.load(serviceImpl, classLoader);
-									staticDefinedServiceFactories.add(clazz);
-								}
-							}
-						});
+			String services=JConfiguration.get().getString(JProperties.SERVICES, "");
+			String[] serviceStrings=services.split(";");
+			for(int i=0;i<serviceStrings.length;i++){
+				String serviceString=serviceStrings[i];
+				String[] ones=serviceString.split("=");
+				if(ones.length==2){
+					String serviceType=((String) ones[0]).trim();
+					String serviceImpl=((String) ones[1]).trim();
+					if(!items.containsKey(serviceType)){
+						items.put(serviceType, serviceImpl);
+						Class<? extends JServiceFactorySupport<? extends JService>> clazz=JClassUtils.load(serviceImpl, classLoader);
+						staticDefinedServiceFactories.add(clazz);
 					}
 				}
 			}

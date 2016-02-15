@@ -1,6 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.eventdriven.context.JCommonsEventDrivenContext;
+import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
@@ -21,7 +21,7 @@ import java.util.List;
  *@see JEventQueueOUTPipe
  *@see JEventQueueEndPipe
  */
-public class JEventQueuePipes {
+public class JEventQueuePipeChain {
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 
@@ -29,7 +29,7 @@ public class JEventQueuePipes {
 	
 	private JEventQueueOUTPipe eventQueueOUT=null;
 	
-	public JEventQueuePipes(){
+	public JEventQueuePipeChain(){
 		int order=-1; 
 		register(JEventQueueINPipe.class, ++order);
 		register(JEventQueueProcessingPipe.class, ++order);
@@ -38,7 +38,7 @@ public class JEventQueuePipes {
 			register(JEventQueueResultLoggerPipe.class, ++order);
 		}
 		
-		JPriorityBlockingQueue<JEventQueuePipeInfo> eventQueuePipeQueue= JCommonsEventDrivenContext.get().getEventQueuePipeProvider().getEventQueuePipes();
+		JPriorityBlockingQueue<JEventQueuePipeInfo> eventQueuePipeQueue= JEventDrivenContext.get().getEventQueuePipeProvider().getEventQueuePipes();
 		while(!eventQueuePipeQueue.isEmpty()){
 			JEventQueuePipeInfo eventQueuePipeInfo=eventQueuePipeQueue.poll();
 			register(eventQueuePipeInfo.clazz, ++order);

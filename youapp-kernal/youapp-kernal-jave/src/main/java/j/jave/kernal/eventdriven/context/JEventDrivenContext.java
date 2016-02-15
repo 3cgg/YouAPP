@@ -1,7 +1,7 @@
 package j.jave.kernal.eventdriven.context;
 
-import j.jave.kernal.eventdriven.servicehub.JEventQueuePipes.JEventQueuePipeInfo;
-import j.jave.kernal.eventdriven.servicehub.JEventQueuePipes.JEventQueuePipeProvider;
+import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeInfo;
+import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.ServiceMeta;
 import j.jave.kernal.jave.support.JPriorityBlockingQueue;
@@ -18,24 +18,29 @@ import java.util.List;
  * <p>{@link #getServiceMetaProvider()}
  */
 @SuppressWarnings("serial")
-public class JCommonsEventDrivenContext extends HashMap<String, Object> {
+public class JEventDrivenContext extends HashMap<String, Object> {
 	
-	private static JCommonsEventDrivenContext context;
+	private static JEventDrivenContext context=new JEventDrivenContext();
 	
-	private JCommonsEventDrivenContext() {
+	private JEventDrivenContext() {
 	}
 	
-	public static JCommonsEventDrivenContext get(){
-		if(context==null){
-			synchronized (JCommonsEventDrivenContext.class) {
-				if(context==null){
-					context=new JCommonsEventDrivenContext();
-				}
-			}
-		}
+	public static JEventDrivenContext get(){
+//		if(context==null){
+//			synchronized (JCommonsEventDrivenContext.class) {
+//				if(context==null){
+//					context=new JCommonsEventDrivenContext();
+//				}
+//			}
+//		}
 		return context;
 	}
 
+	/**
+	 * some additional service factories can be append the running system.
+	 * @author JIAZJ
+	 *
+	 */
 	public class ServiceMetaProvider implements JServiceMetaProvider{
 		private static final String EXT_SERVICE_FACTORIES_REGISTER="j.jave.framework.servicehub.JServiceFactoryRegister";
 		{
@@ -55,6 +60,11 @@ public class JCommonsEventDrivenContext extends HashMap<String, Object> {
 		}
 	}
 	
+	/**
+	 * some additional event queue processing can be registered here.
+	 * @author JIAZJ
+	 *
+	 */
 	public class EventQueuePipeProvider implements JEventQueuePipeProvider{
 		
 		private final List<JEventQueuePipeInfo> repo=new ArrayList<JEventQueuePipeInfo>(6);

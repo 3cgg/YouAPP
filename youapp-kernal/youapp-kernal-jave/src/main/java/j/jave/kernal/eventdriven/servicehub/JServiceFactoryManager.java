@@ -1,6 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.eventdriven.context.JCommonsEventDrivenContext;
+import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.eventdriven.exception.JUncheckedServiceException;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JClassRootPathResolver;
@@ -147,7 +147,7 @@ public final class JServiceFactoryManager{
 	 * <pre>
 	 * first , scan from static resource (services.properties)
 	 * second, scan all classes in the classpath
-	 * third,scan all service meta data from {@link JCommonsEventDrivenContext#getServiceMetas()}
+	 * third,scan all service meta data from {@link JEventDrivenContext#getServiceMetas()}
 	 * </pre>
 	 */
 	public synchronized void registerAllServices(){
@@ -180,7 +180,7 @@ public final class JServiceFactoryManager{
 				}
 				
 				//scan context of JContext#getServiceMetas()
-				List<ServiceMeta> serviceMetas= JCommonsEventDrivenContext.get().getServiceMetaProvider().getServiceMetas();
+				List<ServiceMeta> serviceMetas= JEventDrivenContext.get().getServiceMetaProvider().getServiceMetas();
 				if(JCollectionUtils.hasInCollect(serviceMetas)){
 					for(int i=0;i<serviceMetas.size();i++){
 						ServiceMeta serviceMeta=serviceMetas.get(i);
@@ -205,7 +205,7 @@ public final class JServiceFactoryManager{
 	 * @param serviceMeta
 	 */
 	public  void initServiceMeta(ServiceMeta serviceMeta){
-		JCommonsEventDrivenContext.get().getServiceMetaProvider().addServiceMeta(serviceMeta);
+		JEventDrivenContext.get().getServiceMetaProvider().addServiceMeta(serviceMeta);
 	}
 	
 	/**

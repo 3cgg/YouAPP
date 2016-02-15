@@ -10,7 +10,7 @@ import java.util.AbstractQueue;
 
 /**
  * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
- * default the event pipe is the first element in the {@link JEventQueuePipes}.
+ * default the event pipe is the first element in the {@link JEventQueuePipeChain}.
  * the pipe does not support {@link #addEventExecution(JEventExecution)}.
  * @author J
  */

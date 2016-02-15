@@ -11,12 +11,17 @@ import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerEnable
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerEnableListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceUninstallEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceUninstallListener;
+import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMeta;
+import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
+import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorListener;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.reflect.JReflect;
 import j.jave.kernal.jave.service.JService;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.kernal.jave.utils.JCollectionUtils.EntryCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 class JServiceHub implements JService  ,JServiceFactory<JServiceHub>,JServiceListenerDetectListener,
 JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener,JServiceListenerDisableListener
-,JServiceGetListener ,JServiceRegisterListener{
+,JServiceGetListener ,JServiceRegisterListener,JServiceMonitorListener{
 	
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
@@ -229,7 +234,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	}
 
 	
-	private JServiceHubManager serviceHubManager=new JServiceHubManager();
+	private final JServiceHubManager serviceHubManager=new JServiceHubManager();
 	
 	class JServiceHubManager{
 		
@@ -311,6 +316,44 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	@Override
 	public void trigger(JServiceRegisterEvent event) {
 		register(event.getServiceName(), event.getServiceFactory());
+	}
+
+
+	@Override
+	public JServiceHubMeta trigger(JServiceMonitorEvent event) {
+		final JServiceHubMeta serviceHubMeta=new JServiceHubMeta();
+		try{
+			serviceHubMeta.setServiceCount(services.size());
+			JCollectionUtils.each(services, new EntryCallback<Class<?>, JServiceFactory<?>>() {
+				@Override
+				public void process(Class<?> key, JServiceFactory<?> value)
+						throws Exception {
+					if(serviceHubManager.isActive(key)){
+						serviceHubMeta.setActiveServiceCount(serviceHubMeta.getActiveServiceCount()+1);
+						serviceHubMeta.getActiveServiceNames().put(key.getName(), value.getName());
+					}
+					else{
+						serviceHubMeta.setInactiveServiceCount(serviceHubMeta.getInactiveServiceCount()+1);
+						serviceHubMeta.getInactiveServiceNames().put(key.getName(), value.getName());
+					}
+				}
+			});
+			
+			JCollectionUtils.each(serviceListeners, new EntryCallback<Class<?>, List<Class<?>>>() {
+				@Override
+				public void process(Class<?> key, List<Class<?>> value)
+						throws Exception {
+					List<String> listenerNames=new ArrayList<String>();
+					for(int i=0;i<value.size();i++){
+						listenerNames.add(value.get(i).getName());
+					}
+					serviceHubMeta.getServicelistenernames().put(key.getName(), listenerNames);
+				}
+			});
+		}catch(Exception e){
+			serviceHubMeta.setException(e);
+		}
+		return serviceHubMeta;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package j.jave.kernal.jave.support._package;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.io.File;
 import java.util.HashSet;
@@ -11,7 +12,7 @@ import java.util.Set;
  * @author J
  *
  */
-public class JFileSystemDefaultScanner extends JAbstractClassesScan implements JClassesScan{
+public class JFileSystemDefaultScanner extends JAbstractClassesScanner implements JClassesScanner{
 	
 	private Class<?> superClass;
 	
@@ -28,7 +29,7 @@ public class JFileSystemDefaultScanner extends JAbstractClassesScan implements J
 	protected Set<Class<?>> doScan() {
 		try {
 			Set<Class<?>> classes=new HashSet<Class<?>>();
-			if(includePackages!=null){
+			if(JCollectionUtils.hasInArray(includePackages)){
 				for (int i = 0; i < includePackages.length; i++) {
 					String packg=includePackages[i];
 					String packgPath=packg.replace(".", "/");
@@ -61,8 +62,10 @@ public class JFileSystemDefaultScanner extends JAbstractClassesScan implements J
 				String classPathPath=this.file.toURI().toString();
 				String className=fileURIPath.substring(classPathPath.length()).replace("/", ".").replace(".class", "");
 				Class<?> clazz = JClassUtils.load(className, classLoader);
-				if(superClass!=null&&JClassUtils.isAssignable(superClass, clazz, true)){
-					classes.add(clazz);
+				if(superClass!=null){
+					if(JClassUtils.isAssignable(superClass, clazz, true)){
+						classes.add(clazz);
+					}
 				}
 				else{
 					classes.add(clazz);

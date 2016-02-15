@@ -10,7 +10,7 @@ import java.util.Set;
  * @author J
  *
  */
-public interface JClassesScan {
+public interface JClassesScanner {
 
 	/**
 	 * 需要缓存这些类 

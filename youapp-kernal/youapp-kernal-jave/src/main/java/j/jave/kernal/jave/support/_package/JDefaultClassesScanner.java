@@ -1,13 +1,11 @@
 package j.jave.kernal.jave.support._package;
 
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JClassPathUtils;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,7 +20,7 @@ import java.util.Set;
  * @see  {@link JJARDefaultScanner} 
  * @see {@link JFileSystemDefaultScanner}
  */
-public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration implements JClassesScan , JClassesScanConfig {
+public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration implements JClassesScanner , JClassesScanConfig {
 	
 	private static final JLogger LOGGER =JLoggerFactory.getLogger(JDefaultClassesScanner.class);
 	
@@ -46,26 +44,9 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 		this.clazz=clazz;
 		if(files==null){
 			try{
-				this.files= JClassPathUtils.getClassPathFilesFromSystem();
-				
-				// for web
-				URL libUrl=Thread.currentThread().getContextClassLoader().getResource("../lib");
-				LOGGER.info("expected to find [WEB-INF/lib] : "+ (libUrl==null?"NULL":libUrl.toString()));
-				if(libUrl!=null){
-					File file=new File(libUrl.toURI());
-					if(file.isDirectory()){
-						this.files.add(file);
-					}
-				}
-				
-				URI uri=Thread.currentThread().getContextClassLoader().getResource("").toURI();
-				LOGGER.info("expected to find [WEB-INF/classes] : "+ (uri==null?"NULL":uri.toString()));
-				File file=new File(uri);
-				if(file.isDirectory()){
-					this.files.add(file);
-				}
+				this.files= JClassPathUtils.getRuntimeClassPathFiles();
 			}catch(Exception e){
-				
+				throw new JInitializationException(e);
 			}
 			
 		}
@@ -86,16 +67,16 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 				String fileName=classPathFile.getName();
 				
 				if(fileName.endsWith(".jar")){
-					JJARDefaultScanner defaultScan=new JJARDefaultScanner(classPathFile);
+					JJARDefaultScanner defaultScan=new JJARDefaultScanner(classPathFile,clazz);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesResolve.get().getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScanUtil.getSubClass(defaultScan, clazz));
 				}
 				else{
-					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile);
+					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile,clazz);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesResolve.get().getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScanUtil.getSubClass(defaultScan, clazz));
 				}
 			}
 		}

@@ -15,7 +15,7 @@ import java.util.jar.JarFile;
  * @author J
  *
  */
-public class JJARDefaultScanner extends JAbstractClassesScan implements JClassesScan{
+public class JJARDefaultScanner extends JAbstractClassesScanner implements JClassesScanner{
 	
 	private Class<?> superClass;
 	
@@ -56,8 +56,10 @@ public class JJARDefaultScanner extends JAbstractClassesScan implements JClasses
 				if(className.endsWith(".class")&&matches(className)){
 					String clazzName=jarEntry.getName().replace(".class", "").replace("/", ".");
 					Class<?> clazz=JClassUtils.load(clazzName, classLoader);
-					if(superClass!=null&&JClassUtils.isAssignable(superClass, clazz, true)){
-						classes.add(clazz);
+					if(superClass!=null){
+						if(JClassUtils.isAssignable(superClass, clazz, true)){
+							classes.add(clazz);
+						}
 					}
 					else{
 						classes.add(clazz);

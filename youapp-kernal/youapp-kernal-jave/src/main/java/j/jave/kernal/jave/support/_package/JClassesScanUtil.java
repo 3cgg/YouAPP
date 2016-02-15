@@ -6,24 +6,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class JClassesResolve {
-
-	private static JClassesResolve object=new JClassesResolve();
-	
-	private JClassesResolve() {
-	}
-	
-	public static JClassesResolve get(){
-		return object;
-	}
+public class JClassesScanUtil {
 	
 	/**
-	 * get implementation. 
+	 * get implementation class , exclude interface , abstract class. 
 	 * @param packageScan
 	 * @param sup
 	 * @return
 	 */
-	public Set<Class<?>> getImplements(JClassesScan packageScan,Class<?> sup){
+	public static Set<Class<?>> getImplements(JClassesScanner packageScan,Class<?> sup){
 		Set<Class<?>> clazzes=packageScan.scan();
 		Set<Class<?>> classes=new HashSet<Class<?>>();
 		if(clazzes!=null){
@@ -45,7 +36,7 @@ public class JClassesResolve {
 	 * @param sup
 	 * @return
 	 */
-	public Set<Class<?>> getSubClass(JClassesScan packageScan,Class<?> sup){
+	public static Set<Class<?>> getSubClass(JClassesScanner packageScan,Class<?> sup){
 		Set<Class<?>> clazzes=packageScan.scan();
 		Set<Class<?>> classes=new HashSet<Class<?>>();
 		if(clazzes!=null){

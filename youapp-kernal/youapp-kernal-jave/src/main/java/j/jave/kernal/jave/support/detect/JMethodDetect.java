@@ -5,7 +5,7 @@ package j.jave.kernal.jave.support.detect;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JClassProvidedScanner;
-import j.jave.kernal.jave.support._package.JClassesScan;
+import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JClassesScanConfig;
 import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * default scan all classes in the CLASSPATH to detect the method . 
  *<p> you also can define customized implementation of {@code JPackageScan}  to provide whose classes need be processed.
  * @see JDefaultClassesScanner
- * @see JClassesScan
+ * @see JClassesScanner
  * @author J
  * @param <T>  the same as generic of {@link JMethodInfo }
  */
@@ -114,12 +114,12 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 	}
 	
 	
-	private JClassesScan packageScan=null;
+	private JClassesScanner packageScan=null;
 	
 	/**
 	 * @param packageScan the packageScan to set
 	 */
-	public void setPackageScan(JClassesScan packageScan) {
+	public void setPackageScan(JClassesScanner packageScan) {
 		this.packageScan = packageScan;
 	}
 	

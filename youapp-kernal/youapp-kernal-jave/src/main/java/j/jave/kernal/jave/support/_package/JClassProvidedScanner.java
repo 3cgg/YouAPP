@@ -8,13 +8,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * wrap classes to do the similar thing via the {@link JClassesScan}.
+ * wrap classes to do the similar thing via the {@link JClassesScanner}.
  * @see {@link JDefaultClassesScanner}
  * @see {@link JJARDefaultScanner}
  * @see {@link JFileSystemDefaultScanner}
  * @author J
  */
-public class JClassProvidedScanner extends JClassesScanDefaultConfiguration implements JClassesScan {
+public class JClassProvidedScanner extends JClassesScanDefaultConfiguration implements JClassesScanner {
 
 	private final Class<?>[] clazzes;
 	

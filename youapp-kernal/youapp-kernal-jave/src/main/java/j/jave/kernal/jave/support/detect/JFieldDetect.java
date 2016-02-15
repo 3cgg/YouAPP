@@ -5,7 +5,7 @@ package j.jave.kernal.jave.support.detect;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JClassProvidedScanner;
-import j.jave.kernal.jave.support._package.JClassesScan;
+import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JClassesScanConfig;
 import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * default scan all classes in the CLASSPATH to detect the field . 
  *<p> you also can define customized implementation of {@code JClassesScan}  to provide whose classes need be processed.
  * @see JDefaultClassesScanner
- * @see JClassesScan
+ * @see JClassesScanner
  * @author J
  * @param <T>  the same as generic of {@link JFieldInfo }
  */
@@ -111,9 +111,9 @@ public class JFieldDetect<T> extends JClassesScanDefaultConfiguration
 	}
 	
 	
-	private JClassesScan classesScan=null;
+	private JClassesScanner classesScan=null;
 	
-	public void setClassesScan(JClassesScan classesScan) {
+	public void setClassesScan(JClassesScanner classesScan) {
 		this.classesScan = classesScan;
 	}
 	

@@ -12,9 +12,6 @@ import j.jave.kernal.jave.xml.node.JW3CStandardGetter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -112,25 +109,25 @@ public class JConfiguration extends HashMap<String, Object>{
 				
 				//classpath
 				LOGGER.info("scanning from classpath.");
-				List<File> files= JClassPathUtils.getClassPathFilesFromSystem();
+				List<File> files= JClassPathUtils.getRuntimeClassPathFiles();
 				processFiles(files);
 				
-				// for web
-				URL libUrl=Thread.currentThread().getContextClassLoader().getResource("../lib");
-				LOGGER.info("expected to find [WEB-INF/lib] : "+ (libUrl==null?"NULL":libUrl.toString()));
-				if(libUrl!=null){
-					File file=new File(libUrl.toURI());
-					if(file.isDirectory()){
-						processFiles(Arrays.asList(file));
-					}
-				}
-				
-				URI uri=Thread.currentThread().getContextClassLoader().getResource("").toURI();
-				LOGGER.info("expected to find [WEB-INF/classes] : "+ (uri==null?"NULL":uri.toString()));
-				File file=new File(uri);
-				if(file.isDirectory()){
-					processFiles(Arrays.asList(file));
-				}
+//				// for web
+//				URL libUrl=Thread.currentThread().getContextClassLoader().getResource("../lib");
+//				LOGGER.info("expected to find [WEB-INF/lib] : "+ (libUrl==null?"NULL":libUrl.toString()));
+//				if(libUrl!=null){
+//					File file=new File(libUrl.toURI());
+//					if(file.isDirectory()){
+//						processFiles(Arrays.asList(file));
+//					}
+//				}
+//				
+//				URI uri=Thread.currentThread().getContextClassLoader().getResource("").toURI();
+//				LOGGER.info("expected to find [WEB-INF/classes] : "+ (uri==null?"NULL":uri.toString()));
+//				File file=new File(uri);
+//				if(file.isDirectory()){
+//					processFiles(Arrays.asList(file));
+//				}
 				
 			}catch(Exception e){
 				LOGGER.error(e.getMessage(), e);

@@ -10,13 +10,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public abstract class JAbstractClassesScan extends JClassesScanDefaultConfiguration implements JClassesScan{
+public abstract class JAbstractClassesScanner extends JClassesScanDefaultConfiguration implements JClassesScanner{
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	protected final File file;
 	
-	public JAbstractClassesScan(File file){
+	public JAbstractClassesScanner(File file){
 		this.file=file;
 	}
 	

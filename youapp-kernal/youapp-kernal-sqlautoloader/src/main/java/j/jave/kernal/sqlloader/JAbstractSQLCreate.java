@@ -2,7 +2,7 @@ package j.jave.kernal.sqlloader;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._package.JClassesResolve;
+import j.jave.kernal.jave.support._package.JClassesScanUtil;
 import j.jave.kernal.jave.support._package.JFileSystemDefaultScanner;
 import j.jave.kernal.jave.support._package.JJARDefaultScanner;
 import j.jave.kernal.jave.utils.JClassPathUtils;
@@ -161,7 +161,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 		ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
 		Set<Class<?>> classes=new HashSet<Class<?>>();
 		
-		List<File> files= JClassPathUtils.getClassPathFilesFromSystem();
+		List<File> files= JClassPathUtils.getRuntimeClassPathFiles();
 		for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
 			File classPathFile =  iterator.next();
 			if(classPathFile.exists()){
@@ -174,7 +174,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesResolve.get().getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScanUtil.getImplements(defaultScan, clazz));
 				}
 				else{
 					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile);
@@ -182,7 +182,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesResolve.get().getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScanUtil.getImplements(defaultScan, clazz));
 				}
 			}
 		}

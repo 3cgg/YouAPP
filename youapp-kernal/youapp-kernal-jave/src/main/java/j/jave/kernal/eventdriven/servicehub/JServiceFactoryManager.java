@@ -27,7 +27,7 @@ import java.util.Set;
 public final class JServiceFactoryManager{
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
-	// the collection contains those services that is in youapp-*.xml.
+	// the collection contains services that are in youapp-*.xml.
 	private List<Class<? extends JServiceFactorySupport<? extends JService>>> staticDefinedServiceFactories=new ArrayList<Class<? extends JServiceFactorySupport<? extends JService>>>();
 	{
 		try{
@@ -50,6 +50,7 @@ public final class JServiceFactoryManager{
 			}
 			System.out.println("service manager processed items: "+items.size());
 		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
 			throw new JInitializationException(e);
 		}
 	}

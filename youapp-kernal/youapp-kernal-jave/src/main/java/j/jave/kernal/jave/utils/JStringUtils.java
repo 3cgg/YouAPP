@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.base64.JBase64Factory;
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
@@ -57,7 +57,7 @@ public abstract class JStringUtils {
 	 * @return
 	 */
 	public static String bytestoBASE64String(byte[] bytes) {
-		return JBase64Factory.getBase64().encodeBase64String(bytes);
+		return JBase64FactoryProvider.getBase64Factory().getBase64().encodeBase64String(bytes);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class JStringUtils {
 	 */
 	public static byte[] base64stringtobytes(String string) {
 		try {
-			return JBase64Factory.getBase64().decodeBase64(string);
+			return JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(string);
 		} catch (Exception e) {
 			LOGGER.warn("", e);
 			throw new JUtilException(e);

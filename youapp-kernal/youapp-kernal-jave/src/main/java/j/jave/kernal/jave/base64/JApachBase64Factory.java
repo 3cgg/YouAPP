@@ -3,7 +3,7 @@ package j.jave.kernal.jave.base64;
 
 class JApachBase64Factory implements JIBase64Factory {
 
-	private static JApachBase64Factory apachBase64Factory;
+	private static JApachBase64Factory apachBase64Factory=new JApachBase64Factory();
 	
 	private volatile boolean available=false;
 	
@@ -15,13 +15,13 @@ class JApachBase64Factory implements JIBase64Factory {
 	}
 	
 	static JApachBase64Factory get(){
-		if(apachBase64Factory==null){
-			synchronized (JApachBase64Factory.class) {
-				if(apachBase64Factory==null){
-					apachBase64Factory=new JApachBase64Factory();
-				}
-			}
-		}
+//		if(apachBase64Factory==null){
+//			synchronized (JApachBase64Factory.class) {
+//				if(apachBase64Factory==null){
+//					apachBase64Factory=new JApachBase64Factory();
+//				}
+//			}
+//		}
 		return apachBase64Factory;
 	}
 	

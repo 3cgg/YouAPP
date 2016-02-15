@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.logging;
 
 
-class JSystemConsoleLoggerFactory implements JILoggerFactory {
+public class JSystemConsoleLoggerFactory implements JILoggerFactory {
 
 	private static JSystemConsoleLoggerFactory systemConsoleLoggerFactory=new JSystemConsoleLoggerFactory();;
 	
@@ -14,7 +14,7 @@ class JSystemConsoleLoggerFactory implements JILoggerFactory {
 	private JSystemConsoleLoggerFactory() {
 	}
 	
-	static JSystemConsoleLoggerFactory get(){
+	public static JSystemConsoleLoggerFactory get(){
 		return systemConsoleLoggerFactory;
 	}
 	

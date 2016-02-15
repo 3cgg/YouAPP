@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.base64.JBase64Factory;
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,7 +26,7 @@ public class JObjectSerializableUtils {
 			ObjectOutputStream outputStream=new ObjectOutputStream(byteArrayOutputStream);
 			outputStream.writeObject(obj);
 			byte[] bytes=byteArrayOutputStream.toByteArray();
-			return JBase64Factory.getBase64().encodeBase64String(bytes);
+			return JBase64FactoryProvider.getBase64Factory().getBase64().encodeBase64String(bytes);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -40,7 +40,7 @@ public class JObjectSerializableUtils {
 	 */
 	public static <T> T deserialize(String string,Class<T> clazz){
 		try {
-			byte[] bytes=JBase64Factory.getBase64().decodeBase64(string);
+			byte[] bytes=JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(string);
 			ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(bytes));
 			return clazz.cast(inputStream.readObject());
 		} catch (Exception e) {

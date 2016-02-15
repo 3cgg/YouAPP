@@ -3,7 +3,7 @@ package j.jave.kernal.jave.logging;
 
 class JSLF4JLoggerFactory implements JILoggerFactory {
 
-	private static JSLF4JLoggerFactory jsl4jLoggerFactory;
+	private static JSLF4JLoggerFactory jsl4jLoggerFactory=new JSLF4JLoggerFactory();
 	
 	private volatile boolean available=false;
 	
@@ -15,13 +15,13 @@ class JSLF4JLoggerFactory implements JILoggerFactory {
 	}
 	
 	static JSLF4JLoggerFactory get(){
-		if(jsl4jLoggerFactory==null){
-			synchronized (JSLF4JLoggerFactory.class) {
-				if(jsl4jLoggerFactory==null){
-					jsl4jLoggerFactory=new JSLF4JLoggerFactory();
-				}
-			}
-		}
+//		if(jsl4jLoggerFactory==null){
+//			synchronized (JSLF4JLoggerFactory.class) {
+//				if(jsl4jLoggerFactory==null){
+//					jsl4jLoggerFactory=new JSLF4JLoggerFactory();
+//				}
+//			}
+//		}
 		return jsl4jLoggerFactory;
 	}
 	

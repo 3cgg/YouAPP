@@ -33,6 +33,16 @@
   <description>Apache http-client implement.</description>
 </property>
 
+<property>
+  <name>youapp.base64.factory</name>
+  <value>j.jave.kernal.jave.base64.JApachBase64Factory</value>
+  <description>Apache base64 implement.</description>
+</property>
 
+<property>
+  <name>youapp.logger.factory</name>
+  <value>j.jave.kernal.jave.logging.JSLF4JLoggerFactory</value>
+  <description>Slf4j logging API.</description>
+</property>
 
 </configuration>

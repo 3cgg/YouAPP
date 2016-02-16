@@ -23,7 +23,7 @@ import java.util.jar.JarFile;
  * @see JFilePathFilterConfig
  * @see JFileNameFilterConfig
  */
-public class JJARResourceURIScan extends JAbstractResourceURIScan {
+public class JJARResourceURIScanner extends JAbstractResourceURIScanner {
 	private final JarFile jarFile;
 	
 	private ClassLoader classLoader=ClassLoader.getSystemClassLoader();
@@ -32,11 +32,11 @@ public class JJARResourceURIScan extends JAbstractResourceURIScan {
 		this.classLoader = classLoader;
 	}
 	
-	public JJARResourceURIScan(JarFile jarFile){
+	public JJARResourceURIScanner(JarFile jarFile){
 		this.jarFile=jarFile;
 	}
 	
-	public JJARResourceURIScan(URI uri){
+	public JJARResourceURIScanner(URI uri){
 		try {
 			this.jarFile=new JarFile(new File(uri));
 		} catch (IOException e) {

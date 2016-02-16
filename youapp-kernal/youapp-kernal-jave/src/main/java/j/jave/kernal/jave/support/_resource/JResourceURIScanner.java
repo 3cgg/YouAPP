@@ -8,7 +8,7 @@ import java.util.List;
  * @author J
  *
  */
-public interface JResourceURIScan {
+public interface JResourceURIScanner {
 
 	List<URI> scan();
 

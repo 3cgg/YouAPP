@@ -18,15 +18,15 @@ import java.util.List;
  * @author J
  *
  */
-public class JFileSystemResourceURIScan extends JAbstractResourceURIScan {
+public class JFileSystemResourceURIScanner extends JAbstractResourceURIScanner {
 
 	private final JFile file;
 	
-	public JFileSystemResourceURIScan(JFile file){
+	public JFileSystemResourceURIScanner(JFile file){
 		this.file=file;
 	}
 	
-	public JFileSystemResourceURIScan(JPathResolver pathResolver){
+	public JFileSystemResourceURIScanner(JPathResolver pathResolver){
 		
 		URI uri=null;
 		try {

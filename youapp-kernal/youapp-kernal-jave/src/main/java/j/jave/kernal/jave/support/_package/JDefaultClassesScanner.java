@@ -70,13 +70,13 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 					JJARDefaultScanner defaultScan=new JJARDefaultScanner(classPathFile,clazz);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesScanUtil.getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.getSubClass(defaultScan, clazz));
 				}
 				else{
 					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile,clazz);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesScanUtil.getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.getSubClass(defaultScan, clazz));
 				}
 			}
 		}

@@ -5,7 +5,7 @@ package j.jave.kernal.jave.support._resource;
  * basic resource URI scanner.
  * @author J
  */
-public abstract class JAbstractResourceURIScan extends JResourceURIConfiguration implements JFilePathFilterConfig , JResourceURIScan{
+public abstract class JAbstractResourceURIScanner extends JResourceURIConfiguration implements JFilePathFilterConfig , JResourceURIScanner{
 	
 	/**
 	 * if scan all children directories recursively.

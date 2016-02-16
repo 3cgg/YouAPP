@@ -49,6 +49,7 @@ public abstract class JReflect {
 			clazz=clazz.getSuperclass();
 		}
 		if(targetMethod==null) throw new RuntimeException("Method ["+methodName+"] not found.");			
+		targetMethod.setAccessible(true);
 		return targetMethod.invoke(object, parameters);
 	}
 	
@@ -66,6 +67,7 @@ public abstract class JReflect {
 		Class<?> clazz=object.getClass();
 		Method targetMethod=clazz.getMethod(methodName, parameterTypes);
 		if(targetMethod==null) throw new RuntimeException("Method ["+methodName+"] not found.");			
+		targetMethod.setAccessible(true);
 		return targetMethod.invoke(object, parameters);
 	}
 	

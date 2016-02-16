@@ -2,7 +2,6 @@ package j.jave.kernal.eventdriven.servicehub.monitor;
 
 import j.jave.kernal.jave.model.JModel;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,19 +20,19 @@ public class JServiceHubMeta implements JModel {
 	 * KEY: service name. implements <code>JService</code>
 	 * <p>VALUE : service factory name.implements <code>JServiceFactory</code>
 	 */
-	private Map<String, String> serviceNames=new HashMap<String,String>();
+	private Map<String, String> serviceNames=new ConcurrentHashMap<String,String>();
 	
 	/**
 	 * KEY: service name. implements <code>JService</code>
 	 * <p>VALUE : service factory name.implements <code>JServiceFactory</code>
 	 */
-	private Map<String, String> activeServiceNames=new HashMap<String,String>();
+	private Map<String, String> activeServiceNames=new ConcurrentHashMap<String,String>();
 	
 	/**
 	 * KEY: service name. implements <code>JService</code>
 	 * <p>VALUE : service factory name.implements <code>JServiceFactory</code>
 	 */
-	private Map<String, String> inactiveServiceNames=new HashMap<String,String>();
+	private Map<String, String> inactiveServiceNames=new ConcurrentHashMap<String,String>();
 	
 	/**
 	 * KEY: service name. implements <code>JService</code>
@@ -41,6 +40,8 @@ public class JServiceHubMeta implements JModel {
 	 */
 	private final  Map<String, List<String>> serviceListenerNames=new ConcurrentHashMap<String, List<String>>();
 
+	private Map<String,JServiceRuntimeMeta> serviceRuntimeMetas=new ConcurrentHashMap<String,JServiceRuntimeMeta>();
+	
 	public int getServiceCount() {
 		return serviceCount;
 	}
@@ -126,5 +127,13 @@ public class JServiceHubMeta implements JModel {
 		return serviceListenerNames;
 	}
 	
+	public Map<String, JServiceRuntimeMeta> getServiceRuntimeMetas() {
+		return serviceRuntimeMetas;
+	}
+	
+	public void setServiceRuntimeMetas(
+			Map<String, JServiceRuntimeMeta> serviceRuntimeMetas) {
+		this.serviceRuntimeMetas = serviceRuntimeMetas;
+	}
 	
 }

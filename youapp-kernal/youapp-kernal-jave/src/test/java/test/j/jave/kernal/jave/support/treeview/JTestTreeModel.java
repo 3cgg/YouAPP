@@ -1,6 +1,8 @@
 package test.j.jave.kernal.jave.support.treeview;
 
 import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.support.treeview.JDefaultTreeRepresent;
+import j.jave.kernal.jave.support.treeview.JHierarchyTreeRepresent;
 import j.jave.kernal.jave.support.treeview.JTree;
 import j.jave.kernal.jave.support.treeview.JTreeStrcture;
 
@@ -15,6 +17,11 @@ public class JTestTreeModel implements JTreeStrcture {
 	private String parentId;
 	
 	private boolean isText;
+	
+	@Override
+	public String getName() {
+		return id;
+	}
 	
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
@@ -143,9 +150,16 @@ public static void main(String[] args) throws Exception {
 			
 			System.out.println(jTestModel.getId()+"----------"+jTestModel.getParentId()+"--------------"+jTestModel.isText());
 		}
+		JTree tree=new JTree(testModels).get();
 		
+		JDefaultTreeRepresent defaultTreeRepresent=new JDefaultTreeRepresent(tree);
+		System.out.println(defaultTreeRepresent.represent());
 		
-		System.out.println(new JTree(testModels).get().represent());
+		JHierarchyTreeRepresent hierarchyTreeRepresent=new JHierarchyTreeRepresent(tree);
+		System.out.println(hierarchyTreeRepresent.represent());
+		
+//		String treeString=JJSON.get().formatObject(tree.getTreeNodes());
+//		System.out.println(treeString);
 	}
 	
 }

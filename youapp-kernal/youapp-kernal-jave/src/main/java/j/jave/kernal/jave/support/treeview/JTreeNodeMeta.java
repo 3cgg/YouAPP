@@ -2,11 +2,9 @@ package j.jave.kernal.jave.support.treeview;
 
 import java.util.LinkedList;
 
-public class JTreeNodeConfig {
+public class JTreeNodeMeta {
 	
 	private int level;
-
-	private JTreeNodeRepresentStrategy treeNodeRepresentStrategy;
 	
 	private LinkedList<String> path=new LinkedList<String>();
 	
@@ -14,6 +12,18 @@ public class JTreeNodeConfig {
 	 * offset under the same level
 	 */
 	private int offset;
+	
+	/**
+	 * 1
+	 * 1.1
+	 * 1.1.1
+	 * 1.2
+	 * 1.2.1
+	 * 2
+	 * 2.1
+	 * ...
+	 */
+	private String globalOffset;
 	
 	public int getOffset() {
 		return offset;
@@ -31,15 +41,6 @@ public class JTreeNodeConfig {
 		this.level = level;
 	}
 
-	public JTreeNodeRepresentStrategy getTreeNodeRepresentStrategy() {
-		return treeNodeRepresentStrategy;
-	}
-
-	public void setTreeNodeRepresentStrategy(
-			JTreeNodeRepresentStrategy treeNodeRepresentStrategy) {
-		this.treeNodeRepresentStrategy = treeNodeRepresentStrategy;
-	}
-
 	public LinkedList<String> getPath() {
 		return path;
 	}
@@ -54,6 +55,14 @@ public class JTreeNodeConfig {
 	
 	public void addPathPart(String id){
 		path.add(id);
+	}
+
+	public String getGlobalOffset() {
+		return globalOffset;
+	}
+
+	public void setGlobalOffset(String globalOffset) {
+		this.globalOffset = globalOffset;
 	}
 	
 }

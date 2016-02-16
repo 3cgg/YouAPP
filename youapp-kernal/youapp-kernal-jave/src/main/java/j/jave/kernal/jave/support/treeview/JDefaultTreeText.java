@@ -4,7 +4,7 @@ public class JDefaultTreeText implements JTreeText {
 	
 	private JTreeElement parent;
 	
-	private JTreeNodeConfig textConfig;
+	private JTreeNodeMeta textConfig;
 	
 	private final JTreeStrcture data;
 	
@@ -24,11 +24,11 @@ public class JDefaultTreeText implements JTreeText {
 		this.parent = parent;
 	}
 
-	public JTreeNodeConfig getTextConfig() {
+	public JTreeNodeMeta getTextConfig() {
 		return textConfig;
 	}
 
-	public void setTextConfig(JTreeNodeConfig textConfig) {
+	public void setTextConfig(JTreeNodeMeta textConfig) {
 		this.textConfig = textConfig;
 	}
 
@@ -38,7 +38,7 @@ public class JDefaultTreeText implements JTreeText {
 	}
 
 	@Override
-	public JTreeNodeConfig getNodeConfig() {
+	public JTreeNodeMeta getNodeMeta() {
 		return textConfig;
 	}
 	

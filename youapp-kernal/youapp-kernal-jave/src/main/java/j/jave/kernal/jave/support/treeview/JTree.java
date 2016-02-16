@@ -2,7 +2,6 @@ package j.jave.kernal.jave.support.treeview;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support.console.JRepresent;
 import j.jave.kernal.jave.utils.JAssert;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JTree implements JRepresent{
+public class JTree{
 
 	private static JLogger LOGGER=JLoggerFactory.getLogger(JTree.class);
 	
@@ -63,30 +62,29 @@ public class JTree implements JRepresent{
 			JTreeNode treeNode=treeNodeMap.get(item.getId());
 			if(treeNode==null){
 				//new initialization
-				JTreeNodeConfig treeNodeConfig=new JTreeNodeConfig();
+				JTreeNodeMeta treeNodeConfig=new JTreeNodeMeta();
 				
 				if(item.isText()){
 					// text
 					JDefaultTreeText defaultTreeText=new JDefaultTreeText(item);
 					treeNode=defaultTreeText;
 					defaultTreeText.setTextConfig(treeNodeConfig);
-					treeNodeConfig.setTreeNodeRepresentStrategy(new JDefaultNodeRepresentStrategy(defaultTreeText));
 				}
 				else{
 					// element  , capability of holding other element of text
 					JDefaultTreeElement defaultTreeElement=new JDefaultTreeElement(item);
 					treeNode=defaultTreeElement;
 					defaultTreeElement.setElementConfig(treeNodeConfig);
-					treeNodeConfig.setTreeNodeRepresentStrategy(new JDefaultNodeRepresentStrategy(defaultTreeElement));
 				}
 				
 				treeNodeMap.put(item.getId(), treeNode);
 				
 				if(item.getParentId()==null){
 					//top level as without parent id , processed , removed
-					treeNodeConfig.setLevel(0);
+					treeNodeConfig.setLevel(1);
 					treeNodeConfig.addPathPart(item.getId()); 
 					treeNodeConfig.setOffset(treeNodes.size()+1);
+					treeNodeConfig.setGlobalOffset(String.valueOf(treeNodeConfig.getOffset()));
 					treeNodes.add(treeNode);
 				}
 				else{
@@ -118,13 +116,13 @@ public class JTree implements JRepresent{
 				JAssert.state(parentTreeElement!=thisTreeNode, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] is the as self.");
 				JAssert.state(parentTreeElement.getParent()!=thisTreeNode, "the model ["+item.getParentId()+"] and model ["+item.getId()+"] references each other..");
 				
-				thisTreeNode.getNodeConfig().setLevel(parentTreeElement.getNodeConfig().getLevel()+1);
+				thisTreeNode.getNodeMeta().setLevel(parentTreeElement.getNodeMeta().getLevel()+1);
 				
-				thisTreeNode.getNodeConfig().addPathParts(parentTreeElement.getNodeConfig().getPath());
-				thisTreeNode.getNodeConfig().addPathPart(item.getId());
+				thisTreeNode.getNodeMeta().addPathParts(parentTreeElement.getNodeMeta().getPath());
+				thisTreeNode.getNodeMeta().addPathPart(item.getId());
 				
-				thisTreeNode.getNodeConfig().setOffset(parentTreeElement.elementCount()+1);
-				
+				thisTreeNode.getNodeMeta().setOffset(parentTreeElement.elementCount()+1);
+				thisTreeNode.getNodeMeta().setGlobalOffset(parentTreeElement.getNodeMeta().getGlobalOffset()+"."+thisTreeNode.getNodeMeta().getOffset());
 				parentTreeElement.addChildren(thisTreeNode);
 				thisTreeNode.addParent(parentTreeElement);
 			}
@@ -133,25 +131,9 @@ public class JTree implements JRepresent{
 		return this;
 	}
 	
-	@Override
-	public String represent() {
-		
-		StringBuffer stringBuffer=new StringBuffer();
-		
-		for (Iterator<JTreeNode> iterator = treeNodes.iterator(); iterator.hasNext();) {
-			JTreeNode treeNode =  iterator.next();
-			JTreeWalker treeWalker=new JTreeWalker(treeNode);
-			while(treeWalker.hasNext()){
-				JTreeNode walkerTreeNode=treeWalker.nextNode();
-				JTreeStrcture treeStrcture= walkerTreeNode.getData();
-				
-				stringBuffer.append("\n"+walkerTreeNode.getNodeConfig().getTreeNodeRepresentStrategy().represent()
-						+"    ----data::--- id->"+treeStrcture.getId()+"---parent-id->"+treeStrcture.getParentId()+"---istext->"+treeStrcture.isText());
-			}
-		}
-		return stringBuffer.toString();
+	public List<JTreeNode> getTreeNodes() {
+		return treeNodes;
 	}
-	
 	
 	
 }

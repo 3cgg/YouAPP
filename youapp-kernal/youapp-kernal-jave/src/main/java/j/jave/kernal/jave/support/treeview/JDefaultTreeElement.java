@@ -9,7 +9,7 @@ public class JDefaultTreeElement implements JTreeElement {
 	
 	private List<JTreeNode> children=new ArrayList<JTreeNode>();
 	
-	private JTreeNodeConfig elementConfig;
+	private JTreeNodeMeta elementConfig;
 	
 	private final JTreeStrcture data;
 	
@@ -39,11 +39,11 @@ public class JDefaultTreeElement implements JTreeElement {
 		this.children = children;
 	}
 
-	public JTreeNodeConfig getElementConfig() {
+	public JTreeNodeMeta getElementConfig() {
 		return elementConfig;
 	}
 
-	public void setElementConfig(JTreeNodeConfig elementConfig) {
+	public void setElementConfig(JTreeNodeMeta elementConfig) {
 		this.elementConfig = elementConfig;
 	}
 
@@ -58,7 +58,7 @@ public class JDefaultTreeElement implements JTreeElement {
 	}
 
 	@Override
-	public JTreeNodeConfig getNodeConfig() {
+	public JTreeNodeMeta getNodeMeta() {
 		return elementConfig;
 	}
 

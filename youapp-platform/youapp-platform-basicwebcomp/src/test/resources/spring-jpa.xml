@@ -5,6 +5,7 @@
     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
     xsi:schemaLocation="http://www.springframework.org/schema/beans    
       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd    
       http://www.springframework.org/schema/context    
@@ -15,6 +16,7 @@
       http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
       http://www.springframework.org/schema/tx
       http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+      http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
       ">  
       
     <bean id="dataSource"  
@@ -25,30 +27,47 @@
         <property name="password" value="${youapp.database.password}" />  
     </bean>  
   	
-     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"  >  
-       <property name="dataSource" ref="dataSource" />  
-       <!-- <property name="mapperLocations" value="classpath:db/cfg/mapper/*.xml"/> --> 
-        <property name="configLocation">  
-        <value>classpath:mybatis-settings.xml</value>  
-    </property>  
-       <property name="configurationProperties">  
-        <props>  
-            <prop key="cacheEnabled">false</prop>  
-        </props>  
-    </property>  
-       
-    </bean>  
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
-       <property name="basePackage" 
-       value="j.jave" />  
-       <property name="markerInterface" value="j.jave.platform.mybatis.JMapper"/>  
-       <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>  
-    </bean>  
-  
-    <bean id="transactionManager"  
-        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-        <property name="dataSource" ref="dataSource" />  
-    </bean>   
+      <jpa:repositories
+            base-package="j.jave"
+            repository-impl-postfix="Impl"
+            factory-class="j.jave.platform.basicwebcomp.spirngjpa.JSpringJPARepositoryFactoryBean" 
+            entity-manager-factory-ref="entityManagerFactory"
+            transaction-manager-ref="transactionManager">
+    </jpa:repositories>   
+     <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="j.jave"/>
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>
+        </property>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="generateDdl" value="false"/>
+                <property name="database" value="H2"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect"/>
+                <property name="showSql" value="true"/>
+            </bean>
+        </property>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+        <property name="jpaPropertyMap">
+            <map>
+                <entry key="hibernate.query.substitutions" value="true 1, false 0"/>
+                <entry key="hibernate.default_batch_fetch_size" value="16"/>
+                <entry key="hibernate.max_fetch_depth" value="2"/>
+                <entry key="hibernate.generate_statistics" value="true"/>
+                <entry key="hibernate.bytecode.use_reflection_optimizer" value="true"/>
+                <entry key="hibernate.cache.use_second_level_cache" value="false"/>
+                <entry key="hibernate.cache.use_query_cache" value="false"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
       
 	<aop:config>    
         <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* j.jave.framework.**.service.*.*(..) )"  />

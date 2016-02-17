@@ -8,11 +8,22 @@ import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
 /**
  * @author Administrator
  *
  */
 @JTable(name="PARAM")
+@Entity
+@Table(name="PARAM")
 public class Param extends JBaseModel {
 	
 	/**
@@ -71,6 +82,14 @@ public class Param extends JBaseModel {
 		this.description = description;
 	}
 
-	
+	@Id
+    @GeneratedValue(strategy=GenerationType.AUTO, generator = "uuid")
+	@GenericGenerator(name="uuid", strategy="uuid2")
+    @Column(name = "ID")
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return super.getId();
+	}
 	
 }

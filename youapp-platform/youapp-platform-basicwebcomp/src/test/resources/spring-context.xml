@@ -20,9 +20,9 @@
 	<context:component-scan base-package="j.jave" ></context:component-scan>
 
 	<context:property-placeholder location="classpath:youapp-db.properties"/>
-	
 	<import resource="spring-mybatis.xml"/>
-	
+	<!-- <import resource="spring-mybatis.xml"/> -->
+	<import resource="spring-jpa.xml"/>
 	
 
 

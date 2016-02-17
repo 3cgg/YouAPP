@@ -30,6 +30,6 @@ public interface JTreeNode {
 	 * return the data of the node.
 	 * @return
 	 */
-	public JTreeStrcture getData();
+	public JSimpleTreeStrcture getData();
 	
 }

@@ -1,0 +1,29 @@
+package j.jave.kernal.jave.support.treeview;
+
+/**
+ * any model that need represent tree view should implement the interface to
+ * enable the function.
+ * @author J
+ *
+ */
+public interface JSimpleTreeStrcture {
+
+	/**
+	 * the identification of the model.
+	 * @return
+	 */
+	public String getId();
+	
+	/**
+	 * the represent name.
+	 * @return
+	 */
+	public String getName();
+	
+	/**
+	 * the identification of the parent model.
+	 * @return
+	 */
+	public String getParentId();
+	
+}

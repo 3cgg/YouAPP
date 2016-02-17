@@ -11,13 +11,13 @@ public class JDefaultTreeElement implements JTreeElement {
 	
 	private JTreeNodeMeta elementConfig;
 	
-	private final JTreeStrcture data;
+	private final JSimpleTreeStrcture data;
 	
-	public JDefaultTreeElement(JTreeStrcture data){
+	public JDefaultTreeElement(JSimpleTreeStrcture data){
 		this.data=data;
 	}
 	
-	public JTreeStrcture getData() {
+	public JSimpleTreeStrcture getData() {
 		return data;
 	}
 

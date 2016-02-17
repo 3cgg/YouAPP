@@ -7,9 +7,11 @@ import j.jave.kernal.jave.utils.JAssert;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JTree{
@@ -27,27 +29,29 @@ public class JTree{
 	 */
 	private List<JTreeNode> treeNodes=new ArrayList<JTreeNode>();;
 	
-	private final Collection<? extends JTreeStrcture> treeStrctures;
+	private final Collection<? extends JSimpleTreeStrcture> treeStrctures;
 	
-	public JTree(Collection<? extends JTreeStrcture> treeStrctures){
+	public JTree(Collection<? extends JSimpleTreeStrcture> treeStrctures){
 		this.treeStrctures=treeStrctures;
 		this.howto=Action.REPORT;
 	}
 	
-	public JTree(Collection<? extends JTreeStrcture> treeStrctures,Action howto){
+	public JTree(Collection<? extends JSimpleTreeStrcture> treeStrctures,Action howto){
 		this.treeStrctures=treeStrctures;
 		this.howto=howto;
 	}
 	
 	public JTree get(){
 		
-		Map<String, JTreeStrcture> models=new HashMap<String, JTreeStrcture>();
+		Map<String, JSimpleTreeStrcture> models=new HashMap<String, JSimpleTreeStrcture>();
 		LinkedBlockingQueue<String> itemIndexQueue=new LinkedBlockingQueue<String>(treeStrctures.size());
+		Set<String> parentNodes=new HashSet<String>();
 		
-		for (Iterator<? extends JTreeStrcture> iterator = treeStrctures.iterator(); iterator.hasNext();) {
-			JTreeStrcture treeStrcture =  iterator.next();
+		for (Iterator<? extends JSimpleTreeStrcture> iterator = treeStrctures.iterator(); iterator.hasNext();) {
+			JSimpleTreeStrcture treeStrcture =  iterator.next();
 			models.put(treeStrcture.getId(), treeStrcture);
 			itemIndexQueue.add(treeStrcture.getId());
+			parentNodes.add(treeStrcture.getParentId());
 		}
 		
 		Map<String, JTreeNode> treeNodeMap=new HashMap<String, JTreeNode>();
@@ -57,14 +61,20 @@ public class JTree{
 		int cycleCount=0;
 		while(!itemIndexQueue.isEmpty()&&cycleCount<maxCycle){
 			cycleCount++;
-			JTreeStrcture item = models.get(itemIndexQueue.poll());
+			JSimpleTreeStrcture item = models.get(itemIndexQueue.poll());
 			
 			JTreeNode treeNode=treeNodeMap.get(item.getId());
 			if(treeNode==null){
 				//new initialization
 				JTreeNodeMeta treeNodeConfig=new JTreeNodeMeta();
-				
-				if(item.isText()){
+				boolean isText=false;
+				if(JAdvancedTreeStrcture.class.isInstance(item)){
+					isText=((JAdvancedTreeStrcture)item).isText();
+				}
+				else{
+					isText=!parentNodes.contains(item.getId());
+				}
+				if(isText){
 					// text
 					JDefaultTreeText defaultTreeText=new JDefaultTreeText(item);
 					treeNode=defaultTreeText;
@@ -83,6 +93,7 @@ public class JTree{
 					//top level as without parent id , processed , removed
 					treeNodeConfig.setLevel(1);
 					treeNodeConfig.addPathPart(item.getId()); 
+					treeNodeConfig.setAbsolutePath("/"+item.getId());
 					treeNodeConfig.setOffset(treeNodes.size()+1);
 					treeNodeConfig.setGlobalOffset(String.valueOf(treeNodeConfig.getOffset()));
 					treeNodes.add(treeNode);
@@ -120,6 +131,7 @@ public class JTree{
 				
 				thisTreeNode.getNodeMeta().addPathParts(parentTreeElement.getNodeMeta().getPath());
 				thisTreeNode.getNodeMeta().addPathPart(item.getId());
+				thisTreeNode.getNodeMeta().setAbsolutePath(parentTreeElement.getNodeMeta().getAbsolutePath()+"/"+item.getId());
 				
 				thisTreeNode.getNodeMeta().setOffset(parentTreeElement.elementCount()+1);
 				thisTreeNode.getNodeMeta().setGlobalOffset(parentTreeElement.getNodeMeta().getGlobalOffset()+"."+thisTreeNode.getNodeMeta().getOffset());

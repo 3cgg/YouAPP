@@ -6,13 +6,13 @@ public class JDefaultTreeText implements JTreeText {
 	
 	private JTreeNodeMeta textConfig;
 	
-	private final JTreeStrcture data;
+	private final JSimpleTreeStrcture data;
 	
-	public JDefaultTreeText(JTreeStrcture data){
+	public JDefaultTreeText(JSimpleTreeStrcture data){
 		this.data=data;
 	}
 	
-	public JTreeStrcture getData() {
+	public JSimpleTreeStrcture getData() {
 		return data;
 	}
 

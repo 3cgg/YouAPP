@@ -1,16 +1,16 @@
 package test.j.jave.kernal.jave.support.treeview;
 
 import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.support.treeview.JAdvancedTreeStrcture;
 import j.jave.kernal.jave.support.treeview.JDefaultTreeRepresent;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeRepresent;
 import j.jave.kernal.jave.support.treeview.JTree;
-import j.jave.kernal.jave.support.treeview.JTreeStrcture;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class JTestTreeModel implements JTreeStrcture {
+public class TestAdvancedTreeModel implements JAdvancedTreeStrcture {
 
 	private String id;
 	
@@ -35,12 +35,6 @@ public class JTestTreeModel implements JTreeStrcture {
 	public String getParentId() {
 		return parentId;
 	}
-
-	@Override
-	public boolean isText() {
-		return isText;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -53,10 +47,10 @@ public class JTestTreeModel implements JTreeStrcture {
 	
 public static void main(String[] args) throws Exception {
 		
-		List<JTestTreeModel> testModels=new ArrayList<JTestTreeModel>();
+		List<TestAdvancedTreeModel> testModels=new ArrayList<TestAdvancedTreeModel>();
 		
 		//1
-		JTestTreeModel testModel1=new JTestTreeModel();
+		TestAdvancedTreeModel testModel1=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate1=new JObjectPopulate(testModel1);
 		objectPopulate1.populate();
 		testModel1.setText(false);
@@ -64,7 +58,7 @@ public static void main(String[] args) throws Exception {
 		testModels.add(testModel1);
 		
 		//2
-		JTestTreeModel testModel2=new JTestTreeModel();
+		TestAdvancedTreeModel testModel2=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate2=new JObjectPopulate(testModel2);
 		objectPopulate2.populate();
 		testModels.add(testModel2);
@@ -72,7 +66,7 @@ public static void main(String[] args) throws Exception {
 		testModel2.setParentId(null);
 		
 		//3
-		JTestTreeModel testModel3=new JTestTreeModel();
+		TestAdvancedTreeModel testModel3=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate3=new JObjectPopulate(testModel3);
 		objectPopulate3.populate();
 		testModels.add(testModel3);
@@ -80,7 +74,7 @@ public static void main(String[] args) throws Exception {
 		testModel3.setParentId(null);
 		
 		//1.1
-		JTestTreeModel testModel11=new JTestTreeModel();
+		TestAdvancedTreeModel testModel11=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate11=new JObjectPopulate(testModel11);
 		objectPopulate11.populate();
 		testModel11.setParentId(testModel1.getId());
@@ -88,7 +82,7 @@ public static void main(String[] args) throws Exception {
 		testModel11.setText(false);
 		
 		//2.1
-		JTestTreeModel testModel21=new JTestTreeModel();
+		TestAdvancedTreeModel testModel21=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate21=new JObjectPopulate(testModel21);
 		objectPopulate21.populate();
 		testModel21.setParentId(testModel2.getId());
@@ -96,14 +90,14 @@ public static void main(String[] args) throws Exception {
 		testModel21.setText(false);
 		
 		//1.1.1
-		JTestTreeModel testModel111=new JTestTreeModel();
+		TestAdvancedTreeModel testModel111=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate111=new JObjectPopulate(testModel111);
 		objectPopulate111.populate();
 		testModel111.setParentId(testModel11.getId());
 		testModels.add(testModel111);
 		
 		//2.2
-		JTestTreeModel testModel22=new JTestTreeModel();
+		TestAdvancedTreeModel testModel22=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate22=new JObjectPopulate(testModel22);
 		objectPopulate22.populate();
 		testModel22.setParentId(testModel2.getId());
@@ -111,7 +105,7 @@ public static void main(String[] args) throws Exception {
 		testModel22.setText(false);
 		
 		//1.2
-		JTestTreeModel testModel12=new JTestTreeModel();
+		TestAdvancedTreeModel testModel12=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate12=new JObjectPopulate(testModel12);
 		objectPopulate12.populate();
 		testModel12.setParentId(testModel1.getId());
@@ -119,7 +113,7 @@ public static void main(String[] args) throws Exception {
 		testModel12.setText(false);
 		
 		//4
-		JTestTreeModel testModel4=new JTestTreeModel();
+		TestAdvancedTreeModel testModel4=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate4=new JObjectPopulate(testModel4);
 		objectPopulate4.populate();
 		testModels.add(testModel4);
@@ -127,7 +121,7 @@ public static void main(String[] args) throws Exception {
 		testModel4.setParentId(null);
 		
 		//5-5
-		JTestTreeModel testModel5_5=new JTestTreeModel();
+		TestAdvancedTreeModel testModel5_5=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate5_5=new JObjectPopulate(testModel5_5);
 		objectPopulate5_5.populate();
 		testModels.add(testModel5_5);
@@ -135,7 +129,7 @@ public static void main(String[] args) throws Exception {
 		testModel5_5.setParentId(null);
 		
 		//6_3_6
-		JTestTreeModel testModel6_3_6=new JTestTreeModel();
+		TestAdvancedTreeModel testModel6_3_6=new TestAdvancedTreeModel();
 		JObjectPopulate objectPopulate6_3_6=new JObjectPopulate(testModel6_3_6);
 		objectPopulate6_3_6.populate();
 		testModel6_3_6.setParentId(testModel3.getId());
@@ -145,10 +139,10 @@ public static void main(String[] args) throws Exception {
 //		testModel3.setParentId(testModel6_3_6.getId());
 		
 		
-		for (Iterator<JTestTreeModel> iterator = testModels.iterator(); iterator.hasNext();) {
-			JTestTreeModel jTestModel =  iterator.next();
-			
-			System.out.println(jTestModel.getId()+"----------"+jTestModel.getParentId()+"--------------"+jTestModel.isText());
+		for (Iterator<TestAdvancedTreeModel> iterator = testModels.iterator(); iterator.hasNext();) {
+			TestAdvancedTreeModel jTestModel =  iterator.next();
+			String split="----------";
+			System.out.println(split+jTestModel.getId()+split+jTestModel.getParentId()+split+jTestModel.isText+split);
 		}
 		JTree tree=new JTree(testModels).get();
 		
@@ -161,5 +155,10 @@ public static void main(String[] args) throws Exception {
 //		String treeString=JJSON.get().formatObject(tree.getTreeNodes());
 //		System.out.println(treeString);
 	}
+
+@Override
+public boolean isText() {
+	return isText;
+}
 	
 }

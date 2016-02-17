@@ -8,6 +8,7 @@ public class JTreeNodeMeta {
 	
 	private LinkedList<String> path=new LinkedList<String>();
 	
+	private String absolutePath;
 	/**
 	 * offset under the same level
 	 */
@@ -63,6 +64,14 @@ public class JTreeNodeMeta {
 
 	public void setGlobalOffset(String globalOffset) {
 		this.globalOffset = globalOffset;
+	}
+
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
 	}
 	
 }

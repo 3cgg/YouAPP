@@ -27,22 +27,31 @@ public class JTree{
 	/**
 	 * tree view 
 	 */
-	private List<JTreeNode> treeNodes=new ArrayList<JTreeNode>();;
+	private List<JTreeNode> treeNodes;
 	
 	private final Collection<? extends JSimpleTreeStrcture> treeStrctures;
 	
+	/**
+	 * convenience to {@link #JTree(Collection, Action.REPORT))}
+	 * @param treeStrctures
+	 */
 	public JTree(Collection<? extends JSimpleTreeStrcture> treeStrctures){
 		this.treeStrctures=treeStrctures;
 		this.howto=Action.REPORT;
 	}
 	
+	/**
+	 * @param treeStrctures
+	 * @param howto set whether to report error while processing the tree structure.
+	 */
 	public JTree(Collection<? extends JSimpleTreeStrcture> treeStrctures,Action howto){
 		this.treeStrctures=treeStrctures;
 		this.howto=howto;
 	}
 	
-	public JTree get(){
-		
+	public synchronized JTree get(){
+		if(treeNodes!=null) return this;
+		treeNodes=new ArrayList<JTreeNode>();
 		Map<String, JSimpleTreeStrcture> models=new HashMap<String, JSimpleTreeStrcture>();
 		LinkedBlockingQueue<String> itemIndexQueue=new LinkedBlockingQueue<String>(treeStrctures.size());
 		Set<String> parentNodes=new HashSet<String>();
@@ -120,26 +129,57 @@ public class JTree{
 					}
 				}
 				
-				JAssert.state(parentTreeNode!=null, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] does not exists.");
-				JAssert.state(JTreeElement.class.isInstance(parentTreeNode), "text ["+item.getId()+"] cannot be included in another text (parent) ["+parentId+"]");
+				expected=JTreeElement.class.isInstance(parentTreeNode);
+				if(!expected){
+					String message="text ["+item.getId()+"] cannot be included in another text (parent) ["+parentId+"]";
+					if(howto==Action.REPORT){
+						JAssert.state(expected, message);
+					}
+					else if(howto==Action.DROP){
+						LOGGER.info(message);
+						continue;
+					}
+				}
+				
+//				JAssert.state(parentTreeNode!=null, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] does not exists.");
+//				JAssert.state(JTreeElement.class.isInstance(parentTreeNode), "text ["+item.getId()+"] cannot be included in another text (parent) ["+parentId+"]");
 				JTreeElement parentTreeElement=((JTreeElement)parentTreeNode);
 				JTreeNode thisTreeNode=treeNodeMap.get(item.getId());
-				JAssert.state(parentTreeElement!=thisTreeNode, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] is the as self.");
-				JAssert.state(parentTreeElement.getParent()!=thisTreeNode, "the model ["+item.getParentId()+"] and model ["+item.getId()+"] references each other..");
+//				JAssert.state(parentTreeElement!=thisTreeNode, "the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] is the as self.");
+				expected=parentTreeElement!=thisTreeNode;
+				if(!expected){
+					String message="the parent ["+item.getParentId()+"] of model with id ["+item.getId()+"] is the as self.";
+					if(howto==Action.REPORT){
+						JAssert.state(expected, message);
+					}
+					else if(howto==Action.DROP){
+						LOGGER.info(message);
+						continue;
+					}
+				}
 				
+//				JAssert.state(parentTreeElement.getParent()!=thisTreeNode, "the model ["+item.getParentId()+"] and model ["+item.getId()+"] references each other..");
+				expected=parentTreeElement.getParent()!=thisTreeNode;
+				if(!expected){
+					String message="the model ["+item.getParentId()+"] and model ["+item.getId()+"] references each other.";
+					if(howto==Action.REPORT){
+						JAssert.state(expected, message);
+					}
+					else if(howto==Action.DROP){
+						LOGGER.info(message);
+						continue;
+					}
+				}
 				thisTreeNode.getNodeMeta().setLevel(parentTreeElement.getNodeMeta().getLevel()+1);
-				
 				thisTreeNode.getNodeMeta().addPathParts(parentTreeElement.getNodeMeta().getPath());
 				thisTreeNode.getNodeMeta().addPathPart(item.getId());
 				thisTreeNode.getNodeMeta().setAbsolutePath(parentTreeElement.getNodeMeta().getAbsolutePath()+"/"+item.getId());
-				
 				thisTreeNode.getNodeMeta().setOffset(parentTreeElement.elementCount()+1);
 				thisTreeNode.getNodeMeta().setGlobalOffset(parentTreeElement.getNodeMeta().getGlobalOffset()+"."+thisTreeNode.getNodeMeta().getOffset());
 				parentTreeElement.addChildren(thisTreeNode);
 				thisTreeNode.addParent(parentTreeElement);
 			}
 		}
-		
 		return this;
 	}
 	

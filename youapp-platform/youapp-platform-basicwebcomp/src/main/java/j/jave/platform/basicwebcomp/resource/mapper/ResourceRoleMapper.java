@@ -5,6 +5,7 @@ package j.jave.platform.basicwebcomp.resource.mapper;
 
 import j.jave.kernal.jave.model.support.JModelMapper;
 import j.jave.platform.basicwebcomp.resource.model.ResourceRole;
+import j.jave.platform.basicwebcomp.resource.repo.ResourceRoleRepo;
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="ResourceRoleMapper")
 @JModelMapper(component="ResourceRoleMapper",name=ResourceRole.class)
-public interface ResourceRoleMapper extends JMapper<ResourceRole> {
+public interface ResourceRoleMapper extends JMapper<ResourceRole>,ResourceRoleRepo<JMapper<ResourceRole>> {
 
 	List<ResourceRole> getResourceRolesByResourceId(@Param(value="resourceId")String resourceId);
 	

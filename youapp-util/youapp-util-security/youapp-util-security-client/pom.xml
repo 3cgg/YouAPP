@@ -21,7 +21,7 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-http</artifactId>
+			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		

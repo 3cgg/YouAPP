@@ -6,9 +6,9 @@ package j.jave.platform.basicwebcomp.core.service;
 import j.jave.kernal.jave.exception.JConcurrentException;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.mybatis.JMapper;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -31,7 +31,7 @@ public abstract class AbstractBaseService {
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void proxyOnSave(JMapper jMapper, User authorizer, JBaseModel jBaseModel){
+	protected <T extends JBaseModel> void proxyOnSave(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
 		jBaseModel.setCreateId(authorizer.getId());
 		jBaseModel.setCreateTime(new Timestamp(new Date().getTime()));
 		jBaseModel.setUpdateId(authorizer.getId());
@@ -43,10 +43,10 @@ public abstract class AbstractBaseService {
 		// give a chance to do something containing model intercepter
 		new JDefaultModelInvocation(jBaseModel).proceed();
 		
-		jMapper.save(jBaseModel);
+		jMapper.save((T) jBaseModel);
 	}
 	
-	protected JBaseModel get(JMapper<JBaseModel> jMapper,String id){
+	protected <T extends JBaseModel> JBaseModel get(JIPersist<?, T> jMapper,String id){
 		return jMapper.get(id);
 	}
 	
@@ -58,7 +58,7 @@ public abstract class AbstractBaseService {
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void proxyOnUpdate(JMapper jMapper, User authorizer, JBaseModel jBaseModel){
+	protected <T extends JBaseModel> void proxyOnUpdate(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
 		jBaseModel.setUpdateId(authorizer.getId());
 		jBaseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		
@@ -73,7 +73,7 @@ public abstract class AbstractBaseService {
 		jBaseModel.setCreateTime(dbModel.getCreateTime());
 		jBaseModel.setCreateId(dbModel.getCreateId());
 		jBaseModel.setVersion(jBaseModel.getVersion()+1);
-		int affect=jMapper.update(jBaseModel);
+		int affect=jMapper.update((T) jBaseModel);
 		if(affect==0) throw new JConcurrentException(
 				"record conflict on "+jBaseModel.getId()+" of "+jBaseModel.getClass().getName());
 		System.out.println(affect);

@@ -89,7 +89,7 @@ public class JPropertiesDBConfiguration implements JPropertiesDBConfigure {
 		try{
 			Properties properties= null;
 			if(inputStream==null){
-				URI path=new JClassRootPathResolver("jramework-db.properties").resolve();
+				URI path=new JClassRootPathResolver("youapp-db.properties").resolve();
 				properties= JPropertiesUtils.loadProperties(new JFileResource(new File(path)));
 			}
 			else{

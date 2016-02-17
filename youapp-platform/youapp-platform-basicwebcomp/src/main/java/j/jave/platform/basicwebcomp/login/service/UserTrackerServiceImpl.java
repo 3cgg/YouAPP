@@ -1,11 +1,11 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.mapper.UserTrackerMapper;
 import j.jave.platform.basicwebcomp.login.model.UserTracker;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.login.repo.UserTrackerRepo;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implements UserTrackerService {
 
 	@Autowired
-	private UserTrackerMapper userTrackerMapper;
+	private UserTrackerRepo<?> userTrackerMapper;
 	
 	@Override
 	public List<UserTracker> getUserTrackerByName(String userName) {
@@ -39,7 +39,7 @@ public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implemen
 	}
 	
 	@Override
-	protected JMapper<UserTracker> getMapper() {
+	public JIPersist<?, UserTracker> getRepo() {
 		return userTrackerMapper;
 	}
 

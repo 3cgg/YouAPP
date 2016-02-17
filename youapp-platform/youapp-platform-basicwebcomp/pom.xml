@@ -23,7 +23,6 @@
 			<artifactId>youapp-platform-multiversioncompsupportcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>youapp.youapp-util.security</groupId>
 			<artifactId>youapp-util-securityclient</artifactId>
@@ -78,7 +77,12 @@
 		<!-- jetty end -->
 
 
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 

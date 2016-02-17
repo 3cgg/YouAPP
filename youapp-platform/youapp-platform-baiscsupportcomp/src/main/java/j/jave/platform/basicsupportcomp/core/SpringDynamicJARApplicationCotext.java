@@ -2,7 +2,7 @@ package j.jave.platform.basicsupportcomp.core;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._resource.JJARResourceURIScan;
+import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.io.IOException;
@@ -110,7 +110,7 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 				LOGGER.info("load spring context from : "+url.toString());
 				List<URI> uris=null;
 				if(jarScan==null){
-					JJARResourceURIScan jarResourceScan=new JJARResourceURIScan(url.toURI());
+					JJARResourceURIScanner jarResourceScan=new JJARResourceURIScanner(url.toURI());
 					jarResourceScan.setClassLoader(urlClassLoader);
 					jarResourceScan.setIncludeExpression("spring.*[.]xml");
 					uris=jarResourceScan.scan();

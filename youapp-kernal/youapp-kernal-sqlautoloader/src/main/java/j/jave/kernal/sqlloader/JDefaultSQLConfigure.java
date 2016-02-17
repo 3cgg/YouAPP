@@ -9,9 +9,9 @@ package j.jave.kernal.sqlloader;
  */
 public abstract class JDefaultSQLConfigure implements JSQLConfigure {
 	
-	protected String packageName="j";
+	protected String packageName="j.jave";
 	
-	protected String jarName="jframework-components";
+	protected String jarName="youapp-*.jar";
 	
 	@Override
 	public void setPackageName(String packageName) {

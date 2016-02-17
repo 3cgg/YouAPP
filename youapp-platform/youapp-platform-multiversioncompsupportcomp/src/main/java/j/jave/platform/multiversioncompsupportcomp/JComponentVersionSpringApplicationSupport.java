@@ -4,7 +4,7 @@ import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JInputStreamWrapperSource;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._resource.JJARResourceURIScan;
+import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext.JARScan;
@@ -92,7 +92,7 @@ public abstract class JComponentVersionSpringApplicationSupport {
 			applicationContext.setJarScan(new JARScan() {
 				@Override
 				public List<URI> scan(URL jar, URLClassLoader classLoader) throws Exception {
-					JJARResourceURIScan jarResourceScan=new JJARResourceURIScan(jar.toURI());
+					JJARResourceURIScanner jarResourceScan=new JJARResourceURIScanner(jar.toURI());
 					jarResourceScan.setClassLoader(classLoader);
 					jarResourceScan.setRelativePath(Component.SPRING_LOCATION);
 					return jarResourceScan.scan();

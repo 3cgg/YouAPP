@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.framework.components.login.mapper.GroupMapper">
+<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.GroupMapper">
 
 
-<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
+<resultMap id="jBaseModel"  type="j.jave.kernal.jave.model.JBaseModel"   >
 <result column="ID" property="id"  jdbcType="VARCHAR" />
 <result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
@@ -13,14 +13,14 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="group"  type="j.jave.framework.components.login.model.Group"  extends="jBaseModel" >
+<resultMap id="group"  type="j.jave.platform.basicwebcomp.login.model.Group"  extends="jBaseModel" >
 <result column="GROUPCODE" property="groupCode"  jdbcType="VARCHAR" />
 <result column="GROUPNAME" property="groupName"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.framework.components.login.model.Group">
+<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.Group">
 insert into GROUPS
 (
 GROUPCODE,GROUPNAME,DESCRIPTION
@@ -61,7 +61,7 @@ select a.* from GROUPS a
 </sql>
 
 
-<select id="getsByPage"  resultMap="group"  parameterType="j.jave.framework.commons.model.JPagination">
+<select id="getsByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
@@ -75,7 +75,7 @@ select a.* from GROUPS a
 </select>
 
 
-<select id="getGroupByGroupNameByPage"  resultMap="group"  parameterType="j.jave.framework.commons.model.JPagination">
+<select id="getGroupByGroupNameByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	<if test="groupName !=null and groupName !=''">

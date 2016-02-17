@@ -2,6 +2,7 @@ package j.jave.kernal.jave.xml.xmldb;
 
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.persist.JPersistException;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -96,6 +97,16 @@ public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implem
 		} catch (Exception e) {
 			throw new JPersistException(e);
 		}
+	}
+
+	@Override
+	public void markDeleted(String id) {
+		throw new JOperationNotSupportedException("XML PERSIST DOSENOT SUPPORT THIS.");
+	}
+
+	@Override
+	public List<T> getsByPage(JPagination pagination) {
+		throw new JOperationNotSupportedException("XML PERSIST DOSENOT SUPPORT THIS.");
 	}
 	
 	

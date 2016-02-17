@@ -5,6 +5,7 @@ package j.jave.platform.basicwebcomp.login.mapper;
 
 import j.jave.kernal.jave.model.support.JModelMapper;
 import j.jave.platform.basicwebcomp.login.model.UserRole;
+import j.jave.platform.basicwebcomp.login.repo.UserRoleRepo;
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="UserRoleMapper")
 @JModelMapper(component="UserRoleMapper",name=UserRole.class)
-public interface UserRoleMapper extends JMapper<UserRole> {
+public interface UserRoleMapper extends JMapper<UserRole>,UserRoleRepo<JMapper<UserRole>> {
 
 	List<UserRole> getUserRolesByUserId(@Param(value="userId")String userId);
 	

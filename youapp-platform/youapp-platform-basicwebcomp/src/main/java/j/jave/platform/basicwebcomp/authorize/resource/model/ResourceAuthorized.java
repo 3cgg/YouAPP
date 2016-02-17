@@ -1,6 +1,8 @@
 package j.jave.platform.basicwebcomp.authorize.resource.model;
 
-public class ResourceAuthorized {
+import j.jave.kernal.jave.model.JBaseModel;
+
+public class ResourceAuthorized extends JBaseModel {
 
 	/**
 	 * unique user id

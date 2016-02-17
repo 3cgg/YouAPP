@@ -38,19 +38,7 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-filedistribute</artifactId>
-			<version>${kernal.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
 			<artifactId>youapp-kernal-sqlautoloader</artifactId>
-			<version>${kernal.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-security</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 
@@ -82,6 +70,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 
 

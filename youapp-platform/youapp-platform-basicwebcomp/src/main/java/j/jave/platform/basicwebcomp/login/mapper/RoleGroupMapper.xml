@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.framework.components.login.mapper.RoleGroupMapper">
+<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.RoleGroupMapper">
 
 
-<resultMap id="jBaseModel"  type="j.jave.framework.commons.model.JBaseModel"   >
+<resultMap id="jBaseModel"  type="j.jave.kernal.jave.model.JBaseModel"   >
 <result column="ID" property="id"  jdbcType="VARCHAR" />
 <result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
 <result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
@@ -13,7 +13,7 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="roleGroup"  type="j.jave.framework.components.login.model.RoleGroup"  extends="jBaseModel" >
+<resultMap id="roleGroup"  type="j.jave.platform.basicwebcomp.login.model.RoleGroup"  extends="jBaseModel" >
 <result column="ROLEID" property="roleId"  jdbcType="VARCHAR" />
 <result column="GROUPID" property="groupId"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.framework.components.login.model.RoleGroup">
+<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.RoleGroup">
 insert into ROLES_GROUPS
 (
 ROLEID,GROUPID,DESCRIPTION
@@ -77,7 +77,7 @@ left join GROUPS c on a.GROUPID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.framework.commons.model.JPagination">
+<select id="getsByPage"  resultMap="roleGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from ROLES_GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

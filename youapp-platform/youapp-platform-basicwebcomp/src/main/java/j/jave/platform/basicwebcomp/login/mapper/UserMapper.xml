@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="j.jave.framework.components.login.mapper.UserMapper">
+<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.UserMapper">
 
 
-<resultMap id="base"  type="j.jave.framework.commons.model.JBaseModel" >
+<resultMap id="base"  type="j.jave.kernal.jave.model.JBaseModel" >
 		<result column="ID" property="id" />
 		<result column="CREATEID" property="createId" />
 		<result column="UPDATEID" property="updateId" />
@@ -14,7 +14,7 @@
 		<result column="VERSION" property="version" />
 </resultMap>
 
-<resultMap type="j.jave.framework.components.login.model.User" id="user"  extends="base" >
+<resultMap type="j.jave.platform.basicwebcomp.login.model.User" id="user"  extends="base" >
 	<result column="USERNAME" property="userName" />
 	<result column="PASSWORD" property="password" />
 	
@@ -25,7 +25,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.framework.components.login.model.User">
+<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.User">
 insert into USERS
 (
 USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
@@ -82,7 +82,7 @@ select * from USERS where id=#{param1}
 </select>
 
 
-<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.framework.commons.model.JBaseModel">
+<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JBaseModel">
 	select * from USERS where DELETED='N' 
 	<if test="userName !=null and userName !=''">
 		and USERNAME like CONCAT('%',  #{userName} ,'%')  
@@ -98,7 +98,7 @@ select * from USERS where id=#{param1}
 select * from USERS where DELETED='N'
 </select>
 
-<select id="getsByPage"  resultMap="user"  parameterType="j.jave.framework.commons.model.JPagination">
+<select id="getsByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from USERS
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

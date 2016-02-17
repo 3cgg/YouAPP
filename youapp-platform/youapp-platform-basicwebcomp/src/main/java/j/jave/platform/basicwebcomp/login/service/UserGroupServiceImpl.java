@@ -1,12 +1,12 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.mapper.UserGroupMapper;
 import j.jave.platform.basicwebcomp.login.model.UserGroup;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.login.repo.UserGroupRepo;
 
 import java.util.List;
 
@@ -17,13 +17,12 @@ import org.springframework.stereotype.Service;
 public class UserGroupServiceImpl extends ServiceSupport<UserGroup> implements UserGroupService {
 
 	@Autowired
-	private UserGroupMapper userGroupMapper;
+	private UserGroupRepo<?> userGroupMapper;
 	
 	@Override
-	protected JMapper<UserGroup> getMapper() {
-		return this.userGroupMapper;
+	public JIPersist<?, UserGroup> getRepo() {
+		return userGroupMapper;
 	}
-	
 	@Override
 	public List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,
 			String userId) {

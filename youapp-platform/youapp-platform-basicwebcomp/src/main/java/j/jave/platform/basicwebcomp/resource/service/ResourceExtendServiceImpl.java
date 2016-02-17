@@ -1,13 +1,13 @@
 package j.jave.platform.basicwebcomp.resource.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.resource.mapper.ResourceExtendMapper;
 import j.jave.platform.basicwebcomp.resource.model.Resource;
 import j.jave.platform.basicwebcomp.resource.model.ResourceExtend;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.resource.repo.ResourceExtendRepo;
 
 import java.util.List;
 
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Service;
 public class ResourceExtendServiceImpl extends ServiceSupport<ResourceExtend> implements ResourceExtendService {
 
 	@Autowired
-	private ResourceExtendMapper resourceExtendMapper;
+	private ResourceExtendRepo<?> resourceExtendMapper;
 	
 	@Autowired
 	private ResourceService resourceService;
 	
 	@Override
-	protected JMapper<ResourceExtend> getMapper() {
-		return this.resourceExtendMapper;
+	public JIPersist<?, ResourceExtend> getRepo() {
+		return resourceExtendMapper;
 	}
 	
 	@Override

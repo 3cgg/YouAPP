@@ -1,13 +1,13 @@
 package j.jave.platform.basicwebcomp.resource.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.resource.mapper.ResourceRoleMapper;
 import j.jave.platform.basicwebcomp.resource.model.Resource;
 import j.jave.platform.basicwebcomp.resource.model.ResourceRole;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.resource.repo.ResourceRoleRepo;
 
 import java.util.List;
 
@@ -18,16 +18,16 @@ import org.springframework.stereotype.Service;
 public class ResourceRoleServiceImpl extends ServiceSupport<ResourceRole> implements ResourceRoleService {
 
 	@Autowired
-	private ResourceRoleMapper resourceRoleMapper;
+	private ResourceRoleRepo<?> resourceRoleMapper;
 	
 	@Autowired
 	private ResourceService resourceService;
 	
 	@Override
-	protected JMapper<ResourceRole> getMapper() {
-		return this.resourceRoleMapper;
+	public JIPersist<?, ResourceRole> getRepo() {
+		return resourceRoleMapper;
 	}
-
+	
 	@Override
 	public List<ResourceRole> getResourceRolesByResourceId(
 			ServiceContext serviceContext, String resourceId) {

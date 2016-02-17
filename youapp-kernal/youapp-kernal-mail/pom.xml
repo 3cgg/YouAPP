@@ -25,12 +25,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-security</artifactId>
-			<version>${kernal.version}</version>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>javax.mail-api</artifactId>
 			<version>1.5.3</version>

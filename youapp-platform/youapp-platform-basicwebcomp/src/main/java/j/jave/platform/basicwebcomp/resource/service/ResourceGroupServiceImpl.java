@@ -1,13 +1,13 @@
 package j.jave.platform.basicwebcomp.resource.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.resource.mapper.ResourceGroupMapper;
 import j.jave.platform.basicwebcomp.resource.model.Resource;
 import j.jave.platform.basicwebcomp.resource.model.ResourceGroup;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.resource.repo.ResourceGroupRepo;
 
 import java.util.List;
 
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Service;
 public class ResourceGroupServiceImpl extends ServiceSupport<ResourceGroup> implements ResourceGroupService {
 
 	@Autowired
-	private ResourceGroupMapper resourceGroupMapper;
+	private ResourceGroupRepo<?> resourceGroupMapper;
 	
 	@Autowired
 	private ResourceService resourceService;
 	
 	@Override
-	protected JMapper<ResourceGroup> getMapper() {
-		return this.resourceGroupMapper;
+	public JIPersist<?, ResourceGroup> getRepo() {
+		return resourceGroupMapper;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ package j.jave.platform.basicwebcomp.login.mapper;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.model.support.JModelMapper;
 import j.jave.platform.basicwebcomp.login.model.User;
+import j.jave.platform.basicwebcomp.login.repo.UserRepo;
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="UserMapper")
 @JModelMapper(name=User.class,component="UserMapper")
-public interface UserMapper extends JMapper<User> {
+public interface UserMapper extends JMapper<User>,UserRepo<JMapper<User> > {
 
 	public User getUserByNameAndPassword(
 			@Param(value="userName")String userName,

@@ -4,12 +4,12 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.mapper.UserExtendMapper;
 import j.jave.platform.basicwebcomp.login.model.UserExtend;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.login.repo.UserExtendRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +23,13 @@ public class UserExtendServiceImpl extends ServiceSupport<UserExtend> implements
 		UserExtendService {
 	
 	@Autowired
-	private UserExtendMapper userExtendMapper;
+	private UserExtendRepo<?> userExtendMapper;
 	
 	@Override
-	protected JMapper<UserExtend> getMapper() {
+	public JIPersist<?, UserExtend> getRepo() {
 		return userExtendMapper;
 	}
-
+	
 	@Override
 	public void saveUserExtend(ServiceContext context, UserExtend userExtend)
 			throws JServiceException {

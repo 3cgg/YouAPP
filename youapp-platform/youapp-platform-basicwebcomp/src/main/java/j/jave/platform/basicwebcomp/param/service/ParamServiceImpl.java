@@ -5,12 +5,12 @@ package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.param.mapper.ParamMapper;
 import j.jave.platform.basicwebcomp.param.model.Param;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 public class ParamServiceImpl extends ServiceSupport<Param> implements ParamService{
 
 	@Autowired
-	private ParamMapper paramMapper;
+	private ParamRepo<?> paramMapper;
 	
 	@Override
 	public void saveParam(ServiceContext context, Param param)
@@ -69,8 +69,8 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	}
 
 	@Override
-	protected JMapper<Param> getMapper() {
-		return this.paramMapper;
+	public JIPersist<?, Param> getRepo() {
+		return paramMapper;
 	}
 	
 	@Override
@@ -83,6 +83,8 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 			throw new IllegalArgumentException("code is null.");
 		}
 		Param dbParam= getParamByFunctionIdAndCode(context, param.getFunctionId(), param.getCode());
+		
+		if(dbParam==null) return false;
 		
 		// status of inserting 
 		if(JStringUtils.isNullOrEmpty(param.getId())){

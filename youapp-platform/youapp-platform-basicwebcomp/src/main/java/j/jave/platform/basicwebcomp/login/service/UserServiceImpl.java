@@ -5,12 +5,12 @@ package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.mapper.UserMapper;
 import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.login.repo.UserRepo;
 import j.jave.securityutil.securityclient.JRSSecurityHelper;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceSupport<User> implements UserService {
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserRepo<?> userMapper;
 	
 	@Override
 	public User getUserByNameAndPassword(String userName, String password) {
@@ -63,7 +63,7 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	}
 	
 	@Override
-	protected JMapper<User> getMapper() {
+	public JIPersist<?, User> getRepo() {
 		return userMapper;
 	}
 	

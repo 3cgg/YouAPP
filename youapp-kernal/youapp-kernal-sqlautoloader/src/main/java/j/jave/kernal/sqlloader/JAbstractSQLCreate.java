@@ -2,7 +2,7 @@ package j.jave.kernal.sqlloader;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._package.JClassesScanUtil;
+import j.jave.kernal.jave.support._package.JClassesScannerUtil;
 import j.jave.kernal.jave.support._package.JFileSystemDefaultScanner;
 import j.jave.kernal.jave.support._package.JJARDefaultScanner;
 import j.jave.kernal.jave.utils.JClassPathUtils;
@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * basic class to execute SQL. 
@@ -174,7 +175,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesScanUtil.getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.getImplements(defaultScan, clazz));
 				}
 				else{
 					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile);
@@ -182,7 +183,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesScanUtil.getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.getImplements(defaultScan, clazz));
 				}
 			}
 		}
@@ -226,8 +227,8 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 	 * @return
 	 */
 	protected boolean matches(File jarFile){
-		boolean valid=jarFile.getName().contains(jarName);
-		return valid;
+		Pattern pattern=Pattern.compile(jarName);
+		return pattern.matcher(jarFile.getName()).matches();
 	}
 	
 	

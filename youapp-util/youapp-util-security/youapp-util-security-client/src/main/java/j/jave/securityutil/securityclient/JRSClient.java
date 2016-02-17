@@ -1,8 +1,6 @@
 package j.jave.securityutil.securityclient;
 
-import java.util.Properties;
-
-import j.jave.kernal.http.JHttpFactory;
+import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -10,6 +8,8 @@ import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JFileUtils;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
+
+import java.util.Properties;
 
 public class JRSClient {
 	
@@ -58,14 +58,14 @@ public class JRSClient {
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("GET REQUEST URL :  "+ endpointUrl+url);
 		}
-		return JHttpFactory.getHttpGet().setTimeout(timeout).setRetry(retry).setUrl(endpointUrl+url).execute();
+		return JHttpFactoryProvider.getHttpFactory().getHttpGet().setTimeout(timeout).setRetry(retry).setUrl(endpointUrl+url).execute();
 	}
 	
 	public Object post(String url,String entity) throws Exception{
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("POST REQUEST URL :  "+ endpointUrl+url);
 		}
-		return JHttpFactory.getHttpPost().setTimeout(timeout).setRetry(retry).setUrl(endpointUrl+url).setEntry(entity.getBytes("utf-8")).execute();
+		return JHttpFactoryProvider.getHttpFactory().getHttpPost().setTimeout(timeout).setRetry(retry).setUrl(endpointUrl+url).setEntry(entity.getBytes("utf-8")).execute();
 	} 
 	
 }

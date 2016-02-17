@@ -3,14 +3,14 @@ package j.jave.platform.basicwebcomp.core.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JPagination;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.kernal.jave.persist.JIPersist;
 
 import java.util.List;
 
 /**
  * delegate service operation of a certain table, 
  * <p>include insert, update, delete(default set "DELETE" as "Y" ), get(one record according)
- * <p>sub-class should implements method of {@code getMapper()} .
+ * <p>sub-class should implements method of {@code getRepo()} .
  * @author J
  *
  * @param <T>
@@ -24,7 +24,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	@Override
 	public void saveOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnSave(getMapper(), context.getUser(), object);
+		proxyOnSave(getRepo(), context.getUser(), object);
 	}
 
 	/**
@@ -33,7 +33,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	@Override
 	public void updateOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnUpdate(getMapper(), context.getUser(), object);
+		proxyOnUpdate(getRepo(), context.getUser(), object);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public void delete(ServiceContext context, String id) {
-		getMapper().markDeleted(id);
+		getRepo().markDeleted(id);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public T getById(ServiceContext context, String id) {
-		return getMapper().get(id);
+		return getRepo().get(id);
 	}
 
 	/**
@@ -57,9 +57,9 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public List<T> getsByPage(ServiceContext context, JPagination pagination) {
-		return getMapper().getsByPage(pagination);
+		return getRepo().getsByPage(pagination);
 	}
 
-	protected abstract JMapper<T> getMapper();
+	public abstract JIPersist<?,T> getRepo();
 	
 }

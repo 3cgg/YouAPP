@@ -6,6 +6,7 @@ package j.jave.platform.basicwebcomp.login.mapper;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.model.support.JModelMapper;
 import j.jave.platform.basicwebcomp.login.model.Group;
+import j.jave.platform.basicwebcomp.login.repo.GroupRepo;
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="GroupMapper")
 @JModelMapper(component="GroupMapper",name=Group.class)
-public interface GroupMapper extends JMapper<Group> {
+public interface GroupMapper extends JMapper<Group>,GroupRepo<JMapper<Group>> {
 
 	Group getGroupByGroupCode(@Param(value="groupCode")String roleCode);
 	

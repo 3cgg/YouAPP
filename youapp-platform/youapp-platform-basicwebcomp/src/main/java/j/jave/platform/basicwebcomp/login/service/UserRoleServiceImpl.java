@@ -1,12 +1,12 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.mapper.UserRoleMapper;
 import j.jave.platform.basicwebcomp.login.model.UserRole;
-import j.jave.platform.mybatis.JMapper;
+import j.jave.platform.basicwebcomp.login.repo.UserRoleRepo;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements UserRoleService {
 
 	@Autowired
-	private UserRoleMapper userRoleMapper;
+	private UserRoleRepo<?> userRoleMapper;
 	
 	@Override
-	protected JMapper<UserRole> getMapper() {
-		return this.userRoleMapper;
+	public JIPersist<?, UserRole> getRepo() {
+		return userRoleMapper;
 	}
 	
 	@Override

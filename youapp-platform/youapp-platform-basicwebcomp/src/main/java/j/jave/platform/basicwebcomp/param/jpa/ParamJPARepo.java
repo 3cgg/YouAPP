@@ -1,8 +1,13 @@
 package j.jave.platform.basicwebcomp.param.jpa;
 
-import j.jave.platform.basicwebcomp.param.model.Param;
-import j.jave.platform.basicwebcomp.spirngjpa.JSpringJPARepository;
+import org.springframework.stereotype.Repository;
 
-public interface ParamJPARepo extends JSpringJPARepository<Param, String>{
+import j.jave.platform.basicwebcomp.param.model.Param;
+import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
+import j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepository;
+
+@Repository
+public interface ParamJPARepo extends JSpringJpaRepository<Param, String>,
+ParamRepo<JSpringJpaRepository<Param, String>>{
 
 }

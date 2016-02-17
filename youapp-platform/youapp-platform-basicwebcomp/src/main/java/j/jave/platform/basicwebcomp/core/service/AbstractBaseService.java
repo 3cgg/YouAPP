@@ -31,7 +31,7 @@ public abstract class AbstractBaseService {
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected <T extends JBaseModel> void proxyOnSave(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
+	protected <T extends JBaseModel> T proxyOnSave(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
 		jBaseModel.setCreateId(authorizer.getId());
 		jBaseModel.setCreateTime(new Timestamp(new Date().getTime()));
 		jBaseModel.setUpdateId(authorizer.getId());
@@ -43,7 +43,7 @@ public abstract class AbstractBaseService {
 		// give a chance to do something containing model intercepter
 		new JDefaultModelInvocation(jBaseModel).proceed();
 		
-		jMapper.save((T) jBaseModel);
+		return jMapper.save((T) jBaseModel);
 	}
 	
 	protected <T extends JBaseModel> JBaseModel get(JIPersist<?, T> jMapper,String id){
@@ -58,7 +58,7 @@ public abstract class AbstractBaseService {
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected <T extends JBaseModel> void proxyOnUpdate(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
+	protected <T extends JBaseModel> T proxyOnUpdate(JIPersist<?, T> jMapper, User authorizer, JBaseModel jBaseModel){
 		jBaseModel.setUpdateId(authorizer.getId());
 		jBaseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		
@@ -76,7 +76,7 @@ public abstract class AbstractBaseService {
 		int affect=jMapper.update((T) jBaseModel);
 		if(affect==0) throw new JConcurrentException(
 				"record conflict on "+jBaseModel.getId()+" of "+jBaseModel.getClass().getName());
-		System.out.println(affect);
+		return (T) jBaseModel;
 	}
 	
 	

@@ -40,7 +40,10 @@
     </bean>  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
        <property name="basePackage" 
-       value="j.jave" />  
+       value="j.jave.platform.basicwebcomp.authorize.resource,
+       j.jave.platform.basicwebcomp.login,
+       j.jave.platform.basicwebcomp.resource
+       " />  
        <property name="markerInterface" value="j.jave.platform.mybatis.JMapper"/>  
        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>  
     </bean>  

@@ -30,7 +30,7 @@
       <jpa:repositories
             base-package="j.jave"
             repository-impl-postfix="Impl"
-            factory-class="j.jave.platform.basicwebcomp.spirngjpa.JSpringJPARepositoryFactoryBean" 
+            factory-class="j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepositoryFactoryBean" 
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager">
     </jpa:repositories>   

@@ -9,50 +9,48 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.data.repository.NoRepositoryBean;
 
-@NoRepositoryBean
-public class JSimpleSpringJPAImpl<T, ID extends Serializable> 
-	extends SimpleJpaRepository<T, Serializable> implements JSpringJPARepository<T, ID> {
+public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable> 
+	extends SimpleJpaRepository<T, Serializable> implements JSpringJpaRepository<T, ID> {
 
     private EntityManager em;
 	
 	// There are two constructors to choose from, either can be used.
-	  public JSimpleSpringJPAImpl(Class<T> domainClass, EntityManager entityManager) {
+	  public JSimpleSpringJpaImpl(Class<T> domainClass, EntityManager entityManager) {
 	    super(domainClass, entityManager);
 	    // This is the recommended method for accessing inherited class dependencies.
 	    this.em = entityManager;
 	  }
 	  
 	@Override
-	public void save(JBaseModel baseModel) {
-		super.save((T)baseModel);
+	public T save(T baseModel) {
+		return super.save(baseModel);
 	}
 
 	@Override
-	public int update(JBaseModel baseModel) {
-		super.save((T)baseModel);
+	public int update(T baseModel) {
+		super.save(baseModel);
 		return 1;
 	}
 
 	@Override
-	public JBaseModel get(String id, String... entryName) {
-		return (JBaseModel) super.getOne(id);
+	public T get(String id, String... entryName) {
+		return (T) super.getOne(id);
 	}
 
 	@Override
-	public void delete(JBaseModel baseModel) {
+	public void delete(T baseModel) {
 		super.delete(baseModel);
 	}
 
 	@Override
-	public void markDeleted(JBaseModel baseModel) {
+	public void markDeleted(T baseModel) {
 		baseModel.setDeleted("Y");
 		this.update(baseModel);
 	}
 	
 	@Override
-	public JSpringJPARepository<T, ID> getInstance() {
+	public JSpringJpaRepository<T, ID> getInstance() {
 		return this;
 	}
 
@@ -62,7 +60,7 @@ public class JSimpleSpringJPAImpl<T, ID extends Serializable>
 	}
 
 	@Override
-	public List<JBaseModel> getsByPage(JPagination pagination) {
+	public List<T> getsByPage(JPagination pagination) {
 		// TODO Auto-generated method stub
 		return null;
 	}

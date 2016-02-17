@@ -20,9 +20,10 @@ import java.util.Map;
 public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implements JIPersist<JXMLPersist<T>,T> {
 
 	@Override
-	public void save(T baseModel) {
+	public T save(T baseModel) {
 		try {
 			getXmlSession().insert(baseModel);
+			return baseModel;
 		} catch (Exception e) {
 			throw new JPersistException(e);
 		}

@@ -18,7 +18,7 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * insert new record 
 	 * @param baseModel
 	 */
-	public void save(M baseModel); 
+	public M save(M baseModel); 
 	
 	/**
 	 * update the existing record, maybe return affect record count, if API support. 

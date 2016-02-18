@@ -33,7 +33,7 @@ ROLECODE,ROLENAME,DESCRIPTION
 
 
 <update id="updateModel">
-updateModel ROLES
+update ROLES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="roleCode!=null">,ROLECODE =#{roleCode}</if>
@@ -46,7 +46,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel ROLES set DELETED='Y' where ID=#{id}
+update ROLES set DELETED='Y' where ID=#{id}
 </delete>
 
 

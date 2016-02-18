@@ -45,7 +45,7 @@ USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 </insert>
 
 <delete id="markModelDeleted" >
-	updateModel USERS set DELETED='Y' where ID=#{id}
+	update USERS set DELETED='Y' where ID=#{id}
 </delete>
 
 <sql id="selectfor">

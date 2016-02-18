@@ -35,7 +35,7 @@ RESOURCEID,URL,ACTION,CACHED,DESCRIPTION
 
 
 <update id="updateModel">
-updateModel RESOURCES_EXTEND
+update RESOURCES_EXTEND
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
@@ -50,7 +50,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel RESOURCES_EXTEND set DELETED='Y' where ID=#{id}
+update RESOURCES_EXTEND set DELETED='Y' where ID=#{id}
 </delete>
 
 
@@ -79,7 +79,7 @@ order by ${page.sortColumn} ${page.sortType}
 
 
 <delete id="updateCached" >
-updateModel RESOURCES_EXTEND set CACHED=#{cached} where ID=#{id}
+update RESOURCES_EXTEND set CACHED=#{cached} where ID=#{id}
 </delete>
 
 

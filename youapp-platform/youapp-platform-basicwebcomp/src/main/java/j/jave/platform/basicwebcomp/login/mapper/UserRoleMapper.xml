@@ -39,7 +39,7 @@ ROLEID,USERID,DESCRIPTION
 
 
 <update id="updateModel">
-updateModel USERS_ROLES
+update USERS_ROLES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="roleId!=null">,ROLEID =#{roleId}</if>
@@ -52,7 +52,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel USERS_ROLES set DELETED='Y' where ID=#{id}
+update USERS_ROLES set DELETED='Y' where ID=#{id}
 </delete>
 
 

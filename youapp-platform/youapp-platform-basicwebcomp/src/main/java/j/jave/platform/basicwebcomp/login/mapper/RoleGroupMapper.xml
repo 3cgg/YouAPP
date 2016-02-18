@@ -40,7 +40,7 @@ ROLEID,GROUPID,DESCRIPTION
 
 
 <update id="updateModel">
-updateModel ROLES_GROUPS
+update ROLES_GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="roleId!=null">,ROLEID =#{roleId}</if>
@@ -53,7 +53,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel ROLES_GROUPS set DELETED='Y' where ID=#{id}
+update ROLES_GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 

@@ -48,7 +48,7 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 </insert>
 
 <update id="updateModel">
-updateModel PARAM
+update PARAM
 set UPDATEID=#{updateId}
 ,UPDATETIME=#{updateTime}
 ,VERSION=#{version}
@@ -64,7 +64,7 @@ select * from PARAM where id=#{param1}
 </select>
 
 <delete id="markModelDeleted" >
-	updateModel PARAM set DELETED='Y' where ID=#{id}
+	update PARAM set DELETED='Y' where ID=#{id}
 </delete>
 
 <select id="getParamByFunctionIdAndCode"  resultMap="param"  >

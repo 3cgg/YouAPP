@@ -39,7 +39,7 @@ RESOURCEID,GROUPID,DESCRIPTION,ENABLE
 
 
 <update id="updateModel">
-updateModel RESOURCES_GROUPS
+update RESOURCES_GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
@@ -53,7 +53,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel RESOURCES_GROUPS set DELETED='Y' where ID=#{id}
+update RESOURCES_GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 

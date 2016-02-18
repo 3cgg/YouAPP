@@ -34,7 +34,7 @@ USERID,USERNAME,USERIMAGE,NATURENAME
 
 
 <update id="updateModel">
-updateModel USERS_EXTEND
+update USERS_EXTEND
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="userId!=null">,USERID =#{userId}</if>
@@ -48,7 +48,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel USERS_EXTEND set DELETED='Y' where ID=#{id}
+update USERS_EXTEND set DELETED='Y' where ID=#{id}
 </delete>
 
 

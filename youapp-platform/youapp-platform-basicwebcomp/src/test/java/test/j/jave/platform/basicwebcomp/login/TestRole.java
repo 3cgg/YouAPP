@@ -5,6 +5,7 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.Role;
 import j.jave.platform.basicwebcomp.login.model.User;
+import j.jave.platform.basicwebcomp.login.service.RoleService;
 import j.jave.platform.basicwebcomp.login.service.UserService;
 import j.jave.platform.basicwebcomp.param.model.Param;
 
@@ -19,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestRole {
 
 	@Autowired
-	private UserService userService;
+	private RoleService roleService;
 	
 	@Test
 	public void testUserService(){
@@ -32,15 +33,15 @@ public class TestRole {
 			Role roleData=new Role();
 			new JObjectPopulate(roleData).populate();
 			roleData.setId(JUniqueUtils.unique().replaceAll("-", ""));
-			userService.saveUser(context, roleData);
+			roleService.saveRole(context, roleData);
 			
-			User dbUser=userService.getById(context, userData.getId());
-			dbUser.setPassword("ABC");
-			userService.updateUser(context, dbUser);
+			Role dbRole=roleService.getById(context, roleData.getId());
+			dbRole.setDescription("SYS-DESC");
+			roleService.updateRole(context, dbRole);
 			
-			userService.delete(context, userData.getId());
-			dbUser=userService.getById(context, userData.getId());
-			System.out.println(dbUser.getDeleted());
+			roleService.delete(context, roleData.getId());
+			dbRole=roleService.getById(context, roleData.getId());
+			System.out.println(dbRole.getDeleted());
 			
 		}catch(Exception e){
 			e.printStackTrace();

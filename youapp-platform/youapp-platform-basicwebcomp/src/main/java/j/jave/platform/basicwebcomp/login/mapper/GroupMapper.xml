@@ -33,7 +33,7 @@ GROUPCODE,GROUPNAME,DESCRIPTION
 
 
 <update id="updateModel">
-updateModel GROUPS
+update GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="groupCode!=null">,GROUPCODE =#{groupCode}</if>
@@ -46,7 +46,7 @@ where ID=#{id}
 
 
 <delete id="markModelDeleted" >
-updateModel GROUPS set DELETED='Y' where ID=#{id}
+update GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 

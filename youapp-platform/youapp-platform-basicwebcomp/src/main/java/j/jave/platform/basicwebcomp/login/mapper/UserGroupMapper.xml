@@ -25,7 +25,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.UserGroup">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.UserGroup">
 insert into USERS_GROUPS
 (
 GROUPID,USERID,DESCRIPTION
@@ -37,8 +37,8 @@ GROUPID,USERID,DESCRIPTION
 </insert>
 
 
-<update id="update">
-update USERS_GROUPS
+<update id="updateModel">
+updateModel USERS_GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="groupId!=null">,GROUPID =#{groupId}</if>
@@ -50,12 +50,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update USERS_GROUPS set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel USERS_GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="userGroup"  >
+<select id="getModel"   resultMap="userGroup"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -71,7 +71,7 @@ LEFT JOIN GROUPS c on a. GROUPID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getsByPage"  resultMap="userGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="userGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from USERS_GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

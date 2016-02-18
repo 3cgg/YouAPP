@@ -20,17 +20,16 @@ import java.util.Map;
 public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implements JIPersist<JXMLPersist<T>,T> {
 
 	@Override
-	public T save(T baseModel) {
+	public void saveModel(T baseModel) {
 		try {
 			getXmlSession().insert(baseModel);
-			return baseModel;
 		} catch (Exception e) {
 			throw new JPersistException(e);
 		}
 	}
 
 	@Override
-	public int update(T baseModel) {
+	public int updateModel(T baseModel) {
 		try {
 			getXmlSession().update(baseModel);
 			return 1;
@@ -40,7 +39,7 @@ public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implem
 	}
 
 	@Override
-	public T get(String id, String... entryName) {
+	public T getModel(String id, String... entryName) {
 		try {
 			Class<? extends JBaseModel> clazz=JClassUtils.load(entryName[0]);
 			return getXmlSession().get(id, clazz);
@@ -50,12 +49,12 @@ public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implem
 	}
 
 	@Override
-	public void delete(T baseModel) {
+	public void deleteModel(T baseModel) {
 		throw new JOperationNotSupportedException("XML Database doesnot support delete.");
 	}
 
 	@Override
-	public void markDeleted(T baseModel) {
+	public void markModelDeleted(T baseModel) {
 		try {
 			getXmlSession().update(baseModel);
 		} catch (Exception e) {
@@ -101,12 +100,12 @@ public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implem
 	}
 
 	@Override
-	public void markDeleted(String id) {
+	public void markModelDeleted(String id) {
 		throw new JOperationNotSupportedException("XML PERSIST DOSENOT SUPPORT THIS.");
 	}
 
 	@Override
-	public List<T> getsByPage(JPagination pagination) {
+	public List<T> getModelsByPage(JPagination pagination) {
 		throw new JOperationNotSupportedException("XML PERSIST DOSENOT SUPPORT THIS.");
 	}
 	

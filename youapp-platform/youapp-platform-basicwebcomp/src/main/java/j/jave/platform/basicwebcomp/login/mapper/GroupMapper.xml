@@ -20,7 +20,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.Group">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.Group">
 insert into GROUPS
 (
 GROUPCODE,GROUPNAME,DESCRIPTION
@@ -32,8 +32,8 @@ GROUPCODE,GROUPNAME,DESCRIPTION
 </insert>
 
 
-<update id="update">
-update GROUPS
+<update id="updateModel">
+updateModel GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="groupCode!=null">,GROUPCODE =#{groupCode}</if>
@@ -45,12 +45,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update GROUPS set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="group"  >
+<select id="getModel"   resultMap="group"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -61,7 +61,7 @@ select a.* from GROUPS a
 </sql>
 
 
-<select id="getsByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

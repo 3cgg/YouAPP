@@ -25,7 +25,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.User">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.User">
 insert into USERS
 (
 USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
@@ -44,8 +44,8 @@ USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ) 
 </insert>
 
-<delete id="markDeleted" >
-	update USERS set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+	updateModel USERS set DELETED='Y' where ID=#{id}
 </delete>
 
 <sql id="selectfor">
@@ -77,7 +77,7 @@ and a.USERNAME=#{userName}
 </select>
 
 
-<select id="get"   resultMap="user"  >
+<select id="getModel"   resultMap="user"  >
 select * from USERS where id=#{param1}
 </select>
 
@@ -98,7 +98,7 @@ select * from USERS where id=#{param1}
 select * from USERS where DELETED='N'
 </select>
 
-<select id="getsByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from USERS
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

@@ -9,12 +9,12 @@ import j.jave.platform.basicwebcomp.param.model.Param;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * @author J
  */
 public interface ParamRepo<T> extends JIPersist<T,Param> {
-	
-	public List<Param> getParamsByPage(JPagination pagination) ;
 	
 	public Param getParamByFunctionIdAndCode(String functionId,String code);
 	

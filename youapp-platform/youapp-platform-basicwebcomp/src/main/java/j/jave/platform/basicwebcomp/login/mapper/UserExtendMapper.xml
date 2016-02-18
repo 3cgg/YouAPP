@@ -21,7 +21,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.UserExtend">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.UserExtend">
 insert into USERS_EXTEND
 (
 USERID,USERNAME,USERIMAGE,NATURENAME
@@ -33,8 +33,8 @@ USERID,USERNAME,USERIMAGE,NATURENAME
 </insert>
 
 
-<update id="update">
-update USERS_EXTEND
+<update id="updateModel">
+updateModel USERS_EXTEND
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="userId!=null">,USERID =#{userId}</if>
@@ -47,12 +47,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update USERS_EXTEND set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel USERS_EXTEND set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="userExtend"  >
+<select id="getModel"   resultMap="userExtend"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -68,7 +68,7 @@ left join USERS b on b.ID=a.USERID
 </sql>
 
 
-<select id="getsByPage"   resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
 select * from USERS_EXTEND  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

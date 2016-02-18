@@ -26,7 +26,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.resource.model.ResourceGroup">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.resource.model.ResourceGroup">
 insert into RESOURCES_GROUPS
 (
 RESOURCEID,GROUPID,DESCRIPTION,ENABLE
@@ -38,8 +38,8 @@ RESOURCEID,GROUPID,DESCRIPTION,ENABLE
 </insert>
 
 
-<update id="update">
-update RESOURCES_GROUPS
+<update id="updateModel">
+updateModel RESOURCES_GROUPS
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
@@ -52,12 +52,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update RESOURCES_GROUPS set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel RESOURCES_GROUPS set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="resourceGroup"  >
+<select id="getModel"   resultMap="resourceGroup"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -76,7 +76,7 @@ left join RESOURCES c on a.RESOURCEID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getsByPage"   resultMap="resourceGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="resourceGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
 select * from RESOURCES_GROUPS  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

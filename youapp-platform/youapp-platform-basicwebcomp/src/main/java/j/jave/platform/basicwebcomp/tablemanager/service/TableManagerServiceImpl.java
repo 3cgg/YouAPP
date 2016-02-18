@@ -202,7 +202,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		init();
 		
 		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(getModelName(model));
-		JBaseModel baseModel=mapper.get(model.getId());
+		JBaseModel baseModel=mapper.getModel(model.getId());
 		return getRecord(baseModel);
 	}
 	
@@ -260,7 +260,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		
 		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(tableSearch.getModelName());
 		
-		List<? extends JBaseModel> models=mapper.getsByPage((JPagination) model);
+		List<? extends JBaseModel> models=mapper.getModelsByPage((JPagination) model);
 		List<Record> records=new ArrayList<Record>();
 		for (int i = 0; i < models.size(); i++) {
 			JBaseModel baseModel=models.get(i);
@@ -282,7 +282,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		init();
 		
 		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(modelName);
-		JBaseModel baseModel=mapper.get(id);
+		JBaseModel baseModel=mapper.getModel(id);
 		return getRecord(baseModel);
 	}
 	
@@ -300,7 +300,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			String modelName=record.getModelName();
 			JBaseModel model=get(record);
 			JMapper<JBaseModel> mapper=mappersWithModelName.get(modelName);
-			mapper.update( model);
+			mapper.updateModel( model);
 			
 		} catch (Exception e) {
 			throw new JServiceException(e);

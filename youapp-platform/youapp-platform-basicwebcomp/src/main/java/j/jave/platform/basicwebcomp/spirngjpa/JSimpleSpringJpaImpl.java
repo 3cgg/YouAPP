@@ -23,30 +23,30 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 	  }
 	  
 	@Override
-	public T save(T baseModel) {
-		return super.save(baseModel);
+	public void saveModel(T baseModel) {
+		super.save(baseModel);
 	}
 
 	@Override
-	public int update(T baseModel) {
+	public int updateModel(T baseModel) {
 		super.save(baseModel);
 		return 1;
 	}
 
 	@Override
-	public T get(String id, String... entryName) {
-		return (T) super.getOne(id);
+	public T getModel(String id, String... entryName) {
+		return super.getOne(id);
 	}
 
 	@Override
-	public void delete(T baseModel) {
+	public void deleteModel(T baseModel) {
 		super.delete(baseModel);
 	}
 
 	@Override
-	public void markDeleted(T baseModel) {
+	public void markModelDeleted(T baseModel) {
 		baseModel.setDeleted("Y");
-		this.update(baseModel);
+		this.updateModel(baseModel);
 	}
 	
 	@Override
@@ -55,13 +55,14 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 	}
 
 	@Override
-	public void markDeleted(String id) {
-		super.delete(id);
+	public void markModelDeleted(String id) {
+		T t=getModel(id);
+		t.setDeleted("Y");
+		updateModel(t);
 	}
 
 	@Override
-	public List<T> getsByPage(JPagination pagination) {
-		// TODO Auto-generated method stub
+	public List<T> getModelsByPage(JPagination pagination) {
 		return null;
 	}
 

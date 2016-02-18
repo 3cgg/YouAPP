@@ -18,14 +18,14 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * insert new record 
 	 * @param baseModel
 	 */
-	public M save(M baseModel); 
+	public void saveModel(M baseModel); 
 	
 	/**
 	 * update the existing record, maybe return affect record count, if API support. 
 	 * @param baseModel
 	 * @return {@link Integer} the affect record count
 	 */
-	public int update(M baseModel);
+	public int updateModel(M baseModel);
 	
 	/**
 	 * get the certain record according to the primary key.
@@ -33,14 +33,14 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param entryName  it maybe a full qualified class name mapping to table.
 	 * @return
 	 */
-	public M get(String id,String... entryName);
+	public M getModel(String id,String... entryName);
 	
 	/**
 	 * delete the existing record permanently . <br/>
 	 * note: <br/> the record can not be recovered agian later. 
 	 * @param baseModel
 	 */
-	public void delete(M baseModel);
+	public void deleteModel(M baseModel);
 	
 	/**
 	 * delete the existing record through marking the column named "deleted";
@@ -49,7 +49,7 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param baseModel
 	 * @see {@link JUNDeletable}
 	 */
-	public void markDeleted(M baseModel);
+	public void markModelDeleted(M baseModel);
 	
 	/**
 	 * get the current instance 
@@ -64,7 +64,7 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param id
 	 * @see {@link JUNDeletable}
 	 */
-	public void markDeleted(String id);
+	public void markModelDeleted(String id);
 	
 	/**
 	 * get records thats matches the criteria , the sub-implementation must be for pagination.
@@ -73,5 +73,5 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param pagination
 	 * @return 
 	 */
-	public List<M> getsByPage(JPagination pagination);
+	public List<M> getModelsByPage(JPagination pagination);
 }

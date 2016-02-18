@@ -1,27 +1,26 @@
 package test.j.jave.platform.basicwebcomp.param;
 
 import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.stereotype.Service;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"classpath:spring-context.xml"})
-public class TestParam {
+@Service(value="test.paramService.transation.jpa")
+public class TestJpaParamServiceImpl{
 	
 	@Autowired
 	private ParamService paramService;
 	
-	@Test
-	public void testParam(){
+	public TestJpaParamServiceImpl(){
+		System.out.println("TestParamServiceImpl");
+	}
+	
+	public void testJpa(){
 		try{
 			ServiceContext context=new ServiceContext();
 			User user=new User();
@@ -30,7 +29,7 @@ public class TestParam {
 			
 			Param param=new Param();
 			new JObjectPopulate(param).populate();
-			
+			param.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			paramService.saveParam(context, param);
 			
 			Param dbParam=paramService.getById(context, param.getId());
@@ -44,8 +43,7 @@ public class TestParam {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		
 	}
-	
-	
 	
 }

@@ -1,5 +1,6 @@
 package j.jave.kernal.jave.random;
 
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.math.BigDecimal;
@@ -92,6 +93,23 @@ public interface JPopulate {
 			Long now=new Date().getTime();
 			Random random=new Random(now);
 			return random.nextInt(Integer.MAX_VALUE);
+		}
+	}
+	
+	public static class JDefaultFieldTypeRandom implements JRandom<Object>{
+		private Class<?> clazz;
+		public JDefaultFieldTypeRandom(Class<?> clazz) {
+			this.clazz=clazz;
+		}
+		
+		@Override
+		public Object random() {
+			try{
+				return clazz.newInstance();
+			}catch(Exception e){
+				throw new JInitializationException(e);
+			}
+			
 		}
 	}
 	

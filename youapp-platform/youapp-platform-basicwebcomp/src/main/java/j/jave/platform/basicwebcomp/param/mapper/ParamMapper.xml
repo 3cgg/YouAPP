@@ -22,7 +22,7 @@
 </resultMap>
 
 
-<insert  id="save" >
+<insert  id="saveModel" >
 insert into PARAM
 (
 ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
@@ -47,8 +47,8 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ) 
 </insert>
 
-<update id="update">
-update PARAM
+<update id="updateModel">
+updateModel PARAM
 set UPDATEID=#{updateId}
 ,UPDATETIME=#{updateTime}
 ,VERSION=#{version}
@@ -59,12 +59,12 @@ set UPDATEID=#{updateId}
 where ID=#{id}
 </update>
 
-<select id="get"   resultMap="param"  >
+<select id="getModel"   resultMap="param"  >
 select * from PARAM where id=#{param1}
 </select>
 
-<delete id="markDeleted" >
-	update PARAM set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+	updateModel PARAM set DELETED='Y' where ID=#{id}
 </delete>
 
 <select id="getParamByFunctionIdAndCode"  resultMap="param"  >
@@ -90,7 +90,7 @@ select * from PARAM where id=#{param1}
 </select>
 
 
-<select id="getsByPage"  resultMap="param"  parameterType="j.jave.kernal.jave.model.JBaseModel">
+<select id="getModelsByPage"  resultMap="param"  parameterType="j.jave.kernal.jave.model.JBaseModel">
     select * from PARAM 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

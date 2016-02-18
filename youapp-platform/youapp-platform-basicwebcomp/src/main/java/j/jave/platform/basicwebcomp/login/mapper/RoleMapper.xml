@@ -20,7 +20,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.Role">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.Role">
 insert into ROLES
 (
 ROLECODE,ROLENAME,DESCRIPTION
@@ -32,8 +32,8 @@ ROLECODE,ROLENAME,DESCRIPTION
 </insert>
 
 
-<update id="update">
-update ROLES
+<update id="updateModel">
+updateModel ROLES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="roleCode!=null">,ROLECODE =#{roleCode}</if>
@@ -45,12 +45,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update ROLES set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel ROLES set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="role"  >
+<select id="getModel"   resultMap="role"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -60,7 +60,7 @@ where a.id=#{param1}
 select a.* from ROLES a 
 </sql>
 
-<select id="getsByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPagination">
     select * from ROLES 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

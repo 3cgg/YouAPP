@@ -15,11 +15,12 @@
       http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
       ">
 
-	<aop:aspectj-autoproxy expose-proxy="true" />
+	<aop:aspectj-autoproxy expose-proxy="true"  proxy-target-class="true" />
 	<context:annotation-config />
-	<context:component-scan base-package="j.jave" ></context:component-scan>
+	<context:component-scan base-package="j.jave,test.j.jave" ></context:component-scan>
 	
 	<context:property-placeholder location="classpath:youapp-db.properties"/>
+	<import resource="spring-datasource.xml"/>
 	<import resource="spring-jpa.xml"/>
 	<import resource="spring-mybatis.xml"/>
 	<!-- <import resource="spring-mybatis.xml"/> -->

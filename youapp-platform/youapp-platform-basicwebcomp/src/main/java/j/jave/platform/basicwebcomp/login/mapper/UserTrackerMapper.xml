@@ -22,7 +22,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.login.model.UserTracker">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.UserTracker">
 insert into USER_TRACKER
 (
 ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
@@ -49,7 +49,7 @@ ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
 ) 
 </insert>
 
-<select id="get"   resultMap="userTracker"  >
+<select id="getModel"   resultMap="userTracker"  >
 select * from USER_TRACKER where id=#{param1}
 </select>
 
@@ -58,7 +58,7 @@ select * from USER_TRACKER where DELETED='N' and USERNAME=#{userName} order by L
 </select>
 
 
-<select id="getsByPage"  resultMap="userTracker"  parameterType="j.jave.kernal.jave.model.JBaseModel">
+<select id="getModelsByPage"  resultMap="userTracker"  parameterType="j.jave.kernal.jave.model.JBaseModel">
     select * from USER_TRACKER 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

@@ -3,19 +3,14 @@
  */
 package j.jave.platform.basicwebcomp.param.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author Administrator
@@ -24,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 @JTable(name="PARAM")
 @Entity
 @Table(name="PARAM")
-public class Param extends JBaseModel {
+public class Param extends JJpaBaseModel {
 	
 	/**
 	 * the id the type of funciton. 
@@ -50,6 +45,7 @@ public class Param extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
 	private String description;
 
+	@Column(name="FUNCTIONID")
 	public String getFunctionId() {
 		return functionId;
 	}
@@ -58,6 +54,7 @@ public class Param extends JBaseModel {
 		this.functionId = functionId;
 	}
 
+	@Column(name="CODE")
 	public String getCode() {
 		return code;
 	}
@@ -66,6 +63,7 @@ public class Param extends JBaseModel {
 		this.code = code;
 	}
 
+	@Column(name="NAME")
 	public String getName() {
 		return name;
 	}
@@ -74,22 +72,13 @@ public class Param extends JBaseModel {
 		this.name = name;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator = "uuid")
-	@GenericGenerator(name="uuid", strategy="uuid2")
-    @Column(name = "ID")
-	@Override
-	public String getId() {
-		// TODO Auto-generated method stub
-		return super.getId();
 	}
 	
 }

@@ -104,6 +104,9 @@ public abstract class JAbstractFieldPopulate implements JClassFieldPopulate {
 		else if(BigDecimal.class==type){
 			random=new JDefaultBigDecimalRandom(); 
 		}
+		else{
+			random=new JDefaultFieldTypeRandom(field.getType());
+		}
 		return random;
 	}
 	

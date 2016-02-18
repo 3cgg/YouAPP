@@ -18,7 +18,7 @@
       http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
       http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
       ">  
-      
+      <!-- 
     <bean id="dataSource"  
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
         <property name="driverClassName" value="${youapp.database.driver}" />  
@@ -26,8 +26,9 @@
         <property name="username" value="${youapp.database.username}" />  
         <property name="password" value="${youapp.database.password}" />  
     </bean>  
-  	
-      <jpa:repositories
+  	 -->
+  	 
+     <jpa:repositories
             base-package="j.jave"
             repository-impl-postfix="Impl"
             factory-class="j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepositoryFactoryBean" 
@@ -54,6 +55,7 @@
         </property>
         <property name="jpaPropertyMap">
             <map>
+            	<entry key="hibernate.current_session_context_class" value="thread" />
                 <entry key="hibernate.query.substitutions" value="true 1, false 0"/>
                 <entry key="hibernate.default_batch_fetch_size" value="16"/>
                 <entry key="hibernate.max_fetch_depth" value="2"/>
@@ -65,15 +67,15 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
       
 	<aop:config>    
-        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* j.jave.framework.**.service.*.*(..) )"  />
+        <aop:advisor id="jpaManagerTx" advice-ref="jpaTxAdvice" pointcut="execution(* j.jave.**.service.*.*(..) )"  />
     </aop:config>
 
-    <tx:advice id="txAdvice"  transaction-manager="transactionManager"  >
+    <tx:advice id="jpaTxAdvice"  transaction-manager="jpaTransactionManager"  >
         <tx:attributes>
             <tx:method name="*"  propagation="REQUIRED" read-only="false"  rollback-for="java.lang.Exception"   />
             
@@ -93,12 +95,12 @@
 	 <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
         <property name="beanNames">  
             <list>  
-                <value>*.transation</value>
+                <value>*.transation.jpa</value>
             </list>  
         </property>  
         <property name="interceptorNames">  
             <list>  
-                <value>txAdvice</value>  
+                <value>jpaTxAdvice</value>  
             </list>  
         </property>  
     </bean>    

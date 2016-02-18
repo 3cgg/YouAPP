@@ -41,7 +41,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public void delete(ServiceContext context, String id) {
-		getRepo().markDeleted(id);
+		getRepo().markModelDeleted(id);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public T getById(ServiceContext context, String id) {
-		return getRepo().get(id);
+		return getRepo().getModel(id);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public abstract class ServiceSupport<T extends JBaseModel> extends AbstractBaseS
 	 */
 	@Override
 	public List<T> getsByPage(ServiceContext context, JPagination pagination) {
-		return getRepo().getsByPage(pagination);
+		return getRepo().getModelsByPage(pagination);
 	}
 
 	public abstract JIPersist<?,T> getRepo();

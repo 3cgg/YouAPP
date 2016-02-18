@@ -21,9 +21,12 @@ import org.springframework.stereotype.Service;
  * parameter basic service.
  * @author J
  */
-@Service(value="paramService.transation")
+@Service(value="paramService.transation.jpa")
 public class ParamServiceImpl extends ServiceSupport<Param> implements ParamService{
 
+	public ParamServiceImpl(){
+		System.out.println("ParamServiceImpl");
+	}
 	@Autowired
 	private ParamRepo<?> paramMapper;
 	
@@ -53,7 +56,7 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 
 	@Override
 	public List<Param> getParamsByPage(ServiceContext context, JPagination pagination) {
-		return paramMapper.getParamsByPage(pagination);
+		return paramMapper.getModelsByPage(pagination);
 	}
 
 	@Override

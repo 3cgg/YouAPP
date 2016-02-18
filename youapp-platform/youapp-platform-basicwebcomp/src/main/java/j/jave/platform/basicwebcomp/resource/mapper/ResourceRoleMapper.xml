@@ -24,7 +24,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.resource.model.ResourceRole">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.resource.model.ResourceRole">
 insert into RESOURCES_ROLES
 (
 RESOURCEID,ROLEID,ENABLE,DESCRIPTION
@@ -36,8 +36,8 @@ RESOURCEID,ROLEID,ENABLE,DESCRIPTION
 </insert>
 
 
-<update id="update">
-update RESOURCES_ROLES
+<update id="updateModel">
+updateModel RESOURCES_ROLES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
@@ -50,12 +50,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update RESOURCES_ROLES set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel RESOURCES_ROLES set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="resourceRole"  >
+<select id="getModel"   resultMap="resourceRole"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -73,7 +73,7 @@ left join RESOURCES c on a.RESOURCEID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getsByPage"   resultMap="resourceRole"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="resourceRole"  parameterType="j.jave.kernal.jave.model.JPagination">
 select * from RESOURCES_ROLES  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

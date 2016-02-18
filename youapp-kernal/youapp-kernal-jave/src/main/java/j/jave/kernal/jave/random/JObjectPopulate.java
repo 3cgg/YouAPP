@@ -38,6 +38,7 @@ public class JObjectPopulate  extends JAbstractFieldPopulate{
 			public void process(FieldRelated element) throws Exception {
 				
 				JRandom<?> random=element.getRandom();
+				if(random==null) return;
 				Object value=null;
 				if(random instanceof JFieldRandom<?>){
 					value=((JFieldRandom<?>)random).random(element.getField(), element.getObjectClass());

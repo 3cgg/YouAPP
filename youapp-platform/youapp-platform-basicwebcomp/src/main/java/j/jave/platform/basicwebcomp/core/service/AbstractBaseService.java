@@ -43,11 +43,12 @@ public abstract class AbstractBaseService {
 		// give a chance to do something containing model intercepter
 		new JDefaultModelInvocation(jBaseModel).proceed();
 		
-		return jMapper.save((T) jBaseModel);
+		jMapper.saveModel((T) jBaseModel);
+		return (T) jBaseModel;
 	}
 	
 	protected <T extends JBaseModel> JBaseModel get(JIPersist<?, T> jMapper,String id){
-		return jMapper.get(id);
+		return jMapper.getModel(id);
 	}
 	
 	/**
@@ -73,7 +74,7 @@ public abstract class AbstractBaseService {
 		jBaseModel.setCreateTime(dbModel.getCreateTime());
 		jBaseModel.setCreateId(dbModel.getCreateId());
 		jBaseModel.setVersion(jBaseModel.getVersion()+1);
-		int affect=jMapper.update((T) jBaseModel);
+		int affect=jMapper.updateModel((T) jBaseModel);
 		if(affect==0) throw new JConcurrentException(
 				"record conflict on "+jBaseModel.getId()+" of "+jBaseModel.getClass().getName());
 		return (T) jBaseModel;

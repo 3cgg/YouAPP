@@ -10,7 +10,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User get(String id) {
-		return userXMLPersist.get(id, User.class.getName());
+		return userXMLPersist.getModel(id, User.class.getName());
 	}
 	
 	@Override

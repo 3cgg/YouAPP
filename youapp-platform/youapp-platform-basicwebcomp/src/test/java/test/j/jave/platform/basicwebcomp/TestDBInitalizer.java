@@ -5,7 +5,7 @@ import j.jave.kernal.sqlloader.ddl.JSQLDDLCreateFactory;
 import j.jave.kernal.sqlloader.dml.JPropertiesSQLDMLCreateFactory;
 import j.jave.kernal.sqlloader.dml.JSQLDMLCreateFactory;
 
-public class TestDDLCreate {
+public class TestDBInitalizer {
 
 	public static void main(String[] args) {
 		JSQLDDLCreateFactory ddlCreateFactory=new JPropertiesSQLDDLCreateFactory();

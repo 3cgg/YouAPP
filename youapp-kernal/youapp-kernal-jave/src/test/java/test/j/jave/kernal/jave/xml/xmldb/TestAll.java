@@ -75,7 +75,7 @@ public class TestAll extends TestCase{
 		
 		JUserXMLPersist userXMLPersist=new JUserXMLPersist();
 		
-		User user=  userXMLPersist.get("8de576f014e849d79700aea53e454d04",User.class.getName());
+		User user=  userXMLPersist.getModel("8de576f014e849d79700aea53e454d04",User.class.getName());
 		
 		//user.setUserName("zhongjin modify");
 		

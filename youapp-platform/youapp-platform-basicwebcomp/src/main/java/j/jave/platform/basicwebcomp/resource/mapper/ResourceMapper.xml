@@ -24,7 +24,7 @@
 </resultMap>
 
 
-<insert  id="save" parameterType="j.jave.platform.basicwebcomp.resource.model.Resource">
+<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.resource.model.Resource">
 insert into RESOURCES
 (
 URL,DESCRIPTION
@@ -36,8 +36,8 @@ URL,DESCRIPTION
 </insert>
 
 
-<update id="update">
-update RESOURCES
+<update id="updateModel">
+updateModel RESOURCES
 <set>  
 UPDATEID =#{updateId},UPDATETIME =#{updateTime}
 <if test="url!=null">,URL =#{url}</if>
@@ -48,12 +48,12 @@ where ID=#{id}
 </update>
 
 
-<delete id="markDeleted" >
-update RESOURCES set DELETED='Y' where ID=#{id}
+<delete id="markModelDeleted" >
+updateModel RESOURCES set DELETED='Y' where ID=#{id}
 </delete>
 
 
-<select id="get"   resultMap="resource"  >
+<select id="getModel"   resultMap="resource"  >
 <include refid="selectfor"></include> 
 where a.id=#{param1}
 </select>
@@ -71,7 +71,7 @@ left join RESOURCES_EXTEND b on a.ID=b.RESOURCEID
 </sql>
 
 
-<select id="getsByPage"   resultMap="resource"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="resource"  parameterType="j.jave.kernal.jave.model.JPagination">
 select * from RESOURCES  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

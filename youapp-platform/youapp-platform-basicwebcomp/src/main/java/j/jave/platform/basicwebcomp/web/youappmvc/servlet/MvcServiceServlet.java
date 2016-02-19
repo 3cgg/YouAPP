@@ -14,10 +14,10 @@ import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
-import j.jave.platform.basicwebcomp.web.youappmvc.jsp.JJSPServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.mobile.JJSONServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 
@@ -39,21 +39,21 @@ import org.slf4j.LoggerFactory;
  *  the servlet also test the object from ActionExecutor is File(see {@link JFile}) or not, if true the response will be for downloading file,
  *  Note that we check that according to {@link JFile} ,but not any byte array {@link byte[]}. 
  * @author J
- * @see JHttpContext
- * @see ActionExecutor#execute(JHttpContext)
- * @see JJSPServletViewHandler
- * @see JJSONServletViewHandler
+ * @see HttpContext
+ * @see ActionExecutor#execute(HttpContext)
+ * @see JSPServletViewHandler
+ * @see JSONServletViewHandler
  */
 @SuppressWarnings("serial")
-public class JServiceServlet  extends JServlet {
+public class MvcServiceServlet  extends JServlet {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JServiceServlet.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(MvcServiceServlet.class);
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
-	private JServletViewHandle servletViewHandle=new JJSPServletViewHandler();
+	private JServletViewHandle servletViewHandle=new JSPServletViewHandler();
 	
-	public JServiceServlet() {
+	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");
 	}
 	
@@ -69,7 +69,7 @@ public class JServiceServlet  extends JServlet {
 		 * @throws Exception
 		 */
 		public abstract void handleNavigate(HttpServletRequest request,HttpServletResponse response,
-				JHttpContext httpContext,Object navigate) throws Exception;
+				HttpContext httpContext,Object navigate) throws Exception;
 		
 		/**
 		 * how to handle service exception . the method is the end statement by the request. what is means the output stream 
@@ -80,7 +80,7 @@ public class JServiceServlet  extends JServlet {
 		 * @param httpContext
 		 * @param exception
 		 */
-		public abstract void handleServiceExcepion(HttpServletRequest request,HttpServletResponse response,JHttpContext httpContext,JServiceException exception);
+		public abstract void handleServiceExcepion(HttpServletRequest request,HttpServletResponse response,HttpContext httpContext,JServiceException exception);
 		
 		/**
 		 * how to handle exception .  the method is the end statement by the request. what is means the output stream 
@@ -90,7 +90,7 @@ public class JServiceServlet  extends JServlet {
 		 * @param httpContext
 		 * @param exception
 		 */
-		public abstract void handleExcepion(HttpServletRequest request,HttpServletResponse response,JHttpContext httpContext,Exception exception);
+		public abstract void handleExcepion(HttpServletRequest request,HttpServletResponse response,HttpContext httpContext,Exception exception);
 		
 	}
 	
@@ -107,32 +107,32 @@ public class JServiceServlet  extends JServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		JHttpContext httpContext=new JHttpContext(req,resp);
+		HttpContext httpContext=new HttpContext(req,resp);
 		try{
 			
-			String uniqueName=JYouAppMvcUtils.getTicket(req);
+			String uniqueName=YouAppMvcUtils.getTicket(req);
 			httpContext.setTicket(uniqueName);
 			
 			if(JStringUtils.isNullOrEmpty(uniqueName)){
 				//mock 用户信息
 				SessionUser user=serviceHubDelegate.addImmediateEvent(new SessionUserGetEvent(this), SessionUser.class);
-				String IP=JYouAppMvcUtils.getIP(req);
+				String IP=YouAppMvcUtils.getIP(req);
 				user.setUserName(IP);
 				user.setId(IP);
 				httpContext.setUser(user);
 			}
 			else{
 				// 从会话缓存中获取信息
-				JHttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), JHttpContext.class);
+				HttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), HttpContext.class);
 				if(context==null){
 					JCookieUtils.deleteCookie(req, resp, JCookieUtils.getCookie(req, ViewConstants.TICKET));
-					resp.sendRedirect(JYouAppMvcUtils.getAppUrlPath(req));
+					resp.sendRedirect(YouAppMvcUtils.getAppUrlPath(req));
 					return ;
 				}
 				httpContext.setUser(context.getUser());
 			}
 			
-			String target=JYouAppMvcUtils.getPathInfo(req);
+			String target=YouAppMvcUtils.getPathInfo(req);
 			httpContext.setTargetPath(target);
 			Object navigate=ActionExecutor.newSingleExecutor().execute(httpContext);
 			

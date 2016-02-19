@@ -5,8 +5,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.JLinkedRequestSupport;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * HTTP CONTEXT Wrapper , with which ACTION EXECUTOR can perform operation.
- * The class detect if the attribute {@link JLinkedRequestSupport#LINKED_REQUEST_PARAM_KEY} indicates linked request is existing , if exists extract them into {@link #parameters}
+ * The class detect if the attribute {@link LinkedRequestSupport#LINKED_REQUEST_PARAM_KEY} indicates linked request is existing , if exists extract them into {@link #parameters}
  * <p><strong>note that properties below is mandatory :</strong>
  * <p> {@link #ticket}
  * <p> {@link #user}
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see ActionExecutor
  */
-public class JHttpContext implements Serializable {
+public class HttpContext implements Serializable {
 
 	private static final long serialVersionUID = -3949287782520790723L;
 
@@ -82,30 +82,30 @@ public class JHttpContext implements Serializable {
 	 */
 	private transient volatile boolean linked=false; 
 	
-	public JHttpContext(HttpServletRequest request,HttpServletResponse response){
+	public HttpContext(HttpServletRequest request,HttpServletResponse response){
 		this.request = request;
 		this.response = response;
 		init();
 	}
 	
-	public JHttpContext(){
+	public HttpContext(){
 		this(null, null);
 	}
 	
 	private void init(){
 		boolean parse=false;
 		// process request with context type : multipart/form-data
-		if(request!=null&&JYouAppMvcUtils.isFileContextType(request)){
-			Map<String, Object> parameterValues=JYouAppMvcUtils.doWithRequestParameterWithFileAttached(request);
+		if(request!=null&&YouAppMvcUtils.isFileContextType(request)){
+			Map<String, Object> parameterValues=YouAppMvcUtils.doWithRequestParameterWithFileAttached(request);
 			this.parameters.putAll(parameterValues);
 			parse=true;
 		}
 
 		//initialize linked parameters from the request scope.
 		// avoid process those requests of FORWARD, INCLUDE ， specially aware of  FORWARD
-		if(request!=null&&JYouAppMvcUtils.isRequestTypeAndGET(request)&&JLinkedRequestSupport.isLinked(request)){
+		if(request!=null&&YouAppMvcUtils.isRequestTypeAndGET(request)&&LinkedRequestSupport.isLinked(request)){
 			linked=true;
-			Map<String,Object> linkedParameters=(Map<String, Object>) JLinkedRequestSupport.getParameters(request);
+			Map<String,Object> linkedParameters=(Map<String, Object>) LinkedRequestSupport.getParameters(request);
 			if(JCollectionUtils.hasInMap(linkedParameters)){
 				for (Iterator<Entry<String, Object>> iterator = linkedParameters.entrySet().iterator(); iterator.hasNext();) {
 					Entry<String, Object> entry =  iterator.next();
@@ -119,7 +119,7 @@ public class JHttpContext implements Serializable {
 		
 		
 		if(request!=null&&!parse){
-			this.parameters.putAll(JYouAppMvcUtils.parseRequestParameters(request));
+			this.parameters.putAll(YouAppMvcUtils.parseRequestParameters(request));
 			parse=true;
 		}
 		
@@ -190,7 +190,7 @@ public class JHttpContext implements Serializable {
 	}
 
 	/**
-	 * {@link JHttpContext#user}
+	 * {@link HttpContext#user}
 	 * @return generally <code>SessionUser</code> returned.
 	 */
 	public SessionUser getUser() {
@@ -202,11 +202,11 @@ public class JHttpContext implements Serializable {
 	}
 	
 	public String getIP(){
-		return JYouAppMvcUtils.getIP(request);
+		return YouAppMvcUtils.getIP(request);
 	}
 	
 	public String getClient(){
-		return JYouAppMvcUtils.getClient(request);
+		return YouAppMvcUtils.getClient(request);
 	}
 
 	public HttpServletRequest getRequest() {

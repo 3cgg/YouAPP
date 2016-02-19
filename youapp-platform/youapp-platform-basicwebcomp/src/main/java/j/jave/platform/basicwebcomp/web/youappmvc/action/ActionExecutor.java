@@ -7,8 +7,8 @@ import j.jave.kernal.jave.reflect.JReflect;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -27,7 +27,7 @@ public class ActionExecutor {
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(ActionExecutor.class);
 	
-	public Object execute(JHttpContext httpContext) throws Exception{
+	public Object execute(HttpContext httpContext) throws Exception{
 		
 		String targetPath=httpContext.getTargetPath();
 		
@@ -65,13 +65,13 @@ public class ActionExecutor {
 			applicationContext = SpringContextSupport.getApplicationContext();
 		}
 		
-		AbstractAction object=(AbstractAction) applicationContext.getBean(serviceName);
+		ActionSupport object=(ActionSupport) applicationContext.getBean(serviceName);
 		
 		// set HTTP context constructed above.
 		object.setHttpContext(httpContext);
 		
 		//setting attributes associate to the request. 
-		JYouAppMvcUtils.set(object, httpContext);
+		YouAppMvcUtils.set(object, httpContext);
 		
 		StopWatch stopWatch=null;
 		if(LOGGER.isDebugEnabled()){

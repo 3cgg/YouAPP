@@ -8,8 +8,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.util.JWebUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.JLinkedRequestSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,29 +39,29 @@ import org.slf4j.LoggerFactory;
  * HTTP Utilization
  * @author J
  */
-public abstract class JYouAppMvcUtils extends JWebUtils {
+public abstract class YouAppMvcUtils extends JWebUtils {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JYouAppMvcUtils.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(YouAppMvcUtils.class);
 
 	private static final String YOUAPP_HTTP_CONTEXT_KEY="youAPPHttpContext";
 	
 	
 	/**
-	 * get {@link JHttpContext} from HTTP Request Scope.
+	 * get {@link HttpContext} from HTTP Request Scope.
 	 * @param request
 	 * @return
 	 */
-	public static final JHttpContext getHttpContext(HttpServletRequest request){
-		return (JHttpContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
+	public static final HttpContext getHttpContext(HttpServletRequest request){
+		return (HttpContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
 	}
 	
 	
 	/**
-	 * put the {@link JHttpContext} to HTTP Request Scope.
+	 * put the {@link HttpContext} to HTTP Request Scope.
 	 * @param request
 	 * @param httpContext
 	 */
-	public static final void setHttpContext(HttpServletRequest request,JHttpContext httpContext ){
+	public static final void setHttpContext(HttpServletRequest request,HttpContext httpContext ){
 		request.setAttribute(YOUAPP_HTTP_CONTEXT_KEY, httpContext);
 	}
 	
@@ -96,7 +96,7 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 
 	/**
 	 * set the object properties with the parameter keys of request query string,  
-	 * the value of parameter is ordering by the {@link  JHttpContext#getParameter(String)}
+	 * the value of parameter is ordering by the {@link  HttpContext#getParameter(String)}
 	 *  , {@link HttpServletRequest#getParameter(String)} .
 	 * @param obj
 	 * @param request  if {@param httpContext}  does not contains the parameter, then get. <strong>{mandatory}</strong>
@@ -104,7 +104,7 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	 * @throws Exception
 	 * @see {@link JClassUtils#set}
 	 */
-	public static void set(Object obj, HttpServletRequest request, JHttpContext httpContext) throws Exception {
+	public static void set(Object obj, HttpServletRequest request, HttpContext httpContext) throws Exception {
 		if(request==null){
 			throw new IllegalArgumentException("parameter request is null");
 		}
@@ -157,12 +157,12 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	}
 	
 	/**
-	 * set the object properties in the set of {@link JHttpContext#getParameters()}. 
+	 * set the object properties in the set of {@link HttpContext#getParameters()}. 
 	 * @param obj
 	 * @param httpContext  <strong>argument is mandatory</strong>
 	 * @throws Exception
 	 */
-	public static void set(Object obj, JHttpContext httpContext) throws Exception {
+	public static void set(Object obj, HttpContext httpContext) throws Exception {
 		if(httpContext==null){
 			throw new IllegalArgumentException("parameter httpContext is null");
 		}
@@ -233,7 +233,7 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	
 	/**
 	 * put additional attributes in the request scope, these attributes are only added by framework. 
-	 * all ones should be in the only one map with the constraint key {@link JHttpContext#ADDITIONAL_PARAM_KEY}
+	 * all ones should be in the only one map with the constraint key {@link HttpContext#ADDITIONAL_PARAM_KEY}
 	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
 	 * @param request
 	 * @param key
@@ -242,11 +242,11 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	 */
 	public static Object setAdditionalAttributesInRequestScope(HttpServletRequest request,String key,Object attributes){
 		Object previous=null;
-		Map<String, Object> object=(Map<String, Object>) request.getAttribute(JHttpContext.ADDITIONAL_PARAM_KEY);
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(HttpContext.ADDITIONAL_PARAM_KEY);
 		if(object==null){
 			object=new HashMap<String, Object>();
 			object.put(key, attributes);
-			request.setAttribute(JHttpContext.ADDITIONAL_PARAM_KEY, object);
+			request.setAttribute(HttpContext.ADDITIONAL_PARAM_KEY, object);
 			previous=attributes;
 		}
 		else{
@@ -257,7 +257,7 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	
 	/**
 	 * get additional attributes in the request scope.these attributes are only used by framework. 
-	 * all ones should be in the only one map with the constraint key {@link JHttpContext#ADDITIONAL_PARAM_KEY}
+	 * all ones should be in the only one map with the constraint key {@link HttpContext#ADDITIONAL_PARAM_KEY}
 	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
 	 * @param request
 	 * @param key
@@ -265,7 +265,7 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	 * @return
 	 */
 	public static Object getAdditionalAttributesInRequestScope(HttpServletRequest request,String key){
-		Map<String, Object> object=(Map<String, Object>) request.getAttribute(JHttpContext.ADDITIONAL_PARAM_KEY);
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(HttpContext.ADDITIONAL_PARAM_KEY);
 		if(object==null){
 			return null;
 		}
@@ -284,8 +284,8 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 		
 		if(request==null) return null;
 		String value = null;
-		if(JLinkedRequestSupport.isLinked(request)){
-			value=JLinkedRequestSupport.getParameter(request, key);
+		if(LinkedRequestSupport.isLinked(request)){
+			value=LinkedRequestSupport.getParameter(request, key);
 		}
 		else{
 			value = request.getParameter(key);
@@ -302,8 +302,8 @@ public abstract class JYouAppMvcUtils extends JWebUtils {
 	public static String[] getParameterValues(HttpServletRequest request,String key) {
 		if(request==null) return null;
 		String[] values = null;
-		if(JLinkedRequestSupport.isLinked(request)){
-			values=JLinkedRequestSupport.getParameterValues(request, key);
+		if(LinkedRequestSupport.isLinked(request)){
+			values=LinkedRequestSupport.getParameterValues(request, key);
 		}
 		else{
 			values = request.getParameterValues(key);

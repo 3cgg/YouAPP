@@ -4,8 +4,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.JLinkedRequestSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 
 import java.io.IOException;
 
@@ -26,14 +25,14 @@ import javax.servlet.http.HttpServletRequest;
  * The filter is designed following by MemoryHTMLFilter. 
  * <p> What request is a part of link ones, the query string must contain the one or all of the below parameters:
  * <pre>
- * 1. {@link JLinkedRequestSupport#linkedUniqueKey} mandatory
- * 2. {@link JLinkedRequestSupport#linkedOrderKey} optional
+ * 1. {@link LinkedRequestSupport#linkedUniqueKey} mandatory
+ * 2. {@link LinkedRequestSupport#linkedOrderKey} optional
  * </pre>
  * see  JLinkedRequestSupport for detail.
  * @author J
- * @see JLinkedRequestSupport
+ * @see LinkedRequestSupport
  */
-public class JLinkedRequestFilter implements JFilter ,APPFilterConfig  {
+public class LinkedRequestFilter implements JFilter ,APPFilterConfig  {
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -52,19 +51,19 @@ public class JLinkedRequestFilter implements JFilter ,APPFilterConfig  {
 				&&JStringUtils.isNotNullOrEmpty(req.getPathInfo())
 				&&"GET".equals(req.getMethod())){
 			
-			if(JLinkedRequestSupport.isLinked(req)){
+			if(LinkedRequestSupport.isLinked(req)){
 				
 				//the request part of the linked ends 
-				if(JLinkedRequestSupport.isEnd(req)){
+				if(LinkedRequestSupport.isEnd(req)){
 					//PUT linked parameters in to request scope.
-					JLinkedRequestSupport linkedRequestSupport=new JLinkedRequestSupport(req);
+					LinkedRequestSupport linkedRequestSupport=new LinkedRequestSupport(req);
 					linkedRequestSupport.setLinkedParameters();
 					chain.doFilter(request, response);
 				} 
 				else{
 					// store the parameter in the temporary cache ,  for distribution system , which we need the cache support  
 					
-					JLinkedRequestSupport linkedRequestSupport=new JLinkedRequestSupport(req);
+					LinkedRequestSupport linkedRequestSupport=new LinkedRequestSupport(req);
 					boolean stored=linkedRequestSupport.store();
 					
 					if(stored){

@@ -1,6 +1,6 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.mobile;
+package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
-public class MobileResult {
+public class JSONResult {
 	
 	/**
 	 * return status.  OK! or MESSAGE! or ERROR! 
@@ -29,20 +29,20 @@ public class MobileResult {
 		this.data = data;
 	}
 	
-	public static MobileResult newSuccess(){
-		MobileResult mobileResult=new MobileResult();
+	public static JSONResult newSuccess(){
+		JSONResult mobileResult=new JSONResult();
 		mobileResult.status="1";
 		return mobileResult;
 	}
 
-	public static MobileResult newMessage(){
-		MobileResult mobileResult=new MobileResult();
+	public static JSONResult newMessage(){
+		JSONResult mobileResult=new JSONResult();
 		mobileResult.status="0";
 		return mobileResult;
 	}
 	
-	public static MobileResult newError(){
-		MobileResult mobileResult=new MobileResult();
+	public static JSONResult newError(){
+		JSONResult mobileResult=new JSONResult();
 		mobileResult.status="-1";
 		return mobileResult;
 	}

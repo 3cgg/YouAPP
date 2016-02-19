@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.support;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
 public class PlatformInfo {

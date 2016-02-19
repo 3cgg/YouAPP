@@ -7,12 +7,11 @@ import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.support.JServletContext;
 import j.jave.platform.basicwebcomp.web.support.JServletDetect;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.JServiceServlet;
+import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfigResolve;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 
@@ -26,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Do with URL with slash appended （like : http://127.0.0.1:8686/youapp/） or any other cases, check if the path is valid , 
- * what that means the path can be processed by {@link JServiceServlet}. if not valid ,  an entrance view page (<strong>only for browser</strong>) will be shown ( in the case of requesting root resource) ,
+ * what that means the path can be processed by {@link MvcServiceServlet}. if not valid ,  an entrance view page (<strong>only for browser</strong>) will be shown ( in the case of requesting root resource) ,
  * or return error message JSON format that is from FilterResponse. 
  * <p>Also note : some dispatch may need put concrete servlet path ( configured by {@link APPFilterConfig#SERVICE_ON_SERVLET_PATH} ) as prefix of action path.see  APPFilterConfig for detail.
  * if the parameter is not configured, will call {@link JServletContext#getJSPServletUrlMappingResolvingStar()} to get default servlet path.
@@ -50,7 +49,7 @@ import javax.servlet.http.HttpServletRequest;
  * @see JServletContext
  * @see FilterResponse
  */
-public class JValidPathFilter implements JFilter ,APPFilterConfig  {
+public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 	
 	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
@@ -58,12 +57,14 @@ public class JValidPathFilter implements JFilter ,APPFilterConfig  {
 	
 	private JServletDetect servletDetect=null;
 	
-	private JServletContext servletContext=null;;
+	private JServletContext servletContext=null;
 	
 	/**
 	 * "/web/service/dispatch/*" pattern configured in web.xml . 
 	 */
 	private String serviceServletPath=null;
+	
+	private Object sync=new Object();
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -79,8 +80,12 @@ public class JValidPathFilter implements JFilter ,APPFilterConfig  {
 		
 		HttpServletRequest req=(HttpServletRequest) request;
 		if(servletDetect==null){
-			servletDetect=new JServletDetect(req);
-			servletContext=servletDetect.getServletContext();
+			synchronized (sync) {
+				if(servletDetect==null){
+					servletDetect=new JServletDetect(req);
+					servletContext=servletDetect.getServletContext();
+				}
+			}
 		}
 		
 		if(servletContext!=null){
@@ -107,13 +112,13 @@ public class JValidPathFilter implements JFilter ,APPFilterConfig  {
 			}
 		}
 		
-		String path=JYouAppMvcUtils.getPathInfo(req);
+		String path=YouAppMvcUtils.getPathInfo(req);
 		if(JStringUtils.isNotNullOrEmpty(path)){
 			boolean validPath=loginAccessService.isValidResource(path);
 			if(!validPath){
 				FilterResponse filterResponse=FilterResponse.newInvalidPath();
 				filterResponse.setObject(servletConfigService.getInvalidPathInfo());
-				response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+				response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 				return ;
 			}
 		}

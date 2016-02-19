@@ -6,9 +6,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
 import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 
@@ -59,7 +58,7 @@ public class ResourceAccessFilter implements JFilter{
 			HttpServletRequest req=(HttpServletRequest) request;
 			
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String pathInfo=JYouAppMvcUtils.getPathInfo(req);
+			String pathInfo=YouAppMvcUtils.getPathInfo(req);
 			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限
@@ -67,11 +66,11 @@ public class ResourceAccessFilter implements JFilter{
 				return ;
 			}
 			
-			String clientTicket=JYouAppMvcUtils.getTicket(req);
+			String clientTicket=YouAppMvcUtils.getTicket(req);
 			
 			// IF LOGINED, need check whether has an access to the resource
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
-				JHttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), JHttpContext.class);
+				HttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), HttpContext.class);
 				if(context!=null){
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getId());
 					authorized=true;
@@ -86,7 +85,7 @@ public class ResourceAccessFilter implements JFilter{
 					FilterResponse filterResponse=FilterResponse.newNoLogin();
 					filterResponse.setObject("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
 					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
-					JYouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
+					YouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
 					return ;
 				}
 			}

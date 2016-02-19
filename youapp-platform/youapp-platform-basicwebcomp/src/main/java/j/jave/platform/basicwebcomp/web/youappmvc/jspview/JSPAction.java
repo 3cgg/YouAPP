@@ -1,13 +1,13 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.jsp;
+package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
-import j.jave.platform.basicwebcomp.web.youappmvc.action.AbstractAction;
+import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.JQueryDataTablePage;
 
 /**
  * JSP basic action. 
  * @author J
  */
-public abstract class JSPAction extends AbstractAction {
+public abstract class JSPAction extends ActionSupport {
 
 	/**
 	 * define navigate JSP ,  like as 

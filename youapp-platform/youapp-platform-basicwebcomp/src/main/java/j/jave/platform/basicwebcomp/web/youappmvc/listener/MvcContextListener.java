@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
  * <p>3. custom file directories or jar files (split by ";") that need be added into CLASSPATH ,see initial parameter : {@value #CUSTOM_CLASSPATH} 
  * @author J
  */
-public class APPContextListener implements ServletContextListener {
-	private static final Logger LOGGER=LoggerFactory.getLogger(APPContextListener.class);
+public class MvcContextListener implements ServletContextListener {
+	private static final Logger LOGGER=LoggerFactory.getLogger(MvcContextListener.class);
 	
 //	/**
 //	 * other file directory or jar file that need be added in to CLASSPATH.

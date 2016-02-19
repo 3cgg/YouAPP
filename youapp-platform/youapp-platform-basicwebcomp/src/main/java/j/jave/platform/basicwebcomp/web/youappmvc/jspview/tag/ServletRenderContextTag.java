@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.jsp.tag;
+package j.jave.platform.basicwebcomp.web.youappmvc.jspview.tag;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.render.ServletRenderContext;

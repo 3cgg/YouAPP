@@ -1,14 +1,11 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.mobile;
+package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.JLoginFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.LoginFilter.LoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
 
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,37 +30,33 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JMobileLoginFilter extends JLoginFilter implements JFilter ,APPFilterConfig {
+public class JSONLoginHandler implements LoginHandler ,APPFilterConfig {
+	
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		super.init(filterConfig);
-		//add below 
-	}
-	
-	@Override
-	protected void handleNoLogin(HttpServletRequest request,
+	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newNoLogin();
-		MobileResult mobileResult=MobileResult.newMessage();
+		JSONResult mobileResult=JSONResult.newMessage();
 		mobileResult.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().format(mobileResult).getBytes("utf-8"));
+		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
 	}
 	
 	@Override
-	protected void handleDuplicateLogin(HttpServletRequest request,
+	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
-		MobileResult mobileResult=MobileResult.newMessage();
+		JSONResult mobileResult=JSONResult.newMessage();
 		mobileResult.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().format(mobileResult).getBytes("utf-8"));
+		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
+	}
+
+	@Override
+	public void handleToLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
 	}
 	
-	@Override
-	public void destroy() {
-		//add above
-		
-		super.destroy();
-	}
+	
+	
 
 }

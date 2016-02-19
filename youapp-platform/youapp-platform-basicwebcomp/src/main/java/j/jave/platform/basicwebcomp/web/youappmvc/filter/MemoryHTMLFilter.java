@@ -5,7 +5,7 @@ import j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheMemoryCacheService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.util.JMemoryResponseWrapper;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public class MemoryHTMLFilter implements JFilter{
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest httpServletRequest=(HttpServletRequest) request;
-		String path=JYouAppMvcUtils.getPathInfo(httpServletRequest);
+		String path=YouAppMvcUtils.getPathInfo(httpServletRequest);
 		//check if cached.
 		if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
 			ResponseCacheModel responseCachedResource=requestResourceMemoryCacheService.get(path);

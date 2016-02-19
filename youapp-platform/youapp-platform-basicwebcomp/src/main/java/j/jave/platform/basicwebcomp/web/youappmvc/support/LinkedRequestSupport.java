@@ -6,9 +6,9 @@ package j.jave.platform.basicwebcomp.web.youappmvc.support;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedService;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.JLinkedRequestFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.LinkedRequestFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -30,20 +30,20 @@ import org.slf4j.LoggerFactory;
  *  
  * <strong>Also note the instance is not thread safety</strong>
  * @author J
- * @see JLinkedRequestResponse
- * @see JLinkedRequestFilter
+ * @see LinkedRequestResponse
+ * @see LinkedRequestFilter
  * @see SimpleStringTrace
  * @see LinkedObjectTrace
  */
-public class JLinkedRequestSupport {
+public class LinkedRequestSupport {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JLinkedRequestSupport.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(LinkedRequestSupport.class);
 	
 	private static MemcachedService memcachedService=JServiceHubDelegate.get().getService(new Object(), MemcachedService.class);
 	
 	/**
 	 * be used for linked request, the linked request parameter stores in the additional map in request scope, the additional map key is 
-	 * {@link JHttpContext #ADDITIONAL_PARAM_KEY}
+	 * {@link HttpContext #ADDITIONAL_PARAM_KEY}
 	 */
 	public static final String LINKED_REQUEST_PARAM_KEY="j.jave.framework.components.web.linked.param";
 	
@@ -92,7 +92,7 @@ public class JLinkedRequestSupport {
 
 	private final TYPE storeType;
 	
-	public JLinkedRequestSupport(HttpServletRequest request,TYPE storeType){
+	public LinkedRequestSupport(HttpServletRequest request,TYPE storeType){
 		this.storeType=storeType;
 		this.request=request;
 		linkedUniqueValue=request.getParameter(linkedUniqueKey);
@@ -114,7 +114,7 @@ public class JLinkedRequestSupport {
 		init();
 	}
 	
-	public JLinkedRequestSupport(HttpServletRequest request) {
+	public LinkedRequestSupport(HttpServletRequest request) {
 		this(request, TYPE.SimpleString);
 	}
 	
@@ -219,7 +219,7 @@ public class JLinkedRequestSupport {
 
 		private static final String append="-linked-object-trace";
 		private String key=linkedUniqueValue+append;
-		private String pathInfo=JYouAppMvcUtils.getPathInfo(request);
+		private String pathInfo=YouAppMvcUtils.getPathInfo(request);
 		@Override
 		public boolean store()throws Exception  {
 			boolean stored=true;
@@ -227,15 +227,15 @@ public class JLinkedRequestSupport {
 			if(object!=null){
 				object.order++;
 				object.parameter=object.parameter+(JStringUtils.isNullOrEmpty(actualParams)?EMPTY:actualParams);
-				object.isEnd=JLinkedRequestSupport.this.isEnd;
-				object.isStart=JLinkedRequestSupport.this.isStart;
+				object.isEnd=LinkedRequestSupport.this.isEnd;
+				object.isStart=LinkedRequestSupport.this.isStart;
 			}
 			else{
 				object=new LinkedObject();
 				object.order++;
 				object.parameter=object.parameter+(JStringUtils.isNullOrEmpty(actualParams)?EMPTY:actualParams);
-				object.isEnd=JLinkedRequestSupport.this.isEnd;
-				object.isStart=JLinkedRequestSupport.this.isStart;
+				object.isEnd=LinkedRequestSupport.this.isEnd;
+				object.isStart=LinkedRequestSupport.this.isStart;
 				object.pathInfo=pathInfo;
 			}
 			memcachedService.set(key, 60, object);
@@ -249,15 +249,15 @@ public class JLinkedRequestSupport {
 			if(object!=null){
 				object.order++;
 				object.parameter=object.parameter+(JStringUtils.isNullOrEmpty(actualParams)?EMPTY:actualParams);
-				object.isEnd=JLinkedRequestSupport.this.isEnd;
-				object.isStart=JLinkedRequestSupport.this.isStart;
+				object.isEnd=LinkedRequestSupport.this.isEnd;
+				object.isStart=LinkedRequestSupport.this.isStart;
 			}
 			else{
 				object=new LinkedObject();
 				object.order++;
 				object.parameter=object.parameter+(JStringUtils.isNullOrEmpty(actualParams)?EMPTY:actualParams);
-				object.isEnd=JLinkedRequestSupport.this.isEnd;
-				object.isStart=JLinkedRequestSupport.this.isStart;
+				object.isEnd=LinkedRequestSupport.this.isEnd;
+				object.isStart=LinkedRequestSupport.this.isStart;
 				object.pathInfo=pathInfo;
 			}
 			return object;
@@ -355,7 +355,7 @@ public class JLinkedRequestSupport {
 		
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug(linkedUniqueValue+"-the whole parameter->"+object);
-			LOGGER.debug(linkedUniqueValue+"-the whole parameter->"+JYouAppMvcUtils.decode(object)); 
+			LOGGER.debug(linkedUniqueValue+"-the whole parameter->"+YouAppMvcUtils.decode(object)); 
 		}
 		return object;
 	}
@@ -366,8 +366,8 @@ public class JLinkedRequestSupport {
 	 * generally, the method will be called when then method {@link #store()} returns true.
 	 * @return
 	 */
-	public JLinkedRequestResponse next(){
-		JLinkedRequestResponse multiRequest=new JLinkedRequestResponse();
+	public LinkedRequestResponse next(){
+		LinkedRequestResponse multiRequest=new LinkedRequestResponse();
 		multiRequest.setNext(true);
 		multiRequest.setMessage("Do next.");
 		return multiRequest;
@@ -377,8 +377,8 @@ public class JLinkedRequestSupport {
 	 * generally, the method will be called when then method {@link #store()} returns false.
 	 * @return
 	 */
-	public JLinkedRequestResponse terminate(){
-		JLinkedRequestResponse multiRequest=new JLinkedRequestResponse();
+	public LinkedRequestResponse terminate(){
+		LinkedRequestResponse multiRequest=new LinkedRequestResponse();
 		multiRequest.setNext(false);
 		multiRequest.setMessage(exception.getMessage());
 		return multiRequest;
@@ -391,7 +391,7 @@ public class JLinkedRequestSupport {
 	 * @return
 	 */
 	public static String getParameter(HttpServletRequest request,String key) {
-		Map<?,?> map=(Map<?, ?>) JYouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
+		Map<?,?> map=(Map<?, ?>) YouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
 		String value=(String) ((map==null?null:map.get(key)));
 		return value;
 	}
@@ -403,7 +403,7 @@ public class JLinkedRequestSupport {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Map<String,Object> getParameters(HttpServletRequest request) {
-		return (Map<String,Object>) JYouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
+		return (Map<String,Object>) YouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
 	}
 	
 	
@@ -414,19 +414,19 @@ public class JLinkedRequestSupport {
 	 * @return
 	 */
 	public static String[] getParameterValues(HttpServletRequest request,String key) {
-		Map<?,?> map=(Map<?, ?>) JYouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
+		Map<?,?> map=(Map<?, ?>) YouAppMvcUtils.getAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY);
 		String[] value =(String[]) ((map==null?null:map.get(key)));
 		return value;
 	}
 	
 	/**
 	 * put linked parameters into request scope with the key : {@value #LINKED_REQUEST_PARAM_KEY}.
-	 * @see JYouAppMvcUtils#setAdditionalAttributesInRequestScope(HttpServletRequest, String, Object)
+	 * @see YouAppMvcUtils#setAdditionalAttributesInRequestScope(HttpServletRequest, String, Object)
 	 */
 	public void setLinkedParameters(){
 		String allParameters=get();
-		Map<String,String> params= JYouAppMvcUtils.parseQueryString(JYouAppMvcUtils.decode(allParameters));
-		JYouAppMvcUtils.setAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY, params);
+		Map<String,String> params= YouAppMvcUtils.parseQueryString(YouAppMvcUtils.decode(allParameters));
+		YouAppMvcUtils.setAdditionalAttributesInRequestScope(request, LINKED_REQUEST_PARAM_KEY, params);
 	}
 	
 	

@@ -1,12 +1,12 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.jsp;
+package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.JServiceServlet.JServletViewHandle;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandle;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -22,17 +22,17 @@ import org.slf4j.LoggerFactory;
  * JSP Service Servlet
  * @author J
  */
-public class JJSPServletViewHandler  implements JServletViewHandle {
+public class JSPServletViewHandler  implements JServletViewHandle {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JJSPServletViewHandler.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(JSPServletViewHandler.class);
 	
 	@Override
 	public void handleNavigate(HttpServletRequest request,
-			HttpServletResponse response,JHttpContext httpContext, Object navigate) throws Exception {
+			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
 		if(String.class.isInstance(navigate)){  // its forward to JSP. 
 			String expectJsp=(String)navigate;
 			if(expectJsp.endsWith(".jsp")){
-				JYouAppMvcUtils.setHttpContext(request, httpContext);
+				YouAppMvcUtils.setHttpContext(request, httpContext);
 				request.getRequestDispatcher(expectJsp).forward(request, response);
 			}
 			else{
@@ -43,7 +43,7 @@ public class JJSPServletViewHandler  implements JServletViewHandle {
 	
 	@Override
 	public void handleServiceExcepion(HttpServletRequest request,
-			HttpServletResponse response, JHttpContext httpContext,
+			HttpServletResponse response, HttpContext httpContext,
 			JServiceException exception) {
 		try{
 			request.setAttribute("message", exception.getMessage());
@@ -58,7 +58,7 @@ public class JJSPServletViewHandler  implements JServletViewHandle {
 	
 	@Override
 	public void handleExcepion(HttpServletRequest request,
-			HttpServletResponse response, JHttpContext httpContext,
+			HttpServletResponse response, HttpContext httpContext,
 			Exception exception) {
 		try{
 			Throwable exp=exception;

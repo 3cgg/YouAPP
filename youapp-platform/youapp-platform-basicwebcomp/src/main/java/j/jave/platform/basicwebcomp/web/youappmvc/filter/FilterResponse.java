@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.support;
+package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 /**
  * the class warps standard information to make the end-user 

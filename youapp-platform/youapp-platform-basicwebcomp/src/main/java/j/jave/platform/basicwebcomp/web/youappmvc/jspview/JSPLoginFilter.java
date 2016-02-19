@@ -1,14 +1,13 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.jsp;
+package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.JLoginFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.LoginFilter.LoginHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
 
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,41 +42,30 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JJSPLoginFilter extends JLoginFilter implements JFilter ,APPFilterConfig {
+public class JSPLoginFilter implements LoginHandler ,APPFilterConfig {
+	
+	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
 	private String serviceToLoginPath=servletConfigService.getToLoginPath();
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		super.init(filterConfig);
-		//add below 
-	}
-	
-	@Override
-	protected void handleNoLogin(HttpServletRequest request,
+	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		request.setAttribute("url", serviceToLoginPath); 
 		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
 	}
 	
 	@Override
-	protected void handleDuplicateLogin(HttpServletRequest request,
+	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
-		response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+		response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 	}
 	
 	@Override
-	protected void handleToLogin(HttpServletRequest request,
+	public void handleToLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
-	}
-	
-	@Override
-	public void destroy() {
-		//add above
-		
-		super.destroy();
 	}
 
 }

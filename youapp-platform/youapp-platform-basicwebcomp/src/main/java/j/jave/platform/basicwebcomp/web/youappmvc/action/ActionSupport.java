@@ -4,7 +4,7 @@ import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,26 +13,26 @@ import org.slf4j.LoggerFactory;
  * basic action for view controller.
  * @author J
  */
-public abstract class AbstractAction implements Action {
+public abstract class ActionSupport implements Action {
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
-	protected JHttpContext httpContext;
+	protected HttpContext httpContext;
 	
-	/**
-	 * {@link #setHttpContext(JHttpContext)}
-	 */
-	public static final String httpContextCallBackName="setHttpContext";
+//	/**
+//	 * {@link #setHttpContext(HttpContext)}
+//	 */
+//	public static final String httpContextCallBackName="setHttpContext";
 	
 	public static final String CREATE_SUCCESS="保存成功";
 	public static final String DELETE_SUCCESS="删除成功";
 	public static final String EDIT_SUCCESS="更新成功";
 
-	public JHttpContext getHttpContext() {
+	public HttpContext getHttpContext() {
 		return httpContext;
 	}
 
-	public void setHttpContext(JHttpContext httpContext) {
+	public void setHttpContext(HttpContext httpContext) {
 		this.httpContext = httpContext;
 	}
 	

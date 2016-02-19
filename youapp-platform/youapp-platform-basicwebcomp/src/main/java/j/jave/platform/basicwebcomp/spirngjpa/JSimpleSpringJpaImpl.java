@@ -63,7 +63,7 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 
 	@Override
 	public List<T> getModelsByPage(JPagination pagination) {
-		return null;
+		return findAll();
 	}
 
 }

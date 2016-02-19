@@ -1,11 +1,14 @@
 package j.jave.platform.basicwebcomp.tablemanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JModelMapper;
+import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 import j.jave.platform.basicwebcomp.core.model.SearchCriteria;
@@ -15,7 +18,6 @@ import j.jave.platform.basicwebcomp.tablemanager.model.Column;
 import j.jave.platform.basicwebcomp.tablemanager.model.Record;
 import j.jave.platform.basicwebcomp.tablemanager.model.Table;
 import j.jave.platform.basicwebcomp.tablemanager.model.TableSearch;
-import j.jave.platform.mybatis.JMapper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
@@ -36,21 +39,23 @@ import org.springframework.stereotype.Service;
 @Service(value="tableManagerServiceImpl")
 public class TableManagerServiceImpl implements TableManagerService ,ApplicationContextAware{
 
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(TableManagerServiceImpl.class);
+	
 	private ApplicationContext applicationContext=null;
 	
 	private volatile boolean loaded=false;
 	
 	/**
-	 * key :  sub-class of {@link JMapper}
+	 * key :  sub-class of {@link JIPersist}
 	 * <p> value : object 
 	 */
-	private Map<Class<?>, JMapper< JBaseModel>> mappersWithMapperClass=new ConcurrentHashMap<Class<?>, JMapper<JBaseModel>>();
+	private Map<Class<?>, JIPersist<?,JBaseModel>> mappersWithMapperClass=new ConcurrentHashMap<Class<?>, JIPersist<?,JBaseModel>>();
 
 	/**
 	 * key :  name of mapping model.
 	 * <p> value : object 
 	 */
-	private Map<String, JMapper<JBaseModel>> mappersWithModelName=new ConcurrentHashMap<String, JMapper<JBaseModel>>();
+	private Map<String, JIPersist<?,JBaseModel>> mappersWithModelName=new ConcurrentHashMap<String, JIPersist<?,JBaseModel>>();
 
 	
 	/**
@@ -75,17 +80,23 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	private synchronized void loadMapper(){
 		if(!loaded){
 			// get all mappers 
-			JDefaultClassesScanner defaultPackageScan= new JDefaultClassesScanner(JMapper.class);
-			defaultPackageScan.setIncludePackages(new String[]{"j"});
+			JDefaultClassesScanner defaultPackageScan= new JDefaultClassesScanner(JIPersist.class);
+			defaultPackageScan.setIncludePackages(new String[]{"j.jave"});
 			Set<Class<?>> classes=defaultPackageScan.scan();
 			if(classes!=null){
 				for (Iterator<Class<?>> iterator = classes.iterator(); iterator.hasNext();) {
 					Class<?> clazz = iterator.next();
-					JModelMapper modelMapper=clazz.getAnnotation(JModelMapper.class);
+					JModelRepo modelMapper=clazz.getAnnotation(JModelRepo.class);
 					if(modelMapper!=null){
 						// load mapper 
 						String component=modelMapper.component();
-						JMapper mapper=applicationContext.getBean(component,JMapper.class);
+						JIPersist<?, JBaseModel> mapper=null;
+						try{
+							mapper=applicationContext.getBean(component,JIPersist.class);
+						}catch(NoSuchBeanDefinitionException e ){
+							LOGGER.info(e.getMessage(), e);
+							continue;
+						}
 						mappersWithMapperClass.put(clazz, mapper);
 						
 						Class<? extends JBaseModel>  model=modelMapper.name();
@@ -201,7 +212,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	public Record getRecord(ServiceContext serviceContext, JBaseModel model) {
 		init();
 		
-		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(getModelName(model));
+		JIPersist<?,JBaseModel> mapper=mappersWithModelName.get(getModelName(model));
 		JBaseModel baseModel=mapper.getModel(model.getId());
 		return getRecord(baseModel);
 	}
@@ -258,7 +269,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		
 		TableSearch tableSearch=(TableSearch) model;
 		
-		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(tableSearch.getModelName());
+		JIPersist<?,JBaseModel> mapper=mappersWithModelName.get(tableSearch.getModelName());
 		
 		List<? extends JBaseModel> models=mapper.getModelsByPage((JPagination) model);
 		List<Record> records=new ArrayList<Record>();
@@ -281,7 +292,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 			String id) {
 		init();
 		
-		JMapper<? extends JBaseModel> mapper=mappersWithModelName.get(modelName);
+		JIPersist<? , JBaseModel> mapper=mappersWithModelName.get(modelName);
 		JBaseModel baseModel=mapper.getModel(id);
 		return getRecord(baseModel);
 	}
@@ -299,7 +310,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		try {
 			String modelName=record.getModelName();
 			JBaseModel model=get(record);
-			JMapper<JBaseModel> mapper=mappersWithModelName.get(modelName);
+			JIPersist<?,JBaseModel> mapper=mappersWithModelName.get(modelName);
 			mapper.updateModel( model);
 			
 		} catch (Exception e) {

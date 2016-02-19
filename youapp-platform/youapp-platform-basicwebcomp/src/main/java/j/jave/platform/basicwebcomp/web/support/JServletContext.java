@@ -6,7 +6,7 @@ package j.jave.platform.basicwebcomp.web.support;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.web.youappmvc.jsp.JJSPServiceServlet;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsp.JJSPServletViewHandler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -177,7 +177,7 @@ public class JServletContext {
 	private Object jspUrlSync=new Object();
 	
 	/**
-	 * default to find {@link JJSPServiceServlet} , if multiple URL mappings found, return first.
+	 * default to find {@link JJSPServletViewHandler} , if multiple URL mappings found, return first.
 	 * @return
 	 */
 	public String getJSPServletUrlMapping(){
@@ -187,7 +187,7 @@ public class JServletContext {
 					jspServletUrls=new ArrayList<String>();
 					for(int i=0;i<servlets.size();i++){
 						Servlet servlet=servlets.get(i);
-						if(servlet._class==JJSPServiceServlet.class){
+						if(servlet._class==JJSPServletViewHandler.class){
 							jspServletUrls.addAll(servlet.urlMappings);
 						}
 					}
@@ -198,7 +198,7 @@ public class JServletContext {
 	}
 	
 	/**
-	 * default to find {@link JJSPServiceServlet} , if multiple URL mappings found, return first.
+	 * default to find {@link JJSPServletViewHandler} , if multiple URL mappings found, return first.
 	 * convert "/web/service/dispatch/*" -> "/web/service/dispatch" 
 	 * @return
 	 */

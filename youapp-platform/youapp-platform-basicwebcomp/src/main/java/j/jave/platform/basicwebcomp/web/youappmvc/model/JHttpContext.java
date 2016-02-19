@@ -5,8 +5,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.support.JLinkedRequestSupport;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JHttpUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.JLinkedRequestSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -95,15 +95,15 @@ public class JHttpContext implements Serializable {
 	private void init(){
 		boolean parse=false;
 		// process request with context type : multipart/form-data
-		if(request!=null&&JHttpUtils.isFileContextType(request)){
-			Map<String, Object> parameterValues=JHttpUtils.doWithRequestParameterWithFileAttached(request);
+		if(request!=null&&JYouAppMvcUtils.isFileContextType(request)){
+			Map<String, Object> parameterValues=JYouAppMvcUtils.doWithRequestParameterWithFileAttached(request);
 			this.parameters.putAll(parameterValues);
 			parse=true;
 		}
 
 		//initialize linked parameters from the request scope.
 		// avoid process those requests of FORWARD, INCLUDE ， specially aware of  FORWARD
-		if(request!=null&&JHttpUtils.isRequestTypeAndGET(request)&&JLinkedRequestSupport.isLinked(request)){
+		if(request!=null&&JYouAppMvcUtils.isRequestTypeAndGET(request)&&JLinkedRequestSupport.isLinked(request)){
 			linked=true;
 			Map<String,Object> linkedParameters=(Map<String, Object>) JLinkedRequestSupport.getParameters(request);
 			if(JCollectionUtils.hasInMap(linkedParameters)){
@@ -119,7 +119,7 @@ public class JHttpContext implements Serializable {
 		
 		
 		if(request!=null&&!parse){
-			this.parameters.putAll(JHttpUtils.parseRequestParameters(request));
+			this.parameters.putAll(JYouAppMvcUtils.parseRequestParameters(request));
 			parse=true;
 		}
 		
@@ -202,11 +202,11 @@ public class JHttpContext implements Serializable {
 	}
 	
 	public String getIP(){
-		return JHttpUtils.getIP(request);
+		return JYouAppMvcUtils.getIP(request);
 	}
 	
 	public String getClient(){
-		return JHttpUtils.getClient(request);
+		return JYouAppMvcUtils.getClient(request);
 	}
 
 	public HttpServletRequest getRequest() {

@@ -2,9 +2,9 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsp;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.filter.JLoginFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.support.FilterResponse;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.JLoginFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -54,21 +54,21 @@ public class JJSPLoginFilter extends JLoginFilter implements JFilter ,APPFilterC
 	}
 	
 	@Override
-	protected void handlerNoLogin(HttpServletRequest request,
+	protected void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		request.setAttribute("url", serviceToLoginPath); 
 		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
 	}
 	
 	@Override
-	protected void handlerDuplicateLogin(HttpServletRequest request,
+	protected void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
 		response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
 	}
 	
 	@Override
-	protected void handlerToLogin(HttpServletRequest request,
+	protected void handleToLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
 	}

@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.login.mapper;
 
-import j.jave.kernal.jave.model.support.JModelMapper;
+import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.login.model.RoleGroup;
 import j.jave.platform.basicwebcomp.login.repo.RoleGroupRepo;
 import j.jave.platform.mybatis.JMapper;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component(value="RoleGroupMapper")
-@JModelMapper(component="RoleGroupMapper",name=RoleGroup.class)
+@JModelRepo(component="RoleGroupMapper",name=RoleGroup.class)
 public interface RoleGroupMapper extends JMapper<RoleGroup>,RoleGroupRepo<JMapper<RoleGroup>> {
 	
 	int countOnRoleIdAndGroupId(@Param(value="roleId")String roleId,@Param(value="groupId")String groupId);

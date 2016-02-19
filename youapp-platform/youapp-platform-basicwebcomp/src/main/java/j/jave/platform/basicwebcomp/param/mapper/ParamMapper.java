@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.param.mapper;
 
 import j.jave.kernal.jave.model.JPagination;
-import j.jave.kernal.jave.model.support.JModelMapper;
+import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
 import j.jave.platform.mybatis.JMapper;
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author J
  */
-@Component(value="ParamMapper")
-@JModelMapper(component="ParamMapper",name=Param.class)
+@Component(value="paramMapper")
+@JModelRepo(component="paramMapper",name=Param.class)
 public interface ParamMapper extends JMapper<Param> ,ParamRepo<JMapper<Param>>{
 	
 	public List<Param> getParamsByPage(JPagination pagination) ;

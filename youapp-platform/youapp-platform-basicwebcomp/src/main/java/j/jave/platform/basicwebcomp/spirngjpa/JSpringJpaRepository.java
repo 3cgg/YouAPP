@@ -16,8 +16,8 @@ public interface JSpringJpaRepository<T extends JBaseModel,ID extends Serializab
 	extends PagingAndSortingRepository<T, Serializable>,
 		JIPersist<JSpringJpaRepository<T,ID>, T> {
 	
-	@Override
-	@Query(value="select t from #{#entityName} t")
-	public List<T> getModelsByPage(JPagination pagination);
+//	@Override
+//	@Query(value="select t from #{#entityName} t")
+//	public List<T> getModelsByPage(JPagination pagination);
 	
 }

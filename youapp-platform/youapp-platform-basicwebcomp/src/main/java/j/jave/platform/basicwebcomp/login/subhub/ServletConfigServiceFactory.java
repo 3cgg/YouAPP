@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.login.subhub;
 
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
-import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servlet.config.ServletConfigService;
+import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 
 import org.springframework.stereotype.Service;
 

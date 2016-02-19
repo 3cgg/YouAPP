@@ -2,9 +2,9 @@ package j.jave.platform.basicwebcomp.web.youappmvc.mobile;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.filter.JLoginFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.support.FilterResponse;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.JLoginFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
+import j.jave.platform.basicwebcomp.web.youappmvc.support.FilterResponse;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -42,7 +42,7 @@ public class JMobileLoginFilter extends JLoginFilter implements JFilter ,APPFilt
 	}
 	
 	@Override
-	protected void handlerNoLogin(HttpServletRequest request,
+	protected void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newNoLogin();
 		MobileResult mobileResult=MobileResult.newMessage();
@@ -51,7 +51,7 @@ public class JMobileLoginFilter extends JLoginFilter implements JFilter ,APPFilt
 	}
 	
 	@Override
-	protected void handlerDuplicateLogin(HttpServletRequest request,
+	protected void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
 		MobileResult mobileResult=MobileResult.newMessage();

@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.login.mapper;
 
 import j.jave.kernal.jave.model.JPagination;
-import j.jave.kernal.jave.model.support.JModelMapper;
+import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.login.repo.UserRepo;
 import j.jave.platform.mybatis.JMapper;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component(value="UserMapper")
-@JModelMapper(name=User.class,component="UserMapper")
+@JModelRepo(name=User.class,component="UserMapper")
 public interface UserMapper extends JMapper<User>,UserRepo<JMapper<User> > {
 
 	public User getUserByNameAndPassword(

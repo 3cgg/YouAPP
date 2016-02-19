@@ -8,7 +8,7 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.JHttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.JHttpUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.utils.JYouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -71,7 +71,7 @@ public class ActionExecutor {
 		object.setHttpContext(httpContext);
 		
 		//setting attributes associate to the request. 
-		JHttpUtils.set(object, httpContext);
+		JYouAppMvcUtils.set(object, httpContext);
 		
 		StopWatch stopWatch=null;
 		if(LOGGER.isDebugEnabled()){
@@ -89,17 +89,17 @@ public class ActionExecutor {
 		return  navigate;
 	}
 	
-	private static ActionExecutor actionExecutor;
+	private static final ActionExecutor actionExecutor=new ActionExecutor();
 	
 	private ActionExecutor() {
 	}
 	
 	public static ActionExecutor newSingleExecutor(){
-		if(actionExecutor==null){
-			synchronized (ActionExecutor.class) {
-				actionExecutor=new ActionExecutor();
-			}
-		}
+//		if(actionExecutor==null){
+//			synchronized (ActionExecutor.class) {
+//				actionExecutor=new ActionExecutor();
+//			}
+//		}
 		return actionExecutor;
 	}
 }

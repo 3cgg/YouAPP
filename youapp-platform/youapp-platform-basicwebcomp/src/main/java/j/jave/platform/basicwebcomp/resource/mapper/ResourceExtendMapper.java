@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.resource.mapper;
 
-import j.jave.kernal.jave.model.support.JModelMapper;
+import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.resource.model.ResourceExtend;
 import j.jave.platform.basicwebcomp.resource.repo.ResourceExtendRepo;
 import j.jave.platform.mybatis.JMapper;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component(value="ResourceExtendMapper")
-@JModelMapper(component="ResourceExtendMapper",name=ResourceExtend.class)
+@JModelRepo(component="ResourceExtendMapper",name=ResourceExtend.class)
 public interface ResourceExtendMapper extends JMapper<ResourceExtend>,ResourceExtendRepo<JMapper<ResourceExtend>> {
 
 	void updateCached(@Param(value="id")String id,@Param(value="cached")String cached);

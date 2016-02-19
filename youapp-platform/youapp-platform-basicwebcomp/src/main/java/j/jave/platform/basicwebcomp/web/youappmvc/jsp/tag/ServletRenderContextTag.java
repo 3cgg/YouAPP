@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jsp.tag;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.platform.basicwebcomp.web.youappmvc.multi.platform.scope.ServletRenderContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.render.ServletRenderContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;

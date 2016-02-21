@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JSPLoginFilter implements LoginHandler ,APPFilterConfig {
+public class JSPLoginHandler implements LoginHandler ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	

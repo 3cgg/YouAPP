@@ -4,70 +4,34 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="jframework-components-bill-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-bill/jframework-components-bill">
+        <dependent-module archiveName="youapp-platform-basicwebcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-basicwebcomp/youapp-platform-basicwebcomp">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-components-core-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-core/jframework-components-core">
+        <dependent-module archiveName="youapp-platform-multiversioncompsupportcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-multiversioncompsupportcomp/youapp-platform-multiversioncompsupportcomp">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-components-web-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-web/jframework-components-web">
+        <dependent-module archiveName="youapp-platform-baiscsupportcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-baiscsupportcomp/youapp-platform-baiscsupportcomp">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-components-multi-version-support-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-multi-version-support/jframework-components-multi-version-support">
+        <dependent-module archiveName="youapp-kernal-ehcache-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-ehcache/youapp-kernal-ehcache">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-components-support-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-support/jframework-components-support">
+        <dependent-module archiveName="youapp-kernal-memcached-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-memcached/youapp-kernal-memcached">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-components-underlying-javacode-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-underlying-javacode/jframework-components-underlying-javacode">
+        <dependent-module archiveName="youapp-kernal-sqlautoloader-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-sqlautoloader/youapp-kernal-sqlautoloader">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-commons-ehcache-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-ehcache/jframework-commons-ehcache">
+        <dependent-module archiveName="youapp-platform-ormmybatis-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-ormmybatis/youapp-platform-ormmybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-commons-eventdriven-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-eventdriven/jframework-commons-eventdriven">
+        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-security-client/youapp-util-security-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="jframework-commons-filedistribute-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-filedistribute/jframework-commons-filedistribute">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-http-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-http/jframework-commons-http">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-json-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-json/jframework-commons-json">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-memcached-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-memcached/jframework-commons-memcached">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-qrcode-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-qrcode/jframework-commons-qrcode">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-security-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-security/jframework-commons-security">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-sqlautoloader-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-sqlautoloader/jframework-commons-sqlautoloader">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-inner-support-ws-client-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-inner-support-ws-client/jframework-inner-support-ws-client">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-support-mybatis-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-support-mybatis/jframework-support-mybatis">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-commons-independency-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-commons-independency/jframework-commons-independency">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-components-weight-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-weight/jframework-components-weight">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-components-tablemanager-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-tablemanager/jframework-components-tablemanager">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jframework-components-sample-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jframework-components-sample/jframework-components-sample">
+        <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/jframework-me/target/classes"/>
-        <property name="context-root" value="jframework-me"/>
+        <property name="context-root" value="youapp"/>
     </wb-module>
 </project-modules>

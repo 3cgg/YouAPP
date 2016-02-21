@@ -3,13 +3,19 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.action;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JReflect;
+import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
+import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -23,7 +29,7 @@ import org.springframework.context.ApplicationContext;
  * 
  * @author J
  */
-public class ActionExecutor {
+public class ActionExecutor implements JService {
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(ActionExecutor.class);
 	
@@ -37,25 +43,14 @@ public class ActionExecutor {
 		
 		// resolve the path , then invoke the target method. 
 	    // the path like /app/component/version/login.loginaction/toLogin
-		
-		String serviceName="";;
-		String methodName="";
-		if(targetPath.startsWith("/")) targetPath=targetPath.substring(1);
-		String[] targets=targetPath.split("/");
 		String component =null;
-		//compatible with previous
-		if(targets.length==2){
-			serviceName=targets[0];
-			methodName=targets[1];
-		}
-		// for multi-version of component
-		else if(targets.length==5){
-			String appName=targets[0];
-			String componentName=targets[1];
-			int version=Integer.parseInt(targets[2]);
-			component= JComponentVersionSpringApplicationSupport.unique(appName, componentName, version);
-			serviceName=targets[3];
-			methodName=targets[4];
+		String mappingPath=null;
+		String mutiPattern="^(/app/[a-zA-Z]+/[0-9]+){0,1}(/[a-zA-Z0-9._/]+)";
+		Pattern pattern=Pattern.compile(mutiPattern);
+		Matcher matcher=pattern.matcher(targetPath);
+		if(matcher.matches()){
+			component=getComponentVersion(matcher.group(1));
+			mappingPath=matcher.group(2);
 		}
 		//resolve spring application , support multi-version of component.
 		ApplicationContext applicationContext = null;
@@ -65,8 +60,8 @@ public class ActionExecutor {
 			applicationContext = SpringContextSupport.getApplicationContext();
 		}
 		
-		ActionSupport object=(ActionSupport) applicationContext.getBean(serviceName);
-		
+		MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
+		ActionSupport object=(ActionSupport) applicationContext.getBean(mappingMeta.getControllerName());
 		// set HTTP context constructed above.
 		object.setHttpContext(httpContext);
 		
@@ -78,7 +73,7 @@ public class ActionExecutor {
 			stopWatch=new StopWatch();
 			stopWatch.start();
 		}
-		Object navigate=JReflect.invoke(object, methodName, new Object[]{});
+		Object navigate=JReflect.invoke(object, mappingMeta.getMethodName(),mappingMeta.getMethodParams(), new Object[]{});
 		if(LOGGER.isDebugEnabled()){
 			try{
 				LOGGER.debug("time of processing request in action is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
@@ -88,8 +83,31 @@ public class ActionExecutor {
 		}
 		return  navigate;
 	}
+
+	private Object[] resolveArgus(HttpContext httpContext,MappingMeta mappingMeta){
+		Object[] argus=new Object[mappingMeta.getMethodParams().length];
+		for(Class<?> clazz:mappingMeta.getMethodParams()){
+			
+			
+			
+		}
+	}
+	
+	private String getComponentVersion(String componentVer) {
+		if(JStringUtils.isNullOrEmpty(componentVer)) return null;
+		if(componentVer.startsWith("/")) componentVer=componentVer.replaceFirst("/", "");
+		String[] targets=componentVer.split("/");
+		String component;
+		String appName=targets[0];
+		String componentName=targets[1];
+		int version=Integer.parseInt(targets[2]);
+		component= JComponentVersionSpringApplicationSupport.unique(appName, componentName, version);
+		return component;
+	}
 	
 	private static final ActionExecutor actionExecutor=new ActionExecutor();
+	
+	private MappingController mappingController=new MappingController(JConfiguration.get());
 	
 	private ActionExecutor() {
 	}

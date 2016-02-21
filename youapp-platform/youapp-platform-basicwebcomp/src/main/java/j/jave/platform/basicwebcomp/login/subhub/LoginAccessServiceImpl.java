@@ -3,6 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.login.subhub;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
 import j.jave.kernal.eventdriven.exception.JServiceException;
@@ -21,8 +22,8 @@ import j.jave.platform.basicwebcomp.resource.model.Resource;
 import j.jave.platform.basicwebcomp.resource.service.ResourceGroupService;
 import j.jave.platform.basicwebcomp.resource.service.ResourceRoleService;
 import j.jave.platform.basicwebcomp.resource.service.ResourceService;
-import j.jave.platform.basicwebcomp.web.util.ControllerDetect;
-import j.jave.platform.basicwebcomp.web.util.ControllerInfo;
+import j.jave.platform.basicwebcomp.web.util.MappingDetector;
+import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.securityutil.securityclient.JRSSecurityHelper;
 
 import java.util.ArrayList;
@@ -62,8 +63,6 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 	
 	@Autowired
 	private ResourceService resourceService;
-	
-	private ControllerDetect resourceDetect=new ControllerDetect();
 	
 	/**
 	 * cache service . 
@@ -218,11 +217,11 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 			}
 		}
 		
-		
-		List<ControllerInfo> resourceInfos= resourceDetect.detect().getMethodInfos();
+		MappingDetector resourceDetect=new MappingDetector(JConfiguration.get());
+		List<MappingMeta> resourceInfos= resourceDetect.detect().getMappingMetas();
 		if(resourceInfos!=null){
 			for(int i=0;i<resourceInfos.size();i++){
-				ControllerInfo resourceInfo=resourceInfos.get(i);
+				MappingMeta resourceInfo=resourceInfos.get(i);
 				String path=resourceInfo.getPath();
 				if(JStringUtils.isNotNullOrEmpty(path)&&!paths.contains(path)){
 					paths.add(path);

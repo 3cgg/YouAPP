@@ -22,7 +22,7 @@ public class JClassPathList implements JRepresent{
 			}
 		}else{
 			if(JStringUtils.isNotNullOrEmpty(fileAbsolutePath)
-					&&fileAbsolutePaths.contains(fileAbsolutePath)){
+					&&!fileAbsolutePaths.contains(fileAbsolutePath)){
 				fileAbsolutePaths.add(fileAbsolutePath);
 			}
 		}

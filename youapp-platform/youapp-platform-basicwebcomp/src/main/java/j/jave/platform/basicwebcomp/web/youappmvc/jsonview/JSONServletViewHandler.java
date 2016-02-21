@@ -6,7 +6,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandle;
+import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author J
  */
-public class JSONServletViewHandler  implements JServletViewHandle {
+public class JSONServletViewHandler  implements JServletViewHandler {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JSONServletViewHandler.class);
 	

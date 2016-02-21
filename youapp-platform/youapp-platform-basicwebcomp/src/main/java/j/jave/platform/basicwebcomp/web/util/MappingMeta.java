@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 /**
  * @author J
  */
-public class ControllerInfo {
+public class MappingMeta {
 	
 	/**
 	 * name of {@link Controller}
@@ -30,6 +30,8 @@ public class ControllerInfo {
 	 * class , restricted by {@link Controller}
 	 */
 	private Class<?> clazz;
+	
+	private Class<?>[] methodParams;
 
 	public String getControllerName() {
 		return controllerName;
@@ -61,6 +63,14 @@ public class ControllerInfo {
 
 	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
+	}
+
+	public Class<?>[] getMethodParams() {
+		return methodParams;
+	}
+
+	public void setMethodParams(Class<?>[] methodParams) {
+		this.methodParams = methodParams;
 	}
 	
 	

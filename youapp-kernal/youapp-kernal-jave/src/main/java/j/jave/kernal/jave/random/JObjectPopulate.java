@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.random;
 
-import j.jave.kernal.jave.support.detect.JFieldDetect;
+import j.jave.kernal.jave.support.detect.JFieldDetector;
 import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfo;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
@@ -28,7 +28,7 @@ public class JObjectPopulate  extends JAbstractFieldPopulate{
 				return fieldRelated;
 			}
 		};
-		JFieldDetect<FieldRelated> fieldDetect=new JFieldDetect<FieldRelated>(fieldInfo);
+		JFieldDetector<FieldRelated> fieldDetect=new JFieldDetector<FieldRelated>(fieldInfo);
 		fieldDetect.detect(object.getClass());
 		
 		List<FieldRelated>  fieldRelateds=  fieldDetect.getFieldInfos();

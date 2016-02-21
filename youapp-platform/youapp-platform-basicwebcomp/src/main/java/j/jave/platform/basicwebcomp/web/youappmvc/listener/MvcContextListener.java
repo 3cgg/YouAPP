@@ -54,7 +54,7 @@ public class MvcContextListener implements ServletContextListener {
 //				customClassPath="";
 //			}
 			
-			String classesPath= sce.getServletContext().getRealPath("WEB-INF/classes");
+			String classesPath= sce.getServletContext().getRealPath("/WEB-INF/classes");
 			File classesFile=new File(classesPath);
 			if(classesFile.exists()){
 				if(!classPathList.contains(classesFile.getAbsolutePath())){

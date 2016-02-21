@@ -5,9 +5,9 @@ package j.jave.kernal.jave.support.detect;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JClassProvidedScanner;
-import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JClassesScanConfig;
 import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
+import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 
 import java.lang.reflect.Method;
@@ -25,9 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see JDefaultClassesScanner
  * @see JClassesScanner
  * @author J
- * @param <T>  the same as generic of {@link JMethodInfo }
+ * @param <T>  the same as generic of {@link JMethodInfoGen }
  */
-public class JMethodDetect<T> extends JClassesScanDefaultConfiguration 
+public class JMethodDetector<T> extends JClassesScanDefaultConfiguration 
 	implements JClassesScanConfig ,JMethodInfoProvider<T> {
 
 	public static interface JMethodFilter{
@@ -73,9 +73,9 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 		}
 	};
 	
-	private JMethodInfo<T> methodInfo;
+	private JMethodInfoGen<T> methodInfoGen;
 	
-//	private static final JMethodInfo<String> defaultMethodInfo=new JMethodInfo<String>() {
+//	private static final JMethodInfoGen<String> defaultMethodInfo=new JMethodInfoGen<String>() {
 //		@Override
 //		public String getInfo(Method method, Class<?> classIncudeMethod) {
 //			return method.getName();
@@ -84,19 +84,19 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 	
 	private JMethodFilter methodFilter=null;
 	
-	public JMethodDetect(JMethodInfo<T> methodInfo) {
+	public JMethodDetector(JMethodInfoGen<T> methodInfoGen) {
 		methodFilter=defaultMethodFilter;
-		this.methodInfo=methodInfo;
+		this.methodInfoGen=methodInfoGen;
 	} 
 	
 	/**
 	 * 
 	 * @param methodFilter implementation of {@link JMethodFilter}
-	 * @param methodInfo implementation of {@link JMethodInfo}
+	 * @param methodInfoGen implementation of {@link JMethodInfoGen}
 	 */
-	public JMethodDetect(JMethodFilter methodFilter,JMethodInfo<T> methodInfo) {
+	public JMethodDetector(JMethodFilter methodFilter,JMethodInfoGen<T> methodInfoGen) {
 		this.methodFilter=methodFilter;
-		this.methodInfo=methodInfo;
+		this.methodInfoGen=methodInfoGen;
 	} 
 	
 	/**
@@ -107,10 +107,10 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 	}
 	
 	/**
-	 * @param methodInfo the methodInfo to set
+	 * @param methodInfoGen the methodInfoGen to set
 	 */
-	public void setMethodInfo(JMethodInfo<T> methodInfo) {
-		this.methodInfo = methodInfo;
+	public void setMethodInfo(JMethodInfoGen<T> methodInfoGen) {
+		this.methodInfoGen = methodInfoGen;
 	}
 	
 	
@@ -124,13 +124,13 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 	}
 	
 	/**
-	 * ANY expected value from {@link JMethodInfo}
+	 * ANY expected value from {@link JMethodInfoGen}
 	 */
 	private List<T> methodInfos=new ArrayList<T>();
 	
 	/**
 	 * KEY : class type . 
-	 * VALUE : ANY expected value from {@link JMethodInfo}.
+	 * VALUE : ANY expected value from {@link JMethodInfoGen}.
 	 */
 	private Map<Class<?>, List<T>> classMethodInfos=new ConcurrentHashMap<Class<?>, List<T>>();
 	
@@ -202,7 +202,7 @@ public class JMethodDetect<T> extends JClassesScanDefaultConfiguration
 					for(int i=0;i<methods.size();i++){
 						Method method=methods.get(i);
 						if(!methodFilter.filter(method, clazz)){
-							T obj= methodInfo.getInfo(method, clazz);
+							T obj= methodInfoGen.getInfo(method, clazz);
 							methodInfos.add(obj);
 							
 							putClassObjects(clazz, obj);

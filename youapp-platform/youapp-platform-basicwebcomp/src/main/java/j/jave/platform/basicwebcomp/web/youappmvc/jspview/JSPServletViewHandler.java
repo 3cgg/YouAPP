@@ -5,7 +5,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandle;
+import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * JSP Service Servlet
  * @author J
  */
-public class JSPServletViewHandler  implements JServletViewHandle {
+public class JSPServletViewHandler  implements JServletViewHandler {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JSPServletViewHandler.class);
 	

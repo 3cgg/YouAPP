@@ -8,7 +8,7 @@ package j.jave.kernal.jave.support.detect;
  * @author J
  * @param <T> extends {@link JProvider}
  */
-public interface JResourceDetect<T extends JProvider> {
+public interface JResourceDetector<T extends JProvider> {
 
 	/**
 	 * get all resource informations fist time, 

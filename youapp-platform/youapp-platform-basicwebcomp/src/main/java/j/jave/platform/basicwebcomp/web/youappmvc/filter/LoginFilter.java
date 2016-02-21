@@ -6,7 +6,7 @@ import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedServic
 import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONLoginHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPLoginFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPLoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * super class contain common logic to intercept reqeust.
  * @author J
- * @see JSPLoginFilter
+ * @see JSPLoginHandler
  * @see JSONLoginHandler
  */
 public class LoginFilter implements JFilter ,APPFilterConfig {

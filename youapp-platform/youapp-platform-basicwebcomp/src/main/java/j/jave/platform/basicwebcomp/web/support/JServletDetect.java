@@ -6,7 +6,7 @@ package j.jave.platform.basicwebcomp.web.support;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.support.detect.JResourceDetect;
+import j.jave.kernal.jave.support.detect.JResourceDetector;
 import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
 
 import java.util.Iterator;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author J
  * @see JServletContext 
  */
-public class JServletDetect implements JResourceDetect<JServletProvider> , JServletProvider , JServletStaticMemoryCacheIO ,JEhcacheServiceAware {
+public class JServletDetect implements JResourceDetector<JServletProvider> , JServletProvider , JServletStaticMemoryCacheIO ,JEhcacheServiceAware {
 
 	private final HttpServletRequest request;
 	

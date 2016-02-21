@@ -6,7 +6,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<j.version>1.0</j.version>
-		<spring.version>4.2.4.RELEASE</spring.version>
+		<spring.version>4.1.9.RELEASE</spring.version>
 		<httpclient.version>4.3.6</httpclient.version>
 		<jackson.version>1.9.13</jackson.version>
 		<junit.version>4.12</junit.version>

@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author J
  * @param <T>  the same as generic of {@link JFieldInfo }
  */
-public class JFieldDetect<T> extends JClassesScanDefaultConfiguration 
+public class JFieldDetector<T> extends JClassesScanDefaultConfiguration 
 	implements JClassesScanConfig ,JFieldInfoProvider<T> {
 
 	public static interface JFieldFilter{
@@ -87,7 +87,7 @@ public class JFieldDetect<T> extends JClassesScanDefaultConfiguration
 	
 	private JFieldFilter fieldFilter=null;
 	
-	public JFieldDetect(JFieldInfo<T> fieldInfo) {
+	public JFieldDetector(JFieldInfo<T> fieldInfo) {
 		fieldFilter=defaultFieldFilter;
 		this.fieldInfo=fieldInfo;
 	} 
@@ -97,7 +97,7 @@ public class JFieldDetect<T> extends JClassesScanDefaultConfiguration
 	 * @param fieldFilter implementation of {@link JFieldFilter}
 	 * @param fieldInfo implementation of {@link JFieldInfo}
 	 */
-	public JFieldDetect(JFieldFilter fieldFilter,JFieldInfo<T> fieldInfo) {
+	public JFieldDetector(JFieldFilter fieldFilter,JFieldInfo<T> fieldInfo) {
 		this.fieldFilter=fieldFilter;
 		this.fieldInfo=fieldInfo;
 	} 

@@ -51,13 +51,13 @@ public class MvcServiceServlet  extends JServlet {
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
-	private JServletViewHandle servletViewHandle=new JSPServletViewHandler();
+	private JServletViewHandler servletViewHandler=new JSPServletViewHandler();
 	
 	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");
 	}
 	
-	public static interface JServletViewHandle{
+	public static interface JServletViewHandler{
 		
 		/**
 		 * how to handle navigate . the method is the end statement by the request. what is means the output stream 
@@ -145,7 +145,7 @@ public class MvcServiceServlet  extends JServlet {
 				resp.getOutputStream().write(file.getFileContent());
 			}
 			else{
-				servletViewHandle.handleNavigate(req, resp,httpContext, navigate);
+				servletViewHandler.handleNavigate(req, resp,httpContext, navigate);
 			}
 
 			if(LOGGER.isDebugEnabled()){
@@ -154,11 +154,11 @@ public class MvcServiceServlet  extends JServlet {
 		}
 		catch(JServiceException e){
 			LOGGER.error(e.getMessage(),e);
-			servletViewHandle.handleServiceExcepion(req, resp, httpContext, e);
+			servletViewHandler.handleServiceExcepion(req, resp, httpContext, e);
 		}
 		catch(Exception e){
 			LOGGER.error(e.getMessage(),e);
-			servletViewHandle.handleExcepion(req, resp,httpContext,  e);
+			servletViewHandler.handleExcepion(req, resp,httpContext,  e);
 		}finally{
 			if(JStringUtils.isNullOrEmpty(resp.getContentType())){
 				resp.setContentType("text/html;charset=UTF-8");

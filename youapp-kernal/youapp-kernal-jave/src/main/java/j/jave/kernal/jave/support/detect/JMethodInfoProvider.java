@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.support.detect;
 
-import j.jave.kernal.jave.support.detect.JMethodDetect.JMethodFilter;
+import j.jave.kernal.jave.support.detect.JMethodDetector.JMethodFilter;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface JMethodInfoProvider <T> extends JProvider{
 
-	public static interface JMethodInfo<T>{
+	public static interface JMethodInfoGen<T>{
 		/**
 		 * get method information , if all {@code filter()}  in the @see {@link JMethodFilter} return false. 
 		 * @param method

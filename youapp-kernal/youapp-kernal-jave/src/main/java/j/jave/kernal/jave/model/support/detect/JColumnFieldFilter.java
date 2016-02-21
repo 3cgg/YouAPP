@@ -2,7 +2,7 @@ package j.jave.kernal.jave.model.support.detect;
 
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.kernal.jave.support.detect.JFieldDetect.JFieldFilter;
+import j.jave.kernal.jave.support.detect.JFieldDetector.JFieldFilter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

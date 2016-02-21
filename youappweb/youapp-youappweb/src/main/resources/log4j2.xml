@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="debug" strict="true"   name="youAppLog4j2"
-               packages="j.jave.framework.log4j2" >
+               packages="youapp.log4j2" >
   <Properties>
-    <Property name="jramework-commons-file">D:/java_/server-directory/logs/youapp-jframework-commons.log</Property>
-    <Property name="jramework-components-file">D:/java_/server-directory/logs/youapp-jframework-components.log</Property>
-    <Property name="jramework-all-file">D:/java_/server-directory/logs/youapp-jframework-all.log</Property>
-    <Property name="youapp-all-other-file">D:/java_/server-directory/logs/youapp-all-other-file.log</Property>
-    <Property name="errorFile">D:/java_/server-directory/logs/youapp-error.log</Property>
+    <Property name="youapp-kernal">D:/java_/server-directory/logs/youapp-kernal.log</Property>
+    <Property name="youapp-platform">D:/java_/server-directory/logs/youapp-platform.log</Property>
+    <Property name="youapp-business">D:/java_/server-directory/logs/youapp-business.log</Property>
+    <Property name="youapp-others">D:/java_/server-directory/logs/youapp-others.log</Property>
+    
+    <Property name="youapp-all">D:/java_/server-directory/logs/youapp-all.log</Property>
+    <Property name="youapp-error">D:/java_/server-directory/logs/youapp-error.log</Property>
     <Property name="patternFormat">%d %p  %c [%t] %m %n</Property>
   </Properties>
   
@@ -16,23 +18,27 @@
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
-    <Appender type="File" name="jframeworkCommonsAppender" fileName="${jramework-commons-file}">
+    <Appender type="File" name="youapp-kernal" fileName="${youapp-kernal}">
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
-    <Appender type="File" name="jframeworkComponentsAppender" fileName="${jramework-components-file}">
+    <Appender type="File" name="youapp-platform" fileName="${youapp-platform}">
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
-    <Appender type="File" name="jframeworkAllAppender" fileName="${jramework-all-file}">
+    <Appender type="File" name="youapp-business" fileName="${youapp-business}">
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
-    <Appender type="File" name="YouAPPAllOtherAppender" fileName="${youapp-all-other-file}">
+    <Appender type="File" name="youapp-all" fileName="${youapp-all}">
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
-    <Appender type="File" name="errorAppender" fileName="${errorFile}">
+    <Appender type="File" name="youapp-others" fileName="${youapp-others}">
+      <Layout type="PatternLayout" pattern="${patternFormat}"/>
+    </Appender>
+    
+    <Appender type="File" name="youapp-error" fileName="${youapp-error}">
       <Layout type="PatternLayout" pattern="${patternFormat}"/>
     </Appender>
     
@@ -40,13 +46,13 @@
  
   <Loggers>
     
-    <Logger name="j.jave.framework.commons" level="DEBUG" additivity="false">
-      <AppenderRef ref="jframeworkCommonsAppender"/>
+    <Logger name="j.jave.kernal" level="DEBUG" additivity="false">
+      <AppenderRef ref="youapp-kernal"/>
       <AppenderRef ref="appConsole"/>
     </Logger>
     
-    <Logger name="j.jave.framework.components" level="DEBUG" additivity="false">
-      <AppenderRef ref="jframeworkComponentsAppender"/>
+    <Logger name="j.jave.platform" level="DEBUG" additivity="false">
+      <AppenderRef ref="youapp-platform"/>
       <AppenderRef ref="appConsole"/>
     </Logger>
     
@@ -56,12 +62,12 @@
     </Logger>
     
     <Logger name="org,com,*" level="DEBUG" additivity="false" >
-      <AppenderRef ref="YouAPPAllOtherAppender"/>
+      <AppenderRef ref="youapp-others"/>
       <AppenderRef ref="appConsole"/>
     </Logger>
     
-    <Logger name="*"  level="ERROR" additivity="false">
-      <AppenderRef ref="errorAppender"/>
+    <Logger name="*"  level="ERROR" additivity="true">
+      <AppenderRef ref="youapp-error"/>
       <AppenderRef ref="appConsole"/>
     </Logger>
  

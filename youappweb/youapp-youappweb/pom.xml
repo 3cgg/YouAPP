@@ -5,9 +5,9 @@
 
 
 	<parent>
-		<groupId>j.jave</groupId>
-		<artifactId>framework</artifactId>
-		<version>0.0</version>
+		<groupId>youapp</groupId>
+		  <artifactId>youappweb</artifactId>
+		  <version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -20,7 +20,14 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-
+		
+		<dependency>
+			<groupId>youapp.youapp-platform</groupId>
+			<artifactId>youapp-platform-basicwebcomp</artifactId>
+			<version>${platform.version}</version>
+		</dependency>
+		
+		<!-- 
 		<dependency>
 			<groupId>j.jave.framework</groupId>
 			<artifactId>jframework-components-bill</artifactId>
@@ -44,7 +51,7 @@
 			<artifactId>jframework-components-sample</artifactId>
 			<version>${j.version}</version>
 		</dependency>
-		
+		 -->
 		
 		<!-- jetty begin -->
 

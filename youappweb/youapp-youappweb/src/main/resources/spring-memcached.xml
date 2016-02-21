@@ -16,7 +16,7 @@
       ">
 
 
-	<bean id="defaultMemcachedServiceConfiguration" class="j.jave.framework.components.support.memcached.subhub.DefaultMemcachedServiceConfiguration"  lazy-init="true">
+	<bean id="defaultMemcachedServiceConfiguration" class="j.jave.platform.basicsupportcomp.support.memcached.subhub.DefaultMemcachedServiceConfiguration"  lazy-init="true">
         
         <property name="storeAddes">  
         	<map>

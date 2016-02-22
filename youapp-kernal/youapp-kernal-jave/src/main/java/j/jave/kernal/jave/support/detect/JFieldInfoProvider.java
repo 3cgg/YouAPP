@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface JFieldInfoProvider <T> extends JProvider{
 
-	public static interface JFieldInfo<T>{
+	public static interface JFieldInfoGen<T>{
 		/**
 		 * get method information , if all {@code filter()}  in the @see {@link JMethodFilter} return false. 
 		 * @param method

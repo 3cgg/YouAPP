@@ -81,7 +81,19 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 			}
 			resourceInfo.setMethodName(method.getName());
 			resourceInfo.setPath("/"+resourceInfo.getControllerName()+"/"+resourceInfo.getMethodName());
-			resourceInfo.setMethodParams(method.getParameterTypes());
+			
+			Class<?>[] paramClasses= method.getParameterTypes();
+			String[] parameterNames=ParameterNameGet.getMethodParameterNamesByAsm4(classIncudeMethod, method);
+			MethodParamMeta[] methodParamMetas=new MethodParamMeta[paramClasses.length];
+			for(int i=0;i<paramClasses.length;i++){
+				Class<?> clazz=paramClasses[i];
+				MethodParamMeta paramMeta=new MethodParamMeta();
+				paramMeta.setType(clazz);
+				paramMeta.setName(parameterNames[i]);
+				paramMeta.setAnnotations(clazz.getAnnotations());
+				methodParamMetas[i]=paramMeta;
+			}
+			resourceInfo.setMethodParams(methodParamMetas);
 			return resourceInfo;
 		}
 	};

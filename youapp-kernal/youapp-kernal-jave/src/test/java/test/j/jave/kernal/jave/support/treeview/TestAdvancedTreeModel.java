@@ -1,6 +1,6 @@
 package test.j.jave.kernal.jave.support.treeview;
 
-import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.support.treeview.JAdvancedTreeStrcture;
 import j.jave.kernal.jave.support.treeview.JDefaultTreeRepresent;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeRepresent;
@@ -51,87 +51,87 @@ public static void main(String[] args) throws Exception {
 		
 		//1
 		TestAdvancedTreeModel testModel1=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate1=new JObjectPopulate(testModel1);
-		objectPopulate1.populate();
+		JSimpleObjectPopulate objectPopulate1=new JSimpleObjectPopulate();
+		objectPopulate1.populate(testModel1);
 		testModel1.setText(false);
 		testModel1.setParentId(null);
 		testModels.add(testModel1);
 		
 		//2
 		TestAdvancedTreeModel testModel2=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate2=new JObjectPopulate(testModel2);
-		objectPopulate2.populate();
+		JSimpleObjectPopulate objectPopulate2=new JSimpleObjectPopulate();
+		objectPopulate2.populate(testModel2);
 		testModels.add(testModel2);
 		testModel2.setText(false);
 		testModel2.setParentId(null);
 		
 		//3
 		TestAdvancedTreeModel testModel3=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate3=new JObjectPopulate(testModel3);
-		objectPopulate3.populate();
+		JSimpleObjectPopulate objectPopulate3=new JSimpleObjectPopulate();
+		objectPopulate3.populate(testModel3);
 		testModels.add(testModel3);
 		testModel3.setText(false);
 		testModel3.setParentId(null);
 		
 		//1.1
 		TestAdvancedTreeModel testModel11=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate11=new JObjectPopulate(testModel11);
-		objectPopulate11.populate();
+		JSimpleObjectPopulate objectPopulate11=new JSimpleObjectPopulate();
+		objectPopulate11.populate(testModel11);
 		testModel11.setParentId(testModel1.getId());
 		testModels.add(testModel11);
 		testModel11.setText(false);
 		
 		//2.1
 		TestAdvancedTreeModel testModel21=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate21=new JObjectPopulate(testModel21);
-		objectPopulate21.populate();
+		JSimpleObjectPopulate objectPopulate21=new JSimpleObjectPopulate();
+		objectPopulate21.populate(testModel21);
 		testModel21.setParentId(testModel2.getId());
 		testModels.add(testModel21);
 		testModel21.setText(false);
 		
 		//1.1.1
 		TestAdvancedTreeModel testModel111=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate111=new JObjectPopulate(testModel111);
-		objectPopulate111.populate();
+		JSimpleObjectPopulate objectPopulate111=new JSimpleObjectPopulate();
+		objectPopulate111.populate(testModel111);
 		testModel111.setParentId(testModel11.getId());
 		testModels.add(testModel111);
 		
 		//2.2
 		TestAdvancedTreeModel testModel22=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate22=new JObjectPopulate(testModel22);
-		objectPopulate22.populate();
+		JSimpleObjectPopulate objectPopulate22=new JSimpleObjectPopulate();
+		objectPopulate22.populate(testModel22);
 		testModel22.setParentId(testModel2.getId());
 		testModels.add(testModel22);
 		testModel22.setText(false);
 		
 		//1.2
 		TestAdvancedTreeModel testModel12=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate12=new JObjectPopulate(testModel12);
-		objectPopulate12.populate();
+		JSimpleObjectPopulate objectPopulate12=new JSimpleObjectPopulate();
+		objectPopulate12.populate(testModel12);
 		testModel12.setParentId(testModel1.getId());
 		testModels.add(testModel12);
 		testModel12.setText(false);
 		
 		//4
 		TestAdvancedTreeModel testModel4=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate4=new JObjectPopulate(testModel4);
-		objectPopulate4.populate();
+		JSimpleObjectPopulate objectPopulate4=new JSimpleObjectPopulate();
+		objectPopulate4.populate(testModel4);
 		testModels.add(testModel4);
 		testModel4.setText(false);
 		testModel4.setParentId(null);
 		
 		//5-5
 		TestAdvancedTreeModel testModel5_5=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate5_5=new JObjectPopulate(testModel5_5);
-		objectPopulate5_5.populate();
+		JSimpleObjectPopulate objectPopulate5_5=new JSimpleObjectPopulate();
+		objectPopulate5_5.populate(testModel5_5);
 		testModels.add(testModel5_5);
 		testModel5_5.setText(true);
 		testModel5_5.setParentId(null);
 		
 		//6_3_6
 		TestAdvancedTreeModel testModel6_3_6=new TestAdvancedTreeModel();
-		JObjectPopulate objectPopulate6_3_6=new JObjectPopulate(testModel6_3_6);
-		objectPopulate6_3_6.populate();
+		JSimpleObjectPopulate objectPopulate6_3_6=new JSimpleObjectPopulate();
+		objectPopulate6_3_6.populate(testModel6_3_6);
 		testModel6_3_6.setParentId(testModel3.getId());
 		testModels.add(testModel6_3_6);
 		testModel6_3_6.setText(false);

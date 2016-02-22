@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public interface JPopulate {
 
-	public void populate() throws Exception;
+	public void populate(Object object) throws Exception;
 	
 	public static  class JDefaultTimestampRandom implements JTimestampRandom {
 		@Override

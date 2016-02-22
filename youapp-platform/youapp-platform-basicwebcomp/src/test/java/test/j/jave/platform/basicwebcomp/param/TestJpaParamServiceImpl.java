@@ -1,6 +1,6 @@
 package test.j.jave.platform.basicwebcomp.param;
 
-import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.User;
@@ -28,7 +28,7 @@ public class TestJpaParamServiceImpl{
 			context.setUser(user);
 			
 			Param param=new Param();
-			new JObjectPopulate(param).populate();
+			new JSimpleObjectPopulate().populate(param);
 			param.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			paramService.saveParam(context, param);
 			

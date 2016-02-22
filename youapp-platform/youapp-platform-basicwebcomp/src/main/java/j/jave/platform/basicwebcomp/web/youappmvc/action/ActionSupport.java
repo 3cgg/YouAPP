@@ -17,7 +17,7 @@ public abstract class ActionSupport implements Action {
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
-	protected HttpContext httpContext;
+	public static final ThreadLocal<HttpContext> httpContext=new ThreadLocal<HttpContext>();
 	
 //	/**
 //	 * {@link #setHttpContext(HttpContext)}
@@ -28,36 +28,40 @@ public abstract class ActionSupport implements Action {
 	public static final String DELETE_SUCCESS="删除成功";
 	public static final String EDIT_SUCCESS="更新成功";
 
+	public void removeHttpContext(){
+		httpContext.remove();
+	}
+	
 	public HttpContext getHttpContext() {
-		return httpContext;
+		return httpContext.get();
 	}
 
 	public void setHttpContext(HttpContext httpContext) {
-		this.httpContext = httpContext;
+		ActionSupport.httpContext.set(httpContext);
 	}
 	
 	protected void setAttribute(String key,Object obj){
-		httpContext.setAttribute(key, obj);
+		httpContext.get().setAttribute(key, obj);
 	}
 	
 	public String getParameter(String key){
-		return httpContext.getParameter(key);
+		return httpContext.get().getParameter(key);
 	}
 	
 	public void setCookie(String key,String value){
-		httpContext.setCookie(key, value);
+		httpContext.get().setCookie(key, value);
 	}
 	
 	public void setCookie(String key,String value,int maxAge){
-		httpContext.setCookie(key, value, maxAge);
+		httpContext.get().setCookie(key, value, maxAge);
 	}
 	
 	public void deleteCookie(String key){
-		httpContext.deleteCookie(key);
+		httpContext.get().deleteCookie(key);
 	}
 	
 	protected SessionUser getSessionUser(){
-		return httpContext.getUser();
+		return httpContext.get().getUser();
 	}
 
 	protected void setSuccessMessage(String message){

@@ -31,8 +31,16 @@ public class MappingMeta {
 	 */
 	private Class<?> clazz;
 	
-	private Class<?>[] methodParams;
+	private MethodParamMeta[] methodParams;
 
+	public Class<?>[] getMethodParamClasses(){
+		Class<?>[] clazzs=new Class<?>[methodParams.length];
+		for(int i=0;i<methodParams.length;i++){
+			clazzs[i]=methodParams[i].getType();
+		}
+		return clazzs;
+	}
+	
 	public String getControllerName() {
 		return controllerName;
 	}
@@ -65,13 +73,12 @@ public class MappingMeta {
 		this.clazz = clazz;
 	}
 
-	public Class<?>[] getMethodParams() {
+	public MethodParamMeta[] getMethodParams() {
 		return methodParams;
 	}
 
-	public void setMethodParams(Class<?>[] methodParams) {
+	public void setMethodParams(MethodParamMeta[] methodParams) {
 		this.methodParams = methodParams;
 	}
-	
 	
 }

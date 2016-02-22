@@ -10,8 +10,10 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
+import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
+import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
+import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import java.util.regex.Matcher;
@@ -62,35 +64,42 @@ public class ActionExecutor implements JService {
 		
 		MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
 		ActionSupport object=(ActionSupport) applicationContext.getBean(mappingMeta.getControllerName());
-		// set HTTP context constructed above.
-		object.setHttpContext(httpContext);
-		
-		//setting attributes associate to the request. 
-		YouAppMvcUtils.set(object, httpContext);
-		
-		StopWatch stopWatch=null;
-		if(LOGGER.isDebugEnabled()){
-			stopWatch=new StopWatch();
-			stopWatch.start();
-		}
-		Object navigate=JReflect.invoke(object, mappingMeta.getMethodName(),mappingMeta.getMethodParams(), new Object[]{});
-		if(LOGGER.isDebugEnabled()){
-			try{
-				LOGGER.debug("time of processing request in action is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
-			}catch(Exception e){
-				LOGGER.error("error to get time.");
+		Object navigate=null;
+		try{
+			// set HTTP context constructed above.
+			object.setHttpContext(httpContext);
+			
+			StopWatch stopWatch=null;
+			if(LOGGER.isDebugEnabled()){
+				stopWatch=new StopWatch();
+				stopWatch.start();
 			}
+			navigate=JReflect.invoke(object, mappingMeta.getMethodName(),
+					mappingMeta.getMethodParamClasses(), resolveArgs(httpContext, mappingMeta)
+					);
+			if(LOGGER.isDebugEnabled()){
+				try{
+					LOGGER.debug("time of processing request in action is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
+				}catch(Exception e){
+					LOGGER.error("error to get time.");
+				}
+			}
+		}finally{
+			object.removeHttpContext();
 		}
 		return  navigate;
 	}
 
-	private Object[] resolveArgus(HttpContext httpContext,MappingMeta mappingMeta){
-		Object[] argus=new Object[mappingMeta.getMethodParams().length];
-		for(Class<?> clazz:mappingMeta.getMethodParams()){
-			
-			
-			
+	private Object[] resolveArgs(HttpContext httpContext,MappingMeta mappingMeta){
+		MethodParamMeta[] methodParamMetas=  mappingMeta.getMethodParams();
+		Object[] args=new Object[methodParamMetas.length];
+		for(int i=0;i<methodParamMetas.length;i++){
+			MethodParamObject methodParamObject=new MethodParamObject();
+			methodParamObject.setMethodParamMeta(methodParamMetas[i]);
+			new HttpContextDataBinder(httpContext).bind(methodParamObject);
+			args[i]=methodParamObject.getObject();
 		}
+		return args;
 	}
 	
 	private String getComponentVersion(String componentVer) {

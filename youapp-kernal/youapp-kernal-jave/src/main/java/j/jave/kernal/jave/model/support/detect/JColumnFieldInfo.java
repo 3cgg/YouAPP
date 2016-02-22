@@ -6,14 +6,14 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfo;
+import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.lang.reflect.Field;
 import java.sql.Timestamp;
 
-public class JColumnFieldInfo implements JFieldInfo<JColumnInfo> {
+public class JColumnFieldInfo implements JFieldInfoGen<JColumnInfo> {
 
 	private static JLogger logger=JLoggerFactory.getLogger(JColumnFieldInfo.class);
 	

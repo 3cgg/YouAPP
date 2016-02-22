@@ -5,9 +5,9 @@ package j.jave.kernal.jave.support.detect;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JClassProvidedScanner;
-import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JClassesScanConfig;
 import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
+import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 
 import java.lang.reflect.Field;
@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @see JDefaultClassesScanner
  * @see JClassesScanner
  * @author J
- * @param <T>  the same as generic of {@link JFieldInfo }
+ * @param <T>  the same as generic of {@link JFieldInfoGen }
  */
 public class JFieldDetector<T> extends JClassesScanDefaultConfiguration 
 	implements JClassesScanConfig ,JFieldInfoProvider<T> {
@@ -57,7 +57,7 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 		
 	}
 	
-	private static final JFieldFilter defaultFieldFilter=new JFieldFilter() {
+	public static final JFieldFilter defaultFieldFilter=new JFieldFilter() {
 
 		@Override
 		public boolean filter(Field field, Class<?> classIncudeField) {
@@ -76,18 +76,24 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 		
 	};
 	
-	private JFieldInfo<T> fieldInfo;
+	public static final JFieldInfoGen<JDefaultFieldMeta> defaultFieldInfoGen=new JFieldInfoGen<JDefaultFieldMeta>() {
+		@Override
+		public JDefaultFieldMeta getInfo(Field field, Class<?> classIncudeField) {
+			JDefaultFieldMeta defaultFieldMeta=new JDefaultFieldMeta();
+			defaultFieldMeta.setFieldName(field.getName());
+			defaultFieldMeta.setAccess(field.getModifiers());
+			defaultFieldMeta.setClazz(field.getType());
+			defaultFieldMeta.setAnnotations(field.getAnnotations());
+			defaultFieldMeta.setField(field);
+			return defaultFieldMeta;
+		}
+	};
 	
-//	private static final JMethodInfo<String> defaultMethodInfo=new JMethodInfo<String>() {
-//		@Override
-//		public String getInfo(Method method, Class<?> classIncudeMethod) {
-//			return method.getName();
-//		}
-//	};
+	protected JFieldInfoGen<T> fieldInfo;
 	
-	private JFieldFilter fieldFilter=null;
+	protected JFieldFilter fieldFilter=null;
 	
-	public JFieldDetector(JFieldInfo<T> fieldInfo) {
+	public JFieldDetector(JFieldInfoGen<T> fieldInfo) {
 		fieldFilter=defaultFieldFilter;
 		this.fieldInfo=fieldInfo;
 	} 
@@ -95,9 +101,9 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 	/**
 	 * 
 	 * @param fieldFilter implementation of {@link JFieldFilter}
-	 * @param fieldInfo implementation of {@link JFieldInfo}
+	 * @param fieldInfo implementation of {@link JFieldInfoGen}
 	 */
-	public JFieldDetector(JFieldFilter fieldFilter,JFieldInfo<T> fieldInfo) {
+	public JFieldDetector(JFieldFilter fieldFilter,JFieldInfoGen<T> fieldInfo) {
 		this.fieldFilter=fieldFilter;
 		this.fieldInfo=fieldInfo;
 	} 
@@ -106,25 +112,25 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 		this.fieldFilter = fieldFilter;
 	}
 	
-	public void setFieldInfo(JFieldInfo<T> fieldInfo) {
+	public void setFieldInfo(JFieldInfoGen<T> fieldInfo) {
 		this.fieldInfo = fieldInfo;
 	}
 	
 	
-	private JClassesScanner classesScan=null;
+	protected JClassesScanner classesScan=null;
 	
 	public void setClassesScan(JClassesScanner classesScan) {
 		this.classesScan = classesScan;
 	}
 	
 	/**
-	 * ANY expected value from {@link JFieldInfo}
+	 * ANY expected value from {@link JFieldInfoGen}
 	 */
 	private List<T> fieldInfos=new ArrayList<T>();
 	
 	/**
 	 * KEY : class type . 
-	 * VALUE : ANY expected value from {@link JFieldInfo}.
+	 * VALUE : ANY expected value from {@link JFieldInfoGen}.
 	 */
 	private Map<Class<?>, List<T>> classFieldInfos=new ConcurrentHashMap<Class<?>, List<T>>();
 	
@@ -141,7 +147,7 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 	 * detect classes via {@code packageScan} field, which set previously.
 	 * @param superClass
 	 */
-	public void detect(){
+	public void refresh(){
 		Set<Class<?>> classes=classesScan.scan();
 		// filter on the classes 
 		processClasses(classes);
@@ -152,32 +158,7 @@ public class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 	 * @param clazz
 	 */
 	public void detect(Class<?>... clazz){
-		JClassProvidedScanner classProvidedScan = new JClassProvidedScanner(clazz);
-		Set<Class<?>> classes=classProvidedScan.scan();
-		// filter on the classes 
-		processClasses(classes);
-	}
-	
-	/**
-	 * detect classes via {@link JDefaultClassesScanner }.
-	 * @param superClass
-	 * @param scanOnClasspath  only true accepted.
-	 */
-	public void detect(Class<?> superClass,boolean scanOnClasspath){
-		if(superClass==null)
-			throw new IllegalArgumentException("null param not supported.");
-		if(!scanOnClasspath){
-			throw new IllegalArgumentException("only true supported.");
-		}
-		// initialize all 
-		JDefaultClassesScanner defaultPackageScan = new JDefaultClassesScanner(
-				superClass);
-		defaultPackageScan.setIncludePackages(includePackages);
-		defaultPackageScan.setExpression(expression);
-		defaultPackageScan.setIncludeClassNames(includeClassNames);
-		defaultPackageScan.setClassLoader(classLoader);
-		Set<Class<?>> classes=defaultPackageScan.scan();
-		
+		Set<Class<?>> classes=classesScan.scan();
 		// filter on the classes 
 		processClasses(classes);
 	}

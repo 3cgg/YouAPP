@@ -1,6 +1,6 @@
 package test.j.jave.platform.basicwebcomp.login;
 
-import j.jave.kernal.jave.random.JObjectPopulate;
+import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.Role;
@@ -31,7 +31,7 @@ public class TestRole {
 			context.setUser(user);
 			
 			Role roleData=new Role();
-			new JObjectPopulate(roleData).populate();
+			new JSimpleObjectPopulate().populate(roleData);
 			roleData.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			roleService.saveRole(context, roleData);
 			

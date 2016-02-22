@@ -26,4 +26,12 @@ public class TestAction extends JSPAction {
 	public void show(){
 		System.out.println("---------show method-----------");
 	}
+	
+	
+	@RequestMapping(value="/test")
+	public void login(User user,String key,TestModel testModel){
+		System.out.println(user.getId()+"[--]"+key);
+	}
+	
+	
 }

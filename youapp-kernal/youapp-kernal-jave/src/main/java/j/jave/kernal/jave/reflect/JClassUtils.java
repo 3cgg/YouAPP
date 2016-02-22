@@ -11,6 +11,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -607,5 +608,29 @@ public abstract class JClassUtils {
 		return fields;
 	}
 	
+	public static Object newObject(Class<?> clazz){
+		try{
+			return clazz.newInstance();
+		}catch(Exception e){
+			throw new JClassException(e);
+		}
+	}
+	
+	public static boolean isSimpleType(Class<?> clazz){
+		return String.class.isAssignableFrom(clazz)
+				||Integer.class.isAssignableFrom(clazz)
+				||int.class.isAssignableFrom(clazz)
+				||Long.class.isAssignableFrom(clazz)
+				||long.class.isAssignableFrom(clazz)
+				||Double.class.isAssignableFrom(clazz)
+				||double.class.isAssignableFrom(clazz)
+				||Float.class.isAssignableFrom(clazz)
+				||float.class.isAssignableFrom(clazz)
+				||Byte.class.isAssignableFrom(clazz)
+				||byte.class.isAssignableFrom(clazz)
+				||BigDecimal.class.isAssignableFrom(clazz)
+				||boolean.class.isAssignableFrom(clazz)
+				||Boolean.class.isAssignableFrom(clazz);
+	}
 	
 }

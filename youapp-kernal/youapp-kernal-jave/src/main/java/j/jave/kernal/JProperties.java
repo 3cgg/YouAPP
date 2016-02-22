@@ -1,5 +1,7 @@
 package j.jave.kernal;
 
+import j.jave.kernal.jave.utils.JDateUtils;
+
 public class JProperties {
 
 	public static final String XMLDB_URL="youapp.xmldb.url";
@@ -11,5 +13,7 @@ public class JProperties {
 	public static final String BASE64_FACTORY="youapp.base64.factory";
 	public static final String LOGGER_FACTORY="youapp.logger.factory";
 	public static final String SERVICES="youapp.services";
+	
+	public static final String DATE_FORMAT="youapp.date.format";
 	
 }

@@ -1,24 +1,18 @@
 package j.jave.kernal.jave.random;
 
 import j.jave.kernal.jave.support.detect.JFieldDetector;
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfo;
+import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class JObjectPopulate  extends JAbstractFieldPopulate{
-
-	private Object object;
-	
-	public JObjectPopulate(Object object) {
-		this.object=object;
-	}
+public class JSimpleObjectPopulate  extends JAbstractFieldPopulate{
 	
 	@Override
-	public void populate() throws Exception {
+	public void populate(final Object object) throws Exception {
 		
-		JFieldInfo<FieldRelated> fieldInfo=new JFieldInfo<FieldRelated>() {
+		JFieldInfoGen<FieldRelated> fieldInfo=new JFieldInfoGen<FieldRelated>() {
 			@Override
 			public FieldRelated getInfo(Field field, Class<?> classIncudeField) {
 				FieldRelated fieldRelated=new FieldRelated();

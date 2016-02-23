@@ -208,8 +208,22 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 				while (fii.hasNext()) {
 					FileItemStream fis = fii.next();
 					if (fis.isFormField()) {// FileItemStream同样使用OpenStream获取普通表单的值
+						String fieldName=fis.getFieldName();
 						String value=new String(JStringUtils.getBytes(fis.openStream()),"utf-8");
-						parameters.put(fis.getFieldName(), value);
+						if(parameters.containsKey(fieldName)){
+							Object obj=parameters.get(fieldName);
+							if(List.class.isInstance(obj)){ 
+								((List)obj).add(value);
+							}
+							else{
+								List<String> values=new ArrayList<String>();
+								values.add((String) obj);
+								values.add(value);
+								parameters.put(fieldName, values);
+							}
+						}else{
+							parameters.put(fieldName, value);
+						}
 					} else {
 						String fileName = fis.getName();
 						byte[] bytes=JStringUtils.getBytes(fis.openStream());
@@ -219,6 +233,14 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 						
 						URL url=JServiceHubDelegate.get().addImmediateEvent(new JFileDistStoreEvent(request, jFile),URI.class).toURL();
 						parameters.put(fis.getFieldName(), url.toString());
+					}
+				}
+				
+				for (Iterator<Entry<String,Object>> iterator = parameters.entrySet().iterator(); iterator
+						.hasNext();) {
+					Entry<String,Object> entry = iterator.next();
+					if(List.class.isInstance(entry.getValue())){
+						entry.setValue(((List)entry.getValue()).toArray(new String[0]));
 					}
 				}
 			} catch (FileUploadException e) {

@@ -175,7 +175,7 @@ public abstract class JDateUtils {
 		try {
 			return new Timestamp(new SimpleDateFormat(timeformat).parse(date).getTime());
 		} catch (ParseException e) {
-			LOGGER.error("date format : "+timeformat);
+			LOGGER.error("date format : "+timeformat+" date : "+date);
 			throw new JUtilException(e); 
 		}
 	}

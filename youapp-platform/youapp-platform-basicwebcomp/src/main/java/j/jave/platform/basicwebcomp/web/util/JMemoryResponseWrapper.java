@@ -1,5 +1,8 @@
 package j.jave.platform.basicwebcomp.web.util;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
+
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.IOException;
@@ -9,9 +12,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JMemoryResponseWrapper extends HttpServletResponseWrapper {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JMemoryResponseWrapper.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JMemoryResponseWrapper.class);
 	
 	private ByteArrayOutputStream binary=new ByteArrayOutputStream();
 	

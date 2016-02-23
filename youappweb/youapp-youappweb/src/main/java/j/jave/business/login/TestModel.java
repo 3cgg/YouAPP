@@ -39,6 +39,8 @@ public class TestModel extends JBaseModel {
 
 	private List<String> alist;
 	
+	private String[] astrs;
+	
 	public List<String> getAlist() {
 		return alist;
 	}
@@ -158,5 +160,15 @@ public class TestModel extends JBaseModel {
 	public void setBlx(Boolean blx) {
 		this.blx = blx;
 	}
+
+	public String[] getAstrs() {
+		return astrs;
+	}
+
+	public void setAstrs(String[] astrs) {
+		this.astrs = astrs;
+	}
+	
+	
 	
 }

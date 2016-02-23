@@ -8,13 +8,11 @@ import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 
 import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.Map;
 
-import org.hibernate.mapping.Map;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class HttpContextDataBinder{
+public class HttpContextDataBinder extends DataBinder{
 
 	private HttpContext httpContext;
 	
@@ -41,7 +39,7 @@ public class HttpContextDataBinder{
 			if(Map.class.isAssignableFrom(clazz)){
 				methodParamObject.setObject(httpContext.getParameters());
 			}
-			if(Collection.class.isAssignableFrom(clazz)){
+			else if(JClassUtils.isSimpleTypeArray(clazz)){
 				methodParamObject.setObject(dataConvertor.convert(clazz, httpContext.getParameterValue(paramName)));
 			}
 			else if(isSimpleType(clazz)){

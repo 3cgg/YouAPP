@@ -630,7 +630,29 @@ public abstract class JClassUtils {
 				||byte.class.isAssignableFrom(clazz)
 				||BigDecimal.class.isAssignableFrom(clazz)
 				||boolean.class.isAssignableFrom(clazz)
-				||Boolean.class.isAssignableFrom(clazz);
+				||Boolean.class.isAssignableFrom(clazz)
+				||Date.class.isAssignableFrom(clazz)
+				||Timestamp.class.isAssignableFrom(clazz);
+	}
+	
+	public static boolean isSimpleTypeArray(Class<?> clazz){
+		if(!clazz.isArray()) return false;
+		return String[].class.isAssignableFrom(clazz)
+				||Integer[].class.isAssignableFrom(clazz)
+				||int[].class.isAssignableFrom(clazz)
+				||Long[].class.isAssignableFrom(clazz)
+				||long[].class.isAssignableFrom(clazz)
+				||Double[].class.isAssignableFrom(clazz)
+				||double[].class.isAssignableFrom(clazz)
+				||Float[].class.isAssignableFrom(clazz)
+				||float[].class.isAssignableFrom(clazz)
+				||Byte[].class.isAssignableFrom(clazz)
+				||byte[].class.isAssignableFrom(clazz)
+				||BigDecimal[].class.isAssignableFrom(clazz)
+				||boolean[].class.isAssignableFrom(clazz)
+				||Boolean[].class.isAssignableFrom(clazz)
+				||Date[].class.isAssignableFrom(clazz)
+				||Timestamp[].class.isAssignableFrom(clazz);
 	}
 	
 }

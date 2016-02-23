@@ -13,9 +13,11 @@ import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * detect all resources , wrap the information via {@link MappingMeta}
@@ -55,7 +57,7 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 						||Modifier.isNative(method.getModifiers())
 						;
 			}
-			
+			isFilter=method.getAnnotation(RequestMapping.class)==null;
 			return isFilter;
 		}
 		
@@ -80,17 +82,31 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 				throw new IllegalStateException(" class not represented by "+Controller.class);
 			}
 			resourceInfo.setMethodName(method.getName());
-			resourceInfo.setPath("/"+resourceInfo.getControllerName()+"/"+resourceInfo.getMethodName());
+			RequestMapping classRequestMapping= classIncudeMethod.getAnnotation(RequestMapping.class);
+			RequestMapping methodRequestMapping= method.getAnnotation(RequestMapping.class);
 			
-			Class<?>[] paramClasses= method.getParameterTypes();
+			String[] methodPaths= methodRequestMapping.value();
+			String path="";
+			if(classRequestMapping!=null){
+				String[] classPaths=classRequestMapping.value();
+				if(classPaths.length>0){
+					path=classPaths[0];
+				}
+			}
+			if(methodPaths.length>0){
+				path=path+methodPaths[0];
+			}
+			resourceInfo.setPath(path);
+			Parameter[] parameters= method.getParameters();
 			String[] parameterNames=ParameterNameGet.getMethodParameterNamesByAsm4(classIncudeMethod, method);
-			MethodParamMeta[] methodParamMetas=new MethodParamMeta[paramClasses.length];
-			for(int i=0;i<paramClasses.length;i++){
-				Class<?> clazz=paramClasses[i];
+			MethodParamMeta[] methodParamMetas=new MethodParamMeta[parameters.length];
+			for(int i=0;i<parameters.length;i++){
+				Parameter parameter=parameters[i];
+				Class<?> clazz=parameter.getType();
 				MethodParamMeta paramMeta=new MethodParamMeta();
 				paramMeta.setType(clazz);
 				paramMeta.setName(parameterNames[i]);
-				paramMeta.setAnnotations(clazz.getAnnotations());
+				paramMeta.setAnnotations(parameter.getAnnotations());
 				methodParamMetas[i]=paramMeta;
 			}
 			resourceInfo.setMethodParams(methodParamMetas);

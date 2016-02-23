@@ -1,5 +1,9 @@
 package j.jave.platform.basicwebcomp.web.util;
 
+import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -15,6 +19,9 @@ import org.springframework.asm.Type;
 
 public class ParameterNameGet {
 
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ParameterNameGet.class);
+	
+	
 	public static String[] getMethodParameterNamesByAsm4(Class<?> clazz, final Method method) {  
         final Class<?>[] parameterTypes = method.getParameterTypes();  
         if (parameterTypes == null || parameterTypes.length == 0) {  
@@ -33,8 +40,8 @@ public class ParameterNameGet {
                 @Override  
                 public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {  
                     
-                	System.out.println("method name : "+name+" ; access : "+access 
-                				+" ; desc : "+desc +"; signature : "+signature);
+                	LOGGER.debug("method name : "+name+" ; access : "+access 
+                				+" ; desc : "+desc +"; signature : "+signature+JJSON.get().formatObject(exceptions));
                 	
                 	Type[] argumentTypes = Type.getArgumentTypes(desc);  
                     if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {  
@@ -54,9 +61,9 @@ public class ParameterNameGet {
   
                 }  
             }, 0);  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         return parameterNames;  
     }  
 }

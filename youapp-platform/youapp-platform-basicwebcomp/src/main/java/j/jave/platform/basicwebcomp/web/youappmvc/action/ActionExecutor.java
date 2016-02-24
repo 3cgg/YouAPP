@@ -12,8 +12,8 @@ import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import java.util.regex.Matcher;

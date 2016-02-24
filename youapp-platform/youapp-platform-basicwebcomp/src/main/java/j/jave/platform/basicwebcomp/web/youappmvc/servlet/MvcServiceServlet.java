@@ -12,11 +12,11 @@ import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUserGetEvent;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;

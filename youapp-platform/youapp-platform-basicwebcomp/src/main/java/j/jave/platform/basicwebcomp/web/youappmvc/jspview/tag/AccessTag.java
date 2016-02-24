@@ -5,7 +5,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jspview.tag;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import javax.servlet.http.HttpServletRequest;

@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 

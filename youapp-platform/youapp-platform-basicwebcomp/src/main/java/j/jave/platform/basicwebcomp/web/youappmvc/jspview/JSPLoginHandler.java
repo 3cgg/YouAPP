@@ -46,13 +46,12 @@ public class JSPLoginHandler implements LoginHandler ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
-	private String serviceToLoginPath=servletConfigService.getToLoginPath();
-	
 	@Override
 	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
-		request.setAttribute("url", serviceToLoginPath); 
-		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
+//		request.setAttribute("url", serviceToLoginPath); 
+//		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
+		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getToLoginPath()).forward(request, response);
 	}
 	
 	@Override

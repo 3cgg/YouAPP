@@ -5,7 +5,9 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.model.ResponseStatus;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +26,8 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 	@Override
 	public void handleNavigate(HttpServletRequest request,
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
-		JSONResult mobileResult=(JSONResult)navigate;
-		mobileResult.setStatus("1");
+		ResponseModel mobileResult=(ResponseModel)navigate;
+		mobileResult.setStatus(ResponseStatus.SUCCESS);
 		String out=JJSON.get().formatObject(mobileResult);
 		response.getOutputStream().write(out.getBytes("utf-8"));
 	}
@@ -35,8 +37,7 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			HttpServletResponse response, HttpContext httpContext,
 			JServiceException exception) {
 		try{
-			JSONResult mobileResult=new JSONResult();
-			mobileResult.setStatus("0");
+			ResponseModel mobileResult=ResponseModel.newMessage();
 			mobileResult.setData(exception.getMessage());
 			String out=JJSON.get().formatObject(mobileResult);
 			response.getOutputStream().write(out.getBytes("utf-8"));
@@ -59,8 +60,7 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 				handleServiceExcepion(request, response, httpContext, (JServiceException) exp);
 			}
 			else{
-				JSONResult mobileResult=new JSONResult();
-				mobileResult.setStatus("-1");
+				ResponseModel mobileResult=ResponseModel.newError();
 				mobileResult.setData(exception.getMessage());
 				String out=JJSON.get().formatObject(mobileResult);
 				response.getOutputStream().write(out.getBytes("utf-8"));

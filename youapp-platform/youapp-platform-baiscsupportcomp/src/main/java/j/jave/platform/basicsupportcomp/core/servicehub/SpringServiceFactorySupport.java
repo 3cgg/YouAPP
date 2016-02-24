@@ -1,5 +1,7 @@
 package j.jave.platform.basicsupportcomp.core.servicehub;
 
+import java.lang.reflect.ParameterizedType;
+
 import j.jave.kernal.eventdriven.servicehub.JAbstractServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
@@ -30,6 +32,11 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	 * the class registered in service hub.
 	 */
 	private final Class<T> registClass;;
+	
+	public SpringServiceFactorySupport(){
+		ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
+		this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+	}
 	
 	/**
 	 * register a class 

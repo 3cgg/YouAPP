@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * The SQL DDL listener, to load SQL DDL statement automatically, 
  * You can define what DDL Factory ( the property {@link SQLDDLListener#DDL_CREATE_FACTORY}) 
  * scans what package ( the property {@link SQLDDLListener#DDL_CREATE_FACTORY_PACKAGE}). 
- * A default factory (<code>JPropertiesSQLDDLCreateFactory</code> ) and a default package name "j.jave.framework.components" are used if no any configured.
+ * A default factory (<code>JPropertiesSQLDDLCreateFactory</code> ) and a default package name "j.jave" is used if no any configured.
  * <p><strong> Note that the class <code>SQLDDLListener</code> is purpose for developer case, never used in production.</strong> 
  * @author J
  * @see j.jave.framework.support.sqlloader.ddl.JPropertiesSQLDDLCreateFactory
@@ -25,11 +25,11 @@ import org.slf4j.LoggerFactory;
 public class SQLDDLListener implements ServletContextListener {
 	private static final Logger LOGGER=LoggerFactory.getLogger(SQLDDLListener.class);
 	
-	private static final String DDL_CREATE_FACTORY="j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.implementation";
+	private static final String DDL_CREATE_FACTORY="youapp.ddl.create.factory";
 	
-	private static final String DDL_CREATE_FACTORY_PACKAGE="j.jave.framework.support.sqlloader.ddl.JSQLDDLCreateFactory.package";
+	private static final String DDL_CREATE_FACTORY_PACKAGE="youapp.ddl.create.factory.scan.package";
 	
-	private static final String DEFAULT_PACKAGE="j.jave.framework.components";
+	private static final String DEFAULT_PACKAGE="j.jave";
 	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {

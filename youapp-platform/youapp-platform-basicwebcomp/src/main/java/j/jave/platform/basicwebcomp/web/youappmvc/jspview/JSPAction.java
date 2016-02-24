@@ -1,7 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
+import j.jave.kernal.jave.model.JPage;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.JQueryDataTablePage;
 
 /**
  * JSP basic action. 
@@ -96,20 +96,8 @@ public abstract class JSPAction extends ActionSupport {
 	 * the method supports the {@code JQuery Data Table. }
 	 */
 	@Override
-	protected JQueryDataTablePage parseJPage() {
-		String sEcho=getParameter("sEcho");
-		int iDisplayStart=Integer.parseInt(getParameter("iDisplayStart"));
-		int iDisplayLength=Integer.parseInt(getParameter("iDisplayLength"));
-		
-		JQueryDataTablePage page=new JQueryDataTablePage();
-		page.setsEcho(sEcho);
-		page.setPageSize(iDisplayLength);
-		int pageNum=iDisplayStart/iDisplayLength;
-		page.setCurrentPageNum(pageNum+1);
-		page.setSortColumn(getParameter("sortColumn"));
-		page.setSortType(getParameter("sortType"));
-		return page;
-		
+	protected JPage parseJPage() {
+		return pageableService.parse(getHttpContext());
 	}
 	
 	

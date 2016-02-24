@@ -7,8 +7,8 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.util.JWebUtils;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 
 import java.io.File;

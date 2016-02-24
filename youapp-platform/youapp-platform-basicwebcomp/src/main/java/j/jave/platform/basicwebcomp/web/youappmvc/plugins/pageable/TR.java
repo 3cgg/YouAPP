@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.model;
+package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
 import java.util.ArrayList;
 import java.util.List;

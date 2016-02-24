@@ -6,7 +6,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
 import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
@@ -76,14 +76,14 @@ public class ResourceAccessFilter implements JFilter{
 					authorized=true;
 					if(!authorized){
 						FilterResponse filterResponse=FilterResponse.newNoAccess();
-						filterResponse.setObject("have no access to the resource.");
+						filterResponse.setData("have no access to the resource.");
 						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 						return ;
 					}
 				}
 				else{
 					FilterResponse filterResponse=FilterResponse.newNoLogin();
-					filterResponse.setObject("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
+					filterResponse.setData("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
 					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 					YouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
 					return ;

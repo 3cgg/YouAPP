@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.model;
+package j.jave.platform.basicwebcomp.web.youappmvc;
 
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;

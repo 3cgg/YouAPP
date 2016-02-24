@@ -117,7 +117,7 @@ public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 			boolean validPath=loginAccessService.isValidResource(path);
 			if(!validPath){
 				FilterResponse filterResponse=FilterResponse.newInvalidPath();
-				filterResponse.setObject(servletConfigService.getInvalidPathInfo());
+				filterResponse.setData(servletConfigService.getInvalidPathInfo());
 				response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 				return ;
 			}

@@ -9,7 +9,7 @@ import j.jave.kernal.jave.support.detect.JFieldDetector;
 import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.lang.reflect.Field;
 import java.util.Map;

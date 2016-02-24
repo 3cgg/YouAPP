@@ -1,10 +1,11 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.model;
+package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
 import j.jave.kernal.jave.json.JJSONObject;
 import j.jave.kernal.jave.model.JPage;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * the class is for JQuery DataTable plugin.
  * @author J
  */
-public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String, Object>> {
+public class QueryDataTablePage extends JPage implements JJSONObject<Map<String, Object>> {
 
 	private static final long serialVersionUID = -8159481727794008226L;
 
@@ -110,6 +111,23 @@ public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String
 		pagination.put(ITOTALDISPLAYRECORDS, getTotalRecordNum());
 		pagination.put(AADATA, aaData);
 		return pagination;
+	}
+	
+	
+	public static QueryDataTablePage parse(HttpContext httpContext){
+		String sEcho=httpContext.getParameter("sEcho");
+		int iDisplayStart=Integer.parseInt(httpContext.getParameter("iDisplayStart"));
+		int iDisplayLength=Integer.parseInt(httpContext.getParameter("iDisplayLength"));
+		
+		QueryDataTablePage page=new QueryDataTablePage();
+		page.setsEcho(sEcho);
+		page.setPageSize(iDisplayLength);
+		int pageNum=iDisplayStart/iDisplayLength;
+		page.setCurrentPageNum(pageNum+1);
+		page.setSortColumn(httpContext.getParameter("sortColumn"));
+		page.setSortType(httpContext.getParameter("sortType"));
+		return page;
+		
 	}
 	
 }

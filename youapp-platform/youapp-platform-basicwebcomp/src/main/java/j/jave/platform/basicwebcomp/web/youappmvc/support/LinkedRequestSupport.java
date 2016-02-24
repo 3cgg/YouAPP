@@ -6,8 +6,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.support;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedService;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.LinkedRequestFilter;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.Serializable;

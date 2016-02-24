@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.LoginFilter.LoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -37,7 +38,7 @@ public class JSONLoginHandler implements LoginHandler ,APPFilterConfig {
 	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newNoLogin();
-		JSONResult mobileResult=JSONResult.newMessage();
+		ResponseModel mobileResult=ResponseModel.newMessage();
 		mobileResult.setData(filterResponse);
 		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
 	}
@@ -46,7 +47,7 @@ public class JSONLoginHandler implements LoginHandler ,APPFilterConfig {
 	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
-		JSONResult mobileResult=JSONResult.newMessage();
+		ResponseModel mobileResult=ResponseModel.newMessage();
 		mobileResult.setData(filterResponse);
 		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
 	}

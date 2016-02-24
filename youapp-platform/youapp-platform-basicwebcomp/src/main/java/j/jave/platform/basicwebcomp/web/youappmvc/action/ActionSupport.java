@@ -1,10 +1,12 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.action;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.service.JPageableService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,8 @@ public abstract class ActionSupport implements Action {
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
 	public static final ThreadLocal<HttpContext> httpContext=new ThreadLocal<HttpContext>();
+	
+	protected JPageableService pageableService=JServiceHubDelegate.get().getService(this, JPageableService.class);
 	
 //	/**
 //	 * {@link #setHttpContext(HttpContext)}

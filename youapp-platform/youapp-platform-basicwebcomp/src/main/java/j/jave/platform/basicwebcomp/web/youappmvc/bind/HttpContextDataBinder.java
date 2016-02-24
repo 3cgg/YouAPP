@@ -5,7 +5,7 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.convert.JDataConvertor;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
-import j.jave.platform.basicwebcomp.web.youappmvc.model.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

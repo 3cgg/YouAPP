@@ -70,14 +70,14 @@ public class LinkedRequestFilter implements JFilter ,APPFilterConfig  {
 						// notify the client continue to transfer the rest data.
 						
 						FilterResponse filterResponse= FilterResponse.newLinkedRequest();
-						filterResponse.setObject(linkedRequestSupport.next());
-						response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+						filterResponse.setData(linkedRequestSupport.next());
+						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 					}
 					else{
 						FilterResponse filterResponse= FilterResponse.newLinkedRequest();
-						filterResponse.setObject(linkedRequestSupport.terminate());
+						filterResponse.setData(linkedRequestSupport.terminate());
 						// notify the client continue to transfer the rest data.
-						response.getOutputStream().write(JJSON.get().format(filterResponse).getBytes("utf-8"));
+						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 					}
 					
 				}

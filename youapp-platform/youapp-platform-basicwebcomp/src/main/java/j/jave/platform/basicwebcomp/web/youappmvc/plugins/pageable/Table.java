@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.model;
+package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
 import j.jave.kernal.jave.model.JPage;
 

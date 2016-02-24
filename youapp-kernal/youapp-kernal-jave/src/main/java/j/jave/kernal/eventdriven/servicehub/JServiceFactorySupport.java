@@ -4,6 +4,8 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * the super class that supports the single service of the platform.
  * expose the method {@link #postRegister()} to called by service manager to register the service.
@@ -28,6 +30,12 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	 * the class registered in service hub.
 	 */
 	private final Class<T> registClass;;
+	
+	@SuppressWarnings("unchecked")
+	public JServiceFactorySupport(){
+		ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
+		this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+	}
 	
 	/**
 	 * register a class 

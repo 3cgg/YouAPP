@@ -6,9 +6,9 @@ import j.jave.kernal.jave.security.exception.JSecurityException;
 
 public class JDefaultMD5CipherService extends JServiceFactorySupport<JMD5CipherService> implements JMD5CipherService  {
 	
-	public JDefaultMD5CipherService() {
-		super(JMD5CipherService.class);
-	}
+//	public JDefaultMD5CipherService() {
+//		super(JMD5CipherService.class);
+//	}
 
 	@Override
 	public String encrypt(String plain) throws JSecurityException {

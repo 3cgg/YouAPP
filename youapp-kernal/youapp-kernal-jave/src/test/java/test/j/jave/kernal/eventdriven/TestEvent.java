@@ -1,18 +1,11 @@
 package test.j.jave.kernal.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
 import j.jave.kernal.security.service.JMD5CipherService;
-import junit.framework.TestCase;
 
-public class TestEvent  extends TestCase{
-
-	private JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
-	{
-		serviceFactoryManager.registerAllServices();
-	}
+public class TestEvent  extends TestEventSupport{
 	
 	public void testUserFind(){
 		Object object=JServiceHubDelegate.get().addImmediateEvent(new UserFindEvent(this, "jiaz"));
@@ -29,5 +22,12 @@ public class TestEvent  extends TestCase{
 		System.out.println(object);
 	}
 	
+	public void testMD5(){
+		
+		JMD5CipherService md5CipherService= serviceHubDelegate.getService(this, JMD5CipherService.class);
+		
+		String encrp=md5CipherService.encrypt("abc.def.ghi");
+		System.out.println(encrp);
+	}
 	
 }

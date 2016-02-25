@@ -2,6 +2,7 @@ package j.jave.kernal.jave.random;
 
 import j.jave.kernal.jave.support.detect.JFieldDetector;
 import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
+import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.lang.reflect.Field;
@@ -22,7 +23,7 @@ public class JSimpleObjectPopulate  extends JAbstractFieldPopulate{
 				return fieldRelated;
 			}
 		};
-		JFieldDetector<FieldRelated> fieldDetect=new JFieldDetector<FieldRelated>(fieldInfo);
+		JFieldDetector<FieldRelated> fieldDetect=new JFieldOnSingleClassDetector<FieldRelated>(fieldInfo);
 		fieldDetect.detect(object.getClass());
 		
 		List<FieldRelated>  fieldRelateds=  fieldDetect.getFieldInfos();

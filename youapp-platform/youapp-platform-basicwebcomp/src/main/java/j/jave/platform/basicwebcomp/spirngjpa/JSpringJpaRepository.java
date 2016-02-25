@@ -1,13 +1,10 @@
 package j.jave.platform.basicwebcomp.spirngjpa;
 
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

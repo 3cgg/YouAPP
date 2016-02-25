@@ -4,6 +4,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
 import j.jave.kernal.jave.json.JJSONObject;
+import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String, Object>> {
+public class JQueryDataTablePage<T extends JModel> extends JPage<T> implements JJSONObject<Map<String, Object>> {
 
 	public static final String SECHO="sEcho";
 	
@@ -113,12 +114,12 @@ public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String
 	}
 	
 	
-	public static JQueryDataTablePage parse(HttpContext httpContext){
+	public static <T extends JModel> JQueryDataTablePage<T> parse(HttpContext httpContext){
 		String sEcho=httpContext.getParameter("sEcho");
 		int iDisplayStart=Integer.parseInt(httpContext.getParameter("iDisplayStart"));
 		int iDisplayLength=Integer.parseInt(httpContext.getParameter("iDisplayLength"));
 		
-		JQueryDataTablePage page=new JQueryDataTablePage();
+		JQueryDataTablePage<T> page=new JQueryDataTablePage<T>();
 		page.setsEcho(sEcho);
 		page.setPageSize(iDisplayLength);
 		int pageNum=iDisplayStart/iDisplayLength;

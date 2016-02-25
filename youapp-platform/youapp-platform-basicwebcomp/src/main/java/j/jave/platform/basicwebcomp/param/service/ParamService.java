@@ -4,6 +4,7 @@
 package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
@@ -48,7 +49,7 @@ public interface ParamService extends Service<Param> {
 	public Param getParamById(ServiceContext context, String id);
 	
 	
-	public List<Param> getParamsByPage(ServiceContext context, JPagination pagination) ;
+	public JPage<Param> getParamsByPage(ServiceContext context, JPagination pagination) ;
 	
 	/**
 	 * get param according to the function id and code.

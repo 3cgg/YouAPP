@@ -3,12 +3,15 @@
  */
 package j.jave.kernal.jave.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author J
  */
-public class JPage {
+public class JPage<T extends JModel> {
 	
-	private int DEFAULT_NUM_PER_PAGE = Integer.MAX_VALUE/10;
+	private static final int DEFAULT_NUM_PER_PAGE = Integer.MAX_VALUE/10;
 	
 	/**
 	 * 总记录数
@@ -39,6 +42,8 @@ public class JPage {
 	 * sort type .
 	 */
 	private String sortType;
+	
+	private List<T> data=new ArrayList<T>();
 	
 	public String getSortColumn() {
 		return sortColumn;
@@ -99,6 +104,10 @@ public class JPage {
 			this.setCurrentPageNum(this.getTotalPageNum());
 		}
 	}
-
-	
+	public List<T> getData() {
+		return data;
+	}
+	public void setData(List<T> data) {
+		this.data = data;
+	}
 }

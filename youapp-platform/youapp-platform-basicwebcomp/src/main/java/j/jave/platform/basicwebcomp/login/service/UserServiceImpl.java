@@ -4,6 +4,7 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -53,8 +54,11 @@ public class UserServiceImpl extends ServiceSupport<User> implements UserService
 	
 	
 	@Override
-	public List<User> getUsersByPage(ServiceContext context, JPagination pagination) {
-		return userMapper.getUsersByPage(pagination);
+	public JPage<User> getUsersByPage(ServiceContext context, JPagination pagination) {
+		List<User> users=userMapper.getUsersByPage(pagination);
+		JPage<User> page=pagination.getPage();
+		page.setData(users);
+		return page;
 	}
 	
 	@Override

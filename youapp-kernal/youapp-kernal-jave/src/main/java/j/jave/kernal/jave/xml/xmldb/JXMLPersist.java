@@ -2,6 +2,7 @@ package j.jave.kernal.jave.xml.xmldb;
 
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.persist.JPersistException;

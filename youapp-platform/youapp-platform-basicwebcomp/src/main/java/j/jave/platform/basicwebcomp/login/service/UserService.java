@@ -4,6 +4,7 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
@@ -55,7 +56,7 @@ public interface UserService extends Service<User> {
 	 * @param pagination
 	 * @return
 	 */
-	public List<User> getUsersByPage(ServiceContext context, JPagination pagination) ;
+	public JPage<User> getUsersByPage(ServiceContext context, JPagination pagination) ;
 	
 	/**
 	 * 

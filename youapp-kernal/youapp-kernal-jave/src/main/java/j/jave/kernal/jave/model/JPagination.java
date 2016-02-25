@@ -12,9 +12,9 @@ public interface JPagination extends JCriteria {
 	 * set {@link JPage} , any criteria implements {@link JCriteria}
 	 * @param page
 	 */
-	void setPage(JPage page);
+	<T extends JModel> void setPage(JPage<T> page);
 	
-	JPage getPage();
+	<T extends JModel> JPage<T> getPage();
 	
 	/**
 	 * quickly set total record number. 

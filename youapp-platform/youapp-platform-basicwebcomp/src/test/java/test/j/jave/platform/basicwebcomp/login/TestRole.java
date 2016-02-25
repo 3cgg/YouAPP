@@ -1,13 +1,13 @@
 package test.j.jave.platform.basicwebcomp.login;
 
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.Role;
+import j.jave.platform.basicwebcomp.login.model.RoleSearchCriteria;
 import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.login.service.RoleService;
-import j.jave.platform.basicwebcomp.login.service.UserService;
-import j.jave.platform.basicwebcomp.param.model.Param;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +42,12 @@ public class TestRole {
 			roleService.delete(context, roleData.getId());
 			dbRole=roleService.getById(context, roleData.getId());
 			System.out.println(dbRole.getDeleted());
+			
+			RoleSearchCriteria searchCriteria=new RoleSearchCriteria();
+			searchCriteria.setPage(new JPage<Role>());
+			JPage<Role> rolePage=roleService.getsByPage(context, searchCriteria);
+			
+			System.out.println(rolePage.getData());
 			
 		}catch(Exception e){
 			e.printStackTrace();

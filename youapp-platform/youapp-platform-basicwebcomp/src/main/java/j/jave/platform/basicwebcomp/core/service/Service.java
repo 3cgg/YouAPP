@@ -1,9 +1,9 @@
 package j.jave.platform.basicwebcomp.core.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
-
-import java.util.List;
 
 /**
  * service template.
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public interface Service<T> {
+public interface Service<T extends JModel> {
 
 	/**
 	 * insert record . not include other business. 
@@ -51,7 +51,7 @@ public interface Service<T> {
 	 * @param object class implements {@link JPagination}
 	 * @return
 	 */
-	public List<T> getsByPage(ServiceContext context, JPagination pagination) ;
+	public JPage<T> getsByPage(ServiceContext context, JPagination pagination) ;
 	
 	
 }

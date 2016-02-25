@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author J
  * @param <T>  the same as generic of {@link JFieldInfoGen }
  */
-public class JFieldDetector<T> extends JClassesScanDefaultConfiguration 
+public abstract class JFieldDetector<T> extends JClassesScanDefaultConfiguration 
 	implements JClassesScanConfig ,JFieldInfoProvider<T> {
 
 	public static interface JFieldFilter{

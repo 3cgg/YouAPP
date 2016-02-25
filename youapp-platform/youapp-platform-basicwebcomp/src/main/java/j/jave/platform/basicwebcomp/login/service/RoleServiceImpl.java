@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -48,9 +49,12 @@ public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService
 	}
 	
 	@Override
-	public List<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,
+	public JPage<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,
 			JPagination pagination) {
-		return roleMapper.getRoleByRoleNameByPage(pagination);
+		List<Role> roles=roleMapper.getRoleByRoleNameByPage(pagination);
+		JPage<Role> page=pagination.getPage();
+		page.setData(roles);
+		return page;
 	}
 	
 	@Override

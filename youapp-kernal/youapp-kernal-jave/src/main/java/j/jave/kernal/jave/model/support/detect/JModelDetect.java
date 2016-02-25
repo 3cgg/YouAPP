@@ -3,6 +3,7 @@ package j.jave.kernal.jave.model.support.detect;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JTable;
 import j.jave.kernal.jave.support.detect.JFieldDetector;
+import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;
 
 import java.util.List;
 
@@ -19,14 +20,11 @@ public class JModelDetect {
 	}
 	
 	public List<JColumnInfo> getColumnInfos(JBaseModel baseModel){
-		JFieldDetector<JColumnInfo> fieldDetect=new JFieldDetector<JColumnInfo>(new JColumnFieldInfo());
-		fieldDetect.setFieldFilter(new JColumnFieldFilter());
-		fieldDetect.detect(baseModel.getClass());
-		return fieldDetect.getFieldInfos();
+		return getColumnInfos(baseModel.getClass());
 	}
 	
 	public List<JColumnInfo> getColumnInfos(Class<?> baseModelClazz){
-		JFieldDetector<JColumnInfo> fieldDetect=new JFieldDetector<JColumnInfo>(new JColumnFieldInfo());
+		JFieldDetector<JColumnInfo> fieldDetect=new JFieldOnSingleClassDetector<JColumnInfo>(new JColumnFieldInfo());
 		fieldDetect.setFieldFilter(new JColumnFieldFilter());
 		fieldDetect.detect(baseModelClazz);
 		return fieldDetect.getFieldInfos();

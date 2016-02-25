@@ -15,9 +15,8 @@ import java.util.Map;
  * the class is for JQuery DataTable plugin.
  * @author J
  */
-public class QueryDataTablePage extends JPage implements JJSONObject<Map<String, Object>> {
-
-	private static final long serialVersionUID = -8159481727794008226L;
+@SuppressWarnings("serial")
+public class JQueryDataTablePage extends JPage implements JJSONObject<Map<String, Object>> {
 
 	public static final String SECHO="sEcho";
 	
@@ -114,12 +113,12 @@ public class QueryDataTablePage extends JPage implements JJSONObject<Map<String,
 	}
 	
 	
-	public static QueryDataTablePage parse(HttpContext httpContext){
+	public static JQueryDataTablePage parse(HttpContext httpContext){
 		String sEcho=httpContext.getParameter("sEcho");
 		int iDisplayStart=Integer.parseInt(httpContext.getParameter("iDisplayStart"));
 		int iDisplayLength=Integer.parseInt(httpContext.getParameter("iDisplayLength"));
 		
-		QueryDataTablePage page=new QueryDataTablePage();
+		JQueryDataTablePage page=new JQueryDataTablePage();
 		page.setsEcho(sEcho);
 		page.setPageSize(iDisplayLength);
 		int pageNum=iDisplayStart/iDisplayLength;

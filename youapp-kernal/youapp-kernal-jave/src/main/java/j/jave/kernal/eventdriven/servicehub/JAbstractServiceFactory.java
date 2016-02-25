@@ -32,4 +32,8 @@ public abstract class JAbstractServiceFactory<T extends JService> implements JSe
 	public String describer() {
 		return getName()+","+getUniqueId();
 	}
+	
+	protected boolean isCanRegister(){
+		return true;
+	}
 }

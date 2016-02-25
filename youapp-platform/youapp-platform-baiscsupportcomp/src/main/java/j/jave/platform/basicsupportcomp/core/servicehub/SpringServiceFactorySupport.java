@@ -57,9 +57,15 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		getService();
-		JServiceHubDelegate.get().register(this, registClass, this);
-		LOGGER.info("register service :["+registClass.getName()+"]");
+		if(isCanRegister()){
+			getService();
+			JServiceHubDelegate.get().register(this, registClass, this);
+			LOGGER.info("registering service :["+registClass.getName()+"] powered by "+this.getClass().getName());
+		}
+		else{
+			LOGGER.info("No registering service , ignore this service : ["+registClass.getName()+"] powered by "+this.getClass().getName());
+		}
+		
 	}
 
 	@Override

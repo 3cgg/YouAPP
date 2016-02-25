@@ -6,7 +6,7 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.service.JPageableService;
+import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ public abstract class ActionSupport implements Action {
 	
 	public static final ThreadLocal<HttpContext> httpContext=new ThreadLocal<HttpContext>();
 	
-	protected JPageableService pageableService=JServiceHubDelegate.get().getService(this, JPageableService.class);
+	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
 	
 //	/**
 //	 * {@link #setHttpContext(HttpContext)}

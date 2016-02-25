@@ -51,9 +51,14 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	 * @throws Exception
 	 */
 	public final void postRegister() throws Exception {
-		getService();
-		JServiceHubDelegate.get().register(this, registClass, this);
-		LOGGER.info("registering service :["+registClass.getName()+"]");
+		if(isCanRegister()){
+			getService();
+			JServiceHubDelegate.get().register(this, registClass, this);
+			LOGGER.info("registering service :["+registClass.getName()+"] powered by "+this.getClass().getName());
+		}
+		else{
+			LOGGER.info("No registering service , ignore this service : ["+registClass.getName()+"] powered by "+this.getClass().getName());
+		}
 	}
 
 	/**

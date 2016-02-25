@@ -47,12 +47,12 @@
 
 <property>
   <name>youapp.services</name>
-  <value>
+  <value></value>
+  <description>all registered services  in the service hub.
+  	{test.j.jave.kernal.eventdriven.TestUserService=test.j.jave.kernal.eventdriven.TestUserService;
   	test.j.jave.kernal.eventdriven.TestUserService=test.j.jave.kernal.eventdriven.TestUserService;
-  	test.j.jave.kernal.eventdriven.TestUserService=test.j.jave.kernal.eventdriven.TestUserService;
-  	test.j.jave.kernal.eventdriven.TestUserService=test.j.jave.kernal.eventdriven.TestUserService
-  </value>
-  <description>all registered services  in the service hub.</description>
+  	test.j.jave.kernal.eventdriven.TestUserService=test.j.jave.kernal.eventdriven.TestUserService}
+  </description>
 </property>
 
 </configuration>

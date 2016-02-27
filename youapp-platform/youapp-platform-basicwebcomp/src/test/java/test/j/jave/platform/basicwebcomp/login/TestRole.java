@@ -1,6 +1,7 @@
 package test.j.jave.platform.basicwebcomp.login;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
@@ -44,10 +45,10 @@ public class TestRole {
 			System.out.println(dbRole.getDeleted());
 			
 			RoleSearchCriteria searchCriteria=new RoleSearchCriteria();
-			searchCriteria.setPage(new JPage<Role>());
+			searchCriteria.setPage(new JPageImpl<Role>());
 			JPage<Role> rolePage=roleService.getsByPage(context, searchCriteria);
 			
-			System.out.println(rolePage.getData());
+			System.out.println(rolePage.getContent());
 			
 		}catch(Exception e){
 			e.printStackTrace();

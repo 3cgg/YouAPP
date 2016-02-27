@@ -61,7 +61,7 @@ select a.* from GROUPS a
 </sql>
 
 
-<select id="getModelsByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPageable">
     select * from GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
@@ -75,7 +75,7 @@ select a.* from GROUPS a
 </select>
 
 
-<select id="getGroupByGroupNameByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getGroupByGroupNameByPage"  resultMap="group"  parameterType="j.jave.kernal.jave.model.JPageable">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	<if test="groupName !=null and groupName !=''">

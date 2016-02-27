@@ -60,7 +60,7 @@ where a.id=#{param1}
 select a.* from ROLES a 
 </sql>
 
-<select id="getModelsByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPageable">
     select * from ROLES 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    
@@ -73,7 +73,7 @@ select a.* from ROLES a
 </select>
 
 
-<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPageable">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	<if test="roleName !=null and roleName !=''">

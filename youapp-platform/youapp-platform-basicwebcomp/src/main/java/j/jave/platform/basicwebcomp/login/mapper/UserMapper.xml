@@ -98,7 +98,7 @@ select * from USERS where id=#{param1}
 select * from USERS where DELETED='N'
 </select>
 
-<select id="getModelsByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPageable">
     select * from USERS
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

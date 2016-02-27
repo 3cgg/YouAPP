@@ -77,7 +77,7 @@ left join GROUPS c on a.GROUPID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getModelsByPage"  resultMap="roleGroup"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="roleGroup"  parameterType="j.jave.kernal.jave.model.JPageable">
     select * from ROLES_GROUPS 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

@@ -34,6 +34,7 @@
             factory-class="j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepositoryFactoryBean" 
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager">
+            
     </jpa:repositories>   
      <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

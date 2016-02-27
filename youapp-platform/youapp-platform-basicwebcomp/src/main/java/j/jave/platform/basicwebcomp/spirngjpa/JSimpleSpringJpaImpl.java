@@ -1,13 +1,17 @@
 package j.jave.platform.basicwebcomp.spirngjpa;
 
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable> 
@@ -62,8 +66,23 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 	}
 
 	@Override
-	public List<T> getModelsByPage(JPagination pagination) {
-		return findAll();
+	public List<T> getModelsByPage(JPageable pageable) {
+		Pageable springPageable=new PageRequest(pageable.getPageNumber(), 
+				pageable.getPageSize());
+		Page<T> dbPage=findAll(springPageable);
+		return dbPage.getContent();
+	}
+	
+	@Override
+	public Page<T> findAll(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return super.findAll(pageable);
+	}
+	
+	@Override
+	public Page<T> findAll(Specification<T> spec, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return super.findAll(spec, pageable);
 	}
 
 }

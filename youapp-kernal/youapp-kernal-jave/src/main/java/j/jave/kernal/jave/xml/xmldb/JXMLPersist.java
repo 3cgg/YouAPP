@@ -2,8 +2,8 @@ package j.jave.kernal.jave.xml.xmldb;
 
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageImpl;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.persist.JPersistException;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -106,7 +106,7 @@ public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implem
 	}
 
 	@Override
-	public List<T> getModelsByPage(JPagination pagination) {
+	public List<T> getModelsByPage(JPageable pagination) {
 		throw new JOperationNotSupportedException("XML PERSIST DOSENOT SUPPORT THIS.");
 	}
 	

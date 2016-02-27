@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.login.mapper;
 
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.login.model.Group;
 import j.jave.platform.basicwebcomp.login.repo.GroupRepo;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="GroupMapper")
+@Component(value="GroupMapper---===========")
 @JModelRepo(component="GroupMapper",name=Group.class)
 public interface GroupMapper extends JMapper<Group>,GroupRepo<JMapper<Group>> {
 
@@ -29,7 +29,7 @@ public interface GroupMapper extends JMapper<Group>,GroupRepo<JMapper<Group>> {
 	 * @param pagination
 	 * @return
 	 */
-	List<Group> getGroupByGroupNameByPage(JPagination pagination);
+	List<Group> getGroupByGroupNameByPage(JPageable pagination);
 	
 	/**
 	 * GET ALL GROUPS.

@@ -69,7 +69,7 @@ left join RESOURCES b on a.RESOURCEID=b.ID
 </sql>
 
 
-<select id="getModelsByPage"   resultMap="resourceExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="resourceExtend"  parameterType="j.jave.kernal.jave.model.JPageable">
 select * from RESOURCES_EXTEND  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   

@@ -5,7 +5,7 @@ package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.param.model.Param;
@@ -49,7 +49,7 @@ public interface ParamService extends Service<Param> {
 	public Param getParamById(ServiceContext context, String id);
 	
 	
-	public JPage<Param> getParamsByPage(ServiceContext context, JPagination pagination) ;
+	public JPage<Param> getParamsByPage(ServiceContext context, JPageable pagination) ;
 	
 	/**
 	 * get param according to the function id and code.
@@ -78,5 +78,6 @@ public interface ParamService extends Service<Param> {
 	 */
 	boolean exists(ServiceContext context, Param param);
 	
+	public JPage<Param> getParamsByNameByPage(ServiceContext context, JPageable pagination,String name) ;
 	
 }

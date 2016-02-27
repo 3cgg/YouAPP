@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
-import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Table {
 	/**
 	 * PAGINATION INFORMATION.
 	 */
-	private JPage page;
+	private JPageImpl page;
 	
 	/**
 	 * basic column 
@@ -28,11 +28,11 @@ public class Table {
 	 */
 	private List<TR> records=new ArrayList<TR>();
 
-	public JPage getPage() {
+	public JPageImpl getPage() {
 		return page;
 	}
 
-	public void setPage(JPage page) {
+	public void setPage(JPageImpl page) {
 		this.page = page;
 	}
 

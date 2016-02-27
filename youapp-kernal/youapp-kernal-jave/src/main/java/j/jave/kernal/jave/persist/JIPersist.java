@@ -3,8 +3,8 @@ package j.jave.kernal.jave.persist;
 import java.util.List;
 
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageImpl;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.JUNDeletable;
 
 /**
@@ -74,5 +74,5 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param pagination
 	 * @return 
 	 */
-	public List<M> getModelsByPage(JPagination pagination);
+	public List<M> getModelsByPage(JPageable pagination);
 }

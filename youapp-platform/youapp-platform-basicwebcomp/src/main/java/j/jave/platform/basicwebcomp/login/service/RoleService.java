@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.Role;
@@ -44,7 +44,7 @@ public interface RoleService extends Service<Role> {
 	 * @param pagination
 	 * @return
 	 */
-	JPage<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,JPagination pagination);
+	JPage<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,JPageable pagination);
 	
 	/**
 	 * GET ALL ROLES.

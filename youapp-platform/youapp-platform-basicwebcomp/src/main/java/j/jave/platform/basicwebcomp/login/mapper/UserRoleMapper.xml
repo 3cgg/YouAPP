@@ -71,7 +71,7 @@ LEFT JOIN ROLES c on a. ROLEID=c.ID
     (b.DELETED='N' and c.DELETED='N') 
 </sql>
 
-<select id="getModelsByPage"  resultMap="userRole"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"  resultMap="userRole"  parameterType="j.jave.kernal.jave.model.JPageable">
     select * from USERS_ROLES 
     <if test="page.sortColumn!=null ">
     	order by ${page.sortColumn} ${page.sortType}    

@@ -2,7 +2,7 @@ package j.jave.platform.basicsupportcomp.support.mapperxml;
 
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JTable;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -320,7 +320,7 @@ public class MapperXML {
 	
 	private StringBuffer getGetsByPage(){
 		StringBuffer stringBuffer=new StringBuffer();
-		stringBuffer.append("<select id=\"getsByPage\"   resultMap=\""+getResultMapId()+"\"  parameterType=\""+JPagination.class.getName()+"\">");
+		stringBuffer.append("<select id=\"getsByPage\"   resultMap=\""+getResultMapId()+"\"  parameterType=\""+JPageable.class.getName()+"\">");
 		stringBuffer.append(RN);
 		stringBuffer.append("select * from "+tableName+"  ");
 		stringBuffer.append(RN);

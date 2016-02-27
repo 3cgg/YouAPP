@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.tablemanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.platform.basicwebcomp.core.model.SearchCriteria;
+import j.jave.platform.basicwebcomp.core.model.Criteria;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.tablemanager.model.Column;
 import j.jave.platform.basicwebcomp.tablemanager.model.Record;
@@ -60,7 +60,7 @@ public interface TableManagerService {
 	 * @param searchCreiteria
 	 * @return
 	 */
-	public List<Record> getRecords(ServiceContext serviceContext, SearchCriteria model);
+	public List<Record> getRecords(ServiceContext serviceContext, Criteria model);
 	
 	/**
 	 * update record. 

@@ -2,7 +2,8 @@ package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageImpl;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
@@ -46,10 +47,10 @@ public class GroupServiceImpl extends ServiceSupport<Group> implements GroupServ
 	
 	@Override
 	public JPage<Group> getGroupByGroupNameByPage(ServiceContext serviceContext,
-			JPagination pagination) {
+			JPageable pagination) {
+		JPageImpl<Group> page=new JPageImpl<Group>();
 		List<Group> groups=groupMapper.getGroupByGroupNameByPage(pagination);
-		JPage<Group> page=pagination.getPage();
-		page.setData(groups);
+		page.setContent(groups);
 		return page;
 	}
 	

@@ -1,17 +1,14 @@
 package j.jave.platform.basicwebcomp.tablemanager.model;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
-import j.jave.platform.basicwebcomp.core.model.SearchCriteria;
+import j.jave.platform.basicwebcomp.core.model.Criteria;
+import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
 
 /**
  * search criteria model for table manager.
  * @author J
  *
  */
-public class TableSearch implements SearchCriteria,JPagination {
-
-	private JPage page;
+public class TableSearch extends SimplePageCriteria implements Criteria {
 	
 	/**
 	 * full class name of including the package part. 
@@ -38,30 +35,5 @@ public class TableSearch implements SearchCriteria,JPagination {
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
-
-	/* (non-Javadoc)
-	 * @see j.jave.framework.model.JPagination#setPage(j.jave.framework.model.JPage)
-	 */
-	@Override
-	public void setPage(JPage page) {
-		this.page=page;
-	}
-
-	/* (non-Javadoc)
-	 * @see j.jave.framework.model.JPagination#getPage()
-	 */
-	@Override
-	public JPage getPage() {
-		return this.page;
-	}
-
-	/* (non-Javadoc)
-	 * @see j.jave.framework.model.JPagination#setTotalRecordNum(int)
-	 */
-	@Override
-	public void setTotalRecordNum(int totalRecordNum) {
-		this.page.setTotalPageNum(totalRecordNum);
-	}
-
 	
 }

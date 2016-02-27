@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.login.repo;
 
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.login.model.Group;
 
@@ -22,7 +22,7 @@ public interface GroupRepo<T> extends JIPersist<T,Group> {
 	 * @param pagination
 	 * @return
 	 */
-	List<Group> getGroupByGroupNameByPage(JPagination pagination);
+	List<Group> getGroupByGroupNameByPage(JPageable pagination);
 	
 	/**
 	 * GET ALL GROUPS.

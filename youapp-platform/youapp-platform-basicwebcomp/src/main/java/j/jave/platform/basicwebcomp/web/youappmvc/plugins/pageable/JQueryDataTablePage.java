@@ -5,7 +5,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
 import j.jave.kernal.jave.json.JJSONObject;
 import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.model.JPage;
+import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JQueryDataTablePage<T extends JModel> extends JPage<T> implements JJSONObject<Map<String, Object>> {
+public class JQueryDataTablePage<T extends JModel> extends SimplePageCriteria implements JJSONObject<Map<String, Object>> {
 
 	public static final String SECHO="sEcho";
 	
@@ -106,9 +106,9 @@ public class JQueryDataTablePage<T extends JModel> extends JPage<T> implements J
 	@Override
 	public Map<String, Object> serializableJSONObject() {
 		Map<String, Object> pagination=new HashMap<String, Object>();
-		pagination.put(ITOTALRECORDS, getTotalRecordNum());
+		pagination.put(ITOTALRECORDS, iTotalRecords);
 		pagination.put(SECHO,sEcho); 
-		pagination.put(ITOTALDISPLAYRECORDS, getTotalRecordNum());
+		pagination.put(ITOTALDISPLAYRECORDS, iTotalDisplayRecords);
 		pagination.put(AADATA, aaData);
 		return pagination;
 	}
@@ -123,9 +123,9 @@ public class JQueryDataTablePage<T extends JModel> extends JPage<T> implements J
 		page.setsEcho(sEcho);
 		page.setPageSize(iDisplayLength);
 		int pageNum=iDisplayStart/iDisplayLength;
-		page.setCurrentPageNum(pageNum+1);
-		page.setSortColumn(httpContext.getParameter("sortColumn"));
-		page.setSortType(httpContext.getParameter("sortType"));
+		page.setPageNumber(pageNum+1);
+		page.setColumnDirection(httpContext.getParameter("sortColumn")+" "
+				+httpContext.getParameter("sortType"));
 		return page;
 		
 	}

@@ -7,6 +7,6 @@ import j.jave.kernal.jave.model.JCriteria;
  * @author J
  *
  */
-public interface SearchCriteria extends JCriteria{
+public interface Criteria extends JCriteria{
 
 }

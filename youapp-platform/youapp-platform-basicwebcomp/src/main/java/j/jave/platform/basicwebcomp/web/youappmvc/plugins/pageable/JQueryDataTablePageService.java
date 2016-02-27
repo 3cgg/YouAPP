@@ -1,7 +1,6 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable;
 
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableServiceFactory;
@@ -22,7 +21,7 @@ public class JQueryDataTablePageService extends PageableServiceFactory<PageableS
 	}
 
 	@Override
-	public JPage<JModel> parse(HttpContext httpContext) {
+	public JPageable parse(HttpContext httpContext) {
 		return JQueryDataTablePage.parse(httpContext);
 	}
 	

@@ -68,21 +68,21 @@ left join USERS b on b.ID=a.USERID
 </sql>
 
 
-<select id="getModelsByPage"   resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getModelsByPage"   resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPageable">
 select * from USERS_EXTEND  
 <if test="page.sortColumn!=null ">
 order by ${page.sortColumn} ${page.sortType}   
 </if>
 </select>
 
-<select id="getUserExtendByUserId"  resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getUserExtendByUserId"  resultMap="userExtend" >
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	and <include refid="associationFilter"/>
 	and a.USERID=#{userId}
 </select>
 
-<select id="getUserExtendByNatureName"  resultMap="userExtend"  parameterType="j.jave.kernal.jave.model.JPagination">
+<select id="getUserExtendByNatureName"  resultMap="userExtend"  >
 	<include refid="selectfor"/>
 	where a.DELETED='N'
 	and <include refid="associationFilter"/>

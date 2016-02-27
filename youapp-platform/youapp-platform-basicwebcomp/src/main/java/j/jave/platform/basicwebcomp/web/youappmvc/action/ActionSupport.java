@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.action;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -79,7 +79,7 @@ public abstract class ActionSupport implements Action {
 	 * sub-class should implements the method.
 	 * @return
 	 */
-	protected JPage parseJPage(){
+	protected JPageable parseJPage(){
 		throw new JOperationNotSupportedException("Not supported,check if the sub-class implements the method.");
 	} 
 	

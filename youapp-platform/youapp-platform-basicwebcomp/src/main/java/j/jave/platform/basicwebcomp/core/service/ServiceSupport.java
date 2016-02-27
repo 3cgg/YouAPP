@@ -3,15 +3,23 @@ package j.jave.platform.basicwebcomp.core.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.exception.JConcurrentException;
 import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageImpl;
+import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.login.model.User;
+import j.jave.platform.basicwebcomp.param.model.Param;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * delegate service operation of a certain table, 
@@ -61,9 +69,12 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public JPage<T> getsByPage(ServiceContext context, JPagination pagination) {
-		JPage<T> page=pagination.getPage();
-		page.setData(getRepo().getModelsByPage(pagination));
+	public JPage<T> getsByPage(ServiceContext context, JPageable pagination) {
+		JPageImpl<T> page=new JPageImpl<T>();
+		List<T> records=getRepo().getModelsByPage(pagination);
+		page.setPageable(pagination);
+		page.setTotalRecordNumber(records.size());
+		page.setContent(records);
 		return page;
 	}
 
@@ -124,6 +135,17 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		if(affect==0) throw new JConcurrentException(
 				"record conflict on "+baseModel.getId()+" of "+baseModel.getClass().getName());
 		return (T) baseModel;
+	}
+	
+	protected <M extends JModel> JPage<M> convert(Page<M> returnPage,JPageable pageable){
+		JPageImpl<M> page=new JPageImpl<M>();
+		page.setContent(returnPage.getContent());
+		page.setTotalRecordNumber(returnPage.getTotalElements());
+		page.setTotalPageNumber(returnPage.getTotalPages());
+		JPageRequest pageRequest=(JPageRequest)pageable;
+		pageRequest.setPageNumber(returnPage.getNumber());
+		page.setPageable(pageable);
+		return page;
 	}
 	
 }

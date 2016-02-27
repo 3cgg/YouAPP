@@ -3,13 +3,13 @@
  */
 package j.jave.platform.basicwebcomp.param.repo;
 
-import j.jave.kernal.jave.model.JPagination;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.param.model.Param;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author J
@@ -20,5 +20,6 @@ public interface ParamRepo<T> extends JIPersist<T,Param> {
 	
 	public List<Param> getParamByFunctionId(String functionId);
 	
+	public Page<Param> getParamsByNameByPage(Pageable pagination,String name);
 	
 }

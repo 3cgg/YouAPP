@@ -5,7 +5,7 @@ import java.util.List;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.param.model.Param;
-import j.jave.platform.basicwebcomp.param.model.ParamSearchCriteria;
+import j.jave.platform.basicwebcomp.param.model.ParamCriteria;
 import j.jave.platform.basicwebcomp.tablemanager.model.Record;
 import j.jave.platform.basicwebcomp.tablemanager.model.Table;
 import j.jave.platform.basicwebcomp.tablemanager.model.TableSearch;

@@ -3,7 +3,7 @@ package j.jave.platform.basicwebcomp.core.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 
 /**
  * service template.
@@ -48,10 +48,10 @@ public interface Service<T extends JModel> {
 	/**
 	 * get records for pagination.
 	 * @param context
-	 * @param object class implements {@link JPagination}
+	 * @param object class implements {@link JPageable}
 	 * @return
 	 */
-	public JPage<T> getsByPage(ServiceContext context, JPagination pagination) ;
+	public JPage<T> getsByPage(ServiceContext context, JPageable pagination) ;
 	
 	
 }

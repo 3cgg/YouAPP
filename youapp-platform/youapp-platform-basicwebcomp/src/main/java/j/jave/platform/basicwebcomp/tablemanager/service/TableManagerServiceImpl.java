@@ -4,14 +4,14 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.kernal.jave.model.support.JTable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
-import j.jave.platform.basicwebcomp.core.model.SearchCriteria;
+import j.jave.platform.basicwebcomp.core.model.Criteria;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.tablemanager.model.Cell;
 import j.jave.platform.basicwebcomp.tablemanager.model.Column;
@@ -259,10 +259,10 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	
 	
 	@Override
-	public List<Record> getRecords(ServiceContext serviceContext, SearchCriteria model) {
+	public List<Record> getRecords(ServiceContext serviceContext, Criteria model) {
 		
-		if(!JPagination.class.isInstance(model)){
-			throw new RuntimeException(model.getClass().getName()+" not supported, as not the sub-clss of "+JPagination.class.getName());
+		if(!JPageable.class.isInstance(model)){
+			throw new RuntimeException(model.getClass().getName()+" not supported, as not the sub-clss of "+JPageable.class.getName());
 		}
 		
 		init();
@@ -271,7 +271,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 		
 		JIPersist<?,JBaseModel> mapper=mappersWithModelName.get(tableSearch.getModelName());
 		
-		List<? extends JBaseModel> models=mapper.getModelsByPage((JPagination) model);
+		List<? extends JBaseModel> models=mapper.getModelsByPage((JPageable) model);
 		List<Record> records=new ArrayList<Record>();
 		for (int i = 0; i < models.size(); i++) {
 			JBaseModel baseModel=models.get(i);

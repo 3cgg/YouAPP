@@ -1,6 +1,6 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
-import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
 
 /**
@@ -96,7 +96,7 @@ public abstract class JSPAction extends ActionSupport {
 	 * the method supports the {@code JQuery Data Table. }
 	 */
 	@Override
-	protected JPage parseJPage() {
+	protected JPageable parseJPage() {
 		return pageableService.parse(getHttpContext());
 	}
 	

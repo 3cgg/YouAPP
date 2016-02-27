@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.login.repo;
 
-import j.jave.kernal.jave.model.JPagination;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.login.model.Role;
 
@@ -22,7 +22,7 @@ public interface RoleRepo<T> extends JIPersist<T,Role> {
 	 * @param pagination
 	 * @return
 	 */
-	List<Role> getRoleByRoleNameByPage(JPagination pagination);
+	List<Role> getRoleByRoleNameByPage(JPageable pagination);
 	
 	/**
 	 * GET ALL ROLES.

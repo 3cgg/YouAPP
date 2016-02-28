@@ -1,6 +1,5 @@
 package j.jave.platform.basicwebcomp.tablemanager.model;
 
-import j.jave.platform.basicwebcomp.core.model.Criteria;
 import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
 
 /**
@@ -8,7 +7,7 @@ import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
  * @author J
  *
  */
-public class TableSearch extends SimplePageCriteria implements Criteria {
+public class TableSearch extends SimplePageCriteria {
 	
 	/**
 	 * full class name of including the package part. 

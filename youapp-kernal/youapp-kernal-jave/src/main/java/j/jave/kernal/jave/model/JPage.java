@@ -1,8 +1,9 @@
 package j.jave.kernal.jave.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface JPage<T> {
+public interface JPage<T>  extends Serializable{
 
 	JPageable getPageable();
 	

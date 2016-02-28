@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author J
  */
-@Component(value="UserExtendMapper")
-@JModelRepo(name=UserExtend.class,component="UserExtendMapper")
+@Component(value="userExtendMapper.mapper")
+@JModelRepo(name=UserExtend.class,component="userExtendMapper.mapper")
 public interface UserExtendMapper extends JMapper<UserExtend >,UserExtendRepo<JMapper<UserExtend >> {
 	
 	public UserExtend getUserExtendByUserId(@Param(value="userId")String userId);

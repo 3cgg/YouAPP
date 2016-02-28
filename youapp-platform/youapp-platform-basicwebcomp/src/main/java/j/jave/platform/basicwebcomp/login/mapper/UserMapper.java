@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
  * @author Administrator
  *
  */
-@Component(value="UserMapper")
-@JModelRepo(name=User.class,component="UserMapper")
+@Component(value="userMapper.mapper")
+@JModelRepo(name=User.class,component="userMapper.mapper")
 public interface UserMapper extends JMapper<User>,UserRepo<JMapper<User> > {
 
 	public User getUserByNameAndPassword(

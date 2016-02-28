@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author J
  */
-@Component(value="paramMapper")
-@JModelRepo(component="paramMapper",name=Param.class)
+@Component(value="paramMapper.mapper")
+@JModelRepo(component="paramMapper.mapper",name=Param.class)
 public interface ParamMapper extends JMapper<Param> ,
 ParamRepo<JMapper<Param>>{
 	

@@ -1,8 +1,9 @@
 package j.jave.kernal.jave.model;
 
+@SuppressWarnings("serial")
 public class JPageRequest implements JPageable {
 
-	private static final int DEFAULT_SIZE_PER_PAGE = Integer.MAX_VALUE/10;
+	private static final int DEFAULT_SIZE_PER_PAGE = 100;
 	
 	private int pageNumber;
 	

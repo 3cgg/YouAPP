@@ -11,6 +11,7 @@ import java.sql.Timestamp;
  * @author J
  *
  */
+@SuppressWarnings("serial")
 public abstract class JBaseModel implements JModel {
 
 	/**

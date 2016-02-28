@@ -2,19 +2,18 @@ package j.jave.platform.basicwebcomp.login.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.login.model.Group;
 import j.jave.platform.basicwebcomp.login.model.Role;
 import j.jave.platform.basicwebcomp.login.repo.RoleRepo;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service(value="roleServiceImpl.transation")
@@ -53,10 +52,9 @@ public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService
 	@Override
 	public JPage<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,
 			JPageable pagination) {
-		JPageImpl<Role> page=new JPageImpl<Role>();
-		List<Role> roles=roleMapper.getRoleByRoleNameByPage(pagination);
-		page.setContent(roles);
-		return page;
+		Page<Role> returnPage=roleMapper.getRoleByRoleNameByPage(
+				toPageRequest(pagination),pagination);
+		return toJPage(returnPage, pagination);
 	}
 	
 	@Override

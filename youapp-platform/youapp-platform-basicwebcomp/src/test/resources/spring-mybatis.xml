@@ -74,6 +74,22 @@
         </tx:attributes>
     </tx:advice>
   
+  	
+  	<bean  id="queryExecutorMethodInterceptor"  class="j.jave.platform.mybatis.QueryExecutorMethodInterceptor" 
+  	></bean>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
+        <property name="beanNames">  
+            <list>  
+                <value>*.mapper</value>
+            </list>  
+        </property>  
+        <property name="interceptorNames">  
+            <list>  
+                <value>queryExecutorMethodInterceptor</value>  
+            </list>  
+        </property>  
+    </bean>
 	
 	 <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
         <property name="beanNames">  

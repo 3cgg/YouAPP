@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="ResourceMapper")
-@JModelRepo(component="ResourceMapper",name=Resource.class)
+@Component(value="resourceMapper.mapper")
+@JModelRepo(component="resourceMapper.mapper",name=Resource.class)
 public interface ResourceMapper extends JMapper<Resource> ,ResourceRepo<JMapper<Resource>> {
 	
 	List<Resource> getResources();

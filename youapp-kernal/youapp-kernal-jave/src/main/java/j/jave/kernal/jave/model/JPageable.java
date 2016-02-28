@@ -3,10 +3,12 @@
  */
 package j.jave.kernal.jave.model;
 
+import java.io.Serializable;
+
 /**
  * @author J
  */
-public interface JPageable extends JCriteria {
+public interface JPageable extends JCriteria, Serializable{
 
 	/**
 	 * Returns the page to be returned.

@@ -9,6 +9,9 @@ import j.jave.platform.basicwebcomp.login.model.Role;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author J
  *
@@ -22,7 +25,7 @@ public interface RoleRepo<T> extends JIPersist<T,Role> {
 	 * @param pagination
 	 * @return
 	 */
-	List<Role> getRoleByRoleNameByPage(JPageable pagination);
+	Page<Role> getRoleByRoleNameByPage(Pageable pageable,JPageable pageParameter);
 	
 	/**
 	 * GET ALL ROLES.

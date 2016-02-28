@@ -5,21 +5,30 @@ import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.data.domain.PageImpl;
 
 @Intercepts({@Signature(type=Executor.class,method="query",
 args={ MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class })}) 
-public class JPagePlugin implements Interceptor {
+public class JPageablePlugin implements Interceptor {
 
 	/**
 	 * 数据库方言
@@ -39,7 +48,16 @@ public class JPagePlugin implements Interceptor {
 	}
 
 
-	public Object intercept(Invocation ivk) throws Throwable {
+	public Object intercept(Invocation invocation) throws Throwable {
+		
+		
+		
+//		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();  
+//	     MetaObject metaStatementHandler = MetaObject.forObject(statementHandler,  
+//	    		 SystemMetaObject.DEFAULT_OBJECT_FACTORY, 
+//	    		 SystemMetaObject.DEFAULT_OBJECT_WRAPPER_FACTORY);  
+
+		
 //		if (ivk.getTarget() instanceof RoutingStatementHandler) {
 //			RoutingStatementHandler statementHandler = (RoutingStatementHandler) ivk.getTarget();
 //			BaseStatementHandler delegate = (BaseStatementHandler) getValueByFieldName(statementHandler, "delegate");
@@ -75,7 +93,14 @@ public class JPagePlugin implements Interceptor {
 //				}
 //			}
 //		}
-		return new Object();
+		Object obj= invocation.proceed();
+		List list=(List) obj;
+		List result=new ArrayList();
+		if(list.size()>1){
+			PageImpl pageImpl=new PageImpl(list);
+			result.add(pageImpl);
+		}
+		return result.size()==0?obj:result;
 	}
 
 

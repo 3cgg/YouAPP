@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="GroupMapper---===========")
-@JModelRepo(component="GroupMapper",name=Group.class)
+@Component(value="groupMapper.mapper")
+@JModelRepo(component="groupMapper.mapper",name=Group.class)
 public interface GroupMapper extends JMapper<Group>,GroupRepo<JMapper<Group>> {
 
 	Group getGroupByGroupCode(@Param(value="groupCode")String roleCode);

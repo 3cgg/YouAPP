@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="RoleGroupMapper")
-@JModelRepo(component="RoleGroupMapper",name=RoleGroup.class)
+@Component(value="roleGroupMapper.mapper")
+@JModelRepo(component="roleGroupMapper.mapper",name=RoleGroup.class)
 public interface RoleGroupMapper extends JMapper<RoleGroup>,RoleGroupRepo<JMapper<RoleGroup>> {
 	
 	int countOnRoleIdAndGroupId(@Param(value="roleId")String roleId,@Param(value="groupId")String groupId);

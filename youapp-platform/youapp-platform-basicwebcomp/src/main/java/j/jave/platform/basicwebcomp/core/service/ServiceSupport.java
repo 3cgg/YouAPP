@@ -12,7 +12,6 @@ import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.basicwebcomp.param.model.Param;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -137,7 +136,13 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		return (T) baseModel;
 	}
 	
-	protected <M extends JModel> JPage<M> convert(Page<M> returnPage,JPageable pageable){
+	/**
+	 * return the complete {@link JPage} instance.
+	 * @param returnPage  THE {@link Page} instance returned from underlying ORM
+	 * @param pageable the passing pagination parameters
+	 * @return
+	 */
+	protected <M extends JModel> JPage<M> toJPage(Page<M> returnPage,JPageable pageable){
 		JPageImpl<M> page=new JPageImpl<M>();
 		page.setContent(returnPage.getContent());
 		page.setTotalRecordNumber(returnPage.getTotalElements());
@@ -146,6 +151,10 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		pageRequest.setPageNumber(returnPage.getNumber());
 		page.setPageable(pageable);
 		return page;
+	}
+	
+	protected PageRequest toPageRequest(JPageable pageable){
+		return new PageRequest(pageable.getPageNumber(), pageable.getPageSize());
 	}
 	
 }

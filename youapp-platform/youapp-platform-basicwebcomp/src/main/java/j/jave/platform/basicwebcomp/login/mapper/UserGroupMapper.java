@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="UserGroupMapper")
-@JModelRepo(component="UserGroupMapper",name=UserGroup.class)
+@Component(value="userGroupMapper.mapper")
+@JModelRepo(component="userGroupMapper.mapper",name=UserGroup.class)
 public interface UserGroupMapper extends JMapper<UserGroup>,UserGroupRepo<JMapper<UserGroup>> {
 	
 	List<UserGroup> getUserGroupsByUserId(@Param(value="userId")String userId);

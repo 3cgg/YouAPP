@@ -3,47 +3,41 @@
  */
 package j.jave.platform.basicwebcomp.login.model;
 
-import j.jave.kernal.jave.model.JOrder;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageAware;
-import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.basicwebcomp.core.model.Criteria;
+import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
 
 /**
  * @author J
  */
-public class UserSearchCriteria extends User implements Criteria , 
-JPageable,JPageAware{
-
-	private static final long serialVersionUID = 6216852161796720737L;
-
-	private JPage page=new JPageImpl();
+public class UserSearchCriteria extends SimplePageCriteria{
 	
-	@Override
-	public void setPage(JPage page) {
-		this.page=page;
-	}
-
-	@Override
-	public JPage getPage() {
-		return this.page;
-	}
-
-	@Override
-	public int getPageNumber() {
-		return page.getPageable().getPageNumber();
-	}
-
-	@Override
-	public int getPageSize() {
-		return page.getPageable().getPageSize();
-	}
-
-	@Override
-	public JOrder getOrder() {
-		return page.getPageable().getOrder();
-	}
+	private String userName;
 	
+	private String password;
+	
+	private String retypePassword;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRetypePassword() {
+		return retypePassword;
+	}
+
+	public void setRetypePassword(String retypePassword) {
+		this.retypePassword = retypePassword;
+	}
 
 }

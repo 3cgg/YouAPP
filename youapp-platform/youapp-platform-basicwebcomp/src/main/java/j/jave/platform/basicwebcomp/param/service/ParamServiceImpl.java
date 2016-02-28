@@ -5,8 +5,6 @@ package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -19,7 +17,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +30,7 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 		System.out.println("----------ParamServiceImpl-------------------");
 	}
 	@Autowired
-	private ParamRepo paramMapper;
+	private ParamRepo<?> paramMapper;
 	
 	@Override
 	public void saveParam(ServiceContext context, Param param)
@@ -108,8 +105,9 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	@Override
 	public JPage<Param> getParamsByNameByPage(ServiceContext context,
 			JPageable pagination,String name) {
-		Page<Param> obj=paramMapper.getParamsByNameByPage(new PageRequest(0, 10),name);
-		return convert(obj, pagination);
+		Page<Param> obj=paramMapper.getParamsByNameByPage(
+				toPageRequest(pagination),name);
+		return toJPage(obj, pagination);
 	}
 	
 }

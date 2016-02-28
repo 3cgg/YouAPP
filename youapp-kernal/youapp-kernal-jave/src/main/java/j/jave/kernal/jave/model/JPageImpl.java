@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * @author J
  */
+@SuppressWarnings("serial")
 public class JPageImpl<T extends JModel> implements JPage<T> {
 	
 	private long totalRecordNumber=Long.MAX_VALUE;
@@ -19,18 +20,20 @@ public class JPageImpl<T extends JModel> implements JPage<T> {
 	
 	private List<T> content=new ArrayList<T>();
 	
-	public void caculatePageNumber() {
-		
-		if(totalPageNumber < pageable.getPageSize()) {
-			setTotalPageNumber(1);
+	public static int caculateTotalPageNumber(long totalRecordNumber,int pageSize){
+		if(totalRecordNumber < pageSize) {
+			return 1;
 		} else {
-			if ((totalPageNumber % pageable.getPageSize()) > 0) {
-				this.setTotalPageNumber(totalPageNumber/pageable.getPageSize()+1);
+			if ((totalRecordNumber % pageSize) > 0) {
+				return (int) (totalRecordNumber/pageSize+1);
 			} else {
-				this.setTotalPageNumber(totalPageNumber/pageable.getPageSize());
+				return (int) (totalRecordNumber/pageSize);
 			}
 		}
-		
+	}
+	
+	public void caculatePageNumber() {
+		setTotalPageNumber(caculateTotalPageNumber(totalRecordNumber, pageable.getPageSize()));
 		if (pageable.getPageNumber() > totalPageNumber) {
 			JPageRequest pageRequest=(JPageRequest)pageable;
 			pageRequest.setPageNumber(totalPageNumber);

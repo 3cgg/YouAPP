@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="UserRoleMapper")
-@JModelRepo(component="UserRoleMapper",name=UserRole.class)
+@Component(value="userRoleMapper.mapper")
+@JModelRepo(component="userRoleMapper.mapper",name=UserRole.class)
 public interface UserRoleMapper extends JMapper<UserRole>,UserRoleRepo<JMapper<UserRole>> {
 
 	List<UserRole> getUserRolesByUserId(@Param(value="userId")String userId);

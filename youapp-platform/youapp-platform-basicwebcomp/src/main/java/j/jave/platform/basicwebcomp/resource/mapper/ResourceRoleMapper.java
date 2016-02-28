@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 /**
  * @author J
  */
-@Component(value="ResourceRoleMapper")
-@JModelRepo(component="ResourceRoleMapper",name=ResourceRole.class)
+@Component(value="resourceRoleMapper.mapper")
+@JModelRepo(component="resourceRoleMapper.mapper",name=ResourceRole.class)
 public interface ResourceRoleMapper extends JMapper<ResourceRole>,ResourceRoleRepo<JMapper<ResourceRole>> {
 
 	List<ResourceRole> getResourceRolesByResourceId(@Param(value="resourceId")String resourceId);

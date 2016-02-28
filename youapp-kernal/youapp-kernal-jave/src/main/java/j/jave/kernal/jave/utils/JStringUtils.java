@@ -216,4 +216,17 @@ public abstract class JStringUtils {
 		return hasText((CharSequence) str);
 	}
 	
+	/**
+	 * contact 
+	 * @param strings
+	 * @param delimit
+	 * @return
+	 */
+	public static String toString(String[] strings,String delimit){
+		String result="";
+		for(String string:strings){
+			result=result.concat(delimit).concat(string);
+		}
+		return result.replaceFirst(delimit, "");
+	}
 }

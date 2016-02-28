@@ -3,42 +3,42 @@
  */
 package j.jave.platform.basicwebcomp.login.model;
 
-import j.jave.kernal.jave.model.JOrder;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageAware;
-import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.basicwebcomp.core.model.Criteria;
+import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
 
 /**
  * @author J
  */
-public class RoleSearchCriteria extends Role implements Criteria , JPageable,JPageAware{
-
-	private JPage page;
+public class RoleSearchCriteria extends SimplePageCriteria{
 	
-	@Override
-	public void setPage(JPage page) {
-		this.page=page;
+	private String roleCode;
+	
+	private String roleName;
+	
+	private String description;
+
+	public String getRoleCode() {
+		return roleCode;
 	}
 
-	@Override
-	public JPage getPage() {
-		return this.page;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
 
-	@Override
-	public int getPageNumber() {
-		return page.getPageable().getPageNumber();
+	public String getRoleName() {
+		return roleName;
 	}
 
-	@Override
-	public int getPageSize() {
-		return page.getPageable().getPageSize();
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
-	@Override
-	public JOrder getOrder() {
-		return page.getPageable().getOrder();
+	public String getDescription() {
+		return description;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	
 }

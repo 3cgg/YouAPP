@@ -20,6 +20,6 @@ public interface ParamRepo<T> extends JIPersist<T,Param> {
 	
 	public List<Param> getParamByFunctionId(String functionId);
 	
-	public Page<Param> getParamsByNameByPage(Pageable pagination,String name);
+	public Page<Param> getParamsByNameByPage(Pageable pageable,String name);
 	
 }

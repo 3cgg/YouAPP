@@ -73,12 +73,23 @@ select a.* from ROLES a
 </select>
 
 
-<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPageable">
+<select id="countFor_getRoleByRoleNameByPage"  resultType="int" parameterType="j.jave.kernal.jave.model.JPageable">
+	
+	select count(1) from (
+	<include refid="getRoleByRoleNameByPageSQL"/>
+	)
+</select>
+
+<sql id="getRoleByRoleNameByPageSQL">
 	<include refid="selectfor"/>
 	where a.DELETED='N'
-	<if test="roleName !=null and roleName !=''">
-		and ROLENAME like CONCAT('%',  #{roleName} ,'%')  
+	<if test="param.roleName !=null and param.roleName !=''">
+		and ROLENAME like CONCAT('%',  #{param.roleName} ,'%')  
 	</if>
+</sql>
+
+<select id="getRoleByRoleNameByPage"  resultMap="role"  parameterType="j.jave.kernal.jave.model.JPageable">
+	<include refid="getRoleByRoleNameByPageSQL"></include>
 </select>
 
 

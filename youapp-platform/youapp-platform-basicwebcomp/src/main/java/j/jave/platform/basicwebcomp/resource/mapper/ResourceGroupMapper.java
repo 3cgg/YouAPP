@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  * @author J
  *
  */
-@Component(value="ResourceGroupMapper")
-@JModelRepo(component="ResourceGroupMapper",name=ResourceGroup.class)
+@Component(value="resourceGroupMapper.mapper")
+@JModelRepo(component="resourceGroupMapper.mapper",name=ResourceGroup.class)
 public interface ResourceGroupMapper extends JMapper<ResourceGroup>,ResourceGroupRepo<JMapper<ResourceGroup>> {
 
 	List<ResourceGroup> getResourceGroupsByResourceId(@Param(value="resourceId")String resourceId);

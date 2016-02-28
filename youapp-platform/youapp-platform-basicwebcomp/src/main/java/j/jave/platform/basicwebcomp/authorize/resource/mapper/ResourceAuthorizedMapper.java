@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 
-@Component(value="ResourceAuthorizedMapper")
+@Component(value="resourceAuthorizedMapper.mapper")
 public interface ResourceAuthorizedMapper extends JMapper,ResourceAuthorizedRepo{
 
 	public List<ResourceAuthorized> getResourceAuthorizedByUserId(@Param(value="userId") 

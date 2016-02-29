@@ -33,7 +33,7 @@ public class TestRole {
 			Role roleData=new Role();
 			new JSimpleObjectPopulate().populate(roleData);
 			roleData.setId(JUniqueUtils.unique().replaceAll("-", ""));
-			roleService.saveRole(context, roleData);
+//			roleService.saveRole(context, roleData);
 //			
 //			Role dbRole=roleService.getById(context, roleData.getId());
 //			dbRole.setDescription("SYS-DESC");

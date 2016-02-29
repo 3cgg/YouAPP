@@ -73,7 +73,7 @@ select a.* from ROLES a
 </select>
 
 
-<select id="countFor_getRoleByRoleNameByPage"  resultType="int" parameterType="j.jave.kernal.jave.model.JPageable">
+<select id="count_for_getRoleByRoleNameByPage"  resultType="int" parameterType="j.jave.kernal.jave.model.JPageable">
 	
 	select count(1) from (
 	<include refid="getRoleByRoleNameByPageSQL"/>

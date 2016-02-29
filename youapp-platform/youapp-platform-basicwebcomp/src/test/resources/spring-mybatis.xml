@@ -75,7 +75,7 @@
     </tx:advice>
   
   	
-  	<bean  id="queryExecutorMethodInterceptor"  class="j.jave.platform.mybatis.QueryExecutorMethodInterceptor" 
+  	<bean  id="queryExecutorMethodInterceptor"  class="j.jave.platform.mybatis.plugin.pageable.QueryExecutorMethodInterceptor" 
   	></bean>
 	
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  

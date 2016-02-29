@@ -12,14 +12,9 @@
     <setting name="cacheEnabled" value="false"/>  
     </settings>
     
-    <!-- 自定义MyBatis插件 -->
 	<plugins>
-		<!-- 分页插件 -->
-		<plugin interceptor="j.jave.platform.mybatis.plugin.JPageablePlugin">  
-	        <!-- 设定数据库方言 -->
+		<plugin interceptor="j.jave.platform.mybatis.plugin.pageable.SimplePageablePlugin">  
 	        <property name="dialect" value="${youapp.java.sql.dialect}"/>
-	        <!-- Mapper文件中定义的带有分页的select id -->
-	        <property name="pageSqlId" value=".*ByPage.*"/>  
 	    </plugin>  
 	</plugins>
 	

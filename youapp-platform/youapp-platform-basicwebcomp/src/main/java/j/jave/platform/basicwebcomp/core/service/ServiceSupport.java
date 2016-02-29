@@ -11,6 +11,7 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.model.SimplePageRequest;
 import j.jave.platform.basicwebcomp.login.model.User;
 
 import java.sql.Timestamp;
@@ -18,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * delegate service operation of a certain table, 
@@ -153,8 +153,8 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		return page;
 	}
 	
-	protected PageRequest toPageRequest(JPageable pageable){
-		return new PageRequest(pageable.getPageNumber(), pageable.getPageSize());
+	protected SimplePageRequest toPageRequest(JPageable pageable){
+		return new SimplePageRequest(pageable.getPageNumber(), pageable.getPageSize());
 	}
 	
 }

@@ -40,7 +40,7 @@ public interface RoleMapper extends JMapper<Role>,RoleRepo<JMapper<Role>> {
 	List<Role> getAllRoles();
 	
 	
-	int countFor_getRoleByRoleNameByPage(Pageable pageable,
+	int count_for_getRoleByRoleNameByPage(Pageable pageable,
 			@Param(value="param") JPageable pageParameter);
 	
 	Page<Role> getRoleByRoleNameByPage(Pageable pageable,

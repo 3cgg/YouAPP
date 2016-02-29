@@ -54,6 +54,21 @@ public abstract class JAssert {
 	public static void isNull(Object object) {
 		isNull(object, "[Assertion failed] - the object argument must be null");
 	}
+	
+	/**
+	 * Assert that an object is not empty
+	 * @param object the object to check
+	 * @throws IllegalArgumentException if the object is not {@code null}
+	 */
+	public static void isNotEmpty(String object) {
+		isNotEmpty(object, "[Assertion failed] - the object argument must not be empty");
+	}
+	
+	public static void isNotEmpty(String object,String message) {
+		if (object.trim().length()==0) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 
 	/**
 	 * Assert that an object is not {@code null} .

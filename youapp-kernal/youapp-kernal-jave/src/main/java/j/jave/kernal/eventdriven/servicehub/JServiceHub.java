@@ -126,14 +126,14 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 				service= (T) serviceFactory.getService();
 			}
 			else if(serviceHubManager.isUninstall(clazz)){
-				throw new JServiceStatusException("service is uninstalled.");
+				throw new JServiceStatusException("service ("+serviceFactory.getName()+") is uninstalled.");
 			}
 			else{
-				throw new JServiceStatusException("service is inactive.");
+				throw new JServiceStatusException("service ("+serviceFactory.getName()+") is inactive.");
 			}
 		}
 		else{
-			throw new JServiceStatusException("service is missing in the system.");
+			throw new JServiceStatusException("service ("+serviceFactory.getName()+") is missing in the system.");
 		}
 		return service;
 	}

@@ -21,7 +21,7 @@ ParamRepo<JSpringJpaRepository<Param, String>>{
 	public Param getParamByFunctionIdAndCode(String functionId,String code);
 	
 	
-	@Query(value="from Param p where p.name=:name or 1=1 ")
+	@Query(value="from Param p left join User u on p.id=u.id where p.name=:name or 1=1 ")
 	public Page<Param> getParamsByNameByPage(Pageable pagination,
 			@org.springframework.data.repository.query.Param(value="name")String name);
 }

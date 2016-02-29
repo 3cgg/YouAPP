@@ -74,6 +74,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		page.setPageable(pagination);
 		page.setTotalRecordNumber(records.size());
 		page.setContent(records);
+		page.setTotalPageNumber(JPageImpl.caculateTotalPageNumber(records.size(), pagination.getPageSize()));
 		return page;
 	}
 

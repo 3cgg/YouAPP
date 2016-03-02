@@ -33,8 +33,13 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	
 	@SuppressWarnings("unchecked")
 	public JServiceFactorySupport(){
-		ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
-		this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+		if(this.getClass().getName().contains("$$EnhancerByCGLIB$$")){
+			registClass=null;
+		}
+		else{
+			ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
+			this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+		}
 	}
 	
 	/**

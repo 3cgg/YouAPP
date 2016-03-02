@@ -4,22 +4,22 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 
+
 /**
  * service hub delegate. 
  * @author J
  */
 public class JServiceHubDelegate {
 
-	private static JServiceHubDelegate serviceHubDelegate=null;
+	private static JServiceHubDelegate serviceHubDelegate=new JServiceHubDelegate();;
 	private JServiceHubDelegate(){}
 	
 	public static JServiceHubDelegate get(){
-		
-		if(serviceHubDelegate==null){
-			synchronized (JServiceHubDelegate.class) {
-				serviceHubDelegate=new JServiceHubDelegate();
-			}
-		}
+//		if(serviceHubDelegate==null){
+//			synchronized (JServiceHubDelegate.class) {
+//				serviceHubDelegate=new JServiceHubDelegate();
+//			}
+//		}
 		return serviceHubDelegate;
 	}
 	
@@ -42,8 +42,12 @@ public class JServiceHubDelegate {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public  <T> T getService(Object object,Class<T> clazz){
+		return JServiceLazyProxy.proxy(object, clazz);
+	}
+	
+	@SuppressWarnings("unchecked")
+	<T> T getActualService(Object object,Class<T> clazz){
 		JServiceGetEvent getEvent=new JServiceGetEvent(object, clazz);
 		return (T) serviceEventProcessor.getService(getEvent);
 	}

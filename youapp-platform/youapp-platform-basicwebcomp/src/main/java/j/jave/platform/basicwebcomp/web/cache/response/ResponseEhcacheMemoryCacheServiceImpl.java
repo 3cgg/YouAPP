@@ -17,13 +17,10 @@ public abstract class ResponseEhcacheMemoryCacheServiceImpl
 	/**
 	 * cache service . 
 	 */
-	private EhcacheService ehcacheService=null;
+	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
 	
 	@Override
 	public EhcacheService getEhcacheService() {
-		if(ehcacheService==null){
-			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-		}
 		return ehcacheService;
 	}
 	

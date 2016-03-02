@@ -33,13 +33,10 @@ public class JServletDetect implements JResourceDetector<JServletProvider> , JSe
 	
 	private JServletFilter servletFilter;
 	
-	private EhcacheService ehcacheService=null;
+	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
 	
 	@Override
 	public EhcacheService getEhcacheService() {
-		if(ehcacheService==null){
-			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-		}
 		return ehcacheService;
 	}
 	

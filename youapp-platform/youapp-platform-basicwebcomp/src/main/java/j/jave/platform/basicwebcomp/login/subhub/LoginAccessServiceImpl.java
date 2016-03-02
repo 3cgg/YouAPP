@@ -67,7 +67,7 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 	/**
 	 * cache service . 
 	 */
-	private EhcacheService ehcacheService=null;;
+	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;;
 	
 	@Override
 	public String validate(String name, String password)
@@ -182,9 +182,6 @@ public class LoginAccessServiceImpl implements LoginAccessService ,JSingleStatic
 	
 	@Override
 	public EhcacheService getEhcacheService() {
-		if(ehcacheService==null){
-			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-		}
 		return ehcacheService;
 	}
 	

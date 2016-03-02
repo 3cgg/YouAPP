@@ -17,12 +17,9 @@ implements JService{
 		return this;
 	}
 
-	private JCacheService cacheService;
+	private JCacheService cacheService=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 	
 	public JCacheService getCacheService() {
-		if(cacheService==null){
-			cacheService=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
-		}
 		return cacheService;
 	}
 	

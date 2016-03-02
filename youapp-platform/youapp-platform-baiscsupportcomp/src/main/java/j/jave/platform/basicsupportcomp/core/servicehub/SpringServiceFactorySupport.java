@@ -34,8 +34,13 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	private final Class<T> registClass;;
 	
 	public SpringServiceFactorySupport(){
-		ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
-		this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+		if(this.getClass().getName().contains("$$EnhancerByCGLIB$$")){
+			registClass=null;
+		}
+		else{
+			ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
+			this.registClass=(Class<T>) type.getActualTypeArguments()[0];
+		}
 	}
 	
 	/**

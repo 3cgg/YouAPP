@@ -31,16 +31,13 @@ public class ResponseCacheServiceImpl
 	/**
 	 * cache service . 
 	 */
-	private EhcacheService ehcacheService=null;
+	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
 	
 	@Autowired
 	private ResourceCacheService resourceCacheService;
 	
 	@Override
 	public EhcacheService getEhcacheService() {
-		if(ehcacheService==null){
-			ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-		}
 		return ehcacheService;
 	}
 	

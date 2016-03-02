@@ -47,12 +47,9 @@ public class SimplePageablePlugin implements Interceptor {
 	
 	private String countMethodPrefix=PageableProperties.COUNT_FOR_PAGEABLE_METHOD_PREFIX;
 	
-	private PageableSupportService pageableSupportService;
+	private PageableSupportService pageableSupportService=JServiceHubDelegate.get().getService(this, PageableSupportService.class);;
 	
 	public PageableSupportService getPageableSupportService() {
-		if(pageableSupportService==null){
-			pageableSupportService=JServiceHubDelegate.get().getService(this, PageableSupportService.class);
-		}
 		return pageableSupportService;
 	}
 	public void setCountMethodPrefix(String countMethodPrefix) {

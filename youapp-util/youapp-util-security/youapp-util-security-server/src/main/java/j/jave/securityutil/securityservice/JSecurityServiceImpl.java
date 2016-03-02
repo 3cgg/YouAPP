@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 @Service(value="j.jave.framework.inner.support.rs.security.JSecurityServiceImpl")
 public class JSecurityServiceImpl implements JSecurityService, JDESedeCipherServiceSupport ,JMD5CipherServiceSupport{
 	
-	private JDESedeCipherService desedeCipherService;
+	private JDESedeCipherService desedeCipherService=JServiceHubDelegate.get().getService(this, JDESedeCipherService.class);;
 	
-	private JMD5CipherService md5CipherService;
+	private JMD5CipherService md5CipherService=JServiceHubDelegate.get().getService(this, JMD5CipherService.class);;
 	
 	public JSecurityServiceImpl(){
 		System.out.println("on...");
@@ -22,17 +22,10 @@ public class JSecurityServiceImpl implements JSecurityService, JDESedeCipherServ
 	
 	@Override
 	public JDESedeCipherService getDESedeCipherService(){
-		if(desedeCipherService==null){
-			desedeCipherService= JServiceHubDelegate.get().getService(this, JDESedeCipherService.class);
-		}
 		return desedeCipherService;
 	}
 	
 	public JMD5CipherService getMd5CipherService() {
-		
-		if(md5CipherService==null){
-			md5CipherService=JServiceHubDelegate.get().getService(this, JMD5CipherService.class);
-		}
 		return md5CipherService;
 	}
 	

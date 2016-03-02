@@ -26,6 +26,8 @@ public class TestEvent  extends TestEventSupport{
 		
 		JMD5CipherService md5CipherService= serviceHubDelegate.getService(this, JMD5CipherService.class);
 		
+		TestUserService testUserService= serviceHubDelegate.getService(this,TestUserService.class);
+		System.out.println(testUserService.describer());
 		String encrp=md5CipherService.encrypt("abc.def.ghi");
 		System.out.println(encrp);
 	}

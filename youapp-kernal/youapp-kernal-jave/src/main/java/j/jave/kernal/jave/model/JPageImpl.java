@@ -22,7 +22,7 @@ public class JPageImpl<T extends JModel> implements JPage<T> {
 	
 	public static int caculateTotalPageNumber(long totalRecordNumber,int pageSize){
 		if(totalRecordNumber < pageSize) {
-			return 1;
+			return 0;
 		} else {
 			if ((totalRecordNumber % pageSize) > 0) {
 				return (int) (totalRecordNumber/pageSize+1);

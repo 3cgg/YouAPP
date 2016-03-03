@@ -4,6 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipe
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.ServiceMeta;
+import j.jave.kernal.eventdriven.servicehub.JServiceFactoryRegister;
 import j.jave.kernal.jave.support.JPriorityBlockingQueue;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class JEventDrivenContext extends HashMap<String, Object> {
 	 *
 	 */
 	public class ServiceMetaProvider implements JServiceMetaProvider{
-		private static final String EXT_SERVICE_FACTORIES_REGISTER="j.jave.framework.servicehub.JServiceFactoryRegister";
+		private final String EXT_SERVICE_FACTORIES_REGISTER=JServiceFactoryRegister.class.getName();
 		{
 			put(EXT_SERVICE_FACTORIES_REGISTER, new ArrayList<ServiceMeta>());
 		}

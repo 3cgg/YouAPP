@@ -7,6 +7,7 @@ import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class TestJpaParamServiceImpl{
 		System.out.println("TestParamServiceImpl");
 	}
 	
+	@Test
 	public void testJpa(){
 		try{
 			ServiceContext context=new ServiceContext();
@@ -40,6 +42,8 @@ public class TestJpaParamServiceImpl{
 			dbParam=paramService.getById(context, param.getId());
 			System.out.println(dbParam.getDeleted());
 			
+			long count=paramService.countParam(context, param);
+			System.out.println("count : "+count);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

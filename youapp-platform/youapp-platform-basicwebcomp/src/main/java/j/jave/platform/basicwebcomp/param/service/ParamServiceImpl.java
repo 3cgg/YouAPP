@@ -5,6 +5,7 @@ package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -13,7 +14,9 @@ import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -108,6 +111,25 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 		Page<Param> obj=paramMapper.getParamsByNameByPage(
 				toPageRequest(pagination),name);
 		return toJPage(obj, pagination);
+	}
+	
+	@Override
+	public long countParam(ServiceContext context, Param param) {
+		String jpql="select count(0) from Param p where p.name = :name ";
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("name", param.getName());
+		return executeOnSQLQuery(jpql, params, Long.class);
+	}
+	
+	@Override
+	public List<Param> allParams(ServiceContext context, Param param) {
+		String jpql="from Param p where p.name = :name ";
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("name", param.getName());
+		JPageRequest pageRequest= new JPageRequest();
+		pageRequest.setPageNumber(100);
+		JPage<Param> page= executePageableOnSQLQuery(jpql, pageRequest, params);
+		return page.getContent();
 	}
 	
 }

@@ -80,4 +80,7 @@ public interface ParamService extends Service<Param> {
 	
 	public JPage<Param> getParamsByNameByPage(ServiceContext context, JPageable pagination,String name) ;
 	
+	public long countParam(ServiceContext context,Param param);
+	
+	public List<Param> allParams(ServiceContext context,Param param);
 }

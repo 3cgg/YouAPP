@@ -11,6 +11,7 @@ import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,7 +47,12 @@ public class TestJpaParam {
 		JPage<Param> params= paramS.getsByPage(context, pagination);
 		
 		JPage<Param> paramPage= paramS.getParamsByNameByPage(context, pagination,"a");
+		Param param=paramPage.getContent().get(0);
+		long count=paramS.countParam(context, param);
+		System.out.println("count : "+count);
 		
+		List<Param> dbParams=paramS.allParams(context, param);
+		System.out.println(dbParams.size());
 		System.out.println(paramPage.getTotalPageNumber());
 	}
 	

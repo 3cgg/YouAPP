@@ -11,14 +11,22 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.model.JpaCalendarParam;
+import j.jave.platform.basicwebcomp.core.model.JpaDateParam;
 import j.jave.platform.basicwebcomp.core.model.SimplePageRequest;
 import j.jave.platform.basicwebcomp.login.model.User;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.query.QueryUtils;
 
 /**
  * delegate service operation of a certain table, 
@@ -29,6 +37,9 @@ import org.springframework.data.domain.Page;
  * @param <T>
  */
 public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>{
+	
+	@PersistenceContext
+	private EntityManager em;
 	
 	/**
 	 * {@inheritDoc}
@@ -156,6 +167,61 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	
 	protected SimplePageRequest toPageRequest(JPageable pageable){
 		return new SimplePageRequest(pageable.getPageNumber(), pageable.getPageSize());
+	}
+	
+	public <R> R executeOnSQLQuery(String jpql,Map<String, Object> params,Class<R> clazz){
+		Query query=em.createQuery(jpql,clazz);
+		setQueryParameters(query, params);
+		return clazz.cast(query.getSingleResult());
+	}
+	
+	public <R> List<R> executeOnSQLQuery(String jpql,Map<String, Object> params){
+		Query query=em.createQuery(jpql);
+		setQueryParameters(query, params);
+		return query.getResultList();
+	}
+
+	public <R> JPage<R> executePageableOnSQLQuery(String jpql,JPageable pageable,Map<String, Object> params){
+		String countString=QueryUtils.createCountQueryFor(jpql);
+		long count=executeOnSQLQuery(countString, params, Long.class);
+		int pageNumber=pageable.getPageNumber();
+		int pageSize=pageable.getPageSize();
+		int tempTotalPageNumber=JPageImpl.caculateTotalPageNumber(count, pageSize);
+		pageNumber=pageNumber>tempTotalPageNumber?tempTotalPageNumber:pageNumber;
+		
+		Query query=em.createQuery(jpql);
+		setQueryParameters(query, params);
+		query.setFirstResult(pageNumber*pageSize);
+		query.setMaxResults(pageSize);
+		List list= query.getResultList();
+		JPageImpl page=new JPageImpl();
+		page.setContent(list);
+		page.setTotalRecordNumber(count);
+		page.setTotalPageNumber(tempTotalPageNumber);
+		JPageRequest pageRequest=(JPageRequest)pageable;
+		pageRequest.setPageNumber(pageNumber);
+		page.setPageable(pageable);
+		return page;
+	}
+	
+	private void setQueryParameters(Query query, Map<String, Object> params) {
+		for (Map.Entry<String, Object> entry : params.entrySet()){
+			if(JpaDateParam.class.isInstance(entry.getValue())){
+				JpaDateParam jpaDateParam= (JpaDateParam) entry.getValue();
+				query.setParameter(entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+			}
+			else if(JpaCalendarParam.class.isInstance(entry.getValue())){
+				JpaCalendarParam jpaCalendarParam= (JpaCalendarParam) entry.getValue();
+				query.setParameter(entry.getKey(), jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+			}
+			else{
+				query.setParameter(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+	
+	public Query createNamedQuery(String name){
+		return em.createNamedQuery(name);
 	}
 	
 }

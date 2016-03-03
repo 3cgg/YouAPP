@@ -9,6 +9,7 @@ import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.core.service.JPQLQueryMeta;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.param.model.Param;
@@ -128,6 +129,13 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 		params.put("name", param.getName());
 		JPageRequest pageRequest= new JPageRequest();
 		pageRequest.setPageNumber(100);
+		
+		JPQLQueryMeta jpqlQueryMeta=new JPQLQueryMeta(getEntityManager());
+		jpqlQueryMeta.setJpql(jpql);
+		jpqlQueryMeta.setPageable(pageRequest);
+		jpqlQueryMeta.setParams(params);
+		JPage<Param> dbParam= executeOnSQLQuery(jpqlQueryMeta);
+		
 		JPage<Param> page= executePageableOnSQLQuery(jpql, pageRequest, params);
 		return page.getContent();
 	}

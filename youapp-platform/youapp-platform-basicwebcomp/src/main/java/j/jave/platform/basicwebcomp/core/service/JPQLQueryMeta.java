@@ -1,0 +1,50 @@
+package j.jave.platform.basicwebcomp.core.service;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.springframework.data.jpa.repository.query.QueryUtils;
+
+public class JPQLQueryMeta extends QueryMeta{
+
+	private String jpql;
+	
+	private String countSql;
+	
+	public JPQLQueryMeta(EntityManager em) {
+		super(em);
+	}
+	
+	public String getQueryString() {
+		return this.jpql;
+	}
+	
+	@Override
+	public String getCountQueryString() {
+		if(countSql==null){
+			countSql=QueryUtils.createCountQueryFor(jpql);
+		}
+		return countSql;
+	}
+
+	@Override
+	public Query getCountQuery() {
+		return em.createQuery(getCountQueryString());
+	}
+
+	@Override
+	public Query getQuery() {
+		return em.createQuery(jpql);
+	}
+
+	public String getJpql() {
+		return jpql;
+	}
+
+	public void setJpql(String jpql) {
+		this.jpql = jpql;
+	}
+
+	
+	
+}

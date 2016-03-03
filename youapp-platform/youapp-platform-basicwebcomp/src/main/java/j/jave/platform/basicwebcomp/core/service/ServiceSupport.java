@@ -2,6 +2,8 @@ package j.jave.platform.basicwebcomp.core.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.exception.JConcurrentException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.model.JPage;
@@ -10,6 +12,8 @@ import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
+import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.model.JpaCalendarParam;
 import j.jave.platform.basicwebcomp.core.model.JpaDateParam;
@@ -24,8 +28,10 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
 /**
@@ -37,6 +43,8 @@ import org.springframework.data.jpa.repository.query.QueryUtils;
  * @param <T>
  */
 public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>{
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ServiceSupport.class);
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -169,10 +177,33 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		return new SimplePageRequest(pageable.getPageNumber(), pageable.getPageSize());
 	}
 	
+	public <R> R executeOnSQLQuery(QueryMeta queryMeta){
+		return (R) QueryBuilder.build(queryMeta).execute(queryMeta);
+	}
+	
 	public <R> R executeOnSQLQuery(String jpql,Map<String, Object> params,Class<R> clazz){
 		Query query=em.createQuery(jpql,clazz);
 		setQueryParameters(query, params);
 		return clazz.cast(query.getSingleResult());
+	}
+	
+	public <R> R executeOnNativeSQLQueryWithSingle(String sql,Map<String, Object> params,Class<R> clazz){
+		Query query=em.createNativeQuery(sql, clazz);
+		setQueryParameters(query, params);
+		return clazz.cast(query.getSingleResult());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <R> List<R> executeOnNativeSQLQuery(String sql,Map<String, Object> params,Class<R> clazz){
+		Query query=em.createNativeQuery(sql, clazz);
+		setQueryParameters(query, params);
+		return query.getResultList();
+	}
+	
+	public List<?> executeOnNativeSQLQuery(String sql,Map<String, Object> params){
+		Query query=em.createNativeQuery(sql);
+		setQueryParameters(query, params);
+		return query.getResultList();
 	}
 	
 	public <R> List<R> executeOnSQLQuery(String jpql,Map<String, Object> params){
@@ -204,6 +235,67 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		return page;
 	}
 	
+	private static boolean hasNamedQuery(EntityManager em, String queryName) {
+		/*
+		 * @see DATAJPA-617
+		 * we have to use a dedicated em for the lookups to avoid a potential rollback of the running tx.
+		 */
+		EntityManager lookupEm = em.getEntityManagerFactory().createEntityManager();
+
+		try {
+			lookupEm.createNamedQuery(queryName);
+			return true;
+		} catch (IllegalArgumentException e) {
+			LOGGER.debug("Did not find named query {}"+queryName);
+			return false;
+		} finally {
+			lookupEm.close();
+		}
+	}
+	
+	public <R> JPage<R> executePageableOnNamedSQLQuery(String namedSql,String countNamedSql,JPageable pageable,Map<String, Object> params){
+		PersistenceProvider persistenceProvider= PersistenceProvider.fromEntityManager(em);
+		boolean namedCountQueryIsPresent=false;
+		if(JStringUtils.isNotNullOrEmpty(countNamedSql)){
+			namedCountQueryIsPresent=hasNamedQuery(em, countNamedSql);
+			JAssert.state(namedCountQueryIsPresent, " count named SQL canot fround as persistence context : " +countNamedSql);
+		}
+		TypedQuery<Long> countQuery = null;
+		if (namedCountQueryIsPresent) {
+			countQuery = em.createNamedQuery(countNamedSql, Long.class);
+		} else {
+			Query query=em.createNamedQuery(namedSql);
+			if(persistenceProvider.canExtractQuery()){
+				String queryString = persistenceProvider.extractQueryString(query);
+				countQuery = em.createQuery(QueryUtils.createCountQueryFor(queryString), Long.class);
+			}
+		}
+		
+		JAssert.state(countQuery!=null, "cannt found count sql for the named query : "+namedSql);
+		
+		long count=countQuery.getSingleResult();
+		int pageNumber=pageable.getPageNumber();
+		int pageSize=pageable.getPageSize();
+		int tempTotalPageNumber=JPageImpl.caculateTotalPageNumber(count, pageSize);
+		pageNumber=pageNumber>tempTotalPageNumber?tempTotalPageNumber:pageNumber;
+		
+		Query query=em.createNamedQuery(namedSql);
+		setQueryParameters(query, params);
+		query.setFirstResult(pageNumber*pageSize);
+		query.setMaxResults(pageSize);
+		List list= query.getResultList();
+		JPageImpl page=new JPageImpl();
+		page.setContent(list);
+		page.setTotalRecordNumber(count);
+		page.setTotalPageNumber(tempTotalPageNumber);
+		JPageRequest pageRequest=(JPageRequest)pageable;
+		pageRequest.setPageNumber(pageNumber);
+		page.setPageable(pageable);
+		return page;
+	}
+	
+	
+	
 	private void setQueryParameters(Query query, Map<String, Object> params) {
 		for (Map.Entry<String, Object> entry : params.entrySet()){
 			if(JpaDateParam.class.isInstance(entry.getValue())){
@@ -224,4 +316,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		return em.createNamedQuery(name);
 	}
 	
+	protected EntityManager getEntityManager() {
+		return em;
+	}
 }

@@ -11,7 +11,7 @@ import javax.persistence.Query;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-public class NamedQueryMeta extends QueryMeta {
+class NamedQueryMeta extends QueryMeta {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NamedQueryMeta.class);
 	
@@ -106,6 +106,9 @@ public class NamedQueryMeta extends QueryMeta {
 	
 	@Override
 	public Query getQuery() {
+		if(result!=null){
+			return em.createNamedQuery(namedSql,result);
+		}
 		return em.createNamedQuery(namedSql);
 	}
 

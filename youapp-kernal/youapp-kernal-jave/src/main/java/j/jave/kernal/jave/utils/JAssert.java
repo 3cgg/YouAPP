@@ -44,6 +44,12 @@ public abstract class JAssert {
 			throw new IllegalArgumentException(message);
 		}
 	}
+	
+	public static void isNotNull(Object object, String message) {
+		if (object == null) {
+			throw new IllegalArgumentException(message);
+		}
+	}
 
 	/**
 	 * Assert that an object is {@code null} .

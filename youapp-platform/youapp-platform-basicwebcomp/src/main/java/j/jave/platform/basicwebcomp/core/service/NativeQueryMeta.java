@@ -5,7 +5,7 @@ import javax.persistence.Query;
 
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-public class NativeQueryMeta extends QueryMeta {
+class NativeQueryMeta extends QueryMeta {
 
 	private String sql;
 	
@@ -35,7 +35,13 @@ public class NativeQueryMeta extends QueryMeta {
 	
 	@Override
 	public Query getQuery() {
-		return em.createNamedQuery(sql);
+		if(result!=null){
+			return em.createNativeQuery(sql,result);
+		}
+		if(resultSetMapping!=null){
+			return em.createNativeQuery(sql,resultSetMapping);
+		}
+		return em.createNativeQuery(sql);
 	}
 
 	public String getSql() {

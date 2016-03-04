@@ -5,7 +5,7 @@ import javax.persistence.Query;
 
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-public class JPQLQueryMeta extends QueryMeta{
+class JPQLQueryMeta extends QueryMeta{
 
 	private String jpql;
 	
@@ -34,6 +34,9 @@ public class JPQLQueryMeta extends QueryMeta{
 
 	@Override
 	public Query getQuery() {
+		if(result!=null){
+			return em.createQuery(jpql,result);
+		}
 		return em.createQuery(jpql);
 	}
 
@@ -45,6 +48,9 @@ public class JPQLQueryMeta extends QueryMeta{
 		this.jpql = jpql;
 	}
 
+	public void setCountSql(String countSql) {
+		this.countSql = countSql;
+	}
 	
 	
 }

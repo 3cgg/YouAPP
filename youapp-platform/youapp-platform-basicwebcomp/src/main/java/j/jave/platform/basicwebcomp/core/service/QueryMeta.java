@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-public abstract class QueryMeta {
+abstract class QueryMeta {
 
-	protected Map<String, Object> params=new HashMap<String, Object>();
+	protected Map<?, Object> params=new HashMap<Object, Object>();
 	
 	protected final EntityManager em;
 	
@@ -19,6 +19,8 @@ public abstract class QueryMeta {
 	protected Class<?> result;
 	
 	protected boolean single;
+	
+	protected String resultSetMapping;
 
 	public QueryMeta(EntityManager em) {
 		super();
@@ -35,11 +37,11 @@ public abstract class QueryMeta {
 		return pageable!=null;
 	}
 	
-	public Map<String, Object> getParams() {
+	public Map<?, Object> getParams() {
 		return params;
 	}
 	
-	public void setParams(Map<String, Object> params) {
+	public void setParams(Map<?, Object> params) {
 		this.params = params;
 	}
 	
@@ -67,5 +69,8 @@ public abstract class QueryMeta {
 		this.single = single;
 	}
 	
+	public void setResultSetMapping(String resultSetMapping) {
+		this.resultSetMapping = resultSetMapping;
+	}
 	
 }

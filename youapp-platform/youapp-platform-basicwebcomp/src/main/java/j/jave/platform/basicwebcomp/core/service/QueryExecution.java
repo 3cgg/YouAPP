@@ -3,6 +3,7 @@ package j.jave.platform.basicwebcomp.core.service;
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.basicwebcomp.core.model.JpaCalendarParam;
 import j.jave.platform.basicwebcomp.core.model.JpaDateParam;
 
@@ -13,11 +14,18 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public abstract class QueryExecution {
+	
+	protected QueryMeta queryMeta;
+	
+	public QueryExecution(QueryMeta queryMeta) {
+		this.queryMeta = queryMeta;
+	}
 
-	public Object execute(QueryMeta queryMeta){
-		Object result=null;
+
+	public <T> T execute(){
+		T result=null;
 		try {
-			result = doExecute(queryMeta);
+			result = doExecute();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -25,50 +33,82 @@ public abstract class QueryExecution {
 	}
 	
 	
-	protected abstract Object doExecute(QueryMeta queryMeta);
+	protected abstract <T> T doExecute();
 	
 	
-	public static void setQueryParameters(Query query, Map<String, Object> params) {
-		for (Map.Entry<String, Object> entry : params.entrySet()){
+	public static void setQueryParameters(Query query, Map<?, Object> params) {
+		for (Map.Entry<?, Object> entry : params.entrySet()){
 			if(JpaDateParam.class.isInstance(entry.getValue())){
 				JpaDateParam jpaDateParam= (JpaDateParam) entry.getValue();
-				query.setParameter(entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+				if(String.class.isInstance(entry.getKey())){
+					query.setParameter((String)entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+				}
+				else if(Integer.class.isInstance(entry.getKey())){
+					query.setParameter((Integer)entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+				}
 			}
 			else if(JpaCalendarParam.class.isInstance(entry.getValue())){
 				JpaCalendarParam jpaCalendarParam= (JpaCalendarParam) entry.getValue();
-				query.setParameter(entry.getKey(), jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+				if(String.class.isInstance(entry.getKey())){
+					query.setParameter((String)entry.getKey(), jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+					
+				}
+				else if(Integer.class.isInstance(entry.getKey())){
+					query.setParameter((Integer)entry.getKey(), jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+				}
 			}
 			else{
-				query.setParameter(entry.getKey(), entry.getValue());
+				if(String.class.isInstance(entry.getKey())){
+					query.setParameter((String)entry.getKey(), entry.getValue());
+					
+				}
+				else if(Integer.class.isInstance(entry.getKey())){
+					query.setParameter((Integer)entry.getKey(), entry.getValue());
+				}
 			}
 		}
 	}
 	
 	static class SingleExecution extends QueryExecution{
+		public SingleExecution(QueryMeta queryMeta) {
+			super(queryMeta);
+		}
+
 		@Override
-		protected Object doExecute(QueryMeta queryMeta) {
-			Object object= queryMeta.getQuery().getSingleResult();
-			return queryMeta.getResult().cast(object);
+		protected Object doExecute() {
+			Query query=queryMeta.getQuery();
+			QueryExecution.setQueryParameters(query, queryMeta.getParams());
+			Object object= query.getSingleResult();
+			Class<?> result=queryMeta.getResult();
+			return result==null?object:result.cast(object);
 		}
 	}
 	
 	static class ListExecution extends QueryExecution{
+		public ListExecution(QueryMeta queryMeta) {
+			super(queryMeta);
+		}
+
 		@Override
-		protected Object doExecute(QueryMeta queryMeta) {
-			return queryMeta.getQuery().getResultList();
+		protected List<?> doExecute() {
+			Query query=queryMeta.getQuery();
+			QueryExecution.setQueryParameters(query, queryMeta.getParams());
+			return query.getResultList();
 		}
 	}
 	
 	
 	static class PagedExecution extends QueryExecution {
-		private JPageable pageable;
-		public PagedExecution(JPageable pageable) {
-			this.pageable=pageable;
-		}
 		
+		public PagedExecution(QueryMeta queryMeta) {
+			super(queryMeta);
+		}
+
 		@Override
-		protected Object doExecute(QueryMeta queryMeta) {
+		protected JPageImpl doExecute() {
+			JPageable pageable=queryMeta.getPageable();
 			Query countQuery=queryMeta.getCountQuery();
+			JAssert.isNotNull(countQuery, "count query not found.");
 			QueryExecution.setQueryParameters(countQuery, queryMeta.getParams());
 			long count=(long) countQuery.getSingleResult();
 			int pageNumber=pageable.getPageNumber();

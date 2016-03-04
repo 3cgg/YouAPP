@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.core.model;
+package j.jave.platform.basicwebcomp.spirngjpa.query;
 
 import java.util.Date;
 

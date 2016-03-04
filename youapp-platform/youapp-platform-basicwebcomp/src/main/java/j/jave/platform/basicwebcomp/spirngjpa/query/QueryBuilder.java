@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.spirngjpa;
+package j.jave.platform.basicwebcomp.spirngjpa.query;
 
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JAssert;

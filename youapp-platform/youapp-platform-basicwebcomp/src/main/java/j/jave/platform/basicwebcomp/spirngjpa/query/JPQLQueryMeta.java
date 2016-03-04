@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.spirngjpa;
+package j.jave.platform.basicwebcomp.spirngjpa.query;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

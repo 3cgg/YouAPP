@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
-import j.jave.platform.basicwebcomp.spirngjpa.QueryBuilder;
+import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
 
 import java.util.HashMap;
 import java.util.List;

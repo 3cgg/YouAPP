@@ -11,28 +11,55 @@ import javax.persistence.EntityManager;
 
 public class QueryBuilder {
 	
+	/*
+	 * JPQL 
+	 */
 	private String jpql;
 	
 	private String countJpql;
 	
+	/*
+	 *Named SQL 
+	 */
 	private String namedSql;
 	
 	private String countNamedSql;
 	
+	/*
+	 * Native SQL
+	 */
 	private String nativeSql;
 	
 	private String countNativeSql;
 	
+	/*
+	 * Expected Result Type 
+	 */
 	private Class<?> result;
 	
+	/*
+	 * Parameters
+	 */
 	private Map<?, Object> params=new HashMap<Object, Object>();
 	
+	/*
+	 * If pageable
+	 */
 	private JPageable pageable;
 	
+	/*
+	 * Entity Manager , Got Potential JPA Provider 
+	 */
 	private EntityManager entityManager;
 	
+	/*
+	 * The result set is only one element or many.
+	 */
 	private boolean isSingle;
 	
+	/*
+	 * Result Set Mapping Defined in the orm.xml or on the Entity Class
+	 */
 	protected String resultSetMapping;
 	
 	public static QueryBuilder get(EntityManager entityManager){

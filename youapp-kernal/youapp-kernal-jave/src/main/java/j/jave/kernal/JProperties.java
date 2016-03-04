@@ -16,4 +16,6 @@ public class JProperties {
 	
 	public static final String DATE_FORMAT="youapp.date.format";
 	
+	public static final String EVENT_PIPE_PREFIX="youapp.event.pipe.prefix";
+	
 }

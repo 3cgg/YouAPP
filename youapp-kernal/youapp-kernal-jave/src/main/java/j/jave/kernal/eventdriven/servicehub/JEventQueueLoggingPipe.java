@@ -5,13 +5,13 @@ import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProc
 
 import java.util.AbstractQueue;
 
-public class JEventQueueResultLoggerPipe extends JEventQueuePipe {
+public class JEventQueueLoggingPipe extends JEventQueuePipe {
 
 	
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueResultLoggerPipe.class.getName());
+		config.setName(JEventQueueLoggingPipe.class.getName());
 		return config;
 	}
 	
@@ -28,7 +28,7 @@ public class JEventQueueResultLoggerPipe extends JEventQueuePipe {
 			@Override
 			public JPersistenceTask persistenceTask(JEventExecution execution,
 					AbstractQueue<JEventExecution> executions) {
-				LOGGER.debug(" the event processed : "+JJSON.get().formatObject(execution));
+				LOGGER.info(" the event processed : "+JJSON.get().formatObject(execution));
 				return null;
 			}
 

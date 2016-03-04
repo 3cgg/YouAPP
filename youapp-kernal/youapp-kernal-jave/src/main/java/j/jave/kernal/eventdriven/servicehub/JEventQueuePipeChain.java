@@ -6,6 +6,7 @@ import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JPriorityBlockingQueue;
+import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,19 @@ public class JEventQueuePipeChain {
 	
 	
 	static class JEventQueueEndPipe extends JEventQueuePipe{
+		
+		@Override
+		protected JAbstractEventExecutionHandler getHandler() {
+			return null;
+		}
+		
+		@Override
+		protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
+			JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
+			config.setSetup(false);
+			return config;
+		}
+		
 		@Override
 		public void addEventExecution(JEventExecution eventExecution) {
 			LOGGER.debug("the event is processed completely,then drop it.");

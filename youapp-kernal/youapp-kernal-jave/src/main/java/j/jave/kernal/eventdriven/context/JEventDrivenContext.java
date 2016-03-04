@@ -1,15 +1,22 @@
 package j.jave.kernal.eventdriven.context;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.eventdriven.servicehub.JEventQueuePipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeInfo;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.ServiceMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryRegister;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.JPriorityBlockingQueue;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * the context goes through all the application.
@@ -20,6 +27,8 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class JEventDrivenContext extends HashMap<String, Object> {
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JEventDrivenContext.class);
 	
 	private static JEventDrivenContext context=new JEventDrivenContext();
 	
@@ -66,9 +75,46 @@ public class JEventDrivenContext extends HashMap<String, Object> {
 	 * @author JIAZJ
 	 *
 	 */
-	public class EventQueuePipeProvider implements JEventQueuePipeProvider{
+	class EventQueuePipeProvider implements JEventQueuePipeProvider{
 		
 		private final List<JEventQueuePipeInfo> repo=new ArrayList<JEventQueuePipeInfo>(6);
+		
+		/*
+		 * youapp.event.pipe.prefix.[indication].class
+		 * youapp.event.pipe.prefix.[indication].message
+		 * youapp.event.pipe.prefix.[indication].order
+		 */
+		
+		private final static String CLASS_STRING="class";
+		private final static String MESSAGE_STRING="message";
+		private final static String ORDER_STRING="order";
+		
+		private EventQueuePipeProvider() {
+			//youapp.event.pipe.prefix (JProperties.EVENT_PIPE_PREFIX)
+			JConfiguration configuration= JConfiguration.get();
+			Set<String> keys=configuration.allKeys("^youapp[.]event[.]pipe[.]prefix[.](.+)[.]class$");
+			for(String key:keys){
+				String classString=configuration.getString(key, null);
+				if(JStringUtils.isNotNullOrEmpty(classString)){
+					String orderKey=key.substring(0, key.length()-CLASS_STRING.length())+ORDER_STRING;
+					int order=configuration.getInt(orderKey, -1);
+					if(order==-1){
+						LOGGER.warn(" ignoring event pipe , missing order : "+classString);
+						continue; 
+					}
+					Class<? extends JEventQueuePipe>  clazz=JClassUtils.load(classString);
+					JEventQueuePipeInfo eventQueuePipeInfo=new JEventQueuePipeInfo(
+							clazz, order);
+					
+					String messageKey=key.substring(0, key.length()-CLASS_STRING.length())+MESSAGE_STRING;
+					String message=configuration.getString(messageKey, null);
+					if(JStringUtils.isNotNullOrEmpty(message)){
+						eventQueuePipeInfo.setMessage(message);
+					}
+					addEventQueuePipe(eventQueuePipeInfo);
+				}
+			}
+		}
 		
 		@Override
 		public void addEventQueuePipe(JEventQueuePipeInfo eventQueuePipeInfo) {
@@ -92,7 +138,7 @@ public class JEventDrivenContext extends HashMap<String, Object> {
 
 	private EventQueuePipeProvider eventQueuePipeProvider=new EventQueuePipeProvider();
 	
-	public EventQueuePipeProvider getEventQueuePipeProvider() {
+	public JEventQueuePipeProvider getEventQueuePipeProvider() {
 		return eventQueuePipeProvider;
 	}
 	

@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -200,17 +201,44 @@ public class JConfiguration extends HashMap<String, Object>{
 	
 	public int getInt(String  key, int defaultValue){
 		Object obj=get(key, defaultValue);
+		if(!Integer.class.isInstance(obj)){
+			return Integer.valueOf(String.valueOf(obj));
+		}
 		return (Integer)obj;
 	}
 	
 	public long getLong(String  key, long defaultValue){
 		Object obj=get(key, defaultValue);
+		if(!Long.class.isInstance(obj)){
+			return Long.valueOf(String.valueOf(obj));
+		}
 		return (Long)obj;
 	}
 	
 	public double getDouble(String  key, double defaultValue){
 		Object obj=get(key, defaultValue);
+		if(!Double.class.isInstance(obj)){
+			return Double.valueOf(String.valueOf(obj));
+		}
 		return (Double)obj;
+	}
+	
+	public Set<String> allKeys(String regex){
+		Set<String> keys=new HashSet<String>();
+		Pattern pattern=Pattern.compile(regex);
+		
+		for(String key:defaultConfig.keySet()){
+			if(pattern.matcher(key).matches()){
+				keys.add(key);
+			}
+		}
+		
+		for(String key:this.keySet()){
+			if(pattern.matcher(key).matches()){
+				keys.add(key);
+			}
+		}
+		return keys;
 	}
 	
 }

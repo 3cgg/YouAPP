@@ -55,4 +55,24 @@
   </description>
 </property>
 
+
+<property>
+  <name>youapp.event.pipe.prefix.logging.class</name>
+  <value>j.jave.kernal.eventdriven.servicehub.JEventQueueLoggingPipe</value>
+  <description>Event logging API.</description>
+</property>
+
+<property>
+  <name>youapp.event.pipe.prefix.logging.order</name>
+  <value>2</value>
+  <description>Event logging API.</description>
+</property>
+
+<property>
+  <name>youapp.event.pipe.prefix.logging.message</name>
+  <value>Log all message.</value>
+  <description>Event logging API.</description>
+</property>
+
+
 </configuration>

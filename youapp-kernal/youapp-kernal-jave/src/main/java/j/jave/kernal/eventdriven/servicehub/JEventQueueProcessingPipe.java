@@ -1,24 +1,26 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor;
 import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.AbstractQueue;
 import java.util.concurrent.FutureTask;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 public class JEventQueueProcessingPipe extends JEventQueuePipe{
 	
-	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-	{
-		config.setName("JEventQueueProcessingPipe");
+	
+	
+	@Override
+	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
+		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
+		config.setName(JEventQueueProcessingPipe.class.getName());
+		return config;
 	}
-	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
-	=new JQueueDistributeProcessor<JEventExecution>(new LinkedBlockingQueue<JEventExecution>(),config);
-	{
-		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
+	
+	@Override
+	protected JAbstractEventExecutionHandler getHandler() {
+		return new JAbstractEventExecutionHandler() {
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
 					AbstractQueue<JEventExecution> eventExecutions) {
@@ -52,12 +54,12 @@ public class JEventQueueProcessingPipe extends JEventQueuePipe{
 				handoff(execution);
 			}
 			
-		});
+		};
 	}
 	
 	protected void addEventExecution(JEventExecution eventExecution){
 		eventExecution.setPhase(Phase.EVENT_RESULT_GET_READY);
-		queueDistributeProcessor.addExecution(eventExecution);
+		execute(eventExecution);
 	}
 	
 

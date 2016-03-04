@@ -2,8 +2,6 @@ package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.support.JPriorityBlockingQueue;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor;
 import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.AbstractQueue;
@@ -16,15 +14,16 @@ import java.util.AbstractQueue;
  */
 public class JEventQueueINPipe extends JEventQueuePipe{
 
-
-	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-	{
-		config.setName("JEventQueueINPipe");
+	@Override
+	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
+		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
+		config.setName(JEventQueueINPipe.class.getName());
+		return config;
 	}
-	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
-	=new JQueueDistributeProcessor<JEventExecution>(new JPriorityBlockingQueue<JEventExecution>(),config);
-	{
-		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
+	
+	@Override
+	protected JAbstractEventExecutionHandler getHandler() {
+		return new JAbstractEventExecutionHandler() {
 
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
@@ -44,8 +43,7 @@ public class JEventQueueINPipe extends JEventQueuePipe{
 					AbstractQueue<JEventExecution> eventExecutions) {
 				handoff(execution);
 			}
-			
-		});
+		};
 	}
 	
 	void addAPPEvent(JAPPEvent<? > appEvent){
@@ -54,7 +52,7 @@ public class JEventQueueINPipe extends JEventQueuePipe{
 		eventInfo.addAsyncCallbacks(appEvent.getAttachedAsyncCallbackChain());
 		eventInfo.setProcessed(false);
 		eventInfo.setPhase(Phase.EVENT_CONSUME_READY);
-		queueDistributeProcessor.addExecution(eventInfo);
+		execute(eventInfo);
 	}
 
 	@Override

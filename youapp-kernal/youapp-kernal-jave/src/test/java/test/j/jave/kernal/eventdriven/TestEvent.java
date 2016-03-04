@@ -1,5 +1,7 @@
 package test.j.jave.kernal.eventdriven;
 
+import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
+import j.jave.kernal.eventdriven.servicehub.JEventExecution;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
@@ -8,8 +10,14 @@ import j.jave.kernal.security.service.JMD5CipherService;
 public class TestEvent  extends TestEventSupport{
 	
 	public void testUserFind(){
-		Object object=JServiceHubDelegate.get().addImmediateEvent(new UserFindEvent(this, "jiaz"));
-		System.out.println(object);
+		JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz"),new JAsyncCallback() {
+			
+			@Override
+			public void callback(Object[] result, JEventExecution eventExecution) {
+				System.out.println("-------===--------"+result);
+			}
+		});
+		System.out.println("E");
 	}
 	
 	public void testHubMeta(){

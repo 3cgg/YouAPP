@@ -1,25 +1,25 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor;
 import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.util.AbstractQueue;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class JEventQueueOUTPipe extends JEventQueuePipe {
 	
-	JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-	{
-		config.setName("JEventQueueOUTPipe");
+	@Override
+	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
+		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
+		config.setName(JEventQueueOUTPipe.class.getName());
+		return config;
 	}
-	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
-	=new JQueueDistributeProcessor<JEventExecution>(new LinkedBlockingQueue<JEventExecution>(),config);
-	{
-		queueDistributeProcessor.setHandler(new JAbstractEventExecutionHandler() {
+	
+	@Override
+	protected JAbstractEventExecutionHandler getHandler() {
+		return new JAbstractEventExecutionHandler() {
 
 			@Override
 			public boolean isLaterProcess(JEventExecution execution,
@@ -42,14 +42,14 @@ public class JEventQueueOUTPipe extends JEventQueuePipe {
 				handoff(execution);
 			}
 			
-		});
+		};
 	}
 	
 	protected void addEventExecution(JEventExecution eventExecution){
 		//if need event callback.
 		if(JCollectionUtils.hasInCollect(eventExecution.getAsyncCallbackChain())){
 			eventExecution.setPhase(Phase.EVENT_CALLBACK_READY);
-			queueDistributeProcessor.addExecution(eventExecution);
+			execute(eventExecution);
 		}
 		else{
 			waitForGets.put(eventExecution.getEvent().getUnique(), eventExecution);

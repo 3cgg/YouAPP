@@ -40,6 +40,19 @@ public class JQueueDistributeProcessor<T> {
 		 */
 		private int fixedThreadCount=10;
 		
+		/**
+		 * if setup the execution task.
+		 */
+		private boolean setup=true;
+		
+		public boolean isSetup() {
+			return setup;
+		}
+
+		public void setSetup(boolean setup) {
+			this.setup = setup;
+		}
+
 		public String getName() {
 			return name;
 		}
@@ -87,12 +100,15 @@ public class JQueueDistributeProcessor<T> {
 	 * configure end
 	 */
 	
+	private boolean setup=true;
+	
 	private void initConfig(JQueueDistributeProcessorConfig config){
 		this.name=config.name;
 		this.countPerSec=config.countPerSec;
 		this.fixedThreadCount=config.fixedThreadCount;
 		this.pollbackCapacity=countPerSec*2;
 		pollbacks=new JLinkedBlockingQueue<T>(pollbackCapacity);
+		this.setup=config.isSetup();
 	}
 	
 	public JQueueDistributeProcessor(AbstractQueue<T> executions,JQueueDistributeProcessorConfig config){
@@ -114,8 +130,12 @@ public class JQueueDistributeProcessor<T> {
 	
 	private ThreadPoolExecutor getTaskThreadPoolExecutor() {
 		if(taskThreadPoolExecutor==null){
-			taskThreadPoolExecutor =new ThreadPoolExecutor
-					(fixedThreadCount, fixedThreadCount, 1, TimeUnit.SECONDS, linkedBlockingQueue,new ThreadPoolExecutor.CallerRunsPolicy());
+			synchronized(this){
+				if(taskThreadPoolExecutor==null){
+					taskThreadPoolExecutor =new ThreadPoolExecutor
+							(fixedThreadCount, fixedThreadCount, 1, TimeUnit.SECONDS, linkedBlockingQueue,new ThreadPoolExecutor.CallerRunsPolicy());
+				}
+			}
 		}
 		return taskThreadPoolExecutor;
 	}
@@ -189,15 +209,20 @@ public class JQueueDistributeProcessor<T> {
 	/**
 	 * scan all {@link #eventQueue} to pop a highest event to execute.
 	 */
-	private ExecutorService scanOneByOneExecutor =Executors.newFixedThreadPool(1,new ThreadFactory() {
-		@Override
-		public Thread newThread(Runnable r) {
-			return new Thread(r, getName()+"-ScanOneByOne");
+	private ExecutorService scanOneByOneExecutor =null;
+	
+	private synchronized void setup(){
+		if(scanOneByOneExecutor==null){
+			if(setup){
+				scanOneByOneExecutor =Executors.newFixedThreadPool(1,new ThreadFactory() {
+					@Override
+					public Thread newThread(Runnable r) {
+						return new Thread(r, getName()+"-ScanOneByOne");
+					}
+				});
+				scanOneByOneExecutor.execute(scanOneByOneTask);
+			}
 		}
-	});
-
-	private void setup(){
-		scanOneByOneExecutor.execute(scanOneByOneTask);
 	}
 	
 	/**

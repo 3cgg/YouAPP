@@ -157,7 +157,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 		JPageImpl<M> page=new JPageImpl<M>();
 		page.setContent(returnPage.getContent());
 		page.setTotalRecordNumber(returnPage.getTotalElements());
-		page.setTotalPageNumber(returnPage.getTotalPages());
+		page.setTotalPageNumber(returnPage.getTotalPages()-1);
 		JPageRequest pageRequest=(JPageRequest)pageable;
 		pageRequest.setPageNumber(returnPage.getNumber());
 		page.setPageable(pageable);

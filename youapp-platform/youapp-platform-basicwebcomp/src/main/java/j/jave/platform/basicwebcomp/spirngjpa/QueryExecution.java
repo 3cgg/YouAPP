@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.core.service;
+package j.jave.platform.basicwebcomp.spirngjpa;
 
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageRequest;

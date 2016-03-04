@@ -9,11 +9,11 @@ import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.core.service.QueryBuilder;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
+import j.jave.platform.basicwebcomp.spirngjpa.QueryBuilder;
 
 import java.util.HashMap;
 import java.util.List;

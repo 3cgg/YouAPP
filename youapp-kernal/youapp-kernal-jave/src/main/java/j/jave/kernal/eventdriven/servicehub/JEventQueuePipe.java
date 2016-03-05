@@ -1,13 +1,11 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Any subclass extends from this , which provides the function of monitoring the event queue processing. 
@@ -37,10 +35,8 @@ public abstract class JEventQueuePipe {
 	 */
 	private String name;
 	
-	private final JQueueDistributeProcessor<JEventExecution> queueDistributeProcessor
-	=new JQueueDistributeProcessor<JEventExecution>(new LinkedBlockingQueue<JEventExecution>(),
-			getHandler(),
-			getQueueDistributeProcessorConfig());
+	private final JQueueDistributeProcessor queueDistributeProcessor
+	=new JQueueDistributeProcessor(getHandler(),getQueueDistributeProcessorConfig(),this);
 	
 	/**
 	 * configure the queue distributing processor
@@ -64,13 +60,44 @@ public abstract class JEventQueuePipe {
 	 * then can pass the event to processor via calling {@link #execute(JEventExecution)} 
 	 * @param eventExecution
 	 */
-	protected abstract void addEventExecution(JEventExecution eventExecution);
+	void addEventExecution(JEventExecution eventExecution){
+		if(canProcessing(eventExecution)){
+			prepareProcessing(eventExecution);
+			execute(eventExecution);
+		}
+		else{
+			if(isHandOff(eventExecution)){
+				//hand off to next pipe.
+				handoff(eventExecution);
+			}
+		}
+	}
+	
+	/**
+	 * ready to join into processor.  
+	 * @param eventExecution
+	 * @return true if can 
+	 */
+	protected boolean canProcessing(JEventExecution eventExecution){
+		return true;
+	}
+	
+	protected boolean isHandOff(JEventExecution eventExecution){
+		return true;
+	}
+	/**
+	 * prepare to process.  
+	 * @param eventExecution
+	 * @return true if can 
+	 */
+	protected void prepareProcessing(JEventExecution eventExecution){
+	}
 	
 	/**
 	 * hand out the event to processor.
 	 * @param eventExecution
 	 */
-	protected void execute(JEventExecution eventExecution){
+	private void execute(JEventExecution eventExecution){
 		queueDistributeProcessor.addExecution(eventExecution);
 	}
 	
@@ -78,7 +105,7 @@ public abstract class JEventQueuePipe {
 	 * hand off the <code>JEventExecution</code> to next pipe.
 	 * @param eventExecution
 	 */
-	public final void handoff(JEventExecution eventExecution){
+	final void handoff(JEventExecution eventExecution){
 		next().addEventExecution(eventExecution);
 	}
 	

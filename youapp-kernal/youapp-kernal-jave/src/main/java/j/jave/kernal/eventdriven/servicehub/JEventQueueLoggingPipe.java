@@ -1,9 +1,8 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
-
-import java.util.AbstractQueue;
 
 public class JEventQueueLoggingPipe extends JEventQueuePipe {
 
@@ -20,29 +19,20 @@ public class JEventQueueLoggingPipe extends JEventQueuePipe {
 		return new JAbstractEventExecutionHandler() {
 
 			@Override
-			public boolean isLaterProcess(JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
+			public boolean isLaterProcess(JEventExecution execution) {
 				return false;
 			}
 
 			@Override
-			public JPersistenceTask persistenceTask(JEventExecution execution,
-					AbstractQueue<JEventExecution> executions) {
+			public JPersistenceTask persistenceTask(JEventExecution execution) {
 				LOGGER.info(" the event processed : "+JJSON.get().formatObject(execution));
 				return null;
 			}
 
 			@Override
-			public void postProcess(JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
-				handoff(execution);
+			public void postProcess(JEventExecution execution) {
 			}
 		};
-	}
-	
-	@Override
-	public void addEventExecution(JEventExecution eventExecution) {
-		execute(eventExecution);
 	}
 
 }

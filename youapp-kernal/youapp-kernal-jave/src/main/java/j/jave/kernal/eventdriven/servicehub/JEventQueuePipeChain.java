@@ -1,12 +1,13 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JPriorityBlockingQueue;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.List;
 /**
  * the event queue chain thats link different event queue pipe, the default order is 
  * <pre>
- * {@link JEventQueueINPipe} -> {@link JEventQueueProcessingPipe} -> {@link JEventQueueOUTPipe} -> ...( custom event queue )... -> {@link JEventQueueEndPipe}
+ * {@link JEventQueueEventExecutingPipe} -> {@link JEventQueueEventResultGettingPipe} -> {@link JEventQueueEventResultCallBackAndGetLaterPipe} -> ...( custom event queue )... -> {@link JEventQueueEndPipe}
  * </pre>
  * @author J
- *@see JEventQueueINPipe
- *@see JEventQueueProcessingPipe
- *@see JEventQueueOUTPipe
+ *@see JEventQueueEventExecutingPipe
+ *@see JEventQueueEventResultGettingPipe
+ *@see JEventQueueEventResultCallBackAndGetLaterPipe
  *@see JEventQueueEndPipe
  */
 public class JEventQueuePipeChain {
@@ -28,13 +29,13 @@ public class JEventQueuePipeChain {
 
 	private final static List<JEventQueuePipe> eventQueuePipes=new ArrayList<JEventQueuePipe>(6);
 	
-	private JEventQueueOUTPipe eventQueueOUT=null;
+	private JEventQueueEventResultCallBackAndGetLaterPipe eventQueueEventResultCallBackAndGetLaterPipe=null;
 	
 	public JEventQueuePipeChain(){
 		int order=-1; 
-		register(JEventQueueINPipe.class, ++order);
-		register(JEventQueueProcessingPipe.class, ++order);
-		eventQueueOUT=(JEventQueueOUTPipe) register(JEventQueueOUTPipe.class, ++order);
+		register(JEventQueueEventExecutingPipe.class, ++order);
+		register(JEventQueueEventResultGettingPipe.class, ++order);
+		eventQueueEventResultCallBackAndGetLaterPipe=(JEventQueueEventResultCallBackAndGetLaterPipe) register(JEventQueueEventResultCallBackAndGetLaterPipe.class, ++order);
 		if(LOGGER.isDebugEnabled()){
 			register(JEventQueueResultLoggerPipe.class, ++order);
 		}
@@ -66,19 +67,32 @@ public class JEventQueuePipeChain {
 		
 		@Override
 		protected JAbstractEventExecutionHandler getHandler() {
-			return null;
+			return new JAbstractEventExecutionHandler() {
+				@Override
+				public void postProcess(JEventExecution execution) {
+				}
+				@Override
+				public boolean isLaterProcess(JEventExecution execution) {
+					return false;
+				}
+				@Override
+				public JPersistenceTask persistenceTask(JEventExecution execution) {
+					LOGGER.debug("[unique : "+execution.getEvent().getUnique()+"] is completely executed.");
+					return null;
+				}
+				@Override
+				public boolean isHandOff(JEventExecution execution) {
+					return false;
+				}
+			};
 		}
 		
 		@Override
 		protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 			JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-			config.setSetup(false);
+			config.setSetup(true);
+			config.setName(JEventQueueEndPipe.class.getName());
 			return config;
-		}
-		
-		@Override
-		public void addEventExecution(JEventExecution eventExecution) {
-			LOGGER.debug("the event is processed completely,then drop it.");
 		}
 	}
 	
@@ -124,7 +138,7 @@ public class JEventQueuePipeChain {
 	 * @throws JEventExecutionException
 	 */
 	Object getEventResult(String eventUnique) throws JEventExecutionException{
-		return eventQueueOUT.getEventResult(eventUnique);
+		return eventQueueEventResultCallBackAndGetLaterPipe.getEventResult(eventUnique);
 	}
 	
 	public static class JEventQueuePipeInfo implements Comparable<JEventQueuePipeInfo>{

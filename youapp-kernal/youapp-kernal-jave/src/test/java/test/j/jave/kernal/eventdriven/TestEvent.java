@@ -10,13 +10,30 @@ import j.jave.kernal.security.service.JMD5CipherService;
 public class TestEvent  extends TestEventSupport{
 	
 	public void testUserFind(){
-		JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz"),new JAsyncCallback() {
-			
-			@Override
-			public void callback(Object[] result, JEventExecution eventExecution) {
-				System.out.println("-------===--------"+result);
-			}
-		});
+		System.out.println("BEGIN");
+		for(int i=0;i<100000;i++){
+			final String istr=""+i;
+			JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz : "+i),new JAsyncCallback() {
+				
+				@Override
+				public void callback(Object[] result, JEventExecution eventExecution) {
+					System.out.println("-------===---"+istr+"-----"+result[0]);
+				}
+			});
+		}
+		System.out.println("M");
+		
+		for(int i=0;i<100000;i++){
+			final String istr=""+i;
+			JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz : "+i),new JAsyncCallback() {
+				
+				@Override
+				public void callback(Object[] result, JEventExecution eventExecution) {
+					System.out.println("-------===---"+istr+"-----"+result);
+				}
+			});
+		}
+		
 		System.out.println("E");
 	}
 	

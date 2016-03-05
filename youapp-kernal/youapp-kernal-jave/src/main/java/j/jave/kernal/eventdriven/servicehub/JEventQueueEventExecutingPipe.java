@@ -1,10 +1,8 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
-import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.support.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
-
-import java.util.AbstractQueue;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
 
 /**
  * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
@@ -12,12 +10,12 @@ import java.util.AbstractQueue;
  * the pipe does not support {@link #addEventExecution(JEventExecution)}.
  * @author J
  */
-public class JEventQueueINPipe extends JEventQueuePipe{
+public class JEventQueueEventExecutingPipe extends JEventQueuePipe{
 
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueINPipe.class.getName());
+		config.setName(JEventQueueEventExecutingPipe.class.getName());
 		return config;
 	}
 	
@@ -26,22 +24,18 @@ public class JEventQueueINPipe extends JEventQueuePipe{
 		return new JAbstractEventExecutionHandler() {
 
 			@Override
-			public boolean isLaterProcess(JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
+			public boolean isLaterProcess(JEventExecution execution) {
 				return false;
 			}
 
 			@Override
-			public JPersistenceTask persistenceTask(JEventExecution execution,
-					AbstractQueue<JEventExecution> executions) {
+			public JPersistenceTask persistenceTask(JEventExecution execution) {
 				final JPersistenceTask persitenceTask=new JPersistenceExecuteEventOnListenerTask(execution);
 				return persitenceTask;
 			}
 			
 			@Override
-			public void postProcess(JEventExecution execution,
-					AbstractQueue<JEventExecution> eventExecutions) {
-				handoff(execution);
+			public void postProcess(JEventExecution execution) {
 			}
 		};
 	}
@@ -52,13 +46,7 @@ public class JEventQueueINPipe extends JEventQueuePipe{
 		eventInfo.addAsyncCallbacks(appEvent.getAttachedAsyncCallbackChain());
 		eventInfo.setProcessed(false);
 		eventInfo.setPhase(Phase.EVENT_CONSUME_READY);
-		execute(eventInfo);
-	}
-
-	@Override
-	protected void addEventExecution(JEventExecution eventExecution) {
-		throw new JOperationNotSupportedException("it is the first entrance only retrieve event source.");
-		
+		addEventExecution(eventInfo);
 	}
 
 	@SuppressWarnings("serial")

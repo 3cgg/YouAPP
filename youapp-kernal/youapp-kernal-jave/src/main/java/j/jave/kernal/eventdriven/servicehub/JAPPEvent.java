@@ -41,6 +41,8 @@ public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements C
 	 */
 	private final List<JAsyncCallback> attachedAsyncCallbackChain=new ArrayList<JAsyncCallback>();
 	
+	private boolean getResultLater=false;
+	
 	/**
 	 * the collection is only used by the framework, the subclass should not use. 
 	 */
@@ -121,4 +123,12 @@ public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements C
 		return this.priority-o.getPriority();
 	}
 
+	public boolean isGetResultLater() {
+		return getResultLater;
+	}
+
+	public void setGetResultLater(boolean getResultLater) {
+		this.getResultLater = getResultLater;
+	}
+	
 }

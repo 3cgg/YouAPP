@@ -31,6 +31,8 @@ class JServiceEventProcessor {
 	
 	private JServiceHub serviceHub=JServiceHub.get();
 	
+	private JAsyncEventResultRepoService eventResultRepo=JAsyncEventResultRepoServiceUtil.get();
+	
 	private static JServiceEventProcessor eventProcessor=null;
 	
 	private JServiceEventProcessor(){}
@@ -60,7 +62,7 @@ class JServiceEventProcessor {
 	 */
 	public Object getEventResult(String eventUnique,long wait) throws JEventExecutionException{
 		try{
-			return eventQueuePipeChain.getEventResult(eventUnique);
+			return eventResultRepo.getEventResult(eventUnique);
 		}catch(Exception e){
 			if(wait>0){
 				try {
@@ -136,6 +138,11 @@ class JServiceEventProcessor {
 		return serviceHub.executeEventOnListener(event);
 	}
 	
+	/**
+	 * get service, if the service gets lost , thrown some exception.
+	 * @param event
+	 * @return
+	 */
 	public JService getService(JServiceGetEvent event){
 		return serviceHub.trigger(event);
 	}

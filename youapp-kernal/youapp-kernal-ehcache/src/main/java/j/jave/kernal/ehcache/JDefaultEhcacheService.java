@@ -3,10 +3,12 @@
  */
 package j.jave.kernal.ehcache;
 
-import j.jave.kernal.jave.io.JFile;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.jave.io.JClassRootPathResolver;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 
 import net.sf.ehcache.CacheManager;
 
@@ -17,23 +19,9 @@ import net.sf.ehcache.CacheManager;
  */
 public class JDefaultEhcacheService extends JAbstractEhcacheService implements JEhcacheService{
 	
-	private CacheManager cacheManager;
+	public JDefaultEhcacheService(){}
 	
-	/**
-	 * file constructor
-	 * @param file  the XML file for Ehcache, such as ehcache.xml
-	 * @throws IOException 
-	 */
-	public JDefaultEhcacheService(JFile file) throws IOException {
-		try {
-			InputStream inputStream=file.getInputStream();
-			initCacheManager(inputStream);
-			produceEhcache();
-		}catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
-			throw e;
-		}
-	}
+	private CacheManager cacheManager;
 	
 	/**
 	 * init cache manager .
@@ -43,20 +31,18 @@ public class JDefaultEhcacheService extends JAbstractEhcacheService implements J
 		cacheManager=CacheManager.create(inputStream);
 	}
 	
-	/**
-	 * InputStream constructor
-	 * @param inputStream
-	 */
-	public JDefaultEhcacheService(InputStream inputStream){
-		initCacheManager(inputStream);
+	public JDefaultEhcacheService(JConfiguration configuration){
+		JDefaultEhcacheServiceConfiguration ehcacheConfig=new JDefaultEhcacheServiceConfiguration();
+		ehcacheConfig.setConfigLocation(configuration.getString(JEhcacheProperties.EHCACHE_CONFIG_LOCATION, "youappsub-ehcache.xml"));
+		initCacheManager(getConfiguration(ehcacheConfig));
 		produceEhcache();
 	}
 	
 	/**
 	 * default constructor.  use default xml in the JAR. 
 	 */
-	public JDefaultEhcacheService(JEhcacheServiceConfigure ehcacheServiceConfigure){
-		initCacheManager(getConfiguration(ehcacheServiceConfigure));
+	public JDefaultEhcacheService(JDefaultEhcacheServiceConfiguration configuration){
+		initCacheManager(getConfiguration(configuration));
 		produceEhcache();
 	}
 	
@@ -69,9 +55,14 @@ public class JDefaultEhcacheService extends JAbstractEhcacheService implements J
 		}
 	}
 
-	private InputStream getConfiguration(JEhcacheServiceConfigure ehcacheServiceConfigure){
+	private InputStream getConfiguration(JDefaultEhcacheServiceConfiguration configuration){
 		try {
-			return ehcacheServiceConfigure.getConfigLocation().toURL().openStream();
+			String configLocation=configuration.getConfigLocation();
+			URI configURI=new JClassRootPathResolver(configLocation).resolve();
+			if(configURI==null||(!new File(configURI).exists())){
+				return JDefaultEhcacheServiceConfiguration.class.getResourceAsStream(JEhcacheProperties.DEFAULT_EHCACHE);
+			}
+			return configURI.toURL().openStream();
 		}catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}

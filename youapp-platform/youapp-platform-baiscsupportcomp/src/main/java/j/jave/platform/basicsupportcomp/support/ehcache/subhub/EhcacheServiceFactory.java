@@ -3,10 +3,9 @@
  */
 package j.jave.platform.basicsupportcomp.support.ehcache.subhub;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.ehcache.JDefaultEhcacheService;
-import j.jave.kernal.ehcache.JDefaultEhcacheServiceConfiguration;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
-import j.jave.kernal.ehcache.JEhcacheServiceConfigure;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 import net.sf.ehcache.Ehcache;
@@ -26,7 +25,7 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 	}
 	
 	@Autowired(required=false)
-	private JEhcacheServiceConfigure ehcacheServiceConfigure;
+	private BeanSupportEhcacheServiceConfigure ehcacheServiceConfigure;
 	
 	
 	private EhcacheService ehcacheService;
@@ -39,12 +38,8 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 		if(ehcacheService==null){
 			synchronized (sync) {
 				
-				if(ehcacheServiceConfigure==null){
-					ehcacheServiceConfigure=new JDefaultEhcacheServiceConfiguration();
-				}
-				
 				// Ehcache may holded by spring. 
-				if(BeanSupportEhcacheServiceConfigure.class.isInstance(ehcacheServiceConfigure)){
+				if(ehcacheServiceConfigure!=null){
 					BeanSupportEhcacheServiceConfigure springHolder=(BeanSupportEhcacheServiceConfigure) ehcacheServiceConfigure;
 					String beanName=springHolder.getEhcacheBeanName();
 					if(JStringUtils.isNotNullOrEmpty(beanName)){
@@ -63,7 +58,8 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 							SpringEhcacheAware defaultSpringBeanEhcacheServiceImpl=
 									getBeanByName("defaultSpringBeanEhcacheServiceImpl", SpringEhcacheAware.class);
 							defaultSpringBeanEhcacheServiceImpl.putEhcache(cache);
-							return (EhcacheService) defaultSpringBeanEhcacheServiceImpl;
+							this.ehcacheService= (EhcacheService) defaultSpringBeanEhcacheServiceImpl;
+							return this.ehcacheService;
 						}
 						else{
 							LOGGER.info("cache bean found:"+bean.getClass().getName());
@@ -74,13 +70,15 @@ public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheSe
 						
 					}
 				}
-				// use default .
-				JEhcacheServiceAware defaultEhcacheServiceImpl=
-						getBeanByName("defaultEhcacheServiceImpl", JEhcacheServiceAware.class);
-				JDefaultEhcacheService defaultEhcacheService=new JDefaultEhcacheService(ehcacheServiceConfigure);
-				defaultEhcacheServiceImpl.setEhcacheService(defaultEhcacheService);
-				
-				this.ehcacheService= (EhcacheService) defaultEhcacheServiceImpl;
+				else{
+					// use default .
+					JEhcacheServiceAware defaultEhcacheServiceImpl=
+							getBeanByName("defaultEhcacheServiceImpl", JEhcacheServiceAware.class);
+					JDefaultEhcacheService defaultEhcacheService=new JDefaultEhcacheService(JConfiguration.get());
+					defaultEhcacheServiceImpl.setEhcacheService(defaultEhcacheService);
+					this.ehcacheService= (EhcacheService) defaultEhcacheServiceImpl;
+					return this.ehcacheService;
+				}
 			}
 		}
 		return ehcacheService;

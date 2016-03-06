@@ -29,13 +29,11 @@ public class JEventQueuePipeChain {
 
 	private final static List<JEventQueuePipe> eventQueuePipes=new ArrayList<JEventQueuePipe>(6);
 	
-	private JEventQueueEventResultCallBackAndGetLaterPipe eventQueueEventResultCallBackAndGetLaterPipe=null;
-	
 	public JEventQueuePipeChain(){
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEventResultGettingPipe.class, ++order);
-		eventQueueEventResultCallBackAndGetLaterPipe=(JEventQueueEventResultCallBackAndGetLaterPipe) register(JEventQueueEventResultCallBackAndGetLaterPipe.class, ++order);
+		register(JEventQueueEventResultCallBackAndGetLaterPipe.class, ++order);
 		if(LOGGER.isDebugEnabled()){
 			register(JEventQueueResultLoggerPipe.class, ++order);
 		}
@@ -129,16 +127,6 @@ public class JEventQueuePipeChain {
 		}catch(JOperationNotSupportedException e){
 			throw new JEventExecutionException("event queue pipe [name:"+eventQueuePipe.getName()+",uinique:"+eventQueuePipe.getUnique()+"] must override the method { JEventExecution addAPPEvent(JAPPEvent<? > appEvent) }");
 		}
-	}
-	
-	/**
-	 * get to test if the result of the event with the identification is calculated .
-	 * @param eventUnique
-	 * @return
-	 * @throws JEventExecutionException
-	 */
-	Object getEventResult(String eventUnique) throws JEventExecutionException{
-		return eventQueueEventResultCallBackAndGetLaterPipe.getEventResult(eventUnique);
 	}
 	
 	public static class JEventQueuePipeInfo implements Comparable<JEventQueuePipeInfo>{

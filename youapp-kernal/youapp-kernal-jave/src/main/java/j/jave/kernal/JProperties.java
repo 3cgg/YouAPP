@@ -18,4 +18,6 @@ public class JProperties {
 	
 	public static final String EVENT_PIPE_PREFIX="youapp.event.pipe.prefix";
 	
+	public static final String ASYNC_EVENT_RESULT_REPO_SERVICE="youapp.service.async.event.result.repo";
+	
 }

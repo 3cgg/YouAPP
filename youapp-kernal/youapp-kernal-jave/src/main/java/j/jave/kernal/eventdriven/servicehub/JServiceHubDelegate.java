@@ -37,7 +37,7 @@ public class JServiceHubDelegate {
 	}
 	
 	/**
-	 * get service 
+	 * get service lazily, the service proxy returned,
 	 * @param object the caller.
 	 * @param clazz
 	 * @return
@@ -46,6 +46,12 @@ public class JServiceHubDelegate {
 		return JServiceLazyProxy.proxy(object, clazz);
 	}
 	
+	/**
+	 * get service, if the service gets lost , thrown some exception.
+	 * @param object
+	 * @param clazz
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	<T> T getActualService(Object object,Class<T> clazz){
 		JServiceGetEvent getEvent=new JServiceGetEvent(object, clazz);

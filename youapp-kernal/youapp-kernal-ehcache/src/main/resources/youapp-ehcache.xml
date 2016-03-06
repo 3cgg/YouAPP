@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.ehcache.config.location</name>
+  <value>youappsubconfig-ehcache.xml</value>
+  <description>youapp ehcache config file</description>
+</property>
+
+</configuration>

@@ -3,6 +3,7 @@
  */
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerDisableEvent;
@@ -47,8 +48,6 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	 * <p>VALUE : service factory .implements <code>JServiceFactory</code>
 	 */
 	private static Map<Class<?>, JServiceFactory<?>> services=new ConcurrentHashMap<Class<?>, JServiceFactory<?>>();
-	
-	private Object sync=new Object();
 	
 	/**
 	 * KEY: service. implements <code>JService</code>
@@ -133,17 +132,20 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			}
 		}
 		else{
-			throw new JServiceStatusException("service ("+serviceFactory.getName()+") is missing in the system.");
+			throw new JServiceStatusException("service ("+clazz.getName()+") is missing in the system.");
 		}
 		return service;
 	}
 	
-	public void register(Class<?> clazz,JServiceFactory<?> serviceFactory){
-		synchronized (sync) {
-			services.put(clazz, serviceFactory);
-			serviceHubManager.addNewService(clazz);
-			trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
+	public synchronized void register(Class<?> clazz,JServiceFactory<?> serviceFactory){
+		if(services.containsKey(clazz)){
+			JServiceFactory<?> exists=services.get(clazz);
+			throw new JServiceRegisteringException(clazz.getName()+" is registered , name : "
+					+ exists.getName()+" , service factory : "+exists.getClass().getName());
 		}
+		services.put(clazz, serviceFactory);
+		serviceHubManager.addNewService(clazz);
+		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
 	}
 	
 	private JServiceHub(){}

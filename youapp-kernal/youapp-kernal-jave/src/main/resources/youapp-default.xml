@@ -75,4 +75,10 @@
 </property>
 
 
+<property>
+  <name>youapp.service.async.event.result.repo</name>
+  <value>JDefaultAsyncEventResultRepoService</value>
+  <description>Async Event Result Repo Service</description>
+</property>
+
 </configuration>

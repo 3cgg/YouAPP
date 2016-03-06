@@ -3,14 +3,12 @@
  */
 package j.jave.platform.basicsupportcomp.support.ehcache.subhub;
 
-import j.jave.kernal.ehcache.JEhcacheServiceConfigure;
 
 /**
  * @author Administrator
  *
  */
-public interface BeanSupportEhcacheServiceConfigure extends
-		JEhcacheServiceConfigure {
+public interface BeanSupportEhcacheServiceConfigure{
 
 	public void setEhcacheBeanName(String ehcacheBeanName);
 	

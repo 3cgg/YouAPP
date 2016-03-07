@@ -7,6 +7,8 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class JStringUtils {
 
@@ -228,5 +230,20 @@ public abstract class JStringUtils {
 			result=result.concat(delimit).concat(string);
 		}
 		return result.replaceFirst(delimit, "");
+	}
+	
+	public static String[] toStringArray(String strings,String delimit){
+		return toStringList(strings, delimit).toArray(new String[0]);
+	}
+	
+	public static List<String> toStringList(String strings,String delimit){
+		List<String> list=new ArrayList<String>();
+		String[] result=strings.split(delimit);
+		for(String string:result){
+			if(JStringUtils.isNotNullOrEmpty(string)){
+				list.add(string);
+			}
+		}
+		return list;
 	}
 }

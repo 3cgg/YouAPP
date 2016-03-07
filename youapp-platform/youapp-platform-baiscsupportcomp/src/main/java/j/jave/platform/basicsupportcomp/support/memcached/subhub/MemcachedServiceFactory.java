@@ -3,6 +3,7 @@
  */
 package j.jave.platform.basicsupportcomp.support.memcached.subhub;
 
+import j.jave.kernal.memcached.DefaultMemcachedServiceConfiguration;
 import j.jave.kernal.memcached.JDefaultMemcachedDisService;
 import j.jave.kernal.memcached.JMemcachedDisServiceAware;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
@@ -21,7 +22,7 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 		super(MemcachedService.class);
 	}
 	
-	@Autowired(required=false)
+	@Autowired
 	private DefaultMemcachedServiceConfiguration defaultMemcachedServiceConfiguration;
 	
 	private MemcachedService memcachedService;
@@ -33,14 +34,16 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 		
 		if(memcachedService==null){
 			synchronized (sync) {
-				JMemcachedDisServiceAware memcachedService=  (JMemcachedDisServiceAware) getBeanByName("defaultMemcachedServiceImpl"); 
-				if(defaultMemcachedServiceConfiguration!=null){
-					JDefaultMemcachedDisService defaultMemcachedDisService=
-							new JDefaultMemcachedDisService(defaultMemcachedServiceConfiguration.getStoreAddes(),
-									defaultMemcachedServiceConfiguration.getBackupAddes());
-					memcachedService.setMemcachedDisService(defaultMemcachedDisService);
+				if(memcachedService==null){
+					JMemcachedDisServiceAware memcachedService=  (JMemcachedDisServiceAware) getBeanByName("defaultMemcachedServiceImpl"); 
+					if(defaultMemcachedServiceConfiguration!=null){
+						JDefaultMemcachedDisService defaultMemcachedDisService=
+								new JDefaultMemcachedDisService(defaultMemcachedServiceConfiguration.getStoreAddes(),
+										defaultMemcachedServiceConfiguration.getBackupAddes());
+						memcachedService.setMemcachedDisService(defaultMemcachedDisService);
+					}
+					this.memcachedService=(MemcachedService) memcachedService;
 				}
-				this.memcachedService=(MemcachedService) memcachedService;
 			}
 		}
 		return memcachedService;
@@ -48,6 +51,6 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 	
 	@Override
 	public String getName() {
-		return "Cache provider";
+		return "Spring Memcache provider.";
 	}
 }

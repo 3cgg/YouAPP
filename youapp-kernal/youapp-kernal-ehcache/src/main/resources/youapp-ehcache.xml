@@ -9,4 +9,10 @@
   <description>youapp ehcache config file</description>
 </property>
 
+<property>
+  <name>youapp.default.ehcache.enable</name>
+  <value>true</value>
+  <description>youapp ehcache config file</description>
+</property>
+
 </configuration>

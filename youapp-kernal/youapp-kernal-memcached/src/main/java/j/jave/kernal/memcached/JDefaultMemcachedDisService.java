@@ -33,7 +33,12 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService{
 
 	private JObjectLoop<Integer, JMemcached> backupStore=new JObjectLoop<Integer, JMemcached>();
 	
-	private Object sync=new Object();
+	public JDefaultMemcachedDisService(DefaultMemcachedServiceConfiguration configuration) {
+		this(configuration.getStoreAddes(),configuration.getBackupAddes());
+	}
+	
+	public JDefaultMemcachedDisService() {
+	}
 	
 	/**
 	 * constructor 
@@ -41,17 +46,16 @@ public class JDefaultMemcachedDisService implements JMemcachedDisService{
 	 * @param backupAddes
 	 */
 	public JDefaultMemcachedDisService(Map<String, List<String>> storeAddes,Map<String, List<String>> backupAddes){
-		try {
-			synchronized (sync) {
-				if(storeAddes!=null){
-					produce(store, storeAddes);
-				}
-				if(backupAddes!=null){
-					produce(backupStore, storeAddes);
-				}
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		init(storeAddes, backupAddes);
+	}
+
+	private synchronized void init(Map<String, List<String>> storeAddes,
+			Map<String, List<String>> backupAddes) {
+		if(storeAddes!=null){
+			produce(store, storeAddes);
+		}
+		if(backupAddes!=null){
+			produce(backupStore, storeAddes);
 		}
 	}
 

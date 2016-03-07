@@ -1,6 +1,4 @@
-package j.jave.platform.basicsupportcomp.support.memcached.subhub;
-
-import j.jave.kernal.memcached.JDefaultMemcachedDisServiceConfigure;
+package j.jave.kernal.memcached;
 
 import java.util.List;
 import java.util.Map;
@@ -10,18 +8,16 @@ import java.util.Map;
  * @author J
  *
  */
-public class DefaultMemcachedServiceConfiguration implements JDefaultMemcachedDisServiceConfigure {
+public class DefaultMemcachedServiceConfiguration {
 
 	private Map<String, List<String>> storeAddes=null;
 	
 	private Map<String, List<String>> backupAddes=null;
 	
-	@Override
 	public void setStoreAddes(Map<String, List<String>> storeAddes) {
 		this.storeAddes=storeAddes;
 	}
 	
-	@Override
 	public void setBackupAddes(Map<String, List<String>> backupAddes) {
 		this.backupAddes=backupAddes;
 	}

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.memcache.store.address.group.defaultstorage</name>
+  <value>127.0.0.1:11220</value>
+  <description>address list : {
+  127.0.0.1:11220;127.0.0.1:11220;127.0.0.1:11220;...
+  }</description>
+</property>
+
+<property>
+  <name>youapp.memcache.backup.address.group.defaultbackupstorage</name>
+  <value>127.0.0.1:11221</value>
+  <description>address list : {
+  127.0.0.1:11221;127.0.0.1:11221;127.0.0.1:11221;...
+  }</description>
+</property>
+
+<property>
+  <name>youapp.default.memcache.enable</name>
+  <value>true</value>
+  <description> on/off the default memcache</description>
+</property>
+
+</configuration>

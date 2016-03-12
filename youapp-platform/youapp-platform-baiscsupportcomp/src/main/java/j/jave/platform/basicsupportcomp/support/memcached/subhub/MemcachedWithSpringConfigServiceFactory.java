@@ -9,28 +9,19 @@ import j.jave.kernal.memcached.JMemcachedDisServiceAware;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-/**
- * @author Administrator
- *
- */
-@Service(value="memcachedServiceFactory")
-public class MemcachedServiceFactory extends SpringServiceFactorySupport<MemcachedService> {
+@Deprecated
+public class MemcachedWithSpringConfigServiceFactory extends SpringServiceFactorySupport<MemcachedWithSpringConfigService> {
 	
-	public MemcachedServiceFactory() {
-		super(MemcachedService.class);
-	}
-	
-	@Autowired
+	@Autowired(required=false)
 	private DefaultMemcachedServiceConfiguration defaultMemcachedServiceConfiguration;
 	
-	private MemcachedService memcachedService;
+	private MemcachedWithSpringConfigService memcachedService;
 	
 	private Object sync=new Object();
 	
 	@Override
-	public MemcachedService getService() {
+	public MemcachedWithSpringConfigService getService() {
 		
 		if(memcachedService==null){
 			synchronized (sync) {
@@ -42,7 +33,10 @@ public class MemcachedServiceFactory extends SpringServiceFactorySupport<Memcach
 										defaultMemcachedServiceConfiguration.getBackupAddes());
 						memcachedService.setMemcachedDisService(defaultMemcachedDisService);
 					}
-					this.memcachedService=(MemcachedService) memcachedService;
+					else{
+						LOGGER.warn("memcach with spring configuration is not configured, so that is off.");
+					}
+					this.memcachedService=(MemcachedWithSpringConfigService) memcachedService;
 				}
 			}
 		}

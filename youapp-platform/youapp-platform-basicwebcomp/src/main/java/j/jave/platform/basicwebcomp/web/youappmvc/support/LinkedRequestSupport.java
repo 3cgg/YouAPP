@@ -5,7 +5,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.support;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedService;
+import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedWithSpringConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.LinkedRequestFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -39,7 +39,7 @@ public class LinkedRequestSupport {
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(LinkedRequestSupport.class);
 	
-	private static MemcachedService memcachedService=JServiceHubDelegate.get().getService(new Object(), MemcachedService.class);
+	private static MemcachedWithSpringConfigService memcachedService=JServiceHubDelegate.get().getService(new Object(), MemcachedWithSpringConfigService.class);
 	
 	/**
 	 * be used for linked request, the linked request parameter stores in the additional map in request scope, the additional map key is 

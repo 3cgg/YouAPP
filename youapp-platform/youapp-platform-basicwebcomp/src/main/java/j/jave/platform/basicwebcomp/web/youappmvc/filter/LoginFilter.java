@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedService;
+import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedWithSpringConfigService;
 import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -38,7 +38,7 @@ public class LoginFilter implements JFilter ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
-	private MemcachedService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedService.class);;
+	private MemcachedWithSpringConfigService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedWithSpringConfigService.class);;
 	
 	private LoginAccessService loginAccessService= JServiceHubDelegate.get().getService(this, LoginAccessService.class);
 	

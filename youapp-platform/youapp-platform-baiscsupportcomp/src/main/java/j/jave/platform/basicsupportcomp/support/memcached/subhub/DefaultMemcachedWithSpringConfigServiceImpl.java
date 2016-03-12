@@ -8,10 +8,8 @@ import j.jave.kernal.memcached.eventdriven.JMemcachedDisDeleteEvent;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisSetEvent;
 
-import org.springframework.stereotype.Service;
-
-@Service(value="defaultMemcachedServiceImpl")
-public class DefaultMemcachedServiceImpl implements MemcachedService,JMemcachedDisServiceAware {
+@Deprecated
+public class DefaultMemcachedWithSpringConfigServiceImpl implements MemcachedWithSpringConfigService,JMemcachedDisServiceAware {
 	
 	private JDefaultMemcachedDisService defaultMemcachedDisService; 
 

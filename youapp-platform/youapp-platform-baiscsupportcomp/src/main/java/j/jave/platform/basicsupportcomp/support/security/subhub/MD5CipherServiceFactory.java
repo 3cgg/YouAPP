@@ -4,10 +4,7 @@ import j.jave.kernal.security.service.JDefaultMD5CipherService;
 import j.jave.kernal.security.service.JMD5CipherService;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 
-import org.springframework.stereotype.Service;
-
-
-@Service(value="j.jave.framework.components.support.security.subhub.MD5CipherServiceFactory")
+@Deprecated
 public class MD5CipherServiceFactory extends SpringServiceFactorySupport<JMD5CipherService> {
 
 	public MD5CipherServiceFactory() {

@@ -10,6 +10,7 @@ import j.jave.kernal.filedistribute.JLocalFilePathStrategy;
 /**
  * @author J
  */
+@Deprecated
 public class DefaultLocalFileDistServiceConfiguration implements
 		JLocalFileDistServiceConfigure {
 

@@ -7,10 +7,8 @@ import j.jave.kernal.security.service.JDefaultDESedeCipherService;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-
-@Service(value="j.jave.framework.components.support.security.subhub.DESedeCipherServiceFactory")
+@Deprecated
 public class DESedeCipherServiceFactory extends SpringServiceFactorySupport<JDESedeCipherService> {
 
 	public DESedeCipherServiceFactory() {

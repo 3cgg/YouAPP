@@ -13,12 +13,11 @@ import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupp
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * @author J
  */
-@Service(value="fileDisServiceFactory")
+@Deprecated
 public class FileDistServiceFactory extends SpringServiceFactorySupport<FileDistService> {
 	
 	public FileDistServiceFactory() {
@@ -27,9 +26,9 @@ public class FileDistServiceFactory extends SpringServiceFactorySupport<FileDist
 	
 	@Autowired(required=false)
 	private DefaultLocalFileDistServiceConfiguration localFileDistServiceConfig;
-	
+
 	private FileDistService fileDisService;
-	
+
 	private Object sync=new Object();
 	
 	@Override

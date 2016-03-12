@@ -12,12 +12,10 @@ import j.jave.kernal.jave.io.JFile;
 
 import java.net.URI;
 
-import org.springframework.stereotype.Service;
-
 /**
  * @author J
  */
-@Service(value="defaultLocalFileDistServiceImpl")
+@Deprecated
 public class DefaultLocalFileDistServiceImpl implements FileDistService ,JFileDistServiceAware{
 
 	private JDefaultLocalFileDistService defaultLocalFileDistService;

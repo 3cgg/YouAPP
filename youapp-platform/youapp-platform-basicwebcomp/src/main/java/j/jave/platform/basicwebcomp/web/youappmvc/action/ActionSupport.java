@@ -4,7 +4,9 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
+import j.jave.platform.basicwebcomp.web.support.ControllerSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 
@@ -15,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * basic action for view controller.
  * @author J
  */
-public abstract class ActionSupport implements Action {
+public abstract class ActionSupport extends ControllerSupport implements Action {
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
@@ -83,6 +85,9 @@ public abstract class ActionSupport implements Action {
 		throw new JOperationNotSupportedException("Not supported,check if the sub-class implements the method.");
 	} 
 	
+	public ServiceContext getServiceContext(){
+		return new ServiceContext();
+	}
 	
 	
 }

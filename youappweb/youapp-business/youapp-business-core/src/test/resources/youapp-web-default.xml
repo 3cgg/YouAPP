@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.mvc.pageable.service.factory</name>
+  <value>j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable.JQueryDataTablePageService</value>
+  <description>youappmvc pageable service factory provided by jquery data table</description>
+</property>
+
+
+</configuration>

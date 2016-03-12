@@ -1,9 +1,12 @@
 package j.jave.platform.basicwebcomp.web.support;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.ParameterNameGet;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.MappingController;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +18,7 @@ import java.lang.reflect.Parameter;
  * Created by J on 2016/3/12.
  */
 public class ControllerSupport implements InitializingBean {
-
+	private JLogger logger=JLoggerFactory.getLogger(getClass());
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -29,6 +32,11 @@ public class ControllerSupport implements InitializingBean {
                 resourceInfo.setClazz(classIncudeMethod);
 
                 Controller controller=classIncudeMethod.getAnnotation(Controller.class);
+                RequestMapping methodRequestMapping= method.getAnnotation(RequestMapping.class);
+                if(methodRequestMapping==null){
+                	logger.warn(" method : "+method.getName()+", cannot apply annotation [@RequestMapping] .");
+                	continue;
+                }
                 if(controller!=null){
                     resourceInfo.setControllerName(controller.value());
                 }
@@ -37,8 +45,7 @@ public class ControllerSupport implements InitializingBean {
                 }
                 resourceInfo.setMethodName(method.getName());
                 RequestMapping classRequestMapping= classIncudeMethod.getAnnotation(RequestMapping.class);
-                RequestMapping methodRequestMapping= method.getAnnotation(RequestMapping.class);
-
+                
                 String[] methodPaths= methodRequestMapping.value();
                 String path="";
                 if(classRequestMapping!=null){

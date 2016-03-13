@@ -3,6 +3,7 @@ package j.jave.kernal.dataexchange.protocol;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
 import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.http.JResponseHandler;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JObjectSerializableUtils;
@@ -15,6 +16,14 @@ public abstract class JProtocolSender {
 	
 	private JProtocolResultHandler protocolResultHandler;
 	
+	protected final JObjectTransModel objectTransModel;
+	
+	public JProtocolSender(JObjectTransModel objectTransModel) {
+		super();
+		this.objectTransModel = objectTransModel;
+	}
+
+	@SuppressWarnings("unchecked")
 	public <T> T send() {
 		try{
 			byte[] bytes=doSend();
@@ -40,11 +49,8 @@ public abstract class JProtocolSender {
 	
 	static class ObjectProtocolSender extends JProtocolSender{
 		
-		private final JObjectTransModel objectTransModel;
-		
 		public ObjectProtocolSender(JObjectTransModel objectTransModel) {
-			super();
-			this.objectTransModel = objectTransModel;
+			super(objectTransModel);
 		}
 
 		@Override
@@ -58,7 +64,27 @@ public abstract class JProtocolSender {
 			.execute();
 		}
 		
-	} 
+	}
+	
+	
+	static class JSONProtocolSender extends JProtocolSender{
+		
+		public JSONProtocolSender(JObjectTransModel objectTransModel) {
+			super(objectTransModel);
+		}
+
+		@Override
+		protected byte[] doSend()  throws IOException{
+			String objectJSON=JJSON.get().formatObject(objectTransModel);
+			return (byte[]) JHttpFactoryProvider.getHttpFactory().getHttpPost()
+			.setUrl(objectTransModel.getUrl())
+			.setEntry(objectJSON.getBytes("utf-8"))
+			.setResponseHandler(responseHandler)
+			.putHead(JProtocolConstants.PROTOCOL_HEAD, objectTransModel.getSendProtocol().name())
+			.execute();
+		}
+		
+	}
 	
 	void setProtocolResultHandler(
 			JProtocolResultHandler protocolResultHandler) {

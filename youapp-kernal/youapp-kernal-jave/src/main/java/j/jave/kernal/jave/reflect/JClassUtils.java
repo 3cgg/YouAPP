@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.reflect;
 
-import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JNumberUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -34,26 +34,12 @@ public abstract class JClassUtils {
 	public static Object get(String property, Object model) {
 		try {
 			Class<?> clazz = model.getClass();
-			Method method=null;
-			while (clazz != null) {
-				try {
-					Field field=getField(property, model);
-					String getterName=getterName(property, field.getType() ==boolean.class);
-					method = clazz.getDeclaredMethod(getterName);
-				} catch (NoSuchMethodException e) {
-					clazz = clazz.getSuperclass();
-					continue;
-				}
-				if (method != null) {
-					return method.invoke(model);
-				}
-				clazz = clazz.getSuperclass();
-			}
-
-			if(method==null){
-				throw new RuntimeException("cannot find getter method for property "+property);
-			}
-			return null;
+			Field field=getField(property, clazz,true);
+			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
+			String getterName=getterName(property, field.getType() ==boolean.class);
+			Method method=getMethod(getterName, clazz, true);
+			JAssert.isNotNull(method, "cannot find getter method for property "+property);
+			return method.invoke(model);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -161,54 +147,15 @@ public abstract class JClassUtils {
 	 * @param model
 	 * @return
 	 */
-	public static String set(String property,Object value,Object model) {
+	public static void set(String property,Object value,Object model) {
 		try {
 			Class<?> clazz = model.getClass();
-			Method method=null;
-			while (clazz != null) {
-				try {
-					Field field=getField(property, model);
-					String setterName=setterName(property, field.getType() ==boolean.class);
-					
-					if(value!=null){
-						method = clazz.getDeclaredMethod(setterName,value.getClass());
-					}
-					else{
-						Method[] methods=clazz.getDeclaredMethods();
-						if(JCollectionUtils.hasInArray(methods)){
-							for (int i = 0; i < methods.length; i++) {
-								Method inner=methods[i];
-								if(setterName.equals(inner.getName())){
-									method=inner;
-								}
-
-							}
-						}
-						if(method==null){
-							throw new NoSuchMethodException(setterName);
-						}
-					}
-
-
-				} catch (NoSuchMethodException e) {
-					clazz = clazz.getSuperclass();
-					continue;
-				}
-				if (method != null) {
-					Object obj = method.invoke(model, value);
-					if (obj == null) {
-						return null;
-					} else {
-						return String.valueOf(obj);
-					}
-				}
-				clazz = clazz.getSuperclass();
-			}
-
-			if(method==null){
-				throw new RuntimeException("cannot find setter method for property "+property);
-			}
-			return null;
+			Field field=getField(property, clazz,true);
+			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
+			String setterName=setterName(property, field.getType() ==boolean.class);
+			Method method=getMethod(setterName, clazz, true, field.getType());
+			JAssert.isNotNull(method, "cannot find setter method for property "+property);
+			method.invoke(model, value);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -218,26 +165,65 @@ public abstract class JClassUtils {
 	 * get field. 
 	 * @param property
 	 * @param model
+	 * @param deep whether scan upto super class
 	 * @return
 	 */
-	public static Field getField(String property , Object model){
-		if(model==null) return null;
+	public static Field getField(String property , Class<?> clazz,boolean deep){
+		if(clazz==null) return null;
 		if(JStringUtils.isNullOrEmpty(property)) return null;
 		Field field=null;
-		Class<?> superClass=model.getClass();
+		Class<?> superClass=clazz;
 		while(superClass!=null){
 			try {
 				field=superClass.getDeclaredField(property);
 				if(field!=null) break;
 			} catch (NoSuchFieldException e) {
-				superClass=superClass.getSuperclass();
-				continue;
+				if(deep){
+					superClass=superClass.getSuperclass();
+					continue;
+				}
+				else{
+					break;
+				}
 			} catch (SecurityException e) {
 				throw e;
 			}
 		}
 		return field;
 	}
+	
+	/**
+	 * 
+	 * @param property
+	 * @param clazz
+	 * @param deep whether scan upto super class
+	 * @param parameterTypes
+	 * @return
+	 */
+	public static Method getMethod(String methodName,Class<?> clazz,boolean deep,Class<?>... parameterTypes){
+		if(clazz==null) return null;
+		if(JStringUtils.isNullOrEmpty(methodName)) return null;
+		Method method=null;
+		Class<?> superClass=clazz;
+		while(superClass!=null){
+			try {
+				method=superClass.getMethod(methodName, parameterTypes);
+				if(method!=null) break;
+			} catch (NoSuchMethodException e) {
+				if(deep){
+					superClass=superClass.getSuperclass();
+					continue;
+				}
+				else{
+					break;
+				}
+			} catch (SecurityException e) {
+				throw e;
+			}
+		}
+		return method;
+	}
+	
 	
 	/**
 	 * for all property whether or not it is boolean type.

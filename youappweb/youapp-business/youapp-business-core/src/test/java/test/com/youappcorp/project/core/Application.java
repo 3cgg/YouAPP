@@ -18,10 +18,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 
-/**
- * Created by J on 2016/3/9.
- */
-
 @SpringBootApplication
 @ImportResource("classpath:spring-context.xml")
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {

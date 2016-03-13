@@ -30,6 +30,9 @@ public class JProtocolReceiverBuilder {
 		if(protocol==JProtocol.OBJECT){
 			protocolReceiver=new JProtocolReceiver.ObjectProtocolReceiver(bytes);
 		}
+		else if(protocol==JProtocol.JSON){
+			protocolReceiver=new JProtocolReceiver.JSONProtocolReceiver(bytes);
+		}
 		return protocolReceiver;
 	}
 	

@@ -51,7 +51,7 @@ public class MvcServiceServlet  extends JServlet {
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
-	private JServletViewHandler servletViewHandler=new JSPServletViewHandler();
+	private JServletViewHandler servletViewHandler=new JSONServletViewHandler();
 	
 	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");

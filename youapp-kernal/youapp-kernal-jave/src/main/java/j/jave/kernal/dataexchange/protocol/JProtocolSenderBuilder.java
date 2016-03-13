@@ -1,5 +1,6 @@
 package j.jave.kernal.dataexchange.protocol;
 
+import j.jave.kernal.dataexchange.protocol.JProtocolSender.JSONProtocolSender;
 import j.jave.kernal.dataexchange.protocol.JProtocolSender.ObjectProtocolSender;
 import j.jave.kernal.jave.utils.JAssert;
 
@@ -52,6 +53,9 @@ public class JProtocolSenderBuilder {
 		JProtocolSender protocolSender=null;
 		if(objectTramsModel.getSendProtocol()==JProtocol.OBJECT){
 			protocolSender=new ObjectProtocolSender(objectTramsModel);
+		}
+		else if(objectTramsModel.getSendProtocol()==JProtocol.JSON){
+			protocolSender=new JSONProtocolSender(objectTramsModel);
 		}
 		protocolSender.setProtocolResultHandler(protocolResultHandler);
 		return protocolSender;

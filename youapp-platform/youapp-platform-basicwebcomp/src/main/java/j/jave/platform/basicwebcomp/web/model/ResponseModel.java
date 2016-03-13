@@ -22,8 +22,9 @@ public class ResponseModel implements JModel{
 		return data;
 	}
 
-	public void setData(Object data) {
+	public ResponseModel setData(Object data) {
 		this.data = data;
+		return this;
 	}
 	
 	public static ResponseModel newSuccess(){
@@ -53,7 +54,8 @@ public class ResponseModel implements JModel{
 		return status;
 	}
 
-	public void setStatus(ResponseStatus status) {
+	public ResponseModel setStatus(ResponseStatus status) {
 		this.status = status;
+		return this;
 	}
 }

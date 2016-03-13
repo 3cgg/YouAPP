@@ -1,5 +1,9 @@
 package j.jave.platform.basicwebcomp.web.youappmvc;
 
+import j.jave.kernal.dataexchange.protocol.JObjectTransModel;
+import j.jave.kernal.dataexchange.protocol.JProtocol;
+import j.jave.kernal.dataexchange.protocol.JProtocolConstants;
+import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
@@ -8,6 +12,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -82,6 +87,10 @@ public class HttpContext implements Serializable {
 	 */
 	private transient volatile boolean linked=false; 
 	
+	private JProtocol protocol;
+	
+	private JObjectTransModel objectTransModel;
+	
 	public HttpContext(HttpServletRequest request,HttpServletResponse response){
 		this.request = request;
 		this.response = response;
@@ -93,6 +102,29 @@ public class HttpContext implements Serializable {
 	}
 	
 	private void init(){
+		boolean isParseProtocol=false;
+		if(request!=null){
+			String protocolHead= request.getHeader(JProtocolConstants.PROTOCOL_HEAD);
+			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
+				protocol=JProtocol.valueOf(protocolHead);
+				if(JProtocol.BROWSER!=protocol){
+					isParseProtocol=true;
+					try {
+						objectTransModel=JProtocolReceiverBuilder.get(protocol)
+						.setData(JStringUtils.getBytes(request.getInputStream()))
+						.build().receive();
+					} catch (IllegalStateException e) {
+						throw e;
+					}
+					catch (IOException e) {
+						throw new IllegalStateException(e);
+					}
+				}
+			}
+		}
+		
+		if(isParseProtocol) return ;
+		
 		boolean parse=false;
 		// process request with context type : multipart/form-data
 		if(request!=null&&YouAppMvcUtils.isFileContextType(request)){
@@ -122,7 +154,6 @@ public class HttpContext implements Serializable {
 			this.parameters.putAll(YouAppMvcUtils.parseRequestParameters(request));
 			parse=true;
 		}
-		
 	}
 	
 	public void setAttribute(String key, Object obj) {
@@ -231,6 +262,14 @@ public class HttpContext implements Serializable {
 	 */
 	public boolean isLinked() {
 		return linked;
+	}
+	
+	public JProtocol getProtocol() {
+		return protocol;
+	}
+	
+	public JObjectTransModel getObjectTransModel() {
+		return objectTransModel;
 	}
 	
 }

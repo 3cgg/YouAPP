@@ -1,11 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.action;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.platform.basicwebcomp.web.util.MappingDetector;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

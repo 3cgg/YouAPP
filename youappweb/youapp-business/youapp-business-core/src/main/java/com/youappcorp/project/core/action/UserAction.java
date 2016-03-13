@@ -1,7 +1,10 @@
 package com.youappcorp.project.core.action;
 
-import j.jave.platform.basicwebcomp.login.model.User;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPAction;
+
+import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserAction extends JSPAction{
 	
 	@RequestMapping(value="/saveUser")
-	public void saveUser(User user){
-		
-		System.out.println(user);
-		
+	public void saveUser(JConfiguration configuration,HashMap<String, Object> map,JPageRequest pageRequest){
+		System.out.println("ok! scu...");
 	}
 	
 	

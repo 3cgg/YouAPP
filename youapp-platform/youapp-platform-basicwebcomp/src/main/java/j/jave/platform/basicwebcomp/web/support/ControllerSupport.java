@@ -2,17 +2,13 @@ package j.jave.platform.basicwebcomp.web.support;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
-import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
-import j.jave.platform.basicwebcomp.web.util.ParameterNameGet;
 import j.jave.platform.basicwebcomp.web.youappmvc.action.MappingController;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Created by J on 2016/3/12.
@@ -23,6 +19,14 @@ public class ControllerSupport implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
 
+    	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
+		mappingDetector.detect();
+		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
+		for(MappingMeta meta:mappingMetas){
+			MappingController.putMappingMeta(meta.getPath(),meta);
+		}
+    	
+    	/*
         Class<?> classIncudeMethod=this.getClass();
         Method[] methods=classIncudeMethod.getMethods();
         if(methods.length>0){
@@ -68,12 +72,13 @@ public class ControllerSupport implements InitializingBean {
                     paramMeta.setType(clazz);
                     paramMeta.setName(parameterNames[i]);
                     paramMeta.setAnnotations(parameter.getAnnotations());
+                    paramMeta.setIndex(i);
                     methodParamMetas[i]=paramMeta;
                 }
                 resourceInfo.setMethodParams(methodParamMetas);
                 MappingController.putMappingMeta(resourceInfo.getPath(),resourceInfo);
             }
         }
-
+	*/
     }
 }

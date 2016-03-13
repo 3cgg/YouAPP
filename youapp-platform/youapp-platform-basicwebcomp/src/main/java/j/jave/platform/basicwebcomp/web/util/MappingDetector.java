@@ -107,6 +107,7 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 				paramMeta.setType(clazz);
 				paramMeta.setName(parameterNames[i]);
 				paramMeta.setAnnotations(parameter.getAnnotations());
+				paramMeta.setIndex(i);
 				methodParamMetas[i]=paramMeta;
 			}
 			resourceInfo.setMethodParams(methodParamMetas);

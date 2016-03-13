@@ -9,6 +9,8 @@ public class JDefaultParamMeta {
 	private Class<?> type;
 	
 	private Annotation[] annotations;
+	
+	private int index;
 
 	public String getName() {
 		return name;
@@ -34,5 +36,11 @@ public class JDefaultParamMeta {
 		this.annotations = annotations;
 	}
 
-	
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
 }

@@ -54,6 +54,7 @@ public abstract class JProtocolSender {
 			.setUrl(objectTransModel.getUrl())
 			.setEntry(bytes)
 			.setResponseHandler(responseHandler)
+			.putHead(JProtocolConstants.PROTOCOL_HEAD, objectTransModel.getSendProtocol().name())
 			.execute();
 		}
 		

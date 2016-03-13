@@ -14,6 +14,7 @@ import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
+import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import java.util.regex.Matcher;
@@ -91,12 +92,23 @@ public class ActionExecutor implements JService {
 	}
 
 	private Object[] resolveArgs(HttpContext httpContext,MappingMeta mappingMeta){
+		boolean bindWithInnerProtocol=false;
+		if(httpContext.getProtocol()!=null&&httpContext.getObjectTransModel()!=null){
+			// data binding via inner protocol
+			bindWithInnerProtocol=true;
+		}
+		
 		MethodParamMeta[] methodParamMetas=  mappingMeta.getMethodParams();
 		Object[] args=new Object[methodParamMetas.length];
 		for(int i=0;i<methodParamMetas.length;i++){
 			MethodParamObject methodParamObject=new MethodParamObject();
 			methodParamObject.setMethodParamMeta(methodParamMetas[i]);
-			new HttpContextDataBinder(httpContext).bind(methodParamObject);
+			if(bindWithInnerProtocol){
+				new HttpContextWithInnerProtocolDataBinder(httpContext).bind(methodParamObject);
+			}
+			else{
+				new HttpContextDataBinder(httpContext).bind(methodParamObject);
+			}
 			args[i]=methodParamObject.getObject();
 		}
 		return args;

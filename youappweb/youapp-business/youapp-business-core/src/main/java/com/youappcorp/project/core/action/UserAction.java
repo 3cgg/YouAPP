@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@Controller(value="bill.billaction")
+@Controller(value="user.useraction")
 @RequestMapping(value="/userManager")
 public class UserAction extends JSPAction{
 	

@@ -5,6 +5,7 @@ import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JAssert;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -108,7 +109,14 @@ public abstract class QueryExecution {
 			Query countQuery=queryMeta.getCountQuery();
 			JAssert.isNotNull(countQuery, "count query not found.");
 			QueryExecution.setQueryParameters(countQuery, queryMeta.getParams());
-			long count=(long) countQuery.getSingleResult();
+			long count=0;
+			Object obj=countQuery.getSingleResult();
+			if(BigInteger.class.isInstance(obj)){
+				((BigInteger)obj).longValue();
+			}
+			else{
+				count=Long.valueOf(obj.toString());
+			}
 			int pageNumber=pageable.getPageNumber();
 			int pageSize=pageable.getPageSize();
 			int tempTotalPageNumber=JPageImpl.caculateTotalPageNumber(count, pageSize);

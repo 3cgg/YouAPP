@@ -127,11 +127,29 @@ public class ParamServiceImpl extends ServiceSupport<Param> implements ParamServ
 	
 	@Override
 	public List<Param> allParams(ServiceContext context, Param param) {
+		
+		
 		String jpql="from Param p where p.name = :name ";
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("name", param.getName());
 		JPageRequest pageRequest= new JPageRequest();
 		pageRequest.setPageNumber(100);
+		
+		try{
+			String nativeSql="select p.NAME , P.CODE from PARAM p  where p.NAME = :name";
+			Object obj=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
+//					.setCountNativeSql(countSql)
+//					.setResult(Param.class)
+					.setResultSetMapping("ParamQueryMapping")
+			.setParams(params)
+			.setPageable(pageRequest)
+			.build().execute();
+			System.out.println(obj);
+		}catch(Exception e){
+			e.printStackTrace();	
+		}
+		
+		
 		
 		JPage<Param> page= 
 				QueryBuilder.get(getEntityManager()).setJpql(jpql)

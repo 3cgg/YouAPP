@@ -1,5 +1,8 @@
 package j.jave.platform.basicwebcomp.spirngjpa.query;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -24,6 +27,11 @@ class NativeQueryMeta extends QueryMeta {
 	public String getCountQueryString() {
 		if(countSql==null){
 			countSql=QueryUtils.createCountQueryFor(sql);
+		}
+		Matcher matcher=Pattern.compile("^(.+)(count[(].+[)])(.+)$").matcher(countSql);
+		if(matcher.find()){
+			matcher.replaceFirst("count(1)"); 
+			countSql=matcher.group(1)+"  count(1) "+matcher.group(3);
 		}
 		return countSql;
 	}

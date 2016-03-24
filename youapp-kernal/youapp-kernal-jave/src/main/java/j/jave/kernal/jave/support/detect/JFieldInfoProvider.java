@@ -6,7 +6,6 @@ package j.jave.kernal.jave.support.detect;
 import j.jave.kernal.jave.support.detect.JMethodDetector.JMethodFilter;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public interface JFieldInfoProvider <T> extends JProvider{
 	/**
 	 * 
 	 * KEY : class type . 
-	 * VALUE : ANY expected value of {@link JFieldInfo}.
+	 * VALUE : ANY expected values of {@link JFieldInfo}.
 	 * @return
 	 */
 	public Map<Class<?>, List<T>> getClassFieldInfos() ;

@@ -11,7 +11,6 @@ import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -57,21 +56,7 @@ public class JMethodDetector<T> extends JClassesScanDefaultConfiguration
 		
 	}
 	
-	private static final JMethodFilter defaultMethodFilter=new JMethodFilter() {
-		@Override
-		public boolean filter(Method method, Class<?> classIncudeMethod) {
-			return false;
-		}
-		
-		public boolean filter(java.lang.Class<?> clazz) {
-			return false;
-		};
-		
-		@Override
-		public int[] methodModifiers() {
-			return new int[]{Modifier.PUBLIC,Modifier.PROTECTED,Modifier.PRIVATE};
-		}
-	};
+	private static final JMethodFilter defaultMethodFilter=new JDefaultMethodFilter();
 	
 	private JMethodInfoGen<T> methodInfoGen;
 	

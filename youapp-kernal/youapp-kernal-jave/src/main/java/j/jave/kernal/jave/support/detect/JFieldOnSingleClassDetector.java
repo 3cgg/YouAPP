@@ -17,6 +17,14 @@ import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
  */
 public class JFieldOnSingleClassDetector<T> extends JFieldDetector<T> {
 	
+	public JFieldOnSingleClassDetector() {
+		super(defaultFieldFilter,(j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen<T>) defaultFieldInfoGen);
+	}
+	
+	public JFieldOnSingleClassDetector(JFieldFilter fieldFilter) {
+		super(fieldFilter,(j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen<T>) defaultFieldInfoGen);
+	}
+	
 	public JFieldOnSingleClassDetector(JFieldFilter fieldFilter, JFieldInfoGen<T> fieldInfo) {
 		super(fieldFilter,fieldInfo);
 	} 

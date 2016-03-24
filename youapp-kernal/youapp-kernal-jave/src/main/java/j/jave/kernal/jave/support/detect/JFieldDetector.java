@@ -11,7 +11,6 @@ import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -57,24 +56,7 @@ public abstract class JFieldDetector<T> extends JClassesScanDefaultConfiguration
 		
 	}
 	
-	public static final JFieldFilter defaultFieldFilter=new JFieldFilter() {
-
-		@Override
-		public boolean filter(Field field, Class<?> classIncudeField) {
-			return false;
-		}
-
-		@Override
-		public boolean filter(Class<?> clazz) {
-			return false;
-		}
-
-		@Override
-		public int[] fieldModifiers() {
-			return new int[]{Modifier.PUBLIC,Modifier.PROTECTED,Modifier.PRIVATE};
-		}
-		
-	};
+	public static final JFieldFilter defaultFieldFilter=new JDefaultFieldFilter();
 	
 	public static final JFieldInfoGen<JDefaultFieldMeta> defaultFieldInfoGen=new JFieldInfoGen<JDefaultFieldMeta>() {
 		@Override

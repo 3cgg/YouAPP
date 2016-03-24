@@ -3,6 +3,9 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
@@ -23,6 +26,10 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JSONServletViewHandler.class);
 	
+	private List<DataModifyHandler> dataModifyHandlers=new ArrayList<DataModifyHandler>(); 
+	{
+		dataModifyHandlers.add(new SimplePropertyExtendHandler());
+	}
 	@Override
 	public void handleNavigate(HttpServletRequest request,
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {

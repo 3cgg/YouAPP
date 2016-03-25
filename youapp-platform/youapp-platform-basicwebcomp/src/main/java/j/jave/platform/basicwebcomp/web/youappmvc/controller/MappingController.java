@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.action;
+package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
@@ -55,7 +55,7 @@ public class MappingController{
 		CONTROLLERS.put(path, mappingMeta);
 	}
 
-	public void putControllerObject(String path,Object controllerObject){
+	public static void putControllerObject(String path,Object controllerObject){
 		CONTROLLER_OBJECTS.put(path, controllerObject);
 	}
 	

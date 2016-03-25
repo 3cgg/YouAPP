@@ -33,12 +33,11 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 	@Override
 	public void handleNavigate(HttpServletRequest request,
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
-		ResponseModel mobileResult=(ResponseModel)navigate;
-		mobileResult.setStatus(ResponseStatus.SUCCESS);
+		ResponseModel responseModel=(ResponseModel)navigate;
 		for(DataModifyHandler dataModifyHandler:dataModifyHandlers){
-			dataModifyHandler.handle(mobileResult);
+			dataModifyHandler.handle(responseModel);
 		}
-		String out=JJSON.get().formatObject(mobileResult);
+		String out=JJSON.get().formatObject(responseModel);
 		response.getOutputStream().write(out.getBytes("utf-8"));
 	}
 	

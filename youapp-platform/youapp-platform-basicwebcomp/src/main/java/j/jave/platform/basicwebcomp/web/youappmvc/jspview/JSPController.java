@@ -1,7 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
 /**
  * JSP basic action. 

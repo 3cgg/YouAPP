@@ -1,4 +1,4 @@
-package com.youappcorp.project.bill.action;
+package com.youappcorp.project.bill.controller;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.param.model.Param;

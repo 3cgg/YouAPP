@@ -9,7 +9,7 @@ import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.kernal.jave.support.detect.JProvider;
 import j.jave.kernal.jave.support.detect.JResourceDetector;
 import j.jave.platform.basicwebcomp.WebCompProperties;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

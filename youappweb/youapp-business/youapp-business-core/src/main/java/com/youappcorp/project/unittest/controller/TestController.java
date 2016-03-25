@@ -2,7 +2,7 @@ package com.youappcorp.project.unittest.controller;
 
 import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.youappcorp.project.unittest.model.TestModel;
 
-@Controller(value="test.controller")
+@Controller
 @RequestMapping(value="/testmanager")
 public class TestController extends ControllerSupport {
 	

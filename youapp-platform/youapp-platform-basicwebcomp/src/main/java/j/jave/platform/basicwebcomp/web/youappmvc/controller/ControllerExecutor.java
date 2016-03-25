@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.youappmvc.action;
+package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JReflect;
@@ -64,7 +64,14 @@ public class ControllerExecutor implements JService {
 		}
 		
 		MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
-		ControllerSupport object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
+		ControllerSupport object=null;
+		String controllerName=mappingMeta.getControllerName();
+		if(JStringUtils.isNotNullOrEmpty(controllerName)){
+			object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
+		}
+		else{
+			object=(ControllerSupport) mappingController.getControllerObjectByPath(mappingPath);
+		}
 		Object navigate=null;
 		try{
 			// set HTTP context constructed above.

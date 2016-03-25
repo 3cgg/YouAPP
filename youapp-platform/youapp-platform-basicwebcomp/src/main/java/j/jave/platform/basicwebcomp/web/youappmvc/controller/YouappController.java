@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.action;
+package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import java.io.Serializable;
 

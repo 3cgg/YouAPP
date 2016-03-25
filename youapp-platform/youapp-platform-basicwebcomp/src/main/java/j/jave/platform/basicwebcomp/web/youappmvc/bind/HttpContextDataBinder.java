@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 
 import j.jave.kernal.JConfiguration;
+import j.jave.kernal.jave.identifier.DataBinder;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.convert.JDataConvertor;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;

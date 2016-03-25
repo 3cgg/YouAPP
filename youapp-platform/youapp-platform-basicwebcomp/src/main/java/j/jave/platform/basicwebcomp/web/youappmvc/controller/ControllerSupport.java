@@ -1,9 +1,7 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.action;
+package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
@@ -94,18 +92,16 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	public ServiceContext getServiceContext(){
 		return new ServiceContext();
 	}
-	
-
-	private JLogger logger=JLoggerFactory.getLogger(getClass());
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public final void afterPropertiesSet() throws Exception {
 
     	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
 		mappingDetector.detect();
 		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
 		for(MappingMeta meta:mappingMetas){
 			MappingController.putMappingMeta(meta.getPath(),meta);
+			MappingController.putControllerObject(meta.getPath(),this);
 		}
     	
     	/*

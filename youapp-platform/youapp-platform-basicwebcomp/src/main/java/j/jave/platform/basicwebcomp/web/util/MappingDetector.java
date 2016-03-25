@@ -9,7 +9,7 @@ import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.kernal.jave.support.detect.JProvider;
 import j.jave.kernal.jave.support.detect.JResourceDetector;
 import j.jave.platform.basicwebcomp.WebCompProperties;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerSupport;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -122,7 +122,7 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	public MappingDetector(JConfiguration configuration){
 		this.configuration=configuration;
 		initMethodDetector();
-		String superClassString=configuration.getString(WebCompProperties.CONTROLLER_SUPER_CLASS, ActionSupport.class.getName());
+		String superClassString=configuration.getString(WebCompProperties.CONTROLLER_SUPER_CLASS, ControllerSupport.class.getName());
 		superClass=JClassUtils.load(superClassString);
 	}
 

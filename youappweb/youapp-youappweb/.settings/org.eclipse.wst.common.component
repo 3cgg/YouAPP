@@ -2,7 +2,6 @@
     <wb-module deploy-name="jframework-me">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <dependent-module archiveName="youapp-platform-basicwebcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-basicwebcomp/youapp-platform-basicwebcomp">
             <dependency-type>uses</dependency-type>
@@ -25,7 +24,7 @@
         <dependent-module archiveName="youapp-platform-ormmybatis-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-ormmybatis/youapp-platform-ormmybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-securityclient/youapp-util-securityclient">
+        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-security-client/youapp-util-security-client">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">

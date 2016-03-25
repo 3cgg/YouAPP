@@ -7,6 +7,6 @@ import java.io.Serializable;
  * the indicate interface to all view controller. 
  * @author J
  */
-public interface Action  extends Serializable {
+public interface YouappController  extends Serializable {
 
 }

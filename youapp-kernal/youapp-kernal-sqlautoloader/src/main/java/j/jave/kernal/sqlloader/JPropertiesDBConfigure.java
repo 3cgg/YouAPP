@@ -39,7 +39,7 @@ public interface JPropertiesDBConfigure {
 	String SQL_AUTO="youapp.database.sql.auto";
 	String DIALECT="youapp.java.sql.dialect";
 	
-	String H2="h2";
+	String H2="H2";
 	
 	public JPropertiesDBConfiguration parse(InputStream inputStream);
 	

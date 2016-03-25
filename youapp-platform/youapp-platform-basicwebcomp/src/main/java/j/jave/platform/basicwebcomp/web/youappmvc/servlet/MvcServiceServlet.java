@@ -14,7 +14,7 @@ import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
+import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *  Note that we check that according to {@link JFile} ,but not any byte array {@link byte[]}. 
  * @author J
  * @see HttpContext
- * @see ActionExecutor#execute(HttpContext)
+ * @see ControllerExecutor#execute(HttpContext)
  * @see JSPServletViewHandler
  * @see JSONServletViewHandler
  */
@@ -134,7 +134,7 @@ public class MvcServiceServlet  extends JServlet {
 			
 			String target=YouAppMvcUtils.getPathInfo(req);
 			httpContext.setTargetPath(target);
-			Object navigate=ActionExecutor.newSingleExecutor().execute(httpContext);
+			Object navigate=ControllerExecutor.newSingleExecutor().execute(httpContext);
 			
 			// if response for download.
 			if(JFile.class.isInstance(navigate)){

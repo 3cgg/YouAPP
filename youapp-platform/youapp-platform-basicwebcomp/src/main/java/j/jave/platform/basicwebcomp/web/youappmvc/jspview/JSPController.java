@@ -1,13 +1,13 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionSupport;
+import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerSupport;
 
 /**
  * JSP basic action. 
  * @author J
  */
-public abstract class JSPAction extends ActionSupport {
+public abstract class JSPController extends ControllerSupport {
 
 	/**
 	 * define navigate JSP ,  like as 

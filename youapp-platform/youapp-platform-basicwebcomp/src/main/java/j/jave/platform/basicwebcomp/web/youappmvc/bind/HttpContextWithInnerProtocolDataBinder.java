@@ -7,7 +7,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.util.List;
 
-public class HttpContextWithInnerProtocolDataBinder extends DataBinder{
+public class HttpContextWithInnerProtocolDataBinder implements DataBinder{
 
 	private HttpContext httpContext;
 	

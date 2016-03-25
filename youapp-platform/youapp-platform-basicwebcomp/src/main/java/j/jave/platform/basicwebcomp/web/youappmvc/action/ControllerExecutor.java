@@ -32,9 +32,9 @@ import org.springframework.context.ApplicationContext;
  * 
  * @author J
  */
-public class ActionExecutor implements JService {
+public class ControllerExecutor implements JService {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(ActionExecutor.class);
+	private static final Logger LOGGER=LoggerFactory.getLogger(ControllerExecutor.class);
 	
 	public Object execute(HttpContext httpContext) throws Exception{
 		
@@ -64,7 +64,7 @@ public class ActionExecutor implements JService {
 		}
 		
 		MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
-		ActionSupport object=(ActionSupport) applicationContext.getBean(mappingMeta.getControllerName());
+		ControllerSupport object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
 		Object navigate=null;
 		try{
 			// set HTTP context constructed above.
@@ -126,14 +126,14 @@ public class ActionExecutor implements JService {
 		return component;
 	}
 	
-	private static final ActionExecutor actionExecutor=new ActionExecutor();
+	private static final ControllerExecutor actionExecutor=new ControllerExecutor();
 	
 	private MappingController mappingController=new MappingController(JConfiguration.get());
 	
-	private ActionExecutor() {
+	private ControllerExecutor() {
 	}
 	
-	public static ActionExecutor newSingleExecutor(){
+	public static ControllerExecutor newSingleExecutor(){
 //		if(actionExecutor==null){
 //			synchronized (ActionExecutor.class) {
 //				actionExecutor=new ActionExecutor();

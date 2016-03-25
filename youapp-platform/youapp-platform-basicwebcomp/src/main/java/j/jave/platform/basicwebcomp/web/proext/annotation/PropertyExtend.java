@@ -7,8 +7,12 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
+@PropertyExtendable
 public @interface PropertyExtend {
-	PropertyExtendable extend();
+	
+	ObjectExtend objectExtend() default @ObjectExtend(property="null",active=false );
+	
+	CodeExtend codeExtend() default @CodeExtend(property="null",codeType="null",active=false) ;
 	
 	boolean active() default true;
 }

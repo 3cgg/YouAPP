@@ -1,13 +1,17 @@
-package j.jave.business.login;
+package com.youappcorp.project.unittest.model;
+
+import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.platform.basicwebcomp.web.proext.PropertyExtendable;
+import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
+import j.jave.platform.basicwebcomp.web.proext.annotation.ObjectExtend;
+import j.jave.platform.basicwebcomp.web.proext.annotation.PropertyExtend;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import j.jave.kernal.jave.model.JBaseModel;
-
-public class TestModel extends JBaseModel {
+public class TestModel extends JBaseModel  implements PropertyExtendable{
 
 	private String name;
 	
@@ -41,6 +45,51 @@ public class TestModel extends JBaseModel {
 	
 	private String[] astrs;
 	
+	private String code;
+	
+	@CodeExtend(property="code",codeType="A")
+	private String codeName;
+	
+	private String refId="0597eeb9-b5f8-4416-8cc6-82b6e2c1e1f8";
+	
+	@ObjectExtend(property="refId")
+	private Object refObject;
+	
+	@PropertyExtend(active=true,objectExtend=@ObjectExtend(property="refId"))
+	private Object refObject2;
+	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getCodeName() {
+		return codeName;
+	}
+
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
+	}
+
+	public String getRefId() {
+		return refId;
+	}
+
+	public void setRefId(String refId) {
+		this.refId = refId;
+	}
+
+	public Object getRefObject() {
+		return refObject;
+	}
+
+	public void setRefObject(Object refObject) {
+		this.refObject = refObject;
+	}
+
 	public List<String> getAlist() {
 		return alist;
 	}

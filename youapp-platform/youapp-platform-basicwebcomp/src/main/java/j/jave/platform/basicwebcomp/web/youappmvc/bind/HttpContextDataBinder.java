@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class HttpContextDataBinder extends DataBinder{
+public class HttpContextDataBinder implements DataBinder{
 
 	private HttpContext httpContext;
 	

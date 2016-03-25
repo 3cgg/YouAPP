@@ -53,7 +53,7 @@ public class ParameterNameGet {
                             if (Modifier.isStatic(method.getModifiers())) {  
                                 parameterNames[index] = name;  
                             }  
-                            else if (index > 0) {  
+                            else if (index > 0&&index<=parameterNames.length) {  
                                 parameterNames[index - 1] = name;  
                             }  
                         }  

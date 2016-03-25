@@ -45,6 +45,25 @@ public abstract class JClassUtils {
 		}
 	}
 	
+	/**
+	 * get value via property name, directly return the property value,not call the getter method.
+	 * @param property
+	 * @param model
+	 * @param if scan super class, or not
+	 * @return
+	 */
+	public static Object getByField(String property, Object model,boolean deap) {
+		try {
+			Class<?> clazz = model.getClass();
+			Field field=getField(property, clazz,deap);
+			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
+			field.setAccessible(true);
+			return field.get(model);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	
 	/**
 	 * all properties
@@ -156,6 +175,40 @@ public abstract class JClassUtils {
 			Method method=getMethod(setterName, clazz, true, field.getType());
 			JAssert.isNotNull(method, "cannot find setter method for property "+property);
 			method.invoke(model, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * apply value directly via setting on the property.
+	 * @param property
+	 * @param value
+	 * @param model
+	 * @param deep
+	 */
+	public static void setByField(String property,Object value,Object model,boolean deep) {
+		try {
+			Class<?> clazz = model.getClass();
+			Field field=getField(property, clazz,deep);
+			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
+			field.setAccessible(true);
+			field.set(model, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * set value
+	 * @param field
+	 * @param value
+	 * @param model
+	 */
+	public static void setOnField(Field field,Object value,Object model) {
+		try {
+			field.setAccessible(true);
+			field.set(model, value);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

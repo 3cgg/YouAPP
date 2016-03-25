@@ -8,7 +8,7 @@ import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
-import j.jave.platform.basicwebcomp.web.youappmvc.action.ActionExecutor;
+import j.jave.platform.basicwebcomp.web.youappmvc.action.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p> {@link #user}
  * <p> {@link #targetPath}
  * @author J
- * @see ActionExecutor
+ * @see ControllerExecutor
  */
 public class HttpContext implements Serializable {
 

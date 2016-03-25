@@ -35,6 +35,9 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
 		ResponseModel mobileResult=(ResponseModel)navigate;
 		mobileResult.setStatus(ResponseStatus.SUCCESS);
+		for(DataModifyHandler dataModifyHandler:dataModifyHandlers){
+			dataModifyHandler.handle(mobileResult);
+		}
 		String out=JJSON.get().formatObject(mobileResult);
 		response.getOutputStream().write(out.getBytes("utf-8"));
 	}

@@ -41,6 +41,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
+    	container.setContextPath("/youapp");
         container.setPort(8689);
     }
     
@@ -56,9 +57,10 @@ public class Application extends SpringBootServletInitializer implements Embedde
             return new MvcServiceServlet();
         }
 
-        @Bean
+        @Bean(name = "mvcservice-servlet-regist-bean")
         public ServletRegistrationBean dispatcherServletRegistration() {
-            ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet(),"/youapp/*");
+            ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet());
+            registration.addUrlMappings("/extapi/*");
             Map<String,String> params = new HashMap<String,String>();
             params.put("org.atmosphere.servlet","org.springframework.web.servlet.DispatcherServlet");
             params.put("contextClass","org.springframework.web.context.support.AnnotationConfigWebApplicationContext");

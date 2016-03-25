@@ -3,7 +3,7 @@ package com.youappcorp.project.bill.action;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.param.model.Param;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
-import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPAction;
+import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPController;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -17,8 +17,8 @@ import com.youappcorp.project.bill.model.BillSearchCriteria;
 import com.youappcorp.project.bill.service.BillService;
 
 
-@Controller(value="bill.billaction")
-public class BillAction extends JSPAction{
+@Controller(value="bill.billcontroller")
+public class BillController extends JSPController{
 	
 	private Bill  bill;
 	

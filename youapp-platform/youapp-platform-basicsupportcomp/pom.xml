@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>youapp.youapp-platform</groupId>
-	<artifactId>youapp-platform-baiscsupportcomp</artifactId>
+	<artifactId>youapp-platform-basicsupportcomp</artifactId>
 	<version>${platform.version}</version>
 	<packaging>jar</packaging>
 

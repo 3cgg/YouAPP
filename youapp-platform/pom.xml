@@ -23,7 +23,7 @@
 	
 	<modules>
 		<module>../youapp-kernal</module>
-		<module>youapp-platform-baiscsupportcomp</module>
+		<module>youapp-platform-basicsupportcomp</module>
 		<module>youapp-platform-ormmybatis</module>
 		<module>youapp-platform-multiversioncompsupportcomp</module>
 		<module>youapp-platform-basicwebcomp</module>

@@ -9,22 +9,10 @@
         <dependent-module archiveName="youapp-platform-multiversioncompsupportcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-multiversioncompsupportcomp/youapp-platform-multiversioncompsupportcomp">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youapp-platform-baiscsupportcomp-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-baiscsupportcomp/youapp-platform-baiscsupportcomp">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-ehcache-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-ehcache/youapp-kernal-ehcache">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-memcached-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-memcached/youapp-kernal-memcached">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-sqlautoloader-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-sqlautoloader/youapp-kernal-sqlautoloader">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="youapp-platform-ormmybatis-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-ormmybatis/youapp-platform-ormmybatis">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-security-client/youapp-util-security-client">
+        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-securityclient/youapp-util-securityclient">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">

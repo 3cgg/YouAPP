@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.cache.resource;
+package j.jave.kernal.jave.support.resourceuri;
 
 
 /**
@@ -10,4 +10,10 @@ package j.jave.platform.basicwebcomp.web.cache.resource;
  */
 public interface ResourceCacheModel {
 
+	/**
+	 * the request url.
+	 * @return
+	 */
+	public String getUrl();
+	
 }

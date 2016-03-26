@@ -4,10 +4,9 @@ import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.platform.basicwebcomp.web.cache.resource.ResourceCacheModel;
 
 @JTable(name="RESOURCES_EXTEND")
-public class ResourceExtend extends JBaseModel implements ResourceCacheModel{
+public class ResourceExtend extends JBaseModel{
 	
 	/**
 	 * ID reference to RESOURCE table. 

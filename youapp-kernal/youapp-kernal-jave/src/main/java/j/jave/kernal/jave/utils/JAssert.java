@@ -50,6 +50,12 @@ public abstract class JAssert {
 			throw new IllegalArgumentException(message);
 		}
 	}
+	
+	public static void isNotNull(Object object) {
+		if (object == null) {
+			throw new IllegalArgumentException("[Assertion failed] - the object argument must not be null");
+		}
+	}
 
 	/**
 	 * Assert that an object is {@code null} .

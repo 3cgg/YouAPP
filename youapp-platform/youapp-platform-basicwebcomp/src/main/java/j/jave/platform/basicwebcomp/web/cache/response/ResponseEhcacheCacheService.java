@@ -9,7 +9,7 @@ import j.jave.kernal.jave.service.JService;
  * indicate the response cached service provided by Ehcache.
  * @author J
  */
-public interface ResponseEhcacheMemoryCacheService extends JService{
+public interface ResponseEhcacheCacheService extends JService{
 
 	boolean isNeedCache(String key);
 	

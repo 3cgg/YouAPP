@@ -6,15 +6,8 @@ package j.jave.platform.basicwebcomp.web.cache.response;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.memory.JSingleDynamicMemoryCacheIO;
-import j.jave.kernal.jave.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
-import j.jave.platform.basicwebcomp.resource.model.ResourceExtend;
-import j.jave.platform.basicwebcomp.web.cache.resource.ResourceCacheModel;
-import j.jave.platform.basicwebcomp.web.cache.resource.ResourceCacheService;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +15,10 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.framework.components.resource.cache.ResponseCacheServiceImpl")
+@Service(value="j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheServiceImpl")
 public class ResponseCacheServiceImpl 
-	extends ResponseEhcacheMemoryCacheServiceImpl
-		implements JSingleDynamicMemoryCacheIO,
-			JSingleStaticMemoryCacheIO{
+	extends AbstractResponseEhcacheCacheService
+		implements JSingleDynamicMemoryCacheIO<ResponseCacheModel>{
 
 	/**
 	 * cache service . 
@@ -34,7 +26,7 @@ public class ResponseCacheServiceImpl
 	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
 	
 	@Autowired
-	private ResourceCacheService resourceCacheService;
+	private WebRequestURLCacheService webRequestURLCacheService;
 	
 	@Override
 	public EhcacheService getEhcacheService() {
@@ -47,19 +39,18 @@ public class ResponseCacheServiceImpl
 	}
 	
 	@Override
-	public Object set(String key, Object object) {
-		return getEhcacheService().put(key, object);
+	public ResponseCacheModel set(String key, ResponseCacheModel object) {
+		return (ResponseCacheModel) ehcacheService.put(key, object);
 	}
 
 	@Override
-	public Object remove(String key) {
-		return getEhcacheService().remove(key);
+	public ResponseCacheModel remove(String key) {
+		return (ResponseCacheModel) getEhcacheService().remove(key);
 	}
 
 	@Override
 	public boolean isNeedCache(String path) {
-		Map<String, String> map= get();
-		return map.containsKey(path);
+		return webRequestURLCacheService.isNeedCache(path);
 	}
 
 	@Override
@@ -79,39 +70,9 @@ public class ResponseCacheServiceImpl
 
 	@Override
 	public Object trigger(ResponseCacheRefreshEvent event) {
-		set();
 		return "Refresh resource successfully.";
 	}
-
 	
-	private static final String RESOURCE_CACHED_KEY="j.jave.framework.components.memory.response.subhub.ResponseEncacheMemoryCacheService";
-
-	private static final String Y="Y";
 	
-	@Override
-	public Map<String, String> set() {
-		Map<String, String> map=new HashMap<String, String>();
-		List<ResourceCacheModel> resources= resourceCacheService.getResourceCacheModel();
-		if(resources!=null){
-			for(int i=0;i<resources.size();i++){
-				ResourceExtend resourceCached=(ResourceExtend) resources.get(i);
-				if(Y.equals(resourceCached.getCached())){
-					map.put(resourceCached.getUrl(), Y);
-				}
-			}
-		}
-		getEhcacheService().put(RESOURCE_CACHED_KEY, map);
-		return map;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Map<String, String> get() {
-		Object obj=getEhcacheService().get(RESOURCE_CACHED_KEY);
-		if(obj==null){
-			obj=set();
-		}
-		return (Map<String, String>) obj;
-	}
 	
 }

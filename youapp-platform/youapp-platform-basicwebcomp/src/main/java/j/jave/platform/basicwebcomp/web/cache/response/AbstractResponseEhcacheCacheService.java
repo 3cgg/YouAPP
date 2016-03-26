@@ -11,8 +11,8 @@ import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
 /**
  * @author J
  */
-public abstract class ResponseEhcacheMemoryCacheServiceImpl 
-		implements ResponseEhcacheMemoryCacheService, 
+public abstract class AbstractResponseEhcacheCacheService 
+		implements ResponseEhcacheCacheService, 
 			JEhcacheServiceAware,ResponseCacheRefreshListener{
 	/**
 	 * cache service . 

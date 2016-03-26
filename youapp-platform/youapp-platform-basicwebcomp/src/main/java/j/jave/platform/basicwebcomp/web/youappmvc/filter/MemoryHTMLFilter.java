@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheModel;
-import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheMemoryCacheService;
+import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheCacheService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.util.JMemoryResponseWrapper;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -24,11 +24,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MemoryHTMLFilter implements JFilter{
 
-	ResponseEhcacheMemoryCacheService requestResourceMemoryCacheService;
+	ResponseEhcacheCacheService requestResourceMemoryCacheService;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		requestResourceMemoryCacheService=JServiceHubDelegate.get().getService(this,ResponseEhcacheMemoryCacheService.class);
+		requestResourceMemoryCacheService=JServiceHubDelegate.get().getService(this,ResponseEhcacheCacheService.class);
 	}
 	
 		

@@ -6,11 +6,10 @@ package j.jave.platform.basicsupportcomp.support.ehcache.subhub;
 import j.jave.kernal.ehcache.JDefaultEhcacheServiceConfiguration;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
-public class DefaultSpringBeanSupportEhcacheServiceConfigure extends JDefaultEhcacheServiceConfiguration implements
-		BeanSupportEhcacheServiceConfigure {
+public class SpringEhcacheConfiguration extends JDefaultEhcacheServiceConfiguration{
 
 	protected String ehcacheBeanName;
 	

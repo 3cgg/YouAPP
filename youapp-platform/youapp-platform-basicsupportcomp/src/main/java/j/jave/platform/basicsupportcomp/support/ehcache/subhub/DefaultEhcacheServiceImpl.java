@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="defaultEhcacheServiceImpl")
+@Service(value="j.jave.platform.basicsupportcomp.support.ehcache.subhub.DefaultEhcacheServiceImpl")
 public class DefaultEhcacheServiceImpl implements EhcacheService,JEhcacheServiceAware {
 
 	private JDefaultEhcacheService defaultEhcacheService;

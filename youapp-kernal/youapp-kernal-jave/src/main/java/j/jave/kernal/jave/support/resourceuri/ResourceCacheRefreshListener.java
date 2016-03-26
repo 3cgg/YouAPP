@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.cache.resource;
+package j.jave.kernal.jave.support.resourceuri;
 
 import j.jave.kernal.eventdriven.servicehub.JAPPListener;
 import j.jave.kernal.eventdriven.servicehub.JEventOnListener;

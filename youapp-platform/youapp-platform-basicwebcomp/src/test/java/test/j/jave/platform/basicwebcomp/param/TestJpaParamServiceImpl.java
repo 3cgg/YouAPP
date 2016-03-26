@@ -4,7 +4,8 @@ import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.basicwebcomp.param.model.Param;
+import j.jave.platform.basicwebcomp.param.model.ParamCode;
+import j.jave.platform.basicwebcomp.param.model.ParamType;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
 
 import org.junit.Test;
@@ -29,21 +30,20 @@ public class TestJpaParamServiceImpl{
 			user.setId("SYSTEM-TEST");
 			context.setUser(user);
 			
-			Param param=new Param();
-			new JSimpleObjectPopulate().populate(param);
-			param.setId(JUniqueUtils.unique().replaceAll("-", ""));
-			paramService.saveParam(context, param);
+			ParamType paramType=new ParamType();
+			new JSimpleObjectPopulate().populate(paramType);
+			paramType.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			
-			Param dbParam=paramService.getById(context, param.getId());
-			dbParam.setDescription("JIA.ZHONG.JIN");
-			paramService.updateParam(context, dbParam);
+			ParamCode paramCode=new ParamCode();
+			new JSimpleObjectPopulate().populate(paramCode);
+			paramCode.setId(JUniqueUtils.unique().replaceAll("-", ""));
+			paramService.saveParam(context, paramType,paramCode);
 			
-			paramService.delete(context, param.getId());
-			dbParam=paramService.getById(context, param.getId());
-			System.out.println(dbParam.getDeleted());
+			paramCode.setDescription("JIA.ZHONG.JIN");
+			paramService.updateParam(context, paramType,paramCode);
 			
-			long count=paramService.countParam(context, param);
-			System.out.println("count : "+count);
+			
+			System.out.println("count : ");
 		}catch(Exception e){
 			e.printStackTrace();
 		}

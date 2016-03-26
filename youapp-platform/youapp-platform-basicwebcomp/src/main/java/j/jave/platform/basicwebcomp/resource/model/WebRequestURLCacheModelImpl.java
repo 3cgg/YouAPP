@@ -17,15 +17,17 @@ public class WebRequestURLCacheModelImpl implements WebRequestURLCacheModel {
 	}
 
 	@Override
-	public String getUrl() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getUri() {
+		return url;
 	}
 
 	@Override
 	public boolean isCached() {
-		// TODO Auto-generated method stub
-		return false;
+		return cached;
+	}
+
+	public String getUrl() {
+		return url;
 	}
 
 }

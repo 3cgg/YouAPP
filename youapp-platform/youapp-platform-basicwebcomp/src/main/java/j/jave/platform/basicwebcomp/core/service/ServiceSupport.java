@@ -171,4 +171,9 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	protected EntityManager getEntityManager() {
 		return em;
 	}
+	
+	public List<T> getAllModels(ServiceContext context){
+		return getRepo().getAllModels();
+	}
+	
 }

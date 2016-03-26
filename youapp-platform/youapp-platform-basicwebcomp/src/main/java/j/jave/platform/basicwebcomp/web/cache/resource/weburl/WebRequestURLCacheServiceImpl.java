@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
  */
 @Service(value="j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheServiceImpl")
 public class WebRequestURLCacheServiceImpl extends ResourceCacheServiceSupport<WebRequestURLCacheModel,Object> implements WebRequestURLCacheService,
-	ResourceCacheRefreshListener{
+	ResourceCacheRefreshListener,WebRequestURLCacheRefreshListener{
 	
 	@Autowired(required=false)
 	private WebRequestURLCacheModelService webRequestURLCacheModelService;
@@ -40,11 +40,11 @@ public class WebRequestURLCacheServiceImpl extends ResourceCacheServiceSupport<W
 	
 	@Override
 	public void initResource(JConfiguration configuration) {
-		List<WebRequestURLCacheModel> resources= webRequestURLCacheModelService.getResourceCacheModels();
+		List<? extends WebRequestURLCacheModel> resources= webRequestURLCacheModelService.getResourceCacheModels();
 		if(resources!=null){
 			for(int i=0;i<resources.size();i++){
 				WebRequestURLCacheModel resourceCacheModel=resources.get(i);
-				set(resourceCacheModel.getUrl(), resourceCacheModel);
+				set(resourceCacheModel.getUri(), resourceCacheModel);
 			}
 		}
 	}
@@ -61,10 +61,20 @@ public class WebRequestURLCacheServiceImpl extends ResourceCacheServiceSupport<W
 		return cacheModel.isCached();
 	}
 	
-	private static SimpleStringIdentifierGenerator simpleStringIdentifierGenerator=new SimpleStringIdentifierGenerator();
+	private static SimpleStringIdentifierGenerator simpleStringIdentifierGenerator=new SimpleStringIdentifierGenerator(){
+		public String namespace() {
+			return "/webrequseturl/";
+		};
+	};
 	
 	@Override
 	public IdentifierGenerator generator() {
 		return simpleStringIdentifierGenerator;
+	}
+
+	@Override
+	public Object trigger(WebRequestURLCacheRefreshEvent event) {
+		initResource(JConfiguration.get());
+		return true;
 	}
 }

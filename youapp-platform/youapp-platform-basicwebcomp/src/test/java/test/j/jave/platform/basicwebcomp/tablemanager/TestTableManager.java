@@ -4,7 +4,7 @@ import java.util.List;
 
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.basicwebcomp.param.model.Param;
+import j.jave.platform.basicwebcomp.param.model.ParamCode;
 import j.jave.platform.basicwebcomp.param.model.ParamCriteria;
 import j.jave.platform.basicwebcomp.tablemanager.model.Record;
 import j.jave.platform.basicwebcomp.tablemanager.model.Table;
@@ -44,7 +44,7 @@ public class TestTableManager implements ApplicationContextAware {
 		user.setId("SYSTEM-TEST");
 		context.setUser(user);
 		TableSearch tableSearch=new TableSearch();
-		tableSearch.setModelName(Param.class.getName());
+		tableSearch.setModelName(ParamCode.class.getName());
 		List<Record> records=tableManagerService.getRecords(context, tableSearch);
 		System.out.println(records.size());
 		

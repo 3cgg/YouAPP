@@ -8,20 +8,14 @@ import j.jave.kernal.jave.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.kernal.jave.support.resourceuri.DefaultIdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.InitialResource;
+import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheServiceGetEvent;
 import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
 
 public abstract class ResourceCacheServiceSupport<T,M> implements ResourceCacheService,JSingleDynamicMemoryCacheIO<T> ,
 JSingleStaticMemoryCacheIO<M>,InitialResource{
 
 	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-	
-	@Override
-	public ResourceCacheService trigger(ResourceCacheServiceGetEvent event) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	private static DefaultIdentifierGenerator defaultIdentifierGenerator=new DefaultIdentifierGenerator();
 	@Override
@@ -53,5 +47,11 @@ JSingleStaticMemoryCacheIO<M>,InitialResource{
 	@Override
 	public final M get() {
 		throw new JOperationNotSupportedException("not supported.");
+	}
+	
+	@Override
+	public Object trigger(ResourceCacheRefreshEvent event) {
+		initResource(JConfiguration.get());
+		return true;
 	}
 }

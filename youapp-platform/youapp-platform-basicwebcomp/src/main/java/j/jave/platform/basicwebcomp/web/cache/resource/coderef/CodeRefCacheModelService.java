@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.cache.resource.weburl;
+package j.jave.platform.basicwebcomp.web.cache.resource.coderef;
 
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheModelService;
 
@@ -12,10 +12,10 @@ import java.util.List;
  * system resource interface , to used in request response cached, or any other cases. 
  * @author J
  */
-public interface WebRequestURLCacheModelService extends ResourceCacheModelService{
+public interface CodeRefCacheModelService extends ResourceCacheModelService{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<? extends WebRequestURLCacheModel> getResourceCacheModels();
+	public List<? extends CodeRefCacheModel> getResourceCacheModels();
 	
 }

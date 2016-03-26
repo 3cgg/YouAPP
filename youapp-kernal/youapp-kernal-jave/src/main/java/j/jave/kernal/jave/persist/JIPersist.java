@@ -1,11 +1,10 @@
 package j.jave.kernal.jave.persist;
 
-import java.util.List;
-
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.JUNDeletable;
+
+import java.util.List;
 
 /**
  * the common entry to the database platform.  
@@ -75,4 +74,11 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @return 
 	 */
 	public List<M> getModelsByPage(JPageable pagination);
+	
+	/**
+	 * all recoreds return.
+	 * @return
+	 */
+	public List<M> getAllModels();
+	
 }

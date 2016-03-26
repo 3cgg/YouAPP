@@ -4,23 +4,19 @@
 package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageRequest;
-import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.param.model.Param;
-import j.jave.platform.basicwebcomp.param.repo.ParamRepo;
+import j.jave.platform.basicwebcomp.param.model.CodeTableCacheModel;
+import j.jave.platform.basicwebcomp.param.model.ParamCode;
+import j.jave.platform.basicwebcomp.param.model.ParamType;
 import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
+import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModelService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,135 +24,58 @@ import org.springframework.stereotype.Service;
  * @author J
  */
 @Service(value="paramService.transation.jpa")
-public class ParamServiceImpl extends ServiceSupport<Param> implements ParamService{
+public class ParamServiceImpl extends ServiceSupport<ParamCode> implements ParamService{
 
-	public ParamServiceImpl(){
-		System.out.println("----------ParamServiceImpl-------------------");
-	}
 	@Autowired
-	private ParamRepo<?> paramMapper;
+	private InternalParamTypeServiceImpl internalParamTypeServiceImpl;
+	
+	@Autowired
+	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;
+	
+	@Autowired
+	private  CodeRefCacheModelService classd;
 	
 	@Override
-	public void saveParam(ServiceContext context, Param param)
-			throws JServiceException {
+	public void saveParam(ServiceContext context, ParamType paramType,
+			ParamCode paramCode) throws JServiceException {
 		
-		if(exists(context, param)){
-			throw new JServiceException("The param is existing, please change others.");
+		internalParamTypeServiceImpl.saveOnly(context, paramType);
+		if(paramType!=null){
+			throw new RuntimeException("sssssss");
 		}
-		saveOnly(context, param);
+		paramCode.setTypeId(paramType.getId());
+		internalParamCodeServiceImpl.saveOnly(context, paramCode);
 	}
 
 	@Override
-	public void updateParam(ServiceContext context, Param param)
-			throws JServiceException {
-		if(exists(context, param)){
-			throw new JServiceException("The param is existing, please change others.");
-		}
-		updateOnly(context, param);
+	public void updateParam(ServiceContext context, ParamType paramType,
+			ParamCode paramCode) throws JServiceException {
+		internalParamTypeServiceImpl.updateOnly(context, paramType);
+		internalParamCodeServiceImpl.updateOnly(context, paramCode);
 	}
 
 	@Override
-	public Param getParamById(ServiceContext context, String id) {
-		return getById(context, id);
-	}
-
-	@Override
-	public JPage<Param> getParamsByPage(ServiceContext context, JPageable pagination) {
-		return getsByPage(context, pagination);
-	}
-
-	@Override
-	public Param getParamByFunctionIdAndCode(ServiceContext context,
-			String functionId, String code) {
-		return paramMapper.getParamByFunctionIdAndCode(functionId, code);
-	}
-
-	@Override
-	public List<Param> getParamByFunctionId(ServiceContext context,
-			String functionId) {
-		return paramMapper.getParamByFunctionId(functionId);
-	}
-
-	@Override
-	public JIPersist<?, Param> getRepo() {
-		return paramMapper;
-	}
-	
-	@Override
-	public boolean exists(ServiceContext context, Param param) {
-		
-		if(JStringUtils.isNullOrEmpty(param.getFunctionId())){
-			throw new IllegalArgumentException("Function id is null.");
-		}
-		if(JStringUtils.isNullOrEmpty(param.getCode())){
-			throw new IllegalArgumentException("code is null.");
-		}
-		Param dbParam= getParamByFunctionIdAndCode(context, param.getFunctionId(), param.getCode());
-		
-		if(dbParam==null) return false;
-		
-		// status of inserting 
-		if(JStringUtils.isNullOrEmpty(param.getId())){
-			return dbParam!=null;
-		}
-		//status of updating or others.
-		else{
-			return !dbParam.getId().equals(param.getId());
-		}
-		
-	}
-
-	@Override
-	public JPage<Param> getParamsByNameByPage(ServiceContext context,
-			JPageable pagination,String name) {
-		Page<Param> obj=paramMapper.getParamsByNameByPage(
-				toPageRequest(pagination),name);
-		return toJPage(obj, pagination);
-	}
-	
-	@Override
-	public long countParam(ServiceContext context, Param param) {
-		String jpql="select count(0) from Param p where p.name = :name ";
-		Map<String, Object> params=new HashMap<String, Object>();
-		params.put("name", param.getName());
-		return QueryBuilder.get(getEntityManager()).setJpql(jpql)
-		.setParams(params)
-		.setSingle(true)
+	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context) {
+		String nativeSql=
+				"SELECT PT.CODE TYPE, PC.CODE,PC.NAME from PARAM_CODE PC , PARAM_TYPE PT"
+				+ " WHERE PC.TYPEID = PT.ID";
+		List<CodeTableCacheModel> codes=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
+				.setResultSetMapping("CodeTableQueryMapping")
 		.build().execute();
+		
+		nativeSql=
+				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT";
+		List<CodeTableCacheModel> types=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
+				.setResultSetMapping("CodeTableQueryMapping")
+		.build().execute();
+		codes.addAll(types);
+		return codes;
+	}
+
+	@Override
+	public JIPersist<?, ParamCode> getRepo() {
+		return null;
 	}
 	
-	@Override
-	public List<Param> allParams(ServiceContext context, Param param) {
-		
-		
-		String jpql="from Param p where p.name = :name ";
-		Map<String, Object> params=new HashMap<String, Object>();
-		params.put("name", param.getName());
-		JPageRequest pageRequest= new JPageRequest();
-		pageRequest.setPageNumber(100);
-		
-		try{
-			String nativeSql="select p.NAME , P.CODE from PARAM p  where p.NAME = :name";
-			Object obj=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
-//					.setCountNativeSql(countSql)
-//					.setResult(Param.class)
-					.setResultSetMapping("ParamQueryMapping")
-			.setParams(params)
-			.setPageable(pageRequest)
-			.build().execute();
-			System.out.println(obj);
-		}catch(Exception e){
-			e.printStackTrace();	
-		}
-		
-		
-		
-		JPage<Param> page= 
-				QueryBuilder.get(getEntityManager()).setJpql(jpql)
-				.setParams(params)
-				.setPageable(pageRequest)
-				.build().execute();
-		return page.getContent();
-	}
 	
 }

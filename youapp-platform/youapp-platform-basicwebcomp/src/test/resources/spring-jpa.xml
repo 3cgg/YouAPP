@@ -103,7 +103,8 @@
             <list>  
                 <value>jpaTxAdvice</value>  
             </list>  
-        </property>  
+        </property>
+        <property name="proxyTargetClass" value="true" />  
     </bean>    
   
   

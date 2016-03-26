@@ -10,7 +10,7 @@ import j.jave.kernal.jave.service.JService;
  * system resource interface.
  * @author J
  */
-public interface ResourceCacheService extends JService, ResourceCacheServiceGetListener{
+public interface ResourceCacheService extends JService,ResourceCacheRefreshListener{
 	
 	IdentifierGenerator generator();
 	

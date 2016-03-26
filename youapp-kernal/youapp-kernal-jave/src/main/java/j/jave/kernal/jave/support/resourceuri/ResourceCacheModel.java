@@ -11,9 +11,9 @@ package j.jave.kernal.jave.support.resourceuri;
 public interface ResourceCacheModel {
 
 	/**
-	 * the request url.
+	 * the resource uri.
 	 * @return
 	 */
-	public String getUrl();
+	public String getUri();
 	
 }

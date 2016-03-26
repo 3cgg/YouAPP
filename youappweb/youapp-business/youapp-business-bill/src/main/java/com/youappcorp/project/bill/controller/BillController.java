@@ -1,7 +1,7 @@
 package com.youappcorp.project.bill.controller;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.param.model.Param;
+import j.jave.platform.basicwebcomp.param.model.ParamCode;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPController;
 
@@ -99,14 +99,14 @@ public class BillController extends JSPController{
 	}
 
 	private void initSelect() {
-		List<Param> goodTypes=paramService.getParamByFunctionId(getServiceContext(), "GOOD");
-		setAttribute("goodCodes", goodTypes);
-		
-		List<Param> malls=paramService.getParamByFunctionId(getServiceContext(), "MALL");
-		setAttribute("mallCodes", malls);
-		
-		List<Param> userNameCodes=paramService.getParamByFunctionId(getServiceContext(), "USERS");
-		setAttribute("userNameCodes", userNameCodes);
+//		List<ParamCode> goodTypes=paramService.getParamByFunctionId(getServiceContext(), "GOOD");
+//		setAttribute("goodCodes", goodTypes);
+//		
+//		List<ParamCode> malls=paramService.getParamByFunctionId(getServiceContext(), "MALL");
+//		setAttribute("mallCodes", malls);
+//		
+//		List<ParamCode> userNameCodes=paramService.getParamByFunctionId(getServiceContext(), "USERS");
+//		setAttribute("userNameCodes", userNameCodes);
 	}
 	
 	public String editBill() throws JServiceException{

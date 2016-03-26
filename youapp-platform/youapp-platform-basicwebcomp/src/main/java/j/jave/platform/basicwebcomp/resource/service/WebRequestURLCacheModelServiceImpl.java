@@ -22,7 +22,7 @@ public class WebRequestURLCacheModelServiceImpl implements
 	private ResourceExtendService resourceExtendService;
 	
 	@Override
-	public List<WebRequestURLCacheModel> getResourceCacheModels() {
+	public List<? extends WebRequestURLCacheModel> getResourceCacheModels() {
 		List<WebRequestURLCacheModel> cacheModels=new ArrayList<WebRequestURLCacheModel>();
 		ServiceContext serviceContext=DefaultServiceContext.getDefaultServiceContext();
 		List<ResourceExtend> resourceExtends= resourceExtendService.getAllResourceExtends(serviceContext);

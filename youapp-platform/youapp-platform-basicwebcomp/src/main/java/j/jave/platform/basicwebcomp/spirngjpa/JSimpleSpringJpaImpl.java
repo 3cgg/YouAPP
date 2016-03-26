@@ -84,5 +84,10 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 		// TODO Auto-generated method stub
 		return super.findAll(spec, pageable);
 	}
+	
+	@Override
+	public List<T> getAllModels() {
+		return findAll();
+	}
 
 }

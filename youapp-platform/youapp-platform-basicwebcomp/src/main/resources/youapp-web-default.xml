@@ -9,5 +9,12 @@
   <description>youappmvc pageable service factory provided by jquery data table</description>
 </property>
 
+<property>
+  <name>youapp.mvc.resource.cache.service.interface</name>
+  <value>j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService</value>
+  <description>indicate which cache implementation to be used.
+  "j.jave.kernal.memcached.JDefaultMemcachedDisService",
+  "j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService"</description>
+</property>
 
 </configuration>

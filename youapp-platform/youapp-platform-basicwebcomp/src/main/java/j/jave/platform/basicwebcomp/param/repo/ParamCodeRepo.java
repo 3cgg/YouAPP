@@ -21,4 +21,8 @@ public interface ParamCodeRepo<T> extends JIPersist<T,ParamCode> {
 	public Page<ParamCode> getParamsByNameByPage(Pageable pageable,String name);
 	
 	public List<ParamCode> getParamCodeByTypeId(String typeId);
+	
+	public long getCountByTypeAndCode(String type, String code);
+	
+	public long getCountByTypeIdAndCode(String typeId, String code);
 }

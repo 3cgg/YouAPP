@@ -2,8 +2,8 @@ package test.j.jave.platform.basicwebcomp.param;
 
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.param.model.ParamCode;
 import j.jave.platform.basicwebcomp.param.model.ParamType;
 import j.jave.platform.basicwebcomp.param.service.ParamService;
@@ -25,10 +25,7 @@ public class TestJpaParamServiceImpl{
 	@Test
 	public void testJpa(){
 		try{
-			ServiceContext context=new ServiceContext();
-			User user=new User();
-			user.setId("SYSTEM-TEST");
-			context.setUser(user);
+			ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 			
 			ParamType paramType=new ParamType();
 			new JSimpleObjectPopulate().populate(paramType);

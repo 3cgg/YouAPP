@@ -1,11 +1,11 @@
 package j.jave.platform.basicwebcomp.param.jpa;
 
-import java.util.List;
-
 import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.basicwebcomp.param.model.ParamCode;
 import j.jave.platform.basicwebcomp.param.repo.ParamCodeRepo;
 import j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepository;
+
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,4 +29,19 @@ ParamCodeRepo<JSpringJpaRepository<ParamCode, String>>{
 	@Query(value="from ParamCode p where p.name=:name or 1=1 ")
 	public Page<ParamCode> getParamsByNameByPage(Pageable pagination,
 			@org.springframework.data.repository.query.Param(value="name")String name);
+	
+	@Query(value="select count(1) from ParamType p , ParamCode pc "
+			+ " where p.id=pc.typeId and p.code= :type and p.code = :code and pc.deleted='N'")
+	@Override
+	public long getCountByTypeAndCode(
+			@org.springframework.data.repository.query.Param(value="type")String type, 
+			@org.springframework.data.repository.query.Param(value="code")String code);
+	
+	@Query(value="select count(1) from ParamCode pc "
+			+ " where pc.typeId=:typeId and pc.code=:code and pc.deleted='N'")
+	@Override
+	public long getCountByTypeIdAndCode(
+			@org.springframework.data.repository.query.Param(value="typeId")String typeId, 
+			@org.springframework.data.repository.query.Param(value="code")String code);
+	
 }

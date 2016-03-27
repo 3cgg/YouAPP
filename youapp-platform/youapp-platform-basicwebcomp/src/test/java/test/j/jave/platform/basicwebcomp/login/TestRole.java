@@ -3,10 +3,10 @@ package test.j.jave.platform.basicwebcomp.login;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.login.model.Role;
 import j.jave.platform.basicwebcomp.login.model.RoleSearchCriteria;
-import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.login.service.RoleService;
 
 import org.junit.Test;
@@ -25,10 +25,7 @@ public class TestRole {
 	@Test
 	public void testRoleService(){
 		try{
-			ServiceContext context=new ServiceContext();
-			User user=new User();
-			user.setId("SYSTEM-TEST");
-			context.setUser(user);
+			ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 			
 			Role roleData=new Role();
 			new JSimpleObjectPopulate().populate(roleData);

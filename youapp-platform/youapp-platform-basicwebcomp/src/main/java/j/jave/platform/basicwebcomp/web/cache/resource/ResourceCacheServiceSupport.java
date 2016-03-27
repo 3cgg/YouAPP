@@ -4,12 +4,15 @@ import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.io.memory.JSingleStaticMemoryCacheIO;
+import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.service.JCacheService;
 import j.jave.kernal.jave.support.resourceuri.DefaultIdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.InitialResource;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
 import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
+import j.jave.platform.basicwebcomp.WebCompProperties;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,8 +20,11 @@ import java.util.Set;
 public abstract class ResourceCacheServiceSupport<T,M> implements ResourceCacheService<T>,
 JSingleStaticMemoryCacheIO<M>,InitialResource{
 
-	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
-
+	private JCacheService cacheService=null;
+	{
+		String cacheImpl=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_RESOURCE_CACHE_SERVICE_INTERFACE, EhcacheService.class.getName());
+		cacheService=JServiceHubDelegate.get().getService(this, JClassUtils.load(cacheImpl));
+	}
 	private static DefaultIdentifierGenerator defaultIdentifierGenerator=new DefaultIdentifierGenerator();
 	
 	private static Set<InitialResource> initialResources=new HashSet<InitialResource>();
@@ -38,12 +44,12 @@ JSingleStaticMemoryCacheIO<M>,InitialResource{
 
 	@Override
 	public T set(String key, T object) {
-		return (T) ehcacheService.put(generator().key(key), object);
+		return (T) cacheService.putNeverExpired(generator().key(key), object);
 	}
 
 	@Override
 	public T get(String key) {
-		return (T) ehcacheService.get(generator().key(key));
+		return (T) cacheService.get(generator().key(key));
 	}
 	
 	@Override
@@ -54,7 +60,7 @@ JSingleStaticMemoryCacheIO<M>,InitialResource{
 
 	@Override
 	public T remove(String key) {
-		return (T) ehcacheService.remove(generator().key(key));
+		return (T) cacheService.remove(generator().key(key));
 	}
 	
 	@Override

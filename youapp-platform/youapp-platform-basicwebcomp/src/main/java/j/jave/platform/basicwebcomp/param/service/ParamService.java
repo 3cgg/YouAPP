@@ -42,4 +42,17 @@ public interface ParamService extends Service<ParamCode> {
 	 */
 	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context); 
 	
+	public void updateParamCode(ServiceContext context,ParamCode paramCode) throws JServiceException;
+	
+	public void updateParamType(ServiceContext context,ParamType paramType) throws JServiceException;
+	
+	public void saveParamCode(ServiceContext context,ParamCode paramCode) throws JServiceException;
+	
+	public void saveParamType(ServiceContext context,ParamType paramType) throws JServiceException;
+	
+	public boolean existsParamType(ServiceContext context,String code);
+	
+	public boolean existsParamCode(ServiceContext context,String type,String code);
+	
+	
 }

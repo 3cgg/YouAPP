@@ -8,4 +8,6 @@ public abstract class WebCompProperties {
 	
 	public static final String YOUAPPMVC_PAGEABLE_SERVICE_FACTORY="youapp.mvc.pageable.service.factory";
 	
+	public static final String YOUAPPMVC_RESOURCE_CACHE_SERVICE_INTERFACE="youapp.mvc.resource.cache.service.interface";
+
 }

@@ -1,15 +1,14 @@
 package test.j.jave.platform.basicwebcomp.tablemanager;
 
-import java.util.List;
-
+import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.param.model.ParamCode;
-import j.jave.platform.basicwebcomp.param.model.ParamCriteria;
 import j.jave.platform.basicwebcomp.tablemanager.model.Record;
 import j.jave.platform.basicwebcomp.tablemanager.model.Table;
 import j.jave.platform.basicwebcomp.tablemanager.model.TableSearch;
 import j.jave.platform.basicwebcomp.tablemanager.service.TableManagerService;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,10 +38,7 @@ public class TestTableManager implements ApplicationContextAware {
 	
 		System.out.println(tables.size());
 		
-		ServiceContext context=new ServiceContext();
-		User user=new User();
-		user.setId("SYSTEM-TEST");
-		context.setUser(user);
+		ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 		TableSearch tableSearch=new TableSearch();
 		tableSearch.setModelName(ParamCode.class.getName());
 		List<Record> records=tableManagerService.getRecords(context, tableSearch);

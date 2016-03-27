@@ -18,4 +18,8 @@ public interface ParamTypeJPARepo extends JSpringJpaRepository<ParamType, String
 	@Query(value="from ParamType p where p.name=:name or 1=1 ")
 	public Page<ParamType> getParamsByNameByPage(Pageable pagination,
 			@org.springframework.data.repository.query.Param(value="name")String name);
+	
+	@Query(value="select count(1) from ParamType p where p.code = :code and p.deleted='N'")
+	public long getCountByCode(@org.springframework.data.repository.query.Param(value="code")String code);
+	
 }

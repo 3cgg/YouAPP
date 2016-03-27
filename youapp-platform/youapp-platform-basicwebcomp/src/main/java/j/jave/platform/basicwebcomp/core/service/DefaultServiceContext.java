@@ -2,8 +2,6 @@ package j.jave.platform.basicwebcomp.core.service;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import j.jave.platform.basicwebcomp.login.model.User;
-
 public class DefaultServiceContext implements ServiceContextSupport ,InitializingBean{
 
 	private static ServiceContext instance;
@@ -11,10 +9,10 @@ public class DefaultServiceContext implements ServiceContextSupport ,Initializin
 	private static ServiceContext getDefault(){
 		if(instance==null){
 			ServiceContext serviceContext=new ServiceContext();
-			User user=new User();
-			user.setId("default-user-id-as-no-user-session");
+			SessionUser user=new SessionUser();
+			user.setUserId("default-user-id-as-no-user-session");
 			user.setUserName("SYS");
-			serviceContext.setUser(user);
+			serviceContext.setSessionUser(user);
 			instance=serviceContext;
 		}
 		return instance;

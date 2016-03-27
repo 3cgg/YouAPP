@@ -14,7 +14,6 @@ import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.model.SimplePageRequest;
-import j.jave.platform.basicwebcomp.login.model.User;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -46,7 +45,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	@Override
 	public void saveOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnSave(getRepo(), context.getUser(), object);
+		proxyOnSave(getRepo(), context.getSessionUser(), object);
 	}
 
 	/**
@@ -55,7 +54,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	@Override
 	public void updateOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnUpdate(getRepo(), context.getUser(), object);
+		proxyOnUpdate(getRepo(), context.getSessionUser(), object);
 	}
 
 	/**
@@ -98,10 +97,10 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnSave(JIPersist<?, T> repo, User authorizer, JBaseModel baseModel){
-		baseModel.setCreateId(authorizer.getId());
+	private T proxyOnSave(JIPersist<?, T> repo, SessionUser authorizer, JBaseModel baseModel){
+		baseModel.setCreateId(authorizer.getUserId());
 		baseModel.setCreateTime(new Timestamp(new Date().getTime()));
-		baseModel.setUpdateId(authorizer.getId());
+		baseModel.setUpdateId(authorizer.getUserId());
 		baseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		baseModel.setVersion(1);
 		baseModel.setDeleted("N");
@@ -126,8 +125,8 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnUpdate(JIPersist<?, T> repo, User authorizer, JBaseModel baseModel){
-		baseModel.setUpdateId(authorizer.getId());
+	private T proxyOnUpdate(JIPersist<?, T> repo, SessionUser authorizer, JBaseModel baseModel){
+		baseModel.setUpdateId(authorizer.getUserId());
 		baseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		
 		// give a chance to do something containing model intercepter

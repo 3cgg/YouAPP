@@ -3,7 +3,6 @@
  */
 package j.jave.platform.basicwebcomp.core.service;
 
-import j.jave.platform.basicwebcomp.login.model.User;
 
 /**
  * @author Administrator
@@ -11,17 +10,14 @@ import j.jave.platform.basicwebcomp.login.model.User;
  */
 public class ServiceContext {
 
-	private User user;
+	private SessionUser sessionUser;
 
-	public User getUser() {
-		return user;
+	public SessionUser getSessionUser() {
+		return sessionUser;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setSessionUser(SessionUser sessionUser) {
+		this.sessionUser = sessionUser;
 	}
-	
-	
-	
 	
 }

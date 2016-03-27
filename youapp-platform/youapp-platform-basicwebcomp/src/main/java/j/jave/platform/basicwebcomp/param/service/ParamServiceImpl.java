@@ -5,7 +5,6 @@ package j.jave.platform.basicwebcomp.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.persist.JIPersist;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.param.model.CodeTableCacheModel;
@@ -40,9 +39,6 @@ public class ParamServiceImpl extends ServiceSupport<ParamCode> implements Param
 			ParamCode paramCode) throws JServiceException {
 		
 		internalParamTypeServiceImpl.saveOnly(context, paramType);
-		if(paramType!=null){
-			throw new RuntimeException("sssssss");
-		}
 		paramCode.setTypeId(paramType.getId());
 		internalParamCodeServiceImpl.saveOnly(context, paramCode);
 	}

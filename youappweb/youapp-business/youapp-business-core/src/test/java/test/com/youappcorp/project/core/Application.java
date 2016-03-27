@@ -1,5 +1,7 @@
 package test.com.youappcorp.project.core;
 
+import j.jave.platform.basicwebcomp.web.youappmvc.listener.MvcClassPathListener;
+import j.jave.platform.basicwebcomp.web.youappmvc.listener.ResourceLoaderListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 
 import java.util.Arrays;
@@ -11,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +26,10 @@ import org.springframework.context.annotation.ImportResource;
 public class Application extends SpringBootServletInitializer implements EmbeddedServletContainerCustomizer {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+    	
+    	SpringApplication springApplication=new SpringApplication(Application.class);
+    	springApplication.addListeners(new ResourceLoaderListener());
+        ApplicationContext ctx = springApplication.run();
 
         System.out.println("Let's inspect the beans provided by Spring Boot:");
 
@@ -68,7 +74,20 @@ public class Application extends SpringBootServletInitializer implements Embedde
             registration.setInitParameters(params);
             return registration;
         }
-
+        
+        @Bean
+        public MvcClassPathListener mvcClassPathListener(){
+            return new MvcClassPathListener();
+        }
+        
+        @Bean(name = "mvcclasspath-listener-regist-bean")
+        public ServletListenerRegistrationBean<MvcClassPathListener> mvcClassPathListenerRegistration() {
+        	ServletListenerRegistrationBean<MvcClassPathListener> registration 
+        	= new ServletListenerRegistrationBean<MvcClassPathListener>(mvcClassPathListener());
+        	registration.setOrder(ServletListenerRegistrationBean.HIGHEST_PRECEDENCE);
+        	return registration;
+        }
+        
     }
 
 }

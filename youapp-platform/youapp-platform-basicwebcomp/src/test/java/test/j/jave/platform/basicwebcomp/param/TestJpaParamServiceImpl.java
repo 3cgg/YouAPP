@@ -33,10 +33,12 @@ public class TestJpaParamServiceImpl{
 			ParamType paramType=new ParamType();
 			new JSimpleObjectPopulate().populate(paramType);
 			paramType.setId(JUniqueUtils.unique().replaceAll("-", ""));
-			
+			paramType.setCode("SEX");
 			ParamCode paramCode=new ParamCode();
 			new JSimpleObjectPopulate().populate(paramCode);
 			paramCode.setId(JUniqueUtils.unique().replaceAll("-", ""));
+			paramCode.setCode("M");
+			paramCode.setName("男");
 			paramService.saveParam(context, paramType,paramCode);
 			
 			paramCode.setDescription("JIA.ZHONG.JIN");

@@ -1,9 +1,6 @@
 package j.jave.platform.basicwebcomp.web.proext;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.identifier.DataBinder;
-import j.jave.kernal.jave.service.JCacheService;
-import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.support.detect.JDefaultFieldFilter;
 import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
 import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;
@@ -17,8 +14,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 public abstract class PropertyExtendBinder implements DataBinder {
-
-	protected static JCacheService cacheService=JServiceHubDelegate.get().getService(PropertyExtendBinder.class, JDefaultHashCacheService.class);
 	
 	private static CodeExtendBinder codeExtendBinder=new CodeExtendBinder();
 	

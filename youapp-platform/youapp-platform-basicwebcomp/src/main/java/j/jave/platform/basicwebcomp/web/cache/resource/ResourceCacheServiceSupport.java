@@ -3,7 +3,6 @@ package j.jave.platform.basicwebcomp.web.cache.resource;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.io.memory.JSingleDynamicMemoryCacheIO;
 import j.jave.kernal.jave.io.memory.JSingleStaticMemoryCacheIO;
 import j.jave.kernal.jave.support.resourceuri.DefaultIdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
@@ -12,12 +11,26 @@ import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
 import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
 
-public abstract class ResourceCacheServiceSupport<T,M> implements ResourceCacheService,JSingleDynamicMemoryCacheIO<T> ,
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class ResourceCacheServiceSupport<T,M> implements ResourceCacheService<T>,
 JSingleStaticMemoryCacheIO<M>,InitialResource{
 
 	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);
 
 	private static DefaultIdentifierGenerator defaultIdentifierGenerator=new DefaultIdentifierGenerator();
+	
+	private static Set<InitialResource> initialResources=new HashSet<InitialResource>();
+	
+	static Set<InitialResource> getInitialResources() {
+		return initialResources;
+	}
+	
+	public ResourceCacheServiceSupport() {
+		initialResources.add(this);
+	}
+	
 	@Override
 	public IdentifierGenerator generator() {
 		return defaultIdentifierGenerator;

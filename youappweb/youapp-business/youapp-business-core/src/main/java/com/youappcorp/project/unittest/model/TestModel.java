@@ -47,7 +47,7 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 	
 	private String code;
 	
-	@CodeExtend(property="code",codeType="A")
+	@CodeExtend(property="code",codeType="SEX")
 	private String codeName;
 	
 	private String refId="0597eeb9-b5f8-4416-8cc6-82b6e2c1e1f8";

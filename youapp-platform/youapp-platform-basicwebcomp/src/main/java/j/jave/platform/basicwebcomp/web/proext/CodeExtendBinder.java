@@ -1,14 +1,17 @@
 package j.jave.platform.basicwebcomp.web.proext;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModel;
+import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheService;
 import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
 
 
 public class CodeExtendBinder extends PropertyExtendBinder {
 
-	private static String getKey(String codeType,String code){
-		return codeType+"\\/\\"+code;
-	}
+	@SuppressWarnings("unchecked")
+	private CodeRefCacheService<CodeRefCacheModel> codeRefCacheService=
+			JServiceHubDelegate.get().getService(this, CodeRefCacheService.class);
 	
 	@Override
 	protected void doBind(PropertyExtendModel propertyExtendModel) {
@@ -17,8 +20,8 @@ public class CodeExtendBinder extends PropertyExtendBinder {
 		String property=codeExtend.property();
 		Object code=JClassUtils.getByField(property, object, false);
 		String codeType=codeExtend.codeType();
-		Object value=cacheService.get(getKey(codeType, String.valueOf(code)));
-		JClassUtils.setOnField(propertyExtendModel.getField(), value, object);
+		Object name=codeRefCacheService.getName(codeType, (String) code);
+		JClassUtils.setOnField(propertyExtendModel.getField(), name, object);
 	}
 
 }

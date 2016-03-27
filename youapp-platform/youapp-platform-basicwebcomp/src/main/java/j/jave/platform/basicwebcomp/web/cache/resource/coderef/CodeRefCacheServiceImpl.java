@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service("j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheServiceImpl")
 public class CodeRefCacheServiceImpl extends ResourceCacheServiceSupport<CodeRefCacheModel, Object>
-		implements CodeRefCacheService,CodeRefCacheRefreshListener {
+		implements CodeRefCacheService<CodeRefCacheModel>,CodeRefCacheRefreshListener {
 
 	@Autowired(required=false)
 	private CodeRefCacheModelService codeRefCacheModelService;
@@ -34,7 +34,7 @@ public class CodeRefCacheServiceImpl extends ResourceCacheServiceSupport<CodeRef
 		List<? extends CodeRefCacheModel> codeRefCacheModels= codeRefCacheModelService.getResourceCacheModels();
 		if(JCollectionUtils.hasInCollect(codeRefCacheModels)){
 			for(CodeRefCacheModel codeRefCacheModel:codeRefCacheModels){
-				set(generator().key(codeRefCacheModel.getUri()), codeRefCacheModel);
+				set(codeRefCacheModel.getUri(), codeRefCacheModel);
 			}
 		}
 	}
@@ -45,4 +45,13 @@ public class CodeRefCacheServiceImpl extends ResourceCacheServiceSupport<CodeRef
 		return true;
 	}
 
+	@Override
+	public String getName(String type, String code) {
+		String name=null;
+		CodeRefCacheModel codeRefCacheModel=super.get(CodeRefCacheModelUtil.key(type, code));
+		if(codeRefCacheModel!=null){
+			name=codeRefCacheModel.name();
+		}
+		return name;
+	}
 }

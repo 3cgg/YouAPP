@@ -4,6 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.model.SimplePageRequest;
 
@@ -110,13 +111,16 @@ public class SimplePageablePlugin implements Interceptor {
 			else{
 				HashMap<String, Object> runtimeParams = (HashMap<String, Object>) boundSql
 						.getParameterObject();
-				for (Object obj : runtimeParams.values()) {
-					if (SimplePageRequest.class.isInstance(obj)) {
-						isPageable = true;
-						pageable=(SimplePageRequest) obj;
-						break;
+				if(JCollectionUtils.hasInMap(runtimeParams)){
+					for (Object obj : runtimeParams.values()) {
+						if (SimplePageRequest.class.isInstance(obj)) {
+							isPageable = true;
+							pageable=(SimplePageRequest) obj;
+							break;
+						}
 					}
 				}
+				
 				isPageable=isPageable&&mappedId.indexOf("."+countMethodPrefix)==-1;
 				mappedMeta=new MappedMeta();
 				mappedMeta.setPageable(isPageable);

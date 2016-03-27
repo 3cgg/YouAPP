@@ -8,8 +8,8 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
-import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
-import j.jave.platform.basicwebcomp.login.subhub.SessionUserGetEvent;
+import j.jave.platform.basicwebcomp.access.subhub.SessionUserGetEvent;
+import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -118,7 +118,7 @@ public class MvcServiceServlet  extends JServlet {
 				SessionUser user=serviceHubDelegate.addImmediateEvent(new SessionUserGetEvent(this), SessionUser.class);
 				String IP=YouAppMvcUtils.getIP(req);
 				user.setUserName(IP);
-				user.setId(IP);
+				user.setUserId(IP);
 				httpContext.setUser(user);
 			}
 			else{

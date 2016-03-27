@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package com.youappcorp.project.usermanager.mapper;
+
+import j.jave.kernal.jave.model.support.JModelRepo;
+import j.jave.platform.mybatis.JMapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+import com.youappcorp.project.usermanager.model.UserTracker;
+import com.youappcorp.project.usermanager.repo.UserTrackerRepo;
+
+/**
+ * @author J
+ */
+@Component(value="userTrackerMapper.mapper")
+@JModelRepo(component="userTrackerMapper.mapper",name=UserTracker.class)
+public interface UserTrackerMapper extends JMapper<UserTracker>,UserTrackerRepo<JMapper<UserTracker>> {
+
+	
+	public List<UserTracker> getUserTrackerByName(
+			@Param(value="userName")String userName);
+	
+	
+}

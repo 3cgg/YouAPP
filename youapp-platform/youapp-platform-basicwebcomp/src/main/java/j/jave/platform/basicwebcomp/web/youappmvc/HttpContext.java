@@ -6,7 +6,7 @@ import j.jave.kernal.dataexchange.protocol.JProtocolConstants;
 import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.login.subhub.SessionUser;
+import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;

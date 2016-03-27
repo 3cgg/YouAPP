@@ -12,7 +12,7 @@ import j.jave.kernal.jave.support.resourceuri.ResourceCacheServiceGetListener;
  * system resource interface , to used in request response cached. 
  * @author J
  */
-public interface WebRequestURLCacheService<T> extends ResourceCacheService<T>, ResourceCacheServiceGetListener{
+public interface WebRequestURLCacheService extends ResourceCacheService<WebRequestURLCacheModel>, ResourceCacheServiceGetListener{
 	
 	boolean isNeedCache(String path);
 }

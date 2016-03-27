@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.youappcorp.project.resource.mapper.ResourceExtendMapper">
+
+
+<resultMap id="jBaseModel"  type="j.jave.kernal.jave.model.JBaseModel"   >
+<result column="ID" property="id"  jdbcType="VARCHAR" />
+<result column="CREATEID" property="createId"  jdbcType="VARCHAR" />
+<result column="UPDATEID" property="updateId"  jdbcType="VARCHAR" />
+<result column="CREATETIME" property="createTime"  jdbcType="TIMESTAMP" />
+<result column="UPDATETIME" property="updateTime"  jdbcType="TIMESTAMP" />
+<result column="DELETED" property="deleted"  jdbcType="VARCHAR" />
+<result column="VERSION" property="version"  jdbcType="INTEGER" />
+</resultMap>
+
+<resultMap id="resourceExtend"  type="com.youappcorp.project.resource.model.ResourceExtend"  extends="jBaseModel" >
+<result column="RESOURCEID" property="resourceId"  jdbcType="VARCHAR" />
+<result column="URL" property="url"  jdbcType="VARCHAR" />
+<result column="ACTION" property="action"  jdbcType="VARCHAR" />
+<result column="CACHED" property="cached"  jdbcType="VARCHAR" />
+<result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
+</resultMap>
+
+
+<insert  id="saveModel" parameterType="com.youappcorp.project.resource.model.ResourceExtend">
+insert into RESOURCES_EXTEND
+(
+RESOURCEID,URL,ACTION,CACHED,DESCRIPTION
+,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION
+)values(
+#{resourceId},#{url},#{action},#{cached},#{description}
+,#{id},#{createId},#{updateId},#{createTime},#{updateTime},#{deleted},#{version}
+)
+</insert>
+
+
+<update id="updateModel">
+update RESOURCES_EXTEND
+<set>  
+UPDATEID =#{updateId},UPDATETIME =#{updateTime}
+<if test="resourceId!=null">,RESOURCEID =#{resourceId}</if>
+<if test="url!=null">,URL =#{url}</if>
+<if test="action!=null">,ACTION =#{action}</if>
+<if test="cached!=null">,CACHED =#{cached}</if>
+<if test="description!=null">,DESCRIPTION =#{description}</if>
+<if test="version!=null">,VERSION =#{version}</if>
+</set>  
+where ID=#{id}
+</update>
+
+
+<delete id="markModelDeleted" >
+update RESOURCES_EXTEND set DELETED='Y' where ID=#{id}
+</delete>
+
+
+<select id="getModel"   resultMap="resourceExtend"  >
+<include refid="selectfor"></include> 
+where a.id=#{param1}
+</select>
+
+
+<sql id="selectfor">
+select a.* from RESOURCES_EXTEND a 
+left join RESOURCES b on a.RESOURCEID=b.ID
+</sql>
+<sql id="associationFilter">
+    (b.DELETED='N' ) 
+</sql>
+
+
+<select id="getModelsByPage"   resultMap="resourceExtend"  parameterType="j.jave.kernal.jave.model.JPageable">
+select * from RESOURCES_EXTEND  
+<if test="page.sortColumn!=null ">
+order by ${page.sortColumn} ${page.sortType}   
+</if>
+</select>
+
+
+
+<delete id="updateCached" >
+update RESOURCES_EXTEND set CACHED=#{cached} where ID=#{id}
+</delete>
+
+
+<select id="getResourceExtendOnResourceId"  resultMap="resourceExtend" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    and <include refid="associationFilter"/>
+    and  a.RESOURCEID=#{resourceId} 
+</select>
+
+
+<select id="getAllResourceExtends"  resultMap="resourceExtend" >
+    <include refid="selectfor"></include>
+    where a.DELETED='N' 
+    and <include refid="associationFilter"/>
+</select>
+
+</mapper>

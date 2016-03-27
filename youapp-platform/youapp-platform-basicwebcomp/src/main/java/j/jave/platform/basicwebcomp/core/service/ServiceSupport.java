@@ -97,7 +97,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnSave(JIPersist<?, T> repo, SessionUser authorizer, JBaseModel baseModel){
+	private T proxyOnSave(JIPersist<?, T> repo, SessionUserImpl authorizer, JBaseModel baseModel){
 		baseModel.setCreateId(authorizer.getUserId());
 		baseModel.setCreateTime(new Timestamp(new Date().getTime()));
 		baseModel.setUpdateId(authorizer.getUserId());
@@ -125,7 +125,7 @@ public abstract class ServiceSupport<T extends JBaseModel> implements Service<T>
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnUpdate(JIPersist<?, T> repo, SessionUser authorizer, JBaseModel baseModel){
+	private T proxyOnUpdate(JIPersist<?, T> repo, SessionUserImpl authorizer, JBaseModel baseModel){
 		baseModel.setUpdateId(authorizer.getUserId());
 		baseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		

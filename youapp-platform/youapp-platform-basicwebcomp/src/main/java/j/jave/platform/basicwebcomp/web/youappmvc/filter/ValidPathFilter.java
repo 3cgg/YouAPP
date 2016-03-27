@@ -2,8 +2,10 @@ package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
+import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.support.JServletContext;
 import j.jave.platform.basicwebcomp.web.support.JServletDetect;
@@ -51,9 +53,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ValidPathFilter.class);
+	
 	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
-	private LoginAccessService loginAccessService= JServiceHubDelegate.get().getService(this, LoginAccessService.class);
+	private AuthenticationAccessService loginAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	
 	private JServletDetect servletDetect=null;
 	
@@ -77,52 +81,56 @@ public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		
-		HttpServletRequest req=(HttpServletRequest) request;
-		if(servletDetect==null){
-			synchronized (sync) {
-				if(servletDetect==null){
-					servletDetect=new JServletDetect(req);
-					servletContext=servletDetect.getServletContext();
+		try{
+			HttpServletRequest req=(HttpServletRequest) request;
+			if(servletDetect==null){
+				synchronized (sync) {
+					if(servletDetect==null){
+						servletDetect=new JServletDetect(req);
+						servletContext=servletDetect.getServletContext();
+					}
 				}
-			}
-		}
-		
-		if(servletContext!=null){
-			String servletPath=req.getServletPath();
-			
-			//forward to login view page, if request root resource, note it's extend to browser
-			if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
-				String entranceViewPath="";
-				if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
-					entranceViewPath=serviceServletPath+servletConfigService.getToLoginPath();
-				}
-				else {
-					entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
-				}
-				req.getRequestDispatcher(entranceViewPath).forward(request, response);
-				return ;
 			}
 			
-			servletPath=servletPath+"/";
-			boolean isServletPath=servletContext.containServletPath(servletPath);
-			if(!isServletPath){
-				chain.doFilter(request, response);
-				return ;
+			if(servletContext!=null){
+				String servletPath=req.getServletPath();
+				
+				//forward to login view page, if request root resource, note it's extend to browser
+				if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
+					String entranceViewPath="";
+					if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
+						entranceViewPath=serviceServletPath+servletConfigService.getToLoginPath();
+					}
+					else {
+						entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
+					}
+					req.getRequestDispatcher(entranceViewPath).forward(request, response);
+					return ;
+				}
+				
+				servletPath=servletPath+"/";
+				boolean isServletPath=servletContext.containServletPath(servletPath);
+				if(!isServletPath){
+					chain.doFilter(request, response);
+					return ;
+				}
 			}
-		}
-		
-		String path=YouAppMvcUtils.getPathInfo(req);
-		if(JStringUtils.isNotNullOrEmpty(path)){
-			boolean validPath=loginAccessService.isValidResource(path);
-			if(!validPath){
-				FilterResponse filterResponse=FilterResponse.newInvalidPath();
-				filterResponse.setData(servletConfigService.getInvalidPathInfo());
-				response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
-				return ;
+			
+			String path=YouAppMvcUtils.getPathInfo(req);
+			if(JStringUtils.isNotNullOrEmpty(path)){
+				boolean validPath=loginAccessService.isValidResource(path);
+				if(!validPath){
+					FilterResponse filterResponse=FilterResponse.newInvalidPath();
+					filterResponse.setData(servletConfigService.getInvalidPathInfo());
+					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+					return ;
+				}
 			}
+			chain.doFilter(request, response);
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e); 
+			FilterExceptionUtil.exception(request, response, e);
 		}
-		chain.doFilter(request, response); 
 	}
 
 	@Override

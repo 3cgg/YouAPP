@@ -2,9 +2,11 @@ package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
-import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
+import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -18,9 +20,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * filter on all request , check if the request is authorized on the end-user.
  * the filter may follow from JJSPLoginFilter, but the filter also intercept those request from mobile platform such as Android, IOS
@@ -39,9 +38,9 @@ import org.slf4j.LoggerFactory;
  */
 public class ResourceAccessFilter implements JFilter{
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(ResourceAccessFilter.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ResourceAccessFilter.class);
 	
-	private LoginAccessService loginAccessService=JServiceHubDelegate.get().getService(this,LoginAccessService.class);
+	private AuthenticationAccessService loginAccessService=JServiceHubDelegate.get().getService(this,AuthenticationAccessService.class);
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
@@ -72,7 +71,7 @@ public class ResourceAccessFilter implements JFilter{
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
 				HttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), HttpContext.class);
 				if(context!=null){
-					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getId());
+					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getUserId());
 					authorized=true;
 					if(!authorized){
 						FilterResponse filterResponse=FilterResponse.newNoAccess();
@@ -92,7 +91,7 @@ public class ResourceAccessFilter implements JFilter{
 			chain.doFilter(request, response);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
-			throw new ServletException(e);
+			FilterExceptionUtil.exception(request, response, e);
 		}
 	}
 	

@@ -1,6 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheCacheService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
@@ -24,43 +26,48 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class MemoryHTMLFilter implements JFilter{
 
-	ResponseEhcacheCacheService requestResourceMemoryCacheService;
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(MemoryHTMLFilter.class);
+	
+	ResponseEhcacheCacheService requestResourceMemoryCacheService
+	=JServiceHubDelegate.get().getService(this,ResponseEhcacheCacheService.class);
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		requestResourceMemoryCacheService=JServiceHubDelegate.get().getService(this,ResponseEhcacheCacheService.class);
 	}
-	
 		
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-
-		HttpServletRequest httpServletRequest=(HttpServletRequest) request;
-		String path=YouAppMvcUtils.getPathInfo(httpServletRequest);
-		//check if cached.
-		if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
-			ResponseCacheModel responseCachedResource=requestResourceMemoryCacheService.get(path);
-			if(responseCachedResource==null){
-				JMemoryResponseWrapper responseWrapper = new JMemoryResponseWrapper((HttpServletResponse)response); 
-				chain.doFilter(request, responseWrapper);
-				byte[] bytes=responseWrapper.getBytes();
-				response.getOutputStream().write(bytes);
-				
-				ResponseCacheModel requestCachedResource=new ResponseCacheModel();
-				requestCachedResource.setPath(path);
-				requestCachedResource.setBytes(bytes);
-				requestResourceMemoryCacheService.add(requestCachedResource);
+		try{
+			HttpServletRequest httpServletRequest=(HttpServletRequest) request;
+			String path=YouAppMvcUtils.getPathInfo(httpServletRequest);
+			//check if cached.
+			if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
+				ResponseCacheModel responseCachedResource=requestResourceMemoryCacheService.get(path);
+				if(responseCachedResource==null){
+					JMemoryResponseWrapper responseWrapper = new JMemoryResponseWrapper((HttpServletResponse)response); 
+					chain.doFilter(request, responseWrapper);
+					byte[] bytes=responseWrapper.getBytes();
+					response.getOutputStream().write(bytes);
+					
+					ResponseCacheModel requestCachedResource=new ResponseCacheModel();
+					requestCachedResource.setPath(path);
+					requestCachedResource.setBytes(bytes);
+					requestResourceMemoryCacheService.add(requestCachedResource);
+				}
+				else{
+					response.getOutputStream().write(responseCachedResource.getBytes());
+				}
 			}
+			// no need cached.
 			else{
-				response.getOutputStream().write(responseCachedResource.getBytes());
+				chain.doFilter(request, response);
 			}
-		}
-		// no need cached.
-		else{
-			chain.doFilter(request, response);
-		}
 		
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e); 
+			FilterExceptionUtil.exception(request, response, e);
+		}
 	}
 	
 	@Override

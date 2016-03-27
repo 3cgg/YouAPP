@@ -2,8 +2,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.LoginFilter.LoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 
@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JSPLoginHandler implements LoginHandler ,APPFilterConfig {
+public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
@@ -67,4 +67,9 @@ public class JSPLoginHandler implements LoginHandler ,APPFilterConfig {
 		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
 	}
 
+	@Override
+	public void handleLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		
+	}
 }

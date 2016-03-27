@@ -1,6 +1,5 @@
 package com.youappcorp.project.unittest.controller;
 
-import j.jave.platform.basicwebcomp.login.model.User;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.youappcorp.project.unittest.model.TestModel;
+import com.youappcorp.project.usermanager.model.User;
 
 @Controller
 @RequestMapping(value="/testmanager")

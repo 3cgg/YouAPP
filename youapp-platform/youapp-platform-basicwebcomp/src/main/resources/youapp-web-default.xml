@@ -17,4 +17,16 @@
   "j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService"</description>
 </property>
 
+<property>
+  <name>youapp.mvc.login.name</name>
+  <value>_name</value>
+  <description>the key can be got from the request parameter.</description>
+</property>
+
+<property>
+  <name>youapp.mvc.login.password</name>
+  <value>_password</value>
+  <description>the key can be got from the request parameter.</description>
+</property>
+
 </configuration>

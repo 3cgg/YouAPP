@@ -10,13 +10,13 @@ package j.jave.platform.basicwebcomp.core.service;
  */
 public class ServiceContext {
 
-	private SessionUser sessionUser;
+	private SessionUserImpl sessionUser;
 
-	public SessionUser getSessionUser() {
+	public SessionUserImpl getSessionUser() {
 		return sessionUser;
 	}
 
-	public void setSessionUser(SessionUser sessionUser) {
+	public void setSessionUser(SessionUserImpl sessionUser) {
 		this.sessionUser = sessionUser;
 	}
 	

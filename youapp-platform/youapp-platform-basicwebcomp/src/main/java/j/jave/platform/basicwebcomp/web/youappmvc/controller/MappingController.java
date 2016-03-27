@@ -4,6 +4,7 @@ import j.jave.kernal.JConfiguration;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MappingController{
@@ -59,7 +60,9 @@ public class MappingController{
 		CONTROLLER_OBJECTS.put(path, controllerObject);
 	}
 	
-	
+	public static Set<String> urls(){
+		return CONTROLLERS.keySet();
+	}
 	
 	
 	

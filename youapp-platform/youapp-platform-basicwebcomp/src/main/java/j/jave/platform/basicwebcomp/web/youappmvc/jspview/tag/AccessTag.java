@@ -4,7 +4,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jspview.tag;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.platform.basicwebcomp.login.subhub.LoginAccessService;
+import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
@@ -24,8 +24,8 @@ public class AccessTag implements Tag{
 	 
 	 private String resource;
 	
-	 private LoginAccessService loginAccessService=
-			 JServiceHubDelegate.get().getService(this,LoginAccessService.class);
+	 private AuthenticationAccessService loginAccessService=
+			 JServiceHubDelegate.get().getService(this,AuthenticationAccessService.class);
 	 
 	public String getResource() {
 		return resource;
@@ -53,7 +53,7 @@ public class AccessTag implements Tag{
 		HttpServletRequest request=(HttpServletRequest) pageContext.getRequest();
 		//String userName=pageContext.get
 		HttpContext httpContext=YouAppMvcUtils.getHttpContext(request);
-		boolean authorized=loginAccessService.authorizeOnUserId(resource, httpContext.getUser().getId());
+		boolean authorized=loginAccessService.authorizeOnUserId(resource, httpContext.getUser().getUserId());
 		if(!authorized){
 			return SKIP_BODY;
 		}

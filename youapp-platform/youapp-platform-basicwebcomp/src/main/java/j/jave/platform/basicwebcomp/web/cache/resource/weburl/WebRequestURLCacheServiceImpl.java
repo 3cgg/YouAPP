@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
  */
 @Service(value="j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheServiceImpl")
 public class WebRequestURLCacheServiceImpl extends ResourceCacheServiceSupport<WebRequestURLCacheModel,Object> 
-	implements WebRequestURLCacheService<WebRequestURLCacheModel>,
+	implements WebRequestURLCacheService,
 	ResourceCacheRefreshListener,WebRequestURLCacheRefreshListener{
 	
 	@Autowired(required=false)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.UserExtendMapper">
+<mapper namespace="com.youappcorp.project.usermanager.mapper.UserExtendMapper">
 
 
 <resultMap id="jBaseModel"  type="j.jave.kernal.jave.model.JBaseModel"   >
@@ -13,7 +13,7 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="userExtend"  type="j.jave.platform.basicwebcomp.login.model.UserExtend"  extends="jBaseModel" >
+<resultMap id="userExtend"  type="com.youappcorp.project.usermanager.model.UserExtend"  extends="jBaseModel" >
 <result column="USERID" property="userId"  jdbcType="VARCHAR" />
 <result column="USERNAME" property="userName"  jdbcType="VARCHAR" />
 <result column="USERIMAGE" property="userImage"  jdbcType="VARCHAR" />
@@ -21,7 +21,7 @@
 </resultMap>
 
 
-<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.UserExtend">
+<insert  id="saveModel" parameterType="com.youappcorp.project.usermanager.model.UserExtend">
 insert into USERS_EXTEND
 (
 USERID,USERNAME,USERIMAGE,NATURENAME

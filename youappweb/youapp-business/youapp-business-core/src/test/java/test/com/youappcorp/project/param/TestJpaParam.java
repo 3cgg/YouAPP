@@ -1,24 +1,17 @@
-package test.j.jave.platform.basicwebcomp.param;
+package test.com.youappcorp.project.param;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.login.model.User;
-import j.jave.platform.basicwebcomp.param.jpa.ParamCodeJPARepo;
-import j.jave.platform.basicwebcomp.param.model.ParamCode;
-import j.jave.platform.basicwebcomp.param.model.ParamCriteria;
-import j.jave.platform.basicwebcomp.param.repo.ParamCodeRepo;
-import j.jave.platform.basicwebcomp.param.service.ParamService;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
+import com.youappcorp.project.param.service.ParamService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,7 +60,7 @@ public class TestJpaParam {
 		
 		Method[] methods=ParamCodeJPARepo.class.getMethods();
 		
-		Method[] methods2=ParamCodeRepo.class.getMethods();
+		Method[] methods2=ParamCodeJPARepo.class.getMethods();
 		
 		
 		System.out.println("END");

@@ -1,12 +1,7 @@
-package test.j.jave.platform.basicwebcomp.tablemanager;
+package test.com.youappcorp.project.tablemanager;
 
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.param.model.ParamCode;
-import j.jave.platform.basicwebcomp.tablemanager.model.Record;
-import j.jave.platform.basicwebcomp.tablemanager.model.Table;
-import j.jave.platform.basicwebcomp.tablemanager.model.TableSearch;
-import j.jave.platform.basicwebcomp.tablemanager.service.TableManagerService;
 
 import java.util.List;
 
@@ -17,6 +12,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.tablemanager.model.Record;
+import com.youappcorp.project.tablemanager.model.Table;
+import com.youappcorp.project.tablemanager.model.TableSearch;
+import com.youappcorp.project.tablemanager.service.TableManagerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-context.xml"})

@@ -7,15 +7,14 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicsupportcomp.support.security.subhub.DESedeCipherService;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingController;
-import j.jave.securityutil.securityclient.JRSSecurityHelper;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,11 +24,14 @@ import org.springframework.stereotype.Service;
 @Service(value="j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessServiceImpl")
 public class AuthenticationAccessServiceImpl implements AuthenticationAccessService{
 	
-	@Autowired
-	private AuthenticationManagerService authenticationManagerService;
+	private AuthenticationManagerService authenticationManagerService=
+			JServiceHubDelegate.get().getService(this, AuthenticationManagerService.class);;
 	
 	private WebRequestURLCacheService webRequestURLCacheService=
 			JServiceHubDelegate.get().getService(this, WebRequestURLCacheService.class);
+	
+	private DESedeCipherService deSedeCipherService=
+			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
 	
 	@Override
 	public SessionUserImpl validate(String name, String password)
@@ -43,7 +45,8 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		}
 		String encryptPassword=null;
 		try {
-			encryptPassword = JRSSecurityHelper.encryptOnDESede(password.trim());
+			encryptPassword =deSedeCipherService.encrypt(password.trim());
+//					JRSSecurityHelper.encryptOnDESede(password.trim());
 		} catch (Exception e) {
 			throw new JServiceException(e);
 		}

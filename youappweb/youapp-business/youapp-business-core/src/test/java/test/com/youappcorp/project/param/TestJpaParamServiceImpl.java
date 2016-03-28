@@ -1,16 +1,17 @@
-package test.j.jave.platform.basicwebcomp.param;
+package test.com.youappcorp.project.param;
 
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.param.model.ParamCode;
-import j.jave.platform.basicwebcomp.param.model.ParamType;
-import j.jave.platform.basicwebcomp.param.service.ParamService;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.param.model.ParamType;
+import com.youappcorp.project.param.service.ParamService;
 
 @Service(value="test.paramService.transation.jpa")
 public class TestJpaParamServiceImpl{

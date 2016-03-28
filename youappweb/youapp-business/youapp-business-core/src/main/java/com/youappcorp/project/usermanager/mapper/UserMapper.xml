@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.UserMapper">
+<mapper namespace="com.youappcorp.project.usermanager.mapper.UserMapper">
 
 
 <resultMap id="base"  type="j.jave.kernal.jave.model.JBaseModel" >
@@ -14,7 +14,7 @@
 		<result column="VERSION" property="version" />
 </resultMap>
 
-<resultMap type="j.jave.platform.basicwebcomp.login.model.User" id="user"  extends="base" >
+<resultMap type="com.youappcorp.project.usermanager.model.User" id="user"  extends="base" >
 	<result column="USERNAME" property="userName" />
 	<result column="PASSWORD" property="password" />
 	
@@ -25,7 +25,7 @@
 </resultMap>
 
 
-<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.User">
+<insert  id="saveModel" parameterType="com.youappcorp.project.usermanager.model.User">
 insert into USERS
 (
 USERNAME,PASSWORD,ID,CREATEID,UPDATEID,CREATETIME,UPDATETIME,DELETED,VERSION

@@ -1,4 +1,4 @@
-package test.j.jave.platform.basicwebcomp;
+package test.com.youappcorp.project;
 
 import j.jave.kernal.sqlloader.ddl.JPropertiesSQLDDLCreateFactory;
 import j.jave.kernal.sqlloader.ddl.JSQLDDLCreateFactory;

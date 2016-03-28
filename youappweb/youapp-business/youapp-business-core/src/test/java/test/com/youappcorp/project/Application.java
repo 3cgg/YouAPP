@@ -1,18 +1,26 @@
-package test.com.youappcorp.project.core;
+package test.com.youappcorp.project;
 
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.MemoryHTMLFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.ResourceAccessFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.filter.ValidPathFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.listener.MvcClassPathListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.listener.ResourceLoaderListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletListenerRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -87,6 +95,81 @@ public class Application extends SpringBootServletInitializer implements Embedde
         	registration.setOrder(ServletListenerRegistrationBean.HIGHEST_PRECEDENCE);
         	return registration;
         }
+        
+        @Bean
+        public AuthenticationFilter authenticationFilter(){
+        	return new AuthenticationFilter();
+        };
+        
+        @Bean(name = "authentication-filter-regist-bean")
+        public FilterRegistrationBean authenticationFilterRegistration() {
+        	FilterRegistrationBean registration 
+        	= new FilterRegistrationBean();
+        	registration.setFilter(authenticationFilter());
+        	Set<String> urlPatterns=new HashSet<String>();
+        	urlPatterns.add("/*");
+        	registration.setUrlPatterns(urlPatterns);
+        	registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE);
+        	return registration;
+        }
+        
+        @Bean
+        public ValidPathFilter validPathFilter(){
+        	return new ValidPathFilter();
+        };
+        
+        @Bean(name = "valid-path-filter-regist-bean")
+        public FilterRegistrationBean validPathFilterRegistration() {
+        	FilterRegistrationBean registration 
+        	= new FilterRegistrationBean();
+        	registration.setFilter(validPathFilter());
+        	Set<String> urlPatterns=new HashSet<String>();
+        	urlPatterns.add("/*");
+        	registration.setUrlPatterns(urlPatterns);
+        	registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE-1);
+        	return registration;
+        }
+        
+        @Bean
+        public ResourceAccessFilter resourceAccessFilter(){
+        	return new ResourceAccessFilter();
+        };
+        
+        @Bean(name = "resourc-access-filter-regist-bean")
+        public FilterRegistrationBean resourceAccessFilterRegistration() {
+        	FilterRegistrationBean registration 
+        	= new FilterRegistrationBean();
+        	registration.setFilter(resourceAccessFilter());
+        	Set<String> urlPatterns=new HashSet<String>();
+        	urlPatterns.add("/*");
+        	registration.setUrlPatterns(urlPatterns);
+        	registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE-2);
+        	return registration;
+        }
+        
+        
+        @Bean
+        public MemoryHTMLFilter memoryHTMLFilter(){
+        	return new MemoryHTMLFilter();
+        };
+        
+        @Bean(name = "memory-html-filter-regist-bean")
+        public FilterRegistrationBean memoryHTMLFilterRegistration() {
+        	FilterRegistrationBean registration 
+        	= new FilterRegistrationBean();
+        	registration.setFilter(memoryHTMLFilter());
+        	Set<String> urlPatterns=new HashSet<String>();
+        	urlPatterns.add("/*");
+        	registration.setUrlPatterns(urlPatterns);
+        	registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE-3);
+        	return registration;
+        }
+        
+        
+        
+        
+        
+        
         
     }
 

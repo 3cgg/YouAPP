@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="j.jave.platform.basicwebcomp.login.mapper.GroupMapper">
+<mapper namespace="com.youappcorp.project.usermanager.mapper.GroupMapper">
 
 
 <resultMap id="jBaseModel"  type="j.jave.kernal.jave.model.JBaseModel"   >
@@ -13,14 +13,14 @@
 <result column="VERSION" property="version"  jdbcType="INTEGER" />
 </resultMap>
 
-<resultMap id="group"  type="j.jave.platform.basicwebcomp.login.model.Group"  extends="jBaseModel" >
+<resultMap id="group"  type="com.youappcorp.project.usermanager.model.Group"  extends="jBaseModel" >
 <result column="GROUPCODE" property="groupCode"  jdbcType="VARCHAR" />
 <result column="GROUPNAME" property="groupName"  jdbcType="VARCHAR" />
 <result column="DESCRIPTION" property="description"  jdbcType="VARCHAR" />
 </resultMap>
 
 
-<insert  id="saveModel" parameterType="j.jave.platform.basicwebcomp.login.model.Group">
+<insert  id="saveModel" parameterType="com.youappcorp.project.usermanager.model.Group">
 insert into GROUPS
 (
 GROUPCODE,GROUPNAME,DESCRIPTION

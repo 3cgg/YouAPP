@@ -1,10 +1,11 @@
 package j.jave.platform.basicwebcomp.access.subhub;
 
-import java.util.List;
-
+import j.jave.kernal.jave.service.JService;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 
-public interface AuthenticationManagerService {
+import java.util.List;
+
+public interface AuthenticationManagerService extends JService {
 
 	SessionUserImpl getUserByNameAndPassword(String name,String password);
 	

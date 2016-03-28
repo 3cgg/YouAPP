@@ -40,7 +40,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 	
 	private AuthenticationAccessService authenticationAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	
-	private AuthenticationHandler authenticationHandler;
+	private AuthenticationHandler authenticationHandler=new JSONAuthenticationHandler();
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

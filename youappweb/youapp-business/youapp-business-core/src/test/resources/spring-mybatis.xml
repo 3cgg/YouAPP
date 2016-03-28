@@ -41,10 +41,7 @@
     </bean>  
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
        <property name="basePackage" 
-       value="j.jave.platform.basicwebcomp.authorize.resource,
-       j.jave.platform.basicwebcomp.login,
-       j.jave.platform.basicwebcomp.resource
-       " />  
+       value="com.youappcorp.project" />  
        <property name="markerInterface" value="j.jave.platform.mybatis.JMapper"/>  
        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>  
     </bean>  
@@ -55,7 +52,7 @@
     </bean>   
       
 	<aop:config>    
-        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* j.jave.**.service.*.*(..) )"  />
+        <aop:advisor id="managerTx" advice-ref="txAdvice" pointcut="execution(* com.youappcorp.project.**.service.*.*(..) )"  />
     </aop:config>
 
     <tx:advice id="txAdvice"  transaction-manager="transactionManager"  >

@@ -5,26 +5,27 @@ package j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig;
 
 import org.springframework.stereotype.Service;
 
+
 /**
  * implements ServletConfigService , see that for detail information.
  * @author J
  */
-@Service(value="j.jave.framework.components.login.subhub.ServletConfigServiceImpl")
-public class ServletConfigServiceImpl implements ServletConfigService {
+@Service(value="j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.DefaultServletConfigServiceImpl")
+public class DefaultServletConfigServiceImpl implements ServletConfigService {
 	
 	@Override
 	public String getLoginPath() {
-		return "/login.loginaction/login";
+		return "/controller.login/login";
 	}
 
 	@Override
 	public String getToLoginPath() {
-		return "/login.loginaction/toLogin";
+		return getLoginPath();
 	}
 
 	@Override
 	public String getEntranceViewPath() {
-		return "/login.loginaction/index";
+		return "entrance view url.";
 	}
 
 	@Override

@@ -26,7 +26,12 @@ public class TestJpaParam {
 	
 	@Test
 	public void aram(){
-		paramService.testJpa();
+		try{
+			paramService.saveParamTypeAndCode();
+			System.out.println(" save  success...");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Test

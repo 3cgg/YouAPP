@@ -4,8 +4,10 @@ import j.jave.kernal.dataexchange.protocol.JObjectTransModel;
 import j.jave.kernal.dataexchange.protocol.JProtocol;
 import j.jave.kernal.dataexchange.protocol.JProtocolConstants;
 import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
+import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.core.service.DefaultSessionUser;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
@@ -13,7 +15,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,10 +34,28 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see ControllerExecutor
  */
-public class HttpContext implements Serializable {
+public class HttpContext implements JModel {
 
-	private static final long serialVersionUID = -3949287782520790723L;
-
+	public static ThreadLocal<HttpContext> threadLocal=new ThreadLocal<HttpContext>();
+	
+	public static void set(HttpContext httpContext){
+		threadLocal.set(httpContext);
+	}
+	
+	public static HttpContext get(){
+		return threadLocal.get();
+	}
+	
+	public static void remove(){
+		threadLocal.remove();
+	}
+	
+	public static HttpContext getMockHttpContext(){
+		HttpContext httpContext=new HttpContext();
+		httpContext.setUser(DefaultSessionUser.getDefaultSessionUser());
+		return httpContext;
+	}
+	
 	/**
 	 * ticket to indicate the unique request to apart from other users.
 	 * <strong>mandatory</strong>
@@ -53,13 +72,13 @@ public class HttpContext implements Serializable {
 	 * HTTP Servlet Request. 
 	 * <strong>optional</strong>
 	 */
-	private final transient  HttpServletRequest request;
+	private transient  HttpServletRequest request;
 
 	/**
 	 * HTTP Servlet Response. 
 	 * <strong>optional</strong>
 	 */
-	private final transient HttpServletResponse response;
+	private transient HttpServletResponse response;
 
 	/**
 	 * HTTP Servlet Request Parameter.  may processed after file distribute service. 
@@ -72,7 +91,7 @@ public class HttpContext implements Serializable {
 	 * like "/login.loginaction/toLogin" , the pattern like "/bean-name/method(with no any arguments)"
 	 * <strong>mandatory</strong>
 	 */
-	private String targetPath;
+	private transient String targetPath;
 	
 	/**
 	 * the key is used to for whose parameters that are added in request scope by framework later.
@@ -87,14 +106,19 @@ public class HttpContext implements Serializable {
 	 */
 	private transient volatile boolean linked=false; 
 	
-	private JProtocol protocol;
+	private transient JProtocol protocol;
 	
-	private JObjectTransModel objectTransModel;
+	private transient JObjectTransModel objectTransModel;
 	
 	public HttpContext(HttpServletRequest request,HttpServletResponse response){
+		initHttp(request,response);
+	}
+	
+	public HttpContext initHttp(HttpServletRequest request,HttpServletResponse response){
 		this.request = request;
 		this.response = response;
 		init();
+		return this;
 	}
 	
 	public HttpContext(){
@@ -151,6 +175,9 @@ public class HttpContext implements Serializable {
 		
 		
 		if(request!=null&&!parse){
+			if(parameters==null){
+				parameters=new HashMap<String, Object>();
+			}
 			this.parameters.putAll(YouAppMvcUtils.parseRequestParameters(request));
 			parse=true;
 		}

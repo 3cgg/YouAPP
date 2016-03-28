@@ -31,6 +31,7 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
+import org.hibernate.mapping.Map;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -109,14 +110,20 @@ public class SimplePageablePlugin implements Interceptor {
 				isPageable=mappedMeta.isPageable();
 			}
 			else{
-				HashMap<String, Object> runtimeParams = (HashMap<String, Object>) boundSql
-						.getParameterObject();
-				if(JCollectionUtils.hasInMap(runtimeParams)){
-					for (Object obj : runtimeParams.values()) {
-						if (SimplePageRequest.class.isInstance(obj)) {
-							isPageable = true;
-							pageable=(SimplePageRequest) obj;
-							break;
+				Object params=boundSql.getParameterObject();
+				if(SimplePageRequest.class.isInstance(params)){
+					isPageable=true;
+					pageable=(SimplePageRequest) params;
+				}
+				else if(Map.class.isInstance(params)){
+					HashMap<String, Object> runtimeParams = (HashMap<String, Object>) params;
+					if(JCollectionUtils.hasInMap(runtimeParams)){
+						for (Object obj : runtimeParams.values()) {
+							if (SimplePageRequest.class.isInstance(obj)) {
+								isPageable = true;
+								pageable=(SimplePageRequest) obj;
+								break;
+							}
 						}
 					}
 				}

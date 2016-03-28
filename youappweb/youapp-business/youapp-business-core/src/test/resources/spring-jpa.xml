@@ -101,7 +101,8 @@
         </property>  
         <property name="interceptorNames">  
             <list>  
-                <value>jpaTxAdvice</value>  
+                <value>jpaTxAdvice</value>
+                <value>txAdvice</value>  
             </list>  
         </property>
         <property name="proxyTargetClass" value="true" />

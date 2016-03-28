@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class DESedeCipherServiceFactory extends SpringServiceFactorySupport<DESedeCipherService> {
 
 	@Autowired(required=false)
-	private DESedeCipherService extDeSedeCipherService;
+	private DESedeCipherServiceProvider extDeSedeCipherService;
 	
 	private DESedeCipherService provideDesedeCipherService;
 	

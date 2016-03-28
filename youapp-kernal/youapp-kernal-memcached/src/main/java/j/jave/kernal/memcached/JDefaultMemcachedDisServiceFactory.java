@@ -12,13 +12,13 @@ import java.util.Set;
 public class JDefaultMemcachedDisServiceFactory extends
 		JServiceFactorySupport<JDefaultMemcachedDisService> {
 
-	private JDefaultMemcachedDisService instance;
+	private JDefaultMemcachedDisServiceImpl instance;
 	
 	private Object sync=new Object();
 	
 	
 	@Override
-	public JDefaultMemcachedDisService getService() {
+	public JDefaultMemcachedDisServiceImpl getService() {
 		
 		if(instance==null){
 			synchronized (sync) {
@@ -30,7 +30,7 @@ public class JDefaultMemcachedDisServiceFactory extends
 					
 					//youapp.memcache.backup.address.group (JMemcacheProperties.MEMCACHE_BACKUP_ADDRESS_GROUP_PREFIX)
 					defaultConfig.setBackupAddes(getStoreAddress(configuration, JMemcacheProperties.MEMCACHE_BACKUP_ADDRESS_GROUP_PREFIX));
-					instance=new JDefaultMemcachedDisService(defaultConfig);
+					instance=new JDefaultMemcachedDisServiceImpl(defaultConfig);
 				}
 			}
 		}

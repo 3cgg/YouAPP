@@ -3,6 +3,8 @@
  */
 package j.jave.platform.basicwebcomp.core.service;
 
+import j.jave.kernal.jave.model.JModel;
+
 import java.util.List;
 
 
@@ -10,7 +12,7 @@ import java.util.List;
  * the interface is support web function, to hold user in session scope. 
  * @author J
  */
-public interface SessionUser {
+public interface SessionUser extends JModel {
 	
 	/**
 	 * get user name

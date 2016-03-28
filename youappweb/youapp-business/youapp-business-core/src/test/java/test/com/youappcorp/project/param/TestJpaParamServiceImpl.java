@@ -1,11 +1,11 @@
 package test.com.youappcorp.project.param;
 
+import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +23,7 @@ public class TestJpaParamServiceImpl{
 		System.out.println("TestParamServiceImpl");
 	}
 	
-	@Test
-	public void testJpa(){
+	public void saveParamTypeAndCode() throws JServiceException{
 		try{
 			ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 			
@@ -35,8 +34,8 @@ public class TestJpaParamServiceImpl{
 			ParamCode paramCode=new ParamCode();
 			new JSimpleObjectPopulate().populate(paramCode);
 			paramCode.setId(JUniqueUtils.unique().replaceAll("-", ""));
-			paramCode.setCode("M");
-			paramCode.setName("男");
+			paramCode.setCode("F");
+			paramCode.setName("女");
 			paramService.saveParam(context, paramType,paramCode);
 			
 			paramCode.setDescription("JIA.ZHONG.JIN");
@@ -45,7 +44,7 @@ public class TestJpaParamServiceImpl{
 			
 			System.out.println("count : ");
 		}catch(Exception e){
-			e.printStackTrace();
+			throw new JServiceException(e);
 		}
 		
 	}

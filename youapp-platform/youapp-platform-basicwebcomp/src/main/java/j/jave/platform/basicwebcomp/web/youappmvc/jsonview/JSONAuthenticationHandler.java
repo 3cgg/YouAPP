@@ -3,11 +3,12 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedWithSpringConfigService;
+import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -45,18 +46,18 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newNoLogin();
-		ResponseModel mobileResult=ResponseModel.newMessage();
-		mobileResult.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
+		ResponseModel responseModel=ResponseModel.newMessage();
+		responseModel.setData(filterResponse);
+		response.getOutputStream().write(JJSON.get().formatObject(responseModel).getBytes("utf-8"));
 	}
 	
 	@Override
 	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
-		ResponseModel mobileResult=ResponseModel.newMessage();
-		mobileResult.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().formatObject(mobileResult).getBytes("utf-8"));
+		ResponseModel responseModel=ResponseModel.newMessage();
+		responseModel.setData(filterResponse);
+		response.getOutputStream().write(JJSON.get().formatObject(responseModel).getBytes("utf-8"));
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 			HttpServletResponse response, FilterChain chain) throws Exception {
 	}
 	
-	private MemcachedWithSpringConfigService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedWithSpringConfigService.class);;
+	private MemcachedDelegateService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedDelegateService.class);;
 	
 	private static final String loginName=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_NAME, "_name");
 	
@@ -77,12 +78,19 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 		String password=request.getParameter(loginPassword);
 		SessionUserImpl sessionUserImpl=authenticationAccessService.login(name, password);
 		if(sessionUserImpl!=null){
-			memcachedService.add(sessionUserImpl.getTicket(), 60*30, sessionUserImpl);
-			ResponseModel responseModel= FilterResponse.newSuccessLogin().setData(sessionUserImpl.getTicket());
+			HttpContext httpContext=new HttpContext();
+			httpContext.setTicket(sessionUserImpl.getTicket());
+			httpContext.setUser(sessionUserImpl);
+			memcachedService.add(sessionUserImpl.getTicket(), 60*30, httpContext);
+			FilterResponse filterResponse= FilterResponse.newSuccessLogin();
+			filterResponse.setData(sessionUserImpl.getTicket());
+			ResponseModel responseModel=ResponseModel.newSuccess();
+			responseModel.setData(filterResponse);
 			write(response, responseModel);
 		}
 		else{
-			ResponseModel responseModel= FilterResponse.newError().setData("用户名或者密码错误");
+			ResponseModel responseModel= FilterResponse.newError();
+			responseModel.setData("用户名或者密码错误");
 			write(response, responseModel);
 		}
 	}

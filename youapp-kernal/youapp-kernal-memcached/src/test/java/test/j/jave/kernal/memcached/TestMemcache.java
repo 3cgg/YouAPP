@@ -2,7 +2,7 @@ package test.j.jave.kernal.memcached;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.memcached.JDefaultMemcachedDisService;
+import j.jave.kernal.memcached.JDefaultMemcachedDisServiceImpl;
 import junit.framework.TestCase;
 
 public class TestMemcache extends TestCase {
@@ -17,7 +17,7 @@ public class TestMemcache extends TestCase {
 	public void testMemcache(){
 		
 		try{
-			JDefaultMemcachedDisService defaultMemcachedDisService= serviceHubDelegate.getService(this, JDefaultMemcachedDisService.class);
+			JDefaultMemcachedDisServiceImpl defaultMemcachedDisService= serviceHubDelegate.getService(this, JDefaultMemcachedDisServiceImpl.class);
 			defaultMemcachedDisService.putNeverExpired("A", "TEST-A-B");
 			String val=(String) defaultMemcachedDisService.get("A");
 			System.out.println(val);

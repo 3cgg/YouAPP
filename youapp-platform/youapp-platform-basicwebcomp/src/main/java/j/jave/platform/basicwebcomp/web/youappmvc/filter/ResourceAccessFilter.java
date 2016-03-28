@@ -5,7 +5,6 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -69,7 +68,7 @@ public class ResourceAccessFilter implements JFilter{
 			
 			// IF LOGINED, need check whether has an access to the resource
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
-				HttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, clientTicket), HttpContext.class);
+				HttpContext context=HttpContext.get();
 				if(context!=null){
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getUserId());
 					authorized=true;

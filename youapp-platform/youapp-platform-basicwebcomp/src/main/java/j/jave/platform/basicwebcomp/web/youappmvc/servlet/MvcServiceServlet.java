@@ -107,7 +107,7 @@ public class MvcServiceServlet  extends JServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		HttpContext httpContext=new HttpContext(req,resp);
+		HttpContext httpContext=HttpContext.get().initHttp(req, resp);
 		try{
 			
 			String uniqueName=YouAppMvcUtils.getTicket(req);

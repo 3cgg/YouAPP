@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class MD5CipherServiceFactory extends SpringServiceFactorySupport<MD5CipherService> {
 
 	@Autowired(required=false)
-	private MD5CipherService extMdsCipherService;
+	private MD5CipherServiceProvider extMdsCipherService;
 	
 	private MD5CipherService provideMdsCipherService;
 	

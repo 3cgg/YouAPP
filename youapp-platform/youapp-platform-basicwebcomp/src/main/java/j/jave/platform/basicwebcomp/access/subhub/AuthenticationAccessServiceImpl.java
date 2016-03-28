@@ -91,16 +91,19 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	
 	@Override
 	public boolean authorizeOnUserName(String resource, String name) {
-		
-		SessionUserImpl user=authenticationManagerService.getUserByName(name);
-		return authorizeOnUserId(resource, user.getUserId());
-		
+		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
+		if(webRequestURLCacheModel==null)
+			return true;
+		List<String> accessUserNames=webRequestURLCacheModel.accessUserNames();
+		return accessUserNames.contains(name);
 	}
 	
 	
 	@Override
 	public boolean authorizeOnUserId(String resource, String userId) {
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
+		if(webRequestURLCacheModel==null)
+			return true;
 		List<String> accessUserIds=webRequestURLCacheModel.accessUserIds();
 		return accessUserIds.contains(userId);
 	}

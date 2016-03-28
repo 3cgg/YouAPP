@@ -4,7 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedWithSpringConfigService;
+import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -36,7 +36,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
-	private MemcachedWithSpringConfigService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedWithSpringConfigService.class);;
+	private MemcachedDelegateService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedDelegateService.class);;
 	
 	private AuthenticationAccessService authenticationAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	
@@ -52,28 +52,35 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 		
 		try{
 			HttpServletRequest req=(HttpServletRequest) request;
-			
+			// REMOVE LOGIN INFO FROM LOCAL.
+			HttpContext.remove();
+			String clientTicket=YouAppMvcUtils.getTicket(req);
+			HttpContext serverTicket=null;
+			if(JStringUtils.isNotNullOrEmpty(clientTicket)){ // already login
+				serverTicket=(HttpContext) memcachedService.get(clientTicket);
+			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String target=YouAppMvcUtils.getPathInfo(req);
 			if(!authenticationAccessService.isNeedLoginRole(target)){
-				// 资源不需要登录权限
+				// 资源不需要登录权限, 仍然尝试获取登录用户信息
+				if(serverTicket==null){
+					// no login, mock a login user.
+					HttpContext httpContext=HttpContext.getMockHttpContext();
+					HttpContext.set(httpContext);
+				}
+				else{
+					HttpContext.set(serverTicket);
+				}
 				chain.doFilter(request, response);
 				return ;
 			}
 			
-			String clientTicket=YouAppMvcUtils.getTicket(req);
 			boolean isLogin=false;
-			if(JStringUtils.isNullOrEmpty(clientTicket)){ // no login.
+			if(serverTicket==null){
 				isLogin=false;
 			}
-			else{ // check  whether server ticket is invalid. 
-				HttpContext serverTicket=(HttpContext) memcachedService.get(clientTicket);
-				if(serverTicket==null){
-					isLogin=false;
-				}
-				else{
-					isLogin=true;
-				}
+			else{
+				isLogin=true;
 			}
 			if(!isLogin){ // 没有登录， 尝试登陆
 				 if(servletConfigService.getLoginPath().equals(target)){ // 尝试登陆
@@ -95,6 +102,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 //					return;
 //				}
 				else{
+					HttpContext.set(serverTicket);
 					chain.doFilter(request, response);
 				}
 			}

@@ -87,7 +87,7 @@
             </list>  
         </property>  
     </bean>
-	
+	<!-- 
 	 <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
         <property name="beanNames">  
             <list>  
@@ -100,13 +100,7 @@
             </list>  
         </property>  
     </bean>    
-  
-  
-  
-  
-  
-  
-  
+   -->
   
   
 </beans>  

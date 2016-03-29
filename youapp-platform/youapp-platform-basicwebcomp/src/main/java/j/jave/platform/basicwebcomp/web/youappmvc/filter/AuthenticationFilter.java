@@ -7,7 +7,9 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
+import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPLoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
@@ -58,6 +60,10 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 			HttpContext serverTicket=null;
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){ // already login
 				serverTicket=(HttpContext) memcachedService.get(clientTicket);
+				if(serverTicket==null){
+					authenticationHandler.handleExpiredLogin(req, (HttpServletResponse) response, chain);
+					return;
+				}
 			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String target=YouAppMvcUtils.getPathInfo(req);

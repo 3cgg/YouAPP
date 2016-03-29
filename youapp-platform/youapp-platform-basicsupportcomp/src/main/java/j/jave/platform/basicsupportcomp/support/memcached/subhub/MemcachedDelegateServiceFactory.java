@@ -3,6 +3,11 @@
  */
 package j.jave.platform.basicsupportcomp.support.memcached.subhub;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicsupportcomp.BasicSupportCompProperties;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +36,21 @@ public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport
 					if(delegateServiceProvider!=null){
 						instance=delegateServiceProvider;
 					}
-					else{
-						instance=memcachedService;
+					else {
+						String config=JConfiguration.get().getString(BasicSupportCompProperties.YOUAPP_MEMECACHE_MEMORY_INSTEAD_OF_SERVICE,
+									"");
+						if(JStringUtils.isNotNullOrEmpty(config)){
+							try {
+								instance=(MemcachedDelegateService) JClassUtils.load(config).newInstance();
+							} catch (InstantiationException
+									| IllegalAccessException e) {
+								throw new JInitializationException(e);
+							}
+						}
+						else{
+							// use default
+							instance=memcachedService;
+						}
 					}
 				}
 			}

@@ -7,13 +7,9 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
-import j.jave.platform.basicwebcomp.access.subhub.SessionUserGetEvent;
-import j.jave.platform.basicwebcomp.core.service.SessionUser;
+import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
-import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
@@ -52,6 +48,8 @@ public class MvcServiceServlet  extends JServlet {
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
 	private JServletViewHandler servletViewHandler=new JSONServletViewHandler();
+	
+	private MemcachedDelegateService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedDelegateService.class);;
 	
 	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");
@@ -109,28 +107,6 @@ public class MvcServiceServlet  extends JServlet {
 			throws ServletException, IOException {
 		HttpContext httpContext=HttpContext.get().initHttp(req, resp);
 		try{
-			
-			String uniqueName=YouAppMvcUtils.getTicket(req);
-			httpContext.setTicket(uniqueName);
-			
-			if(JStringUtils.isNullOrEmpty(uniqueName)){
-				//mock 用户信息
-				SessionUser user=serviceHubDelegate.addImmediateEvent(new SessionUserGetEvent(this), SessionUser.class);
-				String IP=YouAppMvcUtils.getIP(req);
-				user.setUserName(IP);
-				user.setUserId(IP);
-				httpContext.setUser(user);
-			}
-			else{
-				// 从会话缓存中获取信息
-				HttpContext context=serviceHubDelegate.addImmediateEvent(new JMemcachedDisGetEvent(this, uniqueName), HttpContext.class);
-				if(context==null){
-					JCookieUtils.deleteCookie(req, resp, JCookieUtils.getCookie(req, ViewConstants.TICKET));
-					resp.sendRedirect(YouAppMvcUtils.getAppUrlPath(req));
-					return ;
-				}
-				httpContext.setUser(context.getUser());
-			}
 			
 			String target=YouAppMvcUtils.getPathInfo(req);
 			httpContext.setTargetPath(target);

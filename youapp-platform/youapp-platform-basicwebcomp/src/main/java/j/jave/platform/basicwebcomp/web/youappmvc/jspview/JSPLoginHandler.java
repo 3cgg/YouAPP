@@ -72,4 +72,11 @@ public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		
 	}
+	
+	@Override
+	public void handleExpiredLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -44,6 +44,12 @@ public class FilterResponse extends ResponseModel{
 		return filterResponse;
 	}
 	
+	public static FilterResponse newExpiredLogin(){
+		FilterResponse filterResponse=new FilterResponse();
+		filterResponse.setStatus(ResponseStatus.EXPIRED_LOGIN);
+		return filterResponse;
+	}
+	
 	public static FilterResponse newSuccessLogin(){
 		FilterResponse filterResponse=new FilterResponse();
 		filterResponse.setStatus(ResponseStatus.SUCCESS_LOGIN);

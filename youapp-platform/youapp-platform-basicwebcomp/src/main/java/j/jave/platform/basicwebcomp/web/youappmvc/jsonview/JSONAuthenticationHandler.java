@@ -8,7 +8,9 @@ import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -97,6 +99,16 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	
 	private void write(HttpServletResponse response,Object object) throws Exception{
 		response.getOutputStream().write(JJSON.get().formatObject(object).getBytes("utf-8"));
+	}
+	
+	@Override
+	public void handleExpiredLogin(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain) throws Exception {
+		JCookieUtils.deleteCookie(request, response, JCookieUtils.getCookie(request, ViewConstants.TICKET));
+		FilterResponse filterResponse= FilterResponse.newExpiredLogin();
+		ResponseModel responseModel=ResponseModel.newSuccess();
+		responseModel.setData(filterResponse);
+		write(response, responseModel);
 	}
 
 }

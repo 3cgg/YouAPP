@@ -9,5 +9,10 @@
   <description>youappmvc pageable service factory provided by jquery data table</description>
 </property>
 
+<property>
+  <name>youapp.memcache.memory.instead.of.service</name>
+  <value>com.youappcorp.project.core.service.MemoryInsteadOfMemcachedDelegateServiceProvider</value>
+  <description>memcache instead of the memory cache service</description>
+</property>
 
 </configuration>

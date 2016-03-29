@@ -9,7 +9,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.listener.ResourceLoaderListene
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -161,7 +160,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
         	Set<String> urlPatterns=new HashSet<String>();
         	urlPatterns.add("/*");
         	registration.setUrlPatterns(urlPatterns);
-        	registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE-3);
+        	registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
         	return registration;
         }
         

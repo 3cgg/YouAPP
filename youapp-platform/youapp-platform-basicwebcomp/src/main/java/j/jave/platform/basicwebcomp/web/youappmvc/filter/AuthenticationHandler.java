@@ -45,4 +45,7 @@ public interface AuthenticationHandler {
 			FilterChain chain) throws Exception;
 
 	
+	public void handleExpiredLogin(HttpServletRequest request, HttpServletResponse response,
+			FilterChain chain) throws Exception;
+	
 }

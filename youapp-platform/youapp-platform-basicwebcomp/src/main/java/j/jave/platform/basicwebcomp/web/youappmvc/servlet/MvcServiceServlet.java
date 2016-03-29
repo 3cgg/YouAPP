@@ -10,6 +10,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
@@ -105,7 +106,7 @@ public class MvcServiceServlet  extends JServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		HttpContext httpContext=HttpContext.get().initHttp(req, resp);
+		HttpContext httpContext=HttpContextHolder.get().initHttp(req, resp);
 		try{
 			
 			String target=YouAppMvcUtils.getPathInfo(req);

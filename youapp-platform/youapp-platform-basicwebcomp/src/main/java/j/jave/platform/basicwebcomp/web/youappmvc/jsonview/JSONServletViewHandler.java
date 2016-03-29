@@ -3,15 +3,14 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.model.ResponseStatus;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -8,6 +8,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
@@ -41,9 +42,6 @@ public class ResourceAccessFilter implements JFilter{
 	
 	private AuthenticationAccessService loginAccessService=JServiceHubDelegate.get().getService(this,AuthenticationAccessService.class);
 	
-	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
-	
-	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
@@ -68,7 +66,7 @@ public class ResourceAccessFilter implements JFilter{
 			
 			// IF LOGINED, need check whether has an access to the resource
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
-				HttpContext context=HttpContext.get();
+				HttpContext context=HttpContextHolder.get();
 				if(context!=null){
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getUserId());
 					authorized=true;

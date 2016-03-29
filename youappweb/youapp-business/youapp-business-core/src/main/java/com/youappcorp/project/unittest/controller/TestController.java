@@ -3,6 +3,7 @@ package com.youappcorp.project.unittest.controller;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -27,7 +28,27 @@ public class TestController extends ControllerSupport {
 		ResponseModel responseModel=ResponseModel.newSuccess();
 		TestModel testModel=new TestModel();
 		testModel.setCode(code);
-		responseModel.setData(testModel);
+		
+		testModel.getTestModelList().add(new TestModel(code));
+		testModel.getTestModelList().add(new TestModel(code));
+		
+		testModel.getTestModelSet().add(new TestModel(code));
+		testModel.getTestModelSet().add(new TestModel(code));
+		
+		testModel.getMap().put("A", new TestModel(code));
+		testModel.getMap().put("B", new TestModel(code));
+		
+		testModel.getMapList().put("ALIST", testModel.getTestModelList());
+		testModel.getMapList().put("BSET", testModel.getTestModelSet());
+		
+		Map<String, Object> objs=new HashMap<String, Object>();
+		objs.put("FIRST", testModel);
+		
+		Map<String, Object> maps=new HashMap<String, Object>();
+		maps.put("SE-LEV", "SE-LEV-VAL");
+		objs.put("SECOND", maps);
+		
+		responseModel.setData(objs);
 		return responseModel;
 	}
 	

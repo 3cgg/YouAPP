@@ -7,7 +7,6 @@ import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.core.service.DefaultSessionUser;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
@@ -35,26 +34,6 @@ import javax.servlet.http.HttpServletResponse;
  * @see ControllerExecutor
  */
 public class HttpContext implements JModel {
-
-	public static ThreadLocal<HttpContext> threadLocal=new ThreadLocal<HttpContext>();
-	
-	public static void set(HttpContext httpContext){
-		threadLocal.set(httpContext);
-	}
-	
-	public static HttpContext get(){
-		return threadLocal.get();
-	}
-	
-	public static void remove(){
-		threadLocal.remove();
-	}
-	
-	public static HttpContext getMockHttpContext(){
-		HttpContext httpContext=new HttpContext();
-		httpContext.setUser(DefaultSessionUser.getDefaultSessionUser());
-		return httpContext;
-	}
 	
 	/**
 	 * ticket to indicate the unique request to apart from other users.

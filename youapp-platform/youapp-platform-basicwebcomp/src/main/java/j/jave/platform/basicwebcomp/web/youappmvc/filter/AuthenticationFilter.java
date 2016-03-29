@@ -7,9 +7,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
-import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPLoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
@@ -55,7 +54,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 		try{
 			HttpServletRequest req=(HttpServletRequest) request;
 			// REMOVE LOGIN INFO FROM LOCAL.
-			HttpContext.remove();
+			HttpContextHolder.remove();
 			String clientTicket=YouAppMvcUtils.getTicket(req);
 			HttpContext serverTicket=null;
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){ // already login
@@ -71,11 +70,11 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 				// 资源不需要登录权限, 仍然尝试获取登录用户信息
 				if(serverTicket==null){
 					// no login, mock a login user.
-					HttpContext httpContext=HttpContext.getMockHttpContext();
-					HttpContext.set(httpContext);
+					HttpContext httpContext=HttpContextHolder.getMockHttpContext();
+					HttpContextHolder.set(httpContext);
 				}
 				else{
-					HttpContext.set(serverTicket);
+					HttpContextHolder.set(serverTicket);
 				}
 				chain.doFilter(request, response);
 				return ;
@@ -108,7 +107,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 //					return;
 //				}
 				else{
-					HttpContext.set(serverTicket);
+					HttpContextHolder.set(serverTicket);
 					chain.doFilter(request, response);
 				}
 			}

@@ -8,8 +8,14 @@ import j.jave.platform.basicwebcomp.web.proext.annotation.PropertyExtend;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TestModel extends JBaseModel  implements PropertyExtendable{
 
@@ -50,13 +56,28 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 	@CodeExtend(property="code",codeType="SEX")
 	private String codeName;
 	
-	private String refId="0597eeb9-b5f8-4416-8cc6-82b6e2c1e1f8";
+	private String refId="M";
 	
 	@ObjectExtend(property="refId")
 	private Object refObject;
 	
 	@PropertyExtend(active=true,objectExtend=@ObjectExtend(property="refId"))
 	private Object refObject2;
+	
+	private List<TestModel> testModelList=new ArrayList<TestModel>();
+	
+	private Set<TestModel> testModelSet=new HashSet<TestModel>();
+	
+	private Map<String, TestModel> map=new HashMap<String, TestModel>();
+	
+	private Map<String, Collection<TestModel>> mapList=new HashMap<String, Collection<TestModel>>();
+	
+	public TestModel() {
+	}
+	
+	public TestModel(String code){
+		this.code=code;
+	}
 	
 	public String getCode() {
 		return code;
@@ -216,6 +237,46 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 
 	public void setAstrs(String[] astrs) {
 		this.astrs = astrs;
+	}
+
+	public Object getRefObject2() {
+		return refObject2;
+	}
+
+	public void setRefObject2(Object refObject2) {
+		this.refObject2 = refObject2;
+	}
+
+	public List<TestModel> getTestModelList() {
+		return testModelList;
+	}
+
+	public void setTestModelList(List<TestModel> testModelList) {
+		this.testModelList = testModelList;
+	}
+
+	public Set<TestModel> getTestModelSet() {
+		return testModelSet;
+	}
+
+	public void setTestModelSet(Set<TestModel> testModelSet) {
+		this.testModelSet = testModelSet;
+	}
+
+	public Map<String, TestModel> getMap() {
+		return map;
+	}
+
+	public void setMap(Map<String, TestModel> map) {
+		this.map = map;
+	}
+
+	public Map<String, Collection<TestModel>> getMapList() {
+		return mapList;
+	}
+
+	public void setMapList(Map<String, Collection<TestModel>> mapList) {
+		this.mapList = mapList;
 	}
 	
 	

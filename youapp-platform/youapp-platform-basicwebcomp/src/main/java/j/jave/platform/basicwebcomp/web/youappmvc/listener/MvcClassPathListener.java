@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.listener;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassPathList;
 import j.jave.kernal.jave.utils.JClassPathUtils;
 
@@ -7,9 +9,6 @@ import java.io.File;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * initial the context of the APP. the is the major context listener, <strong> Note that it's mandatory for the APP.</strong>  including 
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author J
  */
 public class MvcClassPathListener implements ServletContextListener {
-	private static final Logger LOGGER=LoggerFactory.getLogger(MvcClassPathListener.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(MvcClassPathListener.class);
 	
 //	/**
 //	 * other file directory or jar file that need be added in to CLASSPATH.

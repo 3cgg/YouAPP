@@ -1,6 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.listener;
 
 import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.sqlloader.JSQLConfigure;
@@ -9,9 +11,6 @@ import j.jave.kernal.sqlloader.dml.JSQLDMLCreateFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The SQL DML listener, to load SQL DML statement automatically, 
@@ -23,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * @see j.jave.framework.support.sqlloader.dml.JPropertiesSQLDMLCreateFactory
  */
 public class SQLDMLListener implements ServletContextListener {
-	private static final Logger LOGGER=LoggerFactory.getLogger(SQLDMLListener.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(SQLDMLListener.class);
 	
 	private static final String DML_CREATE_FACTORY="youapp.dml.create.factory";
 	

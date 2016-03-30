@@ -5,6 +5,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
@@ -15,15 +17,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author J
  */
 public class JSONServletViewHandler  implements JServletViewHandler {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(JSONServletViewHandler.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JSONServletViewHandler.class);
 	
 	private List<DataModifyHandler> dataModifyHandlers=new ArrayList<DataModifyHandler>(); 
 	{

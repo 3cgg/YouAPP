@@ -3,11 +3,13 @@
  */
 package j.jave.platform.basicwebcomp.access.subhub;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicsupportcomp.support.security.subhub.DESedeCipherService;
+import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
@@ -62,25 +64,29 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	@Override
 	public boolean isNeedLoginRole(String url) throws JServiceException {
 		
-		if(JStringUtils.isNullOrEmpty(url)){
-			return false;
+		boolean on=JConfiguration.get().getBoolean(WebCompProperties.YOUAPPMVC_RESOURCE_AUTHORIZATION_ONOFF, true);
+		if(on){
+			if(JStringUtils.isNullOrEmpty(url)){
+				return false;
+			}
+			if("/login.loginaction/toRegister".equals(url)){
+				return false;
+			}
+			else if("/login.loginaction/register".equals(url)){
+				return false;
+			}
+			else if("/login.loginaction/login".equals(url)){
+				return false;
+			}
+			else if("/mobile.login.loginaction/login".equals(url)){
+				return false;
+			}
+//			else if("/login.loginaction/toLogin".equals(url)){
+//				return false;
+//			}
+			return true;
 		}
-		if("/login.loginaction/toRegister".equals(url)){
-			return false;
-		}
-		else if("/login.loginaction/register".equals(url)){
-			return false;
-		}
-		else if("/login.loginaction/login".equals(url)){
-			return false;
-		}
-		else if("/mobile.login.loginaction/login".equals(url)){
-			return false;
-		}
-//		else if("/login.loginaction/toLogin".equals(url)){
-//			return false;
-//		}
-		return true;
+		return false;
 	}
 
 	@Override

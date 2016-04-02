@@ -202,6 +202,12 @@ public class JConfiguration extends HashMap<String, Object>{
 	public Boolean getBoolean(String  key, boolean defaultValue){
 		Object obj=get(key, defaultValue);
 		if(!Boolean.class.isInstance(obj)){
+			if("on".equals(String.valueOf(obj).trim())){
+				return true;
+			}
+			if("off".equals(String.valueOf(obj).trim())){
+				return false;
+			}
 			return Boolean.valueOf(String.valueOf(obj));
 		}
 		return (Boolean)obj;

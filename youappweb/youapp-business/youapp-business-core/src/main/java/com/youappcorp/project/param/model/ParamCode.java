@@ -16,6 +16,8 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 
+import com.youappcorp.project.websupport.model.CodeTableCacheModel;
+
 /**
  * @author J
  */

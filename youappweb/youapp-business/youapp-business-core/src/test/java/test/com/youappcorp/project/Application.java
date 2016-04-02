@@ -5,7 +5,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.filter.MemoryHTMLFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.ResourceAccessFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.ValidPathFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.listener.MvcClassPathListener;
-import j.jave.platform.basicwebcomp.web.youappmvc.listener.ResourceLoaderListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 
 import java.util.Arrays;
@@ -35,7 +34,6 @@ public class Application extends SpringBootServletInitializer implements Embedde
     public static void main(String[] args) throws Exception {
     	
     	SpringApplication springApplication=new SpringApplication(Application.class);
-    	springApplication.addListeners(new ResourceLoaderListener());
         ApplicationContext ctx = springApplication.run();
 
         System.out.println("Let's inspect the beans provided by Spring Boot:");

@@ -4,19 +4,18 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
-import com.youappcorp.project.param.model.CodeTableCacheModel;
 import com.youappcorp.project.param.model.ParamCode;
 import com.youappcorp.project.param.model.ParamType;
+import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
 /**
  * @author J
  */
-public interface ParamService extends Service<ParamCode> {
+public interface ParamService{
 	
 	/**
 	 * save param , including some validations. see {@link #exists(ServiceContext, ParamCode)}

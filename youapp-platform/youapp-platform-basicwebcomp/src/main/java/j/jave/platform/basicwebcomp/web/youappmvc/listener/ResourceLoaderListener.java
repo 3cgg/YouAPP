@@ -11,10 +11,12 @@ import java.util.Set;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Service;
 
 /**
  * @author J
  */
+@Service
 public class ResourceLoaderListener implements ApplicationListener<ContextRefreshedEvent> {
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(ResourceLoaderListener.class);

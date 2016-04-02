@@ -29,4 +29,13 @@
   <description>the key can be got from the request parameter.</description>
 </property>
 
+<property>
+  <name>youapp.mvc.resource.authorization.onoff</name>
+  <value>off</value>
+  <description>set whether to turn on/off the authentication on resources.
+  on/true : indicates system need check if the resources are accessible, 
+  false/off : the otherwise. 
+  </description>
+</property>
+
 </configuration>

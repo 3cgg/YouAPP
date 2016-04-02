@@ -82,14 +82,14 @@ select * from USERS where id=#{param1}
 </select>
 
 
-<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JBaseModel">
+<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.platform.basicwebcomp.core.model.SimplePageCriteria">
 	select * from USERS where DELETED='N' 
 	<if test="userName !=null and userName !=''">
 		and USERNAME like CONCAT('%',  #{userName} ,'%')  
 	</if>
 	order by 
-	<if test="page.sortColumn !=null and page.sortColumn !=''">
-		${page.sortColumn} ${page.sortType}    ,
+	<if test="columnDirection !=null and columnDirection !=''">
+		${columnDirection},
 	</if> UPDATETIME desc
 </select>
 

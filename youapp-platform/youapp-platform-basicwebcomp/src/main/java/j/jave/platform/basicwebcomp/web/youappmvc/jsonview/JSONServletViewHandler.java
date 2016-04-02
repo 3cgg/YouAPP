@@ -36,7 +36,9 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			dataModifyHandler.handle(responseModel);
 		}
 		String out=JJSON.get().formatObject(responseModel);
-		response.getOutputStream().write(out.getBytes("utf-8"));
+		String callBackMethod=httpContext.getParameter("callback");
+		String callBackForJsonp=callBackMethod+"("+out+")";
+		response.getOutputStream().write(callBackForJsonp.getBytes("utf-8"));
 	}
 	
 	@Override

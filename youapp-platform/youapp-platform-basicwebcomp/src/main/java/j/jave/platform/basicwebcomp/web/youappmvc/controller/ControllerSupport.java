@@ -6,6 +6,7 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
+import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -90,6 +91,9 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	} 
 	
 	public ServiceContext getServiceContext(){
+		SessionUser sessionUser=httpContext.get().getUser();
+		ServiceContext serviceContext=new ServiceContext();
+		serviceContext.setSessionUser((SessionUserImpl) sessionUser);
 		return new ServiceContext();
 	}
 

@@ -3,26 +3,37 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Administrator
  *
  */
 @JTable(name="USERS")
-public class User extends JBaseModel{
+@Table(name="USERS")
+@Entity
+public class User extends JJpaBaseModel{
 	
 	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
+	@Column(name="USERNAME")
 	private String userName;
 	
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
+	@Column(name="PASSWORD")
 	private String password;
 	
+	@Transient
 	private String retypePassword;
 	
+	@Transient
 	private UserExtend userExtend;
 
 	public UserExtend getUserExtend() {

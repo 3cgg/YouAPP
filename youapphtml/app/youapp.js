@@ -1,0 +1,4 @@
+function onInitOnYouApp(){
+
+    alert('in');
+}

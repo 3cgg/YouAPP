@@ -19,16 +19,16 @@ import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
 import com.youappcorp.project.param.jpa.ParamTypeJPARepo;
-import com.youappcorp.project.param.model.CodeTableCacheModel;
 import com.youappcorp.project.param.model.ParamCode;
 import com.youappcorp.project.param.model.ParamType;
+import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
 /**
  * parameter basic service.
  * @author J
  */
 @Service(value="paramService.transation.jpa")
-public class ParamServiceImpl extends ServiceSupport<ParamCode> implements ParamService{
+public class ParamServiceImpl extends ServiceSupport implements ParamService{
 
 	@Autowired
 	private InternalParamTypeServiceImpl internalParamTypeServiceImpl;
@@ -79,7 +79,7 @@ public class ParamServiceImpl extends ServiceSupport<ParamCode> implements Param
 	}
 
 	@Override
-	public JIPersist<?, ParamCode> getRepo() {
+	public JIPersist<?, ?> getRepo() {
 		return null;
 	}
 

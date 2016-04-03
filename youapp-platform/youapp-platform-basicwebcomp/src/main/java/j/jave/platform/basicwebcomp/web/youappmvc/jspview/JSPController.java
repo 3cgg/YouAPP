@@ -7,6 +7,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
  * JSP basic action. 
  * @author J
  */
+@Deprecated
 public abstract class JSPController extends ControllerSupport {
 
 	/**

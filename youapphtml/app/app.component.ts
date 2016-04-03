@@ -9,7 +9,11 @@ import {NewsComponent} from './news/news.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {GlobalService} from './global.service';
 import {UserManagerComponent} from "./usermanager/usermanager.component";
-
+import {PageInfo} from './pageinfo.component'
+import {UserManagerService} from './usermanager/user-manager.service'
+import {UserInfo} from './userinfo.component'
+import {LoginComponnet} from './login/login.component'
+import {CallbackObject} from './callbackobject.component'
 @Component({
     selector: 'app-html',
     templateUrl:'app/app.component.html',
@@ -19,7 +23,8 @@ import {UserManagerComponent} from "./usermanager/usermanager.component";
         GlobalService,
         Http,
         HTTP_PROVIDERS,
-        JSONP_PROVIDERS
+        JSONP_PROVIDERS,
+        UserManagerService
     ]
 })
 
@@ -39,27 +44,52 @@ import {UserManagerComponent} from "./usermanager/usermanager.component";
         path: '/usermanager',
         name: 'UserManager',
         component: UserManagerComponent
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: LoginComponnet
     }
 ])
 
 export class AppComponent implements OnInit {
 
-    constructor(private _globalService:GlobalService) {
+    constructor(private _globalService:GlobalService,
+    private _userManagerService:UserManagerService
+    ) {
 
-    }
-
-    itemTitle='dd';
-
-    itemTitleDesc='dd-desc';
-
-    ngOnInit() {
-        System.import('dist/js/app.min.js');
-        this._globalService.setAppComponent(this);
-        this._globalService.setTitile('APP','app-app');
     }
 
     globalDateFormat='MM/dd/yy';
 
+    pageInfo:PageInfo=new PageInfo();
+
+    ngOnInit() {
+        System.import('dist/js/app.min.js');
+        System.import('plugins/iCheck/icheck.min.js');
+        this._globalService.setAppComponent(this);
+        this._globalService.setTitile('Init','init');
+        this.getUser();
+    }
+
+    private getUser(){
+        this._userManagerService.getUserById('bd2713e6ad5d493ab2e25c34f6cd339a',
+            
+            new CallbackObject(function (data,_object) {
+                _object.pageInfo.userInfo.userName=data.id;
+                _object.pageInfo.userInfo.natureName=data.version;
+            },this)
+            
+            );
+    }
+    
+    closeErrorMessage(){
+        this._globalService.clearError();
+    }
+
+    closeSuccessMessage(){
+        this._globalService.clearSuccess();
+    }
 }
 
 

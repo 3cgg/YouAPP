@@ -2,6 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
@@ -69,12 +70,12 @@ public class LinkedRequestFilter implements JFilter ,APPFilterConfig  {
 					if(stored){
 						// notify the client continue to transfer the rest data.
 						
-						FilterResponse filterResponse= FilterResponse.newLinkedRequest();
+						ResponseModel filterResponse= ResponseModel.newLinkedRequest();
 						filterResponse.setData(linkedRequestSupport.next());
 						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 					}
 					else{
-						FilterResponse filterResponse= FilterResponse.newLinkedRequest();
+						ResponseModel filterResponse= ResponseModel.newLinkedRequest();
 						filterResponse.setData(linkedRequestSupport.terminate());
 						// notify the client continue to transfer the rest data.
 						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));

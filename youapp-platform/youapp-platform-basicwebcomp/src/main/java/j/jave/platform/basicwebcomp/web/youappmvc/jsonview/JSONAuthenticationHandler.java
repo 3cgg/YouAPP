@@ -2,7 +2,6 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
@@ -10,9 +9,9 @@ import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 
 import javax.servlet.FilterChain;
@@ -47,19 +46,15 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	@Override
 	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
-		FilterResponse filterResponse= FilterResponse.newNoLogin();
-		ResponseModel responseModel=ResponseModel.newMessage();
-		responseModel.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().formatObject(responseModel).getBytes("utf-8"));
+		ResponseModel responseModel= ResponseModel.newNoLogin();
+		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
 	}
 	
 	@Override
 	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
-		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
-		ResponseModel responseModel=ResponseModel.newMessage();
-		responseModel.setData(filterResponse);
-		response.getOutputStream().write(JJSON.get().formatObject(responseModel).getBytes("utf-8"));
+		ResponseModel responseModel= ResponseModel.newDuplicateLogin();
+		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
 	}
 
 	@Override
@@ -84,31 +79,28 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 			httpContext.setTicket(sessionUserImpl.getTicket());
 			httpContext.setUser(sessionUserImpl);
 			memcachedService.add(sessionUserImpl.getTicket(), 60*30, httpContext);
-			FilterResponse filterResponse= FilterResponse.newSuccessLogin();
-			filterResponse.setData(sessionUserImpl.getTicket());
-			ResponseModel responseModel=ResponseModel.newSuccess();
-			responseModel.setData(filterResponse);
-			write(response, responseModel);
+			ResponseModel responseModel= ResponseModel.newSuccessLogin();
+			SessionUserImpl resSessionUserImpl=new SessionUserImpl();
+			resSessionUserImpl.setTicket(sessionUserImpl.getTicket());
+			resSessionUserImpl.setUserName(sessionUserImpl.getUserName());
+			resSessionUserImpl.setUserId(sessionUserImpl.getUserId());
+			responseModel.setData(sessionUserImpl);
+			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 		}
 		else{
-			ResponseModel responseModel= FilterResponse.newError();
+			ResponseModel responseModel= ResponseModel.newError();
 			responseModel.setData("用户名或者密码错误");
-			write(response, responseModel);
+			HttpServletResponseUtil.write(request, response, null, responseModel);
 		}
 	}
 	
-	private void write(HttpServletResponse response,Object object) throws Exception{
-		response.getOutputStream().write(JJSON.get().formatObject(object).getBytes("utf-8"));
-	}
 	
 	@Override
 	public void handleExpiredLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		JCookieUtils.deleteCookie(request, response, JCookieUtils.getCookie(request, ViewConstants.TICKET));
-		FilterResponse filterResponse= FilterResponse.newExpiredLogin();
-		ResponseModel responseModel=ResponseModel.newSuccess();
-		responseModel.setData(filterResponse);
-		write(response, responseModel);
+		ResponseModel responseModel= ResponseModel.newExpiredLogin();
+		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
 	}
 
 }

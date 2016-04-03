@@ -3,36 +3,45 @@ import {Http, Response} from 'angular2/http';
 import {Observable}     from 'rxjs/Observable';
 import 'rxjs/Rx';
 import {Jsonp, URLSearchParams} from 'angular2/http';
+import {Headers, RequestOptions} from 'angular2/http';
+import {GlobalService} from '../global.service'
+import {CallbackObject} from "../callbackobject.component";
 
 @Injectable()
 export class UserManagerService{
 
-    private _getUsersByPage=
-        'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage?callback=JSONP_CALLBACK';
+    private _getUsersByPageUrl=
+        'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage';
+
+    private _getUserByIdUrl=
+        'http://localhost:8689/youapp/extapi/usermanager/getUserById';
+
 
     constructor (private http: Http,
-    private jsonp:Jsonp
+    private jsonp:Jsonp,
+                 private _globalService:GlobalService
     ) {}
 
-    getUsers(){
+    getUsers(_callback:Object){
+        let headers = new Headers({
+            'Content_Type': 'jsonp'
 
-        return this.jsonp.get(this._getUsersByPage)
-            .map(res => res.json().data)
-            .do(data=>console.log(data))
-            .catch(this.handleError);
+        });
+        let options = new RequestOptions({ headers: headers });
+
+        this._globalService.getByJsonp(this._getUsersByPageUrl,{},_callback);
 
     }
 
-    private handleError (error: Response) {
-        // in a real world app, we may send the error to some remote logging infrastructure
-        // instead of just logging it to the console
-        console.error(error);
-        if(error.json()){
-            return Observable.throw(error.json().data || 'Server error');
-        }
-        else{
-            return Observable.throw('Server error');
-        }
+
+
+    getUserById(_id:String,_callback:CallbackObject){
+        
+        var params = new URLSearchParams();
+        params.set('id', _id); // the user's search value
+
+        this._globalService.getByJsonp(this._getUserByIdUrl,params,_callback);
+
     }
 
 }

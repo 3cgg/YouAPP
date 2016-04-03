@@ -2,8 +2,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.FilterResponse;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 
@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
+@Deprecated
 public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
@@ -57,7 +58,7 @@ public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
 	@Override
 	public void handleDuplicateLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
-		FilterResponse filterResponse= FilterResponse.newDuplicateLogin();
+		ResponseModel filterResponse= ResponseModel.newDuplicateLogin();
 		response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
 	}
 	

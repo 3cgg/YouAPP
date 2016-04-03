@@ -30,6 +30,7 @@ System.register(["angular2/core", '../global.service'], function(exports_1, cont
                     setTimeout(function () {
                         _this._globalService.setTitile('News', 'news');
                     }, 1);
+                    this._globalService.reset();
                 };
                 NewsComponent = __decorate([
                     core_1.Component({

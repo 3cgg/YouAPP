@@ -4,7 +4,7 @@ import {UserManagerService} from './user-manager.service'
 
 import {AppComponent} from '../app.component'
 import {GlobalService} from '../global.service';
-
+import {CallbackObject} from '../callbackobject.component'
 @Component(
     {
         selector:'timeline',
@@ -31,17 +31,13 @@ export class UserManagerComponent implements OnInit {
         }, 1);
 
         this.getUsers();
+        this._globalService.reset();
     }
 
-
     getUsers(){
-
-        this._userManagerService.getUsers()
-            .retry(1)
-            .subscribe(
-                data=> this.users=data.content,
-                error=>this.errorMessage=error
-            );
+        this._userManagerService.getUsers(new CallbackObject(function (data,_object) {
+            _object.users=data.content;
+        },this));
     }
 
 

@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
  * JSP Service Servlet
  * @author J
  */
+@Deprecated
 public class JSPServletViewHandler  implements JServletViewHandler {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(JSPServletViewHandler.class);

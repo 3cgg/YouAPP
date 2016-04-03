@@ -16,6 +16,7 @@ import javax.servlet.jsp.tagext.Tag;
 /**
  * @author J
  */
+@Deprecated
 public class AccessTag implements Tag{
 
 	 private PageContext pageContext;

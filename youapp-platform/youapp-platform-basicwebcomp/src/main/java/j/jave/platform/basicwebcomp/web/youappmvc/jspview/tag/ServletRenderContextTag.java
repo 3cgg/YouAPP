@@ -14,6 +14,7 @@ import javax.servlet.jsp.tagext.Tag;
 /**
  * @author J
  */
+@Deprecated
 public class ServletRenderContextTag implements Tag{
 
 	 private PageContext pageContext;

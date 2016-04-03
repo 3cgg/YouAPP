@@ -4,7 +4,6 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
@@ -35,10 +34,7 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 		for(DataModifyHandler dataModifyHandler:dataModifyHandlers){
 			dataModifyHandler.handle(responseModel);
 		}
-		String out=JJSON.get().formatObject(responseModel);
-		String callBackMethod=httpContext.getParameter("callback");
-		String callBackForJsonp=callBackMethod+"("+out+")";
-		response.getOutputStream().write(callBackForJsonp.getBytes("utf-8"));
+		HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 	}
 	
 	@Override
@@ -46,10 +42,9 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			HttpServletResponse response, HttpContext httpContext,
 			JServiceException exception) {
 		try{
-			ResponseModel mobileResult=ResponseModel.newMessage();
-			mobileResult.setData(exception.getMessage());
-			String out=JJSON.get().formatObject(mobileResult);
-			response.getOutputStream().write(out.getBytes("utf-8"));
+			ResponseModel responseModel=ResponseModel.newMessage();
+			responseModel.setData(exception.getMessage());
+			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 		}
@@ -69,10 +64,9 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 				handleServiceExcepion(request, response, httpContext, (JServiceException) exp);
 			}
 			else{
-				ResponseModel mobileResult=ResponseModel.newError();
-				mobileResult.setData(exception.getMessage());
-				String out=JJSON.get().formatObject(mobileResult);
-				response.getOutputStream().write(out.getBytes("utf-8"));
+				ResponseModel responseModel=ResponseModel.newError();
+				responseModel.setData(exception.getMessage());
+				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);

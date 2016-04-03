@@ -66,7 +66,8 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String target=YouAppMvcUtils.getPathInfo(req);
-			if(!authenticationAccessService.isNeedLoginRole(target)){
+			if(!servletConfigService.getLoginPath().equals(target)
+					&&!authenticationAccessService.isNeedLoginRole(target)){
 				// 资源不需要登录权限, 仍然尝试获取登录用户信息
 				if(serverTicket==null){
 					// no login, mock a login user.

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration>
 
-<!-- xmldb properties  -->
+<!-- web default properties  -->
 
 <property>
   <name>youapp.mvc.pageable.service.factory</name>
@@ -36,6 +36,18 @@
   on/true : indicates system need check if the resources are accessible, 
   false/off : the otherwise. 
   </description>
+</property>
+
+<property>
+  <name>youapp.mvc.request.jsonp.onoff</name>
+  <value>on</value>
+  <description>turn of/off the jsonp funciton</description>
+</property>
+
+<property>
+  <name>youapp.mvc.request.jsonp.callback</name>
+  <value>callback</value>
+  <description>the key from which the callback function can be get</description>
 </property>
 
 </configuration>

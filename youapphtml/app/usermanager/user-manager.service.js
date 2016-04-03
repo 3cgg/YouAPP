@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../global.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx']
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, Observable_1, http_2;
+    var core_1, http_1, http_2, http_3, global_service_1;
     var UserManagerService;
     return {
         setters:[
@@ -20,38 +20,36 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx']
             function (http_1_1) {
                 http_1 = http_1_1;
                 http_2 = http_1_1;
+                http_3 = http_1_1;
             },
-            function (Observable_1_1) {
-                Observable_1 = Observable_1_1;
-            },
-            function (_1) {}],
+            function (_1) {},
+            function (global_service_1_1) {
+                global_service_1 = global_service_1_1;
+            }],
         execute: function() {
             UserManagerService = (function () {
-                function UserManagerService(http, jsonp) {
+                function UserManagerService(http, jsonp, _globalService) {
                     this.http = http;
                     this.jsonp = jsonp;
-                    this._getUsersByPage = 'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage?callback=JSONP_CALLBACK';
+                    this._globalService = _globalService;
+                    this._getUsersByPageUrl = 'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage';
+                    this._getUserByIdUrl = 'http://localhost:8689/youapp/extapi/usermanager/getUserById';
                 }
-                UserManagerService.prototype.getUsers = function () {
-                    return this.jsonp.get(this._getUsersByPage)
-                        .map(function (res) { return res.json().data; })
-                        .do(function (data) { return console.log(data); })
-                        .catch(this.handleError);
+                UserManagerService.prototype.getUsers = function (_callback) {
+                    var headers = new http_3.Headers({
+                        'Content_Type': 'jsonp'
+                    });
+                    var options = new http_3.RequestOptions({ headers: headers });
+                    this._globalService.getByJsonp(this._getUsersByPageUrl, {}, _callback);
                 };
-                UserManagerService.prototype.handleError = function (error) {
-                    // in a real world app, we may send the error to some remote logging infrastructure
-                    // instead of just logging it to the console
-                    console.error(error);
-                    if (error.json()) {
-                        return Observable_1.Observable.throw(error.json().data || 'Server error');
-                    }
-                    else {
-                        return Observable_1.Observable.throw('Server error');
-                    }
+                UserManagerService.prototype.getUserById = function (_id, _callback) {
+                    var params = new http_2.URLSearchParams();
+                    params.set('id', _id); // the user's search value
+                    this._globalService.getByJsonp(this._getUserByIdUrl, params, _callback);
                 };
                 UserManagerService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, (typeof (_b = typeof http_2.Jsonp !== 'undefined' && http_2.Jsonp) === 'function' && _b) || Object])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, (typeof (_b = typeof http_2.Jsonp !== 'undefined' && http_2.Jsonp) === 'function' && _b) || Object, global_service_1.GlobalService])
                 ], UserManagerService);
                 return UserManagerService;
                 var _a, _b;

@@ -58,4 +58,47 @@ public class ResponseModel implements JModel{
 		this.status = status;
 		return this;
 	}
+	
+	public static ResponseModel newInvalidPath(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.INVALID_PATH);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newNoLogin(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.NO_LOGIN);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newNoAccess(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.NO_ACCESS);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newLinkedRequest(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.LINKED_REQUEST);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newDuplicateLogin(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.DUPLICATE_LOGIN);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newExpiredLogin(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.EXPIRED_LOGIN);
+		return filterResponse;
+	}
+	
+	public static ResponseModel newSuccessLogin(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.SUCCESS_LOGIN);
+		return filterResponse;
+	}
+	
 }

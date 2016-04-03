@@ -1,14 +1,16 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.support.JServletContext;
 import j.jave.platform.basicwebcomp.web.support.JServletDetect;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -23,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -120,9 +123,9 @@ public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 			if(JStringUtils.isNotNullOrEmpty(path)){
 				boolean validPath=loginAccessService.isValidResource(path);
 				if(!validPath){
-					FilterResponse filterResponse=FilterResponse.newInvalidPath();
-					filterResponse.setData(servletConfigService.getInvalidPathInfo());
-					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+					ResponseModel responseModel=ResponseModel.newInvalidPath();
+					responseModel.setData(servletConfigService.getInvalidPathInfo());
+					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
 					return ;
 				}
 			}

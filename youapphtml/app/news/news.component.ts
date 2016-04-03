@@ -21,7 +21,7 @@ export class NewsComponent implements OnInit {
         setTimeout(() => {
             this._globalService.setTitile('News','news');
         }, 1);
-
+        this._globalService.reset();
     }
     
 }

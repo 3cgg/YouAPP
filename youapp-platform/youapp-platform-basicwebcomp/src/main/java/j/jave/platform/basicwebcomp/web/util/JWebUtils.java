@@ -6,6 +6,7 @@ import j.jave.kernal.jave.utils.JUtilException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -176,6 +177,30 @@ public abstract class JWebUtils {
 			Entry<String, String[]> entry =  iterator.next();
 			String[] values=entry.getValue();
 			params.put(entry.getKey(), values.length==1?values[0]:values);
+		}
+		return params;
+	}
+	
+	
+	/**
+	 * all head map form.
+	 * @param request
+	 * @param splitString the split string for multiple values of certain head.
+	 * @return
+	 */
+	public static Map<String, String> parseRequstHeads(HttpServletRequest request,String... splitStrings){
+		Map<String, String> params=new HashMap<String, String>();
+		Enumeration<String> headNames= request.getHeaderNames();
+		String splitString=splitStrings.length>1?splitStrings[0]:";";
+		while(headNames.hasMoreElements()){
+			String headName=headNames.nextElement();
+			Enumeration<String> values= request.getHeaders(headName);
+			String val="";
+			while(values.hasMoreElements()){
+				val=splitString+values.nextElement();
+			}
+			val=val.replaceFirst(splitString, "");
+			params.put(headName, val);
 		}
 		return params;
 	}

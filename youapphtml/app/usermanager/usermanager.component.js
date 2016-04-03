@@ -1,4 +1,4 @@
-System.register(["angular2/core", './user-manager.service', '../global.service'], function(exports_1, context_1) {
+System.register(["angular2/core", './user-manager.service', '../global.service', '../callbackobject.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["angular2/core", './user-manager.service', '../global.service']
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, user_manager_service_1, global_service_1;
+    var core_1, user_manager_service_1, global_service_1, callbackobject_component_1;
     var UserManagerComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(["angular2/core", './user-manager.service', '../global.service']
             },
             function (global_service_1_1) {
                 global_service_1 = global_service_1_1;
+            },
+            function (callbackobject_component_1_1) {
+                callbackobject_component_1 = callbackobject_component_1_1;
             }],
         execute: function() {
             UserManagerComponent = (function () {
@@ -37,12 +40,12 @@ System.register(["angular2/core", './user-manager.service', '../global.service']
                         _this._globalService.setTitile('User Manager', 'user-manager');
                     }, 1);
                     this.getUsers();
+                    this._globalService.reset();
                 };
                 UserManagerComponent.prototype.getUsers = function () {
-                    var _this = this;
-                    this._userManagerService.getUsers()
-                        .retry(1)
-                        .subscribe(function (data) { return _this.users = data.content; }, function (error) { return _this.errorMessage = error; });
+                    this._userManagerService.getUsers(new callbackobject_component_1.CallbackObject(function (data, _object) {
+                        _object.users = data.content;
+                    }, this));
                 };
                 UserManagerComponent = __decorate([
                     core_1.Component({

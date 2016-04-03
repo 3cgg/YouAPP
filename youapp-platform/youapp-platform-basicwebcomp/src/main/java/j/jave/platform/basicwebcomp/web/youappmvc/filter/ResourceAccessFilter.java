@@ -1,14 +1,15 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
@@ -71,17 +72,18 @@ public class ResourceAccessFilter implements JFilter{
 					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getUserId());
 					authorized=true;
 					if(!authorized){
-						FilterResponse filterResponse=FilterResponse.newNoAccess();
-						filterResponse.setData("have no access to the resource.");
-						response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+						ResponseModel responseModel=ResponseModel.newNoAccess();
+						responseModel.setData("have no access to the resource.");
+						HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
 						return ;
 					}
 				}
 				else{
-					FilterResponse filterResponse=FilterResponse.newNoLogin();
-					filterResponse.setData("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
-					response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+					ResponseModel responseModel=ResponseModel.newNoLogin();
+					responseModel.setData("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
+					
 					YouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
+					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
 					return ;
 				}
 			}

@@ -65,6 +65,14 @@ public class HttpContext implements JModel {
 	 */
 	private transient Map<String, Object> parameters = new HashMap<String, Object>();
 	
+	
+	/**
+	 * HTTP Servlet Request Head.  may processed after file distribute service. 
+	 * <strong>optional</strong>
+	 */
+	private transient Map<String, String> heads = new HashMap<String, String>();
+	
+	
 	/**
 	 * can resolve the path to an object in which inner method is . 
 	 * like "/login.loginaction/toLogin" , the pattern like "/bean-name/method(with no any arguments)"
@@ -106,6 +114,12 @@ public class HttpContext implements JModel {
 	
 	private void init(){
 		boolean isParseProtocol=false;
+		
+		if(request!=null){
+			// parse head parameters
+			heads.putAll(YouAppMvcUtils.parseRequstHeads(request));
+		}
+		
 		if(request!=null){
 			String protocolHead= request.getHeader(JProtocolConstants.PROTOCOL_HEAD);
 			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
@@ -171,6 +185,10 @@ public class HttpContext implements JModel {
 		return value;
 	}
 	
+	public String getHead(String headName){
+		return this.heads.get(headName);
+	}
+	
 	public String[] getParameterValues(String key) {
 		String[] value =  (String[]) parameters.get(key);
 		return value;
@@ -216,6 +234,14 @@ public class HttpContext implements JModel {
 	 */
 	public void initParametersWithoutHTTP(Map<String, Object> parameters) {
 		this.parameters = parameters;
+	}
+	
+	/**
+	 * the method is only used to initialize parameters for testing without HTTP context.
+	 * @param parameters
+	 */
+	public void initHeadsWithoutHTTP(Map<String, String> heads) {
+		this.heads = heads;
 	}
 	
 	public String getTicket() {

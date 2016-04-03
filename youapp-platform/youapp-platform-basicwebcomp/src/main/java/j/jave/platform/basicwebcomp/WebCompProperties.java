@@ -16,4 +16,9 @@ public abstract class WebCompProperties {
 
 	public static final String YOUAPPMVC_RESOURCE_AUTHORIZATION_ONOFF="youapp.mvc.resource.authorization.onoff";
 	
+	public static final String YOUAPPMVC_JSONP_ONOFF="youapp.mvc.request.jsonp.onoff";
+	
+	public static final String YOUAPPMVC_JSONP_CALLBACK="youapp.mvc.request.jsonp.callback";
+	
+	
 }

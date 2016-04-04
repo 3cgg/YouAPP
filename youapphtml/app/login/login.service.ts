@@ -11,7 +11,10 @@ import {CallbackObject} from "../callbackobject.component";
 export class LoginService{
 
     private _loginUrl=
-        'http://localhost:8689/youapp/extapi/controller.login/login';
+        '/controller.login/login';
+
+    private _loginoutUrl=
+        '/controller.loginout/loginout';
 
     constructor (private http: Http,
     private jsonp:Jsonp,
@@ -24,7 +27,11 @@ export class LoginService{
         params.set('_name', _userName); // the user's search value
         params.set('_password', _password);
 
-        this._globalService.getByJsonp(this._loginUrl,params,_callback);
+
+
+        this._globalService.getByJsonp(
+            this._globalService.getWholeUrl(this._loginUrl)
+            ,params,_callback);
 
         //jsonp does not support custom request headers. for only test.
         // return this.jsonp.get(this._loginUrl,{ search: params })
@@ -33,6 +40,19 @@ export class LoginService{
         //     .catch(this.handleError);
     }
 
+    loginout(_callback:CallbackObject){
 
+        var params = new URLSearchParams();
+
+        this._globalService.getByJsonp(
+            this._globalService.getWholeUrl(this._loginoutUrl)
+            ,params,_callback);
+
+        //jsonp does not support custom request headers. for only test.
+        // return this.jsonp.get(this._loginUrl,{ search: params })
+        //     .map(res => res.json())
+        //     .do(data=>console.log(data))
+        //     .catch(this.handleError);
+    }
 
 }

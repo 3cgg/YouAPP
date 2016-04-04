@@ -7,7 +7,9 @@ import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
+import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
@@ -58,13 +60,17 @@ public class HttpContext implements JModel {
 	 * <strong>optional</strong>
 	 */
 	private transient HttpServletResponse response;
-
+	
+	/**
+	 * http client info, such as ip , browser version.
+	 */
+	private transient HttpClientInfo httpClientInfo;
+	
 	/**
 	 * HTTP Servlet Request Parameter.  may processed after file distribute service. 
 	 * <strong>optional</strong>
 	 */
 	private transient Map<String, Object> parameters = new HashMap<String, Object>();
-	
 	
 	/**
 	 * HTTP Servlet Request Head.  may processed after file distribute service. 
@@ -101,10 +107,17 @@ public class HttpContext implements JModel {
 		initHttp(request,response);
 	}
 	
-	public HttpContext initHttp(HttpServletRequest request,HttpServletResponse response){
+	public HttpContext initHttpClient(HttpServletRequest request,HttpServletResponse response){
 		this.request = request;
 		this.response = response;
-		init();
+		this.httpClientInfo=new HttpClientInfo();
+		httpClientInfo.setIp(YouAppMvcUtils.getIP(request));
+		httpClientInfo.setClient(YouAppMvcUtils.getClient(request));
+		return this;
+	}
+	
+	public HttpContext initHttp(HttpServletRequest request,HttpServletResponse response){
+		init(request, response);
 		return this;
 	}
 	
@@ -112,8 +125,15 @@ public class HttpContext implements JModel {
 		this(null, null);
 	}
 	
-	private void init(){
+	private void init(HttpServletRequest request,HttpServletResponse response){
 		boolean isParseProtocol=false;
+		
+		if(parameters==null){
+			parameters=new HashMap<String, Object>();
+		}
+		if(heads==null){
+			heads=new HashMap<String, String>();
+		}
 		
 		if(request!=null){
 			// parse head parameters
@@ -168,9 +188,6 @@ public class HttpContext implements JModel {
 		
 		
 		if(request!=null&&!parse){
-			if(parameters==null){
-				parameters=new HashMap<String, Object>();
-			}
 			this.parameters.putAll(YouAppMvcUtils.parseRequestParameters(request));
 			parse=true;
 		}
@@ -181,20 +198,32 @@ public class HttpContext implements JModel {
 	}
 	
 	public String getParameter(String key) {
+		if(parameters==null){
+			return null;
+		}
 		String value = (String) parameters.get(key);
 		return value;
 	}
 	
 	public String getHead(String headName){
+		if(heads==null){
+			return null;
+		}
 		return this.heads.get(headName);
 	}
 	
 	public String[] getParameterValues(String key) {
+		if(parameters==null){
+			return null;
+		}
 		String[] value =  (String[]) parameters.get(key);
 		return value;
 	}
 	
 	public Object getParameterValue(String key) {
+		if(parameters==null){
+			return null;
+		}
 		return parameters.get(key);
 	}
 	
@@ -265,19 +294,11 @@ public class HttpContext implements JModel {
 	}
 	
 	public String getIP(){
-		return YouAppMvcUtils.getIP(request);
+		return httpClientInfo.getIp();
 	}
 	
 	public String getClient(){
-		return YouAppMvcUtils.getClient(request);
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-	public HttpServletResponse getResponse() {
-		return response;
+		return httpClientInfo.getClient();
 	}
 
 	public String getTargetPath() {
@@ -302,6 +323,12 @@ public class HttpContext implements JModel {
 	
 	public JObjectTransModel getObjectTransModel() {
 		return objectTransModel;
+	}
+	
+	public ServiceContext getServiceContext(){
+		ServiceContext serviceContext=new ServiceContext();
+		serviceContext.setSessionUser((SessionUserImpl) user);
+		return serviceContext;
 	}
 	
 }

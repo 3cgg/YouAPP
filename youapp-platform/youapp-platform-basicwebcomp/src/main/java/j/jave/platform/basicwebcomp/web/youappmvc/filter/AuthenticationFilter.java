@@ -10,7 +10,6 @@ import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPLoginHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * super class contain common logic to intercept reqeust.
  * @author J
- * @see JSPLoginHandler
  * @see JSONAuthenticationHandler
  */
 public class AuthenticationFilter implements JFilter ,APPFilterConfig {
@@ -67,14 +65,17 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String target=YouAppMvcUtils.getPathInfo(req);
 			if(!servletConfigService.getLoginPath().equals(target)
+					&&!servletConfigService.getLoginoutPath().equals(target)
 					&&!authenticationAccessService.isNeedLoginRole(target)){
 				// 资源不需要登录权限, 仍然尝试获取登录用户信息
 				if(serverTicket==null){
 					// no login, mock a login user.
 					HttpContext httpContext=HttpContextHolder.getMockHttpContext();
+					httpContext.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(httpContext);
 				}
 				else{
+					serverTicket.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(serverTicket);
 				}
 				chain.doFilter(request, response);
@@ -103,11 +104,16 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 					authenticationHandler.handleDuplicateLogin(req, (HttpServletResponse) response, chain);
 					return;
 				}
+				if(servletConfigService.getLoginoutPath().equals(target)){  // 登出
+					authenticationHandler.handleLoginout(req, (HttpServletResponse) response, chain,serverTicket);
+					return;
+				}
 //				else if(servletConfigService.getToLoginPath().equals(target)){  // how to do with the request of going to login.
 //					loginHandler.handleToLogin(req, (HttpServletResponse) response, chain);
 //					return;
 //				}
 				else{
+					serverTicket.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(serverTicket);
 					chain.doFilter(request, response);
 				}

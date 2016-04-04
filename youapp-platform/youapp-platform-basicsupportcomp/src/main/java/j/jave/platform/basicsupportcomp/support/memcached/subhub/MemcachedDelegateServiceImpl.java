@@ -84,4 +84,9 @@ public class MemcachedDelegateServiceImpl implements MemcachedDelegateService,JM
 	public boolean contains(String key) {
 		return defaultMemcachedDisService.contains(key);
 	}
+
+	@Override
+	public void put(String key, int expiry, Object value) {
+		defaultMemcachedDisService.put(key, expiry, value);
+	}
 }

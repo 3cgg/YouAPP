@@ -17,6 +17,11 @@ public class DefaultServletConfigServiceImpl implements ServletConfigService {
 	public String getLoginPath() {
 		return "/controller.login/login";
 	}
+	
+	@Override
+	public String getLoginoutPath() {
+		return "/controller.loginout/loginout";
+	}
 
 	@Override
 	public String getToLoginPath() {

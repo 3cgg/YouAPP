@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.filter;
 
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,18 @@ public interface AuthenticationHandler {
 	 */
 	public void handleNoLogin(HttpServletRequest request, HttpServletResponse response,
 			FilterChain chain) throws Exception;
+	
+	/**
+	 * loginout
+	 * @param request
+	 * @param response
+	 * @param chain
+	 * @param httpContext
+	 * @throws Exception
+	 */
+	public void handleLoginout(HttpServletRequest request, HttpServletResponse response,
+			FilterChain chain,HttpContext httpContext) throws Exception;
+	
 	
 	/**
 	 * how to do with login more once.

@@ -116,14 +116,14 @@
                         <!-- The user image in the navbar-->
                         <img src="dist/img/avatar04.png" class="user-image" alt="User Image">
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{pageInfo.userInfo.natureName}}</span>
+                        <span class="hidden-xs">{{pageInfo.sessionUser.natureName}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
                             <img src="dist/img/avatar04.png" class="img-circle" alt="User Image">
                             <p>
-                                {{pageInfo.userInfo.natureName}} - Web Developer
+                                {{pageInfo.sessionUser.natureName}} - Web Developer
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>
@@ -145,7 +145,9 @@
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a class="btn btn-default btn-flat"
+                                (click)="loginout()"
+                                >Sign out</a>
                             </div>
                         </li>
                     </ul>
@@ -170,7 +172,7 @@
                 <img src="dist/img/avatar04.png" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>{{pageInfo.userInfo.natureName}}</p>
+                <p>{{pageInfo.sessionUser.natureName}}</p>
                 <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>

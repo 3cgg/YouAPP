@@ -13,6 +13,7 @@ import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
@@ -37,45 +38,48 @@ public class ControllerExecutor implements JService {
 	private static final Logger LOGGER=LoggerFactory.getLogger(ControllerExecutor.class);
 	
 	public Object execute(HttpContext httpContext) throws Exception{
-		
-		String targetPath=httpContext.getTargetPath();
-		
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("path processing : "+targetPath);
-		}
-		
-		// resolve the path , then invoke the target method. 
-	    // the path like /app/component/version/login.loginaction/toLogin
-		String component =null;
-		String mappingPath=null;
-		String mutiPattern="^(/app/[a-zA-Z]+/[0-9]+){0,1}(/[a-zA-Z0-9._/]+)";
-		Pattern pattern=Pattern.compile(mutiPattern);
-		Matcher matcher=pattern.matcher(targetPath);
-		if(matcher.matches()){
-			component=getComponentVersion(matcher.group(1));
-			mappingPath=matcher.group(2);
-		}
-		//resolve spring application , support multi-version of component.
-		ApplicationContext applicationContext = null;
-		if (JStringUtils.isNotNullOrEmpty(component)) {
-			applicationContext = JComponentVersionSpringApplicationSupport.getApplicationContext(component);
-		} else {
-			applicationContext = SpringContextSupport.getApplicationContext();
-		}
-		
-		MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
-		ControllerSupport object=null;
-		String controllerName=mappingMeta.getControllerName();
-		if(JStringUtils.isNotNullOrEmpty(controllerName)){
-			object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
-		}
-		else{
-			object=(ControllerSupport) mappingController.getControllerObjectByPath(mappingPath);
-		}
 		Object navigate=null;
 		try{
-			// set HTTP context constructed above.
-			object.setHttpContext(httpContext);
+			
+			// promise the subsequence flow hold the http context.
+			if(HttpContextHolder.get()==null){
+				HttpContextHolder.set(httpContext);
+			}
+			
+			String targetPath=httpContext.getTargetPath();
+			
+			if(LOGGER.isDebugEnabled()){
+				LOGGER.debug("processing path : "+targetPath);
+			}
+			
+			// resolve the path , then invoke the target method. 
+		    // the path like /app/component/version/login.loginaction/toLogin
+			String component =null;
+			String mappingPath=null;
+			String mutiPattern="^(/app/[a-zA-Z]+/[0-9]+){0,1}(/[a-zA-Z0-9._/]+)";
+			Pattern pattern=Pattern.compile(mutiPattern);
+			Matcher matcher=pattern.matcher(targetPath);
+			if(matcher.matches()){
+				component=getComponentVersion(matcher.group(1));
+				mappingPath=matcher.group(2);
+			}
+			//resolve spring application , support multi-version of component.
+			ApplicationContext applicationContext = null;
+			if (JStringUtils.isNotNullOrEmpty(component)) {
+				applicationContext = JComponentVersionSpringApplicationSupport.getApplicationContext(component);
+			} else {
+				applicationContext = SpringContextSupport.getApplicationContext();
+			}
+			
+			MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
+			ControllerSupport object=null;
+			String controllerName=mappingMeta.getControllerName();
+			if(JStringUtils.isNotNullOrEmpty(controllerName)){
+				object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
+			}
+			else{
+				object=(ControllerSupport) mappingController.getControllerObjectByPath(mappingPath);
+			}
 			
 			StopWatch stopWatch=null;
 			if(LOGGER.isDebugEnabled()){
@@ -93,7 +97,8 @@ public class ControllerExecutor implements JService {
 				}
 			}
 		}finally{
-			object.removeHttpContext();
+			//no need release http context
+			
 		}
 		return  navigate;
 	}

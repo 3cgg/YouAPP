@@ -42,6 +42,9 @@ System.register(["angular2/core", '../global.service', './timeline.service', "..
                     this.getTimelines();
                     this._globalService.reset();
                 };
+                TimelineComponent.prototype.ngAfterContentInit = function () {
+                    // contentChild is updated after the content has been checked
+                };
                 TimelineComponent.prototype.getTimelines = function () {
                     this._timelineService.getTimelines(new callbackobject_component_1.CallbackObject(function (data, _object) {
                         _object.timelines = data;

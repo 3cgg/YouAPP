@@ -1,9 +1,9 @@
 import {Component} from 'angular2/core';
-import {UserInfo} from './userinfo.component'
+import {SessionUser} from './session-user.component'
 
 export class PageInfo{
 
-    userInfo:UserInfo=new UserInfo();
+    sessionUser:SessionUser=new SessionUser();
 
     itemTitle='';
 
@@ -15,5 +15,6 @@ export class PageInfo{
     isSuccess:boolean=false;
     successMessage:String='';
 
-    ticket='';
+    endpoint:String='http://localhost:8689/youapp/extapi';
+
 }

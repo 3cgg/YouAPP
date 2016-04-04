@@ -12,7 +12,7 @@ export class TimelineService{
 
 
     private _getTimelineUrl=
-        'http://localhost:8689/youapp/extapi/usermanager/getTimeline';
+        '/usermanager/getTimeline';
 
     constructor (private http: Http,
     private jsonp:Jsonp,
@@ -25,8 +25,12 @@ export class TimelineService{
 
         });
         let options = new RequestOptions({ headers: headers });
+        var params = new URLSearchParams();
+        params.set('userName', this._globalService.getSessionUserName()); // the user's search value
 
-        this._globalService.getByJsonp(this._getTimelineUrl,{},_callback);
+        this._globalService.getByJsonp(
+            this._globalService.getWholeUrl(this._getTimelineUrl)
+            ,params,_callback);
     }
 
 

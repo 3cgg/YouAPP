@@ -1,4 +1,4 @@
-System.register(["angular2/core", 'angular2/router', '../global.service', './login.service', "../callbackobject.component"], function(exports_1, context_1) {
+System.register(["angular2/core", 'angular2/router', '../global.service', './login.service', "../callbackobject.component", "../session-user.component"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(["angular2/core", 'angular2/router', '../global.service', './log
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, global_service_1, login_service_1, callbackobject_component_1;
+    var core_1, router_1, global_service_1, login_service_1, callbackobject_component_1, session_user_component_1;
     var LoginComponnet;
     return {
         setters:[
@@ -28,6 +28,9 @@ System.register(["angular2/core", 'angular2/router', '../global.service', './log
             },
             function (callbackobject_component_1_1) {
                 callbackobject_component_1 = callbackobject_component_1_1;
+            },
+            function (session_user_component_1_1) {
+                session_user_component_1 = session_user_component_1_1;
             }],
         execute: function() {
             LoginComponnet = (function () {
@@ -54,8 +57,13 @@ System.register(["angular2/core", 'angular2/router', '../global.service', './log
                 };
                 LoginComponnet.prototype.login = function () {
                     this._loginService.login(this.userName, this.password, new callbackobject_component_1.CallbackObject(function (data, _object) {
-                        _object._globalService.putTicket(data.ticket);
-                        _object._router.navigate(['TimelineComponent', {}]);
+                        var _sessionUser = new session_user_component_1.SessionUser();
+                        _sessionUser.userName = data.userName;
+                        _sessionUser.natureName = data.userName;
+                        _sessionUser.userId = data.id;
+                        _sessionUser.ticket = data.ticket;
+                        _object._globalService.setSessionUser(_sessionUser);
+                        _object._router.navigate(['Timeline', {}]);
                     }, this));
                 };
                 LoginComponnet = __decorate([

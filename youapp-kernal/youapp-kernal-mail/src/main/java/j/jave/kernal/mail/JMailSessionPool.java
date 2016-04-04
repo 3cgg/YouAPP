@@ -5,6 +5,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.security.JMD5Cipher;
 import j.jave.kernal.jave.service.JCacheService;
+import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
@@ -44,7 +45,7 @@ public class JMailSessionPool {
 	 * @author J
 	 *
 	 */
-	static class HashCache implements JCacheService {
+	static class HashCache extends JDefaultHashCacheService {
 
 		private static HashMap<String, JMailSession> sessions=new HashMap<String, JMailSession>();
 		

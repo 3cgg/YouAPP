@@ -31,13 +31,23 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../global.service
                     this.http = http;
                     this.jsonp = jsonp;
                     this._globalService = _globalService;
-                    this._loginUrl = 'http://localhost:8689/youapp/extapi/controller.login/login';
+                    this._loginUrl = '/controller.login/login';
+                    this._loginoutUrl = '/controller.loginout/loginout';
                 }
                 LoginService.prototype.login = function (_userName, _password, _callback) {
                     var params = new http_2.URLSearchParams();
                     params.set('_name', _userName); // the user's search value
                     params.set('_password', _password);
-                    this._globalService.getByJsonp(this._loginUrl, params, _callback);
+                    this._globalService.getByJsonp(this._globalService.getWholeUrl(this._loginUrl), params, _callback);
+                    //jsonp does not support custom request headers. for only test.
+                    // return this.jsonp.get(this._loginUrl,{ search: params })
+                    //     .map(res => res.json())
+                    //     .do(data=>console.log(data))
+                    //     .catch(this.handleError);
+                };
+                LoginService.prototype.loginout = function (_callback) {
+                    var params = new http_2.URLSearchParams();
+                    this._globalService.getByJsonp(this._globalService.getWholeUrl(this._loginoutUrl), params, _callback);
                     //jsonp does not support custom request headers. for only test.
                     // return this.jsonp.get(this._loginUrl,{ search: params })
                     //     .map(res => res.json())

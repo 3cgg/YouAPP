@@ -22,6 +22,12 @@ public interface ServletConfigService extends JService {
 	String getLoginPath();
 	
 	/**
+	 * get login out path , the path will process the login out logic.
+	 * @return
+	 */
+	String getLoginoutPath();
+	
+	/**
 	 * get to login path.  what the path means the end-user need login the system first before doing any other something.
 	 * now the method is the same as {@link #getLoginPath()} instead of.
 	 * @return String 

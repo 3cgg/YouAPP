@@ -6,6 +6,7 @@ import 'rxjs/Rx';
 import {Jsonp, URLSearchParams} from 'angular2/http';
 import {Headers, RequestOptions} from 'angular2/http';
 import {PageInfo} from './pageinfo.component'
+import {SessionUser} from "./session-user.component";
 
 @Injectable()
 export class GlobalService{
@@ -22,9 +23,9 @@ export class GlobalService{
         }
         _urlSearchParams.set('callback', 'JSONP_CALLBACK');
 
-        // if(this.getTicket()&&""!=this.getTicket()){
-        //     _urlSearchParams.set('_youapp_ticket', this.getTicket());
-        // }
+        if(this.getTicket()&&""!=this.getTicket()){
+            _urlSearchParams.set('_youapp_ticket', this.getTicket());
+        }
 
         this.jsonp.get(_url,{ search: _urlSearchParams })
             .map(res =>res.json())
@@ -89,9 +90,10 @@ export class GlobalService{
         this.appComponent.pageInfo.itemTitleDesc=itemTileDesc;
     }
 
-    setUserInfo(_userName:String,_natureName:String){
-        this.appComponent.pageInfo.userInfo.userName=_userName;
-        this.appComponent.pageInfo.userInfo.natureName=_natureName;
+    setSessionUser(_sessionUser:SessionUser){
+        // this.appComponent.pageInfo.sessionUser.userName=_sessionUser.userName;
+        // this.appComponent.pageInfo.sessionUser.natureName=_sessionUser.natureName;
+        this.appComponent.pageInfo.sessionUser=_sessionUser;
     }
     
     setError(_error:String){
@@ -118,11 +120,11 @@ export class GlobalService{
     }
 
     getTicket(){
-        return this.appComponent.pageInfo.ticket;
+        return this.appComponent.pageInfo.sessionUser.ticket;
     }
 
     putTicket(_ticket:String){
-        this.appComponent.pageInfo.ticket=_ticket;
+        this.appComponent.pageInfo.sessionUser.ticket=_ticket;
     }
 
 
@@ -130,8 +132,22 @@ export class GlobalService{
         this.appComponent.pageInfo=new PageInfo();
     }
 
+    getSessionUser(){
+        return this.appComponent.pageInfo.sessionUser;
+    }
 
+    getSessionUserName(){
+        let sessionUser:SessionUser =this.getSessionUser();
+        return sessionUser.userName;
+    }
 
+    getEndpoint(){
+        return this.appComponent.pageInfo.endpoint;
+    }
+
+    getWholeUrl(relativePath:String){
+        return this.getEndpoint()+relativePath;
+    }
 
 
 }

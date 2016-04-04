@@ -1,12 +1,16 @@
 package j.jave.kernal.jave.support;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JCacheService;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class JDefaultHashCacheService extends JServiceFactorySupport<JDefaultHashCacheService>
 implements JCacheService {
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDefaultHashCacheService.class);
 	
 	private ConcurrentHashMap<String, Object> cache=new ConcurrentHashMap<String, Object>();
 	
@@ -33,6 +37,12 @@ implements JCacheService {
 	@Override
 	public boolean contains(String key) {
 		return cache.contains(key);
+	}
+
+	@Override
+	public void put(String key, int expiry, Object value) {
+		putNeverExpired(key, value);
+		LOGGER.warn("currently, hash cache doesnot support expired time, so the cache object is never expired.");
 	}
 
 }

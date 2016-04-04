@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.youappcorp.project.usermanager.model.User;
@@ -45,8 +46,9 @@ public class UserManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getTimeline")
-	public ResponseModel getTimeline() {
-		List<UserTracker> userTrackers= userTrackerService.getUserTrackerByName(getSessionUser().getUserName());
+	public ResponseModel getTimeline(
+			@RequestParam("userName")String userName) {
+		List<UserTracker> userTrackers= userTrackerService.getUserTrackerByName(userName);
 		List<TimeLineGroup> timeLineGroups=new ArrayList<TimeLineGroup>();
 		if(userTrackers!=null){
 			String doDate="";

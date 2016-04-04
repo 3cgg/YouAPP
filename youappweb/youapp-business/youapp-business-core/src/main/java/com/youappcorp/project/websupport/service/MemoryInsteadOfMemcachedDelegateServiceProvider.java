@@ -1,7 +1,9 @@
 package com.youappcorp.project.websupport.service;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
+import j.jave.kernal.jave.utils.JObjectSerializableUtils;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisAddEvent;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisDeleteEvent;
 import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
@@ -11,23 +13,40 @@ import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelega
 public class MemoryInsteadOfMemcachedDelegateServiceProvider
 	implements MemcachedDelegateServiceProvider{
 
+	public static class SerialObject{
+		private String className;
+		private byte[] bytes;
+		public String getClassName() {
+			return className;
+		}
+		public void setClassName(String className) {
+			this.className = className;
+		}
+		public byte[] getBytes() {
+			return bytes;
+		}
+		public void setBytes(byte[] bytes) {
+			this.bytes = bytes;
+		}
+	}
+	
 	
 	private JDefaultHashCacheService hashCacheService=
 			JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 
 	@Override
 	public Object set(String key, int expiry, Object value) {
-		return hashCacheService.putNeverExpired(key, value);
+		return hashCacheService.putNeverExpired(key, getSerialObject(value));
 	}
 
 	@Override
 	public Object get(String key) {
-		return hashCacheService.get(key);
+		return getInnerObject((SerialObject)hashCacheService.get(key));
 	}
 
 	@Override
 	public void add(String key, int expiry, Object value) {
-		hashCacheService.putNeverExpired(key, value);
+		hashCacheService.putNeverExpired(key, getSerialObject(value));
 	}
 
 	@Override
@@ -37,7 +56,21 @@ public class MemoryInsteadOfMemcachedDelegateServiceProvider
 
 	@Override
 	public Object putNeverExpired(String key, Object object) {
-		return hashCacheService.putNeverExpired(key, object);
+		return hashCacheService.putNeverExpired(key, getSerialObject(object));
+	}
+	
+	private SerialObject getSerialObject(Object object){
+		SerialObject serialObject=new SerialObject();
+		serialObject.setClassName(object.getClass().getName());
+		serialObject.setBytes(JObjectSerializableUtils.serializeObject(object));
+		return serialObject;
+	}
+	
+	private Object getInnerObject(SerialObject serialObject){
+		if(serialObject==null){
+			return null;
+		}
+		return JObjectSerializableUtils.deserialize(serialObject.getBytes(), JClassUtils.load(serialObject.getClassName()));
 	}
 
 	@Override
@@ -52,22 +85,27 @@ public class MemoryInsteadOfMemcachedDelegateServiceProvider
 
 	@Override
 	public Object trigger(JMemcachedDisAddEvent event) {
-		return hashCacheService.putNeverExpired(event.getKey(), event.getValue());
+		return putNeverExpired(event.getKey(), event.getValue());
 	}
 
 	@Override
 	public Object trigger(JMemcachedDisDeleteEvent event) {
-		return hashCacheService.remove(event.getKey());
+		return remove(event.getKey());
 	}
 
 	@Override
 	public Object trigger(JMemcachedDisSetEvent event) {
-		return hashCacheService.putNeverExpired(event.getKey(), event.getValue());
+		return putNeverExpired(event.getKey(), event.getValue());
 	}
 
 	@Override
 	public Object trigger(JMemcachedDisGetEvent event) {
-		return hashCacheService.get(event.getKey());
+		return get(event.getKey());
+	}
+
+	@Override
+	public void put(String key, int expiry, Object value) {
+		put(key, expiry, value);
 	}
 	
 }

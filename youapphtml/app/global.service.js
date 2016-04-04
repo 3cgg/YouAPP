@@ -40,9 +40,9 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                         _urlSearchParams = new http_2.URLSearchParams();
                     }
                     _urlSearchParams.set('callback', 'JSONP_CALLBACK');
-                    // if(this.getTicket()&&""!=this.getTicket()){
-                    //     _urlSearchParams.set('_youapp_ticket', this.getTicket());
-                    // }
+                    if (this.getTicket() && "" != this.getTicket()) {
+                        _urlSearchParams.set('_youapp_ticket', this.getTicket());
+                    }
                     this.jsonp.get(_url, { search: _urlSearchParams })
                         .map(function (res) { return res.json(); })
                         .do(function (data) { return console.log(data); })
@@ -93,9 +93,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                     this.appComponent.pageInfo.itemTitle = _itemTile;
                     this.appComponent.pageInfo.itemTitleDesc = itemTileDesc;
                 };
-                GlobalService.prototype.setUserInfo = function (_userName, _natureName) {
-                    this.appComponent.pageInfo.userInfo.userName = _userName;
-                    this.appComponent.pageInfo.userInfo.natureName = _natureName;
+                GlobalService.prototype.setSessionUser = function (_sessionUser) {
+                    // this.appComponent.pageInfo.sessionUser.userName=_sessionUser.userName;
+                    // this.appComponent.pageInfo.sessionUser.natureName=_sessionUser.natureName;
+                    this.appComponent.pageInfo.sessionUser = _sessionUser;
                 };
                 GlobalService.prototype.setError = function (_error) {
                     this.appComponent.pageInfo.isError = true;
@@ -116,13 +117,26 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                     this.clearSuccess();
                 };
                 GlobalService.prototype.getTicket = function () {
-                    return this.appComponent.pageInfo.ticket;
+                    return this.appComponent.pageInfo.sessionUser.ticket;
                 };
                 GlobalService.prototype.putTicket = function (_ticket) {
-                    this.appComponent.pageInfo.ticket = _ticket;
+                    this.appComponent.pageInfo.sessionUser.ticket = _ticket;
                 };
                 GlobalService.prototype.clearCurrentSession = function () {
                     this.appComponent.pageInfo = new pageinfo_component_1.PageInfo();
+                };
+                GlobalService.prototype.getSessionUser = function () {
+                    return this.appComponent.pageInfo.sessionUser;
+                };
+                GlobalService.prototype.getSessionUserName = function () {
+                    var sessionUser = this.getSessionUser();
+                    return sessionUser.userName;
+                };
+                GlobalService.prototype.getEndpoint = function () {
+                    return this.appComponent.pageInfo.endpoint;
+                };
+                GlobalService.prototype.getWholeUrl = function (relativePath) {
+                    return this.getEndpoint() + relativePath;
                 };
                 GlobalService = __decorate([
                     core_1.Injectable(), 

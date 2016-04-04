@@ -5,15 +5,18 @@ import {Observable}     from 'rxjs/Observable';
 import {HTTP_PROVIDERS}    from 'angular2/http';
 import {Jsonp, URLSearchParams,JSONP_PROVIDERS} from 'angular2/http';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
+import {Router} from 'angular2/router';
 import {NewsComponent} from './news/news.component';
 import {TimelineComponent} from './timeline/timeline.component';
 import {GlobalService} from './global.service';
 import {UserManagerComponent} from "./usermanager/usermanager.component";
 import {PageInfo} from './pageinfo.component'
 import {UserManagerService} from './usermanager/user-manager.service'
-import {UserInfo} from './userinfo.component'
+import {SessionUser} from './session-user.component'
 import {LoginComponnet} from './login/login.component'
 import {CallbackObject} from './callbackobject.component'
+import {LoginService} from "./login/login.service";
+import {StoreService} from './store.service'
 @Component({
     selector: 'app-html',
     templateUrl:'app/app.component.html',
@@ -24,7 +27,8 @@ import {CallbackObject} from './callbackobject.component'
         Http,
         HTTP_PROVIDERS,
         JSONP_PROVIDERS,
-        UserManagerService
+        UserManagerService,
+        LoginService
     ]
 })
 
@@ -32,8 +36,8 @@ import {CallbackObject} from './callbackobject.component'
     {
         path: '/news',
         name: 'News',
-        component: NewsComponent
-        // useAsDefault: true
+        component: NewsComponent,
+        useAsDefault: true
     },
     {
         path: '/timeline',
@@ -51,33 +55,43 @@ import {CallbackObject} from './callbackobject.component'
         component: LoginComponnet
     }
 ])
-
 export class AppComponent implements OnInit {
 
     constructor(private _globalService:GlobalService,
-    private _userManagerService:UserManagerService
+    private _userManagerService:UserManagerService,
+                private _router:Router,
+                private _loginService:LoginService,
+                private _storeService:StoreService
     ) {
-
+        
     }
 
     globalDateFormat='MM/dd/yy';
 
-    pageInfo:PageInfo=new PageInfo();
+    pageInfo:PageInfo;
 
     ngOnInit() {
         System.import('dist/js/app.min.js');
         System.import('plugins/iCheck/icheck.min.js');
+        this.setPageInfo();
         this._globalService.setAppComponent(this);
-        this._globalService.setTitile('Init','init');
+    }
+
+    setPageInfo(){
+        this.pageInfo=this._storeService.getPageInfo();
+    }
+
+    ngAfterViewInit(){
+        this._globalService.reset();
         this.getUser();
     }
 
     private getUser(){
-        this._userManagerService.getUserById('bd2713e6ad5d493ab2e25c34f6cd339a',
+        this._userManagerService.getUserById(this.pageInfo.sessionUser.userId,
             
             new CallbackObject(function (data,_object) {
-                _object.pageInfo.userInfo.userName=data.id;
-                _object.pageInfo.userInfo.natureName=data.version;
+                _object.pageInfo.sessionUser.userName=data.userName;
+                _object.pageInfo.sessionUser.natureName=data.userName;
             },this)
             
             );
@@ -90,6 +104,16 @@ export class AppComponent implements OnInit {
     closeSuccessMessage(){
         this._globalService.clearSuccess();
     }
+    
+    loginout(){
+        
+        this._loginService.loginout(new CallbackObject(function (data,_object) {
+            _object._globalService.clearCurrentSession();
+            _object._router.navigate(['News']);
+        },this))
+        
+    }
+
 }
 
 

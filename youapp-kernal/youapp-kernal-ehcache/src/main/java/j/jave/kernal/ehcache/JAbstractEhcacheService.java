@@ -74,6 +74,12 @@ public abstract class JAbstractEhcacheService implements JEhcacheService {
 	}
 	
 	@Override
+	public void put(String key, int expiry, Object value) {
+		put(key, value);
+		LOGGER.warn("Ehcache doesnot support custom expired time, using global setting instead.");
+	}
+	
+	@Override
 	public boolean contains(String key) {
 		Ehcache cache=getEhcache(key);
 		return cache.isKeyInCache(key);

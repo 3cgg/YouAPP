@@ -1,24 +1,24 @@
-System.register(['./userinfo.component'], function(exports_1, context_1) {
+System.register(['./session-user.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var userinfo_component_1;
+    var session_user_component_1;
     var PageInfo;
     return {
         setters:[
-            function (userinfo_component_1_1) {
-                userinfo_component_1 = userinfo_component_1_1;
+            function (session_user_component_1_1) {
+                session_user_component_1 = session_user_component_1_1;
             }],
         execute: function() {
             PageInfo = (function () {
                 function PageInfo() {
-                    this.userInfo = new userinfo_component_1.UserInfo();
+                    this.sessionUser = new session_user_component_1.SessionUser();
                     this.itemTitle = '';
                     this.itemTitleDesc = '';
                     this.isError = false;
                     this.errorMessage = '';
                     this.isSuccess = false;
                     this.successMessage = '';
-                    this.ticket = '';
+                    this.endpoint = 'http://localhost:8689/youapp/extapi';
                 }
                 return PageInfo;
             }());

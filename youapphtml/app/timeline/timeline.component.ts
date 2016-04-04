@@ -39,6 +39,10 @@ export class TimelineComponent implements OnInit,AfterContentInit {
         this._globalService.reset();
     }
 
+    ngAfterContentInit() {
+        // contentChild is updated after the content has been checked
+    }
+
     getTimelines(){
         this._timelineService.getTimelines(new CallbackObject(function (data,_object) {
             _object.timelines=data;

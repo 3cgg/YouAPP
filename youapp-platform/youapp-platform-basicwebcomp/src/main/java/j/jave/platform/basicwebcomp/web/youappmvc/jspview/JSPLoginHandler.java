@@ -3,6 +3,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jspview;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -77,7 +78,11 @@ public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
 	@Override
 	public void handleExpiredLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
-		// TODO Auto-generated method stub
-		
+	}
+	
+	@Override
+	public void handleLoginout(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain,
+			HttpContext httpContext) throws Exception {
 	}
 }

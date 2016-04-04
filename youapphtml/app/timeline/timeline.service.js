@@ -32,14 +32,16 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../global.service
                     this.http = http;
                     this.jsonp = jsonp;
                     this._globalService = _globalService;
-                    this._getTimelineUrl = 'http://localhost:8689/youapp/extapi/usermanager/getTimeline';
+                    this._getTimelineUrl = '/usermanager/getTimeline';
                 }
                 TimelineService.prototype.getTimelines = function (_callback) {
                     var headers = new http_3.Headers({
                         'Content_Type': 'jsonp'
                     });
                     var options = new http_3.RequestOptions({ headers: headers });
-                    this._globalService.getByJsonp(this._getTimelineUrl, {}, _callback);
+                    var params = new http_2.URLSearchParams();
+                    params.set('userName', this._globalService.getSessionUserName()); // the user's search value
+                    this._globalService.getByJsonp(this._globalService.getWholeUrl(this._getTimelineUrl), params, _callback);
                 };
                 TimelineService = __decorate([
                     core_1.Injectable(), 

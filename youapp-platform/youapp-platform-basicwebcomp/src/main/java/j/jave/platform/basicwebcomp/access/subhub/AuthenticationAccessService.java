@@ -34,8 +34,8 @@ public interface AuthenticationAccessService  extends JService {
 	public boolean  isNeedLoginRole(String url) throws JServiceException;
 	
 	/**
-	 * if its valid user, return session user with an unique string.  additional do some logic. 
-	 * may throws {@link JServiceException} i.e.  用户不存在
+	 * if the user is valid, return session user with an unique string,
+	 * otherwise return null (i.e.  用户不存在). 
 	 * @param name
 	 * @param password
 	 * @return

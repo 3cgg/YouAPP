@@ -5,6 +5,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
+import j.jave.platform.basicwebcomp.access.subhub.AuthenticationHookDelegateService;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
@@ -43,6 +44,9 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	
 	private AuthenticationAccessService authenticationAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	
+	private AuthenticationHookDelegateService authenticationHookDelegateService=
+			JServiceHubDelegate.get().getService(this, AuthenticationHookDelegateService.class);
+	
 	@Override
 	public void handleNoLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
@@ -68,29 +72,57 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	
 	private static final String loginPassword=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_PASSWORD, "_password");
 	
+	private final int expiredTime=JConfiguration.get().getInt(WebCompProperties.YOUAPPMVC_TICKET_SESSION_EXPIRED_TIME, 1800);
+	
 	@Override
 	public void handleLogin(HttpServletRequest request,
 			HttpServletResponse response, FilterChain chain) throws Exception {
 		String name=request.getParameter(loginName);
 		String password=request.getParameter(loginPassword);
-		SessionUserImpl sessionUserImpl=authenticationAccessService.login(name, password);
-		if(sessionUserImpl!=null){
-			HttpContext httpContext=new HttpContext();
-			httpContext.setTicket(sessionUserImpl.getTicket());
-			httpContext.setUser(sessionUserImpl);
-			memcachedService.add(sessionUserImpl.getTicket(), 60*30, httpContext);
-			ResponseModel responseModel= ResponseModel.newSuccessLogin();
-			SessionUserImpl resSessionUserImpl=new SessionUserImpl();
-			resSessionUserImpl.setTicket(sessionUserImpl.getTicket());
-			resSessionUserImpl.setUserName(sessionUserImpl.getUserName());
-			resSessionUserImpl.setUserId(sessionUserImpl.getUserId());
-			responseModel.setData(sessionUserImpl);
+		HttpContext httpContext=null;
+		try{
+			SessionUserImpl sessionUserImpl=authenticationAccessService.login(name, password);
+			if(sessionUserImpl!=null){
+				httpContext=new HttpContext();
+				httpContext.setTicket(sessionUserImpl.getTicket());
+				httpContext.setUser(sessionUserImpl);
+				memcachedService.add(sessionUserImpl.getTicket(), expiredTime, httpContext);
+				httpContext.initHttpClient(request, response);
+				authenticationHookDelegateService.doAfterLogin(httpContext);
+				ResponseModel responseModel= ResponseModel.newSuccessLogin();
+				SessionUserImpl resSessionUserImpl=new SessionUserImpl();
+				resSessionUserImpl.setTicket(sessionUserImpl.getTicket());
+				resSessionUserImpl.setUserName(sessionUserImpl.getUserName());
+				resSessionUserImpl.setUserId(sessionUserImpl.getUserId());
+				responseModel.setData(sessionUserImpl);
+				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			}
+			else{
+				ResponseModel responseModel= ResponseModel.newError();
+				responseModel.setData("用户名或者密码错误");
+				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			}
+		}catch(Exception e){
+			ResponseModel responseModel= ResponseModel.newError();
+			responseModel.setData(e.getMessage());
 			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 		}
-		else{
+		
+	}
+	
+	@Override
+	public void handleLoginout(HttpServletRequest request,
+			HttpServletResponse response, FilterChain chain,HttpContext httpContext) throws Exception {
+		try{
+			memcachedService.remove(httpContext.getTicket());
+			authenticationHookDelegateService.doAfterLoginout(httpContext);
+			ResponseModel responseModel= ResponseModel.newSuccess();
+			responseModel.setData(true);
+			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+		}catch(Exception e){
 			ResponseModel responseModel= ResponseModel.newError();
-			responseModel.setData("用户名或者密码错误");
-			HttpServletResponseUtil.write(request, response, null, responseModel);
+			responseModel.setData(e.getMessage());
+			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 		}
 	}
 	

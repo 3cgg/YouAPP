@@ -50,4 +50,10 @@
   <description>the key from which the callback function can be get</description>
 </property>
 
+<property>
+  <name>youapp.mvc.ticket.session.expired.time</name>
+  <value>1800</value>
+  <description>the ticket expired time. in seconds. 30*60</description>
+</property>
+
 </configuration>

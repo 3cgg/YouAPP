@@ -188,6 +188,11 @@ public class JDefaultMemcachedDisServiceImpl implements JDefaultMemcachedDisServ
 		return get(key)!=null;
 	}
 
+	@Override
+	public void put(String key, int expiry, Object value) {
+		add(key, expiry, value);
+	}
+
 	
 	
 	

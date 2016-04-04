@@ -32,20 +32,20 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Rx', '../global.service
                     this.http = http;
                     this.jsonp = jsonp;
                     this._globalService = _globalService;
-                    this._getUsersByPageUrl = 'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage';
-                    this._getUserByIdUrl = 'http://localhost:8689/youapp/extapi/usermanager/getUserById';
+                    this._getUsersByPageUrl = '/usermanager/getUsersByPage';
+                    this._getUserByIdUrl = '/usermanager/getUserById';
                 }
                 UserManagerService.prototype.getUsers = function (_callback) {
                     var headers = new http_3.Headers({
                         'Content_Type': 'jsonp'
                     });
                     var options = new http_3.RequestOptions({ headers: headers });
-                    this._globalService.getByJsonp(this._getUsersByPageUrl, {}, _callback);
+                    this._globalService.getByJsonp(this._globalService.getWholeUrl(this._getUsersByPageUrl), {}, _callback);
                 };
                 UserManagerService.prototype.getUserById = function (_id, _callback) {
                     var params = new http_2.URLSearchParams();
                     params.set('id', _id); // the user's search value
-                    this._globalService.getByJsonp(this._getUserByIdUrl, params, _callback);
+                    this._globalService.getByJsonp(this._globalService.getWholeUrl(this._getUserByIdUrl), params, _callback);
                 };
                 UserManagerService = __decorate([
                     core_1.Injectable(), 

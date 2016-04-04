@@ -52,4 +52,9 @@ public class DefaultEhcacheServiceImpl implements EhcacheService,JEhcacheService
 		return defaultEhcacheService.contains(key);
 	}
 
+	@Override
+	public void put(String key, int expiry, Object value) {
+		defaultEhcacheService.put(key, expiry, value);
+	}
+
 }

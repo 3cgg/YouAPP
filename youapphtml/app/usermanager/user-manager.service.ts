@@ -11,10 +11,10 @@ import {CallbackObject} from "../callbackobject.component";
 export class UserManagerService{
 
     private _getUsersByPageUrl=
-        'http://localhost:8689/youapp/extapi/usermanager/getUsersByPage';
+        '/usermanager/getUsersByPage';
 
     private _getUserByIdUrl=
-        'http://localhost:8689/youapp/extapi/usermanager/getUserById';
+        '/usermanager/getUserById';
 
 
     constructor (private http: Http,
@@ -29,7 +29,9 @@ export class UserManagerService{
         });
         let options = new RequestOptions({ headers: headers });
 
-        this._globalService.getByJsonp(this._getUsersByPageUrl,{},_callback);
+        this._globalService.getByJsonp(
+            this._globalService.getWholeUrl(this._getUsersByPageUrl)
+            ,{},_callback);
 
     }
 
@@ -40,7 +42,9 @@ export class UserManagerService{
         var params = new URLSearchParams();
         params.set('id', _id); // the user's search value
 
-        this._globalService.getByJsonp(this._getUserByIdUrl,params,_callback);
+        this._globalService.getByJsonp(
+            this._globalService.getWholeUrl(this._getUserByIdUrl)
+            ,params,_callback);
 
     }
 

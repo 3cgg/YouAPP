@@ -6,10 +6,10 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
-import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
+import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 
 import java.util.List;
@@ -26,8 +26,6 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
-	public static final ThreadLocal<HttpContext> httpContext=new ThreadLocal<HttpContext>();
-	
 	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
 	
 //	/**
@@ -38,41 +36,33 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	public static final String CREATE_SUCCESS="保存成功";
 	public static final String DELETE_SUCCESS="删除成功";
 	public static final String EDIT_SUCCESS="更新成功";
-
-	public void removeHttpContext(){
-		httpContext.remove();
-	}
 	
 	public HttpContext getHttpContext() {
-		return httpContext.get();
-	}
-
-	public void setHttpContext(HttpContext httpContext) {
-		ControllerSupport.httpContext.set(httpContext);
+		return HttpContextHolder.get();
 	}
 	
 	protected void setAttribute(String key,Object obj){
-		httpContext.get().setAttribute(key, obj);
+		getHttpContext().setAttribute(key, obj);
 	}
 	
 	public String getParameter(String key){
-		return httpContext.get().getParameter(key);
+		return getHttpContext().getParameter(key);
 	}
 	
 	public void setCookie(String key,String value){
-		httpContext.get().setCookie(key, value);
+		getHttpContext().setCookie(key, value);
 	}
 	
 	public void setCookie(String key,String value,int maxAge){
-		httpContext.get().setCookie(key, value, maxAge);
+		getHttpContext().setCookie(key, value, maxAge);
 	}
 	
 	public void deleteCookie(String key){
-		httpContext.get().deleteCookie(key);
+		getHttpContext().deleteCookie(key);
 	}
 	
 	protected SessionUser getSessionUser(){
-		return httpContext.get().getUser();
+		return getHttpContext().getUser();
 	}
 
 	protected void setSuccessMessage(String message){
@@ -90,11 +80,8 @@ public abstract class ControllerSupport implements YouappController,Initializing
 		throw new JOperationNotSupportedException("Not supported,check if the sub-class implements the method.");
 	} 
 	
-	public ServiceContext getServiceContext(){
-		SessionUser sessionUser=httpContext.get().getUser();
-		ServiceContext serviceContext=new ServiceContext();
-		serviceContext.setSessionUser((SessionUserImpl) sessionUser);
-		return new ServiceContext();
+	protected ServiceContext getServiceContext(){
+		return getHttpContext().getServiceContext();
 	}
 
     @Override

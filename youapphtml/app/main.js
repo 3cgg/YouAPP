@@ -1,7 +1,7 @@
-System.register(['angular2/platform/browser', './app.component'], function(exports_1, context_1) {
+System.register(['angular2/platform/browser', './app.component', 'angular2/core', './store.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var browser_1, app_component_1;
+    var browser_1, app_component_1, core_1, store_service_1;
     return {
         setters:[
             function (browser_1_1) {
@@ -9,9 +9,16 @@ System.register(['angular2/platform/browser', './app.component'], function(expor
             },
             function (app_component_1_1) {
                 app_component_1 = app_component_1_1;
+            },
+            function (core_1_1) {
+                core_1 = core_1_1;
+            },
+            function (store_service_1_1) {
+                store_service_1 = store_service_1_1;
             }],
         execute: function() {
-            browser_1.bootstrap(app_component_1.AppComponent);
+            core_1.enableProdMode();
+            browser_1.bootstrap(app_component_1.AppComponent, [store_service_1.StoreService]);
         }
     }
 });

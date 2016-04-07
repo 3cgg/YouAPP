@@ -3,6 +3,10 @@
  */
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.exception.JEventException;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
+import j.jave.kernal.jave.service.JService;
+
 
 
 /**
@@ -100,7 +104,11 @@ public class JServiceHubDelegate {
 	 * @param event
 	 */
 	public Object[] addImmediateEvent(JAPPEvent<?> event){
-		return serviceEventProcessor.addImmediateEvent(event);
+		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
+		if(eventExecutionResult.getException()!=null){
+			throw new JEventException(eventExecutionResult.getException());
+		}
+		return eventExecutionResult.getObjects();
 	}
 	
 	/**
@@ -113,12 +121,27 @@ public class JServiceHubDelegate {
 	 * @see {@link ClassCastException}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T addImmediateEvent(JAPPEvent<?> event,Class<T> clazz){
-		Object[] objects=serviceEventProcessor.addImmediateEvent(event);
+	public <T> T addImmediateEvent(JAPPEvent<?> event,Class<T> clazz) throws JEventException{
+		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
+		if(eventExecutionResult.getException()!=null){
+			throw new JEventException(eventExecutionResult.getException());
+		}
+		Object[] objects=eventExecutionResult.getObjects();
 		if(objects.length>0){
 			return (T) objects[0];
 		}
 		return null;
+	}
+	
+	
+	public boolean existsService(Class<? extends JService> clazz){
+		Object[] objects=addImmediateEvent(new JServiceExistsEvent(this, clazz));
+		if(objects.length<1){
+			return false;
+		}
+		else{
+			return (boolean) objects[0];
+		}
 	}
 	
 }

@@ -4,6 +4,8 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerDisableEvent;
@@ -38,7 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 class JServiceHub implements JService  ,JServiceFactory<JServiceHub>,JServiceListenerDetectListener,
 JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener,JServiceListenerDisableListener
-,JServiceGetListener ,JServiceRegisterListener,JServiceMonitorListener,JServiceHubMonitorListener{
+,JServiceGetListener ,JServiceRegisterListener,JServiceMonitorListener,JServiceHubMonitorListener,JServiceExistsListener{
 	
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
@@ -65,11 +67,12 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	/**
 	 * find all listeners on the event, then trigger one by one
 	 * @param event
-	 * @return <code>Object[]</code> , all listener returned. at least an empty object array if no listener found.
+	 * @return <code>EventExecutionResult</code> , all listener returned. at least an empty object array if no listener found.
 	 */ 
-	public Object[] executeEventOnListener(JAPPEvent<?> event){
-		Object[] objects=new Object[]{};
+	public EventExecutionResult executeEventOnListener(JAPPEvent<?> event){
+		EventExecutionResult eventExecutionResult=new EventExecutionResult();
 		try{
+			Object[] objects=null;
 			Class<?> eventClass=event.getClass();
 			JListenerOnEvent eventListener= eventClass.getAnnotation(JListenerOnEvent.class);
 			if(eventListener==null){
@@ -98,14 +101,18 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 					}
 				}
 				if(!received){
-					LOGGER.info("no any service listeners on the event : "
-							+event.getUnique()+"-|-"+event.getClass().getName());
+					String info="no any service listeners on the event : "
+							+event.getUnique()+"-|-"+event.getClass().getName();
+					LOGGER.info(info);
+					throw new IllegalStateException(info);
 				}
 			}
+			eventExecutionResult.setObjects(objects);
 		}catch(Exception e){
 			LOGGER.error("Event Execute Error , caused by :",e);
+			eventExecutionResult.setException(e);
 		}
-		return objects;
+		return eventExecutionResult;
 	}
 	
 	
@@ -398,5 +405,12 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			refreshServiceHubMetaInfo();
 		}
 		return serviceHubMeta;
+	}
+
+
+	@Override
+	public Object trigger(JServiceExistsEvent event) {
+		Class<?> serviceClass=event.getServiceClass();
+		return services.containsKey(serviceClass);
 	}
 }

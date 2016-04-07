@@ -132,9 +132,9 @@ class JServiceEventProcessor {
 	/**
 	 * execute the event immediately, need block the thread. i.e. synchronized.
 	 * @param event
-	 * @return Object[] , all listener returned. at least an empty object array if no listener found.
+	 * @return EventExecutionResult , all listener returned. at least an empty object array if no listener found.
 	 */
-	public Object[] addImmediateEvent(JAPPEvent<?> event){
+	public EventExecutionResult addImmediateEvent(JAPPEvent<?> event){
 		return serviceHub.executeEventOnListener(event);
 	}
 	

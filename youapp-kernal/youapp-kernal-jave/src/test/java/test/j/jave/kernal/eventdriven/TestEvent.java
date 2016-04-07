@@ -3,8 +3,10 @@ package test.j.jave.kernal.eventdriven;
 import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
 import j.jave.kernal.eventdriven.servicehub.JEventExecution;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
+import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.security.service.JMD5CipherService;
 
 public class TestEvent  extends TestEventSupport{
@@ -55,6 +57,25 @@ public class TestEvent  extends TestEventSupport{
 		System.out.println(testUserService.describer());
 		String encrp=md5CipherService.encrypt("abc.def.ghi");
 		System.out.println(encrp);
+	}
+	
+	public void testServiceExists(){
+		Object object=JServiceHubDelegate.get().
+				addImmediateEvent(new JServiceExistsEvent(this,JService.class));
+		System.out.println(object);
+		
+		object=JServiceHubDelegate.get().
+				addImmediateEvent(new JServiceExistsEvent(this,JMD5CipherService.class));
+		System.out.println(object);
+		
+		object=JServiceHubDelegate.get().
+				existsService(JService.class);
+		System.out.println(object);
+		
+		object=JServiceHubDelegate.get().
+				existsService(JMD5CipherService.class);
+		System.out.println(object);
+		
 	}
 	
 }

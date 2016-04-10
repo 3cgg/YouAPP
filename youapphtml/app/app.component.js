@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'angular2/router', './news/news.component', './timeline/timeline.component', './global.service', "./usermanager/usermanager.component", './usermanager/user-manager.service', './login/login.component', './callbackobject.component', "./login/login.service", './store.service'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'angular2/router', './news/news.component', './timeline/timeline.component', './global.service', "./usermanager/usermanager.component", './usermanager/user-manager.service', './session-user.component', './login/login.component', './callbackobject.component', "./login/login.service", './store.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', './news/ne
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, http_2, http_3, router_1, router_2, news_component_1, timeline_component_1, global_service_1, usermanager_component_1, user_manager_service_1, login_component_1, callbackobject_component_1, login_service_1, store_service_1;
+    var core_1, http_1, http_2, http_3, router_1, router_2, news_component_1, timeline_component_1, global_service_1, usermanager_component_1, user_manager_service_1, session_user_component_1, login_component_1, callbackobject_component_1, login_service_1, store_service_1;
     var AppComponent;
     return {
         setters:[
@@ -41,6 +41,9 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', './news/ne
             function (user_manager_service_1_1) {
                 user_manager_service_1 = user_manager_service_1_1;
             },
+            function (session_user_component_1_1) {
+                session_user_component_1 = session_user_component_1_1;
+            },
             function (login_component_1_1) {
                 login_component_1 = login_component_1_1;
             },
@@ -69,18 +72,26 @@ System.register(['angular2/core', 'angular2/http', 'angular2/router', './news/ne
                     this.setPageInfo();
                     this._globalService.setAppComponent(this);
                 };
+                AppComponent.prototype.setSessionUserInfo = function () {
+                    var _ticket = this._storeService.getTicket();
+                    if (_ticket != null) {
+                        this.pageInfo.sessionUser.ticket = _ticket;
+                    }
+                    var userId = this._storeService.getSessionUserId();
+                    if (userId != null) {
+                        this._userManagerService.getUserById(userId, new callbackobject_component_1.CallbackObject(function (data, _object) {
+                            _object.pageInfo.sessionUser.userName = data.userName;
+                            _object.pageInfo.sessionUser.natureName = data.userName;
+                        }, this));
+                    }
+                };
                 AppComponent.prototype.setPageInfo = function () {
                     this.pageInfo = this._storeService.getPageInfo();
+                    this.pageInfo.sessionUser = new session_user_component_1.SessionUser();
                 };
                 AppComponent.prototype.ngAfterViewInit = function () {
                     this._globalService.reset();
-                    this.getUser();
-                };
-                AppComponent.prototype.getUser = function () {
-                    this._userManagerService.getUserById(this.pageInfo.sessionUser.userId, new callbackobject_component_1.CallbackObject(function (data, _object) {
-                        _object.pageInfo.sessionUser.userName = data.userName;
-                        _object.pageInfo.sessionUser.natureName = data.userName;
-                    }, this));
+                    this.setSessionUserInfo();
                 };
                 AppComponent.prototype.closeErrorMessage = function () {
                     this._globalService.clearError();

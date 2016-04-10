@@ -7,6 +7,7 @@ import {Jsonp, URLSearchParams} from 'angular2/http';
 import {Headers, RequestOptions} from 'angular2/http';
 import {PageInfo} from './pageinfo.component'
 import {SessionUser} from "./session-user.component";
+import {StoreService} from './store.service'
 
 @Injectable()
 export class GlobalService{
@@ -14,7 +15,8 @@ export class GlobalService{
     appComponent:AppComponent;
 
     constructor(private http: Http,
-                private jsonp:Jsonp){}
+                private jsonp:Jsonp,
+    private _storeService:StoreService){}
     
     getByJsonp(_url:String,_urlSearchParams:URLSearchParams,_callback :Object){
 
@@ -94,6 +96,7 @@ export class GlobalService{
         // this.appComponent.pageInfo.sessionUser.userName=_sessionUser.userName;
         // this.appComponent.pageInfo.sessionUser.natureName=_sessionUser.natureName;
         this.appComponent.pageInfo.sessionUser=_sessionUser;
+        this._storeService.setSessionInfo(_sessionUser);
     }
     
     setError(_error:String){
@@ -130,6 +133,7 @@ export class GlobalService{
 
     clearCurrentSession(){
         this.appComponent.pageInfo=new PageInfo();
+        this._storeService.clearSessionInfo();
     }
 
     getSessionUser(){

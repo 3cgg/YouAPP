@@ -2,6 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.utils;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.filedistribute.eventdriven.JFileDistStoreEvent;
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -74,11 +75,22 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	 * @return
 	 */
 	public static final String getTicket(HttpServletRequest request){
-		String ticket=JCookieUtils.getValue(request, ViewConstants.TICKET);
-		if(ticket==null){
-			ticket=request.getParameter(ViewConstants.TICKET_QUERY_PARAMETER);
+		try{
+			String ticket=null;
+//			ticket=JCookieUtils.getValue(request, ViewConstants.TICKET);
+			if(ticket==null){
+				ticket=request.getParameter(ViewConstants.TICKET_QUERY_PARAMETER);
+			}
+//			else{
+//				ticket=URLDecoder.decode(ticket,"utf-8");
+//				if(ticket.startsWith("\"")||ticket.endsWith("\"")){
+//					ticket=ticket.substring(1, ticket.length()-1);
+//				}
+//			}
+			return ticket;
+		}catch(Exception e){
+			throw new JInitializationException(e);
 		}
-		return ticket;
 	}
 	
 	/**

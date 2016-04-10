@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx', './pageinfo.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx', './pageinfo.component', './store.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, Observable_1, http_2, pageinfo_component_1;
+    var core_1, http_1, Observable_1, http_2, pageinfo_component_1, store_service_1;
     var GlobalService;
     return {
         setters:[
@@ -27,12 +27,16 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
             function (_1) {},
             function (pageinfo_component_1_1) {
                 pageinfo_component_1 = pageinfo_component_1_1;
+            },
+            function (store_service_1_1) {
+                store_service_1 = store_service_1_1;
             }],
         execute: function() {
             GlobalService = (function () {
-                function GlobalService(http, jsonp) {
+                function GlobalService(http, jsonp, _storeService) {
                     this.http = http;
                     this.jsonp = jsonp;
+                    this._storeService = _storeService;
                 }
                 GlobalService.prototype.getByJsonp = function (_url, _urlSearchParams, _callback) {
                     var _this = this;
@@ -97,6 +101,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                     // this.appComponent.pageInfo.sessionUser.userName=_sessionUser.userName;
                     // this.appComponent.pageInfo.sessionUser.natureName=_sessionUser.natureName;
                     this.appComponent.pageInfo.sessionUser = _sessionUser;
+                    this._storeService.setSessionInfo(_sessionUser);
                 };
                 GlobalService.prototype.setError = function (_error) {
                     this.appComponent.pageInfo.isError = true;
@@ -124,6 +129,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                 };
                 GlobalService.prototype.clearCurrentSession = function () {
                     this.appComponent.pageInfo = new pageinfo_component_1.PageInfo();
+                    this._storeService.clearSessionInfo();
                 };
                 GlobalService.prototype.getSessionUser = function () {
                     return this.appComponent.pageInfo.sessionUser;
@@ -140,7 +146,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', 'rxjs/Rx',
                 };
                 GlobalService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, (typeof (_b = typeof http_2.Jsonp !== 'undefined' && http_2.Jsonp) === 'function' && _b) || Object])
+                    __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object, (typeof (_b = typeof http_2.Jsonp !== 'undefined' && http_2.Jsonp) === 'function' && _b) || Object, store_service_1.StoreService])
                 ], GlobalService);
                 return GlobalService;
                 var _a, _b;

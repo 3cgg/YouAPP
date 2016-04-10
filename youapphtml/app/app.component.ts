@@ -76,26 +76,34 @@ export class AppComponent implements OnInit {
         this.setPageInfo();
         this._globalService.setAppComponent(this);
     }
-
+    
+    setSessionUserInfo(){
+        let _ticket=this._storeService.getTicket();
+        if(_ticket!=null){
+            this.pageInfo.sessionUser.ticket=_ticket;
+        }
+        let userId=this._storeService.getSessionUserId();
+        if(userId!=null){
+            this._userManagerService.getUserById(userId,
+                new CallbackObject(function (data,_object) {
+                    _object.pageInfo.sessionUser.userName=data.userName;
+                    _object.pageInfo.sessionUser.natureName=data.userName;
+                },this)
+            )
+        }
+        
+    }
+    
     setPageInfo(){
         this.pageInfo=this._storeService.getPageInfo();
+        this.pageInfo.sessionUser=new SessionUser();
     }
 
     ngAfterViewInit(){
         this._globalService.reset();
-        this.getUser();
+        this.setSessionUserInfo();
     }
 
-    private getUser(){
-        this._userManagerService.getUserById(this.pageInfo.sessionUser.userId,
-            
-            new CallbackObject(function (data,_object) {
-                _object.pageInfo.sessionUser.userName=data.userName;
-                _object.pageInfo.sessionUser.natureName=data.userName;
-            },this)
-            
-            );
-    }
     
     closeErrorMessage(){
         this._globalService.clearError();

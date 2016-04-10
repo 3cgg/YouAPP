@@ -6,6 +6,12 @@ System.register([], function(exports_1, context_1) {
         setters:[],
         execute: function() {
             CallbackObject = (function () {
+                /**
+                 *
+                 * @param _callback like function (data,_object) {} the first argument is the data returned from the service,
+                 * the second parameter is the object reference to the @param
+                 * @param _object : generally it is 'this'
+                 */
                 function CallbackObject(_callback, _object) {
                     this._callback = _callback;
                     this._object = _object;

@@ -7,6 +7,7 @@ import {GlobalService} from '../global.service';
 import {LoginService} from './login.service';
 import {CallbackObject} from "../callbackobject.component";
 import {SessionUser} from "../session-user.component";
+import {StoreService} from '../store.service'
 
 @Component(
     {
@@ -25,7 +26,8 @@ export class LoginComponnet implements OnInit {
 
     constructor(private _globalService:GlobalService,
     private _loginService:LoginService,
-                private _router: Router
+                private _router: Router,
+                private _storeService:StoreService
     ) {
 
     }
@@ -60,7 +62,7 @@ export class LoginComponnet implements OnInit {
             let _sessionUser:SessionUser=new SessionUser();
             _sessionUser.userName=data.userName;
             _sessionUser.natureName=data.userName;
-            _sessionUser.userId=data.id;
+            _sessionUser.userId=data.userId;
             _sessionUser.ticket=data.ticket;
             _object._globalService.setSessionUser(_sessionUser);
             _object._router.navigate(['Timeline', { }]  );

@@ -7,7 +7,7 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import java.lang.reflect.Field;
 import java.util.Date;
 
-public class DateFormatExtendHandler implements PropertyExtendHandler {
+public class JDateFormatExtendHandler implements JPropertyExtendHandler {
 	
 	@Override
 	public boolean accept(Field field, Object object) {
@@ -18,13 +18,14 @@ public class DateFormatExtendHandler implements PropertyExtendHandler {
 	}
 	
 	@Override
-	public void handle(Field field, Object object) {
+	public Object handle(Field field, Object object) {
 		DateFormatExtend dateFormatExtend=field.getAnnotation(DateFormatExtend.class);
 		String property=dateFormatExtend.property();
 		Date date=(Date) JClassUtils.getByField(property, object, false);
 		String pattern=dateFormatExtend.pattern();
 		Object dateString=JDateUtils.format(date, pattern);
 		JClassUtils.setOnField(field, dateString, object);
+		return null;
 	}
 	
 }

@@ -1,7 +1,7 @@
 package com.youappcorp.project.unittest.model;
 
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.support.databind.proext.PropertyExtendable;
+import j.jave.kernal.jave.support.databind.proext.JPropertyExtendable;
 import j.jave.kernal.jave.support.databind.proext.annotation.DateFormatExtend;
 import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
 import j.jave.platform.basicwebcomp.web.proext.annotation.ObjectExtend;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TestModel extends JBaseModel  implements PropertyExtendable{
+public class TestModel extends JBaseModel  implements JPropertyExtendable{
 
 	private String name;
 	

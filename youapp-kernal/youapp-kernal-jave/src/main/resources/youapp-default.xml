@@ -81,4 +81,14 @@
   <description>Async Event Result Repo Service</description>
 </property>
 
+<property>
+  <name>databind.property.ext.handler.classes</name>
+  <value>j.jave.kernal.jave.support.databind.proext.DateFormatExtendHandler,
+  j.jave.kernal.jave.support.databind.proext.DateFormatExtendHandler
+  </value>
+  <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler} split by comma</description>
+</property>
+
+
+
 </configuration>

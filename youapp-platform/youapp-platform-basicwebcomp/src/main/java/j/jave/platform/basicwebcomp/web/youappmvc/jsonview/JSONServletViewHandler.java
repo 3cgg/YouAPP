@@ -6,6 +6,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.jsonview;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.support.databind.proext.PropertyExtendBinder;
+import j.jave.kernal.jave.support.databind.proext.SimplePropertyExtendBinder;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
@@ -23,16 +25,16 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JSONServletViewHandler.class);
 	
-	private List<DataModifyHandler> dataModifyHandlers=new ArrayList<DataModifyHandler>(); 
+	private List<PropertyExtendBinder> propertyExtendBinders=new ArrayList<PropertyExtendBinder>(); 
 	{
-		dataModifyHandlers.add(new SimplePropertyExtendHandler());
+		propertyExtendBinders.add(new SimplePropertyExtendBinder());
 	}
 	@Override
 	public void handleNavigate(HttpServletRequest request,
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
 		ResponseModel responseModel=(ResponseModel)navigate;
-		for(DataModifyHandler dataModifyHandler:dataModifyHandlers){
-			dataModifyHandler.handle(responseModel);
+		for(PropertyExtendBinder propertyExtendBinder:propertyExtendBinders){
+			propertyExtendBinder.bind(responseModel.getData());
 		}
 		HttpServletResponseUtil.write(request, response, httpContext, responseModel);
 	}

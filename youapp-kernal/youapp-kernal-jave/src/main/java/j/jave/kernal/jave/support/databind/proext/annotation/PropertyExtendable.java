@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.proext.annotation;
+package j.jave.kernal.jave.support.databind.proext.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

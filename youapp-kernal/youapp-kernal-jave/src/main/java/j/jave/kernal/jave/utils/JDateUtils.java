@@ -32,6 +32,17 @@ public abstract class JDateUtils {
 	public static String format(Date date){
 		return new SimpleDateFormat("yyyy-MM-dd").format(date) ;
 	}
+	
+	/**
+	 * format {@link Date} with the argument 'pattern'.
+	 * @param timestamp
+	 * @param pattern
+	 * @return 
+	 */
+	public static String format(Date date,String pattern){
+		return new SimpleDateFormat(pattern).format(date) ;
+	}
+	
 
 	/**
 	 *  format {@link Date} in the form of " yyyy-MM-dd HH:mm:ss".

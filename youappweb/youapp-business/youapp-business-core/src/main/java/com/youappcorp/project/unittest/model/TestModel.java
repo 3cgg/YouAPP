@@ -1,10 +1,10 @@
 package com.youappcorp.project.unittest.model;
 
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.platform.basicwebcomp.web.proext.PropertyExtendable;
+import j.jave.kernal.jave.support.databind.proext.PropertyExtendable;
+import j.jave.kernal.jave.support.databind.proext.annotation.DateFormatExtend;
 import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
 import j.jave.platform.basicwebcomp.web.proext.annotation.ObjectExtend;
-import j.jave.platform.basicwebcomp.web.proext.annotation.PropertyExtend;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -56,12 +56,16 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 	@CodeExtend(property="code",codeType="SEX")
 	private String codeName;
 	
+	private String codeF="F";
+	
+	@CodeExtend(property="codeF",codeType="SEX")
+	private String codeFName;
+	
 	private String refId="M";
 	
 	@ObjectExtend(property="refId")
 	private Object refObject;
 	
-	@PropertyExtend(active=true,objectExtend=@ObjectExtend(property="refId"))
 	private Object refObject2;
 	
 	private List<TestModel> testModelList=new ArrayList<TestModel>();
@@ -72,6 +76,28 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 	
 	private Map<String, Collection<TestModel>> mapList=new HashMap<String, Collection<TestModel>>();
 	
+	
+	private Date nowTime=new Date();
+	
+	@DateFormatExtend(property="nowTime")
+	private String nowTimeStr;
+	
+	public Date getNowTime() {
+		return nowTime;
+	}
+
+	public void setNowTime(Date nowTime) {
+		this.nowTime = nowTime;
+	}
+
+	public String getNowTimeStr() {
+		return nowTimeStr;
+	}
+
+	public void setNowTimeStr(String nowTimeStr) {
+		this.nowTimeStr = nowTimeStr;
+	}
+
 	public TestModel() {
 	}
 	
@@ -277,6 +303,22 @@ public class TestModel extends JBaseModel  implements PropertyExtendable{
 
 	public void setMapList(Map<String, Collection<TestModel>> mapList) {
 		this.mapList = mapList;
+	}
+
+	public String getCodeF() {
+		return codeF;
+	}
+
+	public void setCodeF(String codeF) {
+		this.codeF = codeF;
+	}
+
+	public String getCodeFName() {
+		return codeFName;
+	}
+
+	public void setCodeFName(String codeFName) {
+		this.codeFName = codeFName;
 	}
 	
 	

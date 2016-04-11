@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.proext.annotation;
 
+import j.jave.kernal.jave.support.databind.proext.annotation.PropertyExtendable;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

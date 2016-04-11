@@ -56,4 +56,12 @@
   <description>the ticket expired time. in seconds. 30*60</description>
 </property>
 
+<property>
+  <name>databind.property.ext.handler.classes</name>
+  <value>j.jave.platform.basicwebcomp.web.proext.CodeExtendHandler,
+  j.jave.platform.basicwebcomp.web.proext.ObjectExtendHandler
+  </value>
+  <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler} split by comma</description>
+</property>
+
 </configuration>

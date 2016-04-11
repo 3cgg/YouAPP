@@ -2,26 +2,35 @@ package j.jave.platform.basicwebcomp.web.proext;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler;
 import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheService;
 import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
 
+import java.lang.reflect.Field;
 
-public class CodeExtendBinder extends PropertyExtendBinder {
-
+public class CodeExtendHandler implements PropertyExtendHandler {
+	
 	@SuppressWarnings("unchecked")
 	private CodeRefCacheService<CodeRefCacheModel> codeRefCacheService=
 			JServiceHubDelegate.get().getService(this, CodeRefCacheService.class);
 	
 	@Override
-	protected void doBind(PropertyExtendModel propertyExtendModel) {
-		CodeExtend codeExtend=propertyExtendModel.getCodeExtend();
-		Object object=propertyExtendModel.getObject();
+	public boolean accept(Field field, Object object) {
+		boolean needPropertyExtend=false;
+		CodeExtend codeExtend=field.getAnnotation(CodeExtend.class);
+		needPropertyExtend=needPropertyExtend||(codeExtend!=null&&codeExtend.active());
+		return needPropertyExtend;
+	}
+	
+	@Override
+	public void handle(Field field, Object object) {
+		CodeExtend codeExtend=field.getAnnotation(CodeExtend.class);
 		String property=codeExtend.property();
 		Object code=JClassUtils.getByField(property, object, false);
 		String codeType=codeExtend.codeType();
 		Object name=codeRefCacheService.getName(codeType, (String) code);
-		JClassUtils.setOnField(propertyExtendModel.getField(), name, object);
+		JClassUtils.setOnField(field, name, object);
 	}
-
+	
 }

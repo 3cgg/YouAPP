@@ -22,4 +22,7 @@ public abstract class WebCompProperties {
 	
 	public static final String YOUAPPMVC_TICKET_SESSION_EXPIRED_TIME="youapp.mvc.ticket.session.expired.time";
 	
+	public static final String YOUAPPMVC_PROPERTY_EXT_BIND="youapp.mvc.property.ext.bind.classes";
+	
+	
 }

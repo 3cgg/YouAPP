@@ -1,6 +1,5 @@
 package j.jave.kernal;
 
-import j.jave.kernal.jave.utils.JDateUtils;
 
 public class JProperties {
 
@@ -19,5 +18,7 @@ public class JProperties {
 	public static final String EVENT_PIPE_PREFIX="youapp.event.pipe.prefix";
 	
 	public static final String ASYNC_EVENT_RESULT_REPO_SERVICE="youapp.service.async.event.result.repo";
+	
+	public static final String DATABIND_PROPERTY_EXT_HANDLER="databind.property.ext.handler.classes";
 	
 }

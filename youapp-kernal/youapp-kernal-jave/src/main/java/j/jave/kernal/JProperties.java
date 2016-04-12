@@ -21,4 +21,7 @@ public class JProperties {
 	
 	public static final String DATABIND_PROPERTY_EXT_HANDLER="databind.property.ext.handler.classes";
 	
+	public static final String DATAVALIDATE_PROPERTY_ANNOTATION_HANDLER="datavalidate.property.annotation.handler.classes";
+	
+	
 }

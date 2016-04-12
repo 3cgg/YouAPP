@@ -40,9 +40,9 @@ public class JDataConvertor {
 		return dataConvertor;
 	}
 	
-	public Object convert(Class<?> clazz,Object object){
+	public <T> T convert(Class<T> clazz,Object object){
 		Convert convert=getConvert(clazz);
-		return convert==null?object:convert.convert(object,clazz);
+		return convert==null?(T) object:(T) convert.convert(object,clazz);
 	}
 
 	private Convert getConvert(Class<?> clazz) {

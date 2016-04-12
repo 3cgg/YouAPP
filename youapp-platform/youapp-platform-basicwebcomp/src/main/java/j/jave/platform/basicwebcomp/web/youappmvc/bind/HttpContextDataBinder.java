@@ -4,6 +4,7 @@ import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.identifier.DataBinder;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.convert.JDataConvertor;
+import j.jave.kernal.jave.support.databind.JDataBindException;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -52,7 +53,7 @@ public class HttpContextDataBinder implements DataBinder{
 				requestParamPopulate.populate(methodParamObject.getObject());
 			}
 		}catch(Exception e){
-			throw new DataBindException(e);
+			throw new JDataBindException(e);
 		}
 	}
 	

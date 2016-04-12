@@ -23,6 +23,8 @@ public abstract class JDateUtils {
 	
 	public static final String yyyyMMddHHmmss="yyyy-MM-dd HH:mm:ss";
 	
+	public static final String ANY="ANY";
+	
 	
 	/**
 	 * format {@link Date} in the form of "yyyy-MM-dd".

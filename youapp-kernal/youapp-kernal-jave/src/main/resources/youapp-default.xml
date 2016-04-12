@@ -89,6 +89,12 @@
   <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler} split by comma</description>
 </property>
 
-
+<property>
+  <name>datavalidate.property.annotation.handler.classes</name>
+  <value>j.jave.kernal.jave.support.validate.propertyvalidator.JFloatAnnotationValidatorHandler,
+  j.jave.kernal.jave.support.validate.propertyvalidator.JLengthAnnotationValidatorHandler
+  </value>
+  <description>any handler must implements {j.jave.kernal.jave.support.validate.propertyvalidator.JPropertyAnnotationValidatorHandler} split by comma</description>
+</property>
 
 </configuration>

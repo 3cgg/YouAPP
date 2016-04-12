@@ -1,6 +1,6 @@
 package test.j.jave.kernal.datapropertyvalidate;
 
-import j.jave.kernal.jave.support.validate.propertyvalidator.JSimplePropertyAnnoationValidator;
+import j.jave.kernal.jave.support.validate.annotationvalidator.JSimplePropertyAnnoationValidator;
 
 public class TestModelMain {
 

@@ -61,7 +61,7 @@ public class MvcClassPathListener implements ServletContextListener {
 					LOGGER.info("Appending [WEB-INF/classes] as classpath : "+classesFile.getAbsolutePath());
 				}
 			}
-			System.setProperty("java.class.path", classPathList.represent());
+			System.setProperty("java.class.path", classPathList.view());
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 		}

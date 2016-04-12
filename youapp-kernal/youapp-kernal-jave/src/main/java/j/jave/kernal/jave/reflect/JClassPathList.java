@@ -1,12 +1,12 @@
 package j.jave.kernal.jave.reflect;
 
-import j.jave.kernal.jave.support.console.JRepresent;
+import j.jave.kernal.jave.support.view.JView;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JClassPathList implements JRepresent{
+public class JClassPathList implements JView{
 
 	private List<String> fileAbsolutePaths=new ArrayList<String>();
 	
@@ -35,7 +35,7 @@ public class JClassPathList implements JRepresent{
 	}
 	
 	@Override
-	public String represent() {
+	public String view() {
 		StringBuffer stringBuffer=new StringBuffer();
 		for (String fileAbsolutePath:fileAbsolutePaths) {
 			stringBuffer.append(";");

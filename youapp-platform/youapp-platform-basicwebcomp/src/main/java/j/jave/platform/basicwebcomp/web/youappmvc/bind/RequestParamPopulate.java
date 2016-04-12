@@ -3,7 +3,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.random.JPopulate;
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support.convert.JDataConvertor;
+import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
 import j.jave.kernal.jave.support.detect.JDefaultFieldMeta;
 import j.jave.kernal.jave.support.detect.JFieldDetector;
 import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;

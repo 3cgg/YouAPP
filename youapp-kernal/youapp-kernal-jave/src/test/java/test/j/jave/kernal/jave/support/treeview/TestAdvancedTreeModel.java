@@ -2,8 +2,8 @@ package test.j.jave.kernal.jave.support.treeview;
 
 import j.jave.kernal.jave.random.JSimpleObjectPopulate;
 import j.jave.kernal.jave.support.treeview.JAdvancedTreeStrcture;
-import j.jave.kernal.jave.support.treeview.JDefaultTreeRepresent;
-import j.jave.kernal.jave.support.treeview.JHierarchyTreeRepresent;
+import j.jave.kernal.jave.support.treeview.JDefaultTreeView;
+import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JTree;
 
 import java.util.ArrayList;
@@ -146,11 +146,11 @@ public static void main(String[] args) throws Exception {
 		}
 		JTree tree=new JTree(testModels).get();
 		
-		JDefaultTreeRepresent defaultTreeRepresent=new JDefaultTreeRepresent(tree);
-		System.out.println(defaultTreeRepresent.represent());
+		JDefaultTreeView defaultTreeRepresent=new JDefaultTreeView(tree);
+		System.out.println(defaultTreeRepresent.view());
 		
-		JHierarchyTreeRepresent hierarchyTreeRepresent=new JHierarchyTreeRepresent(tree);
-		System.out.println(hierarchyTreeRepresent.represent());
+		JHierarchyTreeView hierarchyTreeRepresent=new JHierarchyTreeView(tree);
+		System.out.println(hierarchyTreeRepresent.view());
 		
 //		String treeString=JJSON.get().formatObject(tree.getTreeNodes());
 //		System.out.println(treeString);

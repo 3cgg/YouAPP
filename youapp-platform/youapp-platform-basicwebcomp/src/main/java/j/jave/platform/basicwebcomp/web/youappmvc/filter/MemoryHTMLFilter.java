@@ -7,6 +7,7 @@ import j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheCacheService;
 import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.util.JMemoryResponseWrapper;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class MemoryHTMLFilter implements JFilter{
 					JMemoryResponseWrapper responseWrapper = new JMemoryResponseWrapper((HttpServletResponse)response); 
 					chain.doFilter(request, responseWrapper);
 					byte[] bytes=responseWrapper.getBytes();
-					response.getOutputStream().write(bytes);
+					HttpServletResponseUtil.writeBytesDirectly((HttpServletRequest)request, (HttpServletResponse)response, bytes);
 					
 					ResponseCacheModel requestCachedResource=new ResponseCacheModel();
 					requestCachedResource.setPath(path);
@@ -56,7 +57,7 @@ public class MemoryHTMLFilter implements JFilter{
 					requestResourceMemoryCacheService.add(requestCachedResource);
 				}
 				else{
-					response.getOutputStream().write(responseCachedResource.getBytes());
+					HttpServletResponseUtil.writeBytesDirectly((HttpServletRequest)request, (HttpServletResponse)response, responseCachedResource.getBytes());
 				}
 			}
 			// no need cached.

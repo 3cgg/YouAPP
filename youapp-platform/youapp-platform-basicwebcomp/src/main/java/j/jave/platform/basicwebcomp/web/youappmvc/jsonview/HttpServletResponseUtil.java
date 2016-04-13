@@ -10,6 +10,11 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *  the unified writing stream for servlet/filter.
+ * @author JIAZJ
+ *
+ */
 public class HttpServletResponseUtil {
 
 	public static final void write(HttpServletRequest request,
@@ -18,13 +23,22 @@ public class HttpServletResponseUtil {
 		if(ResponseModel.class.isInstance(data)){
 			responseModel=ResponseModelUtil.intercept(request, response, httpContext, (ResponseModel) data);
 		}
+		
+		try {
+			writeBytesDirectly(request, response, String.valueOf(responseModel).getBytes("utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	
+	public static final void writeBytesDirectly(HttpServletRequest request,
+			HttpServletResponse response,byte[] bytes){
 		OutputStream outputStream=null;
 		try {
 			outputStream=response.getOutputStream();
-			response.getOutputStream().write(String.valueOf(responseModel).getBytes("utf-8"));
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch(Exception e){
+			response.getOutputStream().write(bytes);
+		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
 			if(outputStream!=null){
@@ -36,7 +50,6 @@ public class HttpServletResponseUtil {
 				}
 			}
 		}
-		
 	}
 	
 }

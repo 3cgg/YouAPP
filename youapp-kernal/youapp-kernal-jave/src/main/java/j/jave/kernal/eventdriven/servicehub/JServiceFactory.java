@@ -35,4 +35,10 @@ public interface JServiceFactory<T extends JService> {
 	 */
 	String describer();
 	
+	/**
+	 * test if the factory is available or not.
+	 * @return
+	 */
+	boolean available();
+	
 }

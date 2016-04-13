@@ -1,8 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.identifier.DataBinder;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.kernal.jave.support.databind.JDataBindException;
 import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class HttpContextDataBinder implements DataBinder{
+public class HttpContextDataBinder implements JDataBinder{
 
 	private HttpContext httpContext;
 	

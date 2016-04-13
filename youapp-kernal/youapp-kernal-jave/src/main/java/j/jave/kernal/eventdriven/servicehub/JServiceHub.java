@@ -64,6 +64,11 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	private final static Map<Class<?>, List<Class<?>>> listenerServices=new ConcurrentHashMap<Class<?>, List<Class<?>>>();
 
 	
+	@Override
+	public boolean available() {
+		return true;
+	}
+	
 	/**
 	 * find all listeners on the event, then trigger one by one
 	 * @param event
@@ -150,6 +155,13 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			throw new JServiceRegisteringException(clazz.getName()+" is registered , name : "
 					+ exists.getName()+" , service factory : "+exists.getClass().getName());
 		}
+		
+		//check whether the service factory is available.
+		if(!serviceFactory.available()){
+			LOGGER.info("service factory ("+serviceFactory.getName()+") is unavaiable, drop it.");
+			return ;
+		}
+		
 		services.put(clazz, serviceFactory);
 		serviceHubManager.addNewService(clazz);
 		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));

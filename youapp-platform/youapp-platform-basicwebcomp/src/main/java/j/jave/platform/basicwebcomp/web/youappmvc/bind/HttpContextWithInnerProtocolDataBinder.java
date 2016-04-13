@@ -2,13 +2,13 @@ package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 
 import j.jave.kernal.dataexchange.protocol.JObjectTransModel;
 import j.jave.kernal.dataexchange.protocol.JObjectWrapper;
-import j.jave.kernal.jave.identifier.DataBinder;
+import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
 import java.util.List;
 
-public class HttpContextWithInnerProtocolDataBinder implements DataBinder{
+public class HttpContextWithInnerProtocolDataBinder implements JDataBinder{
 
 	private HttpContext httpContext;
 	

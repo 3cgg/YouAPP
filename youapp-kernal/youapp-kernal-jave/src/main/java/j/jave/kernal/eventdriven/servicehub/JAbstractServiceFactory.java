@@ -36,4 +36,9 @@ public abstract class JAbstractServiceFactory<T extends JService> implements JSe
 	protected boolean isCanRegister(){
 		return true;
 	}
+	
+	@Override
+	public boolean available() {
+		return true;
+	}
 }

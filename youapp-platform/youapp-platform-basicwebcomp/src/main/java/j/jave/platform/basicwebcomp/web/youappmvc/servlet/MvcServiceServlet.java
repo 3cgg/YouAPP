@@ -7,6 +7,7 @@ import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
+import j.jave.platform.basicwebcomp.web.util.JResponseWrittenRejectWrapper;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.DefaultServletRequestInvocation;
@@ -64,9 +65,9 @@ public class MvcServiceServlet  extends JServlet {
 		HttpServletRequest request=req;
 		HttpServletResponse response=resp;
 		try{
-			ServletRequestInvocation servletRequestInvocation=new DefaultServletRequestInvocation(req, response);
+			JResponseWrittenRejectWrapper rejectWrapper=new JResponseWrittenRejectWrapper(resp);
+			ServletRequestInvocation servletRequestInvocation=new DefaultServletRequestInvocation(req, rejectWrapper);
 			Object navigate=servletRequestInvocation.proceed();
-			response=servletRequestInvocation.getHttpServletResponse();
 			// if response for download.
 			if(JFile.class.isInstance(navigate)){
 				JFile file=(JFile)navigate;

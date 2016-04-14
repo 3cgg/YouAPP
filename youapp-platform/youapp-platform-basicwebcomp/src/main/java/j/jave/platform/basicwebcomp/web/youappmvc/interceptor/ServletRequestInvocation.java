@@ -21,8 +21,6 @@ public interface ServletRequestInvocation {
 
 	public HttpServletResponse getHttpServletResponse();
 	
-	public void setHttpServletResponse(HttpServletResponse httpServletResponse);
-	
 	HttpContext getHttpContext();
 	
 	void setHttpContext(HttpContext httpContext);

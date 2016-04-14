@@ -3,18 +3,17 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.servlet;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.DefaultServletRequestInvocation;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.ServletExceptionUtil;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.ServletRequestInvocation;
+import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.IOException;
 
@@ -38,7 +37,6 @@ import org.slf4j.LoggerFactory;
  * @author J
  * @see HttpContext
  * @see ControllerExecutor#execute(HttpContext)
- * @see JSPServletViewHandler
  * @see JSONServletViewHandler
  */
 @SuppressWarnings("serial")
@@ -46,51 +44,8 @@ public class MvcServiceServlet  extends JServlet {
 
 	private static final Logger LOGGER=LoggerFactory.getLogger(MvcServiceServlet.class);
 	
-	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
-	
-	private JServletViewHandler servletViewHandler=new JSONServletViewHandler();
-	
-	private MemcachedDelegateService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedDelegateService.class);;
-	
 	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");
-	}
-	
-	public static interface JServletViewHandler{
-		
-		/**
-		 * how to handle navigate . the method is the end statement by the request. what is means the output stream 
-		 * {@link HttpServletResponse#getOutputStream()} can be used.
-		 * @param request
-		 * @param response
-		 * @param httpContext
-		 * @param navigate
-		 * @throws Exception
-		 */
-		public abstract void handleNavigate(HttpServletRequest request,HttpServletResponse response,
-				HttpContext httpContext,Object navigate) throws Exception;
-		
-		/**
-		 * how to handle service exception . the method is the end statement by the request. what is means the output stream 
-		 * {@link HttpServletResponse#getOutputStream()} can be used.
-		 * see {@link JServiceException}
-		 * @param request
-		 * @param response
-		 * @param httpContext
-		 * @param exception
-		 */
-		public abstract void handleServiceExcepion(HttpServletRequest request,HttpServletResponse response,HttpContext httpContext,JServiceException exception);
-		
-		/**
-		 * how to handle exception .  the method is the end statement by the request. what is means the output stream 
-		 * {@link HttpServletResponse#getOutputStream()} can be used.
-		 * @param request
-		 * @param response
-		 * @param httpContext
-		 * @param exception
-		 */
-		public abstract void handleExcepion(HttpServletRequest request,HttpServletResponse response,HttpContext httpContext,Exception exception);
-		
 	}
 	
 	@Override
@@ -106,36 +61,34 @@ public class MvcServiceServlet  extends JServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		HttpContext httpContext=HttpContextHolder.get().initHttp(req, resp);
+		HttpServletRequest request=req;
+		HttpServletResponse response=resp;
 		try{
-			
-			String target=YouAppMvcUtils.getPathInfo(req);
-			httpContext.setTargetPath(target);
-			Object navigate=ControllerExecutor.newSingleExecutor().execute(httpContext);
-			
+			ServletRequestInvocation servletRequestInvocation=new DefaultServletRequestInvocation(req, response);
+			Object navigate=servletRequestInvocation.proceed();
+			response=servletRequestInvocation.getHttpServletResponse();
 			// if response for download.
 			if(JFile.class.isInstance(navigate)){
 				JFile file=(JFile)navigate;
-				resp.setContentType("application/" + file.getFileExtension());
-				resp.setContentLength((int) file.contentLength());
-				resp.setHeader("Content-Disposition", "attachment;filename="+ file.getExpectedFullFileName()); 
-				resp.getOutputStream().write(file.getFileContent());
+				response.setContentType("application/" + file.getFileExtension());
+				response.setContentLength((int) file.contentLength());
+				response.setHeader("Content-Disposition", "attachment;filename="+ file.getExpectedFullFileName()); 
+				HttpServletResponseUtil.writeBytesDirectly(request, response, file.getFileContent());
+			}
+			else if(ResponseModel.class.isInstance(navigate)){
+				HttpServletResponseUtil.write(request, response, servletRequestInvocation.getHttpContext(), navigate);
 			}
 			else{
-				servletViewHandler.handleNavigate(req, resp,httpContext, navigate);
+				HttpServletResponseUtil.write(request, response, servletRequestInvocation.getHttpContext(), navigate);
 			}
 
 			if(LOGGER.isDebugEnabled()){
 				LOGGER.debug("the response of "+req.getRequestURL()+"[DispathType:"+req.getDispatcherType().name()+"] is OK!");
 			}
 		}
-		catch(JServiceException e){
-			LOGGER.error(e.getMessage(),e);
-			servletViewHandler.handleServiceExcepion(req, resp, httpContext, e);
-		}
 		catch(Exception e){
-			LOGGER.error(e.getMessage(),e);
-			servletViewHandler.handleExcepion(req, resp,httpContext,  e);
+			ResponseModel responseModel=  ServletExceptionUtil.exception(req, response, e);
+			HttpServletResponseUtil.write(request, response, null, responseModel);
 		}finally{
 			if(JStringUtils.isNullOrEmpty(resp.getContentType())){
 				resp.setContentType("text/html;charset=UTF-8");

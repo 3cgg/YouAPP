@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.filter;
+package j.jave.platform.basicwebcomp.web.youappmvc.interceptor;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
@@ -6,24 +6,13 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.support.JServletContext;
 import j.jave.platform.basicwebcomp.web.support.JServletDetect;
-import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfigResolve;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -54,9 +43,9 @@ import javax.servlet.http.HttpServletResponse;
  * @see JServletContext
  * @see FilterResponse
  */
-public class ValidPathFilter implements JFilter ,APPFilterConfig  {
+public class ValidPathInterceptor implements ServletRequestInterceptor  {
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(ValidPathFilter.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ValidPathInterceptor.class);
 	
 	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
@@ -74,29 +63,23 @@ public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 	private Object sync=new Object();
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		String serviceServletPath=new APPFilterConfigResolve().resolveServiceOnServletPath(filterConfig);
-		if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
-			this.serviceServletPath=serviceServletPath;
-		}
-	}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
+		HttpServletRequest request= servletRequestInvocation.getHttpServletRequest();
+		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
+		
 		try{
-			HttpServletRequest req=(HttpServletRequest) request;
+			
 			if(servletDetect==null){
 				synchronized (sync) {
 					if(servletDetect==null){
-						servletDetect=new JServletDetect(req);
+						servletDetect=new JServletDetect(request);
 						servletContext=servletDetect.getServletContext();
 					}
 				}
 			}
 			
 			if(servletContext!=null){
-				String servletPath=req.getServletPath();
+				String servletPath=request.getServletPath();
 				
 				//forward to login view page, if request root resource, note it's extend to browser
 				if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
@@ -107,38 +90,32 @@ public class ValidPathFilter implements JFilter ,APPFilterConfig  {
 					else {
 						entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
 					}
-					req.getRequestDispatcher(entranceViewPath).forward(request, response);
-					return ;
+					request.getRequestDispatcher(entranceViewPath).forward(request, response);
+					return null;
 				}
 				
 				servletPath=servletPath+"/";
 				boolean isServletPath=servletContext.containServletPath(servletPath);
 				if(!isServletPath){
-					chain.doFilter(request, response);
-					return ;
+					return servletRequestInvocation.proceed();
 				}
 			}
 			
-			String path=YouAppMvcUtils.getPathInfo(req);
+			String path=YouAppMvcUtils.getPathInfo(request);
 			if(JStringUtils.isNotNullOrEmpty(path)){
 				boolean validPath=loginAccessService.isValidResource(path);
 				if(!validPath){
 					ResponseModel responseModel=ResponseModel.newInvalidPath();
 					responseModel.setData(servletConfigService.getInvalidPathInfo());
-					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
-					return ;
+//					HttpServletResponseUtil.write(request, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
+					return responseModel;
 				}
 			}
-			chain.doFilter(request, response);
+			return servletRequestInvocation.proceed();
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
-			FilterExceptionUtil.exception(request, response, e);
+			return ServletExceptionUtil.exception(request, response, e);
 		}
-	}
-
-	@Override
-	public void destroy() {
-		
 	}
 
 }

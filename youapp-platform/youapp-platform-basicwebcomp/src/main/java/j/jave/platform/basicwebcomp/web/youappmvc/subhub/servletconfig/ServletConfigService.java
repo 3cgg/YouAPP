@@ -5,13 +5,13 @@ package j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig;
 
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.ValidPathFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.ValidPathInterceptor;
 
 /**
  * the interface to make the rule of what common configuration to configure,
  * these information can be used in different Filters or Servlets. 
  * @author J
- * @see ValidPathFilter
+ * @see ValidPathInterceptor
  */
 public interface ServletConfigService extends JService {
 	

@@ -10,9 +10,9 @@ import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.AuthenticationHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.ServletExceptionUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 
 import javax.servlet.FilterChain;
@@ -48,17 +48,17 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 			JServiceHubDelegate.get().getService(this, AuthenticationHookDelegateService.class);
 	
 	@Override
-	public void handleNoLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
+	public Object handleNoLogin(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		ResponseModel responseModel= ResponseModel.newNoLogin();
-		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
+		return responseModel;
 	}
 	
 	@Override
-	public void handleDuplicateLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
+	public Object handleDuplicateLogin(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		ResponseModel responseModel= ResponseModel.newDuplicateLogin();
-		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
+		return responseModel;
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 	private final int expiredTime=JConfiguration.get().getInt(WebCompProperties.YOUAPPMVC_TICKET_SESSION_EXPIRED_TIME, 1800);
 	
 	@Override
-	public void handleLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
+	public Object handleLogin(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String name=request.getParameter(loginName);
 		String password=request.getParameter(loginPassword);
 		HttpContext httpContext=null;
@@ -95,44 +95,40 @@ public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilt
 				resSessionUserImpl.setUserName(sessionUserImpl.getUserName());
 				resSessionUserImpl.setUserId(sessionUserImpl.getUserId());
 				responseModel.setData(sessionUserImpl);
-				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+				return responseModel;
 			}
 			else{
 				ResponseModel responseModel= ResponseModel.newError();
 				responseModel.setData("用户名或者密码错误");
-				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+				return responseModel;
 			}
 		}catch(Exception e){
-			ResponseModel responseModel= ResponseModel.newError();
-			responseModel.setData(e.getMessage());
-			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			return ServletExceptionUtil.exception(request, response, e);
 		}
 		
 	}
 	
 	@Override
-	public void handleLoginout(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain,HttpContext httpContext) throws Exception {
+	public Object handleLoginout(HttpServletRequest request,
+			HttpServletResponse response,HttpContext httpContext) throws Exception {
 		try{
 			memcachedService.remove(httpContext.getTicket());
 			authenticationHookDelegateService.doAfterLoginout(httpContext);
 			ResponseModel responseModel= ResponseModel.newSuccess();
 			responseModel.setData(true);
-			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			return responseModel;
 		}catch(Exception e){
-			ResponseModel responseModel= ResponseModel.newError();
-			responseModel.setData(e.getMessage());
-			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			return ServletExceptionUtil.exception(request, response, e);
 		}
 	}
 	
 	
 	@Override
-	public void handleExpiredLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
+	public Object handleExpiredLogin(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		JCookieUtils.deleteCookie(request, response, JCookieUtils.getCookie(request, ViewConstants.TICKET));
 		ResponseModel responseModel= ResponseModel.newExpiredLogin();
-		HttpServletResponseUtil.write(request, response, HttpContextHolder.get(), responseModel);
+		return responseModel;
 	}
 
 }

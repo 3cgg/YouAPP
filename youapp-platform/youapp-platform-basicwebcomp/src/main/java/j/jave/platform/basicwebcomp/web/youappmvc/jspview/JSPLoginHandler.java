@@ -4,7 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.AuthenticationHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.AuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 
@@ -44,45 +44,46 @@ import javax.servlet.http.HttpServletResponse;
  * @see {@link APPFilterConfig}
  */
 @Deprecated
-public class JSPLoginHandler implements AuthenticationHandler ,APPFilterConfig {
-	
-	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
-	
-	@Override
-	public void handleNoLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
-//		request.setAttribute("url", serviceToLoginPath); 
-//		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
-		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getToLoginPath()).forward(request, response);
-	}
-	
-	@Override
-	public void handleDuplicateLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
-		ResponseModel filterResponse= ResponseModel.newDuplicateLogin();
-		response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
-	}
-	
-	@Override
-	public void handleToLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
-		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
-	}
-
-	@Override
-	public void handleLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
-		
-	}
-	
-	@Override
-	public void handleExpiredLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
-	}
-	
-	@Override
-	public void handleLoginout(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain,
-			HttpContext httpContext) throws Exception {
-	}
+public class JSPLoginHandler  {
+//	
+//	
+//	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
+//	
+//	@Override
+//	public void handleNoLogin(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain) throws Exception {
+////		request.setAttribute("url", serviceToLoginPath); 
+////		request.getRequestDispatcher("/WEB-INF/jsp/navigate.jsp").forward(request, response);
+//		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getToLoginPath()).forward(request, response);
+//	}
+//	
+//	@Override
+//	public void handleDuplicateLogin(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain) throws Exception {
+//		ResponseModel filterResponse= ResponseModel.newDuplicateLogin();
+//		response.getOutputStream().write(JJSON.get().formatObject(filterResponse).getBytes("utf-8"));
+//	}
+//	
+//	@Override
+//	public void handleToLogin(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain) throws Exception {
+//		request.getRequestDispatcher(request.getServletPath()+servletConfigService.getEntranceViewPath()).forward(request, response);
+//	}
+//
+//	@Override
+//	public void handleLogin(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain) throws Exception {
+//		
+//	}
+//	
+//	@Override
+//	public void handleExpiredLogin(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain) throws Exception {
+//	}
+//	
+//	@Override
+//	public void handleLoginout(HttpServletRequest request,
+//			HttpServletResponse response, FilterChain chain,
+//			HttpContext httpContext) throws Exception {
+//	}
 }

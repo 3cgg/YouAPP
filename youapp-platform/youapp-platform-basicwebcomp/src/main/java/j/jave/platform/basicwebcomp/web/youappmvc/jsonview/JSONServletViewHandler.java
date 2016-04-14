@@ -10,7 +10,8 @@ import j.jave.kernal.jave.support.databind.proext.JPropertyExtendBinder;
 import j.jave.kernal.jave.support.databind.proext.JSimplePropertyExtendBinder;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet.JServletViewHandler;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.ServletExceptionUtil;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.JServletViewHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,30 +31,31 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 		propertyExtendBinders.add(new JSimplePropertyExtendBinder());
 	}
 	@Override
-	public void handleNavigate(HttpServletRequest request,
+	public Object handleNavigate(HttpServletRequest request,
 			HttpServletResponse response,HttpContext httpContext, Object navigate) throws Exception {
 		ResponseModel responseModel=(ResponseModel)navigate;
 		for(JPropertyExtendBinder propertyExtendBinder:propertyExtendBinders){
 			propertyExtendBinder.bind(responseModel.getData());
 		}
-		HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+		return responseModel;
 	}
 	
 	@Override
-	public void handleServiceExcepion(HttpServletRequest request,
+	public Object handleServiceExcepion(HttpServletRequest request,
 			HttpServletResponse response, HttpContext httpContext,
 			JServiceException exception) {
 		try{
 			ResponseModel responseModel=ResponseModel.newMessage();
 			responseModel.setData(exception.getMessage());
-			HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+			return responseModel;
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
+			return ServletExceptionUtil.exception(request, response, e); 
 		}
 	}
 	
 	@Override
-	public void handleExcepion(HttpServletRequest request,
+	public Object handleExcepion(HttpServletRequest request,
 			HttpServletResponse response, HttpContext httpContext,
 			Exception exception) {
 		try{
@@ -63,15 +65,16 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			}
 			
 			if(JServiceException.class.isInstance(exp)){
-				handleServiceExcepion(request, response, httpContext, (JServiceException) exp);
+				return handleServiceExcepion(request, response, httpContext, (JServiceException) exp);
 			}
 			else{
 				ResponseModel responseModel=ResponseModel.newError();
 				responseModel.setData(exception.getMessage());
-				HttpServletResponseUtil.write(request, response, httpContext, responseModel);
+				return responseModel;
 			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
+			return ServletExceptionUtil.exception(request, response, e);
 		}
 	}
 	

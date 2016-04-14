@@ -17,7 +17,7 @@ public class ResponseCacheModel {
 	/**
 	 * the content of JSP page ,  js , image , css 
 	 */
-	private byte[] bytes;
+	private Object object;
 
 	public String getPath() {
 		return path;
@@ -27,12 +27,12 @@ public class ResponseCacheModel {
 		this.path = path;
 	}
 
-	public byte[] getBytes() {
-		return bytes;
+	public Object getObject() {
+		return object;
 	}
 
-	public void setBytes(byte[] bytes) {
-		this.bytes = bytes;
+	public void setObject(Object object) {
+		this.object = object;
 	}
 
 	@Override

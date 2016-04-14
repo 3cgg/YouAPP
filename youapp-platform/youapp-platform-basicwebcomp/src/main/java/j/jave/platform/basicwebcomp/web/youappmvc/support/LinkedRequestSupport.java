@@ -7,7 +7,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
-import j.jave.platform.basicwebcomp.web.youappmvc.filter.LinkedRequestFilter;
+import j.jave.platform.basicwebcomp.web.youappmvc.interceptor.LinkedRequestInterceptor;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.io.Serializable;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * <strong>Also note the instance is not thread safety</strong>
  * @author J
  * @see LinkedRequestResponse
- * @see LinkedRequestFilter
+ * @see LinkedRequestInterceptor
  * @see SimpleStringTrace
  * @see LinkedObjectTrace
  */

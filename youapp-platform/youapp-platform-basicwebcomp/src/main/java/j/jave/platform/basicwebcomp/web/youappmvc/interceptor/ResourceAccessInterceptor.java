@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.filter;
+package j.jave.platform.basicwebcomp.web.youappmvc.interceptor;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
@@ -6,19 +6,10 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 /**
@@ -37,30 +28,25 @@ import javax.servlet.http.HttpServletResponse;
 	&lt;/filter-mapping>    
  * @author J
  */
-public class ResourceAccessFilter implements JFilter{
+public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(ResourceAccessFilter.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ResourceAccessInterceptor.class);
 	
 	private AuthenticationAccessService loginAccessService=JServiceHubDelegate.get().getService(this,AuthenticationAccessService.class);
 	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
-		
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
+
+		HttpServletRequest req=(HttpServletRequest) servletRequestInvocation.getHttpServletRequest();
+		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
 		
 		try{
-			HttpServletRequest req=(HttpServletRequest) request;
-			
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String pathInfo=YouAppMvcUtils.getPathInfo(req);
 			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限
-				chain.doFilter(request, response);
-				return ;
+				return servletRequestInvocation.proceed();
 			}
 			
 			String clientTicket=YouAppMvcUtils.getTicket(req);
@@ -74,8 +60,8 @@ public class ResourceAccessFilter implements JFilter{
 					if(!authorized){
 						ResponseModel responseModel=ResponseModel.newNoAccess();
 						responseModel.setData("have no access to the resource.");
-						HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
-						return ;
+//						HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
+						return responseModel;
 					}
 				}
 				else{
@@ -83,20 +69,16 @@ public class ResourceAccessFilter implements JFilter{
 					responseModel.setData("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
 					
 					YouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
-					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
-					return ;
+//					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
+					return responseModel;
 				}
 			}
-			chain.doFilter(request, response);
+			return servletRequestInvocation.proceed();
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
-			FilterExceptionUtil.exception(request, response, e);
+			return ServletExceptionUtil.exception(req, response, e);
 		}
 	}
 	
-	@Override
-	public void destroy() {
-		
-	}
 	
 }

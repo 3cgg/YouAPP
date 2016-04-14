@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.filter;
+package j.jave.platform.basicwebcomp.web.youappmvc.interceptor;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
@@ -6,32 +6,18 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
-import j.jave.platform.basicwebcomp.web.support.JFilter;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
-import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * super class contain common logic to intercept reqeust.
- * @author J
- * @see JSONAuthenticationHandler
- */
-public class AuthenticationFilter implements JFilter ,APPFilterConfig {
-
-	protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationFilter.class);
+public class AuthenticationInterceptor implements ServletRequestInterceptor {
+	
+protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationInterceptor.class);
 	
 	protected ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
 	
@@ -41,16 +27,12 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 	
 	private AuthenticationHandler authenticationHandler=new JSONAuthenticationHandler();
 	
+	
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		
+	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
+		HttpServletRequest req= servletRequestInvocation.getHttpServletRequest();
+		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
 		try{
-			HttpServletRequest req=(HttpServletRequest) request;
 			// REMOVE LOGIN INFO FROM LOCAL.
 			HttpContextHolder.remove();
 			String clientTicket=YouAppMvcUtils.getTicket(req);
@@ -58,8 +40,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){ // already login
 				serverTicket=(HttpContext) memcachedService.get(clientTicket);
 				if(serverTicket==null){
-					authenticationHandler.handleExpiredLogin(req, (HttpServletResponse) response, chain);
-					return;
+					return authenticationHandler.handleExpiredLogin(req, (HttpServletResponse) response);
 				}
 			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
@@ -78,8 +59,7 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 					serverTicket.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(serverTicket);
 				}
-				chain.doFilter(request, response);
-				return ;
+				return servletRequestInvocation.proceed();
 			}
 			
 			boolean isLogin=false;
@@ -91,22 +71,18 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 			}
 			if(!isLogin){ // 没有登录， 尝试登陆
 				 if(servletConfigService.getLoginPath().equals(target)){ // 尝试登陆
-					 authenticationHandler.handleLogin(req, (HttpServletResponse)response, chain);
-					 return ;
+					 return authenticationHandler.handleLogin(req, (HttpServletResponse)response);
 				 }
 				 else{
-					 authenticationHandler.handleNoLogin(req, (HttpServletResponse) response, chain);
-					 return;
+					 return authenticationHandler.handleNoLogin(req, (HttpServletResponse) response);
 				 }
 			}
 			else{ // 已经登录
 				if(servletConfigService.getLoginPath().equals(target)){  // 不能重复登录
-					authenticationHandler.handleDuplicateLogin(req, (HttpServletResponse) response, chain);
-					return;
+					return authenticationHandler.handleDuplicateLogin(req, (HttpServletResponse) response);
 				}
 				if(servletConfigService.getLoginoutPath().equals(target)){  // 登出
-					authenticationHandler.handleLoginout(req, (HttpServletResponse) response, chain,serverTicket);
-					return;
+					return authenticationHandler.handleLoginout(req, (HttpServletResponse) response,serverTicket);
 				}
 //				else if(servletConfigService.getToLoginPath().equals(target)){  // how to do with the request of going to login.
 //					loginHandler.handleToLogin(req, (HttpServletResponse) response, chain);
@@ -115,18 +91,13 @@ public class AuthenticationFilter implements JFilter ,APPFilterConfig {
 				else{
 					serverTicket.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(serverTicket);
-					chain.doFilter(request, response);
+					return servletRequestInvocation.proceed();
 				}
 			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
-			FilterExceptionUtil.exception(request, response, e);
+			return ServletExceptionUtil.exception(req, response, e);
 		}
+	
 	}
-
-	@Override
-	public void destroy() {
-		
-	}
-
 }

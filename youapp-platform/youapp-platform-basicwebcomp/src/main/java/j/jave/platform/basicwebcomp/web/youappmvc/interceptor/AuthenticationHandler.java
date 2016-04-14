@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.filter;
+package j.jave.platform.basicwebcomp.web.youappmvc.interceptor;
 
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
@@ -15,19 +15,16 @@ public interface AuthenticationHandler {
 	 * @param response
 	 * @param chain
 	 */
-	public void handleNoLogin(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain) throws Exception;
+	public Object handleNoLogin(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 	/**
 	 * loginout
 	 * @param request
 	 * @param response
-	 * @param chain
 	 * @param httpContext
 	 * @throws Exception
 	 */
-	public void handleLoginout(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain,HttpContext httpContext) throws Exception;
+	public Object handleLoginout(HttpServletRequest request, HttpServletResponse response,HttpContext httpContext) throws Exception;
 	
 	
 	/**
@@ -36,8 +33,7 @@ public interface AuthenticationHandler {
 	 * @param response
 	 * @param chain
 	 */
-	public void handleDuplicateLogin(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain) throws Exception;
+	public Object handleDuplicateLogin(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 	/**
 	 * how to do with to login request, the request is force the end-user go the login page.
@@ -55,11 +51,8 @@ public interface AuthenticationHandler {
 	 * @param response
 	 * @param chain
 	 */
-	public void handleLogin(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain) throws Exception;
-
+	public Object handleLogin(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
-	public void handleExpiredLogin(HttpServletRequest request, HttpServletResponse response,
-			FilterChain chain) throws Exception;
+	public Object handleExpiredLogin(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	
 }

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -27,11 +28,11 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	
 	private ApplicationContext applicationContext=null;
 
-	private static SpringApplicationServiceGetService springApplicationServiceGetService
-	=new SpringApplicationServiceGetServiceImpl();
+	@Autowired
+	private SpringApplicationServiceGetService springApplicationServiceGetService;
 	
-	private static SpringApplicationServiceNameCheckService serviceNameCheckService
-	=new SpringApplicationServiceNameSameAsClassNameService();
+	@Autowired
+	private SpringApplicationServiceNameCheckService serviceNameCheckService;
 	
 	protected T object=null;
 	

@@ -4,7 +4,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletCo
 
 import org.springframework.stereotype.Service;
 
-@Service(value="com.youappcorp.project.core.service.ServletConfigServiceFactory")
+@Service(value="com.youappcorp.project.websupport.service.ServletConfigServiceFactory")
 public class ServletConfigServiceFactory extends j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigServiceFactory {
 	
 	public ServletConfigServiceFactory() {

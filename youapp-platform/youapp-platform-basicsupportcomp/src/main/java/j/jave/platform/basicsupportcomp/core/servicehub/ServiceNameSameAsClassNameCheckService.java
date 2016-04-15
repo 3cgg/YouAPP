@@ -5,10 +5,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-
 @Service(value="CHECK-SPRING-BEAN-NAME-AS-CLASS-NAME-BEAN")
-public class SpringApplicationServiceNameSameAsClassNameService
-extends SpringServiceFactorySupport<SpringApplicationServiceNameCheckService>
+public class ServiceNameSameAsClassNameCheckService
 implements SpringApplicationServiceNameCheckService{
 
 	@Override
@@ -29,7 +27,7 @@ implements SpringApplicationServiceNameCheckService{
 			return name.equals(serviceName);
 		}
 		
-		return false;
+		return true;
 	}
 	
 }

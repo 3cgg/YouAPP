@@ -1,11 +1,12 @@
 package j.jave.platform.basicsupportcomp.core.servicehub;
 
-import java.lang.reflect.ParameterizedType;
-
 import j.jave.kernal.eventdriven.servicehub.JAbstractServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.service.JService;
+
+import java.lang.reflect.ParameterizedType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,12 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	
 	private ApplicationContext applicationContext=null;
 
+	private static SpringApplicationServiceGetService springApplicationServiceGetService
+	=new SpringApplicationServiceGetServiceImpl();
+	
+	private static SpringApplicationServiceNameCheckService serviceNameCheckService
+	=new SpringApplicationServiceNameSameAsClassNameService();
+	
 	protected T object=null;
 	
 	/**
@@ -62,8 +69,12 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		
+		if(!serviceNameCheckService.valid(this.getClass())){
+			throw new JInitializationException(" the service/factory'name is not same as class name : "+this.getClass().getName());
+		}
+		
 		if(isCanRegister()){
-			getService();
 			JServiceHubDelegate.get().register(this, registClass, this);
 			LOGGER.info("registering service :["+registClass.getName()+"] powered by "+this.getClass().getName());
 		}
@@ -80,12 +91,14 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	}
 
 	/**
-	 * override the method by the sub-class. 
+	 * may be override the method by the sub-class. 
+	 * default the method get the object-AOP .
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getService() {
-		throw new RuntimeException("override the method to provide concrete service.");
+		return (T) springApplicationServiceGetService.getService(this.getClass());
 	}
 	
 }

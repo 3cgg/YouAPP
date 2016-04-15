@@ -15,10 +15,6 @@ implements JService,AuthenticationHookService
 	@Autowired(required=false)
 	private AuthenticationHookService authenticationHookService;
 	
-	@Override
-	public AuthenticationHookDelegateService getService() {
-		return this;
-	}
 
 	@Override
 	public void doAfterLogin(HttpContext httpContext) {

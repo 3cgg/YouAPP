@@ -8,10 +8,10 @@ import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupp
 import org.springframework.stereotype.Service;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
-@Service(value="j.jave.platform.basicwebcomp.login.subhub.AuthenticationAccessServiceFactory")
+@Service(value="j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessServiceFactory")
 public class AuthenticationAccessServiceFactory extends SpringServiceFactorySupport<AuthenticationAccessService> {
 
 	public AuthenticationAccessServiceFactory() {

@@ -7,11 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SimpleServiceRegisterService extends SpringServiceFactorySupport<SimpleServiceRegisterService> implements JService {
-
-	@Override
-	public SimpleServiceRegisterService getService() {
-		return this;
-	}
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {

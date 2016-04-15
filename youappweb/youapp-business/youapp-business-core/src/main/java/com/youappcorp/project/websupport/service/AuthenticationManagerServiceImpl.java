@@ -15,17 +15,12 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.service.UserService;
 
-@Service(value="com.youappcorp.project.core.service.AuthenticationManagerServiceImpl")
+@Service(value="com.youappcorp.project.websupport.service.AuthenticationManagerServiceImpl")
 public class AuthenticationManagerServiceImpl extends SpringServiceFactorySupport<AuthenticationManagerService> implements
 		AuthenticationManagerService {
 
 	@Autowired
 	private UserService userService;
-	
-	@Override
-	public AuthenticationManagerService getService() {
-		return this;
-	}
 	
 	@Override
 	public SessionUserImpl getUserByNameAndPassword(String name, String password) {

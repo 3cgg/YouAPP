@@ -8,14 +8,9 @@ import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupp
 
 import org.springframework.stereotype.Service;
 
-@Service(value="pageableSupportService")
+@Service(value="j.jave.platform.mybatis.plugin.pageable.PageableSupportService")
 public class PageableSupportService extends SpringServiceFactorySupport<PageableSupportService>
 implements JService{
-
-	@Override
-	public PageableSupportService getService() {
-		return this;
-	}
 
 	private JCacheService cacheService=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 	

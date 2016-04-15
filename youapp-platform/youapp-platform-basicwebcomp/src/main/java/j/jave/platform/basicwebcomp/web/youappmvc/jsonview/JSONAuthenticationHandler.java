@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see {@link APPFilterConfig}
  */
-public class JSONAuthenticationHandler implements AuthenticationHandler ,APPFilterConfig {
+public class JSONAuthenticationHandler implements AuthenticationHandler {
 	
 	private AuthenticationAccessService authenticationAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	

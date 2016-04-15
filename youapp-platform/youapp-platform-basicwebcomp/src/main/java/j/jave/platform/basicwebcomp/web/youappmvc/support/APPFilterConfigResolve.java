@@ -9,6 +9,7 @@ import javax.servlet.FilterConfig;
  * resolve some path ,or others .
  * @author J
  */
+@Deprecated
 public class APPFilterConfigResolve implements APPFilterConfig{
 	
 	public String resolveServiceOnServletPath(FilterConfig filterConfig){

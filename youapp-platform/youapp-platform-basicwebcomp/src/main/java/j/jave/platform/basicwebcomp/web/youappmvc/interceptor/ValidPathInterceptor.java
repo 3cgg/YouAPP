@@ -7,7 +7,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JServletContext;
-import j.jave.platform.basicwebcomp.web.support.JServletDetect;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
@@ -39,9 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  *	&lt;/filter-mapping>
  * </pre>
  * @author J
- * @see APPFilterConfig
  * @see JServletContext
- * @see FilterResponse
  */
 public class ValidPathInterceptor implements ServletRequestInterceptor  {
 	
@@ -51,16 +48,16 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 	
 	private AuthenticationAccessService loginAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
 	
-	private JServletDetect servletDetect=null;
+//	private JServletDetect servletDetect=null;
 	
-	private JServletContext servletContext=null;
+//	private JServletContext servletContext=null;
 	
 	/**
 	 * "/web/service/dispatch/*" pattern configured in web.xml . 
 	 */
-	private String serviceServletPath=null;
+//	private String serviceServletPath=null;
 	
-	private Object sync=new Object();
+//	private Object sync=new Object();
 	
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
@@ -68,7 +65,7 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
 		
 		try{
-			
+			/* @Deprecated
 			if(servletDetect==null){
 				synchronized (sync) {
 					if(servletDetect==null){
@@ -81,8 +78,9 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 			if(servletContext!=null){
 				String servletPath=request.getServletPath();
 				
-				//forward to login view page, if request root resource, note it's extend to browser
 				if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
+					//forward to login view page, if request root resource, note it's extend to browser
+					// the way is @Deprecated
 					String entranceViewPath="";
 					if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
 						entranceViewPath=serviceServletPath+servletConfigService.getToLoginPath();
@@ -90,8 +88,8 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 					else {
 						entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
 					}
-					request.getRequestDispatcher(entranceViewPath).forward(request, response);
-					return null;
+					ResponseModel responseModel=ResponseModel.newError().setData("the root url is not supported.");
+					return responseModel;
 				}
 				
 				servletPath=servletPath+"/";
@@ -100,18 +98,21 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 					return servletRequestInvocation.proceed();
 				}
 			}
-			
+			*/
 			String path=YouAppMvcUtils.getPathInfo(request);
-			if(JStringUtils.isNotNullOrEmpty(path)){
+			if(JStringUtils.isNotNullOrEmpty(path)&&!"/".equals(path)){
 				boolean validPath=loginAccessService.isValidResource(path);
 				if(!validPath){
 					ResponseModel responseModel=ResponseModel.newInvalidPath();
 					responseModel.setData(servletConfigService.getInvalidPathInfo());
-//					HttpServletResponseUtil.write(request, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
 					return responseModel;
 				}
+				return servletRequestInvocation.proceed();
 			}
-			return servletRequestInvocation.proceed();
+			else{
+				ResponseModel responseModel=ResponseModel.newError().setData("the root url is not supported.");
+				return responseModel;
+			}
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
 			return ServletExceptionUtil.exception(request, response, e);

@@ -1,6 +1,6 @@
 package test.j.jave.kernal.jave.support.treeview;
 
-import j.jave.kernal.jave.random.JSimpleObjectPopulate;
+import j.jave.kernal.jave.support.random.JSimpleObjectRandomBinder;
 import j.jave.kernal.jave.support.treeview.JDefaultTreeView;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JSimpleTreeStrcture;
@@ -45,78 +45,78 @@ public static void main(String[] args) throws Exception {
 		
 		//1
 		TestSimpleTreeModel testModel1=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate1=new JSimpleObjectPopulate();
-		objectPopulate1.populate(testModel1);
+		JSimpleObjectRandomBinder objectPopulate1=new JSimpleObjectRandomBinder();
+		objectPopulate1.bind(testModel1);
 		testModel1.setParentId(null);
 		testModels.add(testModel1);
 		
 		//2
 		TestSimpleTreeModel testModel2=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate2=new JSimpleObjectPopulate();
-		objectPopulate2.populate(testModel2);
+		JSimpleObjectRandomBinder objectPopulate2=new JSimpleObjectRandomBinder();
+		objectPopulate2.bind(testModel2);
 		testModels.add(testModel2);
 		testModel2.setParentId(null);
 		
 		//3
 		TestSimpleTreeModel testModel3=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate3=new JSimpleObjectPopulate();
-		objectPopulate3.populate(testModel3);
+		JSimpleObjectRandomBinder objectPopulate3=new JSimpleObjectRandomBinder();
+		objectPopulate3.bind(testModel3);
 		testModels.add(testModel3);
 		testModel3.setParentId(null);
 		
 		//1.1
 		TestSimpleTreeModel testModel11=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate11=new JSimpleObjectPopulate();
-		objectPopulate11.populate(testModel11);
+		JSimpleObjectRandomBinder objectPopulate11=new JSimpleObjectRandomBinder();
+		objectPopulate11.bind(testModel11);
 		testModel11.setParentId(testModel1.getId());
 		testModels.add(testModel11);
 		
 		//2.1
 		TestSimpleTreeModel testModel21=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate21=new JSimpleObjectPopulate();
-		objectPopulate21.populate(testModel21);
+		JSimpleObjectRandomBinder objectPopulate21=new JSimpleObjectRandomBinder();
+		objectPopulate21.bind(testModel21);
 		testModel21.setParentId(testModel2.getId());
 		testModels.add(testModel21);
 		
 		//1.1.1
 		TestSimpleTreeModel testModel111=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate111=new JSimpleObjectPopulate();
-		objectPopulate111.populate(testModel111);
+		JSimpleObjectRandomBinder objectPopulate111=new JSimpleObjectRandomBinder();
+		objectPopulate111.bind(testModel111);
 		testModel111.setParentId(testModel11.getId());
 		testModels.add(testModel111);
 		
 		//2.2
 		TestSimpleTreeModel testModel22=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate22=new JSimpleObjectPopulate();
-		objectPopulate22.populate(testModel22);
+		JSimpleObjectRandomBinder objectPopulate22=new JSimpleObjectRandomBinder();
+		objectPopulate22.bind(testModel22);
 		testModel22.setParentId(testModel2.getId());
 		testModels.add(testModel22);
 		
 		//1.2
 		TestSimpleTreeModel testModel12=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate12=new JSimpleObjectPopulate();
-		objectPopulate12.populate(testModel12);
+		JSimpleObjectRandomBinder objectPopulate12=new JSimpleObjectRandomBinder();
+		objectPopulate12.bind(testModel12);
 		testModel12.setParentId(testModel1.getId());
 		testModels.add(testModel12);
 		
 		//4
 		TestSimpleTreeModel testModel4=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate4=new JSimpleObjectPopulate();
-		objectPopulate4.populate(testModel4);
+		JSimpleObjectRandomBinder objectPopulate4=new JSimpleObjectRandomBinder();
+		objectPopulate4.bind(testModel4);
 		testModels.add(testModel4);
 		testModel4.setParentId(null);
 		
 		//5-5
 		TestSimpleTreeModel testModel5_5=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate5_5=new JSimpleObjectPopulate();
-		objectPopulate5_5.populate(testModel5_5);
+		JSimpleObjectRandomBinder objectPopulate5_5=new JSimpleObjectRandomBinder();
+		objectPopulate5_5.bind(testModel5_5);
 		testModels.add(testModel5_5);
 		testModel5_5.setParentId(null);
 		
 		//6_3_6
 		TestSimpleTreeModel testModel6_3_6=new TestSimpleTreeModel();
-		JSimpleObjectPopulate objectPopulate6_3_6=new JSimpleObjectPopulate();
-		objectPopulate6_3_6.populate(testModel6_3_6);
+		JSimpleObjectRandomBinder objectPopulate6_3_6=new JSimpleObjectRandomBinder();
+		objectPopulate6_3_6.bind(testModel6_3_6);
 		testModel6_3_6.setParentId(testModel3.getId());
 		testModels.add(testModel6_3_6);
 		

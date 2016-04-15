@@ -50,7 +50,7 @@ public class HttpContextDataBinder implements JDataBinder{
 			else{
 				RequestParamPopulate requestParamPopulate=new RequestParamPopulate(prefix, httpContext);
 				newObject(methodParamObject);
-				requestParamPopulate.populate(methodParamObject.getObject());
+				requestParamPopulate.bind(methodParamObject.getObject());
 			}
 		}catch(Exception e){
 			throw new JDataBindException(e);

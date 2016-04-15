@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 public interface JLongRandom extends JRandom<Long> {
 	@Override

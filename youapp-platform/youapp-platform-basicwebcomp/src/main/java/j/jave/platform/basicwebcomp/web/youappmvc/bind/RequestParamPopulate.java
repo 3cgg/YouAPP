@@ -1,8 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.random.JPopulate;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
 import j.jave.kernal.jave.support.detect.JDefaultFieldMeta;
 import j.jave.kernal.jave.support.detect.JFieldDetector;
@@ -14,7 +14,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-public class RequestParamPopulate implements JPopulate {
+public class RequestParamPopulate implements JDataBinder {
 
 	private String prefix;
 	
@@ -25,8 +25,7 @@ public class RequestParamPopulate implements JPopulate {
 		this.httpContext=httpContext;
 	}
 	
-	@Override
-	public void populate(final Object object) throws Exception {
+	public void bind(final Object object) throws Exception {
 		final JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
 		JFieldOnSingleClassDetector<JDefaultFieldMeta> fieldOnSingleClassDetector
 		=new JFieldOnSingleClassDetector<JDefaultFieldMeta>(JFieldDetector.defaultFieldInfoGen);

@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 import j.jave.kernal.jave.support.detect.JFieldDetector.JFieldFilter;
 import j.jave.kernal.jave.utils.JCollectionUtils;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class JAbstractFieldPopulate implements JClassFieldPopulate {
+public abstract class JAbstractClassFieldBinder implements JClassFieldBinder {
 
 	protected JFieldFilter fieldFilter;
 	

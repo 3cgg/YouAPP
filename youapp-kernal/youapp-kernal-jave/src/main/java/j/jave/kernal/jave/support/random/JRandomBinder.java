@@ -1,6 +1,7 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.math.BigDecimal;
@@ -9,13 +10,13 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * automatically populate the resource , such as class/object instance.
+ * automatically bind the resource with the random values, such as class/object instance.
  * @author J
  *
  */
-public interface JPopulate {
+public interface JRandomBinder extends JDataBinder {
 
-	public void populate(Object object) throws Exception;
+	public void bind(Object object) throws Exception;
 	
 	public static  class JDefaultTimestampRandom implements JTimestampRandom {
 		@Override

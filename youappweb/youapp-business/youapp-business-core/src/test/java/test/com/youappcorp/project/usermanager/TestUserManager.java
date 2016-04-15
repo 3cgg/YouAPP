@@ -1,7 +1,7 @@
 package test.com.youappcorp.project.usermanager;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.random.JSimpleObjectPopulate;
+import j.jave.kernal.jave.support.random.JSimpleObjectRandomBinder;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.basicsupportcomp.support.security.subhub.DESedeCipherService;
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
@@ -33,7 +33,7 @@ public class TestUserManager {
 		ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 		User user=new User();
 		try {
-			new JSimpleObjectPopulate().populate(user);
+			new JSimpleObjectRandomBinder().bind(user);
 			user.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			user.setUserName("N");
 			user.setPassword(deSedeCipherService.encrypt("P"));

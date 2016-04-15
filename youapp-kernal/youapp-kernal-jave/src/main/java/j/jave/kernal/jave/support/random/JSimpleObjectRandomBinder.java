@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 import j.jave.kernal.jave.support.detect.JFieldDetector;
 import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
@@ -8,10 +8,10 @@ import j.jave.kernal.jave.utils.JCollectionUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class JSimpleObjectPopulate  extends JAbstractFieldPopulate{
+public class JSimpleObjectRandomBinder  extends JAbstractClassFieldBinder{
 	
 	@Override
-	public void populate(final Object object) throws Exception {
+	public void bind(final Object object) throws Exception {
 		
 		JFieldInfoGen<FieldRelated> fieldInfo=new JFieldInfoGen<FieldRelated>() {
 			@Override

@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 public interface JIntRandom extends JRandom<Integer> {
 	@Override

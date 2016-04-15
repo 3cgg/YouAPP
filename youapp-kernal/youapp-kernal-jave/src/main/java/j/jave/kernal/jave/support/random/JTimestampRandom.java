@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.random;
+package j.jave.kernal.jave.support.random;
 
 import java.sql.Timestamp;
 

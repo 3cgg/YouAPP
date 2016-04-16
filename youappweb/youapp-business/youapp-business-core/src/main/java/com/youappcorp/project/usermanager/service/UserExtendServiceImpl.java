@@ -19,7 +19,7 @@ import com.youappcorp.project.usermanager.repo.UserExtendRepo;
  * @author J
  *
  */
-@Service(value="UserExtendServiceImpl")
+@Service(value="UserExtendServiceImpl.transation.jpa")
 public class UserExtendServiceImpl extends ServiceSupport<UserExtend> implements
 		UserExtendService {
 	

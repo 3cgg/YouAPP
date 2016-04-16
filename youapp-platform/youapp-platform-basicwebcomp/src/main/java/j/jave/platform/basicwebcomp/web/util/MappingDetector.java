@@ -68,6 +68,8 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	};
 	
 	static final JMethodInfoGen<MappingMeta> methodInfo=new JMethodInfoGen<MappingMeta>() {
+		
+		
 		@Override
 		public MappingMeta getInfo(Method method, Class<?> classIncudeMethod) {
 			

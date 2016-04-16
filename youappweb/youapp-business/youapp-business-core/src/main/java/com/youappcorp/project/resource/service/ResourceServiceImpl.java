@@ -12,7 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="resourceServiceImpl.transation")
+@Service(value="resourceServiceImpl.transation.jpa")
 public class ResourceServiceImpl extends ServiceSupport<Resource> implements ResourceService {
 
 	@Autowired

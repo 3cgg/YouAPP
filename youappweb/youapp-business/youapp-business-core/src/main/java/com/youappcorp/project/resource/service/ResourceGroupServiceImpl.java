@@ -14,7 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="resourceGroupServiceImpl.transation")
+@Service(value="resourceGroupServiceImpl.transation.jpa")
 public class ResourceGroupServiceImpl extends ServiceSupport<ResourceGroup> implements ResourceGroupService {
 
 	@Autowired

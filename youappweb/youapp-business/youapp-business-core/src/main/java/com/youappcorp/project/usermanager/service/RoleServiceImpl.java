@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.repo.RoleRepo;
 
-@Service(value="roleServiceImpl.transation")
+@Service(value="roleServiceImpl.transation.jpa")
 public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService {
 
 	@Autowired

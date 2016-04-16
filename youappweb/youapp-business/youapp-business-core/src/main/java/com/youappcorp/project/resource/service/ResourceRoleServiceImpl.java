@@ -14,7 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="resourceRoleServiceImpl.transation")
+@Service(value="resourceRoleServiceImpl.transation.jpa")
 public class ResourceRoleServiceImpl extends ServiceSupport<ResourceRole> implements ResourceRoleService {
 
 	@Autowired

@@ -23,6 +23,7 @@
 
 	<modules>
 		<module>../youapp-platform</module>
+		<module>youapp-business</module>
 	</modules>
   
 </project>

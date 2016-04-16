@@ -22,7 +22,7 @@ public class ParameterNameGet {
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(ParameterNameGet.class);
 	
 	
-	public static String[] getMethodParameterNamesByAsm4(Class<?> clazz, final Method method) {  
+	public static String[] getMethodParameterNamesByAsm4(Class<?> clazz, final Method method,ClassLoader classLoader) {  
         final Class<?>[] parameterTypes = method.getParameterTypes();  
         if (parameterTypes == null || parameterTypes.length == 0) {  
             return null;  
@@ -32,8 +32,11 @@ public class ParameterNameGet {
             types[i] = Type.getType(parameterTypes[i]);  
         }  
         final String[] parameterNames = new String[parameterTypes.length];  
-        try { 
-        	InputStream is=Thread.currentThread().getContextClassLoader().getResourceAsStream(clazz.getName().replace('.', '/')
+        try {
+        	if(classLoader==null){
+        		classLoader=Thread.currentThread().getContextClassLoader();
+        	}
+        	InputStream is=classLoader.getResourceAsStream(clazz.getName().replace('.', '/')
                         + ".class");
             ClassReader classReader = new ClassReader(is);  
             classReader.accept(new ClassVisitor(Opcodes.ASM4) {  

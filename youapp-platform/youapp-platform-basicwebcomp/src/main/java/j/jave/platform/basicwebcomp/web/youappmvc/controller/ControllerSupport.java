@@ -17,16 +17,24 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * basic action for view controller.
  * @author J
  */
-public abstract class ControllerSupport implements YouappController,InitializingBean {
+public abstract class ControllerSupport implements YouappController,InitializingBean,ApplicationContextAware {
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
 	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
+	
+	private ApplicationContext applicationContext;
+	
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 	
 //	/**
 //	 * {@link #setHttpContext(HttpContext)}
@@ -35,7 +43,7 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	
 	public static final String CREATE_SUCCESS="保存成功";
 	public static final String DELETE_SUCCESS="删除成功";
-	public static final String EDIT_SUCCESS="更新成功";
+	public static final String UPDATE_SUCCESS="更新成功";
 	
 	public HttpContext getHttpContext() {
 		return HttpContextHolder.get();

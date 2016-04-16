@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.UserTracker;
 import com.youappcorp.project.usermanager.repo.UserTrackerRepo;
 
-@Service(value="userTrackerService.transation")
+@Service(value="userTrackerService.transation.jpa")
 public class UserTrackerServiceImpl extends ServiceSupport<UserTracker> implements UserTrackerService {
 
 	@Autowired

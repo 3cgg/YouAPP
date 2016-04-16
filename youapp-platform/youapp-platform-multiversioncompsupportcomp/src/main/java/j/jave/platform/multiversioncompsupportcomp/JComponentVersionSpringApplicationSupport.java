@@ -10,6 +10,7 @@ import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext.JARScan;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
@@ -25,7 +26,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public abstract class JComponentVersionSpringApplicationSupport {
 	
-	protected final JLogger LOGGER=JLoggerFactory.getLogger(JComponentVersionSpringApplicationSupport.class);
+	public static final JLogger LOGGER=JLoggerFactory.getLogger(JComponentVersionSpringApplicationSupport.class);
 	
 	/**
 	 * predefined configuration of spring etc.
@@ -103,8 +104,9 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		// get all info from component-version.properties.
 		private void findComponentInfo(){
 			
-			InputStream inputStream=urlClassLoader.getResourceAsStream(ComponentProperties.PROPERTY_LOCATION);
+			InputStream inputStream=null;
 			try {
+				inputStream=urlClassLoader.findResource(ComponentProperties.PROPERTY_LOCATION).openStream();
 				JInputStreamWrapperSource inputStreamWrapperSource=new JInputStreamWrapperSource(inputStream);
 				Properties properties= JPropertiesUtils.loadProperties(inputStreamWrapperSource);
 				app=JPropertiesUtils.getKey(ComponentProperties.APP_NAME, properties);
@@ -112,6 +114,14 @@ public abstract class JComponentVersionSpringApplicationSupport {
 				version=Integer.parseInt(JPropertiesUtils.getKey(ComponentProperties.COMPONENT_VERSION, properties));
 			} catch (Exception e) {
 				throw new JInitializationException(e);
+			}finally{
+				if(inputStream!=null){
+					try {
+						inputStream.close();
+					} catch (IOException e) {
+						LOGGER.error(e.getMessage(), e);
+					}
+				}
 			}
 		}
 		

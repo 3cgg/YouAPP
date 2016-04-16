@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.UserGroup;
 import com.youappcorp.project.usermanager.repo.UserGroupRepo;
 
-@Service(value="userGroupServiceImpl.transation")
+@Service(value="userGroupServiceImpl.transation.jpa")
 public class UserGroupServiceImpl extends ServiceSupport<UserGroup> implements UserGroupService {
 
 	@Autowired

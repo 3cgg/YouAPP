@@ -25,7 +25,7 @@ import com.youappcorp.project.usermanager.repo.UserRepo;
  * @author Administrator
  *
  */
-@Service(value="userService.transation")
+@Service(value="userService.transation.jpa")
 public class UserServiceImpl extends ServiceSupport<User> implements UserService {
 	
 	@Autowired

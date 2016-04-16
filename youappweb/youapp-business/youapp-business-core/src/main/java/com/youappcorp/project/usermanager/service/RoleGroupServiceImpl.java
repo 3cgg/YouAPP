@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.RoleGroup;
 import com.youappcorp.project.usermanager.repo.RoleGroupRepo;
 
-@Service(value="roleGroupServiceImpl.transation")
+@Service(value="roleGroupServiceImpl.transation.jpa")
 public class RoleGroupServiceImpl extends ServiceSupport<RoleGroup> implements RoleGroupService {
 
 	@Autowired

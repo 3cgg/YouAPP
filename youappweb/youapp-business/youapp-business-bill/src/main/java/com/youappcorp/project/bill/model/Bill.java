@@ -3,91 +3,88 @@
  */
 package com.youappcorp.project.bill.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
 
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.youappcorp.project.bill.BillCodes.GoodTypeCode;
+import com.youappcorp.project.bill.BillCodes.MallCode;
 
 /**
  * @author J
  */
-@JTable(name="BILL")
-public class Bill extends JBaseModel {
+@Entity
+@Table(name="BILL")
+public class Bill extends JJpaBaseModel {
 	
 	/**
-	 *用户CODE 
+	 *用户ID
 	 */
-	@JColumn(name="USER_CODE",type=JSQLType.VARCHAR,length=32)
-	private String userCode;
+	@Column(name="USER_ID")
+	private String userId;
 	
-	@JColumn(name="MONEY",type=JSQLType.DOUBLE)
+	@Column(name="MONEY")
 	private double money;
 	
 	/**
 	 * GOOD_NAME
 	 */
-	@JColumn(name="GOOD_NAME",type=JSQLType.VARCHAR,length=64)
+	@Column(name="GOOD_NAME")
 	private String goodName;
 	
 	/**
 	 * GOOD_TYPE
 	 */
-	@JColumn(name="GOOD_TYPE",type=JSQLType.VARCHAR,length=32)
+	@Column(name="GOOD_TYPE")
 	private String goodType;
+	
+	@CodeExtend(property="goodType",codeType=GoodTypeCode.CODE_TYPE)
+	@Transient
+	private String goodTypeName;
 	
 	/**
 	 * 购物地址编码
 	 */
-	@JColumn(name="MALL_CODE",type=JSQLType.VARCHAR,length=32)
+	@Column(name="MALL_CODE")
 	private String mallCode;
+	
+	/*
+	 * extend properties
+	 */
+	@CodeExtend(property="mallCode",codeType=MallCode.CODE_TYPE)
+	@Transient
+	private String mallCodeName;
 	
 	/**
 	 * 购物地址
 	 */
-	@JColumn(name="MALL_NAME",type=JSQLType.VARCHAR,length=256)
+	@Column(name="MALL_NAME")
 	private String mallName;
 	
 	/**
 	 * 账单时间
 	 */
-	@JColumn(name="BILL_TIME",type=JSQLType.TIMESTAMP)
+	@Column(name="BILL_TIME")
 	private Timestamp billTime;
 
 	/**
 	 * optional description 
 	 */
-	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
+	@Column(name="DESCRIPTION")
 	private String description;
-
 	
-	/*
-	 * extend properties
-	 */
-	private String mallCodeName;
-	
-	private String goodTypeName;
-	
-	private String userCodeName;
-	
-	
-
-	
-	public String getUserCode() {
-		return userCode;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
-
-	public String getUserCodeName() {
-		return userCodeName;
-	}
-
-	public void setUserCodeName(String userCodeName) {
-		this.userCodeName = userCodeName;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getMallCodeName() {

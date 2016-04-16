@@ -1,7 +1,10 @@
 package com.youappcorp.project.bill.controller;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPController;
+import j.jave.kernal.jave.model.JPage;
+import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -9,64 +12,48 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.youappcorp.project.bill.model.Bill;
 import com.youappcorp.project.bill.model.BillSearchCriteria;
 import com.youappcorp.project.bill.service.BillService;
-import com.youappcorp.project.param.service.ParamService;
 
-
-@Controller(value="bill.billcontroller")
-public class BillController extends JSPController{
-	
-	private Bill  bill;
-	
-	/**
-	 * for search criteria 
-	 */
-	private BillSearchCriteria billSearchCriteria;
+@Controller
+@RequestMapping(value="/billcontroller")
+public class BillController extends ControllerSupport{
 	
 	@Autowired
 	private BillService billService;
 	
-	@Autowired
-	private ParamService paramService;
-	
-	
-	public String toRecordBill() throws Exception {
-		
-		initSelect();
-		
-		return "/WEB-INF/jsp/bill/record-bill.jsp";
-	}
-	
-	public String recordBill() throws Exception {
+	@RequestMapping(value="/saveBill")
+	public ResponseModel saveBill(Bill bill) throws Exception {
 		billService.saveBill(getServiceContext(), bill);
-		setSuccessMessage(CREATE_SUCCESS);
-		
-		initSelect();
-		return "/WEB-INF/jsp/bill/record-bill.jsp";
+		return ResponseModel.newSuccess().setData(CREATE_SUCCESS);
 	}
 	
-	
-	public String toViewBill() throws Exception {
-		
-		String id=getParameter("id");
+	@RequestMapping(value="/getBillById")
+	public ResponseModel getBillById(String id) throws Exception {
 		Bill bill= billService.getBillById(getServiceContext(),id);
-		if(bill!=null){
-			setAttribute("bill", bill);
-		}
-		return "/WEB-INF/jsp/bill/view-bill.jsp"; 
+		return ResponseModel.newSuccess().setData(bill);
 	}
 	
-	public String toViewAllBill() throws Exception {
-		BillSearchCriteria bill=new BillSearchCriteria();
-		List<Bill> bills=billService.getBillsByPage(getServiceContext(), bill);
-		setAttribute("bills", bills);
-		return "/WEB-INF/jsp/bill/view-all-bill.jsp";
+	@RequestMapping(value="/getBillByUserName")
+	public ResponseModel getBillByUserName(String userName){
+		List<Bill> bills=billService.getBillByUserName(getServiceContext(), userName);
+		return ResponseModel.newSuccess().setData(bills);
 	}
 	
-	public String getBillsWithsCondition(){
+	@RequestMapping(value="/getAllBills")
+	public ResponseModel getAllBills() throws Exception {
+		SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
+		simplePageCriteria.setPageNumber(0);
+		simplePageCriteria.setPageSize(100);
+		JPage<Bill> billsPage=billService.getBillsByPage(getServiceContext(), simplePageCriteria);
+		return ResponseModel.newSuccess().setData(billsPage);
+	}
+	
+	@RequestMapping(value="/getBillsByCriteria")
+	public ResponseModel getBillsByCriteria(BillSearchCriteria billSearchCriteria){
 		int latestMonth=36;
 		if(billSearchCriteria!=null){
 			latestMonth=billSearchCriteria.getLatestMonth();
@@ -77,38 +64,19 @@ public class BillController extends JSPController{
 		if(billSearchCriteria==null){
 			billSearchCriteria=new BillSearchCriteria();
 		}
-		
 		billSearchCriteria.setBillTime(new Timestamp(calendar.getTime().getTime()));
-		List<Bill> bills=billService.getBillsByPage(getServiceContext(), billSearchCriteria);
-		setAttribute("bills", bills);
-		return "/WEB-INF/jsp/bill/view-all-bill.jsp";
+		JPage<Bill> billsPage=billService.getBillsByPage(getServiceContext(), billSearchCriteria);
+		return ResponseModel.newSuccess().setData(billsPage);
 	}
 	
-	public String deleteBill(){
-		billService.delete(getServiceContext(), getParameter("id")); 
-		setSuccessMessage(DELETE_SUCCESS);
-		return getBillsWithsCondition();
-	}
-	
-	public String toEditBill(){
-		Bill bill=billService.getBillById(getServiceContext(), getParameter("id"));
-		setAttribute("bill", bill);
-		initSelect();
-		return "/WEB-INF/jsp/bill/edit-bill.jsp"; 
+	@RequestMapping(value="/deleteBillById")
+	public ResponseModel deleteBillById(String id){
+		billService.delete(getServiceContext(), id); 
+		return ResponseModel.newSuccess().setData(DELETE_SUCCESS);
 	}
 
-	private void initSelect() {
-//		List<ParamCode> goodTypes=paramService.getParamByFunctionId(getServiceContext(), "GOOD");
-//		setAttribute("goodCodes", goodTypes);
-//		
-//		List<ParamCode> malls=paramService.getParamByFunctionId(getServiceContext(), "MALL");
-//		setAttribute("mallCodes", malls);
-//		
-//		List<ParamCode> userNameCodes=paramService.getParamByFunctionId(getServiceContext(), "USERS");
-//		setAttribute("userNameCodes", userNameCodes);
-	}
-	
-	public String editBill() throws JServiceException{
+	@RequestMapping(value="/updateBill")
+	public ResponseModel updateBill(Bill bill) throws JServiceException{
 		Bill dbBill=billService.getBillById(getServiceContext(), bill.getId());
 		dbBill.setMoney(bill.getMoney());
 		dbBill.setGoodName(bill.getGoodName());
@@ -116,55 +84,11 @@ public class BillController extends JSPController{
 		dbBill.setBillTime(bill.getBillTime());
 		dbBill.setMallCode(bill.getMallCode());
 		dbBill.setMallName(bill.getMallName());
-		dbBill.setUserCode(bill.getUserCode());
 		dbBill.setDescription(bill.getDescription());
 		dbBill.setVersion(bill.getVersion());
 		billService.updateBill(getServiceContext(), dbBill);
-		
-		setAttribute("bill", billService.getBillById(getServiceContext(), bill.getId())); 
-		setSuccessMessage(EDIT_SUCCESS);
-		initSelect();
-		return "/WEB-INF/jsp/bill/edit-bill.jsp";
-		
+		return ResponseModel.newSuccess().setData(UPDATE_SUCCESS);
 	}
-	
-	public String toViewChart () throws JServiceException{
-		
-//		if(billSearchCriteria==null){
-//			billSearchCriteria=new BillSearchCriteria();
-//		}
-//		SimpleBarChart simpleBarChart=new SimpleBarChart();
-//		List<Bill> bills=billService.getBillsByPage(getServiceContext(), billSearchCriteria);
-//		if(bills!=null){
-//			for(int i=0;i<bills.size();i++){
-//				Bill bill=bills.get(i);
-//				simpleBarChart.put(JDateUtils.format(bill.getBillTime()), bill.getGoodType(), bill.getMoney(),bill.getGoodTypeName());
-//			}
-//		}
-//		simpleBarChart.sort();
-//		setAttribute("barChart", simpleBarChart);
-		return "/WEB-INF/jsp/bill/view-chart-bill.jsp";
-		
-	}
-	
-	
-	public String toNavigate(){
-		
-		
-		return "/WEB-INF/jsp/bill/navigate-bill.jsp";
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }

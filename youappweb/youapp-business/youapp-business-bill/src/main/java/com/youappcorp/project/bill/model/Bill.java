@@ -26,59 +26,50 @@ public class Bill extends JJpaBaseModel {
 	/**
 	 *用户ID
 	 */
-	@Column(name="USER_ID")
 	private String userId;
 	
-	@Column(name="MONEY")
 	private double money;
 	
 	/**
 	 * GOOD_NAME
 	 */
-	@Column(name="GOOD_NAME")
 	private String goodName;
 	
 	/**
 	 * GOOD_TYPE
 	 */
-	@Column(name="GOOD_TYPE")
 	private String goodType;
 	
 	@CodeExtend(property="goodType",codeType=GoodTypeCode.CODE_TYPE)
-	@Transient
 	private String goodTypeName;
 	
 	/**
 	 * 购物地址编码
 	 */
-	@Column(name="MALL_CODE")
 	private String mallCode;
 	
 	/*
 	 * extend properties
 	 */
 	@CodeExtend(property="mallCode",codeType=MallCode.CODE_TYPE)
-	@Transient
 	private String mallCodeName;
 	
 	/**
 	 * 购物地址
 	 */
-	@Column(name="MALL_NAME")
 	private String mallName;
 	
 	/**
 	 * 账单时间
 	 */
-	@Column(name="BILL_TIME")
 	private Timestamp billTime;
 
 	/**
 	 * optional description 
 	 */
-	@Column(name="DESCRIPTION")
 	private String description;
 	
+	@Column(name="USER_ID")
 	public String getUserId() {
 		return userId;
 	}
@@ -87,6 +78,7 @@ public class Bill extends JJpaBaseModel {
 		this.userId = userId;
 	}
 
+	@Transient
 	public String getMallCodeName() {
 		return mallCodeName;
 	}
@@ -95,6 +87,7 @@ public class Bill extends JJpaBaseModel {
 		this.mallCodeName = mallCodeName;
 	}
 
+	@Transient
 	public String getGoodTypeName() {
 		return goodTypeName;
 	}
@@ -103,6 +96,7 @@ public class Bill extends JJpaBaseModel {
 		this.goodTypeName = goodTypeName;
 	}
 
+	@Column(name="MONEY")
 	public double getMoney() {
 		return money;
 	}
@@ -111,6 +105,7 @@ public class Bill extends JJpaBaseModel {
 		this.money = money;
 	}
 
+	@Column(name="GOOD_TYPE")
 	public String getGoodType() {
 		return goodType;
 	}
@@ -119,6 +114,7 @@ public class Bill extends JJpaBaseModel {
 		this.goodType = goodType;
 	}
 
+	@Column(name="MALL_CODE")
 	public String getMallCode() {
 		return mallCode;
 	}
@@ -127,6 +123,7 @@ public class Bill extends JJpaBaseModel {
 		this.mallCode = mallCode;
 	}
 
+	@Column(name="MALL_NAME")
 	public String getMallName() {
 		return mallName;
 	}
@@ -135,6 +132,7 @@ public class Bill extends JJpaBaseModel {
 		this.mallName = mallName;
 	}
 
+	@Column(name="BILL_TIME")
 	public Timestamp getBillTime() {
 		return billTime;
 	}
@@ -143,6 +141,7 @@ public class Bill extends JJpaBaseModel {
 		this.billTime = billTime;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
@@ -151,6 +150,7 @@ public class Bill extends JJpaBaseModel {
 		this.description = description;
 	}
 
+	@Column(name="GOOD_NAME")
 	public String getGoodName() {
 		return goodName;
 	}

@@ -3,16 +3,22 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author J
  */
 @JTable(name="GROUPS")
-public class Group extends JBaseModel {
+@Entity
+@Table(name="GROUPS")
+public class Group extends JJpaBaseModel {
 
 	@JColumn(name="GROUPCODE",type=JSQLType.VARCHAR,length=32)
 	private String groupCode;
@@ -23,6 +29,7 @@ public class Group extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 
+	@Column(name="GROUPCODE")
 	public String getGroupCode() {
 		return groupCode;
 	}
@@ -31,6 +38,7 @@ public class Group extends JBaseModel {
 		this.groupCode = groupCode;
 	}
 
+	@Column(name="GROUPNAME")
 	public String getGroupName() {
 		return groupName;
 	}
@@ -39,6 +47,7 @@ public class Group extends JBaseModel {
 		this.groupName = groupName;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}

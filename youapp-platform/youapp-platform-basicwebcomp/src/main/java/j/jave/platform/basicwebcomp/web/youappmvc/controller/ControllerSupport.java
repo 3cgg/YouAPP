@@ -4,6 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -24,13 +26,21 @@ import org.springframework.context.ApplicationContextAware;
  * basic action for view controller.
  * @author J
  */
-public abstract class ControllerSupport implements YouappController,InitializingBean,ApplicationContextAware {
+public abstract class ControllerSupport implements YouappController,InitializingBean,ApplicationContextAware
+,BeanNameAware{
 	
 	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
 	
 	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
 	
 	private ApplicationContext applicationContext;
+	
+	private String beanName;
+	
+	@Override
+	public final void setBeanName(String name) {
+		this.beanName=name;
+	}
 	
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
@@ -95,12 +105,18 @@ public abstract class ControllerSupport implements YouappController,Initializing
     @Override
     public final void afterPropertiesSet() throws Exception {
 
+    	boolean isDynamicLoader=SpringDynamicJARApplicationCotext.class.isInstance(applicationContext);
+    	String unique=MappingController.PLATFORM;
+    	if(isDynamicLoader){
+    		unique=((SpringDynamicJARApplicationCotext)applicationContext).getUnique();
+    	}
+    	
     	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
 		mappingDetector.detect();
 		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
 		for(MappingMeta meta:mappingMetas){
-			MappingController.putMappingMeta(meta.getPath(),meta);
-			MappingController.putControllerObject(meta.getPath(),this);
+			meta.setControllerName(beanName);
+			MappingController.putMappingMeta(meta.getPath(),meta,unique);
 		}
     	
     	/*

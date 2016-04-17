@@ -3,16 +3,23 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author J
  */
 @JTable(name="USERS_ROLES")
-public class UserRole extends JBaseModel {
+@Table(name="USERS_ROLES")
+@Entity
+public class UserRole extends JJpaBaseModel {
 
 	@JColumn(name="ROLEID",type=JSQLType.VARCHAR,length=32)
 	private String roleId;
@@ -28,6 +35,7 @@ public class UserRole extends JBaseModel {
 	
 	private Role role;
 	
+	@Transient
 	public User getUser() {
 		return user;
 	}
@@ -36,6 +44,7 @@ public class UserRole extends JBaseModel {
 		this.user = user;
 	}
 
+	@Transient
 	public Role getRole() {
 		return role;
 	}
@@ -44,6 +53,7 @@ public class UserRole extends JBaseModel {
 		this.role = role;
 	}
 
+	@Column(name="ROLEID")
 	public String getRoleId() {
 		return roleId;
 	}
@@ -52,6 +62,7 @@ public class UserRole extends JBaseModel {
 		this.roleId = roleId;
 	}
 
+	@Column(name="USERID")
 	public String getUserId() {
 		return userId;
 	}
@@ -60,6 +71,7 @@ public class UserRole extends JBaseModel {
 		this.userId = userId;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}

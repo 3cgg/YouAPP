@@ -24,8 +24,9 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 	}
 
 	private void initMethodDetector(){
+		MappingMetaInfoGen mappingMetaInfoGen=new MappingMetaInfoGen(thisClass.getClassLoader());
 		methodDetector=new JMethodDetector<MappingMeta>(MappingDetector.methodFilter,
-				MappingDetector.methodInfo);
+				mappingMetaInfoGen);
 	}
 	
 //	private volatile boolean flag=true;

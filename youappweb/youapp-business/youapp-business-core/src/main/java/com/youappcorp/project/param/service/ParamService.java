@@ -4,11 +4,13 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
 import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.param.model.ParamCriteria;
 import com.youappcorp.project.param.model.ParamType;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
@@ -54,5 +56,10 @@ public interface ParamService{
 	
 	public boolean existsParamCode(ServiceContext context,String type,String code);
 	
+	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteria paramCriteria);
 	
+	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteria paramCriteria);
+	
+	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteria paramCriteria);
+
 }

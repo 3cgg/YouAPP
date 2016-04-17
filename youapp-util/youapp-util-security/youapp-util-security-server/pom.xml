@@ -21,13 +21,13 @@
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-security</artifactId>
+			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>youapp.youapp-platform</groupId>
-			<artifactId>youapp-platform-baiscsupportcomp</artifactId>
+			<artifactId>youapp-platform-basicsupportcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
 		

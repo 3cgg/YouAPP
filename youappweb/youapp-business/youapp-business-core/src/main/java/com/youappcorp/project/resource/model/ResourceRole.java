@@ -1,14 +1,21 @@
 package com.youappcorp.project.resource.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.youappcorp.project.usermanager.model.Role;
 
 @JTable(name="RESOURCES_ROLES")
-public class ResourceRole extends JBaseModel {
+@Table(name="RESOURCES_ROLES")
+@Entity
+public class ResourceRole extends JJpaBaseModel {
 	
 	/**
 	 * ID reference to RESOURCE table. 
@@ -38,6 +45,7 @@ public class ResourceRole extends JBaseModel {
 	
 	private Resource resource;
 
+	@Transient
 	public Role getRole() {
 		return role;
 	}
@@ -46,6 +54,7 @@ public class ResourceRole extends JBaseModel {
 		this.role = role;
 	}
 
+	@Transient
 	public Resource getResource() {
 		return resource;
 	}
@@ -54,6 +63,7 @@ public class ResourceRole extends JBaseModel {
 		this.resource = resource;
 	}
 
+	@Column(name="RESOURCEID")
 	public String getResourceId() {
 		return resourceId;
 	}
@@ -62,6 +72,7 @@ public class ResourceRole extends JBaseModel {
 		this.resourceId = resourceId;
 	}
 
+	@Column(name="ROLEID")
 	public String getRoleId() {
 		return roleId;
 	}
@@ -70,6 +81,7 @@ public class ResourceRole extends JBaseModel {
 		this.roleId = roleId;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
@@ -78,6 +90,7 @@ public class ResourceRole extends JBaseModel {
 		this.description = description;
 	}
 
+	@Column(name="ENABLE")
 	public String getEnable() {
 		return enable;
 	}
@@ -85,8 +98,5 @@ public class ResourceRole extends JBaseModel {
 	public void setEnable(String enable) {
 		this.enable = enable;
 	}
-
-	
-	
 	
 }

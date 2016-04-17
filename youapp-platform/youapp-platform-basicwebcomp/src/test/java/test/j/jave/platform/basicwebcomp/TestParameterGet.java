@@ -16,7 +16,7 @@ public class TestParameterGet extends TestCase{
 	public void testGetParameter(){
 		try{
 			String[] params=ParameterNameGet.getMethodParameterNamesByAsm4(TestParameterGet.class,
-					TestParameterGet.class.getMethod("show", String.class,String.class));
+					TestParameterGet.class.getMethod("show", String.class,String.class),TestParameterGet.class.getClassLoader());
 			
 			System.out.println(params);
 		}catch(Exception e){e.printStackTrace();}

@@ -13,7 +13,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -31,6 +30,8 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	private JConfiguration configuration;
 	
 	private Class<?> superClass;
+	
+	private ClassLoader classLoader;
 	
 	static final JMethodFilter methodFilter=new JMethodFilter() {
 		@Override
@@ -67,68 +68,22 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 		}
 	};
 	
-	static final JMethodInfoGen<MappingMeta> methodInfo=new JMethodInfoGen<MappingMeta>() {
-		
-		
-		@Override
-		public MappingMeta getInfo(Method method, Class<?> classIncudeMethod) {
-			
-			MappingMeta resourceInfo=new MappingMeta();
-			resourceInfo.setClazz(classIncudeMethod);
-			
-			Controller controller=classIncudeMethod.getAnnotation(Controller.class);
-			if(controller!=null){
-				resourceInfo.setControllerName(controller.value());
-			}
-			else{
-				throw new IllegalStateException(" class not represented by "+Controller.class);
-			}
-			resourceInfo.setMethodName(method.getName());
-			RequestMapping classRequestMapping= classIncudeMethod.getAnnotation(RequestMapping.class);
-			RequestMapping methodRequestMapping= method.getAnnotation(RequestMapping.class);
-			
-			String[] methodPaths= methodRequestMapping.value();
-			String path="";
-			if(classRequestMapping!=null){
-				String[] classPaths=classRequestMapping.value();
-				if(classPaths.length>0){
-					path=classPaths[0];
-				}
-			}
-			if(methodPaths.length>0){
-				path=path+methodPaths[0];
-			}
-			resourceInfo.setPath(path);
-			Parameter[] parameters= method.getParameters();
-			String[] parameterNames=ParameterNameGet.getMethodParameterNamesByAsm4(classIncudeMethod, method);
-			MethodParamMeta[] methodParamMetas=new MethodParamMeta[parameters.length];
-			for(int i=0;i<parameters.length;i++){
-				Parameter parameter=parameters[i];
-				Class<?> clazz=parameter.getType();
-				MethodParamMeta paramMeta=new MethodParamMeta();
-				paramMeta.setType(clazz);
-				paramMeta.setName(parameterNames[i]);
-				paramMeta.setAnnotations(parameter.getAnnotations());
-				paramMeta.setIndex(i);
-				methodParamMetas[i]=paramMeta;
-			}
-			resourceInfo.setMethodParams(methodParamMetas);
-			return resourceInfo;
-		}
-	};
+	JMethodInfoGen<MappingMeta> methodInfo;
 	
-	public MappingDetector(){
-		this(JConfiguration.get());
+	public MappingDetector(ClassLoader classLoader){
+		this(JConfiguration.get(),classLoader);
 	}
 	
-	public MappingDetector(JConfiguration configuration){
+	public MappingDetector(JConfiguration configuration,ClassLoader classLoader){
 		this.configuration=configuration;
+		this.classLoader=classLoader;
 		initMethodDetector();
 		String superClassString=configuration.getString(WebCompProperties.CONTROLLER_SUPER_CLASS, ControllerSupport.class.getName());
 		superClass=JClassUtils.load(superClassString);
 	}
 
 	private void initMethodDetector(){
+		this.methodInfo=new MappingMetaInfoGen(classLoader);
 		methodDetector=new JMethodDetector<MappingMeta>(methodFilter,methodInfo);
 		String controllerPackage=configuration.getString(WebCompProperties.CONTROLLER_PACKAGE, "j.jave");
 		methodDetector.setIncludePackages(controllerPackage.split(";"));

@@ -5,6 +5,7 @@ import j.jave.kernal.jave.io.JInputStreamWrapperSource;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext.JARScan;
@@ -35,6 +36,10 @@ public abstract class JComponentVersionSpringApplicationSupport {
 	public static interface Component{
 		public static final String CONFIG_LOCATION="config/";
 		public static final String SPRING_LOCATION=CONFIG_LOCATION+"spring/";
+		
+		public static final String YOUAPP_WEB_APP_NAME_KEY="_youapp_app_name";
+		public static final String YOUAPP_WEB_COM_NAME_KEY="_youapp_com_name";
+		public static final String YOUAPP_WEB_COM_VER_KEY="_youapp_com_ver";
 	}
 	
 	/**
@@ -126,6 +131,7 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		}
 		
 		SpringDynamicJARApplicationCotext load(){
+			applicationContext.setUnique(unique());
 			applicationContext.refresh();
 			return applicationContext;
 		}
@@ -167,7 +173,15 @@ public abstract class JComponentVersionSpringApplicationSupport {
 	
 	
 	public static String unique(String appName,String componentName,int version){
+		JAssert.isNotEmpty(appName);
+		JAssert.isNotEmpty(componentName);
 		return appName+":"+componentName+":"+version;
 	}
 	
+	public static String unique(String appName,String componentName,String version){
+		JAssert.isNotEmpty(appName);
+		JAssert.isNotEmpty(componentName);
+		JAssert.isNotEmpty(version);
+		return appName+":"+componentName+":"+version;
+	}
 }

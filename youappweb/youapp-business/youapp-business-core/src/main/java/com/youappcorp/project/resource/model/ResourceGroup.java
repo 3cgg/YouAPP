@@ -1,14 +1,21 @@
 package com.youappcorp.project.resource.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.youappcorp.project.usermanager.model.Group;
 
 @JTable(name="RESOURCES_GROUPS")
-public class ResourceGroup extends JBaseModel {
+@Table(name="RESOURCES_GROUPS")
+@Entity
+public class ResourceGroup extends JJpaBaseModel {
 	
 	/**
 	 * ID reference to RESOURCE table. 
@@ -39,6 +46,7 @@ public class ResourceGroup extends JBaseModel {
 	
 	private Group group;
 	
+	@Transient
 	public Resource getResource() {
 		return resource;
 	}
@@ -47,6 +55,7 @@ public class ResourceGroup extends JBaseModel {
 		this.resource = resource;
 	}
 
+	@Transient
 	public Group getGroup() {
 		return group;
 	}
@@ -55,6 +64,7 @@ public class ResourceGroup extends JBaseModel {
 		this.group = group;
 	}
 
+	@Column(name="RESOURCEID")
 	public String getResourceId() {
 		return resourceId;
 	}
@@ -62,7 +72,8 @@ public class ResourceGroup extends JBaseModel {
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
 	}
-
+	
+	@Column(name="GROUPID")
 	public String getGroupId() {
 		return groupId;
 	}
@@ -71,6 +82,7 @@ public class ResourceGroup extends JBaseModel {
 		this.groupId = groupId;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}
@@ -79,6 +91,7 @@ public class ResourceGroup extends JBaseModel {
 		this.description = description;
 	}
 
+	@Column(name="ENABLE")
 	public String getEnable() {
 		return enable;
 	}

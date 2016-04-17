@@ -1,12 +1,19 @@
 package com.youappcorp.project.resource.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @JTable(name="RESOURCES_EXTEND")
-public class ResourceExtend extends JBaseModel{
+@Table(name="RESOURCES_EXTEND")
+@Entity
+public class ResourceExtend extends JJpaBaseModel{
 	
 	/**
 	 * ID reference to RESOURCE table. 
@@ -40,6 +47,7 @@ public class ResourceExtend extends JBaseModel{
 	
 	private Resource resource;
 	
+	@Transient
 	public Resource getResource() {
 		return resource;
 	}
@@ -48,6 +56,7 @@ public class ResourceExtend extends JBaseModel{
 		this.resource = resource;
 	}
 
+	@Column(name="CACHED")
 	public String getCached() {
 		return cached;
 	}
@@ -56,6 +65,7 @@ public class ResourceExtend extends JBaseModel{
 		this.cached = cached;
 	}
 
+	@Column(name="RESOURCEID")
 	public String getResourceId() {
 		return resourceId;
 	}
@@ -64,6 +74,7 @@ public class ResourceExtend extends JBaseModel{
 		this.resourceId = resourceId;
 	}
 
+	@Column(name="URL")
 	public String getUrl() {
 		return url;
 	}
@@ -72,6 +83,7 @@ public class ResourceExtend extends JBaseModel{
 		this.url = url;
 	}
 
+	@Column(name="ACTION")
 	public String getAction() {
 		return action;
 	}
@@ -80,6 +92,7 @@ public class ResourceExtend extends JBaseModel{
 		this.action = action;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}

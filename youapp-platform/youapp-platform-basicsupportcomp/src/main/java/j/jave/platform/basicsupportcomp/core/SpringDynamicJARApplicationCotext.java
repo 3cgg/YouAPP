@@ -32,6 +32,11 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
+	/**
+	 * component information. app:component:version
+	 */
+	private String unique;
+	
 	private final URLClassLoader urlClassLoader;
 	
 	private JARScan jarScan;
@@ -43,7 +48,15 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 	public URLClassLoader getUrlClassLoader() {
 		return urlClassLoader;
 	}
-			
+
+	public String getUnique() {
+		return unique;
+	}
+	
+	public void setUnique(String unique) {
+		this.unique = unique;
+	}
+	
 	public SpringDynamicJARApplicationCotext(ConfigurableApplicationContext applicationContext,URL[] jarUrls){
 		super(applicationContext);
 		this.urlClassLoader=new URLClassLoader(jarUrls,applicationContext.getClassLoader());

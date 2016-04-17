@@ -119,7 +119,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
 		boolean valid=webRequestURLCacheModel!=null;
 		if(!valid){
-			valid=valid||MappingController.urls().contains(resource);
+			valid=valid||MappingController.hasUrl(resource);
 		}
 		return valid;
 	}

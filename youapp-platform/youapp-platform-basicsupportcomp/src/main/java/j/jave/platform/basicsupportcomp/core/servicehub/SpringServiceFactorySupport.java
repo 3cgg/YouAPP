@@ -4,13 +4,14 @@ import j.jave.kernal.eventdriven.servicehub.JAbstractServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
 
 import java.lang.reflect.ParameterizedType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -22,9 +23,10 @@ import org.springframework.context.ApplicationContextAware;
  * @author J
  * @param <T> the name service expose.  A full class name. 
  */
-public  class SpringServiceFactorySupport<T extends JService> extends JAbstractServiceFactory<T> implements JServiceFactory<T> ,ApplicationContextAware ,InitializingBean {
+public  class SpringServiceFactorySupport<T extends JService> extends JAbstractServiceFactory<T> implements JServiceFactory<T> ,ApplicationContextAware 
+,InitializingBean,BeanNameAware {
 
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	private ApplicationContext applicationContext=null;
 
@@ -35,6 +37,13 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	private SpringApplicationServiceNameCheckService serviceNameCheckService;
 	
 	protected T object=null;
+	
+	private String beanName;
+	
+	@Override
+	public final void setBeanName(String name) {
+		this.beanName=name;
+	}
 	
 	/**
 	 * the class registered in service hub.
@@ -99,7 +108,7 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getService() {
-		return (T) springApplicationServiceGetService.getService(this.getClass());
+		return (T) springApplicationServiceGetService.getService(applicationContext,this.getClass(),beanName);
 	}
 	
 }

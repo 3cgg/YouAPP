@@ -1,11 +1,15 @@
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
 
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * 
@@ -13,7 +17,9 @@ import java.sql.Timestamp;
  *
  */
 @JTable(name="USER_TRACKER")
-public class UserTracker extends JBaseModel {
+@Table(name="USER_TRACKER")
+@Entity
+public class UserTracker extends JJpaBaseModel {
 
 	/**
 	 * User ID
@@ -45,6 +51,7 @@ public class UserTracker extends JBaseModel {
 	@JColumn(name="LOGIN_CLIENT",type=JSQLType.VARCHAR,length=256)
 	private String loginClient;
 
+	@Column(name="USERID")
 	public String getUserId() {
 		return userId;
 	}
@@ -53,6 +60,7 @@ public class UserTracker extends JBaseModel {
 		this.userId = userId;
 	}
 
+	@Column(name="IP")
 	public String getIp() {
 		return ip;
 	}
@@ -61,6 +69,7 @@ public class UserTracker extends JBaseModel {
 		this.ip = ip;
 	}
 
+	@Column(name="USERNAME")
 	public String getUserName() {
 		return userName;
 	}
@@ -69,6 +78,7 @@ public class UserTracker extends JBaseModel {
 		this.userName = userName;
 	}
 
+	@Column(name="LOGIN_TIME")
 	public Timestamp getLoginTime() {
 		return loginTime;
 	}
@@ -77,6 +87,7 @@ public class UserTracker extends JBaseModel {
 		this.loginTime = loginTime;
 	}
 
+	@Column(name="LOGIN_CLIENT")
 	public String getLoginClient() {
 		return loginClient;
 	}

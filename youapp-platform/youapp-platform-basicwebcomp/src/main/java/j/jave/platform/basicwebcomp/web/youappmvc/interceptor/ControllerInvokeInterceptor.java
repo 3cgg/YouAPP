@@ -2,6 +2,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.interceptor;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.io.JFile;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
@@ -11,12 +13,9 @@ import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(ControllerInvokeInterceptor.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ControllerInvokeInterceptor.class);
 	
 	private JServletViewHandler servletViewHandler=new JSONServletViewHandler();
 	

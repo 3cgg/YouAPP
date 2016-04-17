@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
@@ -81,6 +82,17 @@ public class ParamCode extends JJpaBaseModel {
 	 */
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
 	private String description;
+
+	private String paramTypeCode;
+	
+	@Transient
+	public String getParamTypeCode() {
+		return paramTypeCode;
+	}
+
+	public void setParamTypeCode(String paramTypeCode) {
+		this.paramTypeCode = paramTypeCode;
+	}
 
 	@Column(name="TYPEID")
 	public String getTypeId() {

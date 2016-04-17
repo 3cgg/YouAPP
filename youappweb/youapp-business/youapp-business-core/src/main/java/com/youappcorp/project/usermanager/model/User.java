@@ -23,19 +23,16 @@ import javax.persistence.Transient;
 public class User extends JJpaBaseModel{
 	
 	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
-	@Column(name="USERNAME")
 	private String userName;
 	
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
-	@Column(name="PASSWORD")
 	private String password;
 	
-	@Transient
 	private String retypePassword;
 	
-	@Transient
 	private UserExtend userExtend;
 
+	@Transient
 	public UserExtend getUserExtend() {
 		return userExtend;
 	}
@@ -44,6 +41,7 @@ public class User extends JJpaBaseModel{
 		this.userExtend = userExtend;
 	}
 
+	@Transient
 	public String getRetypePassword() {
 		return retypePassword;
 	}
@@ -52,6 +50,7 @@ public class User extends JJpaBaseModel{
 		this.retypePassword = retypePassword;
 	}
 
+	@Column(name="USERNAME")
 	public String getUserName() {
 		return userName;
 	}
@@ -60,6 +59,7 @@ public class User extends JJpaBaseModel{
 		this.userName = userName;
 	}
 
+	@Column(name="PASSWORD")
 	public String getPassword() {
 		return password;
 	}

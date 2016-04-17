@@ -4,6 +4,7 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
 import com.youappcorp.project.param.jpa.ParamTypeJPARepo;
 import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.param.model.ParamCriteria;
 import com.youappcorp.project.param.model.ParamType;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
@@ -154,5 +156,34 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		}
 		internalParamTypeServiceImpl.saveOnly(context, paramType);
 	}
+	
+	@Override
+	public JPage<ParamType> getAllParamTypes(ServiceContext context,
+			ParamCriteria paramCriteria) {
+		return internalParamTypeServiceImpl.getsByPage(context, paramCriteria);
+	}
+	
+	@Override
+	public JPage<ParamCode> getAllParamCodes(ServiceContext context,
+			ParamCriteria paramCriteria) {
+		return internalParamCodeServiceImpl.getsByPage(context, paramCriteria);
+	}
+	
+	@Override
+	public JPage<ParamCode> getAllParamCodesByType(ServiceContext context,
+			ParamCriteria paramCriteria) {
+		String jpql="select pc from ParamCode pc , ParamType pt "
+				+ " where pc.deleted='N' and pt.deleted='N' "
+				+ "  and pc.typeId=pt.id  and pt.code =:code";
+		Map<String , Object> params=new HashMap<String, Object>();
+		params.put("code", paramCriteria.getCode());
+		
+		return QueryBuilder.get(getEntityManager())
+		.setJpql(jpql)
+		.setPageable(paramCriteria)
+		.setParams(params)
+		.build().execute();
+	}
+	
 	
 }

@@ -34,7 +34,7 @@ public class ParameterNameGet {
         final String[] parameterNames = new String[parameterTypes.length];  
         try {
         	if(classLoader==null){
-        		classLoader=Thread.currentThread().getContextClassLoader();
+        		classLoader=clazz.getClassLoader();
         	}
         	InputStream is=classLoader.getResourceAsStream(clazz.getName().replace('.', '/')
                         + ".class");

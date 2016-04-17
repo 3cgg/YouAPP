@@ -62,6 +62,7 @@ public class BillServiceImpl extends ServiceSupport implements BillService{
 	@Override
 	public List<Bill> getBillByUserName(ServiceContext context, String userName) {
 		User user=  userManagerService.getUserByName(context, userName);
+		if(user==null) return null;
 		return billJPARepo.getBillByUserId(user.getId());
 	}
 

@@ -3,12 +3,12 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
-import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JReflect;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
+import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
@@ -17,9 +17,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.Component;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
@@ -54,31 +52,47 @@ public class ControllerExecutor implements JService {
 			
 			// resolve the path , then invoke the target method. 
 		    // the path like /app/component/version/login.loginaction/toLogin
-			String component =null;
-			String mappingPath=null;
-			String mutiPattern="^(/app/[a-zA-Z]+/[0-9]+){0,1}(/[a-zA-Z0-9._/]+)";
-			Pattern pattern=Pattern.compile(mutiPattern);
-			Matcher matcher=pattern.matcher(targetPath);
-			if(matcher.matches()){
-				component=getComponentVersion(matcher.group(1));
-				mappingPath=matcher.group(2);
+			
+			String appName =httpContext.getParameter(Component.YOUAPP_WEB_APP_NAME_KEY);
+			String component=null;
+			if(JStringUtils.isNotNullOrEmpty(appName)){
+				String comName =httpContext.getParameter(Component.YOUAPP_WEB_COM_NAME_KEY);
+				String comVer =httpContext.getParameter(Component.YOUAPP_WEB_COM_VER_KEY);
+				component=JComponentVersionSpringApplicationSupport.unique(appName, comName, comVer);
 			}
+
 			//resolve spring application , support multi-version of component.
 			ApplicationContext applicationContext = null;
+			MappingController mappingController=null;
 			if (JStringUtils.isNotNullOrEmpty(component)) {
 				applicationContext = JComponentVersionSpringApplicationSupport.getApplicationContext(component);
+				mappingController=MappingController.getMappingController(component);
 			} else {
 				applicationContext = SpringContextSupport.getApplicationContext();
+				mappingController=MappingController.getMappingController(MappingController.PLATFORM);
 			}
 			
-			MappingMeta mappingMeta=  mappingController.getMappingMeta(mappingPath);
+			MappingMeta mappingMeta= null;
+			if(mappingController==null
+					||(mappingMeta=mappingController.getMappingMeta(targetPath))==null){
+				return ResponseModel.newError().setData("cannot find any controller for the path. "
+						+ " check if turn on multiple component version infrastructure (immutable version)."
+						+ " attempt to append "+Component.YOUAPP_WEB_APP_NAME_KEY
+						+ "&"+Component.YOUAPP_WEB_COM_NAME_KEY
+						+"&"+Component.YOUAPP_WEB_COM_VER_KEY+" to the request parameter.");
+			}
 			ControllerSupport object=null;
 			String controllerName=mappingMeta.getControllerName();
 			if(JStringUtils.isNotNullOrEmpty(controllerName)){
 				object=(ControllerSupport) applicationContext.getBean(mappingMeta.getControllerName());
 			}
-			else{
-				object=(ControllerSupport) mappingController.getControllerObjectByPath(mappingPath);
+			
+			if(object==null){
+				return ResponseModel.newError().setData("cannot find any controller for the path. "
+						+ " check if turn on multiple component version infrastructure (immutable version)."
+						+ " attempt to append "+Component.YOUAPP_WEB_APP_NAME_KEY
+						+ "&"+Component.YOUAPP_WEB_COM_NAME_KEY
+						+"&"+Component.YOUAPP_WEB_COM_VER_KEY+" to the request parameter.");
 			}
 			
 			StopWatch stopWatch=null;
@@ -126,21 +140,7 @@ public class ControllerExecutor implements JService {
 		return args;
 	}
 	
-	private String getComponentVersion(String componentVer) {
-		if(JStringUtils.isNullOrEmpty(componentVer)) return null;
-		if(componentVer.startsWith("/")) componentVer=componentVer.replaceFirst("/", "");
-		String[] targets=componentVer.split("/");
-		String component;
-		String appName=targets[0];
-		String componentName=targets[1];
-		int version=Integer.parseInt(targets[2]);
-		component= JComponentVersionSpringApplicationSupport.unique(appName, componentName, version);
-		return component;
-	}
-	
 	private static final ControllerExecutor actionExecutor=new ControllerExecutor();
-	
-	private MappingController mappingController=new MappingController(JConfiguration.get());
 	
 	private ControllerExecutor() {
 	}

@@ -3,16 +3,22 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
+import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author J
  */
 @JTable(name="ROLES")
-public class Role extends JBaseModel {
+@Entity
+@Table(name="ROLES")
+public class Role extends JJpaBaseModel {
 
 	@JColumn(name="ROLECODE",type=JSQLType.VARCHAR,length=32)
 	private String roleCode;
@@ -23,6 +29,7 @@ public class Role extends JBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 
+	@Column(name="ROLECODE")
 	public String getRoleCode() {
 		return roleCode;
 	}
@@ -31,6 +38,7 @@ public class Role extends JBaseModel {
 		this.roleCode = roleCode;
 	}
 
+	@Column(name="ROLENAME")
 	public String getRoleName() {
 		return roleName;
 	}
@@ -39,6 +47,7 @@ public class Role extends JBaseModel {
 		this.roleName = roleName;
 	}
 
+	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}

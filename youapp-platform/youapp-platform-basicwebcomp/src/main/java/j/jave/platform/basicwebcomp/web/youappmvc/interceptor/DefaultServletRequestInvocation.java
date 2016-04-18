@@ -27,9 +27,14 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	
 	private Exception exception;
 	
+	private String unique;
+	
+	private String mappingPath;
+	
 	private static List<ServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<ServletRequestInterceptor>(8);
 	
 	static{
+		MODEL_INTERCEPTORS.add(new MultiVersionCheckInterceptor());
 		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
 		MODEL_INTERCEPTORS.add(new ResourceAccessInterceptor());
 		MODEL_INTERCEPTORS.add(new ValidPathInterceptor());
@@ -85,5 +90,18 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 		this.httpContext=httpContext;
 	}
 	
+	public void setUnique(String unique) {
+		this.unique = unique;
+	}
+	
+	public String getUnique() {
+		return unique;
+	}
+	public String getMappingPath() {
+		return mappingPath;
+	}
+	public void setMappingPath(String mappingPath) {
+		this.mappingPath = mappingPath;
+	}
 	
 }

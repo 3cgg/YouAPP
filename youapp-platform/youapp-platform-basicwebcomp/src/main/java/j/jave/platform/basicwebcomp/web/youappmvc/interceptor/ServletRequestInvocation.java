@@ -24,4 +24,13 @@ public interface ServletRequestInvocation {
 	HttpContext getHttpContext();
 	
 	void setHttpContext(HttpContext httpContext);
+	
+	public void setUnique(String unique);
+	
+	public String getUnique();
+	
+	public void setMappingPath(String mappingPath);
+	
+	public String getMappingPath();
+	
 }

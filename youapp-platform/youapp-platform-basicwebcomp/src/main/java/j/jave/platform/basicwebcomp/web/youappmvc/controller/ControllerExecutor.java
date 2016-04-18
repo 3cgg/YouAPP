@@ -16,6 +16,7 @@ import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingControllerManagers.MappingControllerManager;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.Component;
 
@@ -53,33 +54,31 @@ public class ControllerExecutor implements JService {
 			// resolve the path , then invoke the target method. 
 		    // the path like /app/component/version/login.loginaction/toLogin
 			
-			String appName =httpContext.getParameter(Component.YOUAPP_WEB_APP_NAME_KEY);
-			String component=null;
-			if(JStringUtils.isNotNullOrEmpty(appName)){
-				String comName =httpContext.getParameter(Component.YOUAPP_WEB_COM_NAME_KEY);
-				String comVer =httpContext.getParameter(Component.YOUAPP_WEB_COM_VER_KEY);
-				component=JComponentVersionSpringApplicationSupport.unique(appName, comName, comVer);
-			}
+//			String appName =httpContext.getParameter(Component.YOUAPP_WEB_APP_NAME_KEY);
+			String component=httpContext.getUnique();
+//			if(JStringUtils.isNotNullOrEmpty(appName)){
+//				String comName =httpContext.getParameter(Component.YOUAPP_WEB_COM_NAME_KEY);
+//				String comVer =httpContext.getParameter(Component.YOUAPP_WEB_COM_VER_KEY);
+//				component=JComponentVersionSpringApplicationSupport.unique(appName, comName, comVer);
+//			}
 
 			//resolve spring application , support multi-version of component.
 			ApplicationContext applicationContext = null;
-			MappingController mappingController=null;
+			MappingControllerManager mappingControllerManager=null;
 			if (JStringUtils.isNotNullOrEmpty(component)) {
 				applicationContext = JComponentVersionSpringApplicationSupport.getApplicationContext(component);
-				mappingController=MappingController.getMappingController(component);
+				mappingControllerManager=MappingControllerManagers.getMappingControllerManager(component);
 			} else {
 				applicationContext = SpringContextSupport.getApplicationContext();
-				mappingController=MappingController.getMappingController(MappingController.PLATFORM);
+				mappingControllerManager=MappingControllerManagers.getMappingControllerManager(MappingControllerManagers.PLATFORM);
 			}
 			
 			MappingMeta mappingMeta= null;
-			if(mappingController==null
-					||(mappingMeta=mappingController.getMappingMeta(targetPath))==null){
+			if(mappingControllerManager==null
+					||(mappingMeta=mappingControllerManager.getMappingMeta(targetPath))==null){
 				return ResponseModel.newError().setData("cannot find any controller for the path. "
 						+ " check if turn on multiple component version infrastructure (immutable version)."
-						+ " attempt to append "+Component.YOUAPP_WEB_APP_NAME_KEY
-						+ "&"+Component.YOUAPP_WEB_COM_NAME_KEY
-						+"&"+Component.YOUAPP_WEB_COM_VER_KEY+" to the request parameter.");
+						+ " attempt to prefix /appname/component/compversion/...  you actual path.");
 			}
 			ControllerSupport object=null;
 			String controllerName=mappingMeta.getControllerName();
@@ -90,9 +89,7 @@ public class ControllerExecutor implements JService {
 			if(object==null){
 				return ResponseModel.newError().setData("cannot find any controller for the path. "
 						+ " check if turn on multiple component version infrastructure (immutable version)."
-						+ " attempt to append "+Component.YOUAPP_WEB_APP_NAME_KEY
-						+ "&"+Component.YOUAPP_WEB_COM_NAME_KEY
-						+"&"+Component.YOUAPP_WEB_COM_VER_KEY+" to the request parameter.");
+						+ " attempt to prefix /appname/component/compversion/...  you actual path.");
 			}
 			
 			StopWatch stopWatch=null;

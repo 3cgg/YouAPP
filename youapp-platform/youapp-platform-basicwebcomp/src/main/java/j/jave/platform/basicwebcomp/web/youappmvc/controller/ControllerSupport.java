@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -12,6 +13,7 @@ import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
+import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import java.util.List;
 
@@ -106,9 +108,12 @@ public abstract class ControllerSupport implements YouappController,Initializing
     public final void afterPropertiesSet() throws Exception {
 
     	boolean isDynamicLoader=SpringDynamicJARApplicationCotext.class.isInstance(applicationContext);
-    	String unique=MappingController.PLATFORM;
+    	String unique=MappingControllerManagers.PLATFORM;
+    	String prefix="";
     	if(isDynamicLoader){
     		unique=((SpringDynamicJARApplicationCotext)applicationContext).getUnique();
+    		prefix=JComponentVersionSpringApplicationSupport.getComponent(unique)
+    				.getUrlPrefix();
     	}
     	
     	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
@@ -116,7 +121,11 @@ public abstract class ControllerSupport implements YouappController,Initializing
 		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
 		for(MappingMeta meta:mappingMetas){
 			meta.setControllerName(beanName);
-			MappingController.putMappingMeta(meta.getPath(),meta,unique);
+			if(!meta.getPath().startsWith(prefix)){
+				throw new JInitializationException("the request mapping of controller ["+this.getClass().getName()
+						+"] must be start with "+prefix);
+			}
+			MappingControllerManagers.putMappingMeta(meta.getPath(),meta,unique);
 		}
     	
     	/*

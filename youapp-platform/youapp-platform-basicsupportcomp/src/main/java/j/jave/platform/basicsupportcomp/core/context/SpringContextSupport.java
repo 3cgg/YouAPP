@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 @Service("SpringContextSupport-Get-Bean-Not-Supported")
 public class SpringContextSupport implements ApplicationContextAware {
 	
+	public static final String PLATFORM="YOUAPP:COM:0";
+	
 	/**
 	 * platform application context. 
 	 */
@@ -36,6 +38,7 @@ public class SpringContextSupport implements ApplicationContextAware {
 
 	public  void setApplicationContext(ApplicationContext applicationContext) {
 		SpringContextSupport.applicationContext = applicationContext;
+		setApplicationContext(applicationContext, PLATFORM);
 	}
 	
 	/**

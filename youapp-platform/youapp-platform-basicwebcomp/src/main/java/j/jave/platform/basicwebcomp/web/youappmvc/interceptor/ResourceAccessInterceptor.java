@@ -42,7 +42,7 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 		
 		try{
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String pathInfo=YouAppMvcUtils.getPathInfo(req);
+			String pathInfo=servletRequestInvocation.getMappingPath();
 			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限

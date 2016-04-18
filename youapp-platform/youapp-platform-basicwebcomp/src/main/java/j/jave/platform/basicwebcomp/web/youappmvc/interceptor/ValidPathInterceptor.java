@@ -10,7 +10,6 @@ import j.jave.platform.basicwebcomp.web.support.JServletContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 import j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.APPFilterConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -99,7 +98,7 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 				}
 			}
 			*/
-			String path=YouAppMvcUtils.getPathInfo(request);
+			String path=servletRequestInvocation.getMappingPath();
 			if(JStringUtils.isNotNullOrEmpty(path)&&!"/".equals(path)){
 				boolean validPath=loginAccessService.isValidResource(path);
 				if(!validPath){

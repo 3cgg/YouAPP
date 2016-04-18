@@ -44,7 +44,7 @@ protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationInt
 				}
 			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String target=YouAppMvcUtils.getPathInfo(req);
+			String target=servletRequestInvocation.getMappingPath();
 			if(!servletConfigService.getLoginPath().equals(target)
 					&&!servletConfigService.getLoginoutPath().equals(target)
 					&&!authenticationAccessService.isNeedLoginRole(target)){

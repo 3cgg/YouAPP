@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingController;
+import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingControllerManagers;
 
 import java.util.List;
 
@@ -119,7 +119,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
 		boolean valid=webRequestURLCacheModel!=null;
 		if(!valid){
-			valid=valid||MappingController.hasUrl(resource);
+			valid=valid||MappingControllerManagers.hasUrl(resource);
 		}
 		return valid;
 	}

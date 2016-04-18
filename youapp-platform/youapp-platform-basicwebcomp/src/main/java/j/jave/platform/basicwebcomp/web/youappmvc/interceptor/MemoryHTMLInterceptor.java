@@ -8,7 +8,6 @@ import j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.response.ResponseEhcacheCacheService;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.model.ResponseStatus;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +30,7 @@ public class MemoryHTMLInterceptor implements ServletRequestInterceptor{
 		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
 		try{
 			
-			String path=YouAppMvcUtils.getPathInfo(request);
+			String path=servletRequestInvocation.getMappingPath();
 			//check if cached.
 			if(requestResourceMemoryCacheService.isNeedCache(path)){ // need cached.
 				ResponseCacheModel responseCachedResource=requestResourceMemoryCacheService.get(path);

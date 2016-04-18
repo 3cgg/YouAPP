@@ -7,6 +7,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext.JARScan;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
@@ -51,11 +52,14 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		
 		public static final String PROPERTY_LOCATION=Component.CONFIG_LOCATION+"component-version.properties";
 		
-		public static final String APP_NAME="j.jave.framework.components.multi.version.app.name";
+		public static final String APP_NAME="j.jave.platform.components.multi.version.app.name";
 		
-		public static final String COMPONENT_NAME="j.jave.framework.components.multi.version.component.name";
+		public static final String COMPONENT_NAME="j.jave.platform.components.multi.version.component.name";
 		
-		public static final String COMPONENT_VERSION="j.jave.framework.components.multi.version.component.version";
+		public static final String COMPONENT_VERSION="j.jave.platform.components.multi.version.component.version";
+		
+		public static final String COMPONENT_URL_PREFIX="j.jave.platform.components.multi.version.component.controller.prefix";
+		
 	}
 	
 	public static class ComponentVersionApplication{
@@ -65,6 +69,8 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		private String component;
 		
 		private String app;
+		
+		private String urlPrefix;
 		
 		private final URL[] jarUrls;
 		
@@ -117,6 +123,12 @@ public abstract class JComponentVersionSpringApplicationSupport {
 				app=JPropertiesUtils.getKey(ComponentProperties.APP_NAME, properties);
 				component=JPropertiesUtils.getKey(ComponentProperties.COMPONENT_NAME, properties);
 				version=Integer.parseInt(JPropertiesUtils.getKey(ComponentProperties.COMPONENT_VERSION, properties));
+				urlPrefix=JPropertiesUtils.getKey(ComponentProperties.COMPONENT_URL_PREFIX, properties);
+				
+				if(JStringUtils.isNotNullOrEmpty(urlPrefix)
+						&&!(urlPrefix.startsWith("/")&&urlPrefix.endsWith("/"))){
+					throw new JInitializationException(" the url prefix format must be '/..../'");
+				}
 			} catch (Exception e) {
 				throw new JInitializationException(e);
 			}finally{
@@ -147,6 +159,15 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		public String getApp() {
 			return app;
 		}
+		
+		public String getUrlPrefix() {
+			return urlPrefix;
+		}
+		
+		public void setUrlPrefix(String urlPrefix) {
+			this.urlPrefix = urlPrefix;
+		}
+		
 	}
 	
 	private static Map<String, ComponentVersionApplication> componentVersions=new ConcurrentHashMap<String, JComponentVersionSpringApplicationSupport.ComponentVersionApplication>();
@@ -163,6 +184,10 @@ public abstract class JComponentVersionSpringApplicationSupport {
 	
 	public static ApplicationContext getApplicationContext(String key){
 		return SpringContextSupport.getApplicationContext(key);
+	}
+	
+	public static ComponentVersionApplication getComponent(String key){
+		return componentVersions.get(key);
 	}
 	
 	public static void removeComponent(String key){

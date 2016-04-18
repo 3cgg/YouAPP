@@ -8,7 +8,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
-import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,8 +28,10 @@ public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 		servletRequestInvocation.setHttpContext(httpContext);
 		try{
 			
-			String target=YouAppMvcUtils.getPathInfo(req);
+			String target=servletRequestInvocation.getMappingPath();
 			httpContext.setTargetPath(target);
+			httpContext.setUnique(servletRequestInvocation.getUnique());
+			
 			Object navigate=ControllerExecutor.newSingleExecutor().execute(httpContext);
 			if(LOGGER.isDebugEnabled()){
 				LOGGER.debug("the response of "+req.getRequestURL()+"[DispathType:"+req.getDispatcherType().name()+"] is OK!");

@@ -78,6 +78,10 @@ public abstract class JComponentVersionSpringApplicationSupport {
 
 		private SpringDynamicJARApplicationCotext applicationContext;
 		
+		public SpringDynamicJARApplicationCotext getApplicationContext() {
+			return applicationContext;
+		}
+		
 		public URLClassLoader getUrlClassLoader() {
 			return urlClassLoader;
 		}

@@ -2,11 +2,11 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import java.net.URI;
 
-public class EnvContainer implements JExecutor {
+public class MicroContainer implements JExecutor ,JIdentifier,JContainer{
 
 	private JRunner runner;
 	
-	private EnvContainerConfig containerConfig;
+	private MicroContainerConfig containerConfig;
 
 	public JRunner getRunner() {
 		return runner;
@@ -16,36 +16,38 @@ public class EnvContainer implements JExecutor {
 		this.runner = runner;
 	}
 
-	public EnvContainerConfig getContainerConfig() {
+	public MicroContainerConfig getContainerConfig() {
 		return containerConfig;
 	}
 
-	public void setContainerConfig(EnvContainerConfig containerConfig) {
+	public void setContainerConfig(MicroContainerConfig containerConfig) {
 		this.containerConfig = containerConfig;
 	}
 
 	@Override
 	public String unique() {
-		// TODO Auto-generated method stub
-		return null;
+		return containerConfig.getUnique();
 	}
 
 	@Override
 	public String name() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean accept(URI uri) {
-		// TODO Auto-generated method stub
-		return false;
+		return runner.accept(uri);
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
+		return runner.execute(uri, object);
+	}
+
+	@Override
+	public void destroy() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 	
 	

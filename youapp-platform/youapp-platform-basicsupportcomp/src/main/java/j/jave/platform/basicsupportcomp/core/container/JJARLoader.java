@@ -18,7 +18,7 @@ public class JJARLoader implements JLoader{
 		this.jarUrls=jarUrls;
 	}
 	
-	public JRunner load() {
+	public JRunner load(MicroContainerConfig envContainerConfig) {
 		ComponentVersionApplication componentVersionApplication=  JComponentVersionSpringApplicationSupport.loadComponent(applicationContext, jarUrls);
 		JSpringCompRunner springCompRunner=new JSpringCompRunner(componentVersionApplication.getApplicationContext());
 		return springCompRunner;

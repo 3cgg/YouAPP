@@ -2,10 +2,11 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import java.net.URI;
 
+import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
 
-public class JSpringCompRunner implements JRunner {
+public abstract class JControllerRunner implements JRunner {
 
 	private String unique;
 	
@@ -17,7 +18,7 @@ public class JSpringCompRunner implements JRunner {
 	
 	private MicroContainerConfig containerConfig;
 	
-	public JSpringCompRunner(SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
+	public JControllerRunner(SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
 		this.dynamicJARApplicationCotext=dynamicJARApplicationCotext;
 		this.componentVersionApplication=dynamicJARApplicationCotext.getComponentVersionApplication();
 	}
@@ -33,14 +34,13 @@ public class JSpringCompRunner implements JRunner {
 	}
 
 	@Override
-	public boolean accept(URI uri) {
-		return Scheme.BEAN.getValue().equals(uri.getScheme());
+	public final boolean accept(URI uri) {
+		return Scheme.CONTROLLER.getValue().equals(uri.getScheme());
 	}
 
 	@Override
 	public Object execute(URI uri,Object object) {
-		String beanName=uri.getSchemeSpecificPart();
-		return dynamicJARApplicationCotext.getBean(beanName);
+		throw new JOperationNotSupportedException("sub-class provide the function.");
 	}
 	
 	@Override

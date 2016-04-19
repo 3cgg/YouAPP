@@ -2,7 +2,7 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import java.net.URI;
 
-public interface JExecutor extends JIdentifier {
+public interface JExecutor {
 
 	public boolean accept(URI uri);
 	

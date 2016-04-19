@@ -144,6 +144,7 @@ public abstract class JComponentVersionSpringApplicationSupport {
 		
 		SpringDynamicJARApplicationCotext load(){
 			applicationContext.setUnique(unique());
+			applicationContext.setComponentVersionApplication(this);
 			applicationContext.refresh();
 			return applicationContext;
 		}

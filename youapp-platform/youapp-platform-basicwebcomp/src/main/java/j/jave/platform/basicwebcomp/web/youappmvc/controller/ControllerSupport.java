@@ -13,7 +13,6 @@ import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 
 import java.util.List;
 
@@ -111,9 +110,9 @@ public abstract class ControllerSupport implements YouappController,Initializing
     	String unique=MappingControllerManagers.PLATFORM;
     	String prefix="";
     	if(isDynamicLoader){
-    		unique=((SpringDynamicJARApplicationCotext)applicationContext).getUnique();
-    		prefix=JComponentVersionSpringApplicationSupport.getComponent(unique)
-    				.getUrlPrefix();
+    		SpringDynamicJARApplicationCotext springDynamicJARApplicationCotext=(SpringDynamicJARApplicationCotext)applicationContext;
+    		unique=springDynamicJARApplicationCotext.getUnique();
+    		prefix=springDynamicJARApplicationCotext.getComponentVersionApplication().getUrlPrefix();
     	}
     	
     	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());

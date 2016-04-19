@@ -14,15 +14,16 @@
 	<version>${platform.version}</version>
 	<packaging>jar</packaging>
 
-	<name>youapp.youapp-platform.components-web</name>
+	<name>youapp.youapp-platform.basicwebcomp</name>
 
 	<dependencies>
 		
 		<dependency>
 			<groupId>youapp.youapp-platform</groupId>
-			<artifactId>youapp-platform-multiversioncompsupportcomp</artifactId>
+			<artifactId>youapp-platform-basicsupportcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>youapp.youapp-util.security</groupId>
 			<artifactId>youapp-util-securityclient</artifactId>

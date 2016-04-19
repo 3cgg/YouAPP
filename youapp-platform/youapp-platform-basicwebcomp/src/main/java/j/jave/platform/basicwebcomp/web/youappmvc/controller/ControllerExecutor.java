@@ -78,7 +78,7 @@ public class ControllerExecutor implements JService {
 					||(mappingMeta=mappingControllerManager.getMappingMeta(targetPath))==null){
 				return ResponseModel.newError().setData("cannot find any controller for the path. "
 						+ " check if turn on multiple component version infrastructure (immutable version)."
-						+ " attempt to prefix /appname/component/compversion/...  you actual path.");
+						+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
 			}
 			ControllerSupport object=null;
 			String controllerName=mappingMeta.getControllerName();
@@ -89,7 +89,7 @@ public class ControllerExecutor implements JService {
 			if(object==null){
 				return ResponseModel.newError().setData("cannot find any controller for the path. "
 						+ " check if turn on multiple component version infrastructure (immutable version)."
-						+ " attempt to prefix /appname/component/compversion/...  you actual path.");
+						+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
 			}
 			
 			StopWatch stopWatch=null;

@@ -14,9 +14,15 @@
 	<version>${platform.version}</version>
 	<packaging>jar</packaging>
 
-	<name>youapp.youapp-platform.components-support</name>
+	<name>youapp.youapp-platform.basicsupportcomp</name>
 
 	<dependencies>
+	
+		<dependency>
+		  	<groupId>youapp.youapp-platform</groupId>
+		 	<artifactId>youapp-platform-ormmybatis</artifactId>
+		  	<version>${platform.version}</version>
+		  </dependency>
 		
 		<dependency>
 			<groupId>youapp.youapp-kernal</groupId>

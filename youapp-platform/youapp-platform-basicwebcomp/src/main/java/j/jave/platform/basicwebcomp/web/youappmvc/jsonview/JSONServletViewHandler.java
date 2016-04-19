@@ -69,7 +69,7 @@ public class JSONServletViewHandler  implements JServletViewHandler {
 			}
 			else{
 				ResponseModel responseModel=ResponseModel.newError();
-				responseModel.setData(exception.getMessage());
+				responseModel.setData(exp.getMessage());
 				return responseModel;
 			}
 		}catch(Exception e){

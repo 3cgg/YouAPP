@@ -4,6 +4,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -36,6 +38,8 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 	 * component information. app:component:version
 	 */
 	private String unique;
+	
+	private ComponentVersionApplication componentVersionApplication;
 	
 	private final URLClassLoader urlClassLoader;
 	
@@ -166,6 +170,25 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 			throw new IllegalStateException(e);
 		}
 		super.refresh();
+	}
+
+	public ComponentVersionApplication getComponentVersionApplication() {
+		return componentVersionApplication;
+	}
+
+	public void setComponentVersionApplication(
+			ComponentVersionApplication componentVersionApplication) {
+		this.componentVersionApplication = componentVersionApplication;
+	}
+	
+	
+	/**
+	 * OVERRIDE the super method to prevent the event propagate, promise any jar should not affect the
+	 * platform environment.
+	 */
+	@Override
+	public void publishEvent(ApplicationEvent event) {
+		LOGGER.info("ignore the propagate refresh event");
 	}
 	
 }

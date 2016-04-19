@@ -34,11 +34,11 @@ public class MultiVersionCheckInterceptor implements ServletRequestInterceptor {
             Pattern pattern=Pattern.compile(mutiPattern);
             Matcher matcher=pattern.matcher(targetPath);
             if(matcher.matches()){
-            	unique=getUnique(matcher.group(1));
+            	String tempUnique=getUnique(matcher.group(1));
+            	if(JStringUtils.isNotNullOrEmpty(tempUnique)){
+            		unique=tempUnique;
+            	}
                 mappingPath=matcher.group(2);
-            }
-            else{
-            	mappingPath=targetPath;
             }
             servletRequestInvocation.setUnique(unique);
             servletRequestInvocation.setMappingPath(mappingPath);
@@ -58,9 +58,9 @@ public class MultiVersionCheckInterceptor implements ServletRequestInterceptor {
 			componentVer = componentVer.replaceFirst("/", "");
 		String[] targets = componentVer.split("/");
 		String unique;
-		String appName = targets[0];
-		String componentName = targets[1];
-		int version = Integer.parseInt(targets[2]);
+		String appName = targets[1];
+		String componentName = targets[2];
+		int version = Integer.parseInt(targets[3]);
 		unique = JComponentVersionSpringApplicationSupport.unique(appName,
 				componentName, version);
 		return unique;

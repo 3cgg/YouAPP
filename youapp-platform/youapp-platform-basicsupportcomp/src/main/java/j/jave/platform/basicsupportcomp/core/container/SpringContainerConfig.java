@@ -1,14 +1,12 @@
 package j.jave.platform.basicsupportcomp.core.container;
 
+import j.jave.kernal.container.ContainerConfig;
+
 import java.net.URL;
 
 import org.springframework.context.ApplicationContext;
 
-public class ContainerConfig  implements JIdentifier{
-	
-	private String unique;
-	
-	private String name;
+public class SpringContainerConfig extends ContainerConfig{
 	
 	/**
 	 * the root application/or parent application
@@ -19,33 +17,7 @@ public class ContainerConfig  implements JIdentifier{
 	 * loaded jar
 	 */
 	private URL[]  jarUrls;
-
-	public String getUnique() {
-		return unique;
-	}
-
-	public void setUnique(String unique) {
-		this.unique = unique;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String unique() {
-		return unique;
-	}
-
-	@Override
-	public String name() {
-		return name;
-	}
-
+	
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
 	}

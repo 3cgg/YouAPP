@@ -1,9 +1,12 @@
 package j.jave.platform.basicsupportcomp.core.container;
 
-import java.net.URI;
-
+import j.jave.kernal.container.JRunner;
+import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.Scheme;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
+
+import java.net.URI;
 
 public class JSpringCompRunner implements JRunner {
 
@@ -15,7 +18,7 @@ public class JSpringCompRunner implements JRunner {
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
-	private MicroContainerConfig containerConfig;
+	private SpringCompMicroContainerConfig containerConfig;
 	
 	public JSpringCompRunner(SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
 		this.dynamicJARApplicationCotext=dynamicJARApplicationCotext;
@@ -45,7 +48,7 @@ public class JSpringCompRunner implements JRunner {
 	
 	@Override
 	public void setContainerConfig(MicroContainerConfig containerConfig) {
-		this.containerConfig=containerConfig;
+		this.containerConfig=(SpringCompMicroContainerConfig) containerConfig;
 	}
 	
 }

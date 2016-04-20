@@ -1,12 +1,15 @@
-package j.jave.platform.basicsupportcomp.core.container;
+package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
-import java.net.URI;
-
+import j.jave.kernal.container.JRunner;
+import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.Scheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
 
-public abstract class JControllerRunner implements JRunner {
+import java.net.URI;
+
+public class ControllerRunner implements JRunner {
 
 	private String unique;
 	
@@ -16,9 +19,9 @@ public abstract class JControllerRunner implements JRunner {
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
-	private MicroContainerConfig containerConfig;
+	private ControllerMicroContainerConfig controllerMicroContainerConfig;
 	
-	public JControllerRunner(SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
+	public ControllerRunner(SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
 		this.dynamicJARApplicationCotext=dynamicJARApplicationCotext;
 		this.componentVersionApplication=dynamicJARApplicationCotext.getComponentVersionApplication();
 	}
@@ -34,6 +37,15 @@ public abstract class JControllerRunner implements JRunner {
 	}
 
 	@Override
+	public void setContainerConfig(MicroContainerConfig containerConfig) {
+		this.controllerMicroContainerConfig=(ControllerMicroContainerConfig) containerConfig;
+	}
+	
+	private static final String GET=Scheme.CONTROLLER.getValue()+"://get?unique={}&path={}";
+	
+	private static final String PUT=Scheme.CONTROLLER.getValue()+"://put?unique={}&path={}";
+	
+	@Override
 	public final boolean accept(URI uri) {
 		return Scheme.CONTROLLER.getValue().equals(uri.getScheme());
 	}
@@ -41,11 +53,6 @@ public abstract class JControllerRunner implements JRunner {
 	@Override
 	public Object execute(URI uri,Object object) {
 		throw new JOperationNotSupportedException("sub-class provide the function.");
-	}
-	
-	@Override
-	public void setContainerConfig(MicroContainerConfig containerConfig) {
-		this.containerConfig=containerConfig;
 	}
 	
 }

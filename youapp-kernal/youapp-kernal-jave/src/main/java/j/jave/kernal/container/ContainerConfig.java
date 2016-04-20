@@ -1,20 +1,10 @@
-package j.jave.platform.basicsupportcomp.core.container;
+package j.jave.kernal.container;
 
-public class MicroContainerConfig  implements JIdentifier{
-
-	private JLoader loader;
+public class ContainerConfig  implements JIdentifier{
 	
 	private String unique;
 	
 	private String name;
-
-	public JLoader getLoader() {
-		return loader;
-	}
-
-	public void setLoader(JLoader loader) {
-		this.loader = loader;
-	}
 
 	public String getUnique() {
 		return unique;
@@ -41,5 +31,7 @@ public class MicroContainerConfig  implements JIdentifier{
 	public String name() {
 		return name;
 	}
+
+	
 	
 }

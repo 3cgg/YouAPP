@@ -1,6 +1,7 @@
-package j.jave.platform.basicsupportcomp.core.container;
+package j.jave.kernal.container;
 
 import j.jave.kernal.JConfiguration;
+import j.jave.kernal.container.JRunner;
 
 public class MicroContainers {
 	
@@ -19,9 +20,9 @@ public class MicroContainers {
 	}
 	
 	public MicroContainer build(MicroContainerConfig containerConfig){
-		MicroContainer microContainer=new MicroContainer();
+		MicroContainer microContainer=containerConfig.newMicroContainer();
 		microContainer.setContainerConfig(containerConfig);
-		JRunner runner=containerConfig.getLoader().load(containerConfig);
+		JRunner runner=containerConfig.getRunnerLoader().load(containerConfig);
 		microContainer.setRunner(runner);
 		return microContainer;
 	}

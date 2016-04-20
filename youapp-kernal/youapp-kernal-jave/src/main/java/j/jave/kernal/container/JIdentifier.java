@@ -1,4 +1,4 @@
-package j.jave.platform.basicsupportcomp.core.container;
+package j.jave.kernal.container;
 
 public interface JIdentifier {
 

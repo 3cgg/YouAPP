@@ -2,20 +2,10 @@ package j.jave.kernal.container;
 
 
 public abstract class MicroContainerConfig  implements JIdentifier{
-
-	private JRunnerLoader runnerLoader;
 	
 	private String unique;
 	
 	private String name;
-	
-	public JRunnerLoader getRunnerLoader() {
-		return runnerLoader;
-	}
-
-	public void setRunnerLoader(JRunnerLoader runnerLoader) {
-		this.runnerLoader = runnerLoader;
-	}
 
 	public String getUnique() {
 		return unique;
@@ -42,7 +32,5 @@ public abstract class MicroContainerConfig  implements JIdentifier{
 	public String name() {
 		return name;
 	}
-	
-	protected abstract MicroContainer newMicroContainer();
 	
 }

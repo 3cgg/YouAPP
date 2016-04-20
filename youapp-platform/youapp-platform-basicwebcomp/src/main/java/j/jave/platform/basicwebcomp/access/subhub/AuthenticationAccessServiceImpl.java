@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingControllerManagers;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.MappingControllerManagers;
 
 import java.util.List;
 

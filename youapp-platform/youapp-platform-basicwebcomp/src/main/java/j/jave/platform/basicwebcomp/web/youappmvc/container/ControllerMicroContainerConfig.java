@@ -1,14 +1,19 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
 
 public class ControllerMicroContainerConfig extends MicroContainerConfig {
+	
+	private SpringDynamicJARApplicationCotext dynamicJARApplicationCotext;
 
-	@Override
-	protected MicroContainer newMicroContainer() {
-		// TODO Auto-generated method stub
-		return null;
+	public ControllerMicroContainerConfig(
+			SpringDynamicJARApplicationCotext dynamicJARApplicationCotext) {
+		this.dynamicJARApplicationCotext = dynamicJARApplicationCotext;
+	}
+
+	public SpringDynamicJARApplicationCotext getDynamicJARApplicationCotext() {
+		return dynamicJARApplicationCotext;
 	}
 	
 	

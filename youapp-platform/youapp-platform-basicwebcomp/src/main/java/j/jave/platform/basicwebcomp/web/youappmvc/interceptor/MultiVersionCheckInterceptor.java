@@ -4,7 +4,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.MappingControllerManagers;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.MappingControllerManagers;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
 

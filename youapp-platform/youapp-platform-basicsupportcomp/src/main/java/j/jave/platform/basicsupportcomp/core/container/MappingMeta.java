@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.platform.basicwebcomp.web.util;
+package j.jave.platform.basicsupportcomp.core.container;
 
 import org.springframework.stereotype.Controller;
 

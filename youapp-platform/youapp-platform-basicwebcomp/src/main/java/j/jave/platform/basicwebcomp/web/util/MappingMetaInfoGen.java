@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
+import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
+import j.jave.platform.basicsupportcomp.core.container.MethodParamMeta;
 
 public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 

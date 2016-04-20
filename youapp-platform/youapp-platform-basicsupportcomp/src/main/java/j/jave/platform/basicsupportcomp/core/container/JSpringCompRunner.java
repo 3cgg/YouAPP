@@ -51,4 +51,12 @@ public class JSpringCompRunner implements JRunner {
 		this.containerConfig=(SpringCompMicroContainerConfig) containerConfig;
 	}
 	
+	public SpringDynamicJARApplicationCotext getDynamicJARApplicationCotext() {
+		return dynamicJARApplicationCotext;
+	}
+	
+	public ComponentVersionApplication getComponentVersionApplication() {
+		return componentVersionApplication;
+	}
+	
 }

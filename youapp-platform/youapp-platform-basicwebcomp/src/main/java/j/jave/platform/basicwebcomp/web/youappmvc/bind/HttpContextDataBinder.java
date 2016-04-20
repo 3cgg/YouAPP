@@ -5,7 +5,7 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.kernal.jave.support.databind.JDataBindException;
 import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
-import j.jave.platform.basicwebcomp.web.util.MethodParamMeta;
+import j.jave.platform.basicsupportcomp.core.container.MethodParamMeta;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 

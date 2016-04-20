@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.util;
+package j.jave.platform.basicsupportcomp.core.container;
 
 import j.jave.kernal.jave.support.detect.JDefaultParamMeta;
 

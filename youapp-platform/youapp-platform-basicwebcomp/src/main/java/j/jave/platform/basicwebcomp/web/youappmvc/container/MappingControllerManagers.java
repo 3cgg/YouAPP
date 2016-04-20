@@ -1,12 +1,12 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.controller;
+package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
-import j.jave.platform.basicwebcomp.web.util.MappingMeta;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -117,7 +117,7 @@ public class MappingControllerManagers{
 		return hasUrl(url,null);
 	}
 	
-	public static MappingControllerManager getMappingControllerManager(String unique){
+	static MappingControllerManager getMappingControllerManager(String unique){
 		if(unique==null){
 			unique=PLATFORM;
 		}

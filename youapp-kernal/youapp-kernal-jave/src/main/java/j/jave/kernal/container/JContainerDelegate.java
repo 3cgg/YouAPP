@@ -1,6 +1,7 @@
 package j.jave.kernal.container;
 
 import j.jave.kernal.container.eventdriven.JContainerGetEvent;
+import j.jave.kernal.container.eventdriven.JContainerRegisterEvent;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 
@@ -72,4 +73,10 @@ public class JContainerDelegate {
 		JExecutor executor=(JExecutor)getContainer(containerUnique);
 		return executor.execute(uri, object);
 	}
+	
+	public void register(JContainer container){
+		serviceHubDelegate.addImmediateEvent(new JContainerRegisterEvent(this, container));
+	}
+	
+	
 }

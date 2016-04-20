@@ -8,6 +8,7 @@ import j.jave.kernal.jave.support.detect.JMethodInfoProvider;
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.kernal.jave.support.detect.JProvider;
 import j.jave.kernal.jave.support.detect.JResourceDetector;
+import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 

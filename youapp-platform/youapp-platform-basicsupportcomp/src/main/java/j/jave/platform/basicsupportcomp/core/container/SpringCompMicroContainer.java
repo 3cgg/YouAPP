@@ -3,6 +3,8 @@ package j.jave.platform.basicsupportcomp.core.container;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
+import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
 
 import java.net.URI;
 
@@ -15,6 +17,15 @@ public class SpringCompMicroContainer implements MicroContainer{
 	private String name;
 	
 	private String unique;
+	
+	public SpringCompMicroContainer(SpringContainerConfig springContainerConfig,SpringCompMicroContainerConfig springCompMicroContainerConfig) {
+		this.springCompMicroContainerConfig=springCompMicroContainerConfig;
+		JSpringCompRunnerLoader springCompRunnerLoader=new JSpringCompRunnerLoader(
+				springContainerConfig.getApplicationContext(), springContainerConfig.getJarUrls());
+		springCompRunner=(JSpringCompRunner) springCompRunnerLoader.load(springCompMicroContainerConfig);
+		this.name=springCompMicroContainerConfig.getName();
+		this.unique=springCompMicroContainerConfig.getUnique();
+	}
 	
 	@Override
 	public boolean accept(URI uri) {
@@ -76,4 +87,12 @@ public class SpringCompMicroContainer implements MicroContainer{
 		this.springCompMicroContainerConfig=(SpringCompMicroContainerConfig) containerConfig;
 	}
 
+	public SpringDynamicJARApplicationCotext getDynamicJARApplicationCotext() {
+		return springCompRunner.getDynamicJARApplicationCotext();
+	}
+	
+	public ComponentVersionApplication getComponentVersionApplication() {
+		return springCompRunner.getComponentVersionApplication();
+	}
+	
 }

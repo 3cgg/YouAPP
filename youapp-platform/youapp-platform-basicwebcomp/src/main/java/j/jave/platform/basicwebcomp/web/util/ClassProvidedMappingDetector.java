@@ -4,6 +4,7 @@ import j.jave.kernal.jave.support.detect.JMethodDetector;
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider;
 import j.jave.kernal.jave.support.detect.JProvider;
 import j.jave.kernal.jave.support.detect.JResourceDetector;
+import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 
 import java.util.List;
 

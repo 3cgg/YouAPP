@@ -4,6 +4,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
 
 import java.io.IOException;
@@ -12,7 +13,10 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -44,6 +48,8 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 	private final URLClassLoader urlClassLoader;
 	
 	private JARScan jarScan;
+	
+	private Map<String, MappingMeta> mappingMetas=new ConcurrentHashMap<String, MappingMeta>(128);
 	
 	public void setJarScan(JARScan jarScan) {
 		this.jarScan = jarScan;
@@ -191,4 +197,12 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 		LOGGER.info("ignore the propagate refresh event");
 	}
 	
+	public void putMappingMeta(MappingMeta mappingMeta){
+		mappingMetas.put(mappingMeta.getPath(), mappingMeta);
+	}
+	
+	public Map<String, MappingMeta> getMappingMetas() {
+		return Collections.unmodifiableMap(mappingMetas);
+	}
+
 }

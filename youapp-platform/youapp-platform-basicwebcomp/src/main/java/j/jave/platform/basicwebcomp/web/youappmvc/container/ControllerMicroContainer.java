@@ -3,6 +3,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
 
 import java.net.URI;
 
@@ -15,6 +16,16 @@ public class ControllerMicroContainer implements MicroContainer{
 	private String name;
 	
 	private String unique;
+	
+	public ControllerMicroContainer(SpringContainerConfig springContainerConfig,
+			ControllerMicroContainerConfig controllerMicroContainerConfig) {
+		this.controllerMicroContainerConfig=controllerMicroContainerConfig;
+		ControllerRunnerLoader controllerRunnerLoader=new ControllerRunnerLoader(
+				controllerMicroContainerConfig.getDynamicJARApplicationCotext());
+		this.controllerRunner=(ControllerRunner) controllerRunnerLoader.load(controllerMicroContainerConfig);
+		this.name=controllerMicroContainerConfig.getName();
+		this.unique=controllerMicroContainerConfig.getUnique();
+	}
 	
 	@Override
 	public boolean accept(URI uri) {
@@ -73,7 +84,7 @@ public class ControllerMicroContainer implements MicroContainer{
 
 	@Override
 	public void setContainerConfig(MicroContainerConfig containerConfig) {
-		this.controllerMicroContainerConfig=(SpringCompMicroContainerConfig) containerConfig;
+		this.controllerMicroContainerConfig= (ControllerMicroContainerConfig) containerConfig;
 	}
 
 }

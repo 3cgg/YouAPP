@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.util;
 
+import j.jave.platform.basicsupportcomp.core.container.MethodParamMeta;
+
 
 public class MethodParamObject {
 

@@ -2,7 +2,7 @@ package j.jave.kernal.container;
 
 public enum Scheme {
 
-	BEAN("bean"),CONTROLLER("controller");
+	BEAN("bean"),CONTROLLER("controller"),EXECUTE("execute");
 	
 	private final String value;
 	

@@ -1,11 +1,13 @@
 package j.jave.kernal.container;
 
 import j.jave.kernal.container.eventdriven.JContainerGetEvent;
+import j.jave.kernal.container.eventdriven.JContainerUniquesGetEvent;
 import j.jave.kernal.container.eventdriven.JContainerRegisterEvent;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 
 import java.net.URI;
+import java.util.Collection;
 
 public class JContainerDelegate {
 
@@ -20,7 +22,7 @@ public class JContainerDelegate {
 		return containerDelegate;
 	}
 	
-	private JContainer getContainer(String unique){
+	public JContainer getContainer(String unique){
 		return serviceHubDelegate.addImmediateEvent(new JContainerGetEvent(this, unique),JContainer.class);
 	}
 	
@@ -28,7 +30,7 @@ public class JContainerDelegate {
 		return this.accept(uri, containerUnique, false);
 	}
 	
-	private boolean accept(URI uri,String containerUnique,boolean throwsException){
+	public boolean accept(URI uri,String containerUnique,boolean throwsException){
 		JContainer container=getContainer(containerUnique);
 		if(JExecutor.class.isInstance(container)){
 			JExecutor executor=(JExecutor) container;
@@ -78,5 +80,9 @@ public class JContainerDelegate {
 		serviceHubDelegate.addImmediateEvent(new JContainerRegisterEvent(this, container));
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Collection<String> getAllContainerUniques(Object source){
+		return serviceHubDelegate.addImmediateEvent(new JContainerUniquesGetEvent(source),Collection.class);
+	}
 	
 }

@@ -5,16 +5,19 @@ import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationCotext;
+import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
+import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.MappingControllerManagers;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainer;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 
+import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -38,6 +41,9 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	private ApplicationContext applicationContext;
 	
 	private String beanName;
+	
+	private RequestInvokeContainerDelegateService requestInvokeContainerDelegate=
+			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
 	
 	@Override
 	public final void setBeanName(String name) {
@@ -103,15 +109,15 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	protected ServiceContext getServiceContext(){
 		return getHttpContext().getServiceContext();
 	}
-
+	
     @Override
     public final void afterPropertiesSet() throws Exception {
 
-    	boolean isDynamicLoader=SpringDynamicJARApplicationCotext.class.isInstance(applicationContext);
-    	String unique=MappingControllerManagers.PLATFORM;
+    	boolean isDynamicLoader=SpringDynamicJARApplicationContext.class.isInstance(applicationContext);
+    	String unique=SpringContextSupport.PLATFORM;
     	String prefix="";
     	if(isDynamicLoader){
-    		SpringDynamicJARApplicationCotext springDynamicJARApplicationCotext=(SpringDynamicJARApplicationCotext)applicationContext;
+    		SpringDynamicJARApplicationContext springDynamicJARApplicationCotext=(SpringDynamicJARApplicationContext)applicationContext;
     		unique=springDynamicJARApplicationCotext.getUnique();
     		prefix=springDynamicJARApplicationCotext.getComponentVersionApplication().getUrlPrefix();
     	}
@@ -125,7 +131,14 @@ public abstract class ControllerSupport implements YouappController,Initializing
 				throw new JInitializationException("the request mapping of controller ["+this.getClass().getName()
 						+"] must be start with "+prefix);
 			}
-			MappingControllerManagers.putMappingMeta(meta.getPath(),meta,unique);
+			if(isDynamicLoader){
+				SpringDynamicJARApplicationContext springDynamicJARApplicationCotext=(SpringDynamicJARApplicationContext)applicationContext;
+				springDynamicJARApplicationCotext.putMappingMeta(meta);
+			}
+			else{
+				requestInvokeContainerDelegate.execute(new URI(RequestInvokeContainer.getControllerRequestPutURI(unique, meta.getPath())
+				), meta, unique);
+			}
 		}
     	
     	/*

@@ -5,7 +5,8 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentVersionApplication;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
+import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 
 import java.io.IOException;
 import java.net.URI;
@@ -34,7 +35,7 @@ import org.springframework.core.io.FileSystemResourceLoader;
  * @author J
  * @see JARScan
  */
-public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationContext {
+public class SpringDynamicJARApplicationContext extends AbstractXmlApplicationContext {
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
@@ -43,7 +44,7 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 	 */
 	private String unique;
 	
-	private ComponentVersionApplication componentVersionApplication;
+	private DynamicComponentVersionApplication componentVersionApplication;
 	
 	private final URLClassLoader urlClassLoader;
 	
@@ -67,12 +68,12 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 		this.unique = unique;
 	}
 	
-	public SpringDynamicJARApplicationCotext(ConfigurableApplicationContext applicationContext,URL[] jarUrls){
+	public SpringDynamicJARApplicationContext(ConfigurableApplicationContext applicationContext,URL[] jarUrls){
 		super(applicationContext);
 		this.urlClassLoader=new URLClassLoader(jarUrls,applicationContext.getClassLoader());
 	}
 	
-	public SpringDynamicJARApplicationCotext(ConfigurableApplicationContext applicationContext,URLClassLoader urlClassLoader){
+	public SpringDynamicJARApplicationContext(ConfigurableApplicationContext applicationContext,URLClassLoader urlClassLoader){
 		super(applicationContext);
 		this.urlClassLoader=urlClassLoader;
 	}
@@ -184,7 +185,7 @@ public class SpringDynamicJARApplicationCotext extends AbstractXmlApplicationCon
 
 	public void setComponentVersionApplication(
 			ComponentVersionApplication componentVersionApplication) {
-		this.componentVersionApplication = componentVersionApplication;
+		this.componentVersionApplication = (DynamicComponentVersionApplication) componentVersionApplication;
 	}
 	
 	

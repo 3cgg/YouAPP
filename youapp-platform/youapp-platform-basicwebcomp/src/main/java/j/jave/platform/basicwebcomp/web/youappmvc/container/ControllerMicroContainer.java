@@ -4,6 +4,7 @@ import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
@@ -18,10 +19,14 @@ public class ControllerMicroContainer implements MicroContainer{
 	private String unique;
 	
 	public ControllerMicroContainer(SpringContainerConfig springContainerConfig,
-			ControllerMicroContainerConfig controllerMicroContainerConfig) {
+			ControllerMicroContainerConfig controllerMicroContainerConfig,
+			ComponentVersionApplication componentVersionApplication
+			) {
 		this.controllerMicroContainerConfig=controllerMicroContainerConfig;
 		ControllerRunnerLoader controllerRunnerLoader=new ControllerRunnerLoader(
-				controllerMicroContainerConfig.getDynamicJARApplicationCotext());
+				controllerMicroContainerConfig.getApplicationContext(),controllerMicroContainerConfig
+				,componentVersionApplication
+				);
 		this.controllerRunner=(ControllerRunner) controllerRunnerLoader.load(controllerMicroContainerConfig);
 		this.name=controllerMicroContainerConfig.getName();
 		this.unique=controllerMicroContainerConfig.getUnique();
@@ -86,5 +91,18 @@ public class ControllerMicroContainer implements MicroContainer{
 	public void setContainerConfig(MicroContainerConfig containerConfig) {
 		this.controllerMicroContainerConfig= (ControllerMicroContainerConfig) containerConfig;
 	}
+	
+	static final String getGetRequest(String unique,String path){
+		return ControllerRunner.getGetRequest(unique, path);
+	}
 
+	static final String getPutRequest(String unique,String path){
+		return ControllerRunner.getPutRequest(unique, path);
+	}
+	
+	static final String getExistRequest(String unique,String path){
+		return ControllerRunner.getExistRequest(unique, path);
+	}
+	
+	
 }

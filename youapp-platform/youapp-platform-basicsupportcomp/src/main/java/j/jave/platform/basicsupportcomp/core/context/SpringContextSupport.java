@@ -4,6 +4,8 @@
 package j.jave.platform.basicsupportcomp.core.context;
 
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,8 +23,13 @@ import org.springframework.stereotype.Service;
 @Service("SpringContextSupport-Get-Bean-Not-Supported")
 public class SpringContextSupport implements ApplicationContextAware {
 	
-	public static final String PLATFORM="YOUAPP:COM:0";
+	private static PlatformComponentVersionApplication platformComponentVersionApplication
+	=new PlatformComponentVersionApplication();
 	
+	public static final String PLATFORM=
+			JComponentVersionSpringApplicationSupport.unique(platformComponentVersionApplication.getApp()
+					, platformComponentVersionApplication.getComponent(), 
+					platformComponentVersionApplication.getVersion());
 	/**
 	 * platform application context. 
 	 */

@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.MappingControllerManagers;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
 
 import java.util.List;
 
@@ -34,6 +34,10 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	
 	private DESedeCipherService deSedeCipherService=
 			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
+	
+	private RequestInvokeContainerDelegateService requestInvokeContainerDelegate=
+			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	
 	
 	@Override
 	public SessionUserImpl validate(String name, String password)
@@ -119,7 +123,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
 		boolean valid=webRequestURLCacheModel!=null;
 		if(!valid){
-			valid=valid||MappingControllerManagers.hasUrl(resource);
+			valid=valid||requestInvokeContainerDelegate.exist(resource);
 		}
 		return valid;
 	}

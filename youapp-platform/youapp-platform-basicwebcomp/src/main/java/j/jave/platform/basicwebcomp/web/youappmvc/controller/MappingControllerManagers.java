@@ -1,4 +1,4 @@
-package j.jave.platform.basicwebcomp.web.youappmvc.container;
+package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.exception.JInitializationException;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MappingControllerManagers{
+class MappingControllerManagers{
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(MappingControllerManagers.class);
 	

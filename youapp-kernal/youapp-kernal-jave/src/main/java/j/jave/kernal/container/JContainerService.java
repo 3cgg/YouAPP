@@ -5,18 +5,21 @@ import j.jave.kernal.container.eventdriven.JContainerGetEvent;
 import j.jave.kernal.container.eventdriven.JContainerGetListener;
 import j.jave.kernal.container.eventdriven.JContainerRegisterEvent;
 import j.jave.kernal.container.eventdriven.JContainerRegisterListener;
+import j.jave.kernal.container.eventdriven.JContainerUniquesGetEvent;
+import j.jave.kernal.container.eventdriven.JContainerUniquesGetListener;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-class JContainerService extends JServiceFactorySupport<JContainerService> 
-	implements JService, JContainerRegisterListener ,JContainerGetListener{
+public class JContainerService extends JServiceFactorySupport<JContainerService> 
+	implements JService, JContainerRegisterListener ,JContainerGetListener,JContainerUniquesGetListener{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JContainerService.class);
 	
@@ -54,6 +57,10 @@ class JContainerService extends JServiceFactorySupport<JContainerService>
 	public Object trigger(JContainerGetEvent event) {
 		String unique=event.getContainerUnique();
 		return containers.get(unique);
+	}
+	@Override
+	public Object trigger(JContainerUniquesGetEvent event) {
+		return Collections.unmodifiableCollection(containers.keySet());
 	}
 	
 }

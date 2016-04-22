@@ -2,6 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.Scheme;
+import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
@@ -50,7 +51,7 @@ public class ControllerRunner implements JRunner {
 	
 	public static enum Type{
 		
-		GET("get"),PUT("put"),DELETE("delete"),EXIST("exist");
+		GET("/get"),PUT("/put"),DELETE("/delete"),EXIST("/exist");
 		
 		private String value;
 		
@@ -69,12 +70,12 @@ public class ControllerRunner implements JRunner {
 	/**
 	 * controller://get/put/delete?unique=%s&path=%s
 	 */
-	private static final String URI=Scheme.CONTROLLER.getValue()+"://&s?"+UNIQUE+"=%s&"+PATH+"=%s";
+	private static final String URI=Scheme.CONTROLLER.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
 	
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
 	 */
-	private static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_]+)&"+PATH+"=([a-zA-Z:0-9_]+)$";
+	public static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.]+)&"+PATH+"=([a-zA-Z:0-9_/]+)$";
 	
 //	private static final String PUT=Scheme.CONTROLLER.getValue()+"://put?unique={}&path={}";
 	
@@ -102,19 +103,37 @@ public class ControllerRunner implements JRunner {
 			unique=matcher.group(1);
 			path=matcher.group(2);
 		}
-		return accept=accept&&unique.equals(unique)&&mappingMetas.containsKey(path);
+		return accept=accept&&unique.equals(unique);
 	}
 
 	@Override
 	public Object execute(URI uri,Object object) {
-		String type=uri.getSchemeSpecificPart();
+		String type=uri.getPath();
 		if(Type.GET.value.equals(type)){
 			return get(uri, object);
 		}
 		else if(Type.PUT.value.equals(type)){
 			return put(uri, object);
 		}
-		return null;
+		else if(Type.EXIST.value.equals(type)){
+			return exist(uri, object);
+		}
+		else if(Type.DELETE.value.equals(type)){
+			return delete(uri, object);
+		}
+		
+		throw new JOperationNotSupportedException(" the uri ["+uri.toString()+"] not supported."); 
+		
+	}
+	
+	private Object exist(URI uri,Object object){
+		String path = getPath(uri);
+		return mappingMetas.containsKey(path);
+	}
+	
+	private Object delete(URI uri,Object object){
+		String path = getPath(uri);
+		return mappingMetas.remove(path);
 	}
 	
 	private Object put(URI uri,Object object){

@@ -20,6 +20,7 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public class DynamicComponentVersionApplication extends ComponentVersionApplication {
@@ -44,7 +45,7 @@ public class DynamicComponentVersionApplication extends ComponentVersionApplicat
 		return jarUrls;
 	}
 	
-	public DynamicComponentVersionApplication(ConfigurableApplicationContext parent,URL[] jarUrls){
+	public DynamicComponentVersionApplication(ApplicationContext parent,URL[] jarUrls){
 		this.jarUrls=jarUrls;
 		applicationContext=new SpringDynamicJARApplicationContext(parent, jarUrls);
 		urlClassLoader=applicationContext.getUrlClassLoader();

@@ -42,14 +42,12 @@ public class SpringCompMicroContainer implements MicroContainer{
 	
 	@Override
 	public boolean accept(URI uri) {
-		// TODO Auto-generated method stub
-		return false;
+		return springCompRunner.accept(uri);
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		return springCompRunner.execute(uri, object);
 	}
 
 	@Override

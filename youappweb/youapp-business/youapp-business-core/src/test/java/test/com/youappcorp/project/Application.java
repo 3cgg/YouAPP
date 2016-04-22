@@ -1,5 +1,6 @@
 package test.com.youappcorp.project;
 
+import j.jave.platform.basicwebcomp.web.listener.SimpleServiceRegisterContextListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.listener.MvcClassPathListener;
 import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
 
@@ -78,14 +79,27 @@ public class Application extends SpringBootServletInitializer implements Embedde
             return new MvcClassPathListener();
         }
         
-        @Bean(name = "mvcclasspath-listener-regist-bean")
+        @Bean(name = "mvcclasspath-listener-register-bean")
         public ServletListenerRegistrationBean<MvcClassPathListener> mvcClassPathListenerRegistration() {
         	ServletListenerRegistrationBean<MvcClassPathListener> registration 
         	= new ServletListenerRegistrationBean<MvcClassPathListener>(mvcClassPathListener());
         	registration.setOrder(ServletListenerRegistrationBean.HIGHEST_PRECEDENCE);
         	return registration;
         }
-                
+        
+        @Bean
+        public SimpleServiceRegisterContextListener simpleServiceRegisterContextListener(){
+            return new SimpleServiceRegisterContextListener();
+        }
+        
+        @Bean(name = "serviceregister-listener-register-bean")
+        public ServletListenerRegistrationBean<SimpleServiceRegisterContextListener> simpleServiceRegisterContextListenerRegistration() {
+        	ServletListenerRegistrationBean<SimpleServiceRegisterContextListener> registration 
+        	= new ServletListenerRegistrationBean<SimpleServiceRegisterContextListener>(simpleServiceRegisterContextListener());
+        	registration.setOrder(ServletListenerRegistrationBean.HIGHEST_PRECEDENCE-1);
+        	return registration;
+        }
+        
         
     }
 

@@ -37,8 +37,10 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	public RequestInvokeContainer(SpringContainerConfig springContainerConfig,
 			ComponentVersionApplication componentVersionApplication) {
 		this.springContainerConfig=springContainerConfig;
-		this.name=springContainerConfig.name();
-		this.unique=springContainerConfig.unique();
+		springContainerConfig.setName(componentVersionApplication.name());
+		springContainerConfig.setUnique(componentVersionApplication.unique());
+		this.name=springContainerConfig.getName();
+		this.unique=springContainerConfig.getUnique();
 		init(springContainerConfig,componentVersionApplication);
 		JContainerDelegate.get().register(this);
 	}
@@ -75,7 +77,7 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	@Override
 	public Object execute(URI uri, Object object) {
 		
-			if(Type.EXECUTE.value.equals(uri.getSchemeSpecificPart())){
+			if(Type.EXECUTE.value.equals(uri.getPath())){
 				try{
 				String query= uri.getQuery();
 				Pattern pattern=Pattern.compile(REGX);
@@ -154,7 +156,7 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	
 	public static enum Type{
 		
-		EXECUTE("execute");
+		EXECUTE("/execute");
 		
 		private String value;
 		
@@ -173,12 +175,12 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	/**
 	 * controller://get?unique=%s&path=%s
 	 */
-	private static final String EXECUTE=Scheme.EXECUTE.getValue()+"://%s?"+UNIQUE+"=%s&"+PATH+"=%s";
+	private static final String EXECUTE=Scheme.EXECUTE.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
 	
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
 	 */
-	private static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_]+)&"+PATH+"=([a-zA-Z:0-9_]+)$";
+	private static final String REGX=ControllerRunner.REGX;
 	
 	public static String getRequestExecuteURI(String unique,String path){
 		return String.format(EXECUTE,Type.EXECUTE.value,unique,path);

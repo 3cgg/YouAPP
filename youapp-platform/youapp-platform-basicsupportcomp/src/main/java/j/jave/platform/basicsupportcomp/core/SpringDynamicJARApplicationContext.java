@@ -24,6 +24,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.AbstractXmlApplicationContext;
@@ -68,7 +69,7 @@ public class SpringDynamicJARApplicationContext extends AbstractXmlApplicationCo
 		this.unique = unique;
 	}
 	
-	public SpringDynamicJARApplicationContext(ConfigurableApplicationContext applicationContext,URL[] jarUrls){
+	public SpringDynamicJARApplicationContext(ApplicationContext applicationContext,URL[] jarUrls){
 		super(applicationContext);
 		this.urlClassLoader=new URLClassLoader(jarUrls,applicationContext.getClassLoader());
 	}

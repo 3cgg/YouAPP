@@ -9,7 +9,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 /**
  * @author J
  */
-@JListenerOnEvent(name=JContainerRegisterListener.class)
+@JListenerOnEvent(name=JContainerUniquesGetListener.class)
 public class JContainerUniquesGetEvent extends JAPPEvent<JContainerUniquesGetEvent> {
 	
 	public JContainerUniquesGetEvent(Object source, int priority, String unique) {

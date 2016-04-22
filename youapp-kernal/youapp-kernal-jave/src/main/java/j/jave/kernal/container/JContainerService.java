@@ -7,7 +7,6 @@ import j.jave.kernal.container.eventdriven.JContainerRegisterEvent;
 import j.jave.kernal.container.eventdriven.JContainerRegisterListener;
 import j.jave.kernal.container.eventdriven.JContainerUniquesGetEvent;
 import j.jave.kernal.container.eventdriven.JContainerUniquesGetListener;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -18,18 +17,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class JContainerService extends JServiceFactorySupport<JContainerService> 
+class JContainerService 
 	implements JService, JContainerRegisterListener ,JContainerGetListener,JContainerUniquesGetListener{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JContainerService.class);
 	
 	private static JContainerService containerService=new JContainerService(JConfiguration.get());
 	
-	@Override
-	public JContainerService getService() {
-		return containerService;
-	}
 	private JContainerService(JConfiguration configuration) {
+	}
+	
+	static JContainerService get(){
+		return containerService;
 	}
 	
 	private Map<String, JContainer> containers=new ConcurrentHashMap<String, JContainer>();

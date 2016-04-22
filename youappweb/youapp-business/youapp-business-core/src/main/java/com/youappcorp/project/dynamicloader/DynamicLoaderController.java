@@ -34,9 +34,10 @@ public class DynamicLoaderController extends ControllerSupport {
 			dynamicSpringContainerConfig.setJarUrls(jarUrls);
 			dynamicSpringContainerConfig.setApplicationContext(applicationContext);
 			
-			DynamicComponentVersionApplication dynamicComponentVersionApplication=new DynamicComponentVersionApplication(applicationContext, jarUrls);
+			DynamicComponentVersionApplication dynamicComponentVersionApplication
+				=new DynamicComponentVersionApplication(applicationContext, jarUrls);
 			
-			new RequestInvokeContainer(dynamicSpringContainerConfig);
+			new RequestInvokeContainer(dynamicSpringContainerConfig,dynamicComponentVersionApplication);
 			return ResponseModel.newSuccess().setData(true);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);

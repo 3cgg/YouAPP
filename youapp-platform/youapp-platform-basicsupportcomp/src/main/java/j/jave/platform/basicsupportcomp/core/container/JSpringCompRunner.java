@@ -2,6 +2,7 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.Scheme;
+import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
@@ -44,7 +45,7 @@ public class JSpringCompRunner implements JRunner {
 	
 	public static enum Type{
 		
-		GET("get"),PUT("put"),DELETE("delete");
+		GET("/get"),PUT("/put"),DELETE("/delete");
 		
 		private String value;
 		
@@ -63,12 +64,12 @@ public class JSpringCompRunner implements JRunner {
 	/**
 	 * controller://get?unique=%s&beanName=%s
 	 */
-	private static final String URI=Scheme.BEAN.getValue()+"://%s?"+UNIQUE+"=%s&"+BEAN_NAME+"=%s";
+	private static final String URI=Scheme.BEAN.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+BEAN_NAME+"=%s";
 	
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&beanName=([a-zA-Z:0-9_]+)$
 	 */
-	private static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_]+)&"+BEAN_NAME+"=([a-zA-Z:0-9_]+)$";
+	private static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.]+)&"+BEAN_NAME+"=([a-zA-Z:0-9_./]+)$";
 	
 //	private static final String PUT=Scheme.CONTROLLER.getValue()+"://put?unique={}&path={}";
 	
@@ -80,6 +81,19 @@ public class JSpringCompRunner implements JRunner {
 
 	@Override
 	public Object execute(URI uri,Object object) {
+		String type=uri.getPath();
+		if(Type.GET.value.equals(type)){
+			return getBean(uri, object);
+		}
+		throw new JOperationNotSupportedException(" the uri ["+uri.toString()+"] not supported."); 
+	}
+	
+	private Object getBean(URI uri,Object object){
+		String beanName=getBeanName(uri);
+		return applicationContext.getBean(beanName);
+	}
+
+	private String getBeanName(URI uri) {
 		String beanName=null;
 		String query= uri.getQuery();
 		Pattern pattern=Pattern.compile(REGX);
@@ -87,7 +101,7 @@ public class JSpringCompRunner implements JRunner {
 		if(matcher.matches()){
 			beanName=matcher.group(2);
 		}
-		return applicationContext.getBean(beanName);
+		return beanName;
 	}
 	
 	static final String getGetRequest(String unique,String path){

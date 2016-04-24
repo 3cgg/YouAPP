@@ -7,7 +7,6 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainer;
 import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 
@@ -40,7 +39,7 @@ public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 			httpContext.setUnique(servletRequestInvocation.getUnique());
 			Object navigate=
 					requestInvokeContainerDelegate.execute(
-							new URI(RequestInvokeContainer.getRequestExecuteURI(httpContext.getUnique(), httpContext.getTargetPath()))
+							new URI(RequestInvokeContainerDelegateService.getRequestExecuteURI(httpContext.getUnique(), httpContext.getTargetPath()))
 							,httpContext,httpContext.getUnique());
 					
 			if(LOGGER.isDebugEnabled()){

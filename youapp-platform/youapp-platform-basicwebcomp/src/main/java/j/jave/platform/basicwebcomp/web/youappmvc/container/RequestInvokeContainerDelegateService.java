@@ -1,8 +1,15 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
+import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
+import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
+import j.jave.platform.basicsupportcomp.core.container.SpringCompMicroContainer;
+import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainer.URIUtil;
+import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
+import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,7 +68,7 @@ extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements
 	}
 	
 	public boolean exist(String path,String containerUnique){
-		String existURI=RequestInvokeContainer.getControllerRequestExistURI(containerUnique, path);
+		String existURI=URIUtil.getControllerRequestExistURI(containerUnique, path);
 		try {
 			return (boolean) containerDelegate.execute(new URI(existURI), null, containerUnique, false);
 		} catch (URISyntaxException e) {
@@ -82,5 +89,50 @@ extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements
 		}
 		return exist;
 	}
+	
+	/**
+	 * new a container instance... 
+	 * @param dynamicSpringContainerConfig
+	 * @param dynamicComponentVersionApplication
+	 * @return the container unique
+	 */
+	public String newInstance(DynamicSpringContainerConfig dynamicSpringContainerConfig,DynamicComponentVersionApplication dynamicComponentVersionApplication){
+		JContainer container=new RequestInvokeContainer(dynamicSpringContainerConfig,dynamicComponentVersionApplication);
+		container.initialize();
+		return container.unique();
+	}
+	
+	/**
+	 * 
+	 * @param springContainerConfig
+	 * @param componentVersionApplication
+	 * @return
+	 */
+	public String newInstance(SpringContainerConfig springContainerConfig,PlatformComponentVersionApplication platformComponentVersionApplication){
+		JContainer container=new RequestInvokeContainer(springContainerConfig,platformComponentVersionApplication);
+		container.initialize();
+		return container.unique();
+	}
+	
+	public static final String getControllerRequestGetURI(String unique,String path){
+		return ControllerMicroContainer.getGetRequest(unique, path);
+	}
+	
+	public static final String getControllerRequestExistURI(String unique,String path){
+		return ControllerMicroContainer.getExistRequest(unique, path);
+	}
+	
+	public static final String getControllerRequestPutURI(String unique,String path){
+		return ControllerMicroContainer.getPutRequest(unique, path);
+	}
+
+	public static final String getBeanRequestGetURI(String unique,String beanName){
+		return SpringCompMicroContainer.getGetRequest(unique, beanName);
+	}
+	
+	public static String getRequestExecuteURI(String unique,String path){
+		return RequestInvokeContainer.URIUtil.getRequestExecuteURI(unique, path);
+	}
+	
 	
 }

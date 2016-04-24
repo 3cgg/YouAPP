@@ -7,7 +7,7 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import org.springframework.context.ApplicationContext;
 
-public class ControllerRunnerLoader implements JRunnerLoader{
+class ControllerRunnerLoader implements JRunnerLoader{
 
 	private ApplicationContext applicationContext;
 	

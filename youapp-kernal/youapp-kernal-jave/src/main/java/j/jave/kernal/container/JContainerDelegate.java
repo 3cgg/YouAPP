@@ -32,13 +32,16 @@ public class JContainerDelegate {
 	
 	public boolean accept(URI uri,String containerUnique,boolean throwsException){
 		JContainer container=getContainer(containerUnique);
+		if(container==null){
+			throw new JOperationNotSupportedException("the container: ["+containerUnique+"] doesnot exists.");
+		}
 		if(JExecutor.class.isInstance(container)){
 			JExecutor executor=(JExecutor) container;
 			return executor.accept(uri);
 		}
 		else{
 			if(throwsException){
-				throw new JOperationNotSupportedException("the container["+container.unique()+"] is cannot receive request.");
+				throw new JOperationNotSupportedException("the container["+containerUnique+"] cannot receive request.");
 			}
 			else{
 				return false;

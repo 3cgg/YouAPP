@@ -2,7 +2,7 @@ package j.jave.kernal.container;
 
 public enum Scheme {
 
-	BEAN("bean"),CONTROLLER("controller"),EXECUTE("execute");
+	BEAN("bean"),CONTROLLER("controller"),REMOTE_HTTP("rhttp");
 	
 	private final String value;
 	

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.context.ApplicationContext;
 
-public class ControllerRunner implements JRunner {
+class ControllerRunner implements JRunner {
 
 	private String unique;
 	

@@ -4,7 +4,7 @@ import j.jave.kernal.container.MicroContainerConfig;
 
 import org.springframework.context.ApplicationContext;
 
-public class ControllerMicroContainerConfig extends MicroContainerConfig {
+class ControllerMicroContainerConfig extends MicroContainerConfig {
 	
 	private ApplicationContext applicationContext;
 

@@ -1,5 +1,6 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
 import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 @Service(value="PLATFORM_REQEUST_INVOKE_CONTAINER_INITIALIZE_BEAN")
 public class PlatformRequestInvokeContainerInitializeBean implements ApplicationContextAware {
 
+	private RequestInvokeContainerDelegateService requestInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	
 	private ApplicationContext applicationContext;
 	
 	@Override
@@ -20,9 +24,7 @@ public class PlatformRequestInvokeContainerInitializeBean implements Application
 		SpringContainerConfig springContainerConfig=new SpringContainerConfig();
 		springContainerConfig.setApplicationContext(applicationContext);
 		PlatformComponentVersionApplication platformComponentVersionApplication=new PlatformComponentVersionApplication();
-		new RequestInvokeContainer(
-				springContainerConfig,platformComponentVersionApplication);
-	
+		requestInvokeContainerDelegateService.newInstance(springContainerConfig, platformComponentVersionApplication);
 	}
 	
 }

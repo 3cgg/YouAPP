@@ -35,7 +35,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	private DESedeCipherService deSedeCipherService=
 			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
 	
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegate=
+	private RequestInvokeContainerDelegateService requestInvokeContainerDelegateService=
 			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
 	
 	
@@ -123,7 +123,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
 		boolean valid=webRequestURLCacheModel!=null;
 		if(!valid){
-			valid=valid||requestInvokeContainerDelegate.exist(resource);
+			valid=valid||requestInvokeContainerDelegateService.exist(resource);
 		}
 		return valid;
 	}

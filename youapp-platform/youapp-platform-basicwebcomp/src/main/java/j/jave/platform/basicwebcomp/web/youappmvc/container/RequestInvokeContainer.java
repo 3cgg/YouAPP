@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
+class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(RequestInvokeContainer.class);
 	
@@ -34,29 +34,16 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	
 	protected final SpringContainerConfig springContainerConfig;
 	
+	private final ComponentVersionApplication componentVersionApplication;
+	
 	public RequestInvokeContainer(SpringContainerConfig springContainerConfig,
 			ComponentVersionApplication componentVersionApplication) {
 		this.springContainerConfig=springContainerConfig;
+		this.componentVersionApplication=componentVersionApplication;
 		springContainerConfig.setName(componentVersionApplication.name());
 		springContainerConfig.setUnique(componentVersionApplication.unique());
 		this.name=springContainerConfig.getName();
 		this.unique=springContainerConfig.getUnique();
-		init(springContainerConfig,componentVersionApplication);
-		JContainerDelegate.get().register(this);
-	}
-	
-	private void init(SpringContainerConfig springContainerConfig,ComponentVersionApplication componentVersionApplication){
-		SpringCompMicroContainerConfig springCompMicroContainerConfig=
-				new SpringCompMicroContainerConfig();
-		springCompMicroContainerConfig.setUnique(componentVersionApplication.unique());
-		springCompMicroContainerConfig.setName(componentVersionApplication.name());
-		springCompMicroContainer=new SpringCompMicroContainer
-				(springContainerConfig,springCompMicroContainerConfig,componentVersionApplication);
-		ControllerMicroContainerConfig controllerMicroContainerConfig=
-				new ControllerMicroContainerConfig(springCompMicroContainer.getApplicationCotext());
-		controllerMicroContainerConfig.setName(componentVersionApplication.name());
-		controllerMicroContainerConfig.setUnique(componentVersionApplication.unique());
-		controllerMicroContainer=new ControllerMicroContainer(springContainerConfig, controllerMicroContainerConfig,componentVersionApplication);
 	}
 	
 	@Override
@@ -77,34 +64,35 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	@Override
 	public Object execute(URI uri, Object object) {
 		
-			if(Type.EXECUTE.value.equals(uri.getPath())){
+			if(Scheme.CONTROLLER.getValue().equals(uri.getScheme())
+					&&Type.EXECUTE.value.equals(uri.getPath())){
 				try{
-				String query= uri.getQuery();
-				Pattern pattern=Pattern.compile(REGX);
-				Matcher matcher=pattern.matcher(query);
-				String path=null;
-				String unique=null;
-				if(matcher.matches()){
-					unique=matcher.group(1);
-					path=matcher.group(2);
-				}
-				String controllerGetURI= getControllerRequestGetURI(unique, path);
-				MappingMeta mappingMeta= (MappingMeta) controllerMicroContainer.execute(new URI(controllerGetURI), object);
-				if(mappingMeta==null){
-					return ResponseModel.newError().setData("cannot find any controller for the path. "
-							+ " check if turn on multiple component version infrastructure (immutable version)."
-							+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
-				}
-				
-				String beanGetURI=getBeanRequestGetURI(unique, mappingMeta.getControllerName());
-				Object controllerObject=springCompMicroContainer.execute(new URI(beanGetURI), object);
-				if(controllerObject==null){
-					return ResponseModel.newError().setData("cannot find any controller for the path. "
-							+ " check if turn on multiple component version infrastructure (immutable version)."
-							+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
-				}
-				return ControllerExecutor.newSingleExecutor().execute((HttpContext)object,
-						mappingMeta, controllerObject);
+					String query= uri.getQuery();
+					Pattern pattern=Pattern.compile(REGX);
+					Matcher matcher=pattern.matcher(query);
+					String path=null;
+					String unique=null;
+					if(matcher.matches()){
+						unique=matcher.group(1);
+						path=matcher.group(2);
+					}
+					String controllerGetURI= URIUtil.getControllerRequestGetURI(unique, path);
+					MappingMeta mappingMeta= (MappingMeta) controllerMicroContainer.execute(new URI(controllerGetURI), object);
+					if(mappingMeta==null){
+						return ResponseModel.newError().setData("cannot find any controller for the path. "
+								+ " check if turn on multiple component version infrastructure (immutable version)."
+								+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
+					}
+					
+					String beanGetURI=URIUtil.getBeanRequestGetURI(unique, mappingMeta.getControllerName());
+					Object controllerObject=springCompMicroContainer.execute(new URI(beanGetURI), object);
+					if(controllerObject==null){
+						return ResponseModel.newError().setData("cannot find any controller for the path. "
+								+ " check if turn on multiple component version infrastructure (immutable version)."
+								+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
+					}
+					return ControllerExecutor.newSingleExecutor().execute((HttpContext)object,
+							mappingMeta, controllerObject);
 				}catch(Exception e){
 					LOGGER.error(e.getMessage(), e);
 					throw new RuntimeException(e);
@@ -122,36 +110,42 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		springCompMicroContainer.destroy();
+		controllerMicroContainer.destroy();
+		springCompMicroContainer=null;
+		controllerMicroContainer=null;
 	}
 
+	private void initializeSpringCompMicroContainer(){
+		SpringCompMicroContainerConfig springCompMicroContainerConfig=
+				new SpringCompMicroContainerConfig();
+		springCompMicroContainerConfig.setUnique(componentVersionApplication.unique());
+		springCompMicroContainerConfig.setName(componentVersionApplication.name());
+		springCompMicroContainer=new SpringCompMicroContainer
+				(springContainerConfig,springCompMicroContainerConfig,componentVersionApplication);
+		springCompMicroContainer.initialize();
+	}
+	
+	private void initializeControllerMicroContainer(){
+		ControllerMicroContainerConfig controllerMicroContainerConfig=
+				new ControllerMicroContainerConfig(springCompMicroContainer.getApplicationCotext());
+		controllerMicroContainerConfig.setName(componentVersionApplication.name());
+		controllerMicroContainerConfig.setUnique(componentVersionApplication.unique());
+		controllerMicroContainer=new ControllerMicroContainer(springContainerConfig, controllerMicroContainerConfig,componentVersionApplication);
+		controllerMicroContainer.initialize();
+	}
+	
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		initializeSpringCompMicroContainer();
+		initializeControllerMicroContainer();
+		JContainerDelegate.get().register(this);
 	}
 
 	@Override
 	public void restart() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public static final String getControllerRequestGetURI(String unique,String path){
-		return ControllerMicroContainer.getGetRequest(unique, path);
-	}
-	
-	public static final String getControllerRequestExistURI(String unique,String path){
-		return ControllerMicroContainer.getExistRequest(unique, path);
-	}
-	
-	public static final String getControllerRequestPutURI(String unique,String path){
-		return ControllerMicroContainer.getPutRequest(unique, path);
-	}
-
-	public static final String getBeanRequestGetURI(String unique,String beanName){
-		return SpringCompMicroContainer.getGetRequest(unique, beanName);
+		springCompMicroContainer.restart();
+		controllerMicroContainer.restart();
 	}
 	
 	public static enum Type{
@@ -175,15 +169,32 @@ public class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	/**
 	 * controller://get?unique=%s&path=%s
 	 */
-	private static final String EXECUTE=Scheme.EXECUTE.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
+	private static final String EXECUTE=Scheme.CONTROLLER.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
 	
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
 	 */
 	private static final String REGX=ControllerRunner.REGX;
 	
-	public static String getRequestExecuteURI(String unique,String path){
-		return String.format(EXECUTE,Type.EXECUTE.value,unique,path);
+	public static class URIUtil{
+		public static final String getControllerRequestGetURI(String unique,String path){
+			return ControllerMicroContainer.getGetRequest(unique, path);
+		}
+		
+		public static final String getControllerRequestExistURI(String unique,String path){
+			return ControllerMicroContainer.getExistRequest(unique, path);
+		}
+		
+		public static final String getControllerRequestPutURI(String unique,String path){
+			return ControllerMicroContainer.getPutRequest(unique, path);
+		}
+
+		public static final String getBeanRequestGetURI(String unique,String beanName){
+			return SpringCompMicroContainer.getGetRequest(unique, beanName);
+		}
+		
+		public static String getRequestExecuteURI(String unique,String path){
+			return String.format(EXECUTE,Type.EXECUTE.value,unique,path);
+		}
 	}
-	
 }

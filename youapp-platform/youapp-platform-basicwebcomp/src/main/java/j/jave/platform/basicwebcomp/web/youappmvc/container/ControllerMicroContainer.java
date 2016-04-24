@@ -8,9 +8,13 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
-public class ControllerMicroContainer implements MicroContainer{
+class ControllerMicroContainer implements MicroContainer{
 
+	private SpringContainerConfig springContainerConfig;
+	
 	private ControllerMicroContainerConfig controllerMicroContainerConfig;
+	
+	private ComponentVersionApplication componentVersionApplication;
 	
 	private ControllerRunner controllerRunner;
 	
@@ -22,12 +26,9 @@ public class ControllerMicroContainer implements MicroContainer{
 			ControllerMicroContainerConfig controllerMicroContainerConfig,
 			ComponentVersionApplication componentVersionApplication
 			) {
+		this.springContainerConfig=springContainerConfig;
 		this.controllerMicroContainerConfig=controllerMicroContainerConfig;
-		ControllerRunnerLoader controllerRunnerLoader=new ControllerRunnerLoader(
-				controllerMicroContainerConfig.getApplicationContext(),controllerMicroContainerConfig
-				,componentVersionApplication
-				);
-		this.controllerRunner=(ControllerRunner) controllerRunnerLoader.load(controllerMicroContainerConfig);
+		this.componentVersionApplication=componentVersionApplication;
 		this.name=controllerMicroContainerConfig.getName();
 		this.unique=controllerMicroContainerConfig.getUnique();
 	}
@@ -54,8 +55,11 @@ public class ControllerMicroContainer implements MicroContainer{
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		ControllerRunnerLoader controllerRunnerLoader=new ControllerRunnerLoader(
+				controllerMicroContainerConfig.getApplicationContext(),controllerMicroContainerConfig
+				,componentVersionApplication
+				);
+		this.controllerRunner=(ControllerRunner) controllerRunnerLoader.load(controllerMicroContainerConfig);
 	}
 
 	@Override

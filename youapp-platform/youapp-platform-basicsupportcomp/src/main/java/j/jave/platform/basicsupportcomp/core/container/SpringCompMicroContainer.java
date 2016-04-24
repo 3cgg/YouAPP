@@ -11,7 +11,11 @@ import org.springframework.context.ApplicationContext;
 
 public class SpringCompMicroContainer implements MicroContainer{
 
+	private SpringContainerConfig springContainerConfig;
+	
 	private SpringCompMicroContainerConfig springCompMicroContainerConfig;
+	
+	private ComponentVersionApplication componentVersionApplication;
 	
 	private JSpringCompRunner springCompRunner;
 	
@@ -23,19 +27,9 @@ public class SpringCompMicroContainer implements MicroContainer{
 			SpringContainerConfig springContainerConfig,
 			SpringCompMicroContainerConfig springCompMicroContainerConfig,
 			ComponentVersionApplication componentVersionApplication) {
+		this.springContainerConfig=springContainerConfig;
 		this.springCompMicroContainerConfig=springCompMicroContainerConfig;
-		
-		if(DynamicSpringContainerConfig.class.isInstance(springContainerConfig)){
-			DynamicSpringContainerConfig dynamicSpringContainerConfig=(DynamicSpringContainerConfig)springContainerConfig;
-			JDynamicSpringCompRunnerLoader springCompRunnerLoader=new JDynamicSpringCompRunnerLoader(
-					dynamicSpringContainerConfig.getApplicationContext(), dynamicSpringContainerConfig.getJarUrls(),springCompMicroContainerConfig);
-			springCompRunner=(JSpringCompRunner) springCompRunnerLoader.load(springCompMicroContainerConfig);
-		}
-		else{
-			springCompRunner=new JSpringCompRunner(springContainerConfig.getApplicationContext(),
-					componentVersionApplication, springCompMicroContainerConfig);
-		}
-		
+		this.componentVersionApplication=componentVersionApplication;
 		this.name=springCompMicroContainerConfig.getName();
 		this.unique=springCompMicroContainerConfig.getUnique();
 	}
@@ -62,8 +56,16 @@ public class SpringCompMicroContainer implements MicroContainer{
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		if(DynamicSpringContainerConfig.class.isInstance(springContainerConfig)){
+			DynamicSpringContainerConfig dynamicSpringContainerConfig=(DynamicSpringContainerConfig)springContainerConfig;
+			JDynamicSpringCompRunnerLoader springCompRunnerLoader=new JDynamicSpringCompRunnerLoader(
+					dynamicSpringContainerConfig.getApplicationContext(), dynamicSpringContainerConfig.getJarUrls(),springCompMicroContainerConfig);
+			springCompRunner=(JSpringCompRunner) springCompRunnerLoader.load(springCompMicroContainerConfig);
+		}
+		else{
+			springCompRunner=new JSpringCompRunner(springContainerConfig.getApplicationContext(),
+					componentVersionApplication, springCompMicroContainerConfig);
+		}
 	}
 
 	@Override

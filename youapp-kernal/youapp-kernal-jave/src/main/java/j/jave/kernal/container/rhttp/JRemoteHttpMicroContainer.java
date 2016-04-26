@@ -1,12 +1,13 @@
 package j.jave.kernal.container.rhttp;
 
+import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
 
 import java.net.URI;
 
-class JRemoteHttpMicroContainer implements MicroContainer{
+class JRemoteHttpMicroContainer implements MicroContainer,JExecutableURIGenerator{
 
 	private JRemoteHttpContainerConfig remoteHttpContainerConfig;
 	
@@ -29,12 +30,12 @@ class JRemoteHttpMicroContainer implements MicroContainer{
 	
 	@Override
 	public boolean accept(URI uri) {
-		return false;
+		return this.remoteHttpRunner.accept(uri);
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		return null;
+		return this.remoteHttpRunner.execute(uri, object);
 	}
 
 	@Override
@@ -84,18 +85,25 @@ class JRemoteHttpMicroContainer implements MicroContainer{
 	public void setContainerConfig(MicroContainerConfig containerConfig) {
 		this.remoteHttpMicroContainerConfig= (JRemoteHttpMicroContainerConfig)containerConfig;
 	}
-	
-//	static final String getGetRequest(String unique,String path){
-//		return ControllerRunner.getGetRequest(unique, path);
-//	}
-//
-//	static final String getPutRequest(String unique,String path){
-//		return ControllerRunner.getPutRequest(unique, path);
-//	}
-//	
-//	static final String getExistRequest(String unique,String path){
-//		return ControllerRunner.getExistRequest(unique, path);
-//	}
-	
+
+	@Override
+	public String getGetRequestURI(String unique, String path) {
+		return remoteHttpRunner.getGetRequestURI(unique, path);
+	}
+
+	@Override
+	public String getPutRequestURI(String unique, String path) {
+		return remoteHttpRunner.getPutRequestURI(unique, path);
+	}
+
+	@Override
+	public String getDeleteRequestURI(String unique, String path) {
+		return remoteHttpRunner.getDeleteRequestURI(unique, path);
+	}
+
+	@Override
+	public String getExistRequestURI(String unique, String path) {
+		return remoteHttpRunner.getExistRequestURI(unique, path);
+	}
 	
 }

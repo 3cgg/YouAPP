@@ -1,5 +1,6 @@
 package j.jave.platform.basicsupportcomp.core.container;
 
+import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
@@ -9,7 +10,7 @@ import java.net.URI;
 
 import org.springframework.context.ApplicationContext;
 
-public class SpringCompMicroContainer implements MicroContainer{
+public class SpringCompMicroContainer implements MicroContainer ,JExecutableURIGenerator{
 
 	private SpringContainerConfig springContainerConfig;
 	
@@ -107,8 +108,24 @@ public class SpringCompMicroContainer implements MicroContainer{
 	public ComponentVersionApplication getComponentVersionApplication() {
 		return springCompRunner.getComponentVersionApplication();
 	}
-	
-	public static final String getGetRequest(String unique,String beanName){
-		return JSpringCompRunner.getGetRequest(unique, beanName);
+
+	@Override
+	public String getGetRequestURI(String unique, String path) {
+		return springCompRunner.getGetRequestURI(unique, path);
+	}
+
+	@Override
+	public String getPutRequestURI(String unique, String path) {
+		return springCompRunner.getPutRequestURI(unique, path);
+	}
+
+	@Override
+	public String getDeleteRequestURI(String unique, String path) {
+		return springCompRunner.getDeleteRequestURI(unique, path);
+	}
+
+	@Override
+	public String getExistRequestURI(String unique, String path) {
+		return springCompRunner.getExistRequestURI(unique, path);
 	}
 }

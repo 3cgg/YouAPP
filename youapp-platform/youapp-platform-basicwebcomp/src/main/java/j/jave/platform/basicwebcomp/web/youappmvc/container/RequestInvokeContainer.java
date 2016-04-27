@@ -2,6 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
+import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutor;
 import j.jave.kernal.container.JIdentifier;
 import j.jave.kernal.container.Scheme;
@@ -17,8 +18,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
@@ -65,18 +64,11 @@ class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 	public Object execute(URI uri, Object object) {
 		
 			if(Scheme.CONTROLLER.getValue().equals(uri.getScheme())
-					&&Type.EXECUTE.value.equals(uri.getPath())){
+					&&JExecutableURIUtil.Type.EXECUTE.getValue().equals(uri.getPath())){
 				try{
-					String query= uri.getQuery();
-					Pattern pattern=Pattern.compile(REGX);
-					Matcher matcher=pattern.matcher(query);
-					String path=null;
-					String unique=null;
-					if(matcher.matches()){
-						unique=matcher.group(1);
-						path=matcher.group(2);
-					}
-					String controllerGetURI= URIUtil.getControllerRequestGetURI(unique, path);
+					String path=JExecutableURIUtil.getPath(uri);
+					String unique=JExecutableURIUtil.getUnique(uri);
+					String controllerGetURI=controllerMicroContainer.getGetRequestURI(unique, path);
 					MappingMeta mappingMeta= (MappingMeta) controllerMicroContainer.execute(new URI(controllerGetURI), object);
 					if(mappingMeta==null){
 						return ResponseModel.newError().setData("cannot find any controller for the path. "
@@ -84,7 +76,7 @@ class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 								+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
 					}
 					
-					String beanGetURI=URIUtil.getBeanRequestGetURI(unique, mappingMeta.getControllerName());
+					String beanGetURI=springCompMicroContainer.getGetRequestURI(unique, mappingMeta.getControllerName());
 					Object controllerObject=springCompMicroContainer.execute(new URI(beanGetURI), object);
 					if(controllerObject==null){
 						return ResponseModel.newError().setData("cannot find any controller for the path. "
@@ -148,53 +140,20 @@ class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 		controllerMicroContainer.restart();
 	}
 	
-	public static enum Type{
-		
-		EXECUTE("/execute");
-		
-		private String value;
-		
-		Type(String value){
-			this.value=value;
-		}
-		public String getValue() {
-			return value;
-		}
+	public String getGetRequestURI(String unique, String path) {
+		return controllerMicroContainer.getGetRequestURI(unique, path);
 	}
 
-	private static final String UNIQUE="unique";
-	
-	private static final String PATH="path";
-	
-	/**
-	 * controller://get?unique=%s&path=%s
-	 */
-	private static final String EXECUTE=Scheme.CONTROLLER.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
-	
-	/**
-	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
-	 */
-	private static final String REGX=ControllerRunner.REGX;
-	
-	public static class URIUtil{
-		public static final String getControllerRequestGetURI(String unique,String path){
-			return ControllerMicroContainer.getGetRequest(unique, path);
-		}
-		
-		public static final String getControllerRequestExistURI(String unique,String path){
-			return ControllerMicroContainer.getExistRequest(unique, path);
-		}
-		
-		public static final String getControllerRequestPutURI(String unique,String path){
-			return ControllerMicroContainer.getPutRequest(unique, path);
-		}
-
-		public static final String getBeanRequestGetURI(String unique,String beanName){
-			return SpringCompMicroContainer.getGetRequest(unique, beanName);
-		}
-		
-		public static String getRequestExecuteURI(String unique,String path){
-			return String.format(EXECUTE,Type.EXECUTE.value,unique,path);
-		}
+	public String getPutRequestURI(String unique, String path) {
+		return controllerMicroContainer.getPutRequestURI(unique, path);
 	}
+
+	public String getDeleteRequestURI(String unique, String path) {
+		return controllerMicroContainer.getDeleteRequestURI(unique, path);
+	}
+
+	public String getExistRequestURI(String unique, String path) {
+		return controllerMicroContainer.getExistRequestURI(unique, path);
+	}
+
 }

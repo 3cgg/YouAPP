@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
+import j.jave.kernal.container.JExecutableURIGenerator;
+import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.Scheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
@@ -10,12 +12,10 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.context.ApplicationContext;
 
-class ControllerRunner implements JRunner {
+class ControllerRunner implements JRunner, JExecutableURIGenerator {
 
 	private String unique;
 	
@@ -48,77 +48,27 @@ class ControllerRunner implements JRunner {
 	public String name() {
 		return name;
 	}
-	
-	public static enum Type{
-		
-		GET("/get"),PUT("/put"),DELETE("/delete"),EXIST("/exist");
-		
-		private String value;
-		
-		Type(String value){
-			this.value=value;
-		}
-		public String getValue() {
-			return value;
-		}
-	}
-	
-	private static final String UNIQUE="unique";
-	
-	private static final String PATH="path";
-	
-	/**
-	 * controller://get/put/delete?unique=%s&path=%s
-	 */
-	private static final String URI=Scheme.CONTROLLER.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
-	
-	/**
-	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
-	 */
-	public static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.]+)&"+PATH+"=([a-zA-Z:0-9_/]+)$";
-	
-//	private static final String PUT=Scheme.CONTROLLER.getValue()+"://put?unique={}&path={}";
-	
-	static final String getGetRequest(String unique,String path){
-		return String.format(URI,Type.GET.getValue(),unique,path);
-	}
-	
-	static final String getExistRequest(String unique,String path){
-		return String.format(URI,Type.EXIST.getValue(),unique,path);
-	}
-	
-	static final String getPutRequest(String unique,String path){
-		return String.format(URI,Type.PUT.getValue(),unique,path);
-	}
-	
+
 	@Override
 	public final boolean accept(URI uri) {
 		boolean accept= Scheme.CONTROLLER.getValue().equals(uri.getScheme());
-		String query= uri.getQuery();
-		Pattern pattern=Pattern.compile(REGX);
-		Matcher matcher=pattern.matcher(query);
-		String unique=null;
-		String path=null;
-		if(matcher.matches()){
-			unique=matcher.group(1);
-			path=matcher.group(2);
-		}
+		String unique=JExecutableURIUtil.getUnique(uri);
 		return accept=accept&&unique.equals(unique);
 	}
 
 	@Override
 	public Object execute(URI uri,Object object) {
 		String type=uri.getPath();
-		if(Type.GET.value.equals(type)){
+		if(JExecutableURIUtil.Type.GET.getValue().equals(type)){
 			return get(uri, object);
 		}
-		else if(Type.PUT.value.equals(type)){
+		else if(JExecutableURIUtil.Type.PUT.getValue().equals(type)){
 			return put(uri, object);
 		}
-		else if(Type.EXIST.value.equals(type)){
+		else if(JExecutableURIUtil.Type.EXIST.getValue().equals(type)){
 			return exist(uri, object);
 		}
-		else if(Type.DELETE.value.equals(type)){
+		else if(JExecutableURIUtil.Type.DELETE.getValue().equals(type)){
 			return delete(uri, object);
 		}
 		
@@ -142,19 +92,32 @@ class ControllerRunner implements JRunner {
 	}
 
 	private String getPath(URI uri) {
-		String query= uri.getQuery();
-		Pattern pattern=Pattern.compile(REGX);
-		Matcher matcher=pattern.matcher(query);
-		String path=null;
-		if(matcher.matches()){
-			path=matcher.group(2);
-		}
-		return path;
+		return JExecutableURIUtil.getPath(uri);
 	}
 	
 	private Object get(URI uri,Object object){
 		String path = getPath(uri);
 		return mappingMetas.get(path);
+	}
+
+	@Override
+	public String getGetRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.CONTROLLER);
+	}
+
+	@Override
+	public String getPutRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.CONTROLLER);
+	}
+
+	@Override
+	public String getDeleteRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getDeleteRequestURI(unique, path, Scheme.CONTROLLER);
+	}
+
+	@Override
+	public String getExistRequestURI(String unique, String path) {
+		return  JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.CONTROLLER);
 	}
 	
 }

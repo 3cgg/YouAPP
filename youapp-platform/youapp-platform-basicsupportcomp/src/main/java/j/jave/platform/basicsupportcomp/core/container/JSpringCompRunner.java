@@ -1,17 +1,17 @@
 package j.jave.platform.basicsupportcomp.core.container;
 
+import j.jave.kernal.container.JExecutableURIGenerator;
+import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.Scheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.context.ApplicationContext;
 
-public class JSpringCompRunner implements JRunner {
+public class JSpringCompRunner implements JRunner,JExecutableURIGenerator {
 
 	private String unique;
 	
@@ -42,36 +42,7 @@ public class JSpringCompRunner implements JRunner {
 	public ComponentVersionApplication getComponentVersionApplication() {
 		return componentVersionApplication;
 	}
-	
-	public static enum Type{
-		
-		GET("/get"),PUT("/put"),DELETE("/delete");
-		
-		private String value;
-		
-		Type(String value){
-			this.value=value;
-		}
-		public String getValue() {
-			return value;
-		}
-	}
 
-	private static final String UNIQUE="unique";
-	
-	private static final String BEAN_NAME="beanName";
-	
-	/**
-	 * controller://get?unique=%s&beanName=%s
-	 */
-	private static final String URI=Scheme.BEAN.getValue()+"://localhost%s?"+UNIQUE+"=%s&"+BEAN_NAME+"=%s";
-	
-	/**
-	 * ^unique=([a-zA-Z:0-9_]+)&beanName=([a-zA-Z:0-9_]+)$
-	 */
-	private static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.]+)&"+BEAN_NAME+"=([a-zA-Z:0-9_./]+)$";
-	
-//	private static final String PUT=Scheme.CONTROLLER.getValue()+"://put?unique={}&path={}";
 	
 	@Override
 	public boolean accept(URI uri) {
@@ -82,7 +53,7 @@ public class JSpringCompRunner implements JRunner {
 	@Override
 	public Object execute(URI uri,Object object) {
 		String type=uri.getPath();
-		if(Type.GET.value.equals(type)){
+		if(JExecutableURIUtil.Type.GET.getValue().equals(type)){
 			return getBean(uri, object);
 		}
 		throw new JOperationNotSupportedException(" the uri ["+uri.toString()+"] not supported."); 
@@ -94,22 +65,31 @@ public class JSpringCompRunner implements JRunner {
 	}
 
 	private String getBeanName(URI uri) {
-		String beanName=null;
-		String query= uri.getQuery();
-		Pattern pattern=Pattern.compile(REGX);
-		Matcher matcher=pattern.matcher(query);
-		if(matcher.matches()){
-			beanName=matcher.group(2);
-		}
-		return beanName;
-	}
-	
-	static final String getGetRequest(String unique,String path){
-		return String.format(URI,Type.GET.getValue(), unique,path);
+		return JExecutableURIUtil.getPath(uri);
 	}
 	
 	public ApplicationContext getApplicationContext() {
 		return applicationContext;
+	}
+
+	@Override
+	public String getGetRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.BEAN);
+	}
+
+	@Override
+	public String getPutRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.BEAN);
+	}
+
+	@Override
+	public String getDeleteRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getDeleteRequestURI(unique, path, Scheme.BEAN);
+	}
+
+	@Override
+	public String getExistRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.BEAN);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
+import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.MicroContainer;
 import j.jave.kernal.container.MicroContainerConfig;
@@ -8,7 +9,7 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
-class ControllerMicroContainer implements MicroContainer{
+class ControllerMicroContainer implements MicroContainer,JExecutableURIGenerator{
 
 	private SpringContainerConfig springContainerConfig;
 	
@@ -93,17 +94,25 @@ class ControllerMicroContainer implements MicroContainer{
 	public void setContainerConfig(MicroContainerConfig containerConfig) {
 		this.controllerMicroContainerConfig= (ControllerMicroContainerConfig) containerConfig;
 	}
-	
-	static final String getGetRequest(String unique,String path){
-		return ControllerRunner.getGetRequest(unique, path);
+
+	@Override
+	public String getGetRequestURI(String unique, String path) {
+		return controllerRunner.getGetRequestURI(unique, path);
 	}
 
-	static final String getPutRequest(String unique,String path){
-		return ControllerRunner.getPutRequest(unique, path);
+	@Override
+	public String getPutRequestURI(String unique, String path) {
+		return controllerRunner.getPutRequestURI(unique, path);
 	}
-	
-	static final String getExistRequest(String unique,String path){
-		return ControllerRunner.getExistRequest(unique, path);
+
+	@Override
+	public String getDeleteRequestURI(String unique, String path) {
+		return controllerRunner.getDeleteRequestURI(unique, path);
+	}
+
+	@Override
+	public String getExistRequestURI(String unique, String path) {
+		return controllerRunner.getExistRequestURI(unique, path);
 	}
 	
 	

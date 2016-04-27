@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.core.service.SessionUser;
 import j.jave.platform.basicwebcomp.web.util.ClassProvidedMappingDetector;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 
 import java.net.URI;
@@ -41,8 +41,8 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	
 	private String beanName;
 	
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegate=
-			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	private HttpInvokeContainerDelegateService requestInvokeContainerDelegate=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
 	@Override
 	public final void setBeanName(String name) {
@@ -135,7 +135,7 @@ public abstract class ControllerSupport implements YouappController,Initializing
 				springDynamicJARApplicationCotext.putMappingMeta(meta);
 			}
 			else{
-				requestInvokeContainerDelegate.execute(new URI(RequestInvokeContainerDelegateService.getControllerRequestPutURI(unique, meta.getPath())
+				requestInvokeContainerDelegate.execute(new URI(HttpInvokeContainerDelegateService.getControllerRequestPutURI(unique, meta.getPath())
 				), meta, unique);
 			}
 		}

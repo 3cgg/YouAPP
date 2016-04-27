@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service(value="PLATFORM_REQEUST_INVOKE_CONTAINER_INITIALIZE_BEAN")
 public class PlatformRequestInvokeContainerInitializeBean implements ApplicationContextAware {
 
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegateService=
-			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	private HttpInvokeContainerDelegateService requestInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
 	private ApplicationContext applicationContext;
 	

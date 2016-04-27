@@ -2,12 +2,12 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
+import j.jave.kernal.container.JExecutableURIUtil;
+import j.jave.kernal.container.Scheme;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
-import j.jave.platform.basicsupportcomp.core.container.SpringCompMicroContainer;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainer.URIUtil;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
@@ -15,23 +15,23 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 
-public class RequestInvokeContainerDelegateService
-extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements JService
-{
+public class HttpInvokeContainerDelegateService
+extends JServiceFactorySupport<HttpInvokeContainerDelegateService> 
+implements JService{
 
 	private JContainerDelegate containerDelegate=JContainerDelegate.get();
 	
-	private static RequestInvokeContainerDelegateService requestInvokeContainerDelegate=new RequestInvokeContainerDelegateService();
+	private static HttpInvokeContainerDelegateService requestInvokeContainerDelegate=new HttpInvokeContainerDelegateService();
 	
-	public RequestInvokeContainerDelegateService() {
+	public HttpInvokeContainerDelegateService() {
 	}
 	
-	private static RequestInvokeContainerDelegateService get(){
+	private static HttpInvokeContainerDelegateService get(){
 		return requestInvokeContainerDelegate;
 	}
 	
 	@Override
-	public RequestInvokeContainerDelegateService getService() {
+	public HttpInvokeContainerDelegateService getService() {
 		return get();
 	}
 	
@@ -68,7 +68,7 @@ extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements
 	}
 	
 	public boolean exist(String path,String containerUnique){
-		String existURI=URIUtil.getControllerRequestExistURI(containerUnique, path);
+		String existURI=getExistRequestURI(containerUnique, path);
 		try {
 			return (boolean) containerDelegate.execute(new URI(existURI), null, containerUnique, false);
 		} catch (URISyntaxException e) {
@@ -97,7 +97,7 @@ extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements
 	 * @return the container unique
 	 */
 	public String newInstance(DynamicSpringContainerConfig dynamicSpringContainerConfig,DynamicComponentVersionApplication dynamicComponentVersionApplication){
-		JContainer container=new RequestInvokeContainer(dynamicSpringContainerConfig,dynamicComponentVersionApplication);
+		JContainer container=new InnerHttpInvokeContainer(dynamicSpringContainerConfig,dynamicComponentVersionApplication);
 		container.initialize();
 		return container.unique();
 	}
@@ -109,29 +109,33 @@ extends JServiceFactorySupport<RequestInvokeContainerDelegateService> implements
 	 * @return
 	 */
 	public String newInstance(SpringContainerConfig springContainerConfig,PlatformComponentVersionApplication platformComponentVersionApplication){
-		JContainer container=new RequestInvokeContainer(springContainerConfig,platformComponentVersionApplication);
+		JContainer container=new InnerHttpInvokeContainer(springContainerConfig,platformComponentVersionApplication);
 		container.initialize();
 		return container.unique();
 	}
 	
 	public static final String getControllerRequestGetURI(String unique,String path){
-		return ControllerMicroContainer.getGetRequest(unique, path);
+		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.CONTROLLER);
 	}
 	
 	public static final String getControllerRequestExistURI(String unique,String path){
-		return ControllerMicroContainer.getExistRequest(unique, path);
+		return JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.CONTROLLER);
 	}
 	
 	public static final String getControllerRequestPutURI(String unique,String path){
-		return ControllerMicroContainer.getPutRequest(unique, path);
+		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.CONTROLLER);
 	}
 
 	public static final String getBeanRequestGetURI(String unique,String beanName){
-		return SpringCompMicroContainer.getGetRequest(unique, beanName);
+		return JExecutableURIUtil.getGetRequestURI(unique, beanName, Scheme.BEAN);
+	}
+
+	public String getExistRequestURI(String unique, String path) {
+		return new BaseHttpURLExpose(unique, path).getExistRequestURI();
 	}
 	
-	public static String getRequestExecuteURI(String unique,String path){
-		return RequestInvokeContainer.URIUtil.getRequestExecuteURI(unique, path);
+	public String getExecuteRequestURI(String unique, String path){
+		return new BaseHttpURLExpose(unique, path).getExecuteRequestURI();
 	}
 	
 	

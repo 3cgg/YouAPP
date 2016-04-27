@@ -19,9 +19,9 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
-class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
+class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(RequestInvokeContainer.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(InnerHttpInvokeContainer.class);
 	
 	private String unique;
 	
@@ -35,7 +35,7 @@ class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
-	public RequestInvokeContainer(SpringContainerConfig springContainerConfig,
+	public InnerHttpInvokeContainer(SpringContainerConfig springContainerConfig,
 			ComponentVersionApplication componentVersionApplication) {
 		this.springContainerConfig=springContainerConfig;
 		this.componentVersionApplication=componentVersionApplication;
@@ -140,20 +140,24 @@ class RequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
 		controllerMicroContainer.restart();
 	}
 	
-	public String getGetRequestURI(String unique, String path) {
+	public String getControllerGetRequestURI(String unique, String path) {
 		return controllerMicroContainer.getGetRequestURI(unique, path);
 	}
 
-	public String getPutRequestURI(String unique, String path) {
+	public String getControllerPutRequestURI(String unique, String path) {
 		return controllerMicroContainer.getPutRequestURI(unique, path);
 	}
 
-	public String getDeleteRequestURI(String unique, String path) {
+	public String getControllerDeleteRequestURI(String unique, String path) {
 		return controllerMicroContainer.getDeleteRequestURI(unique, path);
 	}
 
-	public String getExistRequestURI(String unique, String path) {
+	public String getControllerExistRequestURI(String unique, String path) {
 		return controllerMicroContainer.getExistRequestURI(unique, path);
 	}
 
+	public String getExecuteRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getExecuteRequestURI(unique, path, Scheme.CONTROLLER);
+	}
+	
 }

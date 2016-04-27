@@ -4,7 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value="/dynamicloader")
 public class DynamicLoaderController extends ControllerSupport {
 	
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegateService=
-			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	private HttpInvokeContainerDelegateService requestInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
 	@ResponseBody
 	@RequestMapping(value="/loadjar")

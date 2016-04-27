@@ -7,7 +7,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 
 import java.net.URI;
@@ -21,8 +21,8 @@ public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 	
 	private JServletViewHandler servletViewHandler=new JSONServletViewHandler();
 	
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegate=
-			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	private HttpInvokeContainerDelegateService httpInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
@@ -38,8 +38,8 @@ public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 			httpContext.setTargetPath(target);
 			httpContext.setUnique(servletRequestInvocation.getUnique());
 			Object navigate=
-					requestInvokeContainerDelegate.execute(
-							new URI(RequestInvokeContainerDelegateService.getRequestExecuteURI(httpContext.getUnique(), httpContext.getTargetPath()))
+					httpInvokeContainerDelegateService.execute(
+							new URI(httpInvokeContainerDelegateService.getExecuteRequestURI(httpContext.getUnique(), httpContext.getTargetPath()))
 							,httpContext,httpContext.getUnique());
 					
 			if(LOGGER.isDebugEnabled()){

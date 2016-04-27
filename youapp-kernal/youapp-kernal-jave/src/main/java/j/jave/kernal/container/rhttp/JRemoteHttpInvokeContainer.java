@@ -16,9 +16,9 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class JRemoteRequestInvokeContainer implements JExecutor,JIdentifier,JContainer {
+public class JRemoteHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(JRemoteRequestInvokeContainer.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JRemoteHttpInvokeContainer.class);
 	
 	private String unique;
 	
@@ -28,7 +28,7 @@ class JRemoteRequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 	
 	protected final JRemoteHttpContainerConfig remoteHttpContainerConfig;
 	
-	public JRemoteRequestInvokeContainer(JRemoteHttpContainerConfig remoteHttpContainerConfig) {
+	public JRemoteHttpInvokeContainer(JRemoteHttpContainerConfig remoteHttpContainerConfig) {
 		this.remoteHttpContainerConfig=remoteHttpContainerConfig;
 		this.name=remoteHttpContainerConfig.name();
 		this.unique=remoteHttpContainerConfig.unique();
@@ -128,20 +128,24 @@ class JRemoteRequestInvokeContainer implements JExecutor,JIdentifier,JContainer 
 		remoteHttpMicroContainer.restart();
 	}
 
-	public String getGetRequestURI(String unique, String path) {
+	public String getURLGetRequestURI(String unique, String path) {
 		return remoteHttpMicroContainer.getGetRequestURI(unique, path);
 	}
 
-	public String getPutRequestURI(String unique, String path) {
+	public String getURLPutRequestURI(String unique, String path) {
 		return remoteHttpMicroContainer.getPutRequestURI(unique, path);
 	}
 
-	public String getDeleteRequestURI(String unique, String path) {
+	public String getURLDeleteRequestURI(String unique, String path) {
 		return remoteHttpMicroContainer.getDeleteRequestURI(unique, path);
 	}
 
-	public String getExistRequestURI(String unique, String path) {
+	public String getURLExistRequestURI(String unique, String path) {
 		return remoteHttpMicroContainer.getExistRequestURI(unique, path);
+	}
+	
+	public String getExecuteRequestURI(String unique, String path) {
+		return JExecutableURIUtil.getExecuteRequestURI(unique, path, Scheme.REMOTE_HTTP);
 	}
 	
 }

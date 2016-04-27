@@ -13,7 +13,7 @@ import j.jave.platform.basicwebcomp.WebCompProperties;
 import j.jave.platform.basicwebcomp.core.service.SessionUserImpl;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.RequestInvokeContainerDelegateService;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 
 import java.util.List;
 
@@ -35,8 +35,8 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	private DESedeCipherService deSedeCipherService=
 			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
 	
-	private RequestInvokeContainerDelegateService requestInvokeContainerDelegateService=
-			JServiceHubDelegate.get().getService(this,RequestInvokeContainerDelegateService.class);
+	private HttpInvokeContainerDelegateService httpInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
 	
 	@Override
@@ -123,7 +123,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		WebRequestURLCacheModel webRequestURLCacheModel=   webRequestURLCacheService.get(resource);
 		boolean valid=webRequestURLCacheModel!=null;
 		if(!valid){
-			valid=valid||requestInvokeContainerDelegateService.exist(resource);
+			valid=valid||httpInvokeContainerDelegateService.exist(resource);
 		}
 		return valid;
 	}

@@ -3,7 +3,7 @@ package j.jave.platform.basicsupportcomp.core.container;
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
@@ -11,7 +11,7 @@ import java.net.URI;
 
 import org.springframework.context.ApplicationContext;
 
-public class JSpringCompRunner implements JRunner,JExecutableURIGenerator {
+public class SpringCompRunner implements JRunner,JExecutableURIGenerator {
 
 	private String unique;
 	
@@ -23,7 +23,7 @@ public class JSpringCompRunner implements JRunner,JExecutableURIGenerator {
 	
 	private final SpringCompMicroContainerConfig springCompMicroContainerConfig;
 	
-	public JSpringCompRunner(ApplicationContext applicationContext,ComponentVersionApplication componentVersionApplication,SpringCompMicroContainerConfig springCompMicroContainerConfig) {
+	public SpringCompRunner(ApplicationContext applicationContext,ComponentVersionApplication componentVersionApplication,SpringCompMicroContainerConfig springCompMicroContainerConfig) {
 		this.applicationContext=applicationContext;
 		this.componentVersionApplication=componentVersionApplication;
 		this.springCompMicroContainerConfig=springCompMicroContainerConfig;
@@ -46,7 +46,7 @@ public class JSpringCompRunner implements JRunner,JExecutableURIGenerator {
 	
 	@Override
 	public boolean accept(URI uri) {
-		boolean accept= Scheme.BEAN.getValue().equals(uri.getScheme());
+		boolean accept= JScheme.BEAN.getValue().equals(uri.getScheme());
 		return accept;
 	}
 
@@ -74,22 +74,22 @@ public class JSpringCompRunner implements JRunner,JExecutableURIGenerator {
 
 	@Override
 	public String getGetRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.BEAN);
+		return JExecutableURIUtil.getGetRequestURI(unique, path, JScheme.BEAN);
 	}
 
 	@Override
 	public String getPutRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.BEAN);
+		return JExecutableURIUtil.getPutRequestURI(unique, path, JScheme.BEAN);
 	}
 
 	@Override
 	public String getDeleteRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getDeleteRequestURI(unique, path, Scheme.BEAN);
+		return JExecutableURIUtil.getDeleteRequestURI(unique, path, JScheme.BEAN);
 	}
 
 	@Override
 	public String getExistRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.BEAN);
+		return JExecutableURIUtil.getExistRequestURI(unique, path, JScheme.BEAN);
 	}
 	
 }

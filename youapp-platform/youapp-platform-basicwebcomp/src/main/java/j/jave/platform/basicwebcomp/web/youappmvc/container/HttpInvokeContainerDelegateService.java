@@ -3,7 +3,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.JExecutableURIUtil;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
@@ -115,19 +115,19 @@ implements JService{
 	}
 	
 	public static final String getControllerRequestGetURI(String unique,String path){
-		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getGetRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
 	public static final String getControllerRequestExistURI(String unique,String path){
-		return JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getExistRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
 	public static final String getControllerRequestPutURI(String unique,String path){
-		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getPutRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 
 	public static final String getBeanRequestGetURI(String unique,String beanName){
-		return JExecutableURIUtil.getGetRequestURI(unique, beanName, Scheme.BEAN);
+		return JExecutableURIUtil.getGetRequestURI(unique, beanName, JScheme.BEAN);
 	}
 
 	public String getExistRequestURI(String unique, String path) {

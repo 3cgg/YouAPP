@@ -3,7 +3,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
@@ -51,7 +51,7 @@ class ControllerRunner implements JRunner, JExecutableURIGenerator {
 
 	@Override
 	public final boolean accept(URI uri) {
-		boolean accept= Scheme.CONTROLLER.getValue().equals(uri.getScheme());
+		boolean accept= JScheme.CONTROLLER.getValue().equals(uri.getScheme());
 		String unique=JExecutableURIUtil.getUnique(uri);
 		return accept=accept&&unique.equals(unique);
 	}
@@ -102,22 +102,22 @@ class ControllerRunner implements JRunner, JExecutableURIGenerator {
 
 	@Override
 	public String getGetRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getGetRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 
 	@Override
 	public String getPutRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getPutRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 
 	@Override
 	public String getDeleteRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getDeleteRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getDeleteRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 
 	@Override
 	public String getExistRequestURI(String unique, String path) {
-		return  JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.CONTROLLER);
+		return  JExecutableURIUtil.getExistRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
 }

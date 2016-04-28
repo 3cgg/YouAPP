@@ -2,12 +2,12 @@ package j.jave.kernal.container.rhttp;
 
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.MicroContainer;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainer;
+import j.jave.kernal.container.JMicroContainerConfig;
 
 import java.net.URI;
 
-class JRemoteHttpMicroContainer implements MicroContainer,JExecutableURIGenerator{
+class JRemoteHttpMicroContainer implements JMicroContainer,JExecutableURIGenerator{
 
 	private JRemoteHttpContainerConfig remoteHttpContainerConfig;
 	
@@ -77,12 +77,12 @@ class JRemoteHttpMicroContainer implements MicroContainer,JExecutableURIGenerato
 	}
 
 	@Override
-	public MicroContainerConfig getContainerConfig() {
+	public JMicroContainerConfig getContainerConfig() {
 		return remoteHttpMicroContainerConfig;
 	}
 
 	@Override
-	public void setContainerConfig(MicroContainerConfig containerConfig) {
+	public void setContainerConfig(JMicroContainerConfig containerConfig) {
 		this.remoteHttpMicroContainerConfig= (JRemoteHttpMicroContainerConfig)containerConfig;
 	}
 

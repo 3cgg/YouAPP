@@ -9,8 +9,8 @@ import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext.JARScan;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.Component;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentProperties;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport.Component;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport.ComponentProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +25,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public class DynamicComponentVersionApplication extends ComponentVersionApplication {
 	
-	public static final JLogger LOGGER=JLoggerFactory.getLogger(JComponentVersionSpringApplicationSupport.class);
+	public static final JLogger LOGGER=JLoggerFactory.getLogger(ComponentVersionSpringApplicationSupport.class);
 	
 	private final URL[] jarUrls;
 	
@@ -53,7 +53,7 @@ public class DynamicComponentVersionApplication extends ComponentVersionApplicat
 	}
 
 	public String unique(){
-		return JComponentVersionSpringApplicationSupport.unique(app, component, version);
+		return ComponentVersionSpringApplicationSupport.unique(app, component, version);
 	}
 	
 	private void initContext(){

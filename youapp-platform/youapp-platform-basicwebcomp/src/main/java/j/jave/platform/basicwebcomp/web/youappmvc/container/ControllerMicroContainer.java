@@ -2,14 +2,14 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.MicroContainer;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainer;
+import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
-class ControllerMicroContainer implements MicroContainer,JExecutableURIGenerator{
+class ControllerMicroContainer implements JMicroContainer,JExecutableURIGenerator{
 
 	private SpringContainerConfig springContainerConfig;
 	
@@ -86,12 +86,12 @@ class ControllerMicroContainer implements MicroContainer,JExecutableURIGenerator
 	}
 
 	@Override
-	public MicroContainerConfig getContainerConfig() {
+	public JMicroContainerConfig getContainerConfig() {
 		return controllerMicroContainerConfig;
 	}
 
 	@Override
-	public void setContainerConfig(MicroContainerConfig containerConfig) {
+	public void setContainerConfig(JMicroContainerConfig containerConfig) {
 		this.controllerMicroContainerConfig= (ControllerMicroContainerConfig) containerConfig;
 	}
 

@@ -14,7 +14,7 @@ import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -89,7 +89,7 @@ public class HttpContext implements JModel {
 	
 	/**
 	 * the unique for multi-component 
-	 * @see JComponentVersionSpringApplicationSupport
+	 * @see ComponentVersionSpringApplicationSupport
 	 */
 	private transient String unique;
 	

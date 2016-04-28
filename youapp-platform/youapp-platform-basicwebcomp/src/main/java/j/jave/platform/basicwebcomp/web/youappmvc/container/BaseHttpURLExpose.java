@@ -4,6 +4,12 @@ import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
 
+/**
+ * the basic http url exposer for {@link InnerHttpInvokeContainer} OR {@link JRemoteHttpInvokeContainer}
+ * @author JIAZJ
+ * @see InnerHttpInvokeContainer
+ * @see JRemoteHttpInvokeContainer
+ */
 public class BaseHttpURLExpose implements HttpURLExpose {
 
 	private JContainerDelegate containerDelegate=JContainerDelegate.get();

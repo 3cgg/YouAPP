@@ -6,7 +6,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,7 +61,7 @@ public class MultiVersionCheckInterceptor implements ServletRequestInterceptor {
 		String appName = targets[1];
 		String componentName = targets[2];
 		int version = Integer.parseInt(targets[3]);
-		unique = JComponentVersionSpringApplicationSupport.unique(appName,
+		unique = ComponentVersionSpringApplicationSupport.unique(appName,
 				componentName, version);
 		return unique;
 	}

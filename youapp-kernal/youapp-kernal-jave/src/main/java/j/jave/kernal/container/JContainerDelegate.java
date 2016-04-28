@@ -9,6 +9,11 @@ import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import java.net.URI;
 import java.util.Collection;
 
+/**
+ * delegate all services to the {@link JContainerService}
+ * @author JIAZJ
+ * @see JContainerService
+ */
 public class JContainerDelegate {
 
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();

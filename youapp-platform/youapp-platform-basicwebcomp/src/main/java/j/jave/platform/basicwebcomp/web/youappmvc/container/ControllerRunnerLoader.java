@@ -2,7 +2,7 @@ package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JRunnerLoader;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import org.springframework.context.ApplicationContext;
@@ -24,7 +24,7 @@ class ControllerRunnerLoader implements JRunnerLoader{
 		this.componentVersionApplication=componentVersionApplication;
 	}
 	
-	public JRunner load(MicroContainerConfig envContainerConfig) {
+	public JRunner load(JMicroContainerConfig envContainerConfig) {
 		ControllerRunner controllerRunner=new ControllerRunner(applicationContext,componentVersionApplication,controllerMicroContainerConfig);
 		return controllerRunner;
 	};

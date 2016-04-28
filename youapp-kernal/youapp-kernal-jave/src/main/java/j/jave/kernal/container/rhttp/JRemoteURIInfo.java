@@ -3,7 +3,7 @@ package j.jave.kernal.container.rhttp;
 import j.jave.kernal.http.JHttpType;
 import j.jave.kernal.jave.model.JModel;
 
-public class RemoteURIInfo implements JModel {
+public class JRemoteURIInfo implements JModel {
 	
 	private String path;
 	

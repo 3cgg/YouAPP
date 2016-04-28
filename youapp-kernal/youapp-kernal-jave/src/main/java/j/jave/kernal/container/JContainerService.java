@@ -17,6 +17,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * the container service interfaces, all contains register themselves here.
+ * Any function on the container can be register in the service hub via event-listener mechanism.
+ * @author JIAZJ
+ * @see JContainerGetListener
+ * @see JContainerRegisterListener
+ * @see JContainerUniquesGetListener
+ */
 class JContainerService 
 	implements JService, JContainerRegisterListener ,JContainerGetListener,JContainerUniquesGetListener{
 

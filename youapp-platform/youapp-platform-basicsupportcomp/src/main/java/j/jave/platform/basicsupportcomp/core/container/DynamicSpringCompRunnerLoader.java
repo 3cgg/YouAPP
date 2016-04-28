@@ -2,15 +2,15 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JRunnerLoader;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 
 import java.net.URL;
 
 import org.springframework.context.ApplicationContext;
 
-public class JDynamicSpringCompRunnerLoader implements JRunnerLoader{
+public class DynamicSpringCompRunnerLoader implements JRunnerLoader{
 
 	private ApplicationContext applicationContext;
 	
@@ -18,7 +18,7 @@ public class JDynamicSpringCompRunnerLoader implements JRunnerLoader{
 	
 	SpringCompMicroContainerConfig springCompMicroContainerConfig;
 	
-	public JDynamicSpringCompRunnerLoader(ApplicationContext applicationContext,URL[]  jarUrls ,
+	public DynamicSpringCompRunnerLoader(ApplicationContext applicationContext,URL[]  jarUrls ,
 			SpringCompMicroContainerConfig springCompMicroContainerConfig
 			) {
 		this.applicationContext=applicationContext;
@@ -26,9 +26,9 @@ public class JDynamicSpringCompRunnerLoader implements JRunnerLoader{
 		this.springCompMicroContainerConfig=springCompMicroContainerConfig;
 	}
 	
-	public JRunner load(MicroContainerConfig envContainerConfig) {
-		DynamicComponentVersionApplication componentVersionApplication=  JComponentVersionSpringApplicationSupport.loadComponent(applicationContext, jarUrls);
-		JDynamicSpringCompRunner springCompRunner=new JDynamicSpringCompRunner(componentVersionApplication.getApplicationContext(),springCompMicroContainerConfig);
+	public JRunner load(JMicroContainerConfig envContainerConfig) {
+		DynamicComponentVersionApplication componentVersionApplication=  ComponentVersionSpringApplicationSupport.loadComponent(applicationContext, jarUrls);
+		DynamicSpringCompRunner springCompRunner=new DynamicSpringCompRunner(componentVersionApplication.getApplicationContext(),springCompMicroContainerConfig);
 		return springCompRunner;
 	};
 }

@@ -3,9 +3,9 @@ package j.jave.platform.basicsupportcomp.core.container;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 
-public class JDynamicSpringCompRunner extends JSpringCompRunner {
+public class DynamicSpringCompRunner extends SpringCompRunner {
 	
-	public JDynamicSpringCompRunner(SpringDynamicJARApplicationContext dynamicJARApplicationCotext,SpringCompMicroContainerConfig springCompMicroContainerConfig) {
+	public DynamicSpringCompRunner(SpringDynamicJARApplicationContext dynamicJARApplicationCotext,SpringCompMicroContainerConfig springCompMicroContainerConfig) {
 		super(dynamicJARApplicationCotext,dynamicJARApplicationCotext.getComponentVersionApplication(),springCompMicroContainerConfig);
 	}
 

@@ -3,14 +3,12 @@ package j.jave.kernal.container.rhttp;
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 
 import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class JRemoteHttpRunner implements JRunner,JExecutableURIGenerator{
 
@@ -26,20 +24,12 @@ public class JRemoteHttpRunner implements JRunner,JExecutableURIGenerator{
 		this.name=this.remoteHttpMicroContainerConfig.name();
 	}
 	
-	private Map<String, RemoteURIInfo> mappingUrls=new ConcurrentHashMap<String, RemoteURIInfo>();
+	private Map<String, JRemoteURIInfo> mappingUrls=new ConcurrentHashMap<String, JRemoteURIInfo>();
 	
 	@Override
 	public boolean accept(URI uri) {
-		boolean accept= Scheme.REMOTE_HTTP.getValue().equals(uri.getScheme());
-		String query= uri.getQuery();
-		Pattern pattern=Pattern.compile(JExecutableURIUtil.REGX);
-		Matcher matcher=pattern.matcher(query);
-		String unique=null;
-		String path=null;
-		if(matcher.matches()){
-			unique=matcher.group(1);
-			path=matcher.group(2);
-		}
+		boolean accept= JScheme.REMOTE_HTTP.getValue().equals(uri.getScheme());
+		String unique=JExecutableURIUtil.getUnique(uri);
 		return accept=accept&&unique.equals(unique);
 	}
 
@@ -75,18 +65,11 @@ public class JRemoteHttpRunner implements JRunner,JExecutableURIGenerator{
 	
 	private Object put(URI uri,Object object){
 		String path = getPath(uri);
-		return mappingUrls.put(path, (RemoteURIInfo) object);
+		return mappingUrls.put(path, (JRemoteURIInfo) object);
 	}
 
 	private String getPath(URI uri) {
-		String query= uri.getQuery();
-		Pattern pattern=Pattern.compile(JExecutableURIUtil.REGX);
-		Matcher matcher=pattern.matcher(query);
-		String path=null;
-		if(matcher.matches()){
-			path=matcher.group(2);
-		}
-		return path;
+		return JExecutableURIUtil.getPath(uri);
 	}
 	
 	private Object get(URI uri,Object object){
@@ -106,21 +89,21 @@ public class JRemoteHttpRunner implements JRunner,JExecutableURIGenerator{
 	
 	@Override
 	public String getGetRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getGetRequestURI(unique, path, Scheme.REMOTE_HTTP);
+		return JExecutableURIUtil.getGetRequestURI(unique, path, JScheme.REMOTE_HTTP);
 	}
 	
 	@Override
 	public String getPutRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getPutRequestURI(unique, path, Scheme.REMOTE_HTTP);
+		return JExecutableURIUtil.getPutRequestURI(unique, path, JScheme.REMOTE_HTTP);
 	}
 	@Override
 	public String getDeleteRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getDeleteRequestURI(unique, path, Scheme.REMOTE_HTTP);
+		return JExecutableURIUtil.getDeleteRequestURI(unique, path, JScheme.REMOTE_HTTP);
 	}
 	
 	@Override
 	public String getExistRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getExistRequestURI(unique, path, Scheme.REMOTE_HTTP);
+		return JExecutableURIUtil.getExistRequestURI(unique, path, JScheme.REMOTE_HTTP);
 	}
 
 }

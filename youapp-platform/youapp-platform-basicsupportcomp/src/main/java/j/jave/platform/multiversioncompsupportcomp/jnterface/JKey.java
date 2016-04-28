@@ -3,8 +3,8 @@ package j.jave.platform.multiversioncompsupportcomp.jnterface;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JInputStreamWrapperSource;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport.ComponentProperties;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport.ComponentProperties;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,7 +23,7 @@ public abstract class JKey {
 	protected String app;
 	
 	protected final String unique(){
-		return JComponentVersionSpringApplicationSupport.unique(app, component, version);
+		return ComponentVersionSpringApplicationSupport.unique(app, component, version);
 	}
 	
 	/**

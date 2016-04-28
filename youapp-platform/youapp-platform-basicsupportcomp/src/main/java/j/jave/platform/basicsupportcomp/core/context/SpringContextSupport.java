@@ -4,7 +4,7 @@
 package j.jave.platform.basicsupportcomp.core.context;
 
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.platform.multiversioncompsupportcomp.JComponentVersionSpringApplicationSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
 import java.util.Map;
@@ -27,7 +27,7 @@ public class SpringContextSupport implements ApplicationContextAware {
 	=new PlatformComponentVersionApplication();
 	
 	public static final String PLATFORM=
-			JComponentVersionSpringApplicationSupport.unique(platformComponentVersionApplication.getApp()
+			ComponentVersionSpringApplicationSupport.unique(platformComponentVersionApplication.getApp()
 					, platformComponentVersionApplication.getComponent(), 
 					platformComponentVersionApplication.getVersion());
 	/**

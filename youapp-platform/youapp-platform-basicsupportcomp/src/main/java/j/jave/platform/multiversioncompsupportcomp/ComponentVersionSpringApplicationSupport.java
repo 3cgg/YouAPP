@@ -14,9 +14,9 @@ import org.apache.ibatis.io.Resources;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public abstract class JComponentVersionSpringApplicationSupport {
+public abstract class ComponentVersionSpringApplicationSupport {
 	
-	public static final JLogger LOGGER=JLoggerFactory.getLogger(JComponentVersionSpringApplicationSupport.class);
+	public static final JLogger LOGGER=JLoggerFactory.getLogger(ComponentVersionSpringApplicationSupport.class);
 	
 	/**
 	 * predefined configuration of spring etc.

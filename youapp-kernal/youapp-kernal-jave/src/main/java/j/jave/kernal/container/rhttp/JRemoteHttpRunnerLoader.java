@@ -2,7 +2,7 @@ package j.jave.kernal.container.rhttp;
 
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JRunnerLoader;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainerConfig;
 
 public class JRemoteHttpRunnerLoader implements JRunnerLoader{
 
@@ -13,7 +13,7 @@ public class JRemoteHttpRunnerLoader implements JRunnerLoader{
 	}
 	
 	@Override
-	public JRunner load(MicroContainerConfig microContainerConfig) {
+	public JRunner load(JMicroContainerConfig microContainerConfig) {
 		JRemoteHttpRunner remoteHttpRunner=new JRemoteHttpRunner(remoteHttpMicroContainerConfig);
 		return remoteHttpRunner;
 	}

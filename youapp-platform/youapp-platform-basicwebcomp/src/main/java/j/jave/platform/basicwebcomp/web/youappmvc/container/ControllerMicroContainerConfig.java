@@ -1,10 +1,10 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainerConfig;
 
 import org.springframework.context.ApplicationContext;
 
-class ControllerMicroContainerConfig extends MicroContainerConfig {
+class ControllerMicroContainerConfig extends JMicroContainerConfig {
 	
 	private ApplicationContext applicationContext;
 

@@ -1,7 +1,7 @@
 package j.jave.kernal.container;
 
 
-public abstract class MicroContainerConfig  implements JIdentifier{
+public abstract class JMicroContainerConfig  implements JIdentifier{
 	
 	private String unique;
 	

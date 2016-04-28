@@ -6,15 +6,13 @@ import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutor;
 import j.jave.kernal.container.JIdentifier;
 import j.jave.kernal.container.JURIExecuteException;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.http.JHttpType;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class JRemoteHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
@@ -52,24 +50,19 @@ public class JRemoteHttpInvokeContainer implements JExecutor,JIdentifier,JContai
 	@Override
 	public Object execute(URI uri, Object object) {
 		
-			if(Scheme.REMOTE_HTTP.getValue().equals(uri.getScheme())
+			if(JScheme.REMOTE_HTTP.getValue().equals(uri.getScheme())
 					&&JExecutableURIUtil.Type.EXECUTE.getValue().equals(uri.getPath())){
 				try{
-					String query= uri.getQuery();
-					Pattern pattern=Pattern.compile(JExecutableURIUtil.REGX);
-					Matcher matcher=pattern.matcher(query);
-					String path=null;
-					String unique=null;
-					if(matcher.matches()){
-						unique=matcher.group(1);
-						path=matcher.group(2);
-					}
+					
+					String path=JExecutableURIUtil.getPath(uri);
+					String unique=JExecutableURIUtil.getUnique(uri);
+					
 					if(!this.unique.equals(unique)){
 						throw new JURIExecuteException("the container ["+this.unique
 								+"] cannot execute this reqeust uri :"+uri.toString());
 					}
 					String getURI=this.remoteHttpMicroContainer.getGetRequestURI(unique, path);
-					RemoteURIInfo remoteURIInfo=(RemoteURIInfo) remoteHttpMicroContainer.execute(new URI(getURI), object);
+					JRemoteURIInfo remoteURIInfo=(JRemoteURIInfo) remoteHttpMicroContainer.execute(new URI(getURI), object);
 					
 					String remoteURL=this.remoteHttpContainerConfig.getHost()+remoteURIInfo.getPath();
 					
@@ -81,7 +74,7 @@ public class JRemoteHttpInvokeContainer implements JExecutor,JIdentifier,JContai
 						.putParams(httpTransEntry.parameters())
 						.execute();
 					}
-					else if(remoteURIInfo.getHttpType()==JHttpType.GET){
+					else if(remoteURIInfo.getHttpType()==JHttpType.POST){
 						return JHttpFactoryProvider.getHttpFactory().getHttpPost()
 						.setUrl(remoteURL)
 						.setEntry(httpTransEntry.entry())
@@ -145,7 +138,7 @@ public class JRemoteHttpInvokeContainer implements JExecutor,JIdentifier,JContai
 	}
 	
 	public String getExecuteRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getExecuteRequestURI(unique, path, Scheme.REMOTE_HTTP);
+		return JExecutableURIUtil.getExecuteRequestURI(unique, path, JScheme.REMOTE_HTTP);
 	}
 	
 }

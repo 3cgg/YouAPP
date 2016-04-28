@@ -5,7 +5,7 @@ import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutor;
 import j.jave.kernal.container.JIdentifier;
-import j.jave.kernal.container.Scheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
@@ -63,7 +63,7 @@ class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 	@Override
 	public Object execute(URI uri, Object object) {
 		
-			if(Scheme.CONTROLLER.getValue().equals(uri.getScheme())
+			if(JScheme.CONTROLLER.getValue().equals(uri.getScheme())
 					&&JExecutableURIUtil.Type.EXECUTE.getValue().equals(uri.getPath())){
 				try{
 					String path=JExecutableURIUtil.getPath(uri);
@@ -157,7 +157,7 @@ class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 	}
 
 	public String getExecuteRequestURI(String unique, String path) {
-		return JExecutableURIUtil.getExecuteRequestURI(unique, path, Scheme.CONTROLLER);
+		return JExecutableURIUtil.getExecuteRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
 }

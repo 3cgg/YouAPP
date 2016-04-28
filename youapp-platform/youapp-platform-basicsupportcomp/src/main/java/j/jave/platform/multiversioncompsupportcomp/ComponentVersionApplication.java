@@ -47,7 +47,7 @@ public abstract class ComponentVersionApplication  implements JIdentifier{
 	
 	@Override
 	public String unique() {
-		return JComponentVersionSpringApplicationSupport.unique(
+		return ComponentVersionSpringApplicationSupport.unique(
 				this.app, this.component,this.version);
 	}
 	@Override

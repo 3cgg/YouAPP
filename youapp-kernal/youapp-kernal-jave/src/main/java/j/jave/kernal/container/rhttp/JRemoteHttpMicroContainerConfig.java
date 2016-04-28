@@ -1,8 +1,8 @@
 package j.jave.kernal.container.rhttp;
 
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainerConfig;
 
-class JRemoteHttpMicroContainerConfig extends MicroContainerConfig {
+class JRemoteHttpMicroContainerConfig extends JMicroContainerConfig {
 	
 	private JRemoteHttpContainerConfig remoteHttpContainerConfig;
 

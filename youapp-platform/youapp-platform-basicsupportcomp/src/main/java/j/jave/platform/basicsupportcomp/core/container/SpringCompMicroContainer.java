@@ -2,15 +2,15 @@ package j.jave.platform.basicsupportcomp.core.container;
 
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.MicroContainer;
-import j.jave.kernal.container.MicroContainerConfig;
+import j.jave.kernal.container.JMicroContainer;
+import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
 import org.springframework.context.ApplicationContext;
 
-public class SpringCompMicroContainer implements MicroContainer ,JExecutableURIGenerator{
+public class SpringCompMicroContainer implements JMicroContainer ,JExecutableURIGenerator{
 
 	private SpringContainerConfig springContainerConfig;
 	
@@ -18,7 +18,7 @@ public class SpringCompMicroContainer implements MicroContainer ,JExecutableURIG
 	
 	private ComponentVersionApplication componentVersionApplication;
 	
-	private JSpringCompRunner springCompRunner;
+	private SpringCompRunner springCompRunner;
 	
 	private String name;
 	
@@ -59,12 +59,12 @@ public class SpringCompMicroContainer implements MicroContainer ,JExecutableURIG
 	public void initialize() {
 		if(DynamicSpringContainerConfig.class.isInstance(springContainerConfig)){
 			DynamicSpringContainerConfig dynamicSpringContainerConfig=(DynamicSpringContainerConfig)springContainerConfig;
-			JDynamicSpringCompRunnerLoader springCompRunnerLoader=new JDynamicSpringCompRunnerLoader(
+			DynamicSpringCompRunnerLoader springCompRunnerLoader=new DynamicSpringCompRunnerLoader(
 					dynamicSpringContainerConfig.getApplicationContext(), dynamicSpringContainerConfig.getJarUrls(),springCompMicroContainerConfig);
-			springCompRunner=(JSpringCompRunner) springCompRunnerLoader.load(springCompMicroContainerConfig);
+			springCompRunner=(SpringCompRunner) springCompRunnerLoader.load(springCompMicroContainerConfig);
 		}
 		else{
-			springCompRunner=new JSpringCompRunner(springContainerConfig.getApplicationContext(),
+			springCompRunner=new SpringCompRunner(springContainerConfig.getApplicationContext(),
 					componentVersionApplication, springCompMicroContainerConfig);
 		}
 	}
@@ -88,16 +88,16 @@ public class SpringCompMicroContainer implements MicroContainer ,JExecutableURIG
 
 	@Override
 	public void setRunner(JRunner runner) {
-		this.springCompRunner=(JSpringCompRunner) runner;
+		this.springCompRunner=(SpringCompRunner) runner;
 	}
 
 	@Override
-	public MicroContainerConfig getContainerConfig() {
+	public JMicroContainerConfig getContainerConfig() {
 		return springCompMicroContainerConfig;
 	}
 
 	@Override
-	public void setContainerConfig(MicroContainerConfig containerConfig) {
+	public void setContainerConfig(JMicroContainerConfig containerConfig) {
 		this.springCompMicroContainerConfig=(SpringCompMicroContainerConfig) containerConfig;
 	}
 

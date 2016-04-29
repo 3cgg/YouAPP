@@ -8,8 +8,6 @@ package j.jave.kernal.jave.exception;
  * @author J
  */
 public class JInitializationException extends RuntimeException {
-	
-	private static final long serialVersionUID = 5276076781917641882L;
 
 	public JInitializationException(String message){
 		super(message);

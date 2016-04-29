@@ -24,9 +24,6 @@
         <dependent-module archiveName="youapp-kernal-sqlautoloader-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-sqlautoloader/youapp-kernal-sqlautoloader">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="youapp-util-securityclient-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-util-securityclient/youapp-util-securityclient">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="java-output-path" value="/jframework-me/target/classes"/>
         <property name="context-root" value="youapp"/>
     </wb-module>

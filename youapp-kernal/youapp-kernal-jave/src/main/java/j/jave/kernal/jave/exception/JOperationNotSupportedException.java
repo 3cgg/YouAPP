@@ -8,8 +8,6 @@ package j.jave.kernal.jave.exception;
  * @author J
  */
 public class JOperationNotSupportedException extends RuntimeException {
-	
-	private static final long serialVersionUID = 638712363288955742L;
 
 	public JOperationNotSupportedException(String message){
 		super(message);

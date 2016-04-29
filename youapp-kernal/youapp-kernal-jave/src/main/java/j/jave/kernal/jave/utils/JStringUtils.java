@@ -4,7 +4,6 @@ import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -16,24 +15,14 @@ public abstract class JStringUtils {
 	
 	/**
 	 * extract all bytes from the {@link InputStream}. 	
+	 * <p>note : use {@link JIOUtils#getBytes(InputStream)} instead of .
 	 * @param input
 	 * @return
 	 * @throws IOException	
 	 */
+	@Deprecated 
 	public static byte[] getBytes(InputStream input) {
-	    ByteArrayOutputStream output = new ByteArrayOutputStream();
-	    byte[] buffer = new byte[4096];
-	    int n = 0;
-	    try {
-			while (-1 != (n = input.read(buffer))) {
-			    output.write(buffer, 0, n);
-			}
-			output.flush();
-		} catch (IOException e) {
-			LOGGER.warn("", e);
-			throw new JUtilException(e);
-		}
-	    return output.toByteArray();
+		return JIOUtils.getBytes(input);
 	}
 	
 	/**

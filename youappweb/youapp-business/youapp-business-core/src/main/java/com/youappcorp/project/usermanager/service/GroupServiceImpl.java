@@ -1,6 +1,5 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageable;
@@ -70,7 +69,7 @@ public class GroupServiceImpl extends InternalServiceSupport<Group> implements G
 			validateGroupCode(group);
 			
 			if(exists(context, group)){
-				throw new JServiceException("group code ["+group.getGroupCode()+"] already has exist.");
+				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
 			saveOnly(context, group);
 		}catch(Exception e){

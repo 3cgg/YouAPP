@@ -9,6 +9,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.param.model.ParamCode;
 import com.youappcorp.project.param.model.ParamType;
 import com.youappcorp.project.param.service.ParamService;
@@ -23,7 +24,7 @@ public class TestJpaParamServiceImpl{
 		System.out.println("TestParamServiceImpl");
 	}
 	
-	public void saveParamTypeAndCode() throws JServiceException{
+	public void saveParamTypeAndCode() throws BusinessException{
 		try{
 			ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 			
@@ -44,7 +45,7 @@ public class TestJpaParamServiceImpl{
 			
 			System.out.println("count : ");
 		}catch(Exception e){
-			throw new JServiceException(e);
+			throw new BusinessException(e);
 		}
 		
 	}

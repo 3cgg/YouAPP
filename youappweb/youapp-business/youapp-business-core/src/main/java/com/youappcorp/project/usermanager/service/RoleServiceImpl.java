@@ -1,6 +1,5 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
@@ -66,7 +65,7 @@ public class RoleServiceImpl extends InternalServiceSupport<Role> implements Rol
 	}
 	
 	
-	private void validateRoleCode(Role role) throws JServiceException{
+	private void validateRoleCode(Role role) throws BusinessException{
 		
 		String code=role.getRoleCode();
 		
@@ -77,11 +76,11 @@ public class RoleServiceImpl extends InternalServiceSupport<Role> implements Rol
 		code=code.trim();
 		
 		if(ADMIN_CODE.equalsIgnoreCase( code)){
-			throw new JServiceException("role code ["+ADMIN_CODE+"] is initialized by system.please change...");
+			throw new BusinessException("role code ["+ADMIN_CODE+"] is initialized by system.please change...");
 		}
 		
 		if(DEFAULT_CODE.equalsIgnoreCase( code)){
-			throw new JServiceException("role code ["+DEFAULT_CODE+"] is initialized by system.please change...");
+			throw new BusinessException("role code ["+DEFAULT_CODE+"] is initialized by system.please change...");
 		}
 	}
 	

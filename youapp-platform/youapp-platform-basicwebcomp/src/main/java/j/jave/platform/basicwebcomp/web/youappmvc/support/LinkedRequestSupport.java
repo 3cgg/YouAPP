@@ -4,6 +4,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.support;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
@@ -14,9 +16,6 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * the class support the case of multi-request, 
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LinkedRequestSupport {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(LinkedRequestSupport.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(LinkedRequestSupport.class);
 	
 	private static MemcachedDelegateService memcachedService=JServiceHubDelegate.get().getService(new Object(), MemcachedDelegateService.class);
 	

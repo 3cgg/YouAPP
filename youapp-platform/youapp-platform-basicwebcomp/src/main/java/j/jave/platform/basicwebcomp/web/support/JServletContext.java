@@ -4,6 +4,8 @@
 package j.jave.platform.basicwebcomp.web.support;
 
 import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.youappmvc.jspview.JSPServletViewHandler;
@@ -17,9 +19,6 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * the class hold all information defined in web.xml,
  * all information in the class will be same whatever the call execute.
@@ -27,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JServletContext {
 	
-	private final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	private final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 
 	List<Servlet> servlets=new ArrayList<JServletContext.Servlet>();
 	

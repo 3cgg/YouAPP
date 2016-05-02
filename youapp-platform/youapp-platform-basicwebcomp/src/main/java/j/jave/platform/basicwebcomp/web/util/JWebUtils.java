@@ -1,5 +1,7 @@
 package j.jave.platform.basicwebcomp.web.util;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUtilException;
 
@@ -15,9 +17,6 @@ import java.util.Map.Entry;
 import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * Web helper
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class JWebUtils {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(JWebUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JWebUtils.class);
 
 	/**
 	 * get remote client IP address.

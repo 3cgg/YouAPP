@@ -3,6 +3,8 @@
  */
 package j.jave.platform.basicsupportcomp.core.autoloader;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.sqlloader.ddl.JSQLDDLLoader;
 
@@ -14,9 +16,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * abstract implementation for DDL Loader. 
  * define a basic common strategy  or style to resolve the sql. 
@@ -25,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractSQLDDLLoader implements JSQLDDLLoader{
 
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	/**
 	 * default/common format 

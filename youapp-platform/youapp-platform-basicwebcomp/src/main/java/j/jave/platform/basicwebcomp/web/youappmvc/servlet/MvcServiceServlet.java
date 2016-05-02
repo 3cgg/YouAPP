@@ -4,6 +4,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.servlet;
 
 import j.jave.kernal.jave.io.JFile;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.support.JServlet;
@@ -23,9 +25,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * do with the request. 
  * a request accepted by the servlet should be like : 
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class MvcServiceServlet  extends JServlet {
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(MvcServiceServlet.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(MvcServiceServlet.class);
 	
 	public MvcServiceServlet() {
 		LOGGER.info("Constructing JServiceServlet... ");

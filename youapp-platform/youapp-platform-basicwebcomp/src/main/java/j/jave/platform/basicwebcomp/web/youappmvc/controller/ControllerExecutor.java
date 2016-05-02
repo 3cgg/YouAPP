@@ -3,6 +3,8 @@
  */
 package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JReflect;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
@@ -15,8 +17,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.basicwebcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * to find target action , then execute method.  
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ControllerExecutor implements JService {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(ControllerExecutor.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ControllerExecutor.class);
 	
 	public Object execute(HttpContext httpContext,MappingMeta mappingMeta
 			,Object controllerObject) throws Exception{

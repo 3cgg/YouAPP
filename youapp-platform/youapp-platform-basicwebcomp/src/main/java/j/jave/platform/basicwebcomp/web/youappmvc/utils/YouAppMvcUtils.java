@@ -4,6 +4,8 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.filedistribute.eventdriven.JFileDistStoreEvent;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JFile;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.web.util.JCookieUtils;
@@ -32,8 +34,6 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class YouAppMvcUtils extends JWebUtils {
 	
-	private static final Logger LOGGER=LoggerFactory.getLogger(YouAppMvcUtils.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(YouAppMvcUtils.class);
 
 	private static final String YOUAPP_HTTP_CONTEXT_KEY="youAPPHttpContext";
 	

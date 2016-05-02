@@ -3,6 +3,8 @@ package j.jave.platform.basicwebcomp.web.youappmvc.controller;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.SpringDynamicJARApplicationContext;
@@ -19,8 +21,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.service.PageableService;
 import java.net.URI;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -33,7 +33,7 @@ import org.springframework.context.ApplicationContextAware;
 public abstract class ControllerSupport implements YouappController,InitializingBean,ApplicationContextAware
 ,BeanNameAware{
 	
-	protected final Logger LOGGER=LoggerFactory.getLogger(getClass());
+	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
 	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
 	

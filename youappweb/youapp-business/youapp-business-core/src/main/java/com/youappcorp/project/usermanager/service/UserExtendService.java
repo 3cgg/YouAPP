@@ -7,6 +7,7 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.model.UserExtend;
 
@@ -25,7 +26,7 @@ public interface UserExtendService extends Service<UserExtend> {
 	 * @param userExtend
 	 * @throws JServiceException
 	 */
-	public void saveUserExtend(ServiceContext context, UserExtend userExtend) throws JServiceException;
+	public void saveUserExtend(ServiceContext context, UserExtend userExtend) throws BusinessException;
 	
 	
 	/**
@@ -37,7 +38,7 @@ public interface UserExtendService extends Service<UserExtend> {
 	 * @param userExtend
 	 * @throws JServiceException
 	 */
-	public void updateUserExtend(ServiceContext context, UserExtend userExtend) throws JServiceException;
+	public void updateUserExtend(ServiceContext context, UserExtend userExtend) throws BusinessException;
 	
 	/**
 	 * get user extension by user id that is the primary key in the user model.

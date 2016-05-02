@@ -3,11 +3,9 @@
  */
 package com.youappcorp.project.bill.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 
@@ -16,13 +14,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.bill.model.Bill;
 import com.youappcorp.project.bill.repo.BillJPARepo;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.service.UserManagerService;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
 @Service(value="billService.transation.jpa")
@@ -39,14 +39,26 @@ public class BillServiceImpl extends ServiceSupport implements BillService{
 	
 	@Override
 	public void saveBill(ServiceContext context, Bill bill)
-			throws JServiceException {
-		internalBillServiceImpl.saveOnly(context, bill);
+			throws BusinessException {
+		try{
+			
+			internalBillServiceImpl.saveOnly(context, bill);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+		
 	}
 
 	@Override
 	public void updateBill(ServiceContext context, Bill bill)
-			throws JServiceException {
-		internalBillServiceImpl.updateOnly(context, bill);
+			throws BusinessException {
+		try{
+			internalBillServiceImpl.updateOnly(context, bill);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+		
 	}
 
 	@Override
@@ -67,8 +79,8 @@ public class BillServiceImpl extends ServiceSupport implements BillService{
 	}
 
 	@Override
-	public JIPersist<?, ?> getRepo() {
-		return null;
+	public void deleteBill(ServiceContext context, String id) {
+		internalBillServiceImpl.delete(context, id);
 	}
 	
 }

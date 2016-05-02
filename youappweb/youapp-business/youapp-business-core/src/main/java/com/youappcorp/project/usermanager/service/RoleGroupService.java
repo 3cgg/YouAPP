@@ -6,6 +6,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.RoleGroup;
 
 public interface RoleGroupService extends Service<RoleGroup> {
@@ -20,7 +21,7 @@ public interface RoleGroupService extends Service<RoleGroup> {
 	 * @param  roleId
 	 * @param groupId
 	 */
-	void bingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) throws JServiceException;
+	void bingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) throws BusinessException;
 	
 	/**
 	 * remove role from the group. 
@@ -29,7 +30,7 @@ public interface RoleGroupService extends Service<RoleGroup> {
 	 * @param groupId
 	 * @throws JServiceException
 	 */
-	void unbingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) throws JServiceException;
+	void unbingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) throws BusinessException;
 	
 	/**
 	 * check if the role belongs to the group. 
@@ -47,7 +48,7 @@ public interface RoleGroupService extends Service<RoleGroup> {
 	 * @param groupId
 	 * @return
 	 */
-	RoleGroup getRoleGroupOnRoleIdAndGroupId(ServiceContext serviceContext,String roleId,String groupId) throws JServiceException;
+	RoleGroup getRoleGroupOnRoleIdAndGroupId(ServiceContext serviceContext,String roleId,String groupId);
 	
 	
 }

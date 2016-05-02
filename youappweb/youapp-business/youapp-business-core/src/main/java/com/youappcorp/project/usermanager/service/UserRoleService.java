@@ -6,6 +6,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserRole;
 
 public interface UserRoleService extends Service<UserRole> {
@@ -19,7 +20,7 @@ public interface UserRoleService extends Service<UserRole> {
 	 * @param userId
 	 * @param roleId
 	 */
-	void bingUserRole(ServiceContext serviceContext,String userId,String roleId) throws JServiceException;
+	void bingUserRole(ServiceContext serviceContext,String userId,String roleId) throws BusinessException;
 	
 	/**
 	 * remove role on the user. 
@@ -28,7 +29,7 @@ public interface UserRoleService extends Service<UserRole> {
 	 * @param roleId
 	 * @throws JServiceException
 	 */
-	void unbingUserRole(ServiceContext serviceContext,String userId,String roleId) throws JServiceException;
+	void unbingUserRole(ServiceContext serviceContext,String userId,String roleId) throws BusinessException;
 	
 	/**
 	 * check if the user has the role. 
@@ -46,6 +47,6 @@ public interface UserRoleService extends Service<UserRole> {
 	 * @param roleId
 	 * @return
 	 */
-	UserRole getUserRoleOnUserIdAndRoleId(ServiceContext serviceContext,String userId,String roleId) throws JServiceException;
+	UserRole getUserRoleOnUserIdAndRoleId(ServiceContext serviceContext,String userId,String roleId);
 	
 }

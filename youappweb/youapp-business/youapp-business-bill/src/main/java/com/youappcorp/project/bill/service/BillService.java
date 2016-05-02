@@ -10,6 +10,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.bill.model.Bill;
 
 /**
@@ -24,7 +25,7 @@ public interface BillService {
 	 * @bill user
 	 * @throws JServiceException
 	 */
-	public void saveBill(ServiceContext context, Bill bill) throws JServiceException;
+	public void saveBill(ServiceContext context, Bill bill) throws BusinessException;
 	
 	
 	/**
@@ -33,14 +34,14 @@ public interface BillService {
 	 * @bill user
 	 * @throws JServiceException
 	 */
-	public void updateBill(ServiceContext context, Bill bill) throws JServiceException;
+	public void updateBill(ServiceContext context, Bill bill) throws BusinessException;
 	
 	/**
 	 * make the record not available
 	 * @bill context
 	 * @bill id
 	 */
-	public void delete(ServiceContext context, String id);
+	public void deleteBill(ServiceContext context, String id);
 	
 	/**
 	 * get one .

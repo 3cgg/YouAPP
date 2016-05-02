@@ -1,19 +1,21 @@
 package com.youappcorp.project.resource.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.persist.JIPersist;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import com.youappcorp.project.resource.model.Resource;
-import com.youappcorp.project.resource.repo.ResourceRepo;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
+import com.youappcorp.project.resource.model.Resource;
+import com.youappcorp.project.resource.repo.ResourceRepo;
+
 @Service(value="resourceServiceImpl.transation.jpa")
-public class ResourceServiceImpl extends ServiceSupport<Resource> implements ResourceService {
+public class ResourceServiceImpl extends InternalServiceSupport<Resource> implements ResourceService {
 
 	@Autowired
 	private ResourceRepo<?> resourceMapper;
@@ -34,12 +36,18 @@ public class ResourceServiceImpl extends ServiceSupport<Resource> implements Res
 	}
 	
 	@Override
-	public void saveResource(ServiceContext context, Resource resource) throws JServiceException{
-		Resource dbResource=getResourceByURL(context, resource.getUrl());
-		if(dbResource!=null){
-			throw new JServiceException("duplicate url : "+resource.getUrl());
+	public void saveResource(ServiceContext context, Resource resource) throws BusinessException{
+		try{
+			Resource dbResource=getResourceByURL(context, resource.getUrl());
+			if(dbResource!=null){
+				throw new BusinessException("duplicate url : "+resource.getUrl());
+			}
+			saveOnly(context, resource);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		saveOnly(context, resource);
+		
 	}
 	
 	

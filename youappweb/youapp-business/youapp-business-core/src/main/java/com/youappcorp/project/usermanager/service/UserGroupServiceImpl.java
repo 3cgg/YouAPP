@@ -1,21 +1,22 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.UserGroup;
 import com.youappcorp.project.usermanager.repo.UserGroupRepo;
 
 @Service(value="userGroupServiceImpl.transation.jpa")
-public class UserGroupServiceImpl extends ServiceSupport<UserGroup> implements UserGroupService {
+public class UserGroupServiceImpl extends InternalServiceSupport<UserGroup> implements UserGroupService {
 
 	@Autowired
 	private UserGroupRepo<?> userGroupMapper;
@@ -32,27 +33,39 @@ public class UserGroupServiceImpl extends ServiceSupport<UserGroup> implements U
 	
 	@Override
 	public void bingUserGroup(ServiceContext serviceContext, String userId,
-			String groupId) throws JServiceException {
-		if(isBing(serviceContext, userId, groupId)){
-			throw new JServiceException("the user had already belong to the group.");
+			String groupId) throws BusinessException {
+		
+		try{
+
+			if(isBing(serviceContext, userId, groupId)){
+				throw new BusinessException("the user had already belong to the group.");
+			}
+			
+			UserGroup userGroup=new UserGroup();
+			userGroup.setUserId(userId);
+			userGroup.setGroupId(groupId);
+			userGroup.setId(JUniqueUtils.unique());
+			saveOnly(serviceContext, userGroup);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
 		
-		UserGroup userGroup=new UserGroup();
-		userGroup.setUserId(userId);
-		userGroup.setGroupId(groupId);
-		userGroup.setId(JUniqueUtils.unique());
-		saveOnly(serviceContext, userGroup);
 	}
 	
 	@Override
 	public void unbingUserGroup(ServiceContext serviceContext, String userId,
-			String groupId) throws JServiceException {
-		
-		UserGroup userGroup=getUserGroupOnUserIdAndGroupId(serviceContext, userId, groupId);
-		if(userGroup==null){
-			throw new JServiceException("the user doesnot belong to the group.");
+			String groupId) throws BusinessException {
+		try{
+			UserGroup userGroup=getUserGroupOnUserIdAndGroupId(serviceContext, userId, groupId);
+			if(userGroup==null){
+				throw new BusinessException("the user doesnot belong to the group.");
+			}
+			delete(serviceContext, userGroup.getId());
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		delete(serviceContext, userGroup.getId());
+		
 	}
 	
 	@Override

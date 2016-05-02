@@ -8,6 +8,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.Role;
 
 public interface RoleService extends Service<Role> {
@@ -62,7 +63,7 @@ public interface RoleService extends Service<Role> {
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void saveRole(ServiceContext context, Role role) throws JServiceException;
+	void saveRole(ServiceContext context, Role role) throws BusinessException;
 	
 	/**
 	 * check if the role is existing, including but not restrict 
@@ -74,7 +75,7 @@ public interface RoleService extends Service<Role> {
 	 * @return
 	 * @throws JServiceException
 	 */
-	boolean exists(ServiceContext context, Role role) throws JServiceException;
+	boolean exists(ServiceContext context, Role role) throws BusinessException;
 	
 	/**
 	 * update the role , together with validation, including not restrict:
@@ -83,7 +84,7 @@ public interface RoleService extends Service<Role> {
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void updateRole(ServiceContext context, Role role)throws JServiceException;
+	void updateRole(ServiceContext context, Role role)throws BusinessException;
 	
 	/**
 	 * delete the role, together with potential validations. 
@@ -91,6 +92,6 @@ public interface RoleService extends Service<Role> {
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void deleteRole(ServiceContext context, Role role)throws JServiceException;
+	void deleteRole(ServiceContext context, Role role)throws BusinessException;
 	
 }

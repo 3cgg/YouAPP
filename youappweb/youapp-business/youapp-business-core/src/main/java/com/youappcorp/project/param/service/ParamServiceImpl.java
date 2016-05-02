@@ -3,9 +3,7 @@
  */
 package com.youappcorp.project.param.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
@@ -18,6 +16,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
 import com.youappcorp.project.param.jpa.ParamTypeJPARepo;
 import com.youappcorp.project.param.model.ParamCode;
@@ -49,17 +49,29 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	
 	@Override
 	public void saveParam(ServiceContext context, ParamType paramType,
-			ParamCode paramCode) throws JServiceException {
-		saveParamType(context, paramType);
-		paramCode.setTypeId(paramType.getId());
-		internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			ParamCode paramCode) throws BusinessException {
+		try{
+			saveParamType(context, paramType);
+			paramCode.setTypeId(paramType.getId());
+			internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+		
 	}
 
 	@Override
 	public void updateParam(ServiceContext context, ParamType paramType,
-			ParamCode paramCode) throws JServiceException {
-		internalParamTypeServiceImpl.updateOnly(context, paramType);
-		internalParamCodeServiceImpl.updateOnly(context, paramCode);
+			ParamCode paramCode) throws BusinessException {
+		try{
+			internalParamTypeServiceImpl.updateOnly(context, paramType);
+			internalParamCodeServiceImpl.updateOnly(context, paramCode);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+		
 	}
 
 	@Override
@@ -81,48 +93,55 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	}
 
 	@Override
-	public JIPersist<?, ?> getRepo() {
-		return null;
+	public void updateParamCode(ServiceContext context, ParamCode paramCode) 
+			throws BusinessException {
+		try{
+			String jpql="select count(1)  from ParamCode pc where pc.deleted='N'"
+					+ " and pc.id<> :id and pc.code=:code and pc.typeId=:typeId";
+			Map<String , Object> params=new HashMap<String, Object>();
+			params.put("id", paramCode.getId());
+			params.put("code", paramCode.getCode());
+			params.put("typeId", paramCode.getTypeId());
+			
+			long count=QueryBuilder.get(getEntityManager())
+			.setJpql(jpql)
+			.setParams(params)
+			.build().execute();
+			if(count>1){
+				throw new BusinessException("param type already exists.");
+			}
+			
+			internalParamCodeServiceImpl.updateOnly(context, paramCode);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+		
 	}
 
 	@Override
-	public void updateParamCode(ServiceContext context, ParamCode paramCode) throws JServiceException {
-		
-		String jpql="select count(1)  from ParamCode pc where pc.deleted='N'"
-				+ " and pc.id<> :id and pc.code=:code and pc.typeId=:typeId";
-		Map<String , Object> params=new HashMap<String, Object>();
-		params.put("id", paramCode.getId());
-		params.put("code", paramCode.getCode());
-		params.put("typeId", paramCode.getTypeId());
-		
-		long count=QueryBuilder.get(getEntityManager())
-		.setJpql(jpql)
-		.setParams(params)
-		.build().execute();
-		if(count>1){
-			throw new JServiceException("param type already exists.");
+	public void updateParamType(ServiceContext context, ParamType paramType)
+			throws BusinessException{
+		try{
+			String jpql="select count(1) from ParamType p where p.deleted='N' "
+					+ " and p.id <> :id and p.code =:code";
+			Map<String , Object> params=new HashMap<String, Object>();
+			params.put("id", paramType.getId());
+			params.put("code", paramType.getCode());
+			
+			long count=QueryBuilder.get(getEntityManager())
+			.setJpql(jpql)
+			.setParams(params)
+			.build().execute();
+			if(count>1){
+				throw new BusinessException("param type already exists.");
+			}
+			internalParamTypeServiceImpl.updateOnly(context, paramType);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
 		
-		internalParamCodeServiceImpl.updateOnly(context, paramCode);
-	}
-
-	@Override
-	public void updateParamType(ServiceContext context, ParamType paramType) throws JServiceException{
-		
-		String jpql="select count(1) from ParamType p where p.deleted='N' "
-				+ " and p.id <> :id and p.code =:code";
-		Map<String , Object> params=new HashMap<String, Object>();
-		params.put("id", paramType.getId());
-		params.put("code", paramType.getCode());
-		
-		long count=QueryBuilder.get(getEntityManager())
-		.setJpql(jpql)
-		.setParams(params)
-		.build().execute();
-		if(count>1){
-			throw new JServiceException("param type already exists.");
-		}
-		internalParamTypeServiceImpl.updateOnly(context, paramType);
 	}
 
 	@Override
@@ -138,11 +157,19 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	}
 
 	@Override
-	public void saveParamCode(ServiceContext context, ParamCode paramCode) throws JServiceException{
-		if(existsParamCodeByTypeIdAndCode(context, paramCode.getTypeId(), paramCode.getCode())){
-			throw new JServiceException("param code already exists.");
+	public void saveParamCode(ServiceContext context, ParamCode paramCode) 
+			throws BusinessException{
+		try{
+
+			if(existsParamCodeByTypeIdAndCode(context, paramCode.getTypeId(), paramCode.getCode())){
+				throw new BusinessException("param code already exists.");
+			}
+			internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		internalParamCodeServiceImpl.saveOnly(context, paramCode);
+		
 	}
 
 	private boolean existsParamCodeByTypeIdAndCode(ServiceContext context, String typeId, String code){
@@ -150,11 +177,17 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	}
 	
 	@Override
-	public void saveParamType(ServiceContext context, ParamType paramType) throws JServiceException {
-		if(existsParamType(context, paramType.getCode())){
-			throw new JServiceException("param type already exists.");
+	public void saveParamType(ServiceContext context, ParamType paramType) 
+			throws BusinessException {
+		try{
+			if(existsParamType(context, paramType.getCode())){
+				throw new BusinessException("param type already exists.");
+			}
+			internalParamTypeServiceImpl.saveOnly(context, paramType);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		internalParamTypeServiceImpl.saveOnly(context, paramType);
+		
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserGroup;
 
 public interface UserGroupService extends Service<UserGroup> {
@@ -18,7 +19,7 @@ public interface UserGroupService extends Service<UserGroup> {
 	 * @param userId
 	 * @param groupId
 	 */
-	void bingUserGroup(ServiceContext serviceContext,String userId,String groupId) throws JServiceException;
+	void bingUserGroup(ServiceContext serviceContext,String userId,String groupId) throws BusinessException;
 	
 	/**
 	 * remove group on the user. 
@@ -27,7 +28,7 @@ public interface UserGroupService extends Service<UserGroup> {
 	 * @param groupId
 	 * @throws JServiceException
 	 */
-	void unbingUserGroup(ServiceContext serviceContext,String userId,String groupId) throws JServiceException;
+	void unbingUserGroup(ServiceContext serviceContext,String userId,String groupId) throws BusinessException;
 	
 	/**
 	 * check if the user belongs to the group. 
@@ -45,6 +46,6 @@ public interface UserGroupService extends Service<UserGroup> {
 	 * @param groupId
 	 * @return
 	 */
-	UserGroup getUserGroupOnUserIdAndGroupId(ServiceContext serviceContext,String userId,String groupId) throws JServiceException;
+	UserGroup getUserGroupOnUserIdAndGroupId(ServiceContext serviceContext,String userId,String groupId) throws BusinessException;
 	
 }

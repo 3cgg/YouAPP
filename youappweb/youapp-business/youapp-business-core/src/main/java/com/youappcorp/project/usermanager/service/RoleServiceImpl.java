@@ -5,8 +5,8 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 
 import java.util.List;
 
@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.repo.RoleRepo;
 
 @Service(value="roleServiceImpl.transation.jpa")
-public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService {
+public class RoleServiceImpl extends InternalServiceSupport<Role> implements RoleService {
 
 	@Autowired
 	private RoleRepo<?> roleMapper;
@@ -85,17 +87,25 @@ public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService
 	
 	@Override
 	public void saveRole(ServiceContext context, Role role)
-			throws JServiceException {
-		validateRoleCode(role);
-		if(exists(context, role)){
-			throw new JServiceException("role code ["+role.getRoleCode()+"] already has exist.");
+			throws BusinessException {
+		
+		try{
+
+			validateRoleCode(role);
+			if(exists(context, role)){
+				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
+			}
+			saveOnly(context, role);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		saveOnly(context, role);
+		
 	}
 	
 	@Override
 	public boolean exists(ServiceContext context, Role role)
-			throws JServiceException {
+			throws BusinessException {
 		if(role==null){
 			throw new IllegalArgumentException("role argument is null");
 		}
@@ -120,32 +130,42 @@ public class RoleServiceImpl extends ServiceSupport<Role> implements RoleService
 	
 	@Override
 	public void updateRole(ServiceContext context, Role role)
-			throws JServiceException {
-		
-		validateRoleCode(role);
-		
-		if(JStringUtils.isNullOrEmpty(role.getId())){
-			throw new IllegalArgumentException("the primary property id of role is null.");
+			throws BusinessException {
+		try{
+			validateRoleCode(role);
+			
+			if(JStringUtils.isNullOrEmpty(role.getId())){
+				throw new IllegalArgumentException("the primary property id of role is null.");
+			}
+			
+			if(exists(context, role)){
+				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
+			}
+			updateOnly(context, role);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
 		
-		if(exists(context, role)){
-			throw new JServiceException("role code ["+role.getRoleCode()+"] already has exist.");
-		}
-		updateOnly(context, role);
 	}
 	
 	@Override
 	public void deleteRole(ServiceContext context, Role role)
-			throws JServiceException {
-		if(JStringUtils.isNullOrEmpty(role.getId())){
-			throw new IllegalArgumentException("the primary property id of role is null.");
+			throws BusinessException {
+		try{
+			if(JStringUtils.isNullOrEmpty(role.getId())){
+				throw new IllegalArgumentException("the primary property id of role is null.");
+			}
+			
+			if(JStringUtils.isNullOrEmpty(role.getRoleCode())){
+				role.setRoleCode(getById(context, role.getId()).getRoleCode());
+			}
+			validateRoleCode(role);
+			delete(context, role.getId());
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
 		
-		if(JStringUtils.isNullOrEmpty(role.getRoleCode())){
-			role.setRoleCode(getById(context, role.getId()).getRoleCode());
-		}
-		validateRoleCode(role);
-		delete(context, role.getId());
 	}
 	
 }

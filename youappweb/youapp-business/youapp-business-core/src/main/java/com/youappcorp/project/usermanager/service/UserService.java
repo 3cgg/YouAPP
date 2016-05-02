@@ -11,6 +11,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.User;
 
 /**
@@ -32,7 +33,7 @@ public interface UserService extends Service<User> {
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void saveUser(ServiceContext context, User user) throws JServiceException;
+	public void saveUser(ServiceContext context, User user) throws BusinessException;
 	
 	
 	/**
@@ -41,7 +42,7 @@ public interface UserService extends Service<User> {
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void updateUser(ServiceContext context, User user) throws JServiceException;
+	public void updateUser(ServiceContext context, User user) throws BusinessException;
 	
 	/**
 	 * get user by name 
@@ -79,6 +80,6 @@ public interface UserService extends Service<User> {
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void register(ServiceContext context,User user) throws JServiceException;
+	public void register(ServiceContext context,User user) throws BusinessException;
 	
 }

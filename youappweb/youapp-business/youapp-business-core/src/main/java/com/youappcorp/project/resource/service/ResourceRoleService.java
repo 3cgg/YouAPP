@@ -3,9 +3,11 @@ package com.youappcorp.project.resource.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import com.youappcorp.project.resource.model.ResourceRole;
 
 import java.util.List;
+
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.resource.model.ResourceRole;
 
 public interface ResourceRoleService extends Service<ResourceRole> {
 
@@ -44,7 +46,7 @@ public interface ResourceRoleService extends Service<ResourceRole> {
 	 * @param roleId
 	 * @return
 	 */
-	ResourceRole bingResourceRole(ServiceContext serviceContext,String resourceId,String roleId) throws JServiceException;
+	ResourceRole bingResourceRole(ServiceContext serviceContext,String resourceId,String roleId) throws BusinessException;
 	
 	/**
 	 * grant the resource to a role.  if the path does not exist, create new resource.
@@ -53,7 +55,7 @@ public interface ResourceRoleService extends Service<ResourceRole> {
 	 * @param roleId
 	 * @return
 	 */
-	ResourceRole bingResourcePathRole(ServiceContext serviceContext,String path,String roleId) throws JServiceException;
+	ResourceRole bingResourcePathRole(ServiceContext serviceContext,String path,String roleId) throws BusinessException;
 	
 	/**
 	 * remove role on the resource. 
@@ -62,7 +64,7 @@ public interface ResourceRoleService extends Service<ResourceRole> {
 	 * @param roleId
 	 * @throws JServiceException
 	 */
-	void unbingResourceRole(ServiceContext serviceContext,String resourceId,String roleId) throws JServiceException;
+	void unbingResourceRole(ServiceContext serviceContext,String resourceId,String roleId) throws BusinessException;
 	
 	/**
 	 * check if the resource had already belong  the role. 

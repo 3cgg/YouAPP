@@ -1,21 +1,22 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.UserRole;
 import com.youappcorp.project.usermanager.repo.UserRoleRepo;
 
 @Service(value="userRoleServiceImpl.transation.jpa")
-public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements UserRoleService {
+public class UserRoleServiceImpl extends InternalServiceSupport<UserRole> implements UserRoleService {
 
 	@Autowired
 	private UserRoleRepo<?> userRoleMapper;
@@ -33,27 +34,40 @@ public class UserRoleServiceImpl extends ServiceSupport<UserRole> implements Use
 	
 	@Override
 	public void bingUserRole(ServiceContext serviceContext, String userId,
-			String roleId) throws JServiceException {
-		if(isBing(serviceContext, userId, roleId)){
-			throw new JServiceException("the user had already the role.");
+			String roleId) throws BusinessException {
+		
+		try{
+			if(isBing(serviceContext, userId, roleId)){
+				throw new BusinessException("the user had already the role.");
+			}
+			
+			UserRole userRole=new UserRole();
+			userRole.setUserId(userId);
+			userRole.setRoleId(roleId);
+			userRole.setId(JUniqueUtils.unique());
+			saveOnly(serviceContext, userRole);
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
 		
-		UserRole userRole=new UserRole();
-		userRole.setUserId(userId);
-		userRole.setRoleId(roleId);
-		userRole.setId(JUniqueUtils.unique());
-		saveOnly(serviceContext, userRole);
+		
 	}
 	
 	@Override
 	public void unbingUserRole(ServiceContext serviceContext, String userId,
-			String roleId) throws JServiceException {
-		
-		UserRole userRole=getUserRoleOnUserIdAndRoleId(serviceContext, userId, roleId);
-		if(userRole==null){
-			throw new JServiceException("the user doesnot have the role.");
+			String roleId) throws BusinessException {
+		try{
+			UserRole userRole=getUserRoleOnUserIdAndRoleId(serviceContext, userId, roleId);
+			if(userRole==null){
+				throw new BusinessException("the user doesnot have the role.");
+			}
+			delete(serviceContext, userRole.getId());
+			
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		delete(serviceContext, userRole.getId());
+		
 	}
 	
 	@Override

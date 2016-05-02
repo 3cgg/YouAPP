@@ -3,9 +3,11 @@ package com.youappcorp.project.resource.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import com.youappcorp.project.resource.model.ResourceExtend;
 
 import java.util.List;
+
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.resource.model.ResourceExtend;
 
 public interface ResourceExtendService extends Service<ResourceExtend> {
 
@@ -15,7 +17,7 @@ public interface ResourceExtendService extends Service<ResourceExtend> {
 	 * @param resourceExtend
 	 * @throws JServiceException
 	 */
-	void saveResourceExtend(ServiceContext context,ResourceExtend resourceExtend) throws JServiceException;
+	void saveResourceExtend(ServiceContext context,ResourceExtend resourceExtend) throws BusinessException;
 	
 	
 	/**
@@ -24,7 +26,7 @@ public interface ResourceExtendService extends Service<ResourceExtend> {
 	 * @param resourceExtend
 	 * @throws JServiceException
 	 */
-	void enableCache(ServiceContext context,ResourceExtend resourceExtend) throws JServiceException;
+	void enableCache(ServiceContext context,ResourceExtend resourceExtend) throws BusinessException;
 	
 	/**
 	 * disable resource cached.
@@ -32,7 +34,7 @@ public interface ResourceExtendService extends Service<ResourceExtend> {
 	 * @param resourceExtend
 	 * @throws JServiceException
 	 */
-	void disableCache(ServiceContext context,ResourceExtend resourceExtend) throws JServiceException;
+	void disableCache(ServiceContext context,ResourceExtend resourceExtend) throws BusinessException;
 	
 	/**
 	 * enhance the resource, collection all additional functions, such as 
@@ -42,7 +44,7 @@ public interface ResourceExtendService extends Service<ResourceExtend> {
 	 * @throws JServiceException
 	 * @return ResourceExtend , the latest record. 
 	 */
-	ResourceExtend enhanceResource(ServiceContext context,ResourceExtend resourceExtend) throws JServiceException;
+	ResourceExtend enhanceResource(ServiceContext context,ResourceExtend resourceExtend) throws BusinessException;
 	
 	/**
 	 * get resource extension according to the resource id. 

@@ -71,7 +71,7 @@ public class BillController extends ControllerSupport{
 	
 	@RequestMapping(value="/deleteBillById")
 	public ResponseModel deleteBillById(String id){
-		billService.delete(getServiceContext(), id); 
+		billService.deleteBill(getServiceContext(), id); 
 		return ResponseModel.newSuccess().setData(DELETE_SUCCESS);
 	}
 

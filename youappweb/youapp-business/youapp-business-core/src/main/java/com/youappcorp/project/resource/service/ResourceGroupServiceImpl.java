@@ -1,21 +1,23 @@
 package com.youappcorp.project.resource.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import com.youappcorp.project.resource.model.Resource;
-import com.youappcorp.project.resource.model.ResourceGroup;
-import com.youappcorp.project.resource.repo.ResourceGroupRepo;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.BusinessExceptionUtil;
+import com.youappcorp.project.resource.model.Resource;
+import com.youappcorp.project.resource.model.ResourceGroup;
+import com.youappcorp.project.resource.repo.ResourceGroupRepo;
+
 @Service(value="resourceGroupServiceImpl.transation.jpa")
-public class ResourceGroupServiceImpl extends ServiceSupport<ResourceGroup> implements ResourceGroupService {
+public class ResourceGroupServiceImpl extends InternalServiceSupport<ResourceGroup> implements ResourceGroupService {
 
 	@Autowired
 	private ResourceGroupRepo<?> resourceGroupMapper;
@@ -49,39 +51,54 @@ public class ResourceGroupServiceImpl extends ServiceSupport<ResourceGroup> impl
 	
 	@Override
 	public ResourceGroup bingResourceGroup(ServiceContext serviceContext, String resourceId,
-			String groupId) throws JServiceException {
-		if(isBing(serviceContext, resourceId, groupId)){
-			throw new JServiceException("the resource had already belong to the group.");
+			String groupId) throws BusinessException {
+		ResourceGroup resourceGroup=null;
+		try{
+			if(isBing(serviceContext, resourceId, groupId)){
+				throw new BusinessException("the resource had already belong to the group.");
+			}
+			resourceGroup=new ResourceGroup();
+			resourceGroup.setResourceId(resourceId);
+			resourceGroup.setGroupId(groupId);
+			resourceGroup.setId(JUniqueUtils.unique());
+			saveOnly(serviceContext, resourceGroup);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		
-		ResourceGroup resourceGroup=new ResourceGroup();
-		resourceGroup.setResourceId(resourceId);
-		resourceGroup.setGroupId(groupId);
-		resourceGroup.setId(JUniqueUtils.unique());
-		saveOnly(serviceContext, resourceGroup);
 		return resourceGroup;
 	}
 	
 	@Override
 	public ResourceGroup bingResourcePathGroup(ServiceContext serviceContext,
-			String path, String groupId) throws JServiceException {
-		Resource resource= resourceService.getResourceByURL(serviceContext, path);
-		if(resource==null){
-			resource=new Resource();
-			resourceService.saveResource(serviceContext, resource);
+			String path, String groupId) throws BusinessException {
+		ResourceGroup resourceGroup=null;
+		try{
+			Resource resource= resourceService.getResourceByURL(serviceContext, path);
+			if(resource==null){
+				resource=new Resource();
+				resourceService.saveResource(serviceContext, resource);
+			}
+			resourceGroup=bingResourceGroup(serviceContext, resource.getId(), groupId);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		return bingResourceGroup(serviceContext, resource.getId(), groupId);
+		return resourceGroup;
+		
 	}
 	
 	@Override
 	public void unbingResourceGroup(ServiceContext serviceContext, String resourceId,
-			String groupId) throws JServiceException {
-		
-		ResourceGroup resourceGroup=getResourceGroupOnResourceIdAndGroupId(serviceContext, resourceId, groupId);
-		if(resourceGroup==null){
-			throw new JServiceException("the resource had not already belong to the group.");
+			String groupId) throws BusinessException {
+		try{
+			ResourceGroup resourceGroup=getResourceGroupOnResourceIdAndGroupId(serviceContext, resourceId, groupId);
+			if(resourceGroup==null){
+				throw new BusinessException("the resource had not already belong to the group.");
+			}
+			delete(serviceContext, resourceGroup.getId());
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
 		}
-		delete(serviceContext, resourceGroup.getId());
+		
 	}
 	
 	@Override

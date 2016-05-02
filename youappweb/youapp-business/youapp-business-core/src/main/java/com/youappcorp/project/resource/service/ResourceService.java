@@ -1,11 +1,12 @@
 package com.youappcorp.project.resource.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import com.youappcorp.project.resource.model.Resource;
 
 import java.util.List;
+
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.resource.model.Resource;
 
 public interface ResourceService extends Service<Resource> {
 
@@ -29,7 +30,7 @@ public interface ResourceService extends Service<Resource> {
 	 * @param context
 	 * @param resource
 	 */
-	void saveResource(ServiceContext context,Resource resource) throws JServiceException;
+	void saveResource(ServiceContext context,Resource resource) throws BusinessException;
 	
 	
 }

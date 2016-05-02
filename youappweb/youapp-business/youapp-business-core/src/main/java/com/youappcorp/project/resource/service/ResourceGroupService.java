@@ -3,9 +3,11 @@ package com.youappcorp.project.resource.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.platform.basicwebcomp.core.service.Service;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import com.youappcorp.project.resource.model.ResourceGroup;
 
 import java.util.List;
+
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.resource.model.ResourceGroup;
 
 public interface ResourceGroupService extends Service<ResourceGroup> {
 
@@ -45,7 +47,7 @@ public interface ResourceGroupService extends Service<ResourceGroup> {
 	 * @param groupId
 	 * @return 
 	 */
-	ResourceGroup bingResourceGroup(ServiceContext serviceContext,String resourceId,String groupId) throws JServiceException;
+	ResourceGroup bingResourceGroup(ServiceContext serviceContext,String resourceId,String groupId) throws BusinessException;
 	
 	/**
 	 * grant the resource to a group.  if the path does not exist, create new resource.
@@ -54,7 +56,7 @@ public interface ResourceGroupService extends Service<ResourceGroup> {
 	 * @param groupId
 	 * @return 
 	 */
-	ResourceGroup bingResourcePathGroup(ServiceContext serviceContext,String path,String groupId) throws JServiceException;
+	ResourceGroup bingResourcePathGroup(ServiceContext serviceContext,String path,String groupId) throws BusinessException;
 	
 	
 	/**
@@ -64,7 +66,7 @@ public interface ResourceGroupService extends Service<ResourceGroup> {
 	 * @param groupId
 	 * @throws JServiceException
 	 */
-	void unbingResourceGroup(ServiceContext serviceContext,String resourceId,String groupId) throws JServiceException;
+	void unbingResourceGroup(ServiceContext serviceContext,String resourceId,String groupId) throws BusinessException;
 	
 	/**
 	 * check if the resource had already belong  the group. 

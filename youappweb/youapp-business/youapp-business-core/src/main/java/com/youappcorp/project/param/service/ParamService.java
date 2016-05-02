@@ -9,6 +9,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.param.model.ParamCode;
 import com.youappcorp.project.param.model.ParamCriteria;
 import com.youappcorp.project.param.model.ParamType;
@@ -26,7 +27,7 @@ public interface ParamService{
 	 * @param paramCode
 	 * @throws JServiceException
 	 */
-	public void saveParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws JServiceException;
+	public void saveParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws BusinessException;
 	
 	
 	/**
@@ -35,7 +36,7 @@ public interface ParamService{
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void updateParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws JServiceException;
+	public void updateParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws BusinessException;
 
 	/**
 	 * 
@@ -44,13 +45,13 @@ public interface ParamService{
 	 */
 	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context); 
 	
-	public void updateParamCode(ServiceContext context,ParamCode paramCode) throws JServiceException;
+	public void updateParamCode(ServiceContext context,ParamCode paramCode) throws BusinessException;
 	
-	public void updateParamType(ServiceContext context,ParamType paramType) throws JServiceException;
+	public void updateParamType(ServiceContext context,ParamType paramType) throws BusinessException;
 	
-	public void saveParamCode(ServiceContext context,ParamCode paramCode) throws JServiceException;
+	public void saveParamCode(ServiceContext context,ParamCode paramCode) throws BusinessException;
 	
-	public void saveParamType(ServiceContext context,ParamType paramType) throws JServiceException;
+	public void saveParamType(ServiceContext context,ParamType paramType) throws BusinessException;
 	
 	public boolean existsParamType(ServiceContext context,String code);
 	

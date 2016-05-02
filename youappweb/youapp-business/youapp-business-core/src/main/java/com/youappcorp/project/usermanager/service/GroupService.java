@@ -8,6 +8,7 @@ import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 
 import java.util.List;
 
+import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.Group;
 
 public interface GroupService extends Service<Group> {
@@ -62,7 +63,7 @@ public interface GroupService extends Service<Group> {
 	 * @param group
 	 * @throws JServiceException
 	 */
-	public void saveGroup(ServiceContext context, Group group) throws JServiceException;
+	public void saveGroup(ServiceContext context, Group group) throws BusinessException;
 	
 	/**
 	 *  check if the group is existing, including but not restrict 
@@ -74,7 +75,7 @@ public interface GroupService extends Service<Group> {
 	 * @return
 	 * @throws JServiceException
 	 */
-	boolean exists(ServiceContext context, Group group) throws JServiceException;
+	boolean exists(ServiceContext context, Group group) throws BusinessException;
 	
 	
 	/**
@@ -84,7 +85,7 @@ public interface GroupService extends Service<Group> {
 	 * @param group
 	 * @throws JServiceException
 	 */
-	void updateGroup(ServiceContext context, Group group)throws JServiceException;
+	void updateGroup(ServiceContext context, Group group)throws BusinessException;
 	
 	/**
 	 * delete the group, together with potential validations. 
@@ -92,6 +93,6 @@ public interface GroupService extends Service<Group> {
 	 * @param group
 	 * @throws JServiceException
 	 */
-	void deleteGroup(ServiceContext context, Group group)throws JServiceException;
+	void deleteGroup(ServiceContext context, Group group)throws BusinessException;
 	
 }

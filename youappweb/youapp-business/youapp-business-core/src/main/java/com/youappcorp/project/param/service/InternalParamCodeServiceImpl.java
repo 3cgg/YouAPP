@@ -1,7 +1,7 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
+import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
 import com.youappcorp.project.param.model.ParamCode;
 
 @Service(value="internalparamCodeService.transation.jpa")
-public class InternalParamCodeServiceImpl extends ServiceSupport<ParamCode>{
+public class InternalParamCodeServiceImpl extends InternalServiceSupport<ParamCode>{
 
 	@Autowired
 	private ParamCodeJPARepo paramCodeRepo;

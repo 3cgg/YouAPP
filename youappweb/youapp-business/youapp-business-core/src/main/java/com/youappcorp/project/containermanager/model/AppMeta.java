@@ -19,6 +19,8 @@ public class AppMeta extends JJpaBaseModel  {
 	
 	private String appVersion;
 	
+	private String unique;
+	
 	private String appDesc;
 	
 	private String appActive;
@@ -30,6 +32,15 @@ public class AppMeta extends JJpaBaseModel  {
 
 	public void setAppName(String appName) {
 		this.appName = appName;
+	}
+
+	@Column(name="UNIQUE")
+	public String getUnique() {
+		return unique;
+	}
+
+	public void setUnique(String unique) {
+		this.unique = unique;
 	}
 
 	@Column(name="APP_COMP_NAME")

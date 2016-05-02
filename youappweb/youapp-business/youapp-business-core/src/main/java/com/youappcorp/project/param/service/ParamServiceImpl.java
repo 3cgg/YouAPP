@@ -7,7 +7,6 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
 import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
-import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModelService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,9 +42,6 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	
 	@Autowired
 	private ParamTypeJPARepo paramTypeJPARepo;
-	
-	@Autowired
-	private  CodeRefCacheModelService classd;
 	
 	@Override
 	public void saveParam(ServiceContext context, ParamType paramType,

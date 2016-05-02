@@ -62,7 +62,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
          *  use "dispatcherServlet" to replace the default spring mvc , if not set the bean name, 
          *  the method name is used as the bean name.
          */
-        @Bean(name={"dispatcherServlet"}) 
+        @Bean(name={"mvcServiceServlet"}) 
         public MvcServiceServlet mvcServiceServlet() {
             return new MvcServiceServlet();
         }

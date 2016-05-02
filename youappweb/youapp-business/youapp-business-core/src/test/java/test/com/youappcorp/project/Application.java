@@ -35,7 +35,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
         String[] beanNames = ctx.getBeanDefinitionNames();
         Arrays.sort(beanNames);
         for (String beanName : beanNames) {
-            System.out.println(beanName);
+            System.out.println(beanName+"->"+ctx.getBean(beanName).getClass().getName());
         }
     }
 
@@ -50,6 +50,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
         container.setPort(8689);
     }
     
+    
     @Configuration
     static class Restbucks extends SpringBootServletInitializer {
 
@@ -57,14 +58,18 @@ public class Application extends SpringBootServletInitializer implements Embedde
             return builder.sources(Restbucks.class);
         }
 
-        @Bean
-        public MvcServiceServlet dispatcherServlet() {
+        /*
+         *  use "dispatcherServlet" to replace the default spring mvc , if not set the bean name, 
+         *  the method name is used as the bean name.
+         */
+        @Bean(name={"dispatcherServlet"}) 
+        public MvcServiceServlet mvcServiceServlet() {
             return new MvcServiceServlet();
         }
 
         @Bean(name = "mvcservice-servlet-regist-bean")
         public ServletRegistrationBean dispatcherServletRegistration() {
-            ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet());
+            ServletRegistrationBean registration = new ServletRegistrationBean(mvcServiceServlet());
             registration.addUrlMappings("/extapi/*");
             Map<String,String> params = new HashMap<String,String>();
             params.put("org.atmosphere.servlet","org.springframework.web.servlet.DispatcherServlet");
@@ -73,7 +78,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
             registration.setInitParameters(params);
             return registration;
         }
-        
+       
         @Bean
         public MvcClassPathListener mvcClassPathListener(){
             return new MvcClassPathListener();

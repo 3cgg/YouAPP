@@ -19,7 +19,7 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
-class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
+public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(InnerHttpInvokeContainer.class);
 	
@@ -76,8 +76,7 @@ class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 								+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
 					}
 					
-					String beanGetURI=springCompMicroContainer.getGetRequestURI(unique, mappingMeta.getControllerName());
-					Object controllerObject=springCompMicroContainer.execute(new URI(beanGetURI), object);
+					Object controllerObject=getControllerObject(unique, mappingMeta, object);
 					if(controllerObject==null){
 						return ResponseModel.newError().setData("cannot find any controller for the path. "
 								+ " check if turn on multiple component version infrastructure (immutable version)."
@@ -100,6 +99,21 @@ class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContainer {
 		return null;
 	}
 
+	/**
+	 * override the method to provide the needable runtime object.
+	 * @param unique
+	 * @param mappingMeta
+	 * @param object
+	 * @return
+	 * @throws Exception
+	 */
+	protected Object getControllerObject(String unique,MappingMeta mappingMeta,Object object) throws Exception{
+		String beanGetURI=springCompMicroContainer.getGetRequestURI(unique, mappingMeta.getControllerName());
+		Object controllerObject=springCompMicroContainer.execute(new URI(beanGetURI), object);
+		return controllerObject;
+	}
+	
+	
 	@Override
 	public void destroy() {
 		springCompMicroContainer.destroy();

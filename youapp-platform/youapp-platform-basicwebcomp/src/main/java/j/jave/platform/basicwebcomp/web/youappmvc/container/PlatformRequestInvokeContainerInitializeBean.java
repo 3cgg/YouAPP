@@ -1,7 +1,9 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
+import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionTestApplication;
 import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
 import org.springframework.beans.BeansException;
@@ -24,7 +26,13 @@ public class PlatformRequestInvokeContainerInitializeBean implements Application
 		SpringContainerConfig springContainerConfig=new SpringContainerConfig();
 		springContainerConfig.setApplicationContext(applicationContext);
 		PlatformComponentVersionApplication platformComponentVersionApplication=new PlatformComponentVersionApplication();
-		requestInvokeContainerDelegateService.newInstance(springContainerConfig, platformComponentVersionApplication);
+		String unique=requestInvokeContainerDelegateService.newInstance(springContainerConfig, platformComponentVersionApplication);
+		
+		//startup test container.
+		ComponentVersionTestApplication componentVersionTestApplication=new ComponentVersionTestApplication();
+		requestInvokeContainerDelegateService.newInstance(springContainerConfig, 
+				componentVersionTestApplication,(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
+	
 	}
 	
 }

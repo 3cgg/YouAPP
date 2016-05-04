@@ -9,6 +9,8 @@ import j.jave.platform.multiversioncompsupportcomp.ComponentVersionApplication;
 
 import java.net.URI;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 
 public class SpringCompRunner implements JRunner,JExecutableURIGenerator {
@@ -56,7 +58,22 @@ public class SpringCompRunner implements JRunner,JExecutableURIGenerator {
 		if(JExecutableURIUtil.Type.GET.getValue().equals(type)){
 			return getBean(uri, object);
 		}
+		if(JExecutableURIUtil.Type.EXIST.getValue().equals(type)){
+			return existBean(uri, object);
+		}
 		throw new JOperationNotSupportedException(" the uri ["+uri.toString()+"] not supported."); 
+	}
+	
+	private boolean existBean(URI uri,Object object){
+		String beanName=getBeanName(uri);
+		try{
+			applicationContext.getBean(beanName);
+			return true;
+		}catch(NoSuchBeanDefinitionException e){
+			return false;
+		}catch(BeansException e){
+			return false;
+		}
 	}
 	
 	private Object getBean(URI uri,Object object){

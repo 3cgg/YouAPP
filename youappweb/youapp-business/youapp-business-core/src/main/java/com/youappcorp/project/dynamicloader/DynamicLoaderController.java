@@ -1,11 +1,15 @@
 package com.youappcorp.project.dynamicloader;
 
+import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
+import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
 import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
 import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
+import j.jave.platform.basicwebcomp.web.youappmvc.container.InnerHttpInvokeContainer;
 import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionTestApplication;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 
 import java.io.File;
@@ -39,7 +43,22 @@ public class DynamicLoaderController extends ControllerSupport {
 			
 			DynamicComponentVersionApplication dynamicComponentVersionApplication
 				=new DynamicComponentVersionApplication(applicationContext, jarUrls);
-			requestInvokeContainerDelegateService.newInstance(dynamicSpringContainerConfig, dynamicComponentVersionApplication);
+			String unique=requestInvokeContainerDelegateService.newInstance(dynamicSpringContainerConfig, dynamicComponentVersionApplication);
+			
+			//startup test container.
+			
+			ComponentVersionTestApplication componentVersionTestApplication
+			=new ComponentVersionTestApplication(dynamicComponentVersionApplication.getApp(),
+					dynamicComponentVersionApplication.getComponent()+"-TEST", 
+					dynamicComponentVersionApplication.getVersion(), 
+					dynamicComponentVersionApplication.getUrlPrefix());
+			
+			SpringContainerConfig springContainerConfig=new SpringContainerConfig();
+			springContainerConfig.setApplicationContext(applicationContext);
+			
+			requestInvokeContainerDelegateService.newInstance(springContainerConfig, componentVersionTestApplication,
+					(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
+			
 			return ResponseModel.newSuccess().setData(true);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);

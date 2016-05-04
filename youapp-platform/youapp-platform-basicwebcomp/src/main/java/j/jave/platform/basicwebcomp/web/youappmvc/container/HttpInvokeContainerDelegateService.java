@@ -6,8 +6,10 @@ import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JScheme;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
 import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
+import j.jave.platform.multiversioncompsupportcomp.ComponentVersionTestApplication;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 import j.jave.platform.multiversioncompsupportcomp.PlatformComponentVersionApplication;
 
@@ -70,6 +72,7 @@ implements JService{
 	public boolean exist(String path,String containerUnique){
 		String existURI=getExistRequestURI(containerUnique, path);
 		try {
+			if(JStringUtils.isNullOrEmpty(existURI)) return true;
 			return (boolean) containerDelegate.execute(new URI(existURI), null, containerUnique, false);
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -103,13 +106,28 @@ implements JService{
 	}
 	
 	/**
-	 * 
+	 * startup platform container.
 	 * @param springContainerConfig
 	 * @param componentVersionApplication
 	 * @return
 	 */
 	public String newInstance(SpringContainerConfig springContainerConfig,PlatformComponentVersionApplication platformComponentVersionApplication){
 		JContainer container=new InnerHttpInvokeContainer(springContainerConfig,platformComponentVersionApplication);
+		container.initialize();
+		return container.unique();
+	}
+	
+	/**
+	 * startup test container for the platform functions.
+	 * @param springContainerConfig
+	 * @param platformTestComponentVersionApplication
+	 * @return
+	 */
+	public String newInstance(SpringContainerConfig springContainerConfig,
+			ComponentVersionTestApplication componentVersionTestApplication,
+			InnerHttpInvokeContainer innerHttpInvokeContainer){
+		JContainer container=new InnerHttpInvokeTestContainer(springContainerConfig,
+				componentVersionTestApplication,innerHttpInvokeContainer);
 		container.initialize();
 		return container.unique();
 	}

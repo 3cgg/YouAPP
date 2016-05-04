@@ -1,5 +1,6 @@
 package test.com.youappcorp.project;
 
+import junit.framework.TestCase;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
@@ -15,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-context.xml"})
-public class TestAnything{
+public class TestAnything extends TestCase{
 
 	private JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
 	{

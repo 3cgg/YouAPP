@@ -10,10 +10,4 @@ public class BusinessException extends RuntimeException {
 		super(e);
 	}
 	
-	public static void throwException(Exception e) throws BusinessException{
-		if(BusinessException.class.isInstance(e)) throw (BusinessException)e;
-		throw new BusinessException(e);
-	}
-	
-	
 }

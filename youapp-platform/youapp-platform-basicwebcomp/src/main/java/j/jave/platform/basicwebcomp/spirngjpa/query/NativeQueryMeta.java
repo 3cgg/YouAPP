@@ -28,7 +28,7 @@ class NativeQueryMeta extends QueryMeta {
 		if(countSql==null){
 			countSql=QueryUtils.createCountQueryFor(sql);
 		}
-		Matcher matcher=Pattern.compile("^(.+)(count[(].+[)])(.+)$").matcher(countSql);
+		Matcher matcher=Pattern.compile("^(.+)(count[(][^)]+[)])(.+)$").matcher(countSql);
 		if(matcher.find()){
 			matcher.replaceFirst("count(1)"); 
 			countSql=matcher.group(1)+"  count(1) "+matcher.group(3);

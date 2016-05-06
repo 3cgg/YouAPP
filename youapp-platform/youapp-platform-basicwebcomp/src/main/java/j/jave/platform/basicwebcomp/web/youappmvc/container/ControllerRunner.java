@@ -37,6 +37,8 @@ class ControllerRunner implements JRunner, JExecutableURIGenerator {
 			mappingMetas.putAll(((SpringDynamicJARApplicationContext)applicationContext).getMappingMetas());
 		}
 		this.controllerMicroContainerConfig=controllerMicroContainerConfig;
+		this.unique=controllerMicroContainerConfig.unique();
+		this.name=controllerMicroContainerConfig.name();
 	}
 	
 	@Override
@@ -53,7 +55,7 @@ class ControllerRunner implements JRunner, JExecutableURIGenerator {
 	public final boolean accept(URI uri) {
 		boolean accept= JScheme.CONTROLLER.getValue().equals(uri.getScheme());
 		String unique=JExecutableURIUtil.getUnique(uri);
-		return accept=accept&&unique.equals(unique);
+		return accept=accept&&this.unique.equals(unique);
 	}
 
 	@Override

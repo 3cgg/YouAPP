@@ -1,29 +1,28 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.container;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.platform.basicsupportcomp.core.container.MappingMeta;
 
+import org.springframework.context.ApplicationContext;
+
 /**
- * the implementation prefixes the test/ the target class name.
- * i.e. the final path of "j.jave.platform.basicwebcomp.web.youappmvc.container.DefaultControllerObjectParser"
- * is "test.j.jave.platform.basicwebcomp.web.youappmvc.container.DefaultControllerObjectParser"
+ * the implementation prefixes the test/ the target bean name.
+ * i.e. if the bean name is "usercontroller" ,then the test bean name is "test/usercontroller"
  * @author J
  *
  */
 public class SpringBeanControllerObjectParser implements ControllerObjectParser {
 
-	private HttpInvokeContainerDelegateService requestInvokeContainerDelegate=
-			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
+	private ApplicationContext applicationContext;
+	
+	public SpringBeanControllerObjectParser(ApplicationContext applicationContext) {
+		this.applicationContext=applicationContext;
+	}
 	
 	@Override
 	public Object parse(MappingMeta mappingMeta) throws Exception {
-		Class<?> controllerClass=mappingMeta.getClazz();
-		String controllerClassName=controllerClass.getName();
-		String testControllerClassName="test."+controllerClassName;
-		
-		
-		return JClassUtils.newObject(JClassUtils.load(testControllerClassName,controllerClass.getClassLoader()));
+		String controllerBeanName=mappingMeta.getControllerName();
+		String testControllerBeanName="test/"+controllerBeanName;
+		return applicationContext.getBean(testControllerBeanName);
 	}
 	
 	

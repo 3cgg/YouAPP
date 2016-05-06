@@ -88,6 +88,11 @@ public class JContainerDelegate {
 		serviceHubDelegate.addImmediateEvent(new JContainerRegisterEvent(this, container));
 	}
 	
+	/**
+	 * get all containers, the event triggered by the passed argument object (#source)
+	 * @param source the event triggering object.
+	 * @return All containers unique
+	 */
 	@SuppressWarnings("unchecked")
 	public Collection<String> getAllContainerUniques(Object source){
 		return serviceHubDelegate.addImmediateEvent(new JContainerUniquesGetEvent(source),Collection.class);

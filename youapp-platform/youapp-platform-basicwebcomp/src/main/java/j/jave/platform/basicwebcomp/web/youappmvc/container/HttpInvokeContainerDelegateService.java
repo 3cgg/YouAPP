@@ -72,7 +72,7 @@ implements JService{
 	public boolean exist(String path,String containerUnique){
 		String existURI=getExistRequestURI(containerUnique, path);
 		try {
-			if(JStringUtils.isNullOrEmpty(existURI)) return true;
+			if(JStringUtils.isNullOrEmpty(existURI)) return false;
 			return (boolean) containerDelegate.execute(new URI(existURI), null, containerUnique, false);
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);

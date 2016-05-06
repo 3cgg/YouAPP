@@ -29,6 +29,8 @@ public class SpringCompRunner implements JRunner,JExecutableURIGenerator {
 		this.applicationContext=applicationContext;
 		this.componentVersionApplication=componentVersionApplication;
 		this.springCompMicroContainerConfig=springCompMicroContainerConfig;
+		this.unique=this.springCompMicroContainerConfig.unique();
+		this.name=this.springCompMicroContainerConfig.name();
 	}
 	
 	@Override

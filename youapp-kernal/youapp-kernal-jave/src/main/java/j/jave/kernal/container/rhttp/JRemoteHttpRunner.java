@@ -30,7 +30,7 @@ public class JRemoteHttpRunner implements JRunner,JExecutableURIGenerator{
 	public boolean accept(URI uri) {
 		boolean accept= JScheme.REMOTE_HTTP.getValue().equals(uri.getScheme());
 		String unique=JExecutableURIUtil.getUnique(uri);
-		return accept=accept&&unique.equals(unique);
+		return accept=accept&&this.unique.equals(unique);
 	}
 
 	@Override

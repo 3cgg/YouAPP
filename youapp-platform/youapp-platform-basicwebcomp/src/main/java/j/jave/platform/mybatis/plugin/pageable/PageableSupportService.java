@@ -1,5 +1,6 @@
 package j.jave.platform.mybatis.plugin.pageable;
 
+import j.jave.kernal.eventdriven.JOrder;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.service.JCacheService;
 import j.jave.kernal.jave.service.JService;
@@ -9,6 +10,7 @@ import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupp
 import org.springframework.stereotype.Service;
 
 @Service(value="j.jave.platform.mybatis.plugin.pageable.PageableSupportService")
+@JOrder(value=999)
 public class PageableSupportService extends SpringServiceFactorySupport<PageableSupportService>
 implements JService{
 

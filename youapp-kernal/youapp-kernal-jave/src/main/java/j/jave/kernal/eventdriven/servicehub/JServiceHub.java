@@ -3,6 +3,8 @@
  */
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.JOrder;
+import j.jave.kernal.eventdriven.JOrdered;
 import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsListener;
@@ -14,6 +16,8 @@ import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerEnable
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceListenerEnableListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceUninstallEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceUninstallListener;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServicesOnListenerEvent;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServicesOnListenerListener;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMeta;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorListener;
@@ -30,6 +34,7 @@ import j.jave.kernal.jave.utils.JCollectionUtils.EntryCallback;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,7 +45,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 class JServiceHub implements JService  ,JServiceFactory<JServiceHub>,JServiceListenerDetectListener,
 JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener,JServiceListenerDisableListener
-,JServiceGetListener ,JServiceRegisterListener,JServiceMonitorListener,JServiceHubMonitorListener,JServiceExistsListener{
+,JServiceGetListener ,JServiceRegisterListener,JServiceMonitorListener,JServiceHubMonitorListener,JServiceExistsListener
+,JServicesOnListenerListener{
 	
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
@@ -59,10 +65,28 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 
 	/**
 	 * KEY: listener.  extends <code>JAPPListener</code>
-	 * <p>VALUE: services. implements <code>JService</code>
+	 * <p>VALUE: services-ordered entities.
 	 */
-	private final static Map<Class<?>, List<Class<?>>> listenerServices=new ConcurrentHashMap<Class<?>, List<Class<?>>>();
+	private final static Map<Class<?>, List<ServiceOrdered>> listenerServices=new ConcurrentHashMap<Class<?>, List<ServiceOrdered>>();
 
+	
+	private class ServiceOrdered implements Comparable<ServiceOrdered>{
+		
+		private Class<?> serviceClass;
+		
+		private Integer order;
+		
+		public ServiceOrdered(Class<?> serviceClass,int order) {
+			this.serviceClass=serviceClass;
+			this.order=order;
+		}
+		
+		@Override
+		public int compareTo(ServiceOrdered o) {
+			return o.order.compareTo(this.order);
+		}
+		
+	}
 	
 	@Override
 	public boolean available() {
@@ -84,13 +108,14 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 				throw new IllegalStateException(eventClass.getName()+"must be modified by annotaion @JEventListener");
 			}
 			Class<? extends JAPPListener>  runningListener=eventListener.name();
-			List<Class<?>> serviceClasses= listenerServices.get(runningListener);
+			List<ServiceOrdered> serviceClasses= listenerServices.get(runningListener);
 			
 			if(serviceClasses!=null&&!serviceClasses.isEmpty()){
 				objects=new Object[serviceClasses.size()];
 				boolean received=false;
 				for(int i=0;i<serviceClasses.size();i++){
-					Class<?> serviceClass=serviceClasses.get(i);
+					ServiceOrdered serviceOrdered=serviceClasses.get(i);
+					Class<?> serviceClass=serviceOrdered.serviceClass;
 					if(serviceHubManager.isEnable(serviceClass, runningListener)){
 						received=true;
 						JAPPListener listener=null;
@@ -164,7 +189,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		
 		services.put(clazz, serviceFactory);
 		serviceHubManager.addNewService(clazz);
-		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz));
+		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz,serviceFactory.getClass()));
 	}
 	
 	private JServiceHub(){}
@@ -183,18 +208,29 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	@Override
 	public Object trigger(JServiceListenerDetectEvent event) {
 		Class<?> serviceClass =  event.getServiceClass();
+		
+		Class<?> serviceFactoryClass= event.getServiceFactoryClass();
+		
+		JOrder order =serviceFactoryClass.getAnnotation(JOrder.class);
+		int orderValue=JOrdered.LOWEST_PRECEDENCE;
+		if(order!=null){
+			orderValue=order.value();
+		}
+		
 		List<Class<?>> listenerClasses= JClassUtils.getAllInterfaces(serviceClass, JAPPListener.class);
 		if(listenerClasses.size()>0){
 			for(int i=0;i<listenerClasses.size();i++){
 				Class<?> listenerClass=listenerClasses.get(i);
 				JEventOnListener eventOnListener=listenerClass.getAnnotation(JEventOnListener.class);
 				if(eventOnListener!=null){
-					List<Class<?>> lnservices= listenerServices.get(listenerClass);
+					List<ServiceOrdered> lnservices= listenerServices.get(listenerClass);
 					if(lnservices==null){
-						lnservices=new ArrayList<Class<?>>();
+						lnservices=new ArrayList<ServiceOrdered>();
 						listenerServices.put(listenerClass, lnservices);
 					}
-					lnservices.add(serviceClass);
+					ServiceOrdered serviceOrdered=new ServiceOrdered(serviceClass, orderValue);
+					lnservices.add(serviceOrdered);
+					Collections.sort(lnservices);
 				}
 			}
 		}
@@ -425,4 +461,19 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		Class<?> serviceClass=event.getServiceClass();
 		return services.containsKey(serviceClass);
 	}
+	
+	@Override
+	public Object trigger(JServicesOnListenerEvent event) {
+		Class<?> listenerClass= event.getListenerClass();
+		return Collections.unmodifiableCollection(listenerServices.get(listenerClass));
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

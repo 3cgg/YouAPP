@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.startup;
+package j.jave.kernal.eventdriven;
 
 public interface JOrdered {
 

@@ -1,8 +1,8 @@
 package j.jave.platform.basicsupportcomp.core.servicehub;
 
-import org.springframework.context.ApplicationContext;
-
 import j.jave.kernal.jave.service.JService;
+
+import org.springframework.context.ApplicationContext;
 
 public interface SpringApplicationServiceGetService extends JService{
 

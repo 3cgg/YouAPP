@@ -14,18 +14,27 @@ class JServiceListenerDetectEvent extends JAPPEvent<JServiceListenerDetectEvent>
 	
 	private final Class<?> serviceClass;
 	
-	JServiceListenerDetectEvent(Object source,Class<?> serviceClass) {
+	private final Class<?> serviceFactoryClass;
+	
+	
+	JServiceListenerDetectEvent(Object source,Class<?> serviceClass,Class<?> serviceFactoryClass) {
 		super(source);
 		this.serviceClass=serviceClass;
+		this.serviceFactoryClass=serviceFactoryClass;
 	}
 
-	JServiceListenerDetectEvent(Object source,int priority ,Class<?> serviceClass) {
+	JServiceListenerDetectEvent(Object source,int priority ,Class<?> serviceClass,Class<?> serviceFactoryClass) {
 		super(source,priority);
 		this.serviceClass=serviceClass;
+		this.serviceFactoryClass=serviceFactoryClass;
 	}
 
 	public Class<?> getServiceClass() {
 		return serviceClass;
+	}
+	
+	public Class<?> getServiceFactoryClass() {
+		return serviceFactoryClass;
 	}
 	
 }

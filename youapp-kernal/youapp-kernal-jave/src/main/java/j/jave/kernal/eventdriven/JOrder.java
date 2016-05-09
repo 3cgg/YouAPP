@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.startup;
+package j.jave.kernal.eventdriven;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -14,7 +14,11 @@ public class JServiceRuntimeMeta implements JModel {
 	private List<String> listenerNames=new ArrayList<String>();
 	
 	private String status;
+	
+	private String serviceClassLoader;
 
+	private String serviceFactoryClassLoader;
+	
 	public String getServiceName() {
 		return serviceName;
 	}
@@ -45,6 +49,22 @@ public class JServiceRuntimeMeta implements JModel {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getServiceClassLoader() {
+		return serviceClassLoader;
+	}
+
+	public void setServiceClassLoader(String serviceClassLoader) {
+		this.serviceClassLoader = serviceClassLoader;
+	}
+
+	public String getServiceFactoryClassLoader() {
+		return serviceFactoryClassLoader;
+	}
+
+	public void setServiceFactoryClassLoader(String serviceFactoryClassLoader) {
+		this.serviceFactoryClassLoader = serviceFactoryClassLoader;
 	}
 
 }

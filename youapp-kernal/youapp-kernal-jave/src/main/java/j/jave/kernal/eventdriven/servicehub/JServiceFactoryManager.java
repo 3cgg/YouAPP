@@ -3,7 +3,7 @@ package j.jave.kernal.eventdriven.servicehub;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
-import j.jave.kernal.eventdriven.exception.JUncheckedServiceException;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -25,7 +25,7 @@ import java.util.Set;
  *
  */
 public final class JServiceFactoryManager{
-	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JServiceFactoryManager.class);
 	
 	// the collection contains services that are in youapp-*.xml.
 	private List<Class<? extends JServiceFactorySupport<? extends JService>>> staticDefinedServiceFactories=new ArrayList<Class<? extends JServiceFactorySupport<? extends JService>>>();
@@ -48,7 +48,7 @@ public final class JServiceFactoryManager{
 					}
 				}
 			}
-			System.out.println("service manager processed items: "+items.size());
+			LOGGER.info("service manager processed items: "+items.size());
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 			throw new JInitializationException(e);
@@ -157,8 +157,10 @@ public final class JServiceFactoryManager{
 						}
 					}
 				}
+				// post process after service hub startup.
+				JServiceHubDelegate.get().addImmediateEvent(new JServiceHubInitializedEvent(this, JConfiguration.get()));
 			}catch(Exception e){
-				throw new JUncheckedServiceException(e);
+				throw new JInitializationException(e);
 			}
 		}
 	}

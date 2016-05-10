@@ -101,6 +101,7 @@ public class JServiceHubDelegate {
 	/**
 	 * delegate the event to the event processor,
 	 * the event is to be executed immediately by processor.
+	 * <p>any exception which occurs in the runtime can be thrown for the caller.
 	 * @param event
 	 */
 	public Object[] addImmediateEvent(JAPPEvent<?> event){
@@ -115,7 +116,8 @@ public class JServiceHubDelegate {
 	 * delegate the event to the event processor,
 	 * the event is to be executed immediately by processor. if many listeners listen the event , the first listener executed 
 	 * result returned (note the result is random, because the listeners don't have any order.), 
-	 * also note the object may cannot cast the class you defined.
+	 * also note the object may cannot cast the target class you defined.
+	 * <p>any exception which occurs in the runtime can be thrown for the caller.
 	 * @param event
 	 * @return <T> the expected type. if no listener found, <code>null</code> returned.
 	 * @see {@link ClassCastException}

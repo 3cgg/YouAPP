@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
 @Documented
-public @interface JOrder {
+public @interface JServiceOrder {
 
 	/**
 	 * The order value.
@@ -18,5 +18,9 @@ public @interface JOrder {
 	 */
 	int value() default JOrdered.LOWEST_PRECEDENCE;
 
-	
+	/**
+	 * which listener the service is ordered.
+	 * @return
+	 */
+	Class<?>[] listenerClasses() default {};
 }

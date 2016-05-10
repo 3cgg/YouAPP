@@ -3,8 +3,9 @@
  */
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.eventdriven.JOrder;
 import j.jave.kernal.eventdriven.JOrdered;
+import j.jave.kernal.eventdriven.JServiceOrder;
+import j.jave.kernal.eventdriven.JServiceOrders;
 import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsListener;
@@ -35,6 +36,7 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -70,7 +72,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	private final static Map<Class<?>, List<ServiceOrdered>> listenerServices=new ConcurrentHashMap<Class<?>, List<ServiceOrdered>>();
 
 	
-	private class ServiceOrdered implements Comparable<ServiceOrdered>{
+	public static class ServiceOrdered implements Comparable<ServiceOrdered>{
 		
 		private Class<?> serviceClass;
 		
@@ -210,11 +212,30 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		Class<?> serviceClass =  event.getServiceClass();
 		
 		Class<?> serviceFactoryClass= event.getServiceFactoryClass();
+		Map<Class<?>, Integer> serviceOrderOnListeners=new HashMap<Class<?>, Integer>();
+		JServiceOrders serviceOrdersAnnotation =serviceFactoryClass.getAnnotation(JServiceOrders.class);
+		if(serviceOrdersAnnotation!=null){
+			JServiceOrder[] serviceOrders=  serviceOrdersAnnotation.serviceOrders();
+			if(serviceOrders.length>0){
+				for(JServiceOrder serviceOrder:serviceOrders){
+					Class<?>[]  listenerClasses=serviceOrder.listenerClasses();
+					if(listenerClasses.length>0){
+						for(Class<?> listenerClass:listenerClasses){
+							serviceOrderOnListeners.put(listenerClass, serviceOrder.value());
+						}
+					}
+				}
+			}
+		}
 		
-		JOrder order =serviceFactoryClass.getAnnotation(JOrder.class);
-		int orderValue=JOrdered.LOWEST_PRECEDENCE;
-		if(order!=null){
-			orderValue=order.value();
+		JServiceOrder serviceOrderAnnotation =serviceFactoryClass.getAnnotation(JServiceOrder.class);
+		if(serviceOrderAnnotation!=null){
+			Class<?>[]  listenerClasses=serviceOrderAnnotation.listenerClasses();
+			if(listenerClasses.length>0){
+				for(Class<?> listenerClass:listenerClasses){
+					serviceOrderOnListeners.put(listenerClass, serviceOrderAnnotation.value());
+				}
+			}
 		}
 		
 		List<Class<?>> listenerClasses= JClassUtils.getAllInterfaces(serviceClass, JAPPListener.class);
@@ -227,6 +248,10 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 					if(lnservices==null){
 						lnservices=new ArrayList<ServiceOrdered>();
 						listenerServices.put(listenerClass, lnservices);
+					}
+					Integer orderValue=serviceOrderOnListeners.get(listenerClass);
+					if(orderValue==null){
+						orderValue=JOrdered.LOWEST_PRECEDENCE;
 					}
 					ServiceOrdered serviceOrdered=new ServiceOrdered(serviceClass, orderValue);
 					lnservices.add(serviceOrdered);
@@ -399,7 +424,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		}catch(Exception e){
 			throw new JEventExecutionException(e);
 		}
-		return serviceRuntimeMetas;
+		return Collections.unmodifiableList(serviceRuntimeMetas);
 	}
 	
 	private synchronized void refreshServiceHubMetaInfo() {
@@ -412,7 +437,9 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 						throws Exception {
 					JServiceRuntimeMeta serviceRuntimeMeta=new JServiceRuntimeMeta();
 					serviceRuntimeMeta.setServiceName(key.getName());
+					serviceRuntimeMeta.setServiceClassLoader(key.getClassLoader().getClass().getName());
 					serviceRuntimeMeta.setServiceFacotoryName(value.getName());
+					serviceRuntimeMeta.setServiceFactoryClassLoader(value.getClass().getClassLoader().getClass().getName());
 					if(serviceHubManager.isActive(key)){
 						serviceHubMeta.setActiveServiceCount(serviceHubMeta.getActiveServiceCount()+1);
 						serviceHubMeta.getActiveServiceNames().put(key.getName(), value.getName());
@@ -465,7 +492,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	@Override
 	public Object trigger(JServicesOnListenerEvent event) {
 		Class<?> listenerClass= event.getListenerClass();
-		return Collections.unmodifiableCollection(listenerServices.get(listenerClass));
+		return Collections.unmodifiableList(listenerServices.get(listenerClass));
 	}
 	
 	

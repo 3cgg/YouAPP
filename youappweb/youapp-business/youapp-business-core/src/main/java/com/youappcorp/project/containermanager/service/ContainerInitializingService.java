@@ -33,7 +33,7 @@ implements SpringApplicationContextInitializedListener ,JService {
 		List<AppMeta> appMetas= containerManagerService.getAllAppMetas(DefaultServiceContext.getDefaultServiceContext());
 		if(JCollectionUtils.hasInCollect(appMetas)){
 			for(AppMeta appMeta:appMetas){
-				LOGGER.info(appMeta.getUnique());
+				LOGGER.info(appMeta.getAppUnique());
 			}
 		}
 		return true;

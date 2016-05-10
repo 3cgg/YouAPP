@@ -25,6 +25,7 @@ import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorListener;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorListener;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceRuntimeMeta;
+import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -176,7 +177,16 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		return service;
 	}
 	
-	public synchronized void register(Class<?> clazz,JServiceFactory<?> serviceFactory){
+	/**
+	 * register the service, true return if registering successfully, otherwise false.
+	 * the method may throw any unexpected exception, such as that the service hub
+	 * may contain the registering service.
+	 * @param clazz
+	 * @param serviceFactory
+	 * @return true if registering successfully, otherwise false.
+	 * @see JServiceRegisteringException
+	 */
+	public synchronized boolean register(Class<?> clazz,JServiceFactory<?> serviceFactory){
 		if(services.containsKey(clazz)){
 			JServiceFactory<?> exists=services.get(clazz);
 			throw new JServiceRegisteringException(clazz.getName()+" is registered , name : "
@@ -186,12 +196,13 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		//check whether the service factory is available.
 		if(!serviceFactory.available()){
 			LOGGER.info("service factory ("+serviceFactory.getName()+") is unavaiable, drop it.");
-			return ;
+			return false;
 		}
 		
 		services.put(clazz, serviceFactory);
 		serviceHubManager.addNewService(clazz);
 		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz,serviceFactory.getClass()));
+		return true;
 	}
 	
 	private JServiceHub(){}
@@ -400,7 +411,11 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	
 	@Override
 	public void trigger(JServiceRegisterEvent event) {
-		register(event.getServiceName(), event.getServiceFactory());
+		boolean successRegister=register(event.getServiceName(), event.getServiceFactory());
+		if(successRegister){
+			JServiceAddNotifyEvent serviceAddNotifyEvent=new JServiceAddNotifyEvent(this, event.getServiceName());
+			JServiceHubDelegate.get().addDelayEvent(serviceAddNotifyEvent);
+		}
 	}
 
 	private JServiceHubMeta serviceHubMeta;

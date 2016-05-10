@@ -25,7 +25,11 @@ public class JEventQueueResultLoggerPipe extends JEventQueuePipe {
 
 			@Override
 			public JPersistenceTask persistenceTask(JEventExecution execution) {
-				LOGGER.debug(" the event processed : "+JJSON.get().formatObject(execution));
+				try{
+					LOGGER.debug(" the event processed : "+JJSON.get().formatObject(execution));
+				}catch(Exception e){
+					LOGGER.error(e.getMessage()+";"+execution.getEvent().getSource(), e);
+				}
 				return null;
 			}
 

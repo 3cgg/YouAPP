@@ -4,6 +4,7 @@ import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
+import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitor;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -119,6 +120,11 @@ public final class JServiceFactoryManager{
 		if(!isScanRegistered){
 			isScanRegistered=true;
 			try{
+				
+				// registering basic monitor service.
+				JServiceMonitor serviceMonitor=new JServiceMonitor();
+				JServiceHubDelegate.get().register(this, JServiceMonitor.class, serviceMonitor);
+				registers.add(JServiceMonitor.class);
 				
 				//register services from static resource.
 				for(int i=0;i<staticDefinedServiceFactories.size();i++){

@@ -9,6 +9,8 @@ import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.security.service.JMD5CipherService;
 
+import org.junit.Test;
+
 public class TestEvent  extends TestEventSupport{
 	
 	public void testUserFind(){
@@ -49,14 +51,15 @@ public class TestEvent  extends TestEventSupport{
 		System.out.println(object);
 	}
 	
+	@Test
 	public void testMD5(){
-		
 		JMD5CipherService md5CipherService= serviceHubDelegate.getService(this, JMD5CipherService.class);
 		
 		TestUserService testUserService= serviceHubDelegate.getService(this,TestUserService.class);
 		System.out.println(testUserService.describer());
 		String encrp=md5CipherService.encrypt("abc.def.ghi");
 		System.out.println(encrp);
+		
 	}
 	
 	public void testServiceExists(){

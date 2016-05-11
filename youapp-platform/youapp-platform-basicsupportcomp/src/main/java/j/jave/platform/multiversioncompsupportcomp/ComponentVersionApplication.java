@@ -12,6 +12,11 @@ public abstract class ComponentVersionApplication  implements JIdentifier{
 	protected String app;
 	
 	protected String urlPrefix;
+	
+	/**
+	 * the friendly url that is the same functionality as {@link #unique()}
+	 */
+	private String friendlyUrl;
 
 	public String getVersion() {
 		return version;
@@ -53,6 +58,14 @@ public abstract class ComponentVersionApplication  implements JIdentifier{
 	@Override
 	public String name() {
 		return unique();
+	}
+
+	public String getFriendlyUrl() {
+		return friendlyUrl;
+	}
+
+	public void setFriendlyUrl(String friendlyUrl) {
+		this.friendlyUrl = friendlyUrl;
 	}
 	
 }

@@ -24,6 +24,13 @@ public class AppMeta extends JJpaBaseModel  {
 	private String appDesc;
 	
 	private String appActive;
+	
+	private String appHost;
+	
+	/**
+	 * the friendly url that is the same functionality as {@link #unique()}
+	 */
+	private String friendlyUrl;
 
 	@Column(name="APP_NAME")
 	public String getAppName() {
@@ -77,6 +84,24 @@ public class AppMeta extends JJpaBaseModel  {
 
 	public void setAppActive(String appActive) {
 		this.appActive = appActive;
+	}
+
+	@Column(name="FRIENDLY_URL")
+	public String getFriendlyUrl() {
+		return friendlyUrl;
+	}
+
+	public void setFriendlyUrl(String friendlyUrl) {
+		this.friendlyUrl = friendlyUrl;
+	}
+
+	@Column(name="APP_HOST")
+	public String getAppHost() {
+		return appHost;
+	}
+
+	public void setAppHost(String appHost) {
+		this.appHost = appHost;
 	}
 
 	

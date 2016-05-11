@@ -4,6 +4,8 @@ import j.jave.kernal.container.JContainer;
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JScheme;
+import j.jave.kernal.container.rhttp.JRemoteHttpContainerConfig;
+import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -128,6 +130,17 @@ implements JService{
 			InnerHttpInvokeContainer innerHttpInvokeContainer){
 		JContainer container=new InnerHttpInvokeTestContainer(springContainerConfig,
 				componentVersionTestApplication,innerHttpInvokeContainer);
+		container.initialize();
+		return container.unique();
+	}
+	
+	/**
+	 * new a new remote http container...
+	 * @param remoteHttpContainerConfig
+	 * @return the container unique .
+	 */
+	public String newInstance(JRemoteHttpContainerConfig remoteHttpContainerConfig){
+		JContainer container=new JRemoteHttpInvokeContainer(remoteHttpContainerConfig);
 		container.initialize();
 		return container.unique();
 	}

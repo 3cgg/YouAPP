@@ -6,6 +6,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
+import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorService;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.security.service.JMD5CipherService;
 
@@ -77,6 +78,18 @@ public class TestEvent  extends TestEventSupport{
 		
 		object=JServiceHubDelegate.get().
 				existsService(JMD5CipherService.class);
+		System.out.println(object);
+		
+	}
+	
+	@Test
+	public void testServiceMonitorService(){
+		
+		JServiceMonitorService serviceMonitorService= serviceHubDelegate.getService(this,JServiceMonitorService.class);
+		Object object=serviceMonitorService.getServiceHubMeta();
+		System.out.println(object);
+		
+		object=serviceMonitorService.getServiceRuntimeMetas(JServiceMonitorService.class);
 		System.out.println(object);
 		
 	}

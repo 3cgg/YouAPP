@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 
 public class DynamicComponentVersionApplication extends ComponentVersionApplication {
 	

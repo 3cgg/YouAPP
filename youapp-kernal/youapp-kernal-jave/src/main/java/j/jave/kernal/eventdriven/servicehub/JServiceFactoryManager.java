@@ -123,7 +123,7 @@ public final class JServiceFactoryManager{
 				
 				// registering basic monitor service.
 				JServiceMonitor serviceMonitor=new JServiceMonitor();
-				JServiceHubDelegate.get().register(this, JServiceMonitor.class, serviceMonitor);
+				serviceMonitor.postRegister();
 				registers.add(JServiceMonitor.class);
 				
 				//register services from static resource.

@@ -5,17 +5,11 @@ import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
-import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedListener;
 import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyListener;
 import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyListener;
 import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyListener;
 import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyListener;
 import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyListener;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -32,9 +26,7 @@ import java.util.List;
  *
  */
 public class JDefaultServiceMonitor extends JServiceFactorySupport<JServiceMonitorService>
-implements JServiceMonitorService, JServiceAddNotifyListener, JServiceHubInitializedListener
-,JServicesRegisterStartNotifyListener,JServicesRegisterEndNotifyListener
-,JEventRequestStartNotifyListener,JEventRequestEndNotifyListener{
+implements JServiceMonitorService{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDefaultServiceMonitor.class); 
 	
@@ -130,7 +122,7 @@ implements JServiceMonitorService, JServiceAddNotifyListener, JServiceHubInitial
 	
 	@Override
 	public Object trigger(JEventRequestEndNotifyEvent event) {
-		JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getUnique());
+		JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getEvent().getUnique());
 		eventProcessingStatus.setEndTime(new Date());
 		serviceMonitorStorage.store(eventProcessingStatus);
 		return null;
@@ -139,7 +131,7 @@ implements JServiceMonitorService, JServiceAddNotifyListener, JServiceHubInitial
 	@Override
 	public Object trigger(JEventRequestStartNotifyEvent event) {
 		JEventProcessingStatus eventProcessingStatus=new JEventProcessingStatus();
-		eventProcessingStatus.setUnique(event.getUnique());
+		eventProcessingStatus.setUnique(event.getEvent().getUnique());
 		eventProcessingStatus.setStartTime(new Date());
 		serviceMonitorStorage.store(eventProcessingStatus);
 		return null;

@@ -270,23 +270,26 @@ public class JQueueDistributeProcessor {
 			@Override
 			public void run() {
 				final ReentrantLock lock = PeriodTaskQueue.this.lock;
-	            try {
-					lock.lockInterruptibly();
-					for (;;) {
+				for(;;){
+					try {
+						lock.lockInterruptibly();
 						EventExecutionRunnable eventExecutionRunnable=poll();
-	                    if (eventExecutionRunnable == null)
-	                        available.await();
-	                    else {
-	                    	LOGGER.debug(JJSON.get().formatObject(eventExecutionRunnable));
+						while (eventExecutionRunnable!=null) {
+							LOGGER.debug(JJSON.get().formatObject(
+									eventExecutionRunnable.eventExecution.getEvent().getClass().getName()
+									+" <-->"+eventExecutionRunnable.eventExecution.getEvent().getUnique()));
 	                    	eventExecutionRunnable.run();
-	                    }
-	                }
-				} catch (InterruptedException e) {
-					LOGGER.error(e.getMessage(), e);
+	                    	eventExecutionRunnable=poll();
+		                }
+						available.await();
+                        System.out.println("wakeup...");
+					} catch (InterruptedException e) {
+						LOGGER.error(e.getMessage(), e);
+					}
+		            finally {
+		                lock.unlock();
+		            }
 				}
-	            finally {
-	                lock.unlock();
-	            }
 			}
 		};
 		
@@ -296,18 +299,30 @@ public class JQueueDistributeProcessor {
 		
 		private final Condition available=lock.newCondition();
 		
+		private final ReentrantLock putLock=new ReentrantLock();
+		
+		
 		private boolean addEventExecutionRunnable(EventExecutionRunnable eventExecutionRunnable){
 			boolean offered=true;
 			try{
-				lock.lockInterruptibly();
+				putLock.lockInterruptibly();
 				offered=offer(eventExecutionRunnable);
 				if(offered){
-					available.signal();
+					if(lock.tryLock()){
+						try{
+							available.signalAll();
+						}catch(Exception e){
+							LOGGER.error(e.getMessage(), e);
+						}
+						finally{
+							lock.unlock();
+						}
+					}
 				}
 			}catch(Exception e){
 				LOGGER.error(e.getMessage(), e);
 			}finally{
-				lock.unlock();
+				putLock.unlock();
 			}
 			return offered;
 		}

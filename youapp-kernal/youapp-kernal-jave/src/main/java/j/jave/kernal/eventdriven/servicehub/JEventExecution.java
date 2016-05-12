@@ -1,6 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import java.io.Serializable;
+import j.jave.kernal.jave.model.JModel;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.FutureTask;
@@ -10,7 +11,7 @@ import java.util.concurrent.FutureTask;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JEventExecution implements Comparable<JEventExecution> ,Serializable {
+public class JEventExecution implements Comparable<JEventExecution> ,JModel {
 
 	/**
 	 * callback chain

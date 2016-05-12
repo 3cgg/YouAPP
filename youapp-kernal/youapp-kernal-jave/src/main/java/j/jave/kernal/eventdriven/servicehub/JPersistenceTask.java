@@ -1,6 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import java.io.Serializable;
+import j.jave.kernal.jave.model.JModel;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.FutureTask;
  * @author J
  */
 @SuppressWarnings("serial")
-public abstract class JPersistenceTask implements Serializable{
+public abstract class JPersistenceTask implements JModel{
 
 	public static final String VOID="void";
 	

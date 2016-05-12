@@ -81,7 +81,7 @@ public class JEventQueueEventResultCallBackAndGetLaterPipe extends JEventQueuePi
 			if(JCollectionUtils.hasInCollect(asyncCallbacks)){
 				for(int i=0;i<asyncCallbacks.size();i++){
 					eventExecution.setCurrentCallbackIndex(i);
-					asyncCallbacks.get(i).callback((Object[]) eventExecution.getResult(),eventExecution);
+					asyncCallbacks.get(i).callback((EventExecutionResult) eventExecution.getResult(),eventExecution);
 				}
 			}
 			return VOID;

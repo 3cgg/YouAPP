@@ -1,5 +1,6 @@
 package test.j.jave.kernal.eventdriven;
 
+import j.jave.kernal.eventdriven.servicehub.EventExecutionResult;
 import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
 import j.jave.kernal.eventdriven.servicehub.JEventExecution;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
@@ -22,8 +23,8 @@ public class TestEvent  extends TestEventSupport{
 			JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz : "+i),new JAsyncCallback() {
 				
 				@Override
-				public void callback(Object[] result, JEventExecution eventExecution) {
-					System.out.println("-------===---"+istr+"-----"+result[0]);
+				public void callback(EventExecutionResult result, JEventExecution eventExecution) {
+					System.out.println("-------===---"+istr+"-----"+result);
 				}
 			});
 		}
@@ -34,7 +35,7 @@ public class TestEvent  extends TestEventSupport{
 			JServiceHubDelegate.get().addDelayEvent(new UserFindEvent(this, "jiaz : "+i),new JAsyncCallback() {
 				
 				@Override
-				public void callback(Object[] result, JEventExecution eventExecution) {
+				public void callback(EventExecutionResult result, JEventExecution eventExecution) {
 					System.out.println("-------===---"+istr+"-----"+result);
 				}
 			});
@@ -92,7 +93,7 @@ public class TestEvent  extends TestEventSupport{
 		JServiceHubMonitorEvent serviceHubMonitorEvent2=new JServiceHubMonitorEvent(this);
 		serviceHubMonitorEvent2.setAsyncCallback(new JAsyncCallback() {
 			@Override
-			public void callback(Object[] result, JEventExecution eventExecution) {
+			public void callback(EventExecutionResult result, JEventExecution eventExecution) {
 				System.out.println("---------"+eventExecution);
 			}
 		});

@@ -71,10 +71,21 @@ public class JServiceHubDelegate {
 	 * @param event
 	 */
 	public void addDelayEvent(JAPPEvent<?> event){
-		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
+		propagateEventRequestStartNotifyEvent(event);
 		serviceEventProcessor.addDelayEvent(event);
 	}
 	
+	public void propagateEventRequestStartNotifyEvent(JAPPEvent<?> event){
+		if(!JEventRequestStartNotifyEvent.class.isInstance(event)){
+			serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JAPPEvent.HIGEST,event));
+		}
+	}
+	
+	public void propagateEventRequestEndNotifyEvent(JAPPEvent<?> event){
+		if(!JEventRequestEndNotifyEvent.class.isInstance(event)){
+			serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JAPPEvent.LOWEST,event));
+		}
+	}
 	
 	/**
 	 * delegate the event to the event processor,
@@ -85,7 +96,7 @@ public class JServiceHubDelegate {
 	 * @param asyncCallback  the parameter override the predefined callback in the event instance if any.
 	 */
 	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback){
-		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
+		propagateEventRequestStartNotifyEvent(event);
 		serviceEventProcessor.addDelayEvent(event,asyncCallback);
 	}
 	
@@ -99,7 +110,7 @@ public class JServiceHubDelegate {
 	 * @param override override the predefined callback if true , otherwise append callback in callback chain.
 	 */
 	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
-		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
+		propagateEventRequestStartNotifyEvent(event);
 		serviceEventProcessor.addDelayEvent(event,asyncCallback,override);
 	}
 	
@@ -110,9 +121,9 @@ public class JServiceHubDelegate {
 	 * @param event
 	 */
 	public Object[] addImmediateEvent(JAPPEvent<?> event){
-		addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
+		propagateEventRequestStartNotifyEvent(event);
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
-		addDelayEvent(new JEventRequestEndNotifyEvent(this,event));
+		propagateEventRequestEndNotifyEvent(event);
 		if(eventExecutionResult.getException()!=null){
 			throw new JEventException(eventExecutionResult.getException());
 		}
@@ -131,9 +142,9 @@ public class JServiceHubDelegate {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T addImmediateEvent(JAPPEvent<?> event,Class<T> clazz) throws JEventException{
-		addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
+		propagateEventRequestStartNotifyEvent(event);
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
-		addDelayEvent(new JEventRequestEndNotifyEvent(this,event));
+		propagateEventRequestEndNotifyEvent(event);
 		if(eventExecutionResult.getException()!=null){
 			throw new JEventException(eventExecutionResult.getException());
 		}

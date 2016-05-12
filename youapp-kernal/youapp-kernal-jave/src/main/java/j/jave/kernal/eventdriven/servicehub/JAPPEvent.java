@@ -1,6 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.jave.eventdriven.JEventObject;
+import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * the unique can be found how to be use in the <code>JServiceEventProcessor</code>
  * @author J
  */
-public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements Comparable<T>{
+public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements Comparable<T>,JModel{
 
 	public static final int NORMAL=5;
 

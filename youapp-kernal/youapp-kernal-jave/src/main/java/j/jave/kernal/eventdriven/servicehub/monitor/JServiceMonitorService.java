@@ -1,10 +1,19 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedListener;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyListener;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyListener;
+import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyListener;
+import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyListener;
+import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyListener;
 import j.jave.kernal.jave.service.JService;
 
 import java.util.List;
 
-public interface JServiceMonitorService extends JService {
+public interface JServiceMonitorService extends JService
+, JServiceAddNotifyListener, JServiceHubInitializedListener
+,JServicesRegisterStartNotifyListener,JServicesRegisterEndNotifyListener
+,JEventRequestStartNotifyListener,JEventRequestEndNotifyListener{
 
 	/**
 	 * inspect the service hub.

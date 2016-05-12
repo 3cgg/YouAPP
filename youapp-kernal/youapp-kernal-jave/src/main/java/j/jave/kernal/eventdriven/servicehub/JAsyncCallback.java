@@ -1,6 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import java.io.Serializable;
+import j.jave.kernal.jave.model.JModel;
 
 /**
  * IF YOU want to correctly serialize/deserialize the callback instance , 
@@ -9,8 +9,8 @@ import java.io.Serializable;
  * @author J
  *
  */
-public interface JAsyncCallback extends Serializable{
+public interface JAsyncCallback extends JModel{
 
-	void callback(Object[] result,JEventExecution eventExecution);
+	void callback(EventExecutionResult result,JEventExecution eventExecution);
 	
 }

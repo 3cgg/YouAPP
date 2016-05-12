@@ -3,6 +3,7 @@ package j.jave.kernal.eventdriven.servicehub;
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
 import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
 import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
 
 /**
  * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
@@ -57,7 +58,10 @@ public class JEventQueueEventExecutingPipe extends JEventQueuePipe{
 		}
 		
 		public Object execute() {
-			return JServiceHub.get().executeEventOnListener(eventExecution.getEvent());
+			Object object= JServiceHub.get().executeEventOnListener(eventExecution.getEvent());
+			// notify the event is processed completely.
+			JServiceHubDelegate.get().addDelayEvent(new JEventRequestEndNotifyEvent(this,eventExecution.getEvent()));
+			return object;
 		}
 		
 		@Override

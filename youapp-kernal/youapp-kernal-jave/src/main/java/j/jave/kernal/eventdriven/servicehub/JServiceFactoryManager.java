@@ -4,7 +4,9 @@ import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
-import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitor;
+import j.jave.kernal.eventdriven.servicehub.monitor.JDefaultServiceMonitor;
+import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyEvent;
+import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyEvent;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -122,9 +124,12 @@ public final class JServiceFactoryManager{
 			try{
 				
 				// registering basic monitor service.
-				JServiceMonitor serviceMonitor=new JServiceMonitor();
+				JDefaultServiceMonitor serviceMonitor=new JDefaultServiceMonitor();
 				serviceMonitor.postRegister();
-				registers.add(JServiceMonitor.class);
+				registers.add(JDefaultServiceMonitor.class);
+				
+				//log services register starting time.
+				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterStartNotifyEvent(this));
 				
 				//register services from static resource.
 				for(int i=0;i<staticDefinedServiceFactories.size();i++){
@@ -163,8 +168,15 @@ public final class JServiceFactoryManager{
 						}
 					}
 				}
+				
+				//log services register end time.
+				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterEndNotifyEvent(this));
+				
 				// post process after service hub startup.
 				JServiceHubDelegate.get().addImmediateEvent(new JServiceHubInitializedEvent(this, JConfiguration.get()));
+				
+				
+			
 			}catch(Exception e){
 				throw new JInitializationException(e);
 			}

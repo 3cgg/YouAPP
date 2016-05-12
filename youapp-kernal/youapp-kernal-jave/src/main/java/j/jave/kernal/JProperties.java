@@ -23,5 +23,7 @@ public class JProperties {
 	
 	public static final String DATAVALIDATE_PROPERTY_ANNOTATION_HANDLER="datavalidate.property.annotation.handler.classes";
 	
+	public static final String SERVICE_HUB_MONITOR_STATUS_STORAGE="youapp.service.hub.monitor.status.storage";
+	
 	
 }

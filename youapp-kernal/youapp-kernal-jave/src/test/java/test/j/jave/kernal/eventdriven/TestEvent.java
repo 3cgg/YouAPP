@@ -4,6 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
 import j.jave.kernal.eventdriven.servicehub.JEventExecution;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
+import j.jave.kernal.eventdriven.servicehub.monitor.JEventProcessingStatus;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorService;
@@ -84,13 +85,30 @@ public class TestEvent  extends TestEventSupport{
 	
 	@Test
 	public void testServiceMonitorService(){
+		JServiceHubMonitorEvent serviceHubMonitorEvent=new JServiceHubMonitorEvent(this);
+		Object object=JServiceHubDelegate.get().addImmediateEvent(serviceHubMonitorEvent);
+		System.out.println(object);
+		
+		JServiceHubMonitorEvent serviceHubMonitorEvent2=new JServiceHubMonitorEvent(this);
+		serviceHubMonitorEvent2.setAsyncCallback(new JAsyncCallback() {
+			@Override
+			public void callback(Object[] result, JEventExecution eventExecution) {
+				System.out.println("---------"+eventExecution);
+			}
+		});
+		JServiceHubDelegate.get().addDelayEvent(serviceHubMonitorEvent2);
+		System.out.println(object);
 		
 		JServiceMonitorService serviceMonitorService= serviceHubDelegate.getService(this,JServiceMonitorService.class);
-		Object object=serviceMonitorService.getServiceHubMeta();
+		object=serviceMonitorService.getServiceHubMeta();
 		System.out.println(object);
 		
 		object=serviceMonitorService.getServiceRuntimeMetas(JServiceMonitorService.class);
 		System.out.println(object);
+	
+		JEventProcessingStatus eventProcessingStatus=serviceMonitorService.getEventProcessingStatus(serviceHubMonitorEvent.getUnique());
+		
+		System.out.println(eventProcessingStatus);
 		
 	}
 	

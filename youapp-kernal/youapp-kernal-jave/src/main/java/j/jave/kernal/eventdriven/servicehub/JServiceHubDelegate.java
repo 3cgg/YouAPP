@@ -5,6 +5,8 @@ package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.exception.JEventException;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
 import j.jave.kernal.jave.service.JService;
 
 
@@ -69,6 +71,7 @@ public class JServiceHubDelegate {
 	 * @param event
 	 */
 	public void addDelayEvent(JAPPEvent<?> event){
+		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
 		serviceEventProcessor.addDelayEvent(event);
 	}
 	
@@ -82,6 +85,7 @@ public class JServiceHubDelegate {
 	 * @param asyncCallback  the parameter override the predefined callback in the event instance if any.
 	 */
 	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback){
+		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
 		serviceEventProcessor.addDelayEvent(event,asyncCallback);
 	}
 	
@@ -95,6 +99,7 @@ public class JServiceHubDelegate {
 	 * @param override override the predefined callback if true , otherwise append callback in callback chain.
 	 */
 	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
+		serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
 		serviceEventProcessor.addDelayEvent(event,asyncCallback,override);
 	}
 	
@@ -105,7 +110,9 @@ public class JServiceHubDelegate {
 	 * @param event
 	 */
 	public Object[] addImmediateEvent(JAPPEvent<?> event){
+		addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
+		addDelayEvent(new JEventRequestEndNotifyEvent(this,event));
 		if(eventExecutionResult.getException()!=null){
 			throw new JEventException(eventExecutionResult.getException());
 		}
@@ -124,7 +131,9 @@ public class JServiceHubDelegate {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T addImmediateEvent(JAPPEvent<?> event,Class<T> clazz) throws JEventException{
+		addDelayEvent(new JEventRequestStartNotifyEvent(this,event));
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
+		addDelayEvent(new JEventRequestEndNotifyEvent(this,event));
 		if(eventExecutionResult.getException()!=null){
 			throw new JEventException(eventExecutionResult.getException());
 		}

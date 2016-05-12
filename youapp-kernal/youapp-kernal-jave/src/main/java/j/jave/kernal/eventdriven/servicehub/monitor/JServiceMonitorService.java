@@ -7,13 +7,42 @@ import java.util.List;
 public interface JServiceMonitorService extends JService {
 
 	/**
-	 * get all existing services in the hub.
+	 * inspect the service hub.
 	 * @return
 	 */
-	public abstract JServiceHubMeta getServiceHubMeta();
+	JServiceHubMeta getServiceHubMeta();
 
-	public abstract List<JServiceRuntimeMeta> getServiceRuntimeMetas(Class<? extends JService>... serviceClasses);
+	/**
+	 * get service runtime metas of some services registered in the hub.
+	 * @param serviceClasses
+	 * @return
+	 */
+	List<JServiceRuntimeMeta> getServiceRuntimeMetas(Class<? extends JService>... serviceClasses);
 
-	public abstract JServiceRuntimeMeta getServiceRuntimeMeta(Class<? extends JService> serviceClass);
+	/**
+	 * get service runtime meta of certain service registered in the hub.
+	 * @param serviceClass
+	 * @return
+	 */
+	JServiceRuntimeMeta getServiceRuntimeMeta(Class<? extends JService> serviceClass);
 
+	/**
+	 * inspect the time that all services registering cost.
+	 * @return
+	 */
+	long getServicesRegisterTime();
+	
+	/**
+	 * inspect the time that the service hub startup cost.
+	 * @return
+	 */
+	long getServiceHubInitializeTime();
+	
+	/**
+	 * get event processing information.
+	 * @param eventId
+	 * @return
+	 */
+	JEventProcessingStatus getEventProcessingStatus(String eventId);
+	
 }

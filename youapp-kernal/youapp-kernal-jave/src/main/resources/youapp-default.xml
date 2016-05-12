@@ -97,4 +97,11 @@
   <description>any handler must implements {j.jave.kernal.jave.support.validate.propertyvalidator.JPropertyAnnotationValidatorHandler} split by comma</description>
 </property>
 
+
+<property>
+  <name>youapp.service.hub.monitor.status.storage</name>
+  <value>j.jave.kernal.eventdriven.servicehub.monitor.JDefaultServiceMonitorStorage</value>
+  <description>storage store all runtime information about service, event etc.</description>
+</property>
+
 </configuration>

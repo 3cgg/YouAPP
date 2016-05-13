@@ -2,6 +2,11 @@ package j.jave.kernal.eventdriven.servicehub.monitor;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.EventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.JEventExecution;
+import j.jave.kernal.eventdriven.servicehub.JPersistenceTask;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
@@ -38,6 +43,31 @@ implements JServiceMonitorService{
 		String serviceMonitorStorageClassName=JConfiguration.get().getString(JProperties.SERVICE_HUB_MONITOR_STATUS_STORAGE,
 				JDefaultServiceMonitorStorage.class.getName());
 		serviceMonitorStorage=(JServiceMonitorStorage) JClassUtils.newObject(JClassUtils.load(serviceMonitorStorageClassName));
+	}
+	
+	
+	private final JQueueDistributeProcessor queueDistributeProcessor=null;
+	{
+		JQueueDistributeProcessorConfig queueDistributeProcessorConfig=new JQueueDistributeProcessorConfig();
+		queueDistributeProcessorConfig.setName(JDefaultServiceMonitor.class.getName());
+		
+		EventExecutionHandler eventExecutionHandler=new JQueueDistributeProcessor.JAbstractEventExecutionHandler() {
+			@Override
+			public void postProcess(JEventExecution execution) {
+			}
+			
+			@Override
+			public boolean isLaterProcess(JEventExecution execution) {
+				return false;
+			}
+			
+			@Override
+			public JPersistenceTask persistenceTask(JEventExecution execution) {
+				return null;
+			}
+		};
+		
+//		queueDistributeProcessor=new JQueueDistributeProcessor(eventExecutionHandler, queueDistributeProcessorConfig, this);
 	}
 	
 	@Override
@@ -78,7 +108,7 @@ implements JServiceMonitorService{
 	@Override
 	public Object trigger(JServiceHubInitializedEvent event) {
 		LOGGER.info("the standalone service hub is initialized.");
-		this.serviceHubReadyTime=new Date();
+		this.serviceHubReadyTime=event.getTime();
 		return null;
 	}
 	
@@ -100,13 +130,13 @@ implements JServiceMonitorService{
 	
 	@Override
 	public Object trigger(JServicesRegisterEndNotifyEvent event) {
-		this.servicesRegisterEndTime=new Date();
+		this.servicesRegisterEndTime=event.getTime();
 		return null;
 	}
 
 	@Override
 	public Object trigger(JServicesRegisterStartNotifyEvent event) {
-		this.servicesRegisterEndTime=new Date();
+		this.servicesRegisterEndTime=event.getTime();
 		return null;
 	}
 	
@@ -123,7 +153,7 @@ implements JServiceMonitorService{
 	@Override
 	public Object trigger(JEventRequestEndNotifyEvent event) {
 		JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getEvent().getUnique());
-		eventProcessingStatus.setEndTime(new Date());
+		eventProcessingStatus.setEndTime(event.getTime());
 		serviceMonitorStorage.store(eventProcessingStatus);
 		return null;
 	}
@@ -132,7 +162,7 @@ implements JServiceMonitorService{
 	public Object trigger(JEventRequestStartNotifyEvent event) {
 		JEventProcessingStatus eventProcessingStatus=new JEventProcessingStatus();
 		eventProcessingStatus.setUnique(event.getEvent().getUnique());
-		eventProcessingStatus.setStartTime(new Date());
+		eventProcessingStatus.setStartTime(event.getTime());
 		serviceMonitorStorage.store(eventProcessingStatus);
 		return null;
 	}

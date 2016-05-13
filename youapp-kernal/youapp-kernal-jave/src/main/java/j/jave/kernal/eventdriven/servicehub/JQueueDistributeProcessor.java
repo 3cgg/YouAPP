@@ -275,10 +275,13 @@ public class JQueueDistributeProcessor {
 						lock.lockInterruptibly();
 						EventExecutionRunnable eventExecutionRunnable=poll();
 						while (eventExecutionRunnable!=null) {
-							LOGGER.debug(JJSON.get().formatObject(
-									eventExecutionRunnable.eventExecution.getEvent().getClass().getName()
-									+" <-->"+eventExecutionRunnable.eventExecution.getEvent().getUnique()));
-	                    	eventExecutionRunnable.run();
+							
+							if(LOGGER.isDebugEnabled()){
+								LOGGER.debug(JJSON.get().formatObject(
+										eventExecutionRunnable.eventExecution.getEvent().getClass().getName()
+										+" <-->"+eventExecutionRunnable.eventExecution.getEvent().getUnique()));
+							}
+							eventExecutionRunnable.run();
 	                    	eventExecutionRunnable=poll();
 		                }
 						available.await();

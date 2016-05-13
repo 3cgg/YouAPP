@@ -2,11 +2,11 @@ package j.jave.kernal.eventdriven.servicehub.monitor;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.EventExecutionHandler;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
-import j.jave.kernal.eventdriven.servicehub.JEventExecution;
-import j.jave.kernal.eventdriven.servicehub.JPersistenceTask;
+import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JQueueElement;
+import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer;
+import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer.JQueueElementDistributerConfig;
+import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer.JQueueElementHandler;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
@@ -45,29 +45,71 @@ implements JServiceMonitorService{
 		serviceMonitorStorage=(JServiceMonitorStorage) JClassUtils.newObject(JClassUtils.load(serviceMonitorStorageClassName));
 	}
 	
-	
-	private final JQueueDistributeProcessor queueDistributeProcessor=null;
+	private JQueueElementDistributer<TemporayObject> queueDistributeProcessor=null;
 	{
-		JQueueDistributeProcessorConfig queueDistributeProcessorConfig=new JQueueDistributeProcessorConfig();
-		queueDistributeProcessorConfig.setName(JDefaultServiceMonitor.class.getName());
-		
-		EventExecutionHandler eventExecutionHandler=new JQueueDistributeProcessor.JAbstractEventExecutionHandler() {
+		JQueueElementDistributerConfig queueElementDistributerConfig=new JQueueElementDistributerConfig();
+		queueElementDistributerConfig.setName(JDefaultServiceMonitor.class.getName());
+		queueElementDistributerConfig.setFixedThreadCount(1);
+		JQueueElementHandler<TemporayObject> queueElementHandler=new JQueueElementHandler<TemporayObject>() {
+
 			@Override
-			public void postProcess(JEventExecution execution) {
+			public boolean isLaterProcess(TemporayObject execution) {
+				return false;
 			}
-			
+
 			@Override
-			public boolean isLaterProcess(JEventExecution execution) {
+			public Runnable taskProvided(TemporayObject execution) {
+				execution.getTemporayCallback().call();
+				return null;
+			}
+
+			@Override
+			public void postProcess(TemporayObject execution) {
+			}
+
+			@Override
+			public boolean isHandOff(TemporayObject execution) {
 				return false;
 			}
 			
-			@Override
-			public JPersistenceTask persistenceTask(JEventExecution execution) {
-				return null;
-			}
 		};
 		
-//		queueDistributeProcessor=new JQueueDistributeProcessor(eventExecutionHandler, queueDistributeProcessorConfig, this);
+		queueDistributeProcessor=new JQueueElementDistributer<TemporayObject>(queueElementHandler,queueElementDistributerConfig);
+	
+	}
+	
+	public static interface TemporayCallback{
+		public void call();
+	}
+	
+	
+	private static class TemporayObject implements JQueueElement ,Comparable<TemporayObject>{
+		private JAPPEvent<?> event;
+		
+		private TemporayCallback temporayCallback;
+		
+		public TemporayObject(JAPPEvent<?> event) {
+			this.event = event;
+		}
+		
+		public TemporayObject(JAPPEvent<?> event,TemporayCallback temporayCallback) {
+			this.event = event;
+			this.temporayCallback=temporayCallback;
+		}
+		
+		public void setTemporayCallback(TemporayCallback temporayCallback) {
+			this.temporayCallback = temporayCallback;
+		}
+		
+		public TemporayCallback getTemporayCallback() {
+			return temporayCallback;
+		}
+		
+		@Override
+		public int compareTo(TemporayObject o) {
+			return event.getPriority()-o.event.getPriority();
+		}
+		
 	}
 	
 	@Override
@@ -152,18 +194,51 @@ implements JServiceMonitorService{
 	
 	@Override
 	public Object trigger(JEventRequestEndNotifyEvent event) {
-		JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getEvent().getUnique());
-		eventProcessingStatus.setEndTime(event.getTime());
-		serviceMonitorStorage.store(eventProcessingStatus);
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("end event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
+		}
+		TemporayObject temporayObject=new TemporayObject(event);
+		temporayObject.setTemporayCallback(new TemporayCallback() {
+			@Override
+			public void call() {
+				if(LOGGER.isDebugEnabled()){
+					LOGGER.debug("end event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
+				}
+				JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getEvent().getUnique());
+				if(eventProcessingStatus==null){
+					eventProcessingStatus=new JEventProcessingStatus();
+				}
+				eventProcessingStatus.setUnique(event.getEvent().getUnique());
+				eventProcessingStatus.setEndTime(event.getTime());
+				serviceMonitorStorage.store(eventProcessingStatus);
+			}
+		});
+		queueDistributeProcessor.addExecution(temporayObject);
 		return null;
 	}
-
+	
 	@Override
 	public Object trigger(JEventRequestStartNotifyEvent event) {
-		JEventProcessingStatus eventProcessingStatus=new JEventProcessingStatus();
-		eventProcessingStatus.setUnique(event.getEvent().getUnique());
-		eventProcessingStatus.setStartTime(event.getTime());
-		serviceMonitorStorage.store(eventProcessingStatus);
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("start event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
+		}
+		TemporayObject temporayObject=new TemporayObject(event);
+		temporayObject.setTemporayCallback(new TemporayCallback() {
+			@Override
+			public void call() {
+				if(LOGGER.isDebugEnabled()){
+					LOGGER.debug("start event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
+				}
+				JEventProcessingStatus eventProcessingStatus=serviceMonitorStorage.getEventProcessingStatus(event.getEvent().getUnique());
+				if(eventProcessingStatus==null){
+					eventProcessingStatus=new JEventProcessingStatus();
+				}
+				eventProcessingStatus.setUnique(event.getEvent().getUnique());
+				eventProcessingStatus.setStartTime(event.getTime());
+				serviceMonitorStorage.store(eventProcessingStatus);
+			}
+		});
+		queueDistributeProcessor.addExecution(temporayObject);
 		return null;
 	}
 	
@@ -171,6 +246,7 @@ implements JServiceMonitorService{
 	public JEventProcessingStatus getEventProcessingStatus(String eventId) {
 		return serviceMonitorStorage.getEventProcessingStatus(eventId);
 	}
+	
 	
 	
 	

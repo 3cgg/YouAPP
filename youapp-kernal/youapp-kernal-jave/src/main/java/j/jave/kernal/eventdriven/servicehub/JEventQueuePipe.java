@@ -1,7 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -35,8 +35,8 @@ public abstract class JEventQueuePipe {
 	 */
 	private String name;
 	
-	private final JQueueDistributeProcessor queueDistributeProcessor
-	=new JQueueDistributeProcessor(getHandler(),getQueueDistributeProcessorConfig(),this);
+	private final JEventExecutionQueueElementDistributer queueDistributeProcessor
+	=new JEventExecutionQueueElementDistributer(getHandler(),getQueueDistributeProcessorConfig(),this);
 	
 	/**
 	 * configure the queue distributing processor

@@ -1,8 +1,8 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;

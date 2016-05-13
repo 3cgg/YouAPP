@@ -1,6 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.EventExecutionHandler;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JLinkedBlockingQueue;
@@ -23,9 +23,9 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @param <T>
  */
-public class JQueueDistributeProcessor {
+public class JQueueElementDistributer<T extends JQueueElement> {
 	
-	public static class JQueueDistributeProcessorConfig{
+	public static class JQueueElementDistributerConfig{
 		/*
 		 * configure
 		 */
@@ -71,7 +71,7 @@ public class JQueueDistributeProcessor {
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
-	private final EventExecutionHandler handler;
+	protected final JQueueElementHandler<T> handler;
 	
 	private int fixedThreadCount=10;
 	
@@ -82,20 +82,16 @@ public class JQueueDistributeProcessor {
 	
 	private boolean setup=true;
 	
-	private final JEventQueuePipe eventQueuePipe;
-	
-	private void initConfig(JQueueDistributeProcessorConfig config){
+	private void initConfig(JQueueElementDistributerConfig config){
 		this.name=config.name;
 		this.fixedThreadCount=config.fixedThreadCount;
 		this.setup=config.isSetup();
 	}
 	
-	public JQueueDistributeProcessor(EventExecutionHandler handler,
-			JQueueDistributeProcessorConfig config,
-			JEventQueuePipe eventQueuePipe
+	public JQueueElementDistributer(JQueueElementHandler<T> handler,
+			JQueueElementDistributerConfig config
 			){
 		this.handler=handler;
-		this.eventQueuePipe=eventQueuePipe;
 		initConfig(config);
 		setup();
 	}
@@ -145,14 +141,14 @@ public class JQueueDistributeProcessor {
 	 *
 	 * @param <T>
 	 */
-	public interface EventExecutionHandler{
+	public interface JQueueElementHandler<T extends JQueueElement>{
 		
 		/**
 		 * offer the element again if true , otherwise processing the element and drop it.
 		 * @param execution
 		 * @return
 		 */
-		boolean isLaterProcess(JEventExecution execution);
+		boolean isLaterProcess(T execution);
 		
 		/**
 		 * the method called base on the returned false from {@link #isLaterProcess(Object, AbstractQueue)}.
@@ -160,64 +156,35 @@ public class JQueueDistributeProcessor {
 		 * @param execution
 		 * @return
 		 */
-		Runnable taskProvided(JEventExecution execution);
+		Runnable taskProvided(T execution);
 	
 		/**
 		 * the method called base on the  returned false from {@link #isLaterProcess(Object, AbstractQueue)}
 		 * @param execution
 		 * @param executions
 		 */
-		void postProcess(JEventExecution execution);
+		void postProcess(T execution);
 		
-		boolean isHandOff(JEventExecution execution);
+		boolean isHandOff(T execution);
 	}
-	
-	
-	/**
-	 * any sub-class may provide JPersistenceTask that can be executed immediately in other thread or later during 
-	 * getting from the persistence repository. 
-	 * @author J
-	 *
-	 */
-	public abstract static class JAbstractEventExecutionHandler implements EventExecutionHandler {
-		
-		@Override
-		public final Runnable taskProvided(JEventExecution execution) {
-			JPersistenceTask persistenceTask=persistenceTask(execution);
-			if(persistenceTask==null) {
-				// remove current runnable task, release resources.
-				execution.setRunnable(null);
-				execution.setPersitenceTask(null);
-				return null;
-			}
-			execution.setPersitenceTask(persistenceTask); 
-			Runnable runnable=persistenceTask.getRunnable();
-			execution.setRunnable(runnable);
-			return runnable;
-		}
-		
-		/**
-		 * providing a delayed task that need be executed later, or immediately execute the expected task.
-		 * @param execution
-		 * @return null means there is not later executable task .
-		 */
-		public abstract JPersistenceTask persistenceTask(JEventExecution execution);
-		
-		@Override
-		public boolean isHandOff(JEventExecution execution) {
-			return true;
-		}
-		
-	}
-
 
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * override the method to provide your custom implementation of {@link QueueElementExecutionRunnable}.
+	 * @param execution
+	 * @return
+	 */
+	protected QueueElementExecutionRunnable getQueueElementExecutionRunnable(T execution){
+		QueueElementExecutionRunnable eventExecutionRunnable=new QueueElementExecutionRunnable(execution, handler);
+		return eventExecutionRunnable;
+	}
 	
-	public void addExecution(JEventExecution execute){
-		EventExecutionRunnable eventExecutionRunnable=new EventExecutionRunnable(execute, handler);
+	
+	public void addExecution(T execution){
+		QueueElementExecutionRunnable eventExecutionRunnable=getQueueElementExecutionRunnable(execution);
 		if(scanOneByOneExecutor!=null){
 			//scanOneByOneExecutor.execute(eventExecutionRunnable);
 		}
@@ -228,13 +195,13 @@ public class JQueueDistributeProcessor {
 		this.name = name;
 	}
 
-	private class EventExecutionRunnable  implements Runnable{
+	protected class QueueElementExecutionRunnable  implements Runnable{
 		
-		private JEventExecution eventExecution;
+		private T eventExecution;
 		
-		private EventExecutionHandler handler;
+		private JQueueElementHandler<T> handler;
 		
-		public EventExecutionRunnable(JEventExecution eventExecution,EventExecutionHandler handler) {
+		public QueueElementExecutionRunnable(T eventExecution,JQueueElementHandler<T> handler) {
 			this.eventExecution = eventExecution;
 			this.handler=handler;
 		}
@@ -242,7 +209,7 @@ public class JQueueDistributeProcessor {
 		@Override
 		public void run() {
 			if(handler.isLaterProcess(eventExecution)){
-				JQueueDistributeProcessor.this.addExecution(eventExecution);
+				JQueueElementDistributer.this.addExecution(eventExecution);
 			}
 			else{
 				Runnable futureTask= handler.taskProvided(eventExecution);
@@ -252,16 +219,24 @@ public class JQueueDistributeProcessor {
 				handler.postProcess(eventExecution);
 				
 				if(handler.isHandOff(eventExecution)){
-					eventQueuePipe.handoff(eventExecution);
+					handoff(eventExecution);
 				}
 				
 			}
 		}
 	}
 	
+	/**
+	 * hand off the current element.
+	 * @param element
+	 */
+	protected void handoff(T element){
+		
+	}
+	
 	private PeriodTaskQueue periodTaskQueue=null;
 	
-	private class PeriodTaskQueue extends JLinkedBlockingQueue<EventExecutionRunnable>{
+	private class PeriodTaskQueue extends JLinkedBlockingQueue<QueueElementExecutionRunnable>{
 		public PeriodTaskQueue() {
 			LOGGER.info(leader.getName());
 			leader.start();
@@ -273,19 +248,19 @@ public class JQueueDistributeProcessor {
 				for(;;){
 					try {
 						lock.lockInterruptibly();
-						EventExecutionRunnable eventExecutionRunnable=poll();
-						while (eventExecutionRunnable!=null) {
-							
-							if(LOGGER.isDebugEnabled()){
-								LOGGER.debug(JJSON.get().formatObject(
-										eventExecutionRunnable.eventExecution.getEvent().getClass().getName()
-										+" <-->"+eventExecutionRunnable.eventExecution.getEvent().getUnique()));
-							}
-							eventExecutionRunnable.run();
-	                    	eventExecutionRunnable=poll();
-		                }
+						try{
+							QueueElementExecutionRunnable eventExecutionRunnable=poll();
+							while (eventExecutionRunnable!=null) {
+								eventExecutionRunnable.run();
+		                    	eventExecutionRunnable=poll();
+			                }
+						}catch(Exception e){
+							LOGGER.error(e.getMessage(), e);
+						}
 						available.await();
-                        System.out.println("wakeup...");
+						if(LOGGER.isDebugEnabled()){
+							LOGGER.debug(Thread.currentThread().getName()+" wakeup...");
+						}
 					} catch (InterruptedException e) {
 						LOGGER.error(e.getMessage(), e);
 					}
@@ -296,7 +271,7 @@ public class JQueueDistributeProcessor {
 			}
 		};
 		
-		private Thread leader=new Thread(runnable,(JQueueDistributeProcessor.this.name+" period thread."));
+		private Thread leader=new Thread(runnable,(JQueueElementDistributer.this.name+" period thread."));
 		
 		private final ReentrantLock lock=new ReentrantLock();
 		
@@ -305,7 +280,7 @@ public class JQueueDistributeProcessor {
 		private final ReentrantLock putLock=new ReentrantLock();
 		
 		
-		private boolean addEventExecutionRunnable(EventExecutionRunnable eventExecutionRunnable){
+		private boolean addEventExecutionRunnable(QueueElementExecutionRunnable eventExecutionRunnable){
 			boolean offered=true;
 			try{
 				putLock.lockInterruptibly();
@@ -329,10 +304,10 @@ public class JQueueDistributeProcessor {
 			}
 			return offered;
 		}
-		
-		
-		
 	}
 	
+	public JQueueElementHandler<T> getHandler() {
+		return handler;
+	}
 	
 }

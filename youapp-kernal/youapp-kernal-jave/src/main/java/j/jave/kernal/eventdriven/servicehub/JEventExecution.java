@@ -11,7 +11,7 @@ import java.util.concurrent.FutureTask;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JEventExecution implements Comparable<JEventExecution> ,JModel {
+public class JEventExecution implements Comparable<JEventExecution> ,JModel,JQueueElement {
 
 	/**
 	 * callback chain

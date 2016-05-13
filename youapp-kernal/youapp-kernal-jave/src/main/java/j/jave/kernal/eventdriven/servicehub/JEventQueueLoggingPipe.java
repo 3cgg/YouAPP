@@ -1,7 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JQueueDistributeProcessorConfig;
 import j.jave.kernal.jave.json.JJSON;
 
 public class JEventQueueLoggingPipe extends JEventQueuePipe {
@@ -26,7 +26,7 @@ public class JEventQueueLoggingPipe extends JEventQueuePipe {
 			@Override
 			public JPersistenceTask persistenceTask(JEventExecution execution) {
 				try{
-					LOGGER.debug(" the event processed : "+JJSON.get().formatObject(execution));
+					LOGGER.debug(" the event processed : "+execution.getEvent().getUnique());
 				}catch(Exception e){
 					LOGGER.error(e.getMessage()+";"+execution.getEvent().getSource(), e);
 				}

@@ -1,8 +1,8 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.JEventExecution.Phase;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JAbstractEventExecutionHandler;
-import j.jave.kernal.eventdriven.servicehub.JQueueDistributeProcessor.JQueueDistributeProcessorConfig;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JAbstractEventExecutionHandler;
+import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JQueueDistributeProcessorConfig;
 
 /**
  * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},

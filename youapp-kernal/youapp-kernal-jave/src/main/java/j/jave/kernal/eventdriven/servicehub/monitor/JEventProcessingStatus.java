@@ -1,10 +1,11 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
+import j.jave.kernal.eventdriven.servicehub.JQueueElement;
 import j.jave.kernal.jave.model.JModel;
 
 import java.util.Date;
 
-public class JEventProcessingStatus implements JModel {
+public class JEventProcessingStatus implements JModel,JQueueElement {
 
 	private Date startTime;
 	

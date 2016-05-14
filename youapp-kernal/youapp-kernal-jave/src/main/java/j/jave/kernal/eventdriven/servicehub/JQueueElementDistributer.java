@@ -299,12 +299,13 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 								}catch(Exception e){
 									eventExecutionRunnable.executedCount++;
 									eventExecutionRunnable.exception=e;
-									if(eventExecutionRunnable.executedCount>dropIfMaxCount){
-										LOGGER.info("the element is drop as some unexpected exception : "+eventExecutionRunnable.exception.getMessage()
-												+eventExecutionRunnable.eventExecution.desc(),e);
+									
+									if(eventExecutionRunnable.executedCount<dropIfMaxCount){
+										offer(eventExecutionRunnable);
 									}
 									else{
-										offer(eventExecutionRunnable);
+										LOGGER.info("the element is drop as some unexpected exception : "+eventExecutionRunnable.exception.getMessage()
+												+eventExecutionRunnable.eventExecution.desc(),e);
 									}
 								}
 		                    	eventExecutionRunnable=poll();

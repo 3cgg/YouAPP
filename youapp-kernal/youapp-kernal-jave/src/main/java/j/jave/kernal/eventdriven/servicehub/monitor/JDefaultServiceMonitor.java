@@ -42,14 +42,14 @@ implements JServiceMonitorService{
 	
 	static{
 		String serviceMonitorStorageClassName=JConfiguration.get().getString(JProperties.SERVICE_HUB_MONITOR_STATUS_STORAGE,
-				JDefaultServiceMonitorStorage.class.getSimpleName());
+				JDefaultServiceMonitorStorage.class.getName());
 		serviceMonitorStorage=(JServiceMonitorStorage) JClassUtils.newObject(JClassUtils.load(serviceMonitorStorageClassName));
 	}
 	
 	private JQueueElementDistributer<TemporayObject> queueDistributeProcessor=null;
 	{
 		JQueueElementDistributerConfig queueElementDistributerConfig=new JQueueElementDistributerConfig();
-		queueElementDistributerConfig.setName(JDefaultServiceMonitor.class.getName());
+		queueElementDistributerConfig.setName(JDefaultServiceMonitor.class.getSimpleName());
 		queueElementDistributerConfig.setFixedThreadCount(1);
 		JQueueElementHandler<TemporayObject> queueElementHandler=new JQueueElementHandler<TemporayObject>() {
 

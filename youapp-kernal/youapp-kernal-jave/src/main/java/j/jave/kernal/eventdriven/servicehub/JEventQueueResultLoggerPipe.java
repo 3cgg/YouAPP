@@ -10,7 +10,7 @@ public class JEventQueueResultLoggerPipe extends JEventQueuePipe {
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueResultLoggerPipe.class.getName());
+		config.setName(JEventQueueResultLoggerPipe.class.getSimpleName());
 		return config;
 	}
 	
@@ -26,7 +26,7 @@ public class JEventQueueResultLoggerPipe extends JEventQueuePipe {
 			@Override
 			public JPersistenceTask persistenceTask(JEventExecution execution) {
 				try{
-					LOGGER.debug(" the event processed : "+execution.getEvent().getUnique());
+					LOGGER.debug(" the event processed : "+JJSON.get().formatJSONObject(execution));
 				}catch(Exception e){
 					LOGGER.error(e.getMessage()+";"+execution.getEvent().getSource(), e);
 				}

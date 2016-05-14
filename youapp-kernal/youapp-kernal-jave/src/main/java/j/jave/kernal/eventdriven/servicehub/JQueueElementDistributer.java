@@ -44,6 +44,19 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 		 */
 		private boolean setup=true;
 		
+		/**
+		 * drop the element if any exception occurs more than the time.
+		 */
+		private int dropIfMaxCount=3;
+		
+		public int getDropIfMaxCount() {
+			return dropIfMaxCount;
+		}
+
+		public void setDropIfMaxCount(int dropIfMaxCount) {
+			this.dropIfMaxCount = dropIfMaxCount;
+		}
+
 		public boolean isSetup() {
 			return setup;
 		}
@@ -76,6 +89,12 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 	private int fixedThreadCount=10;
 	
 	private String name="";
+	
+	/**
+	 * drop the element if any exception occurs more than the time.
+	 */
+	private int dropIfMaxCount=3;
+	
 	/*
 	 * configure end
 	 */
@@ -86,6 +105,7 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 		this.name=config.name;
 		this.fixedThreadCount=config.fixedThreadCount;
 		this.setup=config.isSetup();
+		this.dropIfMaxCount=config.dropIfMaxCount;
 	}
 	
 	public JQueueElementDistributer(JQueueElementHandler<T> handler,
@@ -201,6 +221,29 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 		
 		private JQueueElementHandler<T> handler;
 		
+		/**
+		 * the event executed count once.
+		 */
+		private int executedCount;
+		
+		private Exception exception;
+		
+		public Exception getException() {
+			return exception;
+		}
+
+		public void setException(Exception exception) {
+			this.exception = exception;
+		}
+
+		public int getExecutedCount() {
+			return executedCount;
+		}
+
+		public void setExecutedCount(int executedCount) {
+			this.executedCount = executedCount;
+		}
+
 		public QueueElementExecutionRunnable(T eventExecution,JQueueElementHandler<T> handler) {
 			this.eventExecution = eventExecution;
 			this.handler=handler;
@@ -251,7 +294,19 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 						try{
 							QueueElementExecutionRunnable eventExecutionRunnable=poll();
 							while (eventExecutionRunnable!=null) {
-								eventExecutionRunnable.run();
+								try{
+									eventExecutionRunnable.run();
+								}catch(Exception e){
+									eventExecutionRunnable.executedCount++;
+									eventExecutionRunnable.exception=e;
+									if(eventExecutionRunnable.executedCount>dropIfMaxCount){
+										LOGGER.info("the element is drop as some unexpected exception : "+eventExecutionRunnable.exception.getMessage()
+												+eventExecutionRunnable.eventExecution.desc(),e);
+									}
+									else{
+										offer(eventExecutionRunnable);
+									}
+								}
 		                    	eventExecutionRunnable=poll();
 			                }
 						}catch(Exception e){

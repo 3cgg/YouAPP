@@ -12,7 +12,7 @@ public class JEventQueueEventResultCallBackAndGetLaterPipe extends JEventQueuePi
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueEventResultCallBackAndGetLaterPipe.class.getName());
+		config.setName(JEventQueueEventResultCallBackAndGetLaterPipe.class.getSimpleName());
 		return config;
 	}
 	

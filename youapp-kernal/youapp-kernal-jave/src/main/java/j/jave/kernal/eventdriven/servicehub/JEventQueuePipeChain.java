@@ -89,7 +89,7 @@ public class JEventQueuePipeChain {
 		protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 			JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
 			config.setSetup(true);
-			config.setName(JEventQueueEndPipe.class.getName());
+			config.setName(JEventQueueEndPipe.class.getSimpleName());
 			return config;
 		}
 	}

@@ -1,6 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
 import j.jave.kernal.eventdriven.servicehub.JQueueElement;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JModel;
 
 import java.util.Date;
@@ -38,6 +39,11 @@ public class JEventProcessingStatus implements JModel,JQueueElement {
 
 	public void setUnique(String unique) {
 		this.unique = unique;
+	}
+
+	@Override
+	public String desc() {
+		return JJSON.get().formatObject(this);
 	}
 	
 }

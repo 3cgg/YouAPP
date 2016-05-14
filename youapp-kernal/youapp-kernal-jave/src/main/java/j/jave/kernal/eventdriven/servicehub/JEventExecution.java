@@ -1,9 +1,13 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.json.JJSONObject;
 import j.jave.kernal.jave.model.JModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.FutureTask;
 
 /**
@@ -11,7 +15,8 @@ import java.util.concurrent.FutureTask;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JEventExecution implements Comparable<JEventExecution> ,JModel,JQueueElement {
+public class JEventExecution implements Comparable<JEventExecution> 
+,JModel,JQueueElement,JJSONObject<Map<String,Object>> {
 
 	/**
 	 * callback chain
@@ -156,6 +161,26 @@ public class JEventExecution implements Comparable<JEventExecution> ,JModel,JQue
 
 	void setPhase(String phase) {
 		this.phase = phase;
+	}
+
+	@Override
+	public Map<String, Object> serializableJSONObject() {
+		
+		Map<String, Object> objects=new HashMap<String, Object>();
+		objects.put("processed", processed);
+		objects.put("event.id", event.getUnique());
+		objects.put("event.type", event.getClass().getName());
+		objects.put("event.priority", event.getPriority());
+		objects.put("phase",phase);
+		objects.put("result",result);
+		objects.put("currentCallbackIndex",currentCallbackIndex);
+		objects.put("asyncCallbackChainSize",asyncCallbackChain==null?0:asyncCallbackChain.size());
+		return objects;
+	}
+
+	@Override
+	public String desc() {
+		return JJSON.get().formatJSONObject(this);
 	}
 	
 	

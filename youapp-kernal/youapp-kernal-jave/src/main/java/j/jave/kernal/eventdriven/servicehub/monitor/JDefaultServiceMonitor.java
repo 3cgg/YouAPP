@@ -15,6 +15,7 @@ import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent
 import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
 import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyEvent;
 import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyEvent;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
@@ -41,7 +42,7 @@ implements JServiceMonitorService{
 	
 	static{
 		String serviceMonitorStorageClassName=JConfiguration.get().getString(JProperties.SERVICE_HUB_MONITOR_STATUS_STORAGE,
-				JDefaultServiceMonitorStorage.class.getName());
+				JDefaultServiceMonitorStorage.class.getSimpleName());
 		serviceMonitorStorage=(JServiceMonitorStorage) JClassUtils.newObject(JClassUtils.load(serviceMonitorStorageClassName));
 	}
 	
@@ -108,6 +109,11 @@ implements JServiceMonitorService{
 		@Override
 		public int compareTo(TemporayObject o) {
 			return event.getPriority()-o.event.getPriority();
+		}
+		
+		@Override
+		public String desc() {
+			return JJSON.get().formatObject(event);
 		}
 		
 	}

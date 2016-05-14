@@ -14,7 +14,7 @@ public class JEventQueueEventResultGettingPipe extends JEventQueuePipe{
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueEventResultGettingPipe.class.getName());
+		config.setName(JEventQueueEventResultGettingPipe.class.getSimpleName());
 		return config;
 	}
 	

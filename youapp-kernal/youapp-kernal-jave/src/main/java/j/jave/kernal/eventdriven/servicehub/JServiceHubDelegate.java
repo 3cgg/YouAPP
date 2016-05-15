@@ -31,6 +31,21 @@ public class JServiceHubDelegate {
 	
 	private final JServiceEventProcessor serviceEventProcessor=JServiceEventProcessor.get();
 	
+	private JAsyncEventResultStorageService asyncEventResultRepoService=null;
+	
+	private final Object sync=new Object();
+	
+	public JAsyncEventResultStorageService getAsyncEventResultRepoService() {
+		if(asyncEventResultRepoService==null){
+			synchronized (sync) {
+				if(asyncEventResultRepoService==null){
+					asyncEventResultRepoService=JAsyncEventResultStorageServiceUtil.get();
+				}
+			}
+		}
+		return asyncEventResultRepoService;
+	}
+	
 	/**
 	 * register service 
 	 * @param object
@@ -155,7 +170,11 @@ public class JServiceHubDelegate {
 		return null;
 	}
 	
-	
+	/**
+	 * check if the service is registered in the hub.
+	 * @param clazz
+	 * @return
+	 */
 	public boolean existsService(Class<? extends JService> clazz){
 		Object[] objects=addImmediateEvent(new JServiceExistsEvent(this, clazz));
 		if(objects.length<1){
@@ -164,6 +183,15 @@ public class JServiceHubDelegate {
 		else{
 			return (boolean) objects[0];
 		}
+	}
+	
+	/**
+	 * get the executed result of any executable delay event.
+	 * @param eventId
+	 * @return
+	 */
+	public EventExecutionResult getResultByEventId(String eventId){
+		return getAsyncEventResultRepoService().getEventResult(eventId);
 	}
 	
 }

@@ -1,7 +1,5 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JQueueElement;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer;
@@ -18,7 +16,6 @@ import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyE
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
@@ -38,13 +35,7 @@ implements JServiceMonitorService{
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
-	private static JServiceMonitorStorage serviceMonitorStorage;
-	
-	static{
-		String serviceMonitorStorageClassName=JConfiguration.get().getString(JProperties.SERVICE_HUB_MONITOR_STATUS_STORAGE,
-				JDefaultServiceMonitorStorage.class.getName());
-		serviceMonitorStorage=(JServiceMonitorStorage) JClassUtils.newObject(JClassUtils.load(serviceMonitorStorageClassName));
-	}
+	private static JServiceMonitorStorage serviceMonitorStorage=JServiceMonitorStorageUtil.getServiceMonitorStorage();
 	
 	private JQueueElementDistributer<TemporayObject> queueDistributeProcessor=null;
 	{

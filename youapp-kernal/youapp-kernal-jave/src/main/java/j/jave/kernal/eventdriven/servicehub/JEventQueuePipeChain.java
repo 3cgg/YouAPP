@@ -15,12 +15,13 @@ import java.util.List;
 /**
  * the event queue chain thats link different event queue pipe, the default order is 
  * <pre>
- * {@link JEventQueueEventExecutingPipe} -> {@link JEventQueueEventResultGettingPipe} -> {@link JEventQueueEventResultCallBackAndGetLaterPipe} -> ...( custom event queue )... -> {@link JEventQueueEndPipe}
+ * {@link JEventQueueEventExecutingPipe} -> {@link JEventQueueEventResultGettingPipe} -> {@link JEventQueueEventResultCallBackPipe} -> ...( custom event queue )... -> {@link JEventQueueEndPipe}
  * </pre>
  * @author J
  *@see JEventQueueEventExecutingPipe
  *@see JEventQueueEventResultGettingPipe
- *@see JEventQueueEventResultCallBackAndGetLaterPipe
+ *@see JEventQueueEventResultPersistencePipe
+ *@see JEventQueueEventResultCallBackPipe
  *@see JEventQueueEndPipe
  */
 public class JEventQueuePipeChain {
@@ -33,7 +34,8 @@ public class JEventQueuePipeChain {
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEventResultGettingPipe.class, ++order);
-		register(JEventQueueEventResultCallBackAndGetLaterPipe.class, ++order);
+		register(JEventQueueEventResultPersistencePipe.class, ++order);
+		register(JEventQueueEventResultCallBackPipe.class, ++order);
 		if(LOGGER.isDebugEnabled()){
 			register(JEventQueueResultLoggerPipe.class, ++order);
 		}

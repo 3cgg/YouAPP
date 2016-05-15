@@ -15,14 +15,14 @@ import java.util.concurrent.TimeoutException;
  * And the class also provide the mechanism that manager the processing of how to process the event and the related callback.
  * A event is sent to the event queue incoming named as {@link JEventQueueEventExecutingPipe} ,
  * then processed here to sent to the next one named as {@link JEventQueueEventResultGettingPipe},
- * then to sent to the last one named as {@link JEventQueueEventResultCallBackAndGetLaterPipe}, 
+ * then to sent to the last one named as {@link JEventQueueEventResultCallBackPipe}, 
  * the last one scan the linked queue and find those completed event then check if the callback needed, if true setup a new TASK to send
  * to the executor called {@code ThreadPoolExecutor}.  
  * In the future the event processing can add persistence mechanism.
  * @author J
  * @see JEventQueueEventExecutingPipe
  * @see JEventQueueEventResultGettingPipe
- * @see JEventQueueEventResultCallBackAndGetLaterPipe
+ * @see JEventQueueEventResultCallBackPipe
  * @see JEventQueuePipeChain
  */
 class JServiceEventProcessor {
@@ -31,7 +31,7 @@ class JServiceEventProcessor {
 	
 	private JServiceHub serviceHub=JServiceHub.get();
 	
-	private JAsyncEventResultRepoService eventResultRepo=JAsyncEventResultRepoServiceUtil.get();
+	private JAsyncEventResultStorageService eventResultRepo=JAsyncEventResultStorageServiceUtil.get();
 	
 	private static JServiceEventProcessor eventProcessor=null;
 	

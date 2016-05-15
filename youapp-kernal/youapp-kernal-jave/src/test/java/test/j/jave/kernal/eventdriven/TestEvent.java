@@ -97,7 +97,11 @@ public class TestEvent  extends TestEventSupport{
 				System.out.println("---------"+eventExecution);
 			}
 		});
+		serviceHubMonitorEvent2.setGetResultLater(true);
 		JServiceHubDelegate.get().addDelayEvent(serviceHubMonitorEvent2);
+		System.out.println(object);
+		
+		object=JServiceHubDelegate.get().getResultByEventId(serviceHubMonitorEvent2.getUnique());
 		System.out.println(object);
 		
 		JServiceMonitorService serviceMonitorService= serviceHubDelegate.getService(this,JServiceMonitorService.class);

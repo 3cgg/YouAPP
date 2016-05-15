@@ -82,6 +82,13 @@ public class JEventExecution implements Comparable<JEventExecution>
 		public static final String EVENT_RESULT_GET_ING="EVENT_RESULT_GET_ING";
 		public static final String EVENT_RESULT_GET_DONE="EVENT_RESULT_GET_DONE";
 		
+		public static final String EVENT_PERSITENCE_PERSITENCE="EVENT_PERSITENCE_PERSITENCE";
+		public static final String EVENT_PERSITENCE_READY="EVENT_PERSITENCE_READY";
+		public static final String EVENT_PERSITENCE_ING="EVENT_PERSITENCE_ING";
+		public static final String EVENT_PERSITENCE_DONE="EVENT_PERSITENCE_DONE";
+		
+		
+		
 		public static final String EVENT_CALLBACK_PERSITENCE="EVENT_CALLBACK_PERSITENCE";
 		public static final String EVENT_CALLBACK_READY="EVENT_CALLBACK_READY";
 		public static final String EVENT_CALLBACK_ING="EVENT_CALLBACK_ING";

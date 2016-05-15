@@ -7,12 +7,17 @@ import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.util.List;
 
-public class JEventQueueEventResultCallBackAndGetLaterPipe extends JEventQueuePipe {
+/**
+ * an asynchronized event call back executing pipe.
+ * @author J
+ *
+ */
+public class JEventQueueEventResultCallBackPipe extends JEventQueuePipe {
 	
 	@Override
 	protected JQueueDistributeProcessorConfig getQueueDistributeProcessorConfig() {
 		JQueueDistributeProcessorConfig config=new JQueueDistributeProcessorConfig();
-		config.setName(JEventQueueEventResultCallBackAndGetLaterPipe.class.getSimpleName());
+		config.setName(JEventQueueEventResultCallBackPipe.class.getSimpleName());
 		return config;
 	}
 	
@@ -48,24 +53,8 @@ public class JEventQueueEventResultCallBackAndGetLaterPipe extends JEventQueuePi
 	
 	@Override
 	protected void prepareProcessing(JEventExecution eventExecution) {
-		if(eventExecution.getEvent().isGetResultLater()){
-			eventResultRepo.putEventResult(eventExecution);
-		}
 		eventExecution.setPhase(Phase.EVENT_CALLBACK_READY);
 	}
-	
-//	protected void addEventExecution(JEventExecution eventExecution){
-//		//if need event callback.
-//		if(JCollectionUtils.hasInCollect(eventExecution.getAsyncCallbackChain())){
-//			eventExecution.setPhase(Phase.EVENT_CALLBACK_READY);
-//			execute(eventExecution);
-//		}
-//		else{
-//			waitForGets.put(eventExecution.getEvent().getUnique(), eventExecution);
-//		}
-//	}
-	
-	private JAsyncEventResultRepoService eventResultRepo=JAsyncEventResultRepoServiceUtil.get();
 	
 	@SuppressWarnings("serial")
 	public static class JPersistenceEventAsyncCallbackTask extends JPersistenceTask{

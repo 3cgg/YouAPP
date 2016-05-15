@@ -3,8 +3,8 @@ package j.jave.kernal.eventdriven.servicehub;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class JDefaultAsyncEventResultRepoService extends JServiceFactorySupport<JDefaultAsyncEventResultRepoService>
-	implements JAsyncEventResultRepoService {
+public class JDefaultAsyncEventResultStorageService extends JServiceFactorySupport<JDefaultAsyncEventResultStorageService>
+	implements JAsyncEventResultStorageService {
 
 	/**
 	 * KEY: UNIQUE VALUE. it's the value of property <code>unique</code> of {@code JAPPEvent}
@@ -16,7 +16,7 @@ public class JDefaultAsyncEventResultRepoService extends JServiceFactorySupport<
 
 	private final ReentrantLock lock=new ReentrantLock();
 	
-	private static final JDefaultAsyncEventResultRepoService EVENT_RESULT_REPO=new JDefaultAsyncEventResultRepoService();
+	private static final JDefaultAsyncEventResultStorageService EVENT_RESULT_REPO=new JDefaultAsyncEventResultStorageService();
 	
 	/**
 	 * get expected result, if the event is still not complete, an exception of <code>JEventExecutionException.EVENT_NOT_COMPLETE</code> thrown.
@@ -24,27 +24,25 @@ public class JDefaultAsyncEventResultRepoService extends JServiceFactorySupport<
 	 * @return
 	 * @throws JEventExecutionException
 	 */
-	public Object getEventResult(String eventUnique) throws JEventExecutionException{
-		try {
-			lock.lockInterruptibly();
-		} catch (InterruptedException e) {
-			throw new JEventExecutionException(e);
-		}
+	public EventExecutionResult getEventResult(String eventUnique) throws JEventExecutionException{
 		try{
+			lock.lockInterruptibly();
 			if(waitForGets.containsKey(eventUnique)){
 				JEventExecution eventExecution= waitForGets.get(eventUnique);
 				waitForGets.remove(eventUnique);
-				return eventExecution.getResult();
+				return (EventExecutionResult) eventExecution.getResult();
 			}
 			throw new JEventExecutionException(JEventExecutionException.EVENT_NOT_COMPLETE,
 					"event is still not executed completely! please wait.");
+		}catch (InterruptedException e) {
+			throw new JEventExecutionException(e);
 		}finally{
 			lock.unlock();
 		}
 	}
 	
 	@Override
-	public JDefaultAsyncEventResultRepoService getService() {
+	public JDefaultAsyncEventResultStorageService getService() {
 		return EVENT_RESULT_REPO;
 	}
 

@@ -252,7 +252,8 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 		@Override
 		public void run() {
 			if(handler.isLaterProcess(eventExecution)){
-				JQueueElementDistributer.this.addExecution(eventExecution);
+				JQueueElementDistributer.this.periodTaskQueue.offer(this);  // more efficient
+//				JQueueElementDistributer.this.addExecution(eventExecution);
 			}
 			else{
 				Runnable futureTask= handler.taskProvided(eventExecution);
@@ -333,6 +334,10 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 		
 		private final Condition available=lock.newCondition();
 		
+		/**
+		 * may used in other case
+		 * TODO
+		 */
 		private final ReentrantLock putLock=new ReentrantLock();
 		
 		

@@ -35,7 +35,7 @@ implements JServiceMonitorService{
 	
 	private JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
 	
-	private static JServiceMonitorStorage serviceMonitorStorage=JServiceMonitorStorageUtil.getServiceMonitorStorage();
+	private static JServiceMonitorStorage serviceMonitorStorage=JServiceMonitorStorageUtil.get();
 	
 	private JQueueElementDistributer<TemporayObject> queueDistributeProcessor=null;
 	{

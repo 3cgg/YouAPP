@@ -77,7 +77,7 @@
 
 <property>
   <name>youapp.service.async.event.result.repo</name>
-  <value>j.jave.kernal.eventdriven.servicehub.JDefaultAsyncEventResultRepoService</value>
+  <value>j.jave.kernal.eventdriven.servicehub.JDefaultAsyncEventResultStorageService</value>
   <description>Async Event Result Repo Service</description>
 </property>
 

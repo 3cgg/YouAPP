@@ -64,4 +64,11 @@
   <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler} split by comma</description>
 </property>
 
+
+<property>
+  <name>youapp.mvc.form.token.storage.class</name>
+  <value>j.jave.platform.basicwebcomp.web.form.DefaultMemoryTokenStorage</value>
+  <description>the token storage, generally it's used in promising the form is submit only once.</description>
+</property>
+
 </configuration>

@@ -24,5 +24,7 @@ public abstract class WebCompProperties {
 	
 	public static final String YOUAPPMVC_PROPERTY_EXT_BIND="youapp.mvc.property.ext.bind.classes";
 	
+	public static final String YOUAPPMVC_FORM_TOKEN_STORAGE="youapp.mvc.form.token.storage.class";
+	
 	
 }

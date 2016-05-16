@@ -64,9 +64,13 @@ public class TokenStorageServiceUtil implements TokenStorageService {
 	}
 
 	@Override
-	public boolean removeBySessionId(String formId) {
-		return getTokenStorage().removeBySessionId(formId);
+	public boolean removeBySessionId(String sessionId) {
+		return getTokenStorage().removeBySessionId(sessionId);
 	}
 	
+	@Override
+	public boolean removeByFormId(String formId) {
+		return getTokenStorage().removeByFormId(formId);
+	}
 
 }

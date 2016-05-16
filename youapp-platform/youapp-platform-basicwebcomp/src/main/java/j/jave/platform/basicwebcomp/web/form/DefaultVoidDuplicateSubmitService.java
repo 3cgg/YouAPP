@@ -1,11 +1,13 @@
 package j.jave.platform.basicwebcomp.web.form;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
-public class DefaultVoidDuplicateSubmitService implements VoidDuplicateSubmitService {
+public class DefaultVoidDuplicateSubmitService extends JServiceFactorySupport<VoidDuplicateSubmitService>
+implements VoidDuplicateSubmitService {
 	
 	private TokenStorageService tokenStorageService=TokenStorageServiceUtil.get();
 	

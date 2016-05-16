@@ -48,4 +48,10 @@ implements TokenStorageService
 		return true;
 	}
 	
+	@Override
+	public boolean removeByFormId(String formId) {
+		getInner().remove(formId);
+		return true;
+	}
+	
 }

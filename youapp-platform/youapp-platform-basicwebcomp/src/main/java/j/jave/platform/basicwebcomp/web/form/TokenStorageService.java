@@ -12,4 +12,6 @@ public interface TokenStorageService extends JService {
 	
 	boolean removeBySessionId(String sessionId);
 	
+	boolean removeByFormId(String formId);
+	
 }

@@ -1,6 +1,8 @@
 package j.jave.platform.basicwebcomp.web.form;
 
-public interface VoidDuplicateSubmitService {
+import j.jave.kernal.jave.service.JService;
+
+public interface VoidDuplicateSubmitService extends JService {
 	
 	/**
 	 * check if the form submit if valid.

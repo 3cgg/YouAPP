@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.web.form;
 
 import j.jave.kernal.jave.service.JService;
+import j.jave.kernal.jave.support.validate.JValidatingException;
 
 public interface VoidDuplicateSubmitService extends JService {
 	
@@ -9,14 +10,16 @@ public interface VoidDuplicateSubmitService extends JService {
 	 * @param formId
 	 * @param token
 	 * @return
+	 * @throws JValidatingException
 	 */
 	boolean validate(String formId,String token);
 	
 	/**
 	 * same as {@link #validate(String, String)}
 	 * @param formIdentification
-	 * @return
+	 * @return 
 	 * @throws NullPointerException
+	 * @throws JValidatingException
 	 */
 	boolean validate(FormIdentification formIdentification);
 	

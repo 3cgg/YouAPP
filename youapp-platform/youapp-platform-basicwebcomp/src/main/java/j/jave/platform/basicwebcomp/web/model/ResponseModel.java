@@ -101,4 +101,10 @@ public class ResponseModel implements JModel{
 		return filterResponse;
 	}
 	
+	public static ResponseModel newFormTokenInvalid(){
+		ResponseModel filterResponse=new ResponseModel();
+		filterResponse.setStatus(ResponseStatus.FORM_TOKEN_INVALID);
+		return filterResponse;
+	}
+	
 }

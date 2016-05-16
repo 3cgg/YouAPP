@@ -34,6 +34,7 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	private static List<ServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<ServletRequestInterceptor>(8);
 	
 	static{
+		MODEL_INTERCEPTORS.add(new FormTokenValidatorInterceptor());
 		MODEL_INTERCEPTORS.add(new MultiVersionCheckInterceptor());
 		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
 		MODEL_INTERCEPTORS.add(new ResourceAccessInterceptor());

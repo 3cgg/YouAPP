@@ -33,8 +33,7 @@ public class DefaultVoidDuplicateSubmitService implements VoidDuplicateSubmitSer
 	
 	@Override
 	public boolean cleanup(String sessionId) {
-		// TODO Auto-generated method stub
-		return false;
+		return tokenStorageService.removeBySessionId(sessionId);
 	}
 	
 	

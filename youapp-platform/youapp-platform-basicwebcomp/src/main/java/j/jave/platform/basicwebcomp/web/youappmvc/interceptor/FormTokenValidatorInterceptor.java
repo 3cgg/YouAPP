@@ -6,6 +6,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.basicwebcomp.web.form.DefaultVoidDuplicateSubmitService;
 import j.jave.platform.basicwebcomp.web.form.FormIdentification;
 import j.jave.platform.basicwebcomp.web.model.ResponseModel;
+import j.jave.platform.basicwebcomp.web.model.ResponseStatus;
 import j.jave.platform.basicwebcomp.web.youappmvc.ViewConstants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,15 +35,30 @@ public class FormTokenValidatorInterceptor implements ServletRequestInterceptor 
 				//no check
 				return servletRequestInvocation.proceed(); 
 			}
-			FormIdentification formIdentification= JJSON.get().parse(formToken, FormIdentification.class);
-			boolean valid=voidDuplicateSubmitService.validate(formIdentification);
-			if(valid){
-				return servletRequestInvocation.proceed();
-			}
 			else{
-				ResponseModel responseModel= ResponseModel.newFormTokenInvalid();
-				responseModel.setData(voidDuplicateSubmitService.newFormIdentification());
-				return responseModel;
+				try{
+					FormIdentification formIdentification= JJSON.get().parse(formToken, FormIdentification.class);
+					boolean valid=voidDuplicateSubmitService.validate(formIdentification);
+					if(valid){
+						Object result= servletRequestInvocation.proceed();
+						if(ResponseModel.class.isInstance(result)){
+							ResponseModel responseModel=(ResponseModel)result;
+							if(responseModel.getStatus()!=ResponseStatus.SUCCESS){
+								//refresh token.
+								 responseModel.setToken(voidDuplicateSubmitService.newFormIdentification());
+							}
+						}
+						return result;
+					}
+					else{
+						ResponseModel responseModel= ResponseModel.newFormTokenInvalid();
+						responseModel.setData(voidDuplicateSubmitService.newFormIdentification());
+						return responseModel;
+					}
+				}catch(Exception e){
+					//refresh token.
+					return ResponseModel.newError().setData(voidDuplicateSubmitService.newFormIdentification());
+				}
 			}
 		}
 		catch(Exception e){

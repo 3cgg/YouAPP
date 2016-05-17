@@ -8,9 +8,14 @@ import j.jave.kernal.jave.utils.JAssert;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Parameter;
 import javax.persistence.Query;
+
+import com.kcfy.techservicemarket.kernal.springjpa.query.JpaCalendarParam;
+import com.kcfy.techservicemarket.kernal.springjpa.query.JpaDateParam;
 
 public abstract class QueryExecution {
 	
@@ -34,6 +39,45 @@ public abstract class QueryExecution {
 	
 	protected abstract <T> T doExecute();
 	
+	public static boolean setQueryParameterAsPossible(Query query, Map<?, Object> params) {
+		
+		Set<Parameter<?>> sqlParams=query.getParameters();
+		
+		for (Parameter<?> param : sqlParams){
+			String paramName=param.getName();
+			Object value=params.get(paramName);
+			
+			if(JpaDateParam.class.isInstance(value)){
+				JpaDateParam jpaDateParam= (JpaDateParam) value;
+				if(String.class.isInstance(paramName)){
+					query.setParameter((String)paramName, jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+				}
+				else if(Integer.class.isInstance(paramName)){
+//					query.setParameter((Integer)paramName, jpaDateParam.getDate(), jpaDateParam.getTemporalType());
+				}
+			}
+			else if(JpaCalendarParam.class.isInstance(value)){
+				JpaCalendarParam jpaCalendarParam= (JpaCalendarParam) value;
+				if(String.class.isInstance(paramName)){
+					query.setParameter((String)paramName, jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+					
+				}
+				else if(Integer.class.isInstance(paramName)){
+//					query.setParameter((Integer)paramName, jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
+				}
+			}
+			else{
+				if(String.class.isInstance(paramName)){
+					query.setParameter((String)paramName, value);
+					
+				}
+				else if(Integer.class.isInstance(paramName)){
+//					query.setParameter((Integer)paramName, value);
+				}
+			}
+		}
+	}
+
 	
 	public static void setQueryParameters(Query query, Map<?, Object> params) {
 		for (Map.Entry<?, Object> entry : params.entrySet()){

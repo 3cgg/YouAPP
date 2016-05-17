@@ -1,6 +1,7 @@
 package j.jave.platform.basicwebcomp.web.model;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.platform.basicwebcomp.web.form.FormIdentification;
 
 
 @SuppressWarnings("serial")
@@ -17,6 +18,19 @@ public class ResponseModel implements JModel{
 	 * the data for the subview if status is OK , message for showing if status is ERROR.
 	 */
 	private Object data;
+	
+	/**
+	 * the refreshed token/form identification.
+	 */
+	private FormIdentification token;
+
+	public FormIdentification getToken() {
+		return token;
+	}
+
+	public void setToken(FormIdentification token) {
+		this.token = token;
+	}
 
 	public Object getData() {
 		return data;

@@ -11,53 +11,65 @@ import javax.persistence.EntityManager;
 
 public class QueryBuilder {
 	
-	/*
+	/**
 	 * JPQL 
 	 */
 	private String jpql;
 	
 	private String countJpql;
 	
-	/*
+	/**
 	 *Named SQL 
 	 */
 	private String namedSql;
 	
+	/**
+	 * Named count SQL
+	 */
 	private String countNamedSql;
 	
-	/*
+	/**
 	 * Native SQL
 	 */
 	private String nativeSql;
 	
+	/**
+	 * Native count SQL
+	 */
 	private String countNativeSql;
 	
-	/*
+	/**
 	 * Expected Result Type 
 	 */
 	private Class<?> result;
 	
-	/*
+	/**
 	 * Parameters
 	 */
 	private Map<?, Object> params=new HashMap<Object, Object>();
 	
-	/*
+	/**
+	 * Parameters for count computing
+	 */
+	private Map<?, Object> countParams=new HashMap<Object, Object>();
+	
+	
+	/**
 	 * If pageable
 	 */
 	private JPageable pageable;
 	
-	/*
+	/**
 	 * Entity Manager , Got Potential JPA Provider 
 	 */
 	private EntityManager entityManager;
 	
-	/*
+	/**
 	 * The result set is only one element or many.
 	 */
 	private boolean isSingle;
 	
-	/*
+	/**
 	 * Result Set Mapping Defined in the orm.xml or on the Entity Class
 	 */
 	protected String resultSetMapping;
@@ -91,6 +103,7 @@ public class QueryBuilder {
 		
 		queryMeta.setPageable(pageable);
 		queryMeta.setParams(params);
+		queryMeta.setCountParams(countParams);
 		queryMeta.setResult(result);
 		queryMeta.setSingle(isSingle);
 		queryMeta.setResultSetMapping(resultSetMapping);
@@ -166,4 +179,12 @@ public class QueryBuilder {
 		this.resultSetMapping = resultSetMapping;
 		return this;
 	}
+
+	/**
+	 * @param countParams Parameters for count computing
+	 */
+	public void setCountParams(Map<?, Object> countParams) {
+		this.countParams = countParams;
+	}
+	
 }

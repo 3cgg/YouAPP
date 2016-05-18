@@ -12,6 +12,12 @@ abstract class QueryMeta {
 
 	protected Map<?, Object> params=new HashMap<Object, Object>();
 	
+	/**
+	 * Parameters for count computing
+	 */
+	protected Map<?, Object> countParams=new HashMap<Object, Object>();
+	
+	
 	protected final EntityManager em;
 	
 	protected JPageable pageable;
@@ -45,6 +51,14 @@ abstract class QueryMeta {
 		this.params = params;
 	}
 	
+	public Map<?, Object> getCountParams() {
+		return countParams;
+	}
+
+	public void setCountParams(Map<?, Object> countParams) {
+		this.countParams = countParams;
+	}
+
 	public abstract Query getQuery();
 	
 	public abstract String getQueryString();

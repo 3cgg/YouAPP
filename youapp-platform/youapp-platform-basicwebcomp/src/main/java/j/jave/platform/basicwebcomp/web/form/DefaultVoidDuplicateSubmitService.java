@@ -77,4 +77,8 @@ implements VoidDuplicateSubmitService {
 		return formIdentification;
 	}
 	
+	@Override
+	public VoidDuplicateSubmitService getService() {
+		return this;
+	}
 }

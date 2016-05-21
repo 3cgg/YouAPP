@@ -2,6 +2,8 @@ package j.jave.platform.basicwebcomp.web.form;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
+import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedListener;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
@@ -9,15 +11,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultMemoryTokenStorage extends JServiceFactorySupport<DefaultMemoryTokenStorage>
-implements TokenStorageService
+implements TokenStorageService , JServiceHubInitializedListener
 {
 
 	private JDefaultHashCacheService defaultHashCacheService
 	=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 	
 	private String sessionId=JUniqueUtils.unique();
-	{
+	
+	@Override
+	public Object trigger(JServiceHubInitializedEvent event) {
 		defaultHashCacheService.putNeverExpired(sessionId, new ConcurrentHashMap<String,FormIdentification>());
+		return true;
 	}
 	
 	@Override
@@ -54,4 +59,8 @@ implements TokenStorageService
 		return true;
 	}
 	
+	@Override
+	public DefaultMemoryTokenStorage getService() {
+		return this;
+	}
 }

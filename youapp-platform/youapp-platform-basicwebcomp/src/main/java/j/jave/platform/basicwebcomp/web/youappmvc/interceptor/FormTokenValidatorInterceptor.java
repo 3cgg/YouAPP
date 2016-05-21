@@ -52,12 +52,13 @@ public class FormTokenValidatorInterceptor implements ServletRequestInterceptor 
 					}
 					else{
 						ResponseModel responseModel= ResponseModel.newFormTokenInvalid();
-						responseModel.setData(voidDuplicateSubmitService.newFormIdentification());
+						responseModel.setData("the token is invalid.");
+						responseModel.setToken(voidDuplicateSubmitService.newFormIdentification());
 						return responseModel;
 					}
 				}catch(Exception e){
 					//refresh token.
-					return ResponseModel.newError().setData(voidDuplicateSubmitService.newFormIdentification());
+					return ResponseModel.newError().setData(e.getMessage()).setToken(voidDuplicateSubmitService.newFormIdentification());
 				}
 			}
 		}

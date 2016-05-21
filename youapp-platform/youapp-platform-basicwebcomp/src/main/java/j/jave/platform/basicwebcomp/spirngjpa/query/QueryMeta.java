@@ -27,6 +27,8 @@ abstract class QueryMeta {
 	protected boolean single;
 	
 	protected String resultSetMapping;
+	
+	protected boolean update=false;
 
 	public QueryMeta(EntityManager em) {
 		super();
@@ -86,5 +88,17 @@ abstract class QueryMeta {
 	public void setResultSetMapping(String resultSetMapping) {
 		this.resultSetMapping = resultSetMapping;
 	}
+
+	/**
+	 * set true if the sql is update of insert 
+	 * like 'update table set ... ; insert table ...'
+	 * @param update
+	 */
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
 	
+	public boolean isUpdate() {
+		return update;
+	}
 }

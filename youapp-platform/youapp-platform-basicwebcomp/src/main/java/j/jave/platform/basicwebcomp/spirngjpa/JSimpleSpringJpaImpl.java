@@ -3,7 +3,6 @@ package j.jave.platform.basicwebcomp.spirngjpa;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JPageable;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,8 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable> 
-	extends SimpleJpaRepository<T, Serializable> implements JSpringJpaRepository<T, ID> {
+public class JSimpleSpringJpaImpl<T extends JBaseModel> 
+	extends SimpleJpaRepository<T, String> implements JSpringJpaRepository<T> {
 
     private EntityManager em;
 	
@@ -54,7 +53,7 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel, ID extends Serializable>
 	}
 	
 	@Override
-	public JSpringJpaRepository<T, ID> getInstance() {
+	public JSpringJpaRepository<T> getInstance() {
 		return this;
 	}
 

@@ -53,7 +53,6 @@ public class QueryBuilder {
 	 */
 	private Map<?, Object> countParams=new HashMap<Object, Object>();
 	
-	
 	/**
 	 * If pageable
 	 */
@@ -73,6 +72,21 @@ public class QueryBuilder {
 	 * Result Set Mapping Defined in the orm.xml or on the Entity Class
 	 */
 	protected String resultSetMapping;
+	
+	/**
+	 * set true if the sql is update of insert 
+	 * like 'update table set ... ; insert table ...'
+	 */
+	protected boolean update=false;
+	
+	/**
+	 * set true if the sql is update of insert 
+	 * like 'update table set ... ; insert table ...'
+	 * @param update
+	 */
+	public void setUpdate(boolean update) {
+		this.update = update;
+	}
 	
 	public static QueryBuilder get(EntityManager entityManager){
 		return new QueryBuilder().setEntityManager(entityManager);
@@ -113,6 +127,9 @@ public class QueryBuilder {
 		}
 		else if(queryMeta.isSingle()){
 			queryExecution=new QueryExecution.SingleExecution(queryMeta);
+		}
+		else if(queryMeta.isUpdate()){
+			queryExecution=new QueryExecution.UpdateExecution(queryMeta);
 		}
 		else{
 			queryExecution=new QueryExecution.ListExecution(queryMeta);

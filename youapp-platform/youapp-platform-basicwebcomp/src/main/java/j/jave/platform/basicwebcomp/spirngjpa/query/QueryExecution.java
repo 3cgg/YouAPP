@@ -56,7 +56,7 @@ public abstract class QueryExecution {
 	 * @return if already set the parameters successfully.
 	 * @see Query
 	 */
-	public boolean setSpecifiedQueryParameterAsPossible(Query query, Map<?, Object> params) {
+	private boolean setSpecifiedQueryParameterAsPossible(Query query, Map<?, Object> params) {
 		
 		Set<Parameter<?>> sqlParams=null;
 		try{
@@ -109,7 +109,7 @@ public abstract class QueryExecution {
 	 * @param params
 	 * @return  if already set the parameters successfully.
 	 */
-	public boolean setUnspecifiedQueryParameterAsPossible(Query query, Map<?, Object> params) {
+	private boolean setUnspecifiedQueryParameterAsPossible(Query query, Map<?, Object> params) {
 		for (Map.Entry<?, Object> entry : params.entrySet()){
 			if(JpaDateParam.class.isInstance(entry.getValue())){
 				JpaDateParam jpaDateParam= (JpaDateParam) entry.getValue();
@@ -141,6 +141,20 @@ public abstract class QueryExecution {
 			}
 		}
 		return true;
+	}
+	
+	static class UpdateExecution extends QueryExecution{
+		public UpdateExecution(QueryMeta queryMeta) {
+			super(queryMeta);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Object doExecute() {
+			Query query=queryMeta.getQuery();
+			setQueryParameters(query, queryMeta.getParams());
+			return query.executeUpdate();
+		}
 	}
 	
 	static class SingleExecution extends QueryExecution{

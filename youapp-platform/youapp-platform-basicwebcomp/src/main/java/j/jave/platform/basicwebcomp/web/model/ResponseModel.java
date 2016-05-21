@@ -28,8 +28,9 @@ public class ResponseModel implements JModel{
 		return token;
 	}
 
-	public void setToken(FormIdentification token) {
+	public ResponseModel setToken(FormIdentification token) {
 		this.token = token;
+		return this;
 	}
 
 	public Object getData() {

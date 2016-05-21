@@ -37,4 +37,9 @@ implements TokenStorageService
 		return true;
 	}
 	
+	
+	@Override
+	public DefaultServletSessionTokenStorage getService() {
+		return this;
+	}
 }

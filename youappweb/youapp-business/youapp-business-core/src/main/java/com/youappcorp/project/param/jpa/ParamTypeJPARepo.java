@@ -13,7 +13,7 @@ import com.youappcorp.project.param.model.ParamType;
 
 @JModelRepo(component="jpaParamTypeRepo",name=ParamCode.class)
 @Repository(value="jpaParamTypeRepo")
-public interface ParamTypeJPARepo extends JSpringJpaRepository<ParamType, String>
+public interface ParamTypeJPARepo extends JSpringJpaRepository<ParamType>
 {
 	
 	@Query(value="from ParamType p where p.name=:name or 1=1 ")

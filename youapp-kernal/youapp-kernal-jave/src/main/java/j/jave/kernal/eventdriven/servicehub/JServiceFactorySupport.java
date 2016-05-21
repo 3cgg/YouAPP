@@ -72,7 +72,7 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	 */
 	@Override
 	public T getService() {
-		throw new RuntimeException("override the method to provide concrete service.");
+		throw new RuntimeException("override the method to provide concrete service,"+this.getClass().getName());
 	}
 	
 

@@ -14,7 +14,7 @@ import com.youappcorp.project.param.model.ParamCode;
 
 @JModelRepo(component="jpaParamCodeRepo",name=ParamCode.class)
 @Repository(value="jpaParamCodeRepo")
-public interface ParamCodeJPARepo extends JSpringJpaRepository<ParamCode, String>{
+public interface ParamCodeJPARepo extends JSpringJpaRepository<ParamCode>{
 
 //	@Query(value="select t from Param t")
 //	public List<Param> getsByPage(JPagination pagination);

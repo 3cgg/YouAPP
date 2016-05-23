@@ -26,7 +26,7 @@ public class ResourceRoleServiceImpl extends InternalServiceSupport<ResourceRole
 	private ResourceService resourceService;
 	
 	@Override
-	public JIPersist<?, ResourceRole> getRepo() {
+	public JIPersist<?, ResourceRole, String> getRepo() {
 		return resourceRoleMapper;
 	}
 	

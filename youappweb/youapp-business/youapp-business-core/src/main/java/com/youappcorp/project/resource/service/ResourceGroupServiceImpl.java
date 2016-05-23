@@ -26,7 +26,7 @@ public class ResourceGroupServiceImpl extends InternalServiceSupport<ResourceGro
 	private ResourceService resourceService;
 	
 	@Override
-	public JIPersist<?, ResourceGroup> getRepo() {
+	public JIPersist<?, ResourceGroup, String> getRepo() {
 		return resourceGroupMapper;
 	}
 	

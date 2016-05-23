@@ -16,7 +16,7 @@ public class InternalParamTypeServiceImpl extends InternalServiceSupport<ParamTy
 	private ParamTypeJPARepo paramTypeJPARepo;
 	
 	@Override
-	public JIPersist<?, ParamType> getRepo() {
+	public JIPersist<?, ParamType, String> getRepo() {
 		return paramTypeJPARepo;
 	}
 	

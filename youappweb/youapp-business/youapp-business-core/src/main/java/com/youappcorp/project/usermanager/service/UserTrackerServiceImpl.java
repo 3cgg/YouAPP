@@ -53,7 +53,7 @@ public class UserTrackerServiceImpl extends InternalServiceSupport<UserTracker> 
 	}
 	
 	@Override
-	public JIPersist<?, UserTracker> getRepo() {
+	public JIPersist<?, UserTracker, String> getRepo() {
 		return userTrackerMapper;
 	}
 

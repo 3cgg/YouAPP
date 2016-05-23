@@ -11,7 +11,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.Group;
 
-public interface GroupService extends Service<Group> {
+public interface GroupService extends Service<Group, String> {
 
 	String ADMIN_CODE="ADMIN";
 	

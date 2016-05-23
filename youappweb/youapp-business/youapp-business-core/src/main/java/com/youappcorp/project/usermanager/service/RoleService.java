@@ -11,7 +11,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.Role;
 
-public interface RoleService extends Service<Role> {
+public interface RoleService extends Service<Role, String> {
 
 	String ADMIN_CODE="ADMIN";
 	

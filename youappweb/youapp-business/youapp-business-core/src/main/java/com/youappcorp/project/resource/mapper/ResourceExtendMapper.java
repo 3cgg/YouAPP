@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="resourceExtendMapper.mapper")
 @JModelRepo(component="resourceExtendMapper.mapper",name=ResourceExtend.class)
-public interface ResourceExtendMapper extends JMapper<ResourceExtend>,ResourceExtendRepo<JMapper<ResourceExtend>> {
+public interface ResourceExtendMapper extends JMapper<ResourceExtend,String>,ResourceExtendRepo<JMapper<ResourceExtend,String>> {
 
 	void updateCached(@Param(value="id")String id,@Param(value="cached")String cached);
 	

@@ -26,7 +26,7 @@ public class ResourceExtendServiceImpl extends InternalServiceSupport<ResourceEx
 	private ResourceService resourceService;
 	
 	@Override
-	public JIPersist<?, ResourceExtend> getRepo() {
+	public JIPersist<?, ResourceExtend, String> getRepo() {
 		return resourceExtendMapper;
 	}
 	

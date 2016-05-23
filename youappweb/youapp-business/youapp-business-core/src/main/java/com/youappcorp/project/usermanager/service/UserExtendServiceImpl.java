@@ -28,7 +28,7 @@ public class UserExtendServiceImpl extends InternalServiceSupport<UserExtend> im
 	private UserExtendRepo<?> userExtendMapper;
 	
 	@Override
-	public JIPersist<?, UserExtend> getRepo() {
+	public JIPersist<?, UserExtend, String> getRepo() {
 		return userExtendMapper;
 	}
 	

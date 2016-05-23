@@ -22,7 +22,7 @@ public class UserGroupServiceImpl extends InternalServiceSupport<UserGroup> impl
 	private UserGroupRepo<?> userGroupMapper;
 	
 	@Override
-	public JIPersist<?, UserGroup> getRepo() {
+	public JIPersist<?, UserGroup, String> getRepo() {
 		return userGroupMapper;
 	}
 	@Override

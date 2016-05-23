@@ -4,6 +4,7 @@
 package com.youappcorp.project.resource.repo;
 
 import j.jave.kernal.jave.persist.JIPersist;
+
 import com.youappcorp.project.resource.model.ResourceExtend;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author J
  *
  */
-public interface ResourceExtendRepo<T> extends JIPersist<T, ResourceExtend> {
+public interface ResourceExtendRepo<T> extends JIPersist<T, ResourceExtend,String> {
 
 	void updateCached(String id,String cached);
 	

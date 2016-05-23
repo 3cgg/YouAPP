@@ -14,7 +14,7 @@ import com.youappcorp.project.usermanager.model.UserExtend;
 /**
  * @author J
  */
-public interface UserExtendService extends Service<UserExtend> {
+public interface UserExtendService extends Service<UserExtend, String> {
 	
 	
 	/**

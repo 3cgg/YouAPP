@@ -13,7 +13,7 @@ import com.youappcorp.project.usermanager.model.UserRole;
  * @author J
  *
  */
-public interface UserRoleRepo<T> extends JIPersist<T,UserRole> {
+public interface UserRoleRepo<T> extends JIPersist<T,UserRole,String> {
 
 	List<UserRole> getUserRolesByUserId(String userId);
 	

@@ -8,7 +8,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.Resource;
 
-public interface ResourceService extends Service<Resource> {
+public interface ResourceService extends Service<Resource, String> {
 
 	/**
 	 * get all resources from <code>RESOURCE</code> table. not any filter.

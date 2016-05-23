@@ -14,7 +14,7 @@ import com.youappcorp.project.usermanager.model.Group;
  * @author J
  *
  */
-public interface GroupRepo<T> extends JIPersist<T,Group> {
+public interface GroupRepo<T> extends JIPersist<T,Group,String> {
 
 	Group getGroupByGroupCode(String roleCode);
 	

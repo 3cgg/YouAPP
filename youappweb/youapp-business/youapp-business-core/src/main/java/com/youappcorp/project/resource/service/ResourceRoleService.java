@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.ResourceRole;
 
-public interface ResourceRoleService extends Service<ResourceRole> {
+public interface ResourceRoleService extends Service<ResourceRole, String> {
 
 	
 	/**

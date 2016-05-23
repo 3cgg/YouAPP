@@ -13,7 +13,7 @@ import com.youappcorp.project.usermanager.model.User;
 /**
  * @author J
  */
-public interface UserRepo<T> extends JIPersist<T,User> {
+public interface UserRepo<T> extends JIPersist<T,User,String> {
 
 	public User getUserByNameAndPassword(String userName,String password);
 	

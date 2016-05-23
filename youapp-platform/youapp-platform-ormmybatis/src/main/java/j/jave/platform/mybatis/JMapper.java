@@ -3,6 +3,8 @@
  */
 package j.jave.platform.mybatis;
 
+import java.io.Serializable;
+
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JUNDeletable;
 import j.jave.kernal.jave.persist.JIPersist;
@@ -13,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
  * the interface indicate all children interface is a mapper used in mybatis. 
  * @author J
  */
-public interface JMapper<T extends JBaseModel> extends JIPersist<JMapper<T>,T> {
+public interface JMapper<T extends JBaseModel,ID extends Serializable> extends JIPersist<JMapper<T,ID>,T,ID> {
 	
 	/**
 	 * delete the existing record through marking the column named "deleted";
@@ -23,7 +25,7 @@ public interface JMapper<T extends JBaseModel> extends JIPersist<JMapper<T>,T> {
 	 */
 	public void markDeleted(
 			@Param(value="id")
-	String id);
+			ID id);
 	
 //	/**
 //	 * get records thats matches the criteria , the sub-implementation must be for pagination.

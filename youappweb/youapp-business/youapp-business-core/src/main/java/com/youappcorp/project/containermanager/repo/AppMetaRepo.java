@@ -14,7 +14,7 @@ import com.youappcorp.project.containermanager.model.AppMeta;
  * @author J
  *
  */
-public interface AppMetaRepo extends JSpringJpaRepository<AppMeta> {
+public interface AppMetaRepo extends JSpringJpaRepository<AppMeta,String> {
 
 	@Query(value="from AppMeta where appName= :appName and appCompName= :appCompName and appVersion= :appVersion and deleted=1 ")
 	AppMeta getAppMetaByConfig(

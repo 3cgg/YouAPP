@@ -17,7 +17,7 @@ import com.youappcorp.project.usermanager.model.Role;
  * @author J
  *
  */
-public interface RoleRepo<T> extends JIPersist<T,Role> {
+public interface RoleRepo<T> extends JIPersist<T,Role,String> {
 
 	Role getRoleByRoleCode(String roleCode);
 	

@@ -22,7 +22,7 @@ public class RoleGroupServiceImpl extends InternalServiceSupport<RoleGroup> impl
 	private RoleGroupRepo<?>  roleGroupMapper;
 	
 	@Override
-	public JIPersist<?, RoleGroup> getRepo() {
+	public JIPersist<?, RoleGroup, String> getRepo() {
 		return roleGroupMapper;
 	}
 	

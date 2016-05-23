@@ -13,7 +13,7 @@ import com.youappcorp.project.usermanager.model.RoleGroup;
  * @author J
  *
  */
-public interface RoleGroupRepo<T> extends JIPersist<T,RoleGroup> {
+public interface RoleGroupRepo<T> extends JIPersist<T,RoleGroup,String> {
 	
 	int countOnRoleIdAndGroupId(String roleId,String groupId);
 	

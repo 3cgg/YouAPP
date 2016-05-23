@@ -16,7 +16,7 @@ public class InternalBillServiceImpl extends InternalServiceSupport<Bill>{
 	private BillJPARepo billJPARepo;
 	
 	@Override
-	public JIPersist<?, Bill> getRepo() {
+	public JIPersist<?, Bill, String> getRepo() {
 		return billJPARepo;
 	}
 

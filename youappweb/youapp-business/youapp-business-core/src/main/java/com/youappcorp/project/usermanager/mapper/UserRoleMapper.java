@@ -20,7 +20,7 @@ import com.youappcorp.project.usermanager.repo.UserRoleRepo;
  */
 @Component(value="userRoleMapper.mapper")
 @JModelRepo(component="userRoleMapper.mapper",name=UserRole.class)
-public interface UserRoleMapper extends JMapper<UserRole>,UserRoleRepo<JMapper<UserRole>> {
+public interface UserRoleMapper extends JMapper<UserRole,String>,UserRoleRepo<JMapper<UserRole,String>> {
 
 	List<UserRole> getUserRolesByUserId(@Param(value="userId")String userId);
 	

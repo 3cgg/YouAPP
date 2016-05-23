@@ -3,6 +3,7 @@ package j.jave.platform.basicwebcomp.spirngjpa;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JPageable;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-public class JSimpleSpringJpaImpl<T extends JBaseModel> 
-	extends SimpleJpaRepository<T, String> implements JSpringJpaRepository<T> {
+public class JSimpleSpringJpaImpl<T extends JBaseModel,ID extends Serializable> 
+	extends SimpleJpaRepository<T, ID> implements JSpringJpaRepository<T,ID> {
 
     private EntityManager em;
 	
@@ -37,7 +38,7 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel>
 	}
 
 	@Override
-	public T getModel(String id, String... entryName) {
+	public T getModel(ID id, String... entryName) {
 		return super.getOne(id);
 	}
 
@@ -53,12 +54,12 @@ public class JSimpleSpringJpaImpl<T extends JBaseModel>
 	}
 	
 	@Override
-	public JSpringJpaRepository<T> getInstance() {
+	public JSpringJpaRepository<T, ID> getInstance() {
 		return this;
 	}
 
 	@Override
-	public void markModelDeleted(String id) {
+	public void markModelDeleted(ID id) {
 		T t=getModel(id);
 		t.setDeleted("Y");
 		updateModel(t);

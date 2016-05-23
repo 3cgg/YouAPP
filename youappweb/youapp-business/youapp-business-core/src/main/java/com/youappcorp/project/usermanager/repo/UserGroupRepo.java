@@ -13,7 +13,7 @@ import com.youappcorp.project.usermanager.model.UserGroup;
  * @author J
  *
  */
-public interface UserGroupRepo<T> extends JIPersist<T,UserGroup> {
+public interface UserGroupRepo<T> extends JIPersist<T,UserGroup,String> {
 	
 	List<UserGroup> getUserGroupsByUserId(String userId);
 	

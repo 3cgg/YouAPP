@@ -16,7 +16,7 @@ public class InternalURLMappingMetaServiceImpl extends InternalServiceSupport<UR
 	private URLMappingMetaRepo urlMappingMetaRepo;
 	
 	@Override
-	public JIPersist<?, URLMappingMeta> getRepo() {
+	public JIPersist<?, URLMappingMeta, String> getRepo() {
 		return urlMappingMetaRepo;
 	}
 	

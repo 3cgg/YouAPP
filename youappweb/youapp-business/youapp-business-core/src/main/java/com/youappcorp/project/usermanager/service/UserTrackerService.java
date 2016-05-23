@@ -14,7 +14,7 @@ import com.youappcorp.project.usermanager.model.UserTracker;
 /**
  * @author J
  */
-public interface UserTrackerService extends Service<UserTracker>{
+public interface UserTrackerService extends Service<UserTracker, String>{
 
 	/**
 	 * get all trackers what time login, which client login. 

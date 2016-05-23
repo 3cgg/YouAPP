@@ -4,6 +4,7 @@ import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.model.JUNDeletable;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @author J
  *@param <T> the implementation class. <M>  the model
  */
-public interface JIPersist<T,M extends JBaseModel> {
+public interface JIPersist<T,M extends JBaseModel,ID extends Serializable> {
 	
 	/**
 	 * insert new record 
@@ -33,7 +34,7 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param entryName  it maybe a full qualified class name mapping to table.
 	 * @return
 	 */
-	public M getModel(String id,String... entryName);
+	public M getModel(ID id,String... entryName);
 	
 	/**
 	 * delete the existing record permanently . <br/>
@@ -64,7 +65,7 @@ public interface JIPersist<T,M extends JBaseModel> {
 	 * @param id
 	 * @see {@link JUNDeletable}
 	 */
-	public void markModelDeleted(String id);
+	public void markModelDeleted(ID id);
 	
 	/**
 	 * get records thats matches the criteria , the sub-implementation must be for pagination.

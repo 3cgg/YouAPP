@@ -79,7 +79,7 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 	}
 	
 	@Override
-	public JIPersist<?, User> getRepo() {
+	public JIPersist<?, User, String> getRepo() {
 		return userMapper;
 	}
 	

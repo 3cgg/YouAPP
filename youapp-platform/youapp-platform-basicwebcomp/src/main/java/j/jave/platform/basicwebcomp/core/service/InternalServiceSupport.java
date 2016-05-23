@@ -31,7 +31,7 @@ import org.springframework.data.domain.Page;
  *
  * @param <T>
  */
-public abstract class InternalServiceSupport<T extends JBaseModel> implements Service<T>{
+public abstract class InternalServiceSupport<T extends JBaseModel> implements Service<T,String>{
 	
 	protected final JLogger logger=JLoggerFactory.getLogger(getClass());
 	
@@ -86,7 +86,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 		return page;
 	}
 
-	public abstract JIPersist<?,T> getRepo();
+	public abstract JIPersist<?,T,String> getRepo();
 	
 	
 	/**
@@ -96,7 +96,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnSave(JIPersist<?, T> repo, SessionUserImpl authorizer, JBaseModel baseModel){
+	private T proxyOnSave(JIPersist<?, T,String> repo, SessionUserImpl authorizer, JBaseModel baseModel){
 		baseModel.setCreateId(authorizer.getUserId());
 		baseModel.setCreateTime(new Timestamp(new Date().getTime()));
 		baseModel.setUpdateId(authorizer.getUserId());
@@ -112,7 +112,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 		return (T) baseModel;
 	}
 	
-	private T get(JIPersist<?, T> repo,String id){
+	private T get(JIPersist<?, T,String> repo,String id){
 		return repo.getModel(id);
 	}
 	
@@ -124,7 +124,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnUpdate(JIPersist<?, T> repo, SessionUserImpl authorizer, JBaseModel baseModel){
+	private T proxyOnUpdate(JIPersist<?, T,String> repo, SessionUserImpl authorizer, JBaseModel baseModel){
 		baseModel.setUpdateId(authorizer.getUserId());
 		baseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		

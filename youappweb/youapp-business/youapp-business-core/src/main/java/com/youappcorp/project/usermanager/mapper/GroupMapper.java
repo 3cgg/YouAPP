@@ -21,7 +21,7 @@ import com.youappcorp.project.usermanager.repo.GroupRepo;
  */
 @Component(value="groupMapper.mapper")
 @JModelRepo(component="groupMapper.mapper",name=Group.class)
-public interface GroupMapper extends JMapper<Group>,GroupRepo<JMapper<Group>> {
+public interface GroupMapper extends JMapper<Group,String>,GroupRepo<JMapper<Group,String>> {
 
 	Group getGroupByGroupCode(@Param(value="groupCode")String roleCode);
 	

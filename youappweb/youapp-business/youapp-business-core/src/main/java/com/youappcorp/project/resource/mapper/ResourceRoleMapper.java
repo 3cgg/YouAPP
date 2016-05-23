@@ -4,8 +4,10 @@
 package com.youappcorp.project.resource.mapper;
 
 import j.jave.kernal.jave.model.support.JModelRepo;
+
 import com.youappcorp.project.resource.model.ResourceRole;
 import com.youappcorp.project.resource.repo.ResourceRoleRepo;
+
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="resourceRoleMapper.mapper")
 @JModelRepo(component="resourceRoleMapper.mapper",name=ResourceRole.class)
-public interface ResourceRoleMapper extends JMapper<ResourceRole>,ResourceRoleRepo<JMapper<ResourceRole>> {
+public interface ResourceRoleMapper extends JMapper<ResourceRole,String>,ResourceRoleRepo<JMapper<ResourceRole,String>> {
 
 	List<ResourceRole> getResourceRolesByResourceId(@Param(value="resourceId")String resourceId);
 	

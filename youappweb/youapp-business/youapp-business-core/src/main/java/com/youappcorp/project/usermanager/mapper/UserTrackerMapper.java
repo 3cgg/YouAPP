@@ -19,7 +19,7 @@ import com.youappcorp.project.usermanager.repo.UserTrackerRepo;
  */
 @Component(value="userTrackerMapper.mapper")
 @JModelRepo(component="userTrackerMapper.mapper",name=UserTracker.class)
-public interface UserTrackerMapper extends JMapper<UserTracker>,UserTrackerRepo<JMapper<UserTracker>> {
+public interface UserTrackerMapper extends JMapper<UserTracker,String>,UserTrackerRepo<JMapper<UserTracker,String>> {
 
 	
 	public List<UserTracker> getUserTrackerByName(

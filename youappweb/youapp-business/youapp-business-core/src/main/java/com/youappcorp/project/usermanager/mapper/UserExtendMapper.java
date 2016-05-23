@@ -17,7 +17,7 @@ import com.youappcorp.project.usermanager.repo.UserExtendRepo;
  */
 @Component(value="userExtendMapper.mapper")
 @JModelRepo(name=UserExtend.class,component="userExtendMapper.mapper")
-public interface UserExtendMapper extends JMapper<UserExtend >,UserExtendRepo<JMapper<UserExtend >> {
+public interface UserExtendMapper extends JMapper<UserExtend,String >,UserExtendRepo<JMapper<UserExtend ,String>> {
 	
 	public UserExtend getUserExtendByUserId(@Param(value="userId")String userId);
 

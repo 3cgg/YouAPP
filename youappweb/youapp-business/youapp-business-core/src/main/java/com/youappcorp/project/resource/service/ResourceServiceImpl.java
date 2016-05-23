@@ -21,7 +21,7 @@ public class ResourceServiceImpl extends InternalServiceSupport<Resource> implem
 	private ResourceRepo<?> resourceMapper;
 	
 	@Override
-	public JIPersist<?, Resource> getRepo() {
+	public JIPersist<?, Resource, String> getRepo() {
 		return this.resourceMapper;
 	}
 	

@@ -12,7 +12,7 @@ import com.youappcorp.project.usermanager.model.UserTracker;
 /**
  * @author J
  */
-public interface UserTrackerRepo<P> extends JIPersist<P,UserTracker> {
+public interface UserTrackerRepo<P> extends JIPersist<P,UserTracker,String> {
 
 	
 	public List<UserTracker> getUserTrackerByName(String userName);

@@ -21,7 +21,7 @@ import com.youappcorp.project.usermanager.repo.UserRepo;
  */
 @Component(value="userMapper.mapper")
 @JModelRepo(name=User.class,component="userMapper.mapper")
-public interface UserMapper extends JMapper<User>,UserRepo<JMapper<User> > {
+public interface UserMapper extends JMapper<User,String>,UserRepo<JMapper<User,String> > {
 
 	public User getUserByNameAndPassword(
 			@Param(value="userName")String userName,

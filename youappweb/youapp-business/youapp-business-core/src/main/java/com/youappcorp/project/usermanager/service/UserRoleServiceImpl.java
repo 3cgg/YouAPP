@@ -22,7 +22,7 @@ public class UserRoleServiceImpl extends InternalServiceSupport<UserRole> implem
 	private UserRoleRepo<?> userRoleMapper;
 	
 	@Override
-	public JIPersist<?, UserRole> getRepo() {
+	public JIPersist<?, UserRole, String> getRepo() {
 		return userRoleMapper;
 	}
 	

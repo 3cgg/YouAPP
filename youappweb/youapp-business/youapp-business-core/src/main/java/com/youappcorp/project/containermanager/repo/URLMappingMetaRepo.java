@@ -16,7 +16,7 @@ import com.youappcorp.project.containermanager.model.URLMappingMeta;
  * @author J
  *
  */
-public interface URLMappingMetaRepo extends JSpringJpaRepository<URLMappingMeta> {
+public interface URLMappingMetaRepo extends JSpringJpaRepository<URLMappingMeta,String> {
 
 	@Query(value="from URLMappingMeta where id= :id and deleted=1")
 	URLMappingMeta getURLMappingMetaById(@Param(value="id")String id);

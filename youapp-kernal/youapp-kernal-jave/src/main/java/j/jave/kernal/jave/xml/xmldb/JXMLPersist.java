@@ -17,7 +17,7 @@ import java.util.Map;
  *
  * @param <T>
  */
-public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implements JIPersist<JXMLPersist<T>,T> {
+public class JXMLPersist<T extends JBaseModel> extends JXMLSessionSupport implements JIPersist<JXMLPersist<T>,T,String> {
 
 	@Override
 	public void saveModel(T baseModel) {

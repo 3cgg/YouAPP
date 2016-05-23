@@ -25,7 +25,7 @@ public class GroupServiceImpl extends InternalServiceSupport<Group> implements G
 	private GroupRepo<?> groupMapper;
 	
 	@Override
-	public JIPersist<?, Group> getRepo() {
+	public JIPersist<?, Group, String> getRepo() {
 		return groupMapper;
 	}
 	

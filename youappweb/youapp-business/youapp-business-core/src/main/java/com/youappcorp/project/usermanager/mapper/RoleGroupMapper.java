@@ -20,7 +20,7 @@ import com.youappcorp.project.usermanager.repo.RoleGroupRepo;
  */
 @Component(value="roleGroupMapper.mapper")
 @JModelRepo(component="roleGroupMapper.mapper",name=RoleGroup.class)
-public interface RoleGroupMapper extends JMapper<RoleGroup>,RoleGroupRepo<JMapper<RoleGroup>> {
+public interface RoleGroupMapper extends JMapper<RoleGroup,String>,RoleGroupRepo<JMapper<RoleGroup,String>> {
 	
 	int countOnRoleIdAndGroupId(@Param(value="roleId")String roleId,@Param(value="groupId")String groupId);
 	

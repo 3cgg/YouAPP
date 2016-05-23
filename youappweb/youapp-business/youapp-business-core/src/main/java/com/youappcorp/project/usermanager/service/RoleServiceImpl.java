@@ -29,7 +29,7 @@ public class RoleServiceImpl extends InternalServiceSupport<Role> implements Rol
 	
 	
 	@Override
-	public JIPersist<?, Role> getRepo() {
+	public JIPersist<?, Role, String> getRepo() {
 		return roleMapper;
 	}
 	

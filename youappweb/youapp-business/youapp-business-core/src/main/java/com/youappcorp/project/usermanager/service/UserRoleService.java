@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserRole;
 
-public interface UserRoleService extends Service<UserRole> {
+public interface UserRoleService extends Service<UserRole, String> {
 
 	
 	List<UserRole> getUserRolesByUserId(ServiceContext serviceContext,String userId);

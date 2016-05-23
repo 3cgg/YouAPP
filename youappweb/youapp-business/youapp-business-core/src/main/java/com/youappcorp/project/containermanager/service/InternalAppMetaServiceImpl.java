@@ -16,7 +16,7 @@ public class InternalAppMetaServiceImpl extends InternalServiceSupport<AppMeta>{
 	private AppMetaRepo appMetaRepo;
 	
 	@Override
-	public JIPersist<?, AppMeta> getRepo() {
+	public JIPersist<?, AppMeta, String> getRepo() {
 		return appMetaRepo;
 	}
 	

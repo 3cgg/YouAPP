@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.youappcorp.project.bill.model.Bill;
 
 @Repository(value="jpaBillJPARepo")
-public interface BillJPARepo extends JSpringJpaRepository<Bill>{
+public interface BillJPARepo extends JSpringJpaRepository<Bill,String>{
 
 	@Query(value="from Bill p where p.userId=:userId and p.deleted='N' ")
 	public List<Bill> getBillByUserId(@Param(value="userId")String userId);

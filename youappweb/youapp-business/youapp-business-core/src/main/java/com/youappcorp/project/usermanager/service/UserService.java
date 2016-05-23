@@ -17,7 +17,7 @@ import com.youappcorp.project.usermanager.model.User;
 /**
  * @author J
  */
-public interface UserService extends Service<User> {
+public interface UserService extends Service<User, String> {
 
 	/**
 	 * get user by name & password 

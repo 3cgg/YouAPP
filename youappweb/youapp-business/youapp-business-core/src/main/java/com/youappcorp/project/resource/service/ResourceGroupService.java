@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.ResourceGroup;
 
-public interface ResourceGroupService extends Service<ResourceGroup> {
+public interface ResourceGroupService extends Service<ResourceGroup, String> {
 
 
 	

@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.ResourceExtend;
 
-public interface ResourceExtendService extends Service<ResourceExtend> {
+public interface ResourceExtendService extends Service<ResourceExtend, String> {
 
 	/**
 	 * save resource extend. if the extend does not tie to any resource, we need save resource first.

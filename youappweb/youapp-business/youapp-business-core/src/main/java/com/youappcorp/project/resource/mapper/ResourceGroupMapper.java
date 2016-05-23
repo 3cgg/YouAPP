@@ -4,8 +4,10 @@
 package com.youappcorp.project.resource.mapper;
 
 import j.jave.kernal.jave.model.support.JModelRepo;
+
 import com.youappcorp.project.resource.model.ResourceGroup;
 import com.youappcorp.project.resource.repo.ResourceGroupRepo;
+
 import j.jave.platform.mybatis.JMapper;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Component;
  */
 @Component(value="resourceGroupMapper.mapper")
 @JModelRepo(component="resourceGroupMapper.mapper",name=ResourceGroup.class)
-public interface ResourceGroupMapper extends JMapper<ResourceGroup>,ResourceGroupRepo<JMapper<ResourceGroup>> {
+public interface ResourceGroupMapper extends JMapper<ResourceGroup,String>,ResourceGroupRepo<JMapper<ResourceGroup,String>> {
 
 	List<ResourceGroup> getResourceGroupsByResourceId(@Param(value="resourceId")String resourceId);
 	

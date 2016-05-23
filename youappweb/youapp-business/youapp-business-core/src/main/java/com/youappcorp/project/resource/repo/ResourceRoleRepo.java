@@ -4,6 +4,7 @@
 package com.youappcorp.project.resource.repo;
 
 import j.jave.kernal.jave.persist.JIPersist;
+
 import com.youappcorp.project.resource.model.ResourceRole;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author J
  */
-public interface ResourceRoleRepo<T> extends JIPersist<T, ResourceRole> {
+public interface ResourceRoleRepo<T> extends JIPersist<T, ResourceRole,String> {
 
 	List<ResourceRole> getResourceRolesByResourceId(String resourceId);
 	

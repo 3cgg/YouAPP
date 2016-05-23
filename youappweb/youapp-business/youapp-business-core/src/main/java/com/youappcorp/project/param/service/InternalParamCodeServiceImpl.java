@@ -16,7 +16,7 @@ public class InternalParamCodeServiceImpl extends InternalServiceSupport<ParamCo
 	private ParamCodeJPARepo paramCodeRepo;
 	
 	@Override
-	public JIPersist<?, ParamCode> getRepo() {
+	public JIPersist<?, ParamCode, String> getRepo() {
 		return paramCodeRepo;
 	}
 

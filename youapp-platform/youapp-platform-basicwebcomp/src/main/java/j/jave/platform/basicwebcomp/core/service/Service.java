@@ -6,13 +6,15 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.service.JService;
 
+import java.io.Serializable;
+
 /**
  * service template.
  * @author J
  *
  * @param <T>
  */
-public interface Service<T extends JModel> extends JService {
+public interface Service<T extends JModel,ID extends Serializable> extends JService {
 
 	/**
 	 * insert record . not include other business. 
@@ -35,7 +37,7 @@ public interface Service<T extends JModel> extends JService {
 	 * @bill context
 	 * @bill id
 	 */
-	public void delete(ServiceContext context, String id);
+	public void delete(ServiceContext context, ID id);
 	
 	
 	/**
@@ -44,7 +46,7 @@ public interface Service<T extends JModel> extends JService {
 	 * @param id
 	 * @return
 	 */
-	public T getById(ServiceContext context, String id);
+	public T getById(ServiceContext context, ID id);
 	
 	/**
 	 * get records for pagination.

@@ -89,6 +89,13 @@
 			<artifactId>spring-data-jpa</artifactId>
 		</dependency>
 		
+		<!-- http://mvnrepository.com/artifact/io.netty/netty-all -->
+		<dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-all</artifactId>
+		    <version>4.1.0.CR7</version>
+		</dependency>
+		
 	</dependencies>
 
 

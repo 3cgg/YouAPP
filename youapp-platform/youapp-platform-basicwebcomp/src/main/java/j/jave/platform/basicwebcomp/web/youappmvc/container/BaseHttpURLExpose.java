@@ -26,26 +26,70 @@ public class BaseHttpURLExpose implements HttpURLExpose {
 		this.container=containerDelegate.getContainer(unique);
 	}
 	
-	@Override
-	public String getExistRequestURI() {
+	private HttpURLExpose get(){
 		if(JRemoteHttpInvokeContainer.class.isInstance(container)){
-			return new RemoteRequestInvokeContainerExpose(container).getExistRequestURI();
+			return new RemoteRequestInvokeContainerExpose(container);
 		}
 		else if(InnerHttpInvokeContainer.class.isInstance(container)){
-			return new RequestInvokeContainerExpose(container).getExistRequestURI();
+			return new RequestInvokeContainerExpose(container);
 		}
-		return null;
+		else{
+			return new EmptyHttpURLExpose();
+		}
+	}
+	
+	@Override
+	public String getExistRequestURI() {
+		return get().getExistRequestURI();
 	}
 
 	@Override
 	public String getExecuteRequestURI() {
-		if(JRemoteHttpInvokeContainer.class.isInstance(container)){
-			return new RemoteRequestInvokeContainerExpose(container).getExecuteRequestURI();
+		return get().getExecuteRequestURI();
+	}
+	
+	@Override
+	public String getGetRequestURI() {
+		return get().getGetRequestURI();
+	}
+	
+	@Override
+	public String getPutRequestURI() {
+		return get().getPutRequestURI();
+	}
+	
+	@Override
+	public String getDeleteRequestURI() {
+		return get().getDeleteRequestURI();
+	}
+	
+	public class EmptyHttpURLExpose implements HttpURLExpose{
+
+		@Override
+		public String getExistRequestURI() {
+			return null;
 		}
-		else if(InnerHttpInvokeContainer.class.isInstance(container)){
-			return new RequestInvokeContainerExpose(container).getExecuteRequestURI();
+
+		@Override
+		public String getExecuteRequestURI() {
+			return null;
 		}
-		return null;
+
+		@Override
+		public String getPutRequestURI() {
+			return null;
+		}
+
+		@Override
+		public String getGetRequestURI() {
+			return null;
+		}
+
+		@Override
+		public String getDeleteRequestURI() {
+			return null;
+		}
+		
 	}
 	
 	public class RemoteRequestInvokeContainerExpose implements HttpURLExpose{
@@ -64,6 +108,21 @@ public class BaseHttpURLExpose implements HttpURLExpose {
 			return remoteRequestInvokeContainer.getExecuteRequestURI(unique, path);
 		}
 		
+		@Override
+		public String getGetRequestURI() {
+			return remoteRequestInvokeContainer.getURLGetRequestURI(unique, path);
+		}
+		
+		@Override
+		public String getPutRequestURI() {
+			return remoteRequestInvokeContainer.getURLPutRequestURI(unique, path);
+		}
+		
+		@Override
+		public String getDeleteRequestURI() {
+			return remoteRequestInvokeContainer.getURLDeleteRequestURI(unique, path);
+		}
+		
 	}
 	
 	public class RequestInvokeContainerExpose implements HttpURLExpose{
@@ -80,6 +139,21 @@ public class BaseHttpURLExpose implements HttpURLExpose {
 		
 		public String getExecuteRequestURI(){
 			return requestInvokeContainer.getExecuteRequestURI(unique, path);
+		}
+		
+		@Override
+		public String getGetRequestURI() {
+			return requestInvokeContainer.getControllerGetRequestURI(unique, path);
+		}
+		
+		@Override
+		public String getPutRequestURI() {
+			return requestInvokeContainer.getControllerPutRequestURI(unique, path);
+		}
+		
+		@Override
+		public String getDeleteRequestURI() {
+			return requestInvokeContainer.getControllerDeleteRequestURI(unique, path);
 		}
 		
 	}

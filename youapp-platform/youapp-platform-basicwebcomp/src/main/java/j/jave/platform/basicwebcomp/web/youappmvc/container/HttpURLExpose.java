@@ -22,4 +22,21 @@ public interface HttpURLExpose {
 	 */
 	String getExecuteRequestURI();
 	
+	/**
+	 * the URI that the container can put the special path in itself .
+	 * @return
+	 */
+	String getPutRequestURI();
+	
+	/**
+	 * the URI that the container expose special information about the path.
+	 * @return
+	 */
+	String getGetRequestURI();
+	
+	/**
+	 * the URI that the container remove the special path from itself .
+	 * @return
+	 */
+	String getDeleteRequestURI();
 }

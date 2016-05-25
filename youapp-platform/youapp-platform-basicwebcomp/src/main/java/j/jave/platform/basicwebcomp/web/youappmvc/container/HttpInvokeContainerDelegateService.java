@@ -145,28 +145,95 @@ implements JService{
 		return container.unique();
 	}
 	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
 	public static final String getControllerRequestGetURI(String unique,String path){
 		return JExecutableURIUtil.getGetRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
 	public static final String getControllerRequestExistURI(String unique,String path){
 		return JExecutableURIUtil.getExistRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
 	public static final String getControllerRequestPutURI(String unique,String path){
 		return JExecutableURIUtil.getPutRequestURI(unique, path, JScheme.CONTROLLER);
 	}
 
+	/**
+	 * 
+	 * @param unique the container unique
+	 * @param beanName the spring bean name
+	 * @return
+	 */
 	public static final String getBeanRequestGetURI(String unique,String beanName){
 		return JExecutableURIUtil.getGetRequestURI(unique, beanName, JScheme.BEAN);
 	}
 
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
 	public String getExistRequestURI(String unique, String path) {
 		return new BaseHttpURLExpose(unique, path).getExistRequestURI();
 	}
 	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
 	public String getExecuteRequestURI(String unique, String path){
 		return new BaseHttpURLExpose(unique, path).getExecuteRequestURI();
+	}
+	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
+	public String getGetRequestURI(String unique, String path){
+		return new BaseHttpURLExpose(unique, path).getGetRequestURI();
+	}
+	
+	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
+	public String getPutRequestURI(String unique, String path){
+		return new BaseHttpURLExpose(unique, path).getPutRequestURI();
+	}
+	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
+	public String getDeleteRequestURI(String unique, String path){
+		return new BaseHttpURLExpose(unique, path).getDeleteRequestURI();
 	}
 	
 	

@@ -1,8 +1,6 @@
 package j.jave.platform.standalone.server.controller;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
-import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedListener;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -11,16 +9,15 @@ import java.util.List;
 
 public abstract class ControllerSupport<T extends JService> 
 extends JServiceFactorySupport<T>
-implements JControllerService , JControllerServiceFactory, JServiceHubInitializedListener {
+implements ControllerService , ControllerServiceFactory, ControllerServiceFindingListener {
 	
 	@Override
-	public JControllerService getControllerService() {
+	public ControllerService getControllerService() {
 		return this;
 	}
 	
 	@Override
-	public Object trigger(JServiceHubInitializedEvent event) {
-    	
+	public Object trigger(ControllerServiceFindingEvent event) {
     	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
 		mappingDetector.detect();
 		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();

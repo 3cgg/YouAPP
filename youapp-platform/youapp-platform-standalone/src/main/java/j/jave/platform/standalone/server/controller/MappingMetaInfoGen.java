@@ -19,8 +19,8 @@ public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 		MappingMeta resourceInfo=new MappingMeta();
 		resourceInfo.setClazz(classIncudeMethod);
 		
-		if(!classIncudeMethod.isAssignableFrom(JControllerService.class)){
-			throw new IllegalStateException(" class not represented by "+JControllerService.class);
+		if(!classIncudeMethod.isAssignableFrom(ControllerService.class)){
+			throw new IllegalStateException(" class not represented by "+ControllerService.class);
 		}
 		resourceInfo.setMethodName(method.getName());
 		JRequestMapping classRequestMapping= classIncudeMethod.getAnnotation(JRequestMapping.class);

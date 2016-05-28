@@ -10,7 +10,7 @@ package j.jave.platform.standalone.server.controller;
 public class MappingMeta {
 	
 	/**
-	 * name of {@link JControllerService}
+	 * name of {@link ControllerService}
 	 */
 	private String controllerName;
 	
@@ -20,19 +20,19 @@ public class MappingMeta {
 	private String methodName;
 	
 	/**
-	 * URL path. consist of name of {@link JControllerService} and method name,   like as '/login.loginaction/index' .
-	 * @see  {@link JControllerService}
+	 * URL path. consist of name of {@link ControllerService} and method name,   like as '/login.loginaction/index' .
+	 * @see  {@link ControllerService}
 	 */
 	private String  path;
 
 	/**
-	 * class , restricted by {@link JControllerService}
+	 * class , restricted by {@link ControllerService}
 	 */
 	private Class<?> clazz;
 	
 	private MethodParamMeta[] methodParams;
 	
-	private JControllerServiceFactory controllerServiceFactory;
+	private ControllerServiceFactory controllerServiceFactory;
 
 	public Class<?>[] getMethodParamClasses(){
 		Class<?>[] clazzs=new Class<?>[methodParams.length];
@@ -82,12 +82,12 @@ public class MappingMeta {
 		this.methodParams = methodParams;
 	}
 
-	public JControllerServiceFactory getControllerServiceFactory() {
+	public ControllerServiceFactory getControllerServiceFactory() {
 		return controllerServiceFactory;
 	}
 
 	public void setControllerServiceFactory(
-			JControllerServiceFactory controllerServiceFactory) {
+			ControllerServiceFactory controllerServiceFactory) {
 		this.controllerServiceFactory = controllerServiceFactory;
 	}
 

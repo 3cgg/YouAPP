@@ -29,7 +29,7 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 	static final JMethodFilter methodFilter=new JMethodFilter() {
 		@Override
 		public boolean filter(Class<?> clazz) {
-			return !clazz.isAssignableFrom(JControllerService.class)
+			return !clazz.isAssignableFrom(ControllerService.class)
 					||Modifier.isInterface(clazz.getModifiers())
 					||Modifier.isAbstract(clazz.getModifiers())
 					||Modifier.isProtected(clazz.getModifiers())
@@ -42,7 +42,7 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 			boolean isFilter=false;
 			
 			// if represent by Controller.
-			isFilter=!classIncudeMethod.isAssignableFrom(JControllerService.class);
+			isFilter=!classIncudeMethod.isAssignableFrom(ControllerService.class);
 			
 			if(!isFilter){
 				// if static method.

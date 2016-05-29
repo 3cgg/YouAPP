@@ -1,14 +1,16 @@
 package j.jave.kernal.dataexchange.protocol;
 
+import j.jave.kernal.dataexchange.channel.ObjectTransModelMessage;
+import j.jave.kernal.dataexchange.channel.ObjectTransModelSenderChannel;
+import j.jave.kernal.dataexchange.channel.ResponseFuture;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
-import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.http.JResponseHandler;
+import j.jave.kernal.jave.base64.JBase64;
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JObjectSerializableUtils;
-
-import java.io.IOException;
 
 public abstract class JProtocolSender {
 
@@ -17,6 +19,10 @@ public abstract class JProtocolSender {
 	private JProtocolResultHandler protocolResultHandler;
 	
 	protected final JObjectTransModel objectTransModel;
+	
+	protected ObjectTransModelSenderChannel senderChannel;
+	
+	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
 	public JProtocolSender(JObjectTransModel objectTransModel) {
 		super();
@@ -39,7 +45,7 @@ public abstract class JProtocolSender {
 		}
 	}
 
-	protected abstract byte[] doSend() throws IOException;
+	protected abstract byte[] doSend() throws Exception;
 	
 	private static JResponseHandler<byte[]> responseHandler=new JResponseHandler<byte[]>(){
 		public byte[] process(byte[] bytes) throws JResponseHandler.ProcessException {
@@ -54,14 +60,21 @@ public abstract class JProtocolSender {
 		}
 
 		@Override
-		protected byte[] doSend()  throws IOException{
-			byte[] bytes=JObjectSerializableUtils.serializeObject(objectTransModel);
-			return (byte[]) JHttpFactoryProvider.getHttpFactory().getHttpPost()
-			.setUrl(objectTransModel.getUrl())
-			.setEntry(bytes)
-			.setResponseHandler(responseHandler)
-			.putHead(JProtocolConstants.PROTOCOL_HEAD, objectTransModel.getSendProtocol().name())
-			.execute();
+		protected byte[] doSend()  throws Exception{
+			
+			ObjectTransModelMessage message=new ObjectTransModelMessage();
+			message.setUrl(objectTransModel.getUrl());
+			message.setProtocol(objectTransModel.getProtocol());
+			message.setData(base64Service.encodeBase64String(JObjectSerializableUtils.serializeObject(objectTransModel.getObjectWrappers())));
+			
+			byte[] bytes=null;
+			ResponseFuture responseFuture= new ObjectTransModelSenderChannel().write(message);
+			while(responseFuture.await()!=null){
+				ObjectTransModelMessage modelMessage=(ObjectTransModelMessage) responseFuture.getResponse();
+				String data64=modelMessage.getData();
+				bytes= base64Service.decodeBase64(data64);
+			}
+			return bytes;
 		}
 		
 	}
@@ -74,14 +87,21 @@ public abstract class JProtocolSender {
 		}
 
 		@Override
-		protected byte[] doSend()  throws IOException{
-			String objectJSON=JJSON.get().formatObject(objectTransModel);
-			return (byte[]) JHttpFactoryProvider.getHttpFactory().getHttpPost()
-			.setUrl(objectTransModel.getUrl())
-			.setEntry(objectJSON.getBytes("utf-8"))
-			.setResponseHandler(responseHandler)
-			.putHead(JProtocolConstants.PROTOCOL_HEAD, objectTransModel.getSendProtocol().name())
-			.execute();
+		protected byte[] doSend()  throws Exception{
+			ObjectTransModelMessage message=new ObjectTransModelMessage();
+			message.setUrl(objectTransModel.getUrl());
+			message.setProtocol(objectTransModel.getProtocol());
+			
+			String objectJSON=JJSON.get().formatObject(objectTransModel.getObjectWrappers());
+			message.setData(base64Service.encodeBase64String(objectJSON.getBytes("utf-8")));
+			byte[] bytes=null;
+			ResponseFuture responseFuture= new ObjectTransModelSenderChannel().write(message);
+			while(responseFuture.await()!=null){
+				ObjectTransModelMessage modelMessage=(ObjectTransModelMessage) responseFuture.getResponse();
+				String data64=modelMessage.getData();
+				bytes= base64Service.decodeBase64(data64);
+			}
+			return bytes;
 		}
 		
 	}

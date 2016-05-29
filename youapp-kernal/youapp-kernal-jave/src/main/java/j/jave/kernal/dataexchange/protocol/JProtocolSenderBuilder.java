@@ -13,7 +13,7 @@ public class JProtocolSenderBuilder {
 	public  static JProtocolSenderBuilder get(JProtocol sendProtocol){
 		JProtocolSenderBuilder protocolSendBuilder=  new JProtocolSenderBuilder();
 		protocolSendBuilder.objectTramsModel=new JObjectTransModel();
-		protocolSendBuilder.objectTramsModel.setSendProtocol(sendProtocol);
+		protocolSendBuilder.objectTramsModel.setProtocol(sendProtocol);
 		return protocolSendBuilder;
 	}
 	
@@ -33,11 +33,6 @@ public class JProtocolSenderBuilder {
 		return this;
 	}
 	
-	public JProtocolSenderBuilder setExptectedProtocol(JProtocol expectedProtocol){
-		objectTramsModel.setExpectedProtocol(expectedProtocol);
-		return this;
-	}
-	
 	public JProtocolSenderBuilder setURL(String url){
 		objectTramsModel.setUrl(url);
 		return this;
@@ -51,10 +46,10 @@ public class JProtocolSenderBuilder {
 	
 	public JProtocolSender build(){
 		JProtocolSender protocolSender=null;
-		if(objectTramsModel.getSendProtocol()==JProtocol.OBJECT){
+		if(objectTramsModel.getProtocol()==JProtocol.OBJECT){
 			protocolSender=new ObjectProtocolSender(objectTramsModel);
 		}
-		else if(objectTramsModel.getSendProtocol()==JProtocol.JSON){
+		else if(objectTramsModel.getProtocol()==JProtocol.JSON){
 			protocolSender=new JSONProtocolSender(objectTramsModel);
 		}
 		protocolSender.setProtocolResultHandler(protocolResultHandler);

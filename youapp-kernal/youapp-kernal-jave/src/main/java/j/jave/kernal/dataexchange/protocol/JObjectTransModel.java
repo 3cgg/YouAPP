@@ -10,28 +10,10 @@ public class JObjectTransModel implements JModel{
 
 	private String url;
 	
+	private JProtocol protocol;
+	
 	// object data
 	private List<JObjectWrapper>objectWrappers=new ArrayList<JObjectWrapper>();
-	
-	private JProtocol sendProtocol;
-	
-	private JProtocol expectedProtocol;
-	
-	public JProtocol getSendProtocol() {
-		return sendProtocol;
-	}
-
-	public void setSendProtocol(JProtocol sendProtocol) {
-		this.sendProtocol = sendProtocol;
-	}
-
-	public JProtocol getExpectedProtocol() {
-		return expectedProtocol;
-	}
-
-	public void setExpectedProtocol(JProtocol expectedProtocol) {
-		this.expectedProtocol = expectedProtocol;
-	}
 	
 	public synchronized void setObjectWrapper(JObjectWrapper objectWrapper) {
 		objectWrappers.add(objectWrapper);
@@ -51,6 +33,14 @@ public class JObjectTransModel implements JModel{
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public JProtocol getProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(JProtocol protocol) {
+		this.protocol = protocol;
 	}
 	
 }

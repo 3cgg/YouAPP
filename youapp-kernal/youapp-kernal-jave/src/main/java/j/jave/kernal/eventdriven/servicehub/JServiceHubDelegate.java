@@ -189,6 +189,7 @@ public class JServiceHubDelegate {
 	 * get the executed result of any executable delay event.
 	 * @param eventId
 	 * @return
+	 * @throws JEventExecutionException
 	 */
 	public EventExecutionResult getResultByEventId(String eventId){
 		return getAsyncEventResultRepoService().getEventResult(eventId);

@@ -108,7 +108,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			Class<?> eventClass=event.getClass();
 			JListenerOnEvent eventListener= eventClass.getAnnotation(JListenerOnEvent.class);
 			if(eventListener==null){
-				throw new IllegalStateException(eventClass.getName()+"must be modified by annotaion @JEventListener");
+				throw new IllegalStateException(eventClass.getName()+" must be modified by annotaion @JEventListener");
 			}
 			Class<? extends JAPPListener>  runningListener=eventListener.name();
 			List<ServiceOrdered> serviceClasses= listenerServices.get(runningListener);
@@ -139,6 +139,9 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 					LOGGER.info(info);
 					throw new IllegalStateException(info);
 				}
+			}
+			else{
+				throw new IllegalStateException("cannot find any one service for the listerner:"+runningListener.getName());
 			}
 			eventExecutionResult.setObjects(objects);
 		}catch(Exception e){

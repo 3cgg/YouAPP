@@ -34,19 +34,21 @@ public abstract class Sender {
 	 * @return the byte arrays
 	 */
 	protected byte[] getSenderData(ObjectTransModelMessage message) throws Exception{
-		JProtocol protocol= message.getProtocol();
+//		JProtocol protocol= message.getProtocol();
 //		JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 		byte[] data=null;
-		switch (protocol) {
-		case JSON:
-			String objectJSON=JJSON.get().formatObject(message);
-			data=objectJSON.getBytes("utf-8");
-		case OBJECT:
-			byte[] bytes=JObjectSerializableUtils.serializeObject(message);
-			data=bytes;
-		default:
-			break;
-		}
+		String objectJSON=JJSON.get().formatObject(message);
+		data=objectJSON.getBytes("utf-8");
+//		switch (protocol) {
+//		case JSON:
+//			String objectJSON=JJSON.get().formatObject(message);
+//			data=objectJSON.getBytes("utf-8");
+//		case OBJECT:
+//			byte[] bytes=JObjectSerializableUtils.serializeObject(message);
+//			data=bytes;
+//		default:
+//			break;
+//		}
 		return data;
 	}
 	

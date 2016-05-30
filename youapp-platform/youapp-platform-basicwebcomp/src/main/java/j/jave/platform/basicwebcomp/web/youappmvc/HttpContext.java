@@ -2,10 +2,14 @@ package j.jave.platform.basicwebcomp.web.youappmvc;
 
 import j.jave.kernal.dataexchange.protocol.JObjectTransModel;
 import j.jave.kernal.dataexchange.protocol.JProtocol;
+import j.jave.kernal.dataexchange.protocol.JProtocolByteHandler;
 import j.jave.kernal.dataexchange.protocol.JProtocolConstants;
 import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.support.databind.JDataBindException;
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
 import j.jave.platform.basicwebcomp.core.service.SessionUser;
@@ -16,7 +20,6 @@ import j.jave.platform.basicwebcomp.web.youappmvc.support.LinkedRequestSupport;
 import j.jave.platform.basicwebcomp.web.youappmvc.utils.YouAppMvcUtils;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -131,6 +134,14 @@ public class HttpContext implements JModel {
 	public HttpContext(){
 		this(null, null);
 	}
+
+	public static final JProtocolByteHandler PROTOCOL_BYTE_HANDLER=
+			new JProtocolByteHandler() {
+				@Override
+				public Object handle(byte[] bytes) throws Exception {
+					return JJSON.get().parse(new String(bytes,"utf-8"), JObjectTransModel.class);
+				}
+			};
 	
 	private void init(HttpServletRequest request,HttpServletResponse response){
 		boolean isParseProtocol=false;
@@ -150,20 +161,29 @@ public class HttpContext implements JModel {
 		if(request!=null){
 			String protocolHead= request.getHeader(JProtocolConstants.PROTOCOL_HEAD);
 			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
+				
+				isParseProtocol=true;
 				protocol=JProtocol.valueOf(protocolHead);
-				if(JProtocol.BROWSER!=protocol){
-					isParseProtocol=true;
-					try {
-						objectTransModel=JProtocolReceiverBuilder.get(protocol)
-						.setData(JStringUtils.getBytes(request.getInputStream()))
-						.build().receive();
-					} catch (IllegalStateException e) {
-						throw e;
-					}
-					catch (IOException e) {
-						throw new IllegalStateException(e);
-					}
+				try{
+					objectTransModel=(JObjectTransModel) JProtocolReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
+					.setProtocolByteHandler(PROTOCOL_BYTE_HANDLER).build().receive();
+				}catch(Exception e){
+					throw new JDataBindException(e);
 				}
+//				protocol=JProtocol.valueOf(protocolHead);
+//				if(JProtocol.BROWSER!=protocol){
+//					isParseProtocol=true;
+//					try {
+//						objectTransModel=JProtocolReceiverBuilder.get(protocol)
+//						.setData(JIOUtils.getBytes(request.getInputStream()))
+//						.build().receive();
+//					} catch (IllegalStateException e) {
+//						throw e;
+//					}
+//					catch (IOException e) {
+//						throw new IllegalStateException(e);
+//					}
+//				}
 			}
 		}
 		

@@ -8,8 +8,11 @@ implements ExchangeChannel<ObjectTransModelMessage> {
 	
 	@Override
 	public final ResponseFuture write(ObjectTransModelMessage objectTransModelMessage) throws Exception {
-		ResponseFuture responseFuture=new DefaultResponseFuture(this);
-		JServiceHubDelegate.get().addDelayEvent(new ObjectTransModelSendingEvent(this, responseFuture));
+		DefaultResponseFuture responseFuture=new DefaultResponseFuture(this);
+		ObjectTransModelSendingEvent event=new ObjectTransModelSendingEvent(this, responseFuture);
+		event.setGetResultLater(true);
+		responseFuture.setEvent(event);
+		JServiceHubDelegate.get().addDelayEvent(event);
 		return responseFuture;
 	}
 	

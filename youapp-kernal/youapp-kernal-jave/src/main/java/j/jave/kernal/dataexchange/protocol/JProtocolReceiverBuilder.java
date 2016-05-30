@@ -3,37 +3,34 @@ package j.jave.kernal.dataexchange.protocol;
 
 public class JProtocolReceiverBuilder {
 	
-	private JProtocol protocol;
-	
 	private byte[] bytes;
 	
-	public  static JProtocolReceiverBuilder get(String protocol){
-		return get(JProtocol.valueOf(protocol));
-	}
+	private JProtocolByteHandler protocolByteHandler;
 	
-	public  static JProtocolReceiverBuilder get(JProtocol protocol){
+	public  static JProtocolReceiverBuilder get(byte[] bytes){
 		JProtocolReceiverBuilder protocolSendBuilder=  new JProtocolReceiverBuilder();
-		protocolSendBuilder.protocol=protocol;
+		protocolSendBuilder.bytes=bytes;
 		return protocolSendBuilder;
 	}
 	
 	private JProtocolReceiverBuilder() {
 	}
 	
-	public JProtocolReceiverBuilder setData(byte[] bytes){
-		this.bytes=bytes;
-		return this;
+	public JProtocolReceiver build(){
+		JProtocolReceiver protocolReceiver=new JProtocolReceiver(bytes);
+//		if(protocol==JProtocol.OBJECT){
+//			protocolReceiver=new JProtocolReceiver.ObjectProtocolReceiver(bytes);
+//		}
+//		else if(protocol==JProtocol.JSON){
+//			protocolReceiver=new JProtocolReceiver.JSONProtocolReceiver(bytes);
+//		}
+		protocolReceiver.setProtocolByteHandler(protocolByteHandler);
+		return protocolReceiver;
 	}
 	
-	public JProtocolReceiver build(){
-		JProtocolReceiver protocolReceiver=null;
-		if(protocol==JProtocol.OBJECT){
-			protocolReceiver=new JProtocolReceiver.ObjectProtocolReceiver(bytes);
-		}
-		else if(protocol==JProtocol.JSON){
-			protocolReceiver=new JProtocolReceiver.JSONProtocolReceiver(bytes);
-		}
-		return protocolReceiver;
+	public JProtocolReceiverBuilder setProtocolByteHandler(JProtocolByteHandler protocolByteHandler) {
+		this.protocolByteHandler = protocolByteHandler;
+		return this;
 	}
 	
 }

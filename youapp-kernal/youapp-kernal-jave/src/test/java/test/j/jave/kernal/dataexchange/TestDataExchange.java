@@ -1,21 +1,37 @@
 package test.j.jave.kernal.dataexchange;
 
 import j.jave.kernal.JConfiguration;
+import j.jave.kernal.dataexchange.protocol.JObjectTransModelSenderBuilder;
 import j.jave.kernal.dataexchange.protocol.JProtocol;
-import j.jave.kernal.dataexchange.protocol.JProtocolResultHandler;
-import j.jave.kernal.dataexchange.protocol.JProtocolSenderBuilder;
-import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.dataexchange.protocol.JProtocolByteHandler;
+import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPageRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-public class TestDataExchange extends TestCase{
+import test.j.jave.kernal.eventdriven.TestEventSupport;
 
-	public void testObject(){
+public class TestDataExchange extends TestEventSupport{
+
+	private JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
+
+	protected JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
+	
+	@Before
+	public void initialize() throws Exception {
+		serviceFactoryManager.registerAllServices();
+	}
+	
+	@Test
+	public void testObject() throws Exception{
+		
+		initialize();
 		
 		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("default", JConfiguration.get());
@@ -28,12 +44,11 @@ public class TestDataExchange extends TestCase{
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		
-		String jsonString=JProtocolSenderBuilder.get(JProtocol.OBJECT)
+		String jsonString=JObjectTransModelSenderBuilder.get(JProtocol.JSON)
 		.setURL("http://localhost:8689/youapp/userManager/saveUser")
 		.putData(JConfiguration.class, configuration)
 		.putData(HashMap.class, map)
 		.putData(JPageRequest.class, pageRequest)
-		.setExptectedProtocol(JProtocol.JSON)
 		.build().send();
 		System.out.println(jsonString);
 	}
@@ -52,13 +67,12 @@ public class TestDataExchange extends TestCase{
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		
-		String jsonString=JProtocolSenderBuilder.get(JProtocol.JSON)
+		String jsonString=JObjectTransModelSenderBuilder.get(JProtocol.JSON)
 		.setURL("http://localhost:8689/youapp/userManager/saveUser")
 		.putData(JConfiguration.class, configuration)
 		.putData(HashMap.class, map)
 		.putData(JPageRequest.class, pageRequest)
-		.setExptectedProtocol(JProtocol.JSON)
-		.setProtocolResultHandler(new JProtocolResultHandler() {
+		.setProtocolByteHandler(new JProtocolByteHandler() {
 			
 			@Override
 			public Object handle(byte[] bytes) {

@@ -104,4 +104,12 @@
   <description>storage store all runtime information about service, event etc.</description>
 </property>
 
+
+<property>
+  <name>youapp.service.channel.data.exchange.sender</name>
+  <value>j.jave.kernal.dataexchange.channel.HttpClientSenderSender</value>
+  <description>The target sender sending request to the endpoint.</description>
+</property>
+
+
 </configuration>

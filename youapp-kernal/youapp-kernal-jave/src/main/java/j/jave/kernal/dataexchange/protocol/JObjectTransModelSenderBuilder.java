@@ -4,27 +4,27 @@ import j.jave.kernal.dataexchange.protocol.JProtocolSender.JSONProtocolSender;
 import j.jave.kernal.dataexchange.protocol.JProtocolSender.ObjectProtocolSender;
 import j.jave.kernal.jave.utils.JAssert;
 
-public class JProtocolSenderBuilder {
+public class JObjectTransModelSenderBuilder {
 
 	private JObjectTransModel objectTramsModel;
 	
-	private JProtocolResultHandler protocolResultHandler;
+	private JProtocolByteHandler protocolByteHandler;
 	
-	public  static JProtocolSenderBuilder get(JProtocol sendProtocol){
-		JProtocolSenderBuilder protocolSendBuilder=  new JProtocolSenderBuilder();
+	public  static JObjectTransModelSenderBuilder get(JProtocol sendProtocol){
+		JObjectTransModelSenderBuilder protocolSendBuilder=  new JObjectTransModelSenderBuilder();
 		protocolSendBuilder.objectTramsModel=new JObjectTransModel();
 		protocolSendBuilder.objectTramsModel.setProtocol(sendProtocol);
 		return protocolSendBuilder;
 	}
 	
-	private JProtocolSenderBuilder() {
+	private JObjectTransModelSenderBuilder() {
 	}
 	
-	public JProtocolSenderBuilder putData(Class<?> clazz,Object object){
+	public JObjectTransModelSenderBuilder putData(Class<?> clazz,Object object){
 		return putData(clazz.getName(), object);
 	}
 	
-	public JProtocolSenderBuilder putData(String fullClassName,Object object){
+	public JObjectTransModelSenderBuilder putData(String fullClassName,Object object){
 		JObjectWrapper objectWrapper=new JObjectWrapper();
 		JAssert.state(object.getClass().getName().equals(fullClassName), "please check the object matches the class / class-name.");
 		objectWrapper.setFullClassName(fullClassName);
@@ -33,14 +33,13 @@ public class JProtocolSenderBuilder {
 		return this;
 	}
 	
-	public JProtocolSenderBuilder setURL(String url){
+	public JObjectTransModelSenderBuilder setURL(String url){
 		objectTramsModel.setUrl(url);
 		return this;
 	}
 	
-	public JProtocolSenderBuilder setProtocolResultHandler(
-			JProtocolResultHandler protocolResultHandler) {
-		this.protocolResultHandler = protocolResultHandler;
+	public JObjectTransModelSenderBuilder setProtocolByteHandler(JProtocolByteHandler protocolByteHandler) {
+		this.protocolByteHandler = protocolByteHandler;
 		return this;
 	}
 	
@@ -52,7 +51,9 @@ public class JProtocolSenderBuilder {
 		else if(objectTramsModel.getProtocol()==JProtocol.JSON){
 			protocolSender=new JSONProtocolSender(objectTramsModel);
 		}
-		protocolSender.setProtocolResultHandler(protocolResultHandler);
+		protocolSender.setUrl(objectTramsModel.getUrl());
+		protocolSender.setProtocolByteHandler(protocolByteHandler);
+		protocolSender.setProtocol(objectTramsModel.getProtocol());
 		return protocolSender;
 	}
 	

@@ -25,5 +25,7 @@ public class JProperties {
 	
 	public static final String SERVICE_HUB_MONITOR_STATUS_STORAGE="youapp.service.hub.monitor.status.storage";
 	
+	public static final String SERVICE_CHANNEL_DATAE_XCHANGE_SENDER="youapp.service.channel.data.exchange.sender";
+	
 	
 }

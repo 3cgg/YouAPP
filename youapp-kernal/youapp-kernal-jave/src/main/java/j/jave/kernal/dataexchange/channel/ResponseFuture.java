@@ -10,7 +10,7 @@ public interface ResponseFuture {
      * Returns a channel where the I/O operation associated with this
      * future takes place.
      */
-    ExchangeChannel<?> channel();
+    Channel<?> channel();
     
     ResponseFuture await() throws InterruptedException;
     

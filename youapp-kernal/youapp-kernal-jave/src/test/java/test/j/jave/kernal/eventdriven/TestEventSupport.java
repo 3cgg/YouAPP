@@ -1,12 +1,11 @@
 package test.j.jave.kernal.eventdriven;
 
-import junit.framework.TestCase;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 
 import org.junit.Before;
 
-public class TestEventSupport extends TestCase{
+public class TestEventSupport{
 
 	private JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
 

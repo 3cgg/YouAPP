@@ -84,4 +84,8 @@ implements JService {
 		return deploy(JJSON.get().parse(appJson, AppDeploy.class));
 	}
 	
+	@Override
+	public DefaultRemoteHttpDeployService getService() {
+		return this;
+	}
 }

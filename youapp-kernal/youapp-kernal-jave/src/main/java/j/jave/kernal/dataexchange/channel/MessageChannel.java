@@ -2,14 +2,15 @@ package j.jave.kernal.dataexchange.channel;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 
-public class ObjectTransModelSenderChannel 
-implements ExchangeChannel<ObjectTransModelMessage> {
+public class MessageChannel 
+implements Channel<Message> {
 
 	
 	@Override
-	public final ResponseFuture write(ObjectTransModelMessage objectTransModelMessage) throws Exception {
+	public final ResponseFuture write(Message message) throws Exception {
 		DefaultResponseFuture responseFuture=new DefaultResponseFuture(this);
-		ObjectTransModelSendingEvent event=new ObjectTransModelSendingEvent(this, responseFuture);
+		responseFuture.setRequest(message);
+		MessageSendingEvent event=new MessageSendingEvent(this, responseFuture);
 		event.setGetResultLater(true);
 		responseFuture.setEvent(event);
 		JServiceHubDelegate.get().addDelayEvent(event);

@@ -3,7 +3,7 @@ package j.jave.kernal.dataexchange.channel;
 import j.jave.kernal.dataexchange.protocol.JProtocol;
 import j.jave.kernal.jave.model.JModel;
 
-public class ObjectTransModelMessage implements JModel{
+public class Message implements JModel{
 
 	private String url;
 	

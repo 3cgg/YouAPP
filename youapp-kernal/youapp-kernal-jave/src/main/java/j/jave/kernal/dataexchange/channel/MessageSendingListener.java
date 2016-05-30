@@ -9,9 +9,9 @@ import j.jave.kernal.eventdriven.servicehub.JEventOnListener;
 /**
  * @author J
  */
-@JEventOnListener(name=ObjectTransModelSendingEvent.class)
-public interface ObjectTransModelSendingListener extends JAPPListener {
+@JEventOnListener(name=MessageSendingEvent.class)
+public interface MessageSendingListener extends JAPPListener {
 	
-	public Object trigger(ObjectTransModelSendingEvent event) ;
+	public Object trigger(MessageSendingEvent event) ;
 	
 }

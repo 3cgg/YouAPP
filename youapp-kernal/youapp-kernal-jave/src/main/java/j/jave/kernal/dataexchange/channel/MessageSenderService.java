@@ -9,11 +9,11 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.service.JService;
 
-public class ObjectTransModelSenderService
-extends JServiceFactorySupport<ObjectTransModelSenderService>
-implements JService,ObjectTransModelSendingListener {
+public class MessageSenderService
+extends JServiceFactorySupport<MessageSenderService>
+implements JService,MessageSendingListener {
 	
-	private final static JLogger LOGGER=JLoggerFactory.getLogger(ObjectTransModelSenderService.class);
+	private final static JLogger LOGGER=JLoggerFactory.getLogger(MessageSenderService.class);
 	
 	
 	private Sender sender;
@@ -39,13 +39,12 @@ implements JService,ObjectTransModelSendingListener {
 	}
 	
 	@Override
-	public Object trigger(ObjectTransModelSendingEvent event) {
+	public Object trigger(MessageSendingEvent event) {
 		DefaultResponseFuture responseFuture=(DefaultResponseFuture) event.getResponseFuture();
-		ObjectTransModelMessage response=null;
+		Message response=null;
 		try{
-			ObjectTransModelMessage message=(ObjectTransModelMessage) responseFuture.getRequest();
-			Sender sender=getSender();
-			response=sender.send(message);
+			Message message=(Message) responseFuture.getRequest();
+			response=getSender().send(message);
 		}catch(Exception e){
 			throw new JEventExecutionException(e);
 		}
@@ -54,7 +53,7 @@ implements JService,ObjectTransModelSendingListener {
 	
 	
 	@Override
-	public ObjectTransModelSenderService getService() {
+	public MessageSenderService getService() {
 		return this;
 	}
 	

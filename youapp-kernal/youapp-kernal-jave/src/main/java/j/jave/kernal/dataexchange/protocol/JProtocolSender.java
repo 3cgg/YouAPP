@@ -1,7 +1,7 @@
 package j.jave.kernal.dataexchange.protocol;
 
-import j.jave.kernal.dataexchange.channel.ObjectTransModelMessage;
-import j.jave.kernal.dataexchange.channel.ObjectTransModelSenderChannel;
+import j.jave.kernal.dataexchange.channel.Message;
+import j.jave.kernal.dataexchange.channel.MessageChannel;
 import j.jave.kernal.dataexchange.channel.ResponseFuture;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
 import j.jave.kernal.jave.base64.JBase64;
@@ -50,22 +50,22 @@ public abstract class JProtocolSender {
 	
 	static class ObjectProtocolSender extends JProtocolSender{
 		
-		public ObjectProtocolSender(JObjectTransModel objectTransModel) {
-			super(objectTransModel);
+		public ObjectProtocolSender(Object data) {
+			super(data);
 		}
 
 		@Override
 		protected byte[] doSend()  throws Exception{
 			
-			ObjectTransModelMessage message=new ObjectTransModelMessage();
+			Message message=new Message();
 			message.setUrl(this.url);
 			message.setProtocol(this.protocol);
 			message.setData(base64Service.encodeBase64String(JObjectSerializableUtils.serializeObject(data)));
 			
 			byte[] bytes=null;
-			ResponseFuture responseFuture= new ObjectTransModelSenderChannel().write(message);
+			ResponseFuture responseFuture= new MessageChannel().write(message);
 			if(responseFuture.await()!=null){
-				ObjectTransModelMessage modelMessage=(ObjectTransModelMessage) responseFuture.getResponse();
+				Message modelMessage=(Message) responseFuture.getResponse();
 				String data64=modelMessage.getData();
 				bytes= base64Service.decodeBase64(data64);
 			}
@@ -77,22 +77,22 @@ public abstract class JProtocolSender {
 	
 	static class JSONProtocolSender extends JProtocolSender{
 		
-		public JSONProtocolSender(JObjectTransModel objectTransModel) {
-			super(objectTransModel);
+		public JSONProtocolSender(Object data) {
+			super(data);
 		}
 
 		@Override
 		protected byte[] doSend()  throws Exception{
-			ObjectTransModelMessage message=new ObjectTransModelMessage();
+			Message message=new Message();
 			message.setUrl(this.url);
 			message.setProtocol(this.protocol);
 			
 			String objectJSON=JJSON.get().formatObject(data);
 			message.setData(base64Service.encodeBase64String(objectJSON.getBytes("utf-8")));
 			byte[] bytes=null;
-			ResponseFuture responseFuture= new ObjectTransModelSenderChannel().write(message);
+			ResponseFuture responseFuture= new MessageChannel().write(message);
 			if(responseFuture.await()!=null){
-				ObjectTransModelMessage modelMessage=(ObjectTransModelMessage) responseFuture.getResponse();
+				Message modelMessage=(Message) responseFuture.getResponse();
 				String data64=modelMessage.getData();
 				bytes= base64Service.decodeBase64(data64);
 			}

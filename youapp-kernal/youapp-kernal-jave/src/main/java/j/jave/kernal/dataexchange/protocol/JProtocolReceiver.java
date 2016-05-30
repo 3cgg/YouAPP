@@ -1,6 +1,6 @@
 package j.jave.kernal.dataexchange.protocol;
 
-import j.jave.kernal.dataexchange.channel.ObjectTransModelMessage;
+import j.jave.kernal.dataexchange.channel.Message;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
@@ -26,7 +26,7 @@ public class JProtocolReceiver {
 	public Object receive() {
 		try{
 			
-			ObjectTransModelMessage message= JJSON.get().parse(new String(bytes,"utf-8"), ObjectTransModelMessage.class);
+			Message message= JJSON.get().parse(new String(bytes,"utf-8"), Message.class);
 			byte[] bytes=base64Service.decodeBase64(message.getData());
 			if(protocolByteHandler!=null){
 				return protocolByteHandler.handle(bytes);

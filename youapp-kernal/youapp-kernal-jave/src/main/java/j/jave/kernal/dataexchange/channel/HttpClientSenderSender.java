@@ -13,7 +13,7 @@ public class HttpClientSenderSender extends Sender {
 	};
 	
 	
-	protected byte[] doSend(ObjectTransModelMessage message) throws Exception {
+	protected byte[] doSend(Message message) throws Exception {
 		byte[] data=getSenderData(message);
 		byte[] bytes=(byte[]) JHttpFactoryProvider.getHttpFactory().getHttpPost()
 				.setUrl(message.getUrl())

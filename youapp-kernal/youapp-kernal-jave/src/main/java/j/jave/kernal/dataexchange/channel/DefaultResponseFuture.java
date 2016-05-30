@@ -7,20 +7,20 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 
 public class DefaultResponseFuture implements ResponseFuture {
 	
-	private final ExchangeChannel<?> exchangeChannel;
+	private final Channel<?> exchangeChannel;
 	
 	private Object request;
 	
 	private Object response;
 	
-	private ObjectTransModelSendingEvent event;
+	private MessageSendingEvent event;
 	
-	public DefaultResponseFuture(ExchangeChannel<?> exchangeChannel) {
+	public DefaultResponseFuture(Channel<?> exchangeChannel) {
 		this.exchangeChannel=exchangeChannel;
 	}
 	
 	@Override
-	public ExchangeChannel<?> channel() {
+	public Channel<?> channel() {
 		return exchangeChannel;
 	}
 	
@@ -54,7 +54,10 @@ public class DefaultResponseFuture implements ResponseFuture {
 			if(objects==null||objects.length==0){
 				throw new RuntimeException("execute failly.");
 			}
+			this.response=objects[0];
+			break;
 		}
+		return this;
 	}
 	
 	@Override
@@ -74,11 +77,11 @@ public class DefaultResponseFuture implements ResponseFuture {
 		this.response = response;
 	}
 
-	public ObjectTransModelSendingEvent getEvent() {
+	public MessageSendingEvent getEvent() {
 		return event;
 	}
 
-	public void setEvent(ObjectTransModelSendingEvent event) {
+	public void setEvent(MessageSendingEvent event) {
 		this.event = event;
 	}
 

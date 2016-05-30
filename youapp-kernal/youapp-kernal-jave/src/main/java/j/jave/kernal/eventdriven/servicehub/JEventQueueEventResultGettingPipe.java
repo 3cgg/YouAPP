@@ -6,6 +6,7 @@ import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistribut
 
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class JEventQueueEventResultGettingPipe extends JEventQueuePipe{
 	
@@ -33,11 +34,20 @@ public class JEventQueueEventResultGettingPipe extends JEventQueuePipe{
 						execution.setPhase(Phase.EVENT_RESULT_GET_DONE);
 					}
 					return false;
-				} catch (Exception e) {
-					LOGGER.error(e.getMessage(), e);
-					execution.setPhase(Phase.EVENT_RESULT_GET_READY);
+				}catch(TimeoutException e){
+					if(LOGGER.isDebugEnabled()){
+						LOGGER.error(e.getMessage(), e);
+					}
+					//ignore
 					// put to last, give another chance to get result.
 					return true;
+				} 
+				catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+					// put to last, give another chance to get result.
+					return true;
+				}finally{
+					execution.setPhase(Phase.EVENT_RESULT_GET_READY);
 				}
 			}
 

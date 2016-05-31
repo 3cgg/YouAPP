@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
  * @see JEventQueueEventExecutingPipe
  * @see JEventQueueEventResultGettingPipe
  * @see JEventQueueEventResultCallBackPipe
- * @see JEventQueuePipeChain
+ * @see JEventQueuePipeline
  */
 class JServiceEventProcessor {
 
@@ -46,7 +46,7 @@ class JServiceEventProcessor {
 		return eventProcessor;
 	}
 
-	private JEventQueuePipeChain eventQueuePipeChain=new JEventQueuePipeChain();
+	private JEventQueuePipeline eventQueuePipeChain=new JEventQueuePipeline();
 	
 	/*
 	 * others begin

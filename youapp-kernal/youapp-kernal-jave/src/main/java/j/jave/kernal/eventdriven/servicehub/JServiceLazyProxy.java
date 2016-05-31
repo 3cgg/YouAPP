@@ -111,6 +111,9 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 			return proxy.invoke(target, args);
 		}catch (Exception e) {
 			LOGGER.error("invoke proxy exception : ", e);
+			if(e.getCause()!=null){
+				throw e.getCause();
+			}
 			throw e;
 		}
 	}

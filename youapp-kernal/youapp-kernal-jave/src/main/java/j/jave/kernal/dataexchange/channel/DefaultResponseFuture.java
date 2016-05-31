@@ -1,8 +1,10 @@
 package j.jave.kernal.dataexchange.channel;
 
-import j.jave.kernal.eventdriven.servicehub.EventExecutionResult;
-import j.jave.kernal.eventdriven.servicehub.JEventExecutionException;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
+import j.jave.kernal.dataexchange.exception.JDataExchangeException;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class DefaultResponseFuture implements ResponseFuture {
@@ -15,6 +17,10 @@ public class DefaultResponseFuture implements ResponseFuture {
 	
 	private MessageSendingEvent event;
 	
+	private Exception exception;
+	
+	private AtomicBoolean complete=new AtomicBoolean(false);
+	
 	public DefaultResponseFuture(Channel<?> exchangeChannel) {
 		this.exchangeChannel=exchangeChannel;
 	}
@@ -24,8 +30,42 @@ public class DefaultResponseFuture implements ResponseFuture {
 		return exchangeChannel;
 	}
 	
+	private static final int timeout=1000*JConfiguration.get().getInt(JProperties.SERVICE_CHANNEL_DATAE_XCHANGE_TIMEOUT, 3);
+
+	// delay milliseconds
+	private static final int delay=200;
+	
+	private static final int maxTryCount=timeout/delay;
+	
 	@Override
-	public ResponseFuture await() throws InterruptedException {
+	public ResponseFuture await() throws InterruptedException,JDataExchangeException {
+		int count=0;
+		for(;;){
+			
+			if(complete.get()){
+				if(exception!=null){
+					throw new JDataExchangeException(exception);
+				}
+				break;
+			}
+			else{
+				if(count>maxTryCount){
+					throw new JDataExchangeException("the request is not replied,try it later. time(milliseconds): "+count*delay);
+				}
+				try{
+					Thread.sleep(delay);
+				}catch(InterruptedException e){
+					//ignore
+				}
+				count++;
+				continue;
+			}
+		}
+		return this;
+	}
+	
+	/*
+	 * public ResponseFuture await() throws InterruptedException {
 		for(;;){
 			EventExecutionResult executionResult=null;
 			try{
@@ -55,13 +95,20 @@ public class DefaultResponseFuture implements ResponseFuture {
 				throw new RuntimeException("execute failly.");
 			}
 			this.response=objects[0];
+			this.complete=new AtomicBoolean(true);
 			break;
 		}
 		return this;
 	}
+	 */
 	
 	@Override
-	public Object getResponse() throws Exception {
+	public Object getResponse() throws JDataExchangeException {
+		
+		if(!complete.get()){
+			throw new JDataExchangeException("the request is not replied,try it later");
+		}
+		
 		return response;
 	}
 
@@ -73,7 +120,7 @@ public class DefaultResponseFuture implements ResponseFuture {
 		this.request = request;
 	}
 
-	public void setResponse(Object response) {
+	void setResponse(Object response) {
 		this.response = response;
 	}
 
@@ -85,5 +132,20 @@ public class DefaultResponseFuture implements ResponseFuture {
 		this.event = event;
 	}
 
+	public AtomicBoolean getComplete() {
+		return complete;
+	}
+
+	void setComplete(AtomicBoolean complete) {
+		this.complete = complete;
+	}
+
+	public Exception getException() {
+		return exception;
+	}
+
+	void setException(Exception exception) {
+		this.exception = exception;
+	}
 	
 }

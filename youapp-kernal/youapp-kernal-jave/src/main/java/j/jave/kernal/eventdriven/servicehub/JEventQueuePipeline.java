@@ -24,13 +24,13 @@ import java.util.List;
  *@see JEventQueueEventResultCallBackPipe
  *@see JEventQueueEndPipe
  */
-public class JEventQueuePipeChain {
+public class JEventQueuePipeline {
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 
 	private final static List<JEventQueuePipe> eventQueuePipes=new ArrayList<JEventQueuePipe>(6);
 	
-	public JEventQueuePipeChain(){
+	public JEventQueuePipeline(){
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEventResultGettingPipe.class, ++order);

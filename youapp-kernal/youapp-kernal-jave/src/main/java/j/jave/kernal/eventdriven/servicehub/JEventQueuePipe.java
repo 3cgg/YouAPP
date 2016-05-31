@@ -16,7 +16,7 @@ public abstract class JEventQueuePipe {
 	/**
 	 * be put in the pipe chain.
 	 */
-	private JEventQueuePipeChain eventQueuePipeChain;
+	private JEventQueuePipeline eventQueuePipeChain;
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
@@ -121,7 +121,7 @@ public abstract class JEventQueuePipe {
 		this.order = order;
 	}
 	
-	void setEventQueuePipeChain(JEventQueuePipeChain eventQueuePipeChain) {
+	void setEventQueuePipeChain(JEventQueuePipeline eventQueuePipeChain) {
 		this.eventQueuePipeChain = eventQueuePipeChain;
 	}
 	

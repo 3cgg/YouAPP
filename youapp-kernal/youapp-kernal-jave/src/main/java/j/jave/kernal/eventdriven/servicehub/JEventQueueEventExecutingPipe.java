@@ -6,7 +6,7 @@ import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistribut
 
 /**
  * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
- * default the event pipe is the first element in the {@link JEventQueuePipeChain}.
+ * default the event pipe is the first element in the {@link JEventQueuePipeline}.
  * the pipe does not support {@link #addEventExecution(JEventExecution)}.
  * @author J
  */

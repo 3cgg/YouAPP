@@ -112,4 +112,10 @@
 </property>
 
 
+<property>
+  <name>youapp.service.channel.data.exchange.timeout</name>
+  <value>5</value>
+  <description>timeout as seconds.</description>
+</property>
+
 </configuration>

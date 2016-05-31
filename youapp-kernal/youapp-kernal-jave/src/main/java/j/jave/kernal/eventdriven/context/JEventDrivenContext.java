@@ -2,8 +2,8 @@ package j.jave.kernal.eventdriven.context;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipe;
-import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeInfo;
-import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeChain.JEventQueuePipeProvider;
+import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline.JEventQueuePipeInfo;
+import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline.JEventQueuePipeProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager.ServiceMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryRegister;

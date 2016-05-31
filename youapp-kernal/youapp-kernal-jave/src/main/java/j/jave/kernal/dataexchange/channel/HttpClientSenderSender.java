@@ -19,6 +19,7 @@ public class HttpClientSenderSender extends Sender {
 				.setUrl(message.getUrl())
 				.setEntry(data)
 				.setResponseHandler(responseHandler)
+				.setRetry(0)
 				.putHead(JProtocolConstants.PROTOCOL_HEAD, message.getProtocol().name())
 				.execute();
 		return bytes;

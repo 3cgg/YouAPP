@@ -1,10 +1,12 @@
 package j.jave.kernal.dataexchange.channel;
 
+import j.jave.kernal.dataexchange.exception.JDataExchangeException;
+
+import java.io.IOException;
+
 
 
 public interface ResponseFuture {
-	
-	public static final String COMPLETE="COMPLETE";
 	
 	/**
      * Returns a channel where the I/O operation associated with this
@@ -12,8 +14,14 @@ public interface ResponseFuture {
      */
     Channel<?> channel();
     
-    ResponseFuture await() throws InterruptedException;
+    ResponseFuture await() throws InterruptedException,JDataExchangeException;
     
-    Object getResponse() throws Exception;
+    /**
+     * 
+     * @return
+     * @throws IOException
+     * @throws JDataExchangeException
+     */
+    Object getResponse() throws JDataExchangeException;
     
 }

@@ -27,5 +27,7 @@ public class JProperties {
 	
 	public static final String SERVICE_CHANNEL_DATAE_XCHANGE_SENDER="youapp.service.channel.data.exchange.sender";
 	
+	public static final String SERVICE_CHANNEL_DATAE_XCHANGE_TIMEOUT="youapp.service.channel.data.exchange.timeout";
+	
 	
 }

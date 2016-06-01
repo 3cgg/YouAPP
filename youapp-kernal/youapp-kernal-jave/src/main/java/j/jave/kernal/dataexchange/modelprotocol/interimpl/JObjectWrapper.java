@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.protocol;
+package j.jave.kernal.dataexchange.modelprotocol.interimpl;
 
 import j.jave.kernal.jave.model.JModel;
 

@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.protocol;
+package j.jave.kernal.dataexchange.modelprotocol;
 
 
 public class JProtocolReceiverBuilder {
@@ -18,12 +18,6 @@ public class JProtocolReceiverBuilder {
 	
 	public JProtocolReceiver build(){
 		JProtocolReceiver protocolReceiver=new JProtocolReceiver(bytes);
-//		if(protocol==JProtocol.OBJECT){
-//			protocolReceiver=new JProtocolReceiver.ObjectProtocolReceiver(bytes);
-//		}
-//		else if(protocol==JProtocol.JSON){
-//			protocolReceiver=new JProtocolReceiver.JSONProtocolReceiver(bytes);
-//		}
 		protocolReceiver.setProtocolByteHandler(protocolByteHandler);
 		return protocolReceiver;
 	}

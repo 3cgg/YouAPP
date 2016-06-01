@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.protocol;
+package j.jave.kernal.dataexchange.modelprotocol;
 
 import j.jave.kernal.dataexchange.channel.Message;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;

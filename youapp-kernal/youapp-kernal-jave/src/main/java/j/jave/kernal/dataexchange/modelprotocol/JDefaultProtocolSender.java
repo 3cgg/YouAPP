@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.protocol;
+package j.jave.kernal.dataexchange.modelprotocol;
 
 import j.jave.kernal.dataexchange.channel.Message;
 import j.jave.kernal.dataexchange.channel.MessageChannel;
@@ -11,21 +11,23 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JObjectSerializableUtils;
 
-public abstract class JProtocolSender {
+public class JDefaultProtocolSender {
 
 	private final JLogger LOGGER=JLoggerFactory.getLogger(this.getClass());
 	
-	private JProtocolByteHandler protocolByteHandler;
+	private JProtocolByteHandler receiveHandler;
+	
+	private JProtocolObjectHandler sendHandler;
+	
+	private String serverHandler;
 	
 	protected final Object data;
 	
 	protected String url;
 	
-	protected JProtocol protocol; 
-	
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
-	public JProtocolSender(Object data) {
+	public JDefaultProtocolSender(Object data) {
 		super();
 		this.data = data;
 	}
@@ -34,8 +36,8 @@ public abstract class JProtocolSender {
 	public <T> T send() {
 		try{
 			byte[] bytes=doSend();
-			if(protocolByteHandler!=null){
-				return (T) protocolByteHandler.handle(bytes);
+			if(receiveHandler!=null){
+				return (T) receiveHandler.handle(bytes);
 			}
 			else{
 				return (T) new String(bytes,"UTF-8");
@@ -46,9 +48,24 @@ public abstract class JProtocolSender {
 		}
 	}
 
-	protected abstract byte[] doSend() throws Exception;
+	protected byte[] doSend() throws Exception{
+
+		Message message=new Message();
+		message.setUrl(this.url);
+		message.setHandler(serverHandler);
+		message.setData(base64Service.encodeBase64String(sendHandler.handle(data)));
+		byte[] bytes=null;
+		ResponseFuture responseFuture= new MessageChannel().write(message);
+		if(responseFuture.await()!=null){
+			Message modelMessage=(Message) responseFuture.getResponse();
+			String data64=modelMessage.getData();
+			bytes= base64Service.decodeBase64(data64);
+		}
+		return bytes;
+		
+	}
 	
-	static class ObjectProtocolSender extends JProtocolSender{
+	static class ObjectProtocolSender extends JDefaultProtocolSender{
 		
 		public ObjectProtocolSender(Object data) {
 			super(data);
@@ -59,7 +76,7 @@ public abstract class JProtocolSender {
 			
 			Message message=new Message();
 			message.setUrl(this.url);
-			message.setProtocol(this.protocol);
+//			message.setProtocol(this.protocol);
 			message.setData(base64Service.encodeBase64String(JObjectSerializableUtils.serializeObject(data)));
 			
 			byte[] bytes=null;
@@ -75,7 +92,7 @@ public abstract class JProtocolSender {
 	}
 	
 	
-	static class JSONProtocolSender extends JProtocolSender{
+	static class JSONProtocolSender extends JDefaultProtocolSender{
 		
 		public JSONProtocolSender(Object data) {
 			super(data);
@@ -85,7 +102,7 @@ public abstract class JProtocolSender {
 		protected byte[] doSend()  throws Exception{
 			Message message=new Message();
 			message.setUrl(this.url);
-			message.setProtocol(this.protocol);
+//			message.setProtocol(this.protocol);
 			
 			String objectJSON=JJSON.get().formatObject(data);
 			message.setData(base64Service.encodeBase64String(objectJSON.getBytes("utf-8")));
@@ -101,23 +118,23 @@ public abstract class JProtocolSender {
 		
 	}
 	
-	JProtocolSender setProtocolByteHandler(JProtocolByteHandler protocolByteHandler) {
-		this.protocolByteHandler = protocolByteHandler;
-		return this;
-	}
-	
-	
-	public JProtocolSender setProtocol(JProtocol protocol) {
-		this.protocol = protocol;
-		return this;
-	}
-	
-	public JProtocolSender setUrl(String url) {
+	public JDefaultProtocolSender setUrl(String url) {
 		this.url = url;
 		return this;
 	}
 	
-	
+	public JDefaultProtocolSender setReceiveHandler(JProtocolByteHandler receiveHandler) {
+		this.receiveHandler = receiveHandler;
+		return this;
+	}
+	public JDefaultProtocolSender setSendHandler(JProtocolObjectHandler sendHandler) {
+		this.sendHandler = sendHandler;
+		return this;
+	}
+	public JDefaultProtocolSender setServerHandler(String serverHandler) {
+		this.serverHandler = serverHandler;
+		return this;
+	}
 	
 	
 	

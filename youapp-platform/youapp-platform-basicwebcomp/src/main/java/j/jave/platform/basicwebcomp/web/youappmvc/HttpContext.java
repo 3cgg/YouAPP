@@ -1,10 +1,10 @@
 package j.jave.platform.basicwebcomp.web.youappmvc;
 
-import j.jave.kernal.dataexchange.protocol.JObjectTransModel;
-import j.jave.kernal.dataexchange.protocol.JProtocol;
-import j.jave.kernal.dataexchange.protocol.JProtocolByteHandler;
-import j.jave.kernal.dataexchange.protocol.JProtocolConstants;
-import j.jave.kernal.dataexchange.protocol.JProtocolReceiverBuilder;
+import j.jave.kernal.dataexchange.modelprotocol.JProtocolByteHandler;
+import j.jave.kernal.dataexchange.modelprotocol.JProtocolConstants;
+import j.jave.kernal.dataexchange.modelprotocol.JProtocolReceiverBuilder;
+import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModel;
+import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.support.databind.JDataBindException;
@@ -109,7 +109,7 @@ public class HttpContext implements JModel {
 	 */
 	private transient volatile boolean linked=false; 
 	
-	private transient JProtocol protocol;
+	private transient JObjectTransModelProtocol protocol;
 	
 	private transient JObjectTransModel objectTransModel;
 	
@@ -163,7 +163,7 @@ public class HttpContext implements JModel {
 			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
 				
 				isParseProtocol=true;
-				protocol=JProtocol.valueOf(protocolHead);
+				protocol=JObjectTransModelProtocol.valueOf(protocolHead);
 				try{
 					objectTransModel=(JObjectTransModel) JProtocolReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
 					.setProtocolByteHandler(PROTOCOL_BYTE_HANDLER).build().receive();
@@ -344,7 +344,7 @@ public class HttpContext implements JModel {
 		return linked;
 	}
 	
-	public JProtocol getProtocol() {
+	public JObjectTransModelProtocol getProtocol() {
 		return protocol;
 	}
 	

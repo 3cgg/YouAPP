@@ -24,13 +24,13 @@ implements JService,MessageSendingListener {
 		if(sender==null){
 			synchronized (sync) {
 				if(sender==null){
-					String senderClassStr=JConfiguration.get().getString(JProperties.SERVICE_CHANNEL_DATAE_XCHANGE_SENDER, HttpClientSenderSender.class.getName());
+					String senderClassStr=JConfiguration.get().getString(JProperties.SERVICE_CHANNEL_DATAE_XCHANGE_SENDER, HttpClientSender.class.getName());
 					try{
 						sender=(Sender) JClassUtils.load(senderClassStr).newInstance();
 					}catch(Exception e){
 						LOGGER.info("the sender["+senderClassStr+"] cannot be initialized,"+e.getMessage());
-						sender=new HttpClientSenderSender();
-						LOGGER.info("the sender["+HttpClientSenderSender.class.getName()+"] be as default.");
+						sender=new HttpClientSender();
+						LOGGER.info("the sender["+HttpClientSender.class.getName()+"] be as default.");
 					}
 				}
 			}

@@ -1,9 +1,8 @@
 package test.j.jave.kernal.dataexchange;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.dataexchange.protocol.JObjectTransModelSenderBuilder;
-import j.jave.kernal.dataexchange.protocol.JProtocol;
-import j.jave.kernal.dataexchange.protocol.JProtocolByteHandler;
+import j.jave.kernal.dataexchange.modelprotocol.JProtocolByteHandler;
+import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModelSenderBuilder;
 import j.jave.kernal.jave.model.JPageRequest;
 
 import java.io.UnsupportedEncodingException;
@@ -27,7 +26,7 @@ public class TestDataExchange extends TestEventSupport{
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		
-		String jsonString=JObjectTransModelSenderBuilder.get(JProtocol.JSON)
+		String jsonString=JObjectTransModelSenderBuilder.get()
 		.setURL("http://localhost:8689/youapp/extapi/usermanager/getTimeline")
 		.putData(String.class, "N")
 		.build().send();
@@ -48,12 +47,12 @@ public class TestDataExchange extends TestEventSupport{
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		
-		String jsonString=JObjectTransModelSenderBuilder.get(JProtocol.JSON)
+		String jsonString=JObjectTransModelSenderBuilder.get()
 		.setURL("http://localhost:8689/youapp/userManager/saveUser")
 		.putData(JConfiguration.class, configuration)
 		.putData(HashMap.class, map)
 		.putData(JPageRequest.class, pageRequest)
-		.setProtocolByteHandler(new JProtocolByteHandler() {
+		.setReceiveHandler(new JProtocolByteHandler() {
 			
 			@Override
 			public Object handle(byte[] bytes) {

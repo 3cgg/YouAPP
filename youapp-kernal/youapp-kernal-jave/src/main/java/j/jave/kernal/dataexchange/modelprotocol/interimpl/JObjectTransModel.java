@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.protocol;
+package j.jave.kernal.dataexchange.modelprotocol.interimpl;
 
 import j.jave.kernal.jave.model.JModel;
 
@@ -10,7 +10,7 @@ public class JObjectTransModel implements JModel{
 
 	private String url;
 	
-	private JProtocol protocol;
+	private JObjectTransModelProtocol protocol;
 	
 	// object data
 	private List<JObjectWrapper>objectWrappers=new ArrayList<JObjectWrapper>();
@@ -35,11 +35,11 @@ public class JObjectTransModel implements JModel{
 		this.url = url;
 	}
 
-	public JProtocol getProtocol() {
+	public JObjectTransModelProtocol getProtocol() {
 		return protocol;
 	}
 
-	public void setProtocol(JProtocol protocol) {
+	public void setProtocol(JObjectTransModelProtocol protocol) {
 		this.protocol = protocol;
 	}
 	

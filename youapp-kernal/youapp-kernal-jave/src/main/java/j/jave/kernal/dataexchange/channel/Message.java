@@ -1,6 +1,5 @@
 package j.jave.kernal.dataexchange.channel;
 
-import j.jave.kernal.dataexchange.protocol.JProtocol;
 import j.jave.kernal.jave.model.JModel;
 
 public class Message implements JModel{
@@ -12,7 +11,7 @@ public class Message implements JModel{
 	 */
 	private String data;
 	
-	private JProtocol protocol;
+	private String handler;
 
 	public String getUrl() {
 		return url;
@@ -38,12 +37,12 @@ public class Message implements JModel{
 		this.data = data;
 	}
 
-	public JProtocol getProtocol() {
-		return protocol;
+	public String getHandler() {
+		return handler;
 	}
 
-	public void setProtocol(JProtocol protocol) {
-		this.protocol = protocol;
+	public void setHandler(String handler) {
+		this.handler = handler;
 	}
 
 }

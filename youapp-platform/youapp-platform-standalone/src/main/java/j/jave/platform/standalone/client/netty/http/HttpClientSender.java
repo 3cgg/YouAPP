@@ -8,8 +8,8 @@ public class HttpClientSender extends Sender {
 	@Override
 	protected byte[] doSend(Message message) throws Exception {
 		ConnectionService connectionService= ConnectionService.get(message.getUrl());
-		connectionService.request(message, getSenderData(message));
-		return null;
+		connectionService.connect();
+		return connectionService.request(message, getSenderData(message));
 	}
 
 }

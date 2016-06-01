@@ -15,13 +15,21 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import j.jave.kernal.dataexchange.channel.Message;
 import j.jave.kernal.dataexchange.modelprotocol.JProtocolConstants;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.support.JDefaultHashCacheService;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.net.URI;
 
 class ConnectionService {
 
+	private final static JDefaultHashCacheService defaultHashCacheService=
+			JServiceHubDelegate.get().getService(new Object(), JDefaultHashCacheService.class);
+	
 	private String url;
 	
 	private String host; 
@@ -43,7 +51,19 @@ class ConnectionService {
 	// Make the connection attempt.
     private Channel ch =null;
     
-    public void request(Message message,byte[] bytes){
+    private static class ReturnObject{
+    	
+    	private byte[] bytes;
+    	
+    }
+    
+    /**
+     * request and return the reply to the request.
+     * @param message
+     * @param bytes  the content bytes
+     * @return
+     */
+    public byte[] request(Message message,byte[] bytes){
     	
     	ByteBuf byteBuf=ch.alloc().buffer();
     	byteBuf.setBytes(0, bytes);
@@ -54,7 +74,9 @@ class ConnectionService {
         request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
         request.headers().set(HttpHeaderNames.ACCEPT_ENCODING, HttpHeaderValues.GZIP);
         request.headers().set(JProtocolConstants.PROTOCOL_HEAD, "JSON");
-
+        final String requestId=JUniqueUtils.unique();
+        request.headers().set("request-unique-id", requestId);
+        
         // Set some example cookies.
         request.headers().set(
                 HttpHeaderNames.COOKIE,
@@ -63,9 +85,28 @@ class ConnectionService {
                         new io.netty.handler.codec.http.cookie.DefaultCookie("another-cookie", "bar")));
         
         // Send the HTTP request.
+        final ReturnObject sync=new ReturnObject();
         ChannelFuture channelFuture= ch.writeAndFlush(request);
-//        channelFuture.
-        
+        channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+        	public void operationComplete(Future<? super Void> future) throws Exception {
+        		String object=(String) defaultHashCacheService.get(requestId);
+        		sync.bytes=object.getBytes("utf-8");
+        		synchronized (sync) {
+        			sync.notifyAll();
+				}
+        		
+        	};
+		});
+        synchronized (sync) {
+        	try {
+				sync.wait();
+				System.out.println("wakeup...");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+        return sync.bytes;
     }
     
     
@@ -106,15 +147,15 @@ class ConnectionService {
              .handler(new HttpSnoopClientInitializer(sslCtx));
 
             // Make the connection attempt.
-            Channel ch = b.connect(host, port).sync().channel();
+            ch = b.connect(host, port).sync().channel();
 
             
 
             // Wait for the server to close the connection.
-            ch.closeFuture().sync();
+//            ch.closeFuture().sync();
         } finally {
             // Shut down executor threads to exit.
-            group.shutdownGracefully();
+//            group.shutdownGracefully();
         }
     }
 }

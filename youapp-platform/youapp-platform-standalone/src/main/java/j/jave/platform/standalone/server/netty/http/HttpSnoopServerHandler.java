@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.util.CharsetUtil;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -137,7 +138,9 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
                 Unpooled.copiedBuffer(buf.toString(), CharsetUtil.UTF_8));
 
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-
+        response.headers().set("request-unique-id", request.headers().get("request-unique-id", "exception"));
+        
+        
         if (keepAlive) {
             // Add 'Content-Length' header only for a keep-alive connection.
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());

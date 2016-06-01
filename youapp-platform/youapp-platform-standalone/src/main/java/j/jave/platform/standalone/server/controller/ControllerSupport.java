@@ -33,5 +33,10 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 		}
 		return "the controller ["+this.getClass().getName()+"] is internally registered  OK";
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getService() {
+		return (T) this;
+	}
 }

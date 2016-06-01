@@ -147,7 +147,7 @@ public final class JServiceFactoryManager{
 				if(JCollectionUtils.hasInCollect(classes)){
 					for (Iterator<Class<?>> iterator = classes.iterator(); iterator.hasNext();) {
 						Class<? extends JServiceFactorySupport<? extends JService>> clazz =(Class<? extends JServiceFactorySupport<? extends JService>>) iterator.next();
-						if(!registers.contains(clazz)){
+						if(JClassUtils.isNewInstanceable(clazz)&&!registers.contains(clazz)){
 							JServiceFactoryRegister serviceFactoryRegister=(JServiceFactoryRegister) clazz.newInstance();
 							serviceFactoryRegister.postRegister();
 							registers.add(clazz);
@@ -205,6 +205,7 @@ public final class JServiceFactoryManager{
 				registers.add(clazz);
 			}
 		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
 			throw new JInitializationException(e);
 		}
 	}

@@ -1,5 +1,7 @@
 package j.jave.platform.standalone.client.netty.http;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpContent;
@@ -11,28 +13,40 @@ import io.netty.util.CharsetUtil;
 
 public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 
+	private static JDefaultHashCacheService defaultHashCacheService=
+			JServiceHubDelegate.get().getService(new Object(), JDefaultHashCacheService.class);
+	
+	private String data;
+	
+	public String getData() {
+		return data;
+	}
+	
+	private StringBuffer stringBuffer=new StringBuffer();
+	
+	private HttpResponse response;
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) {
         if (msg instanceof HttpResponse) {
-            HttpResponse response = (HttpResponse) msg;
-
-            System.err.println("STATUS: " + response.status());
-            System.err.println("VERSION: " + response.protocolVersion());
-            System.err.println();
+            response = (HttpResponse) msg;
+            
+            stringBuffer.append("STATUS: " + response.status());
+            stringBuffer.append("VERSION: " + response.protocolVersion());
+            stringBuffer.append("\r\n");
 
             if (!response.headers().isEmpty()) {
                 for (String name: response.headers().names()) {
                     for (String value: response.headers().getAll(name)) {
-                        System.err.println("HEADER: " + name + " = " + value);
+                        stringBuffer.append("HEADER: " + name + " = " + value);
                     }
                 }
-                System.err.println();
+                stringBuffer.append("\r\n");
             }
 
             if (HttpUtil.isTransferEncodingChunked(response)) {
-                System.err.println("CHUNKED CONTENT {");
+                stringBuffer.append("CHUNKED CONTENT {");
             } else {
-                System.err.println("CONTENT {");
+                stringBuffer.append("CONTENT {");
             }
         }
         if (msg instanceof HttpContent) {
@@ -42,8 +56,11 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
             System.err.flush();
 
             if (content instanceof LastHttpContent) {
-                System.err.println("} END OF CONTENT");
-                ctx.close();
+                stringBuffer.append("} END OF CONTENT");
+//                ctx.close();
+            data=stringBuffer.toString();
+            String requestId=response.headers().get("request-unique-id", "exception");
+            defaultHashCacheService.putNeverExpired(requestId, stringBuffer.toString());
             }
         }
     }

@@ -36,7 +36,7 @@ public class JEventQueueEventResultGettingPipe extends JEventQueuePipe{
 					return false;
 				}catch(TimeoutException e){
 					if(LOGGER.isDebugEnabled()){
-						LOGGER.error(e.getMessage(), e);
+//						LOGGER.error(e.getMessage(), e);
 					}
 					//ignore
 					// put to last, give another chance to get result.

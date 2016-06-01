@@ -107,14 +107,14 @@
 
 <property>
   <name>youapp.service.channel.data.exchange.sender</name>
-  <value>j.jave.kernal.dataexchange.channel.HttpClientSenderSender</value>
+  <value>j.jave.platform.standalone.client.netty.http.HttpClientSender</value>
   <description>The target sender sending request to the endpoint.</description>
 </property>
 
 
 <property>
   <name>youapp.service.channel.data.exchange.timeout</name>
-  <value>5</value>
+  <value>5000</value>
   <description>timeout as seconds.</description>
 </property>
 

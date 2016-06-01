@@ -8,7 +8,10 @@ implements JService{
 	
 	
 	
-	
+	@Override
+	public ControllerRegisterService getService() {
+		return this;
+	}
 	
 	
 	

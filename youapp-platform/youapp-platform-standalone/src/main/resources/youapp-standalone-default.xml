@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration>
+
+<property>
+  <name>youapp.service.channel.data.exchange.sender</name>
+  <value>j.jave.platform.standalone.client.netty.http.HttpClientSender</value>
+  <description>The target sender sending request to the endpoint(netty).</description>
+</property>
+
+
+<property>
+  <name>youapp.service.channel.data.exchange.timeout</name>
+  <value>10000000</value>
+  <description>timeout as seconds.</description>
+</property>
+
+</configuration>

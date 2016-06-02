@@ -70,7 +70,7 @@ public class JJSON {
 	 * @param string
 	 * @return
 	 */
-	public Map<String, String> parse(String string){
+	public Map<String, Object> parse(String string){
 		try {
 			return mapper.readValue(string, new TypeReference<Map<String, Object>>() {
 			});

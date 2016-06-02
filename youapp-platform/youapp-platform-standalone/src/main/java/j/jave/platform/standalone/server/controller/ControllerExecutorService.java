@@ -16,21 +16,21 @@ import org.apache.commons.lang3.time.StopWatch;
  * 
  * @author J
  */
-public class ControllerExecutor 
-extends JServiceFactorySupport<ControllerExecutor>
+public class ControllerExecutorService 
+extends JServiceFactorySupport<ControllerExecutorService>
 implements JService {
 	
 	@Override
-	public ControllerExecutor getService() {
+	public ControllerExecutorService getService() {
 		return actionExecutor;
 	}
 	
-	private static final ControllerExecutor actionExecutor=new ControllerExecutor();
+	private static final ControllerExecutorService actionExecutor=new ControllerExecutorService();
 	
-	public ControllerExecutor() {
+	public ControllerExecutorService() {
 	}
 	
-	public static ControllerExecutor newSingleExecutor(){
+	public static ControllerExecutorService newSingleExecutor(){
 		return actionExecutor;
 	}
 	
@@ -70,10 +70,9 @@ implements JService {
 		
 	}
 	
-	
-	private Object[] resolveArgs(ControllerService controllerService,MappingMeta mappingMeta,MessageMeta messageMeta){
-		
-		return null;
+	MethodParamParser methodParamParser=new DefaultMethodParamParser();
+	private Object[] resolveArgs(ControllerService controllerService,MappingMeta mappingMeta,MessageMeta messageMeta) throws Exception{
+		return methodParamParser.parse(controllerService, mappingMeta,  messageMeta.data());
 	}
 	 
 }

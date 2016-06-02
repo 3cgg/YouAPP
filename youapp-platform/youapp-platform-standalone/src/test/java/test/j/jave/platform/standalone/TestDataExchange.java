@@ -3,6 +3,8 @@ package test.j.jave.platform.standalone;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.dataexchange.modelprotocol.JProtocolByteHandler;
 import j.jave.kernal.dataexchange.modelprotocol.JProtocolObjectHandler;
+import j.jave.kernal.jave.base64.JBase64;
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.platform.standalone.interimpl.DefaultMessageMetaSenderBuilder;
@@ -15,9 +17,34 @@ import org.junit.Test;
 
 public class TestDataExchange extends test.j.jave.platform.standalone.TestEventSupport{
 	
+	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
+	
+	@Test
+	public void testMul() throws Exception{
+		
+		for(int i=0;i<10;i++){
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try{
+						testJSON();
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}).start();
+		}
+		
+	}
+	
+	static int count=100;
+	
 	@Test
 	public void testJSON() throws Exception{
 		try{
+			
+			
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put("default", JConfiguration.get());
 			map.put("a", "b");
@@ -29,9 +56,11 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			
 			map.put("page", pageRequest);
 			
+			map.put("name", "BMW-"+count++);
+			
 			String jsonString=DefaultMessageMetaSenderBuilder.get()
-			.setURL("http://127.0.0.1:8080/youapp/userManager/saveUser")
-			.putData("i am param.")
+			.setURL("http://127.0.0.1:8080/example/getCar")
+			.putData(base64Service.encodeBase64String(JJSON.get().formatObject(map).getBytes("utf-8")))
 			.setSendHandler(new JProtocolObjectHandler() {
 				@Override
 				public byte[] handle(Object data) throws Exception {

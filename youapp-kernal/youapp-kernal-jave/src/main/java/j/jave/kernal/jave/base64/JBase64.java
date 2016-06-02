@@ -3,7 +3,7 @@ package j.jave.kernal.jave.base64;
 
 public interface JBase64 {
 
-	byte[] decodeBase64(String string);
+	byte[] decodeBase64(String base64String);
 	
 	String encodeBase64String(byte[] bytes);
 	

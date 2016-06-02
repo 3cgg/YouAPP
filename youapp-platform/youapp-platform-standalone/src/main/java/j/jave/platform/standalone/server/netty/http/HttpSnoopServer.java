@@ -10,6 +10,10 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.platform.standalone.server.controller.ControllerServiceFindingEvent;
 
 /**
  * An HTTP server that sends back the content of the received HTTP request
@@ -17,10 +21,22 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
  */
 public final class HttpSnoopServer {
 
+	private static JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
+
+	protected static JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
+	
+	public static void initialize() throws Exception {
+		serviceFactoryManager.registerAllServices();
+		JServiceHubDelegate.get().addImmediateEvent(new ControllerServiceFindingEvent(new Object(), JConfiguration.get()));
+	}
+	
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", SSL? "8443" : "8080"));
 
     public static void main(String[] args) throws Exception {
+    	
+    	initialize();
+    	
         // Configure SSL.
         final SslContext sslCtx;
         if (SSL) {

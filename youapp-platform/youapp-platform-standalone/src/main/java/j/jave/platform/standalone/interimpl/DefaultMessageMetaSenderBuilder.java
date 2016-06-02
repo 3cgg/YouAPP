@@ -27,6 +27,7 @@ public class DefaultMessageMetaSenderBuilder extends JAbstractSenderBuilder<Defa
 	}
 	
 	public DefaultMessageMetaSenderBuilder build(){
+		defaultMessageMeta.setUrl(url);
 		protocolSender=new JDefaultProtocolSender(defaultMessageMeta);
 		protocolSender.setUrl(this.url)
 			.setReceiveHandler(receiveHandler)

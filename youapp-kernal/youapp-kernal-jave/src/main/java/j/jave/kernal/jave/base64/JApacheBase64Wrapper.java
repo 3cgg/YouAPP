@@ -14,8 +14,8 @@ public class JApacheBase64Wrapper implements JBase64 {
 	}
 	
 	@Override
-	public byte[] decodeBase64(String string) {
-		return Base64.decodeBase64(string);
+	public byte[] decodeBase64(String base64String) {
+		return Base64.decodeBase64(base64String);
 	}
 
 	@Override

@@ -23,8 +23,11 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.util.CharsetUtil;
-import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.json.JJSON;
+import j.jave.platform.standalone.data.MessageMeta.MessageMetaNames;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,7 +38,13 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
     private HttpRequest request;
     /** Buffer that stores the response content */
     private final StringBuilder buf = new StringBuilder();
+    
+    private byte[] data;
 
+    private ServerExecutorService serverExecutorService=JServiceHubDelegate.get()
+			.getService(this, ServerExecutorService.class);
+	
+    
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.flush();
@@ -90,6 +99,8 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
             ByteBuf content = httpContent.content();
             if (content.isReadable()) {
                 buf.append("CONTENT: ");
+                data=new byte[content.capacity()];
+                content.readBytes(data);
                 buf.append(content.toString(CharsetUtil.UTF_8));
                 buf.append("\r\n");
                 appendDecoderResult(buf, request);
@@ -130,15 +141,27 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
     }
 
     private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
-        // Decide whether to close the connection or not.
+    	byte[] bytes=null;
+    	try{
+    		Object object=serverExecutorService.execute(data);
+    		bytes=JJSON.get().formatObject(object).getBytes("utf-8");
+    	}catch(Exception e){
+    		try {
+				bytes=("exception:"+e.getMessage()).getBytes("utf-8");
+			} catch (UnsupportedEncodingException e1) {
+			}
+    	}
+    	
+    	// Decide whether to close the connection or not.
         boolean keepAlive = HttpUtil.isKeepAlive(request);
         // Build the response object.
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HTTP_1_1, currentObj.decoderResult().isSuccess()? OK : BAD_REQUEST,
-                Unpooled.copiedBuffer(buf.toString(), CharsetUtil.UTF_8));
+                Unpooled.copiedBuffer(bytes));
 
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
-        response.headers().set("request-unique-id", request.headers().get("request-unique-id", "exception"));
+        response.headers().set(MessageMetaNames.CONVERSATION_ID, request.headers().get(MessageMetaNames.CONVERSATION_ID, 
+        		MessageMetaNames.CONVERSATION_ID_MISSING));
         
         
         if (keepAlive) {
@@ -167,7 +190,6 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 
         // Write the response.
         ctx.write(response);
-
         return keepAlive;
     }
 

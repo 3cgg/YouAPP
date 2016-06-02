@@ -1,11 +1,11 @@
 package j.jave.platform.standalone.server.controller;
 
-@JRequestMapping(path="example")
+@JRequestMapping(path="/example")
 public class DefaultControllerSupport extends ControllerSupport<DefaultControllerSupport> {
 
-	@JRequestMapping(path="saveCar")
-	public void saveCar(){
-		System.out.println("iiiiiiiiiiiiiiiiiii");
+	@JRequestMapping(path="/getCar")
+	public Object getCar(String name){
+		return "you get it.("+name+")";
 	}
 	
 	

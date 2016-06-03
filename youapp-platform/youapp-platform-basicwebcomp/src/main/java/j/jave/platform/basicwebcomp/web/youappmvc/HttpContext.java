@@ -1,8 +1,8 @@
 package j.jave.platform.basicwebcomp.web.youappmvc;
 
-import j.jave.kernal.dataexchange.modelprotocol.JProtocolByteHandler;
-import j.jave.kernal.dataexchange.modelprotocol.JProtocolConstants;
-import j.jave.kernal.dataexchange.modelprotocol.JProtocolReceiverBuilder;
+import j.jave.kernal.dataexchange.modelprotocol.JByteDecoder;
+import j.jave.kernal.dataexchange.modelprotocol.JMessageHeadNames;
+import j.jave.kernal.dataexchange.modelprotocol.JMessageReceiverBuilder;
 import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModel;
 import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.jave.json.JJSON;
@@ -135,10 +135,10 @@ public class HttpContext implements JModel {
 		this(null, null);
 	}
 
-	public static final JProtocolByteHandler PROTOCOL_BYTE_HANDLER=
-			new JProtocolByteHandler() {
+	public static final JByteDecoder BYTE_DECODER=
+			new JByteDecoder() {
 				@Override
-				public Object handle(byte[] bytes) throws Exception {
+				public Object decode(byte[] bytes) throws Exception {
 					return JJSON.get().parse(new String(bytes,"utf-8"), JObjectTransModel.class);
 				}
 			};
@@ -159,14 +159,14 @@ public class HttpContext implements JModel {
 		}
 		
 		if(request!=null){
-			String protocolHead= request.getHeader(JProtocolConstants.PROTOCOL_HEAD);
+			String protocolHead= request.getHeader(JMessageHeadNames.DATA_ENCODER);
 			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
 				
 				isParseProtocol=true;
 				protocol=JObjectTransModelProtocol.valueOf(protocolHead);
 				try{
-					objectTransModel=(JObjectTransModel) JProtocolReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
-					.setProtocolByteHandler(PROTOCOL_BYTE_HANDLER).build().receive();
+					objectTransModel=(JObjectTransModel) JMessageReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
+					.setByteDecoder(BYTE_DECODER).build().receive();
 				}catch(Exception e){
 					throw new JDataBindException(e);
 				}

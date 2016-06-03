@@ -1,8 +1,10 @@
 package test.j.jave.kernal.dataexchange;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.dataexchange.modelprotocol.JProtocolByteHandler;
+import j.jave.kernal.dataexchange.modelprotocol.JByteDecoder;
+import j.jave.kernal.dataexchange.modelprotocol.JEncoderRegisterService;
 import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModelSenderBuilder;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPageRequest;
 
 import java.io.UnsupportedEncodingException;
@@ -14,6 +16,9 @@ import org.junit.Test;
 import test.j.jave.kernal.eventdriven.TestEventSupport;
 
 public class TestDataExchange extends TestEventSupport{
+	
+	private JEncoderRegisterService encoderRegisterService
+	=JServiceHubDelegate.get().getService(this, JEncoderRegisterService.class);
 	
 	@Test
 	public void testObject() throws Exception{
@@ -34,6 +39,7 @@ public class TestDataExchange extends TestEventSupport{
 	}
 	
 	
+	@Test
 	public void testJSON(){
 		
 		Map<String, Object> map=new HashMap<String, Object>();
@@ -52,10 +58,10 @@ public class TestDataExchange extends TestEventSupport{
 		.putData(JConfiguration.class, configuration)
 		.putData(HashMap.class, map)
 		.putData(JPageRequest.class, pageRequest)
-		.setReceiveHandler(new JProtocolByteHandler() {
+		.setReceiveByteDecoder(new JByteDecoder() {
 			
 			@Override
-			public Object handle(byte[] bytes) {
+			public Object decode(byte[] bytes) {
 				Object object=null;
 				try {
 					object=new String(bytes,"utf-8");

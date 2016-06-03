@@ -8,6 +8,8 @@ public class DefaultMessageMeta implements MessageMeta {
 	
 	private String data;
 	
+	private String dataEncoder;
+	
 	@Override
 	public String url() {
 		return url;
@@ -16,6 +18,11 @@ public class DefaultMessageMeta implements MessageMeta {
 	@Override
 	public String data() {
 		return data;
+	}
+	
+	@Override
+	public String dataEncoder() {
+		return dataEncoder;
 	}
 
 	public String getUrl() {
@@ -33,5 +40,14 @@ public class DefaultMessageMeta implements MessageMeta {
 	public void setData(String data) {
 		this.data = data;
 	}
+
+	public String getDataEncoder() {
+		return dataEncoder;
+	}
+
+	public void setDataEncoder(String dataEncoder) {
+		this.dataEncoder = dataEncoder;
+	}
+	
 	
 }

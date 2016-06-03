@@ -8,15 +8,15 @@ import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class MessageChannel 
-implements Channel<Message> {
+public class JMessageChannel 
+implements JChannel<JMessage> {
 
 	
 	@Override
-	public final ResponseFuture write(Message message) throws Exception {
-		final DefaultResponseFuture responseFuture=new DefaultResponseFuture(this);
+	public final JResponseFuture write(JMessage message) throws Exception {
+		final JDefaultResponseFuture responseFuture=new JDefaultResponseFuture(this);
 		responseFuture.setRequest(message);
-		MessageSendingEvent event=new MessageSendingEvent(this, responseFuture);
+		JMessageSendingEvent event=new JMessageSendingEvent(this, responseFuture);
 //		event.setGetResultLater(true);
 		responseFuture.setEvent(event);
 		JServiceHubDelegate.get().addDelayEvent(event,new JAsyncCallback() {

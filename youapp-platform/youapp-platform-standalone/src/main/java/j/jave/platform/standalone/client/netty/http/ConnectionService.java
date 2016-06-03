@@ -15,8 +15,8 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import j.jave.kernal.dataexchange.channel.Message;
-import j.jave.kernal.dataexchange.modelprotocol.JProtocolConstants;
+import j.jave.kernal.dataexchange.channel.JMessage;
+import j.jave.kernal.dataexchange.modelprotocol.JMessageHeadNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.sync.JSyncMonitor;
@@ -106,7 +106,7 @@ class ConnectionService {
      * @param bytes  the content bytes
      * @return
      */
-    public byte[] request(Message message,byte[] bytes) throws Exception{
+    public byte[] request(JMessage message,byte[] bytes) throws Exception{
     	// Prepare the HTTP request.
     	DefaultFullHttpRequest request = new DefaultFullHttpRequest(
                 HttpVersion.HTTP_1_1, HttpMethod.POST, uri.getRawPath(),Unpooled.wrappedBuffer(bytes));
@@ -114,7 +114,9 @@ class ConnectionService {
         request.headers().set(HttpHeaderNames.HOST, host);
 //        request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
         request.headers().set(HttpHeaderNames.ACCEPT_ENCODING, HttpHeaderValues.GZIP);
-        request.headers().set(JProtocolConstants.PROTOCOL_HEAD, "JSON");
+        request.headers().set(JMessageHeadNames.DATA_ENCODER, 
+        		message.getDataByteEncoder()
+        		);
         request.headers().set(HttpHeaderNames.CONTENT_LENGTH, bytes.length);
         final String requestId=JUniqueUtils.unique();
         request.headers().set(MessageMetaNames.CONVERSATION_ID, requestId);

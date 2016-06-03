@@ -4,6 +4,15 @@ public class JSyncConfig {
 
 	private int waitTime;
 
+	public JSyncConfig() {
+	}
+	
+	public JSyncConfig(int waitTime) {
+		super();
+		this.waitTime = waitTime;
+	}
+
+
 	/**
 	 * in milliseconds
 	 * @return

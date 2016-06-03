@@ -1,10 +1,10 @@
 package j.jave.kernal.dataexchange.modelprotocol.interimpl;
 
-import j.jave.kernal.dataexchange.modelprotocol.JAbstractSenderBuilder;
-import j.jave.kernal.dataexchange.modelprotocol.JDefaultProtocolSender;
+import j.jave.kernal.dataexchange.modelprotocol.JBaseSenderBuilder;
+import j.jave.kernal.dataexchange.modelprotocol.JDefaultMessageSender;
 import j.jave.kernal.jave.utils.JAssert;
 
-public class JObjectTransModelSenderBuilder extends JAbstractSenderBuilder<JObjectTransModelSenderBuilder> {
+public class JObjectTransModelSenderBuilder extends JBaseSenderBuilder<JObjectTransModelSenderBuilder> {
 
 	private JObjectTransModel objectTramsModel;
 	
@@ -31,11 +31,11 @@ public class JObjectTransModelSenderBuilder extends JAbstractSenderBuilder<JObje
 	}
 	
 	public JObjectTransModelSenderBuilder build(){
-		protocolSender=new JDefaultProtocolSender(objectTramsModel);
+		protocolSender=new JDefaultMessageSender(objectTramsModel);
 		protocolSender.setUrl(this.url)
-			.setReceiveHandler(receiveHandler)
-			.setSendHandler(sendHandler)
-			.setServerHandler(serverHandler);
+			.setReceiveByteDecoder(receiveByteDecoder)
+			.setSendObjectEncoder(sendObjectEncoder)
+			.setDataByteEncoder(dataByteEncoder);
 		return this;
 	}
 	

@@ -7,26 +7,26 @@ import j.jave.kernal.dataexchange.exception.JDataExchangeException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class DefaultResponseFuture implements ResponseFuture {
+public class JDefaultResponseFuture implements JResponseFuture {
 	
-	private final Channel<?> exchangeChannel;
+	private final JChannel<?> exchangeChannel;
 	
 	private Object request;
 	
 	private Object response;
 	
-	private MessageSendingEvent event;
+	private JMessageSendingEvent event;
 	
 	private Exception exception;
 	
 	private AtomicBoolean complete=new AtomicBoolean(false);
 	
-	public DefaultResponseFuture(Channel<?> exchangeChannel) {
+	public JDefaultResponseFuture(JChannel<?> exchangeChannel) {
 		this.exchangeChannel=exchangeChannel;
 	}
 	
 	@Override
-	public Channel<?> channel() {
+	public JChannel<?> channel() {
 		return exchangeChannel;
 	}
 	
@@ -38,7 +38,7 @@ public class DefaultResponseFuture implements ResponseFuture {
 	private static final int maxTryCount=timeout/delay;
 	
 	@Override
-	public ResponseFuture await() throws InterruptedException,JDataExchangeException {
+	public JResponseFuture await() throws InterruptedException,JDataExchangeException {
 		int count=0;
 		for(;;){
 			
@@ -124,11 +124,11 @@ public class DefaultResponseFuture implements ResponseFuture {
 		this.response = response;
 	}
 
-	public MessageSendingEvent getEvent() {
+	public JMessageSendingEvent getEvent() {
 		return event;
 	}
 
-	public void setEvent(MessageSendingEvent event) {
+	public void setEvent(JMessageSendingEvent event) {
 		this.event = event;
 	}
 

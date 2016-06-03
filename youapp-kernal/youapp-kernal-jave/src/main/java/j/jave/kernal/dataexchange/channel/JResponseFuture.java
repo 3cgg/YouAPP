@@ -6,15 +6,15 @@ import java.io.IOException;
 
 
 
-public interface ResponseFuture {
+public interface JResponseFuture {
 	
 	/**
      * Returns a channel where the I/O operation associated with this
      * future takes place.
      */
-    Channel<?> channel();
+    JChannel<?> channel();
     
-    ResponseFuture await() throws InterruptedException,JDataExchangeException;
+    JResponseFuture await() throws InterruptedException,JDataExchangeException;
     
     /**
      * 

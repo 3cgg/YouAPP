@@ -16,5 +16,11 @@ public interface MessageMeta {
 	 */
 	public String data();
 	
+	/**
+	 * the encoder that encode some object to the {@link #data()} bytes.
+	 * @return
+	 */
+	public String dataEncoder();
+	
 	
 }

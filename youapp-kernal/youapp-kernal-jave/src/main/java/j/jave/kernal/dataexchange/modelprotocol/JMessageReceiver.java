@@ -1,6 +1,6 @@
 package j.jave.kernal.dataexchange.modelprotocol;
 
-import j.jave.kernal.dataexchange.channel.Message;
+import j.jave.kernal.dataexchange.channel.JMessage;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
@@ -8,17 +8,17 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
-public class JProtocolReceiver {
+public class JMessageReceiver {
 
 	private final JLogger LOGGER=JLoggerFactory.getLogger(this.getClass());
 	
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
-	protected JProtocolByteHandler protocolByteHandler;
+	protected JByteDecoder byteDecoder;
 	
 	protected final byte[] bytes;
 	
-	public JProtocolReceiver(byte[] bytes) {
+	public JMessageReceiver(byte[] bytes) {
 		super();
 		this.bytes = bytes;
 	}
@@ -26,10 +26,10 @@ public class JProtocolReceiver {
 	public Object receive() {
 		try{
 			
-			Message message= JJSON.get().parse(new String(bytes,"utf-8"), Message.class);
+			JMessage message= JJSON.get().parse(new String(bytes,"utf-8"), JMessage.class);
 			byte[] bytes=base64Service.decodeBase64(message.getData());
-			if(protocolByteHandler!=null){
-				return protocolByteHandler.handle(bytes);
+			if(byteDecoder!=null){
+				return byteDecoder.decode(bytes);
 			}
 			return bytes;
 		}catch(Exception e){
@@ -38,10 +38,10 @@ public class JProtocolReceiver {
 		}
 	}
 	
-	public void setProtocolByteHandler(JProtocolByteHandler protocolByteHandler) {
-		this.protocolByteHandler = protocolByteHandler;
+	public void setByteDecoder(JByteDecoder byteDecoder) {
+		this.byteDecoder = byteDecoder;
 	}
-
+	
 //	protected abstract byte[] doReceive() throws Exception;
 //	
 //	static class ObjectProtocolReceiver extends JProtocolReceiver{

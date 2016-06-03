@@ -1,9 +1,9 @@
 package j.jave.platform.standalone.interimpl;
 
-import j.jave.kernal.dataexchange.modelprotocol.JAbstractSenderBuilder;
-import j.jave.kernal.dataexchange.modelprotocol.JDefaultProtocolSender;
+import j.jave.kernal.dataexchange.modelprotocol.JBaseSenderBuilder;
+import j.jave.kernal.dataexchange.modelprotocol.JDefaultMessageSender;
 
-public class DefaultMessageMetaSenderBuilder extends JAbstractSenderBuilder<DefaultMessageMetaSenderBuilder> {
+public class DefaultMessageMetaSenderBuilder extends JBaseSenderBuilder<DefaultMessageMetaSenderBuilder> {
 
 	private DefaultMessageMeta defaultMessageMeta;
 	
@@ -26,13 +26,18 @@ public class DefaultMessageMetaSenderBuilder extends JAbstractSenderBuilder<Defa
 		return this;
 	}
 	
+	public DefaultMessageMetaSenderBuilder putDataEncoderPropertyForDefaultMessageMeta(String dataEncoder){
+		defaultMessageMeta.setDataEncoder(dataEncoder);
+		return this;
+	}
+	
 	public DefaultMessageMetaSenderBuilder build(){
 		defaultMessageMeta.setUrl(url);
-		protocolSender=new JDefaultProtocolSender(defaultMessageMeta);
+		protocolSender=new JDefaultMessageSender(defaultMessageMeta);
 		protocolSender.setUrl(this.url)
-			.setReceiveHandler(receiveHandler)
-			.setSendHandler(sendHandler)
-			.setServerHandler(serverHandler);
+			.setReceiveByteDecoder(receiveByteDecoder)
+			.setSendObjectEncoder(sendObjectEncoder)
+			.setDataByteEncoder(dataByteEncoder);
 		return this;
 	}
 	

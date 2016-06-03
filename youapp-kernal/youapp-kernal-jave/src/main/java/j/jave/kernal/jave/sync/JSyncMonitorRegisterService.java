@@ -9,6 +9,7 @@ import j.jave.kernal.jave.service.JService;
 
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class JSyncMonitorRegisterService
 extends JServiceFactorySupport<JSyncMonitorRegisterService>
@@ -19,8 +20,9 @@ implements JService,JSyncMonitorWakeupListener
 	private ConcurrentHashMap<String, TemporaySyncMonitor> 
 	syncMonitors=new ConcurrentHashMap<String, JSyncMonitorRegisterService.TemporaySyncMonitor>();
 	
+	@SuppressWarnings("unused")
 	private static class TemporaySyncMonitor{
-		
+
 		private String unique;
 		
 		private int count;
@@ -31,40 +33,72 @@ implements JService,JSyncMonitorWakeupListener
 		
 		private JCacheService cacheService;
 		
+		/**
+		 * the thread monitoring the {@link #syncMonitor} 
+		 */
+		private Thread thread;
+		
 	}
 	
+	private int defaultWaitTime=10*1000;  //ten seconds.
+	
 	public void sync(JSyncMonitor monitor,JCacheService cacheService){
-		sync(monitor,new JSyncConfig(), cacheService);
+		sync(monitor,new JSyncConfig(defaultWaitTime), cacheService);
 	}
 	
 	public void sync(JSyncMonitor monitor,JSyncConfig syncConfig){
 		sync(monitor,syncConfig, null);
 	}
 	
+	private ReentrantLock lock=new ReentrantLock();
+	
 	public void sync(JSyncMonitor monitor, JSyncConfig syncConfig,JCacheService cacheService ){
-		TemporaySyncMonitor temporaySyncMonitor=new TemporaySyncMonitor();
-		temporaySyncMonitor.unique=monitor.unique();
-		temporaySyncMonitor.syncMonitor=monitor;
-		temporaySyncMonitor.start=new Date();
-		temporaySyncMonitor.cacheService=cacheService;
-		syncMonitors.put(monitor.unique(), temporaySyncMonitor);
+		
+		try{
+			lock.lockInterruptibly();
+			String unique=monitor.unique();
+			if(syncMonitors.containsKey(unique)){
+				throw new IllegalStateException("the monitor["+unique+"] is held by other threads.");
+			}
+			TemporaySyncMonitor temporaySyncMonitor=new TemporaySyncMonitor();
+			temporaySyncMonitor.unique=unique;
+			temporaySyncMonitor.syncMonitor=monitor;
+			temporaySyncMonitor.start=new Date();
+			temporaySyncMonitor.cacheService=cacheService;
+			temporaySyncMonitor.thread=Thread.currentThread();
+			syncMonitors.put(monitor.unique(), temporaySyncMonitor);
+		}catch(InterruptedException e){
+			throw new IllegalStateException(e);
+		}finally{
+			if(lock.isHeldByCurrentThread()){
+				lock.unlock();
+			}
+		}
 		synchronized (monitor) {
         	try {
-        		monitor.wait();
-        		System.out.println("WAKEUP...");
+        		LOGGER.info("thread ["+Thread.currentThread().getName()
+        				+"] ready to wait any time, monitoring on "+monitor.unique());
+        		int timeout=syncConfig.getWaitTime()<1?defaultWaitTime:syncConfig.getWaitTime();
+        		monitor.wait(timeout);
+        		LOGGER.info("thread ["+Thread.currentThread().getName()
+        				+"] already wake up by other thread , monitoring on "+monitor.unique());
 			} catch (InterruptedException e) {
 				LOGGER.error(e.getMessage(), e);
 			}
 		}
 	}
-	
+
 	@Override
 	public Object trigger(JSyncMonitorWakeupEvent event) {
 		String unique=event.getSyncMonitorUnique();
 		TemporaySyncMonitor temporaySyncMonitor= syncMonitors.get(unique);
 
-		if(temporaySyncMonitor==null){
-			event.setCount(event.getCount()+1);
+		if(temporaySyncMonitor==null){  // attempt to wake up later.
+			int count=event.getCount();
+			if(count>10){ //ignore
+				return false;
+			}
+			event.setCount(count+1);
 			JServiceHubDelegate.get().addDelayEvent(event);
 			return false;
 		}
@@ -72,6 +106,7 @@ implements JService,JSyncMonitorWakeupListener
 		if(temporaySyncMonitor.cacheService!=null){
 			temporaySyncMonitor.cacheService.putNeverExpired(unique, event.getData());
 		}
+		
 		if(temporaySyncMonitor!=null){
 			JSyncMonitor syncMonitor=temporaySyncMonitor.syncMonitor;
 			synchronized (syncMonitor) {

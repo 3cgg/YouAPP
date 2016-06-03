@@ -1,12 +1,12 @@
 package j.jave.platform.standalone.client.netty.http;
 
-import j.jave.kernal.dataexchange.channel.Message;
-import j.jave.kernal.dataexchange.channel.Sender;
+import j.jave.kernal.dataexchange.channel.JDirectSender;
+import j.jave.kernal.dataexchange.channel.JMessage;
 
-public class HttpClientSender extends Sender {
+public class HttpClientDirectSender extends JDirectSender {
 
 	@Override
-	protected byte[] doSend(Message message) throws Exception {
+	protected byte[] doSend(JMessage message) throws Exception {
 		ConnectionService connectionService= ConnectionService.get(message.getUrl());
 		connectionService.connect();
 		return connectionService.request(message, getSenderData(message));

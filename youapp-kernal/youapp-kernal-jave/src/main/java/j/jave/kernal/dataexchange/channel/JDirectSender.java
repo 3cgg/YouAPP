@@ -4,13 +4,13 @@ import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 
-public abstract class Sender {
+public abstract class JDirectSender {
 	
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
-	public final Message send(Message message) throws Exception {
+	public final JMessage send(JMessage message) throws Exception {
 		byte[] bytes=doSend(message);
-		Message response=new Message();
+		JMessage response=new JMessage();
 		response.setUrl(message.getUrl());
 		response.setData(base64Service.encodeBase64String(bytes));
 //		JProtocol protocol=message.getProtocol();
@@ -27,14 +27,14 @@ public abstract class Sender {
 		return response;
 	}
 
-	protected abstract byte[] doSend(Message message) throws Exception;
+	protected abstract byte[] doSend(JMessage message) throws Exception;
 	
 	/**
 	 * extract the real data
 	 * @param objectTransModel
 	 * @return the byte arrays
 	 */
-	protected byte[] getSenderData(Message message) throws Exception{
+	protected byte[] getSenderData(JMessage message) throws Exception{
 //		JProtocol protocol= message.getProtocol();
 //		JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 		byte[] data=null;

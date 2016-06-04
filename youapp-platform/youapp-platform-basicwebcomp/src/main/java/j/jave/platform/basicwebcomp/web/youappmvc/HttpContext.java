@@ -1,11 +1,11 @@
 package j.jave.platform.basicwebcomp.web.youappmvc;
 
-import j.jave.kernal.dataexchange.modelprotocol.JByteDecoder;
-import j.jave.kernal.dataexchange.modelprotocol.JMessageHeadNames;
-import j.jave.kernal.dataexchange.modelprotocol.JMessageReceiverBuilder;
-import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModel;
-import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModelProtocol;
-import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.dataexchange.impl.JDefaultMessageMetaReceiverBuilder;
+import j.jave.kernal.dataexchange.impl.JMessageHeadNames;
+import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModel;
+import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelDecoder;
+import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.support.databind.JDataBindException;
 import j.jave.kernal.jave.utils.JCollectionUtils;
@@ -135,13 +135,8 @@ public class HttpContext implements JModel {
 		this(null, null);
 	}
 
-	public static final JByteDecoder BYTE_DECODER=
-			new JByteDecoder() {
-				@Override
-				public Object decode(byte[] bytes) throws Exception {
-					return JJSON.get().parse(new String(bytes,"utf-8"), JObjectTransModel.class);
-				}
-			};
+	public static final JObjectTransModelDecoder OBJECT_TRANS_MODEL_DECODER =
+			new JObjectTransModelDecoder();
 	
 	private void init(HttpServletRequest request,HttpServletResponse response){
 		boolean isParseProtocol=false;
@@ -159,14 +154,14 @@ public class HttpContext implements JModel {
 		}
 		
 		if(request!=null){
-			String protocolHead= request.getHeader(JMessageHeadNames.DATA_ENCODER);
+			String protocolHead= request.getHeader(JMessageHeadNames.DATA_EXCHNAGE_IDENTIFIER);
 			if(JStringUtils.isNotNullOrEmpty(protocolHead)){
-				
 				isParseProtocol=true;
-				protocol=JObjectTransModelProtocol.valueOf(protocolHead);
 				try{
-					objectTransModel=(JObjectTransModel) JMessageReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
-					.setByteDecoder(BYTE_DECODER).build().receive();
+					MessageMeta messageMeta=JDefaultMessageMetaReceiverBuilder.get(JIOUtils.getBytes(request.getInputStream()))
+							.build().receive();
+					objectTransModel=OBJECT_TRANS_MODEL_DECODER.encode(messageMeta);
+					protocol=objectTransModel.getProtocol();
 				}catch(Exception e){
 					throw new JDataBindException(e);
 				}

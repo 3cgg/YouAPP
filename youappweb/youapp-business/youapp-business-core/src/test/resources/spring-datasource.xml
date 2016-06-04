@@ -24,7 +24,7 @@
         <property name="driverClassName" value="${youapp.database.driver}" />  
         <property name="url" value="${youapp.database.url}" />  
         <property name="username" value="root" />  
-        <property name="password" value="zhongjin" />  
+        <property name="password" value="jiazhongjin" />  
     </bean>  
   
 </beans>  

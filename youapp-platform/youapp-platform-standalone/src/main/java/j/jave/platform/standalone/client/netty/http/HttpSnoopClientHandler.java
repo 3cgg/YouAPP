@@ -8,14 +8,18 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
+import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.sync.JSyncMonitorRegisterService;
 import j.jave.kernal.jave.sync.JSyncMonitorWakeupEvent;
-import j.jave.platform.standalone.data.MessageMeta.MessageMetaNames;
 
 public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 
 	
 	private String data;
+	
+	private static JSyncMonitorRegisterService syncMonitorRegisterService
+	=JServiceHubDelegate.get().getService(new Object(), JSyncMonitorRegisterService.class);
 	
 	public String getData() {
 		return data;
@@ -72,7 +76,7 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
             
             JSyncMonitorWakeupEvent syncMonitorWakeupEvent=new JSyncMonitorWakeupEvent(this, requestId);
             syncMonitorWakeupEvent.setData(data);
-            JServiceHubDelegate.get().addDelayEvent(syncMonitorWakeupEvent);
+            syncMonitorRegisterService.wakeup(syncMonitorWakeupEvent);
             }
         }
     }

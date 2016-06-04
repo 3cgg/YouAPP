@@ -1,33 +1,28 @@
-package j.jave.kernal.dataexchange.modelprotocol;
+package j.jave.kernal.dataexchange.impl;
 
 import j.jave.kernal.dataexchange.channel.JMessage;
 import j.jave.kernal.dataexchange.channel.JMessageChannel;
 import j.jave.kernal.dataexchange.channel.JResponseFuture;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
-public class JDefaultMessageSender {
+class JDefaultMessageMetaSender {
 
 	private final JLogger LOGGER=JLoggerFactory.getLogger(this.getClass());
 	
 	private JByteDecoder receiveByteDecoder;
 	
-	private JObjectEncoder sendObjectEncoder;
-	
-	private String dataByteEncoder;
-	
-	protected final Object data;
-	
-	protected String url;
+	protected final MessageMeta messageMeta;
 	
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
-	public JDefaultMessageSender(Object data) {
-		super();
-		this.data = data;
+	public JDefaultMessageMetaSender(MessageMeta messageMeta) {
+		this.messageMeta = messageMeta;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,9 +44,10 @@ public class JDefaultMessageSender {
 	protected byte[] doSend() throws Exception{
 
 		JMessage message=new JMessage();
-		message.setUrl(this.url);
-		message.setDataByteEncoder(dataByteEncoder);
-		message.setData(base64Service.encodeBase64String(sendObjectEncoder.encode(data)));
+		message.setUrl(messageMeta.url());
+		message.setDataByteEncoder(JEncoderRegisterService.JSON);
+		message.setData(base64Service.encodeBase64String(
+				JJSON.get().formatObject(messageMeta).getBytes("utf-8")));
 		byte[] bytes=null;
 		JResponseFuture responseFuture= new JMessageChannel().write(message);
 		if(responseFuture.await()!=null){
@@ -63,23 +59,8 @@ public class JDefaultMessageSender {
 		
 	}
 	
-	public JDefaultMessageSender setUrl(String url) {
-		this.url = url;
-		return this;
-	}
-	
-	public JDefaultMessageSender setReceiveByteDecoder(JByteDecoder receiveByteDecoder) {
+	public JDefaultMessageMetaSender setReceiveByteDecoder(JByteDecoder receiveByteDecoder) {
 		this.receiveByteDecoder = receiveByteDecoder;
-		return this;
-	}
-
-	public JDefaultMessageSender setSendObjectEncoder(JObjectEncoder sendObjectEncoder) {
-		this.sendObjectEncoder = sendObjectEncoder;
-		return this;
-	}
-	
-	public JDefaultMessageSender setDataByteEncoder(String dataByteEncoder) {
-		this.dataByteEncoder = dataByteEncoder;
 		return this;
 	}
 	

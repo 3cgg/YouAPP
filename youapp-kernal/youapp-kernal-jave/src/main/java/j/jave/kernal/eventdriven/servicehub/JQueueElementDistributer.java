@@ -123,7 +123,14 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 			synchronized(this){
 				if(taskThreadPoolExecutor==null){
 					taskThreadPoolExecutor =new ThreadPoolExecutor
-							(fixedThreadCount, fixedThreadCount, 30, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),new ThreadPoolExecutor.CallerRunsPolicy());
+							(fixedThreadCount, fixedThreadCount, 30, TimeUnit.SECONDS, 
+									new LinkedBlockingQueue<Runnable>(), new ThreadFactory() {
+										int index=0;
+										@Override
+										public Thread newThread(Runnable r) {
+											return new Thread(r,"queue-ele-execute-thread-"+(++index));
+										}
+									},new ThreadPoolExecutor.AbortPolicy());
 				}
 			}
 		}

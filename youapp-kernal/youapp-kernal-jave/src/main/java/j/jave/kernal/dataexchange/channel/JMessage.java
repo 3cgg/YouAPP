@@ -1,6 +1,6 @@
 package j.jave.kernal.dataexchange.channel;
 
-import j.jave.kernal.dataexchange.modelprotocol.JEncoderRegisterService;
+import j.jave.kernal.dataexchange.impl.JEncoderRegisterService;
 import j.jave.kernal.jave.model.JModel;
 
 public class JMessage implements JModel{

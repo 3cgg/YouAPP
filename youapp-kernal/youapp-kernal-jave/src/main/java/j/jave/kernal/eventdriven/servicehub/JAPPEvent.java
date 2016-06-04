@@ -1,5 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
+import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
 import j.jave.kernal.jave.eventdriven.JEventObject;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JUniqueUtils;
@@ -43,6 +45,12 @@ public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements C
 	private final List<JAsyncCallback> attachedAsyncCallbackChain=new ArrayList<JAsyncCallback>();
 	
 	private boolean getResultLater=false;
+	
+	/**
+	 * @see JEventRequestStartNotifyEvent
+	 * @see JEventRequestEndNotifyEvent
+	 */
+	private boolean track;
 	
 	/**
 	 * the collection is only used by the framework, the subclass should not use. 
@@ -130,6 +138,14 @@ public class JAPPEvent<T extends JAPPEvent<T>> extends JEventObject implements C
 
 	public void setGetResultLater(boolean getResultLater) {
 		this.getResultLater = getResultLater;
+	}
+
+	public boolean isTrack() {
+		return track;
+	}
+
+	public void setTrack(boolean track) {
+		this.track = track;
 	}
 	
 }

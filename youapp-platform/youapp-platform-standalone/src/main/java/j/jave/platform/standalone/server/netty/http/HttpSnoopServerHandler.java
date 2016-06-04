@@ -23,9 +23,12 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
 import io.netty.util.CharsetUtil;
+import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.standalone.data.MessageMeta.MessageMetaNames;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -35,12 +38,15 @@ import java.util.Set;
 
 public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> {
 
+	private static final JLogger logger=JLoggerFactory.getLogger(HttpSnoopServerHandler.class);
+	
+	
     private HttpRequest request;
     /** Buffer that stores the response content */
     private final StringBuilder buf = new StringBuilder();
     
-    private byte[] data;
-
+    private StringBuilder dataStringBuilder=new StringBuilder();
+    
     private ServerExecutorService serverExecutorService=JServiceHubDelegate.get()
 			.getService(this, ServerExecutorService.class);
 	
@@ -58,7 +64,9 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
             if (HttpUtil.is100ContinueExpected(request)) {
                 send100Continue(ctx);
             }
-
+            
+            int contentLength=request.headers().getInt(HttpHeaderNames.CONTENT_LENGTH);
+            logger.debug("------------content legth-------->:"+contentLength);
             buf.setLength(0);
             buf.append("WELCOME TO THE WILD WILD WEB SERVER\r\n");
             buf.append("===================================\r\n");
@@ -98,10 +106,12 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 
             ByteBuf content = httpContent.content();
             if (content.isReadable()) {
-                buf.append("CONTENT: ");
-                data=new byte[content.capacity()];
-                content.readBytes(data);
-                buf.append(content.toString(CharsetUtil.UTF_8));
+            	buf.append("CONTENT: ");
+            	String contentStr=content.toString(CharsetUtil.UTF_8);
+            	if(JStringUtils.isNotNullOrEmpty(contentStr)){
+        			dataStringBuilder.append(contentStr);
+        		}
+                buf.append("--part--"+contentStr+"--part--");
                 buf.append("\r\n");
                 appendDecoderResult(buf, request);
             }
@@ -143,9 +153,13 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
     private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
     	byte[] bytes=null;
     	try{
-    		Object object=serverExecutorService.execute(data);
+    		Object object=serverExecutorService.execute(dataStringBuilder.toString().getBytes("utf-8"));
     		bytes=JJSON.get().formatObject(object).getBytes("utf-8");
     	}catch(Exception e){
+    		if(logger.isDebugEnabled()){
+    			logger.debug("------error---->"+dataStringBuilder.toString()
+    					+"---------all content---->"+buf.toString(), e);
+    		}
     		try {
 				bytes=("exception:"+e.getMessage()).getBytes("utf-8");
 			} catch (UnsupportedEncodingException e1) {

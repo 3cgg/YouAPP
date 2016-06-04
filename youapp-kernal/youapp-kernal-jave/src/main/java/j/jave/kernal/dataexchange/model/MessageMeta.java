@@ -1,4 +1,4 @@
-package j.jave.platform.standalone.data;
+package j.jave.kernal.dataexchange.model;
 
 public interface MessageMeta {
 	
@@ -11,7 +11,7 @@ public interface MessageMeta {
 	public String url();
 	
 	/**
-	 * the base64 format
+	 * get the base64 String
 	 * @return the base64 string
 	 */
 	public String data();

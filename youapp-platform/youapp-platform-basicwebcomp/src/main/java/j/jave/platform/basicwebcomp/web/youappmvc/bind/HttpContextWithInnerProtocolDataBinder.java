@@ -1,12 +1,13 @@
 package j.jave.platform.basicwebcomp.web.youappmvc.bind;
 
-import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectTransModel;
-import j.jave.kernal.dataexchange.modelprotocol.interimpl.JObjectWrapper;
+import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModel;
+import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.platform.basicwebcomp.web.util.MethodParamObject;
 import j.jave.platform.basicwebcomp.web.youappmvc.HttpContext;
 
-import java.util.List;
+import java.util.Map;
 
 public class HttpContextWithInnerProtocolDataBinder implements JDataBinder{
 
@@ -18,8 +19,27 @@ public class HttpContextWithInnerProtocolDataBinder implements JDataBinder{
 	
 	public void bind(MethodParamObject methodParamObject){
 		JObjectTransModel objectTransModel= httpContext.getObjectTransModel();
-		List<JObjectWrapper> objectWrappers=objectTransModel.getObjectWrappers();
-		methodParamObject.setObject(objectWrappers.get(methodParamObject.getMethodParamMeta().getIndex()).getObject());
+		Map<String, Object> params= objectTransModel.getParams();
+		String name=methodParamObject.getMethodParamMeta().getName();
+		Object object= params.get(name);
+		if(object==null){
+			methodParamObject.setObject(object);
+		}
+		else{
+			JObjectTransModelProtocol protocol=objectTransModel.getProtocol();
+			switch (protocol) {
+			case OBJECT:
+				methodParamObject.setObject(object);
+				break;
+			case JSON:
+				methodParamObject.setObject(
+						JJSON.get().parse(JJSON.get().formatObject(object), methodParamObject.getClass())
+						);
+				break;	
+			default:
+				break;
+			}
+		}
 	}
 	
 //	private void newObject(MethodParamObject methodParamObject){

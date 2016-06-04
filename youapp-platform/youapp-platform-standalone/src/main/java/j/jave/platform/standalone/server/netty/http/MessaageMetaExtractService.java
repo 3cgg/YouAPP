@@ -1,13 +1,13 @@
 package j.jave.platform.standalone.server.netty.http;
 
-import j.jave.kernal.dataexchange.modelprotocol.JByteDecoder;
-import j.jave.kernal.dataexchange.modelprotocol.JMessageReceiverBuilder;
+import j.jave.kernal.dataexchange.impl.JByteDecoder;
+import j.jave.kernal.dataexchange.impl.JDefaultMessageMetaReceiverBuilder;
+import j.jave.kernal.dataexchange.model.DefaultMessageMeta;
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.support.parser.JParser;
-import j.jave.platform.standalone.data.MessageMeta;
-import j.jave.platform.standalone.interimpl.DefaultMessageMeta;
 
 import java.net.URI;
 
@@ -25,8 +25,8 @@ implements JService ,JParser
 			};
 	
 	public MessageMeta parse(byte[]  bytes)throws Exception{
-		DefaultMessageMeta messageMeta= (DefaultMessageMeta) JMessageReceiverBuilder.get(bytes)
-		.setByteDecoder(BYTE_DECODER).build().receive();
+		DefaultMessageMeta messageMeta= (DefaultMessageMeta) 
+				JDefaultMessageMetaReceiverBuilder.get(bytes).build().receive();
 		messageMeta.setUrl(new URI(messageMeta.getUrl()).getPath());
 		return messageMeta;
 	}

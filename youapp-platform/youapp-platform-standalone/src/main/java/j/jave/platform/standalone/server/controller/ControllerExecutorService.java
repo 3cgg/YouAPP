@@ -4,11 +4,11 @@
 package j.jave.platform.standalone.server.controller;
 
 
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.reflect.JReflect;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
-import j.jave.platform.standalone.data.MessageMeta;
 
 import org.apache.commons.lang3.time.StopWatch;
 

@@ -1,6 +1,6 @@
 package j.jave.kernal.dataexchange.channel;
 
-import j.jave.kernal.dataexchange.modelprotocol.JMessageHeadNames;
+import j.jave.kernal.dataexchange.impl.JMessageHeadNames;
 import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.http.JResponseHandler;
 
@@ -20,8 +20,7 @@ public class JHttpClientDirectSender extends JDirectSender {
 				.setEntry(data)
 				.setResponseHandler(responseHandler)
 				.setRetry(0)
-				.putHead(JMessageHeadNames.DATA_ENCODER, 
-						message.getDataByteEncoder())
+				.putHead(JMessageHeadNames.DATA_EXCHNAGE_IDENTIFIER,JMessage.class.getName())
 				.execute();
 		return bytes;
 	};

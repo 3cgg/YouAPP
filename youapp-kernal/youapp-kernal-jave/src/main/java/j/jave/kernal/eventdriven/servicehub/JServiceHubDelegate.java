@@ -91,14 +91,20 @@ public class JServiceHubDelegate {
 	}
 	
 	public void propagateEventRequestStartNotifyEvent(JAPPEvent<?> event){
-		if(!JEventRequestStartNotifyEvent.class.isInstance(event)){
-			serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JAPPEvent.HIGEST,event));
+		if(!JEventRequestStartNotifyEvent.class.isInstance(event)
+				&&!JEventRequestEndNotifyEvent.class.isInstance(event)){
+			if(event.isTrack()){
+				serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JAPPEvent.HIGEST,event));
+			}
 		}
 	}
 	
 	public void propagateEventRequestEndNotifyEvent(JAPPEvent<?> event){
-		if(!JEventRequestEndNotifyEvent.class.isInstance(event)){
-			serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JAPPEvent.LOWEST,event));
+		if(!JEventRequestEndNotifyEvent.class.isInstance(event)
+				&&!JEventRequestStartNotifyEvent.class.isInstance(event)){
+			if(event.isTrack()){
+				serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JAPPEvent.LOWEST,event));
+			}
 		}
 	}
 	

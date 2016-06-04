@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.modelprotocol;
+package j.jave.kernal.dataexchange.impl;
 
 public interface JObjectEncoder {
 	

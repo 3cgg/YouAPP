@@ -28,9 +28,19 @@ public class JEventQueuePipeline {
 	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 
-	private final static List<JEventQueuePipe> eventQueuePipes=new ArrayList<JEventQueuePipe>(6);
+	private final List<JEventQueuePipe> eventQueuePipes=new ArrayList<JEventQueuePipe>(6);
 	
-	public JEventQueuePipeline(){
+	private String name;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	protected void initPipe(){
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEventResultGettingPipe.class, ++order);
@@ -47,13 +57,20 @@ public class JEventQueuePipeline {
 		}
 
 		register(JEventQueueEndPipe.class, ++order);
+	
+	}
+	
+	public JEventQueuePipeline(String name){
+		this.name=name;
+		initPipe();
 	}
 	
 	
-	private JEventQueuePipe register(Class<? extends JEventQueuePipe> clazz,int order){
+	protected final JEventQueuePipe register(Class<? extends JEventQueuePipe> clazz,int order){
 		try {
 			JEventQueuePipe eventQueuePipe= clazz.newInstance();
 			eventQueuePipe.setOrder(order);
+			eventQueuePipe.setName(name);
 			eventQueuePipe.setEventQueuePipeChain(this);
 			eventQueuePipes.add(eventQueuePipe);
 			return eventQueuePipe;
@@ -63,7 +80,7 @@ public class JEventQueuePipeline {
 	}
 	
 	
-	static class JEventQueueEndPipe extends JEventQueuePipe{
+	protected static class JEventQueueEndPipe extends JEventQueuePipe{
 		
 		@Override
 		protected JAbstractEventExecutionHandler getHandler() {
@@ -119,7 +136,7 @@ public class JEventQueuePipeline {
 	 * JAPPEvent entrance.
 	 * @param appEvent
 	 */
-	void addAPPEvent(JAPPEvent<? > appEvent){
+	protected void addAPPEvent(JAPPEvent<? > appEvent){
 		JEventQueuePipe eventQueuePipe=next(null);
 		try{
 			eventQueuePipe.addAPPEvent(appEvent);

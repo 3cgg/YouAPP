@@ -1,4 +1,4 @@
-package j.jave.kernal.dataexchange.modelprotocol;
+package j.jave.kernal.dataexchange.impl;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.json.JJSON;

@@ -1,11 +1,11 @@
 package j.jave.platform.standalone.server.netty.http;
 
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.service.JService;
-import j.jave.platform.standalone.data.MessageMeta;
 import j.jave.platform.standalone.server.controller.ControllerExecutorService;
 
 public class ServerExecutorService 

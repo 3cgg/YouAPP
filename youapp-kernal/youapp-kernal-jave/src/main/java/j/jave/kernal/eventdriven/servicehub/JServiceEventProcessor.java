@@ -46,8 +46,8 @@ class JServiceEventProcessor {
 		return eventProcessor;
 	}
 
-	private JEventQueuePipeline eventQueuePipeChain=new JEventQueuePipeline();
-	
+	private JEventQueuePipeline eventQueuePipeChain=new JEventQueuePipeline("-EVENT-CORE");
+
 	/*
 	 * others begin
 	 */

@@ -1,45 +1,50 @@
-package j.jave.kernal.dataexchange.modelprotocol;
+package j.jave.kernal.dataexchange.impl;
 
 import j.jave.kernal.dataexchange.channel.JMessage;
 import j.jave.kernal.dataexchange.exception.JDataExchangeException;
+import j.jave.kernal.dataexchange.model.DefaultMessageMeta;
+import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.utils.JObjectSerializableUtils;
 
-public class JMessageReceiver {
+class JDefaultMessageMetaReceiver {
 
 	private final JLogger LOGGER=JLoggerFactory.getLogger(this.getClass());
 	
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
-	protected JByteDecoder byteDecoder;
-	
 	protected final byte[] bytes;
 	
-	public JMessageReceiver(byte[] bytes) {
-		super();
+	/**
+	 * 
+	 * @param bytes the {@link JMessage} JSON string bytes
+	 */
+	public JDefaultMessageMetaReceiver(byte[] bytes) {
 		this.bytes = bytes;
 	}
 
-	public Object receive() {
+	public MessageMeta receive() {
 		try{
-			
 			JMessage message= JJSON.get().parse(new String(bytes,"utf-8"), JMessage.class);
-			byte[] bytes=base64Service.decodeBase64(message.getData());
-			if(byteDecoder!=null){
-				return byteDecoder.decode(bytes);
+			if(JEncoderRegisterService.JSON.equals(message.getDataByteEncoder())){
+				byte[] bytes=base64Service.decodeBase64(message.getData());
+				MessageMeta messageMeta=JJSON.get().parse(new String(bytes,"utf-8"), DefaultMessageMeta.class); 
+				return messageMeta;
 			}
-			return bytes;
+			else if(JEncoderRegisterService.OBJECT_BYTES.equals(message.getDataByteEncoder())){
+				byte[] bytes=base64Service.decodeBase64(message.getData());
+				MessageMeta messageMeta=JObjectSerializableUtils.deserialize(bytes, DefaultMessageMeta.class);
+				return messageMeta;
+			}
+			return null;
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 			throw new JDataExchangeException(e);
 		}
-	}
-	
-	public void setByteDecoder(JByteDecoder byteDecoder) {
-		this.byteDecoder = byteDecoder;
 	}
 	
 //	protected abstract byte[] doReceive() throws Exception;

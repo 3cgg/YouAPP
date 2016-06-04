@@ -1,5 +1,7 @@
 package j.jave.kernal.jave.sync;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
@@ -40,7 +42,8 @@ implements JService,JSyncMonitorWakeupListener
 		
 	}
 	
-	private int defaultWaitTime=10*1000;  //ten seconds.
+	private int defaultWaitTime=JConfiguration.get().getInt(
+			JProperties.SERVICE_CHANNEL_DATAE_XCHANGE_TIMEOUT, 10)*1000;
 	
 	public void sync(JSyncMonitor monitor,JCacheService cacheService){
 		sync(monitor,new JSyncConfig(defaultWaitTime), cacheService);
@@ -122,7 +125,15 @@ implements JService,JSyncMonitorWakeupListener
 		return this;
 	}
 
+	private JSyncEventQueuePipeline syncEventQueuePipeline=new JSyncEventQueuePipeline("-SYNC-MONITOR");
 
-
+	/**
+	 * asynchronize
+	 * @param event
+	 */
+	public void wakeup(JSyncMonitorWakeupEvent event){
+		syncEventQueuePipeline.addAPPEvent(event);
+	}
+	
 
 }

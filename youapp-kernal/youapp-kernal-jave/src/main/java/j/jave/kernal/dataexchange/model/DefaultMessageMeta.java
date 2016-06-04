@@ -1,13 +1,18 @@
-package j.jave.platform.standalone.interimpl;
+package j.jave.kernal.dataexchange.model;
 
-import j.jave.platform.standalone.data.MessageMeta;
 
 public class DefaultMessageMeta implements MessageMeta {
 
 	private String url;
 	
+	/**
+	 * the base64 string.
+	 */
 	private String data;
 	
+	/**
+	 * some encoder that encodes object the bytes of {@link #data()}
+	 */
 	private String dataEncoder;
 	
 	@Override
@@ -41,10 +46,19 @@ public class DefaultMessageMeta implements MessageMeta {
 		this.data = data;
 	}
 
+	/**
+	 * 
+	 * @return 
+	 * @see DefaultMessageMeta#dataEncoder
+	 */
 	public String getDataEncoder() {
 		return dataEncoder;
 	}
 
+	/**
+	 * @param dataEncoder
+	 * @see DefaultMessageMeta#dataEncoder
+	 */
 	public void setDataEncoder(String dataEncoder) {
 		this.dataEncoder = dataEncoder;
 	}

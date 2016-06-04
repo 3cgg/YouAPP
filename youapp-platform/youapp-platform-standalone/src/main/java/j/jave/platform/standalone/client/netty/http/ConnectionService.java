@@ -16,13 +16,16 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import j.jave.kernal.dataexchange.channel.JMessage;
-import j.jave.kernal.dataexchange.modelprotocol.JMessageHeadNames;
+import j.jave.kernal.dataexchange.impl.JMessageHeadNames;
+import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.sync.JSyncMonitor;
 import j.jave.kernal.jave.sync.JSyncMonitorRegisterService;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.platform.standalone.data.MessageMeta.MessageMetaNames;
 
 import java.net.URI;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +33,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 class ConnectionService {
 
+	private JLogger logger=JLoggerFactory.getLogger(JJSON.class);
+	
 	private final static JDefaultHashCacheService defaultHashCacheService=
 			JServiceHubDelegate.get().getService(new Object(), JDefaultHashCacheService.class);
 	
@@ -114,12 +119,16 @@ class ConnectionService {
         request.headers().set(HttpHeaderNames.HOST, host);
 //        request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.CLOSE);
         request.headers().set(HttpHeaderNames.ACCEPT_ENCODING, HttpHeaderValues.GZIP);
-        request.headers().set(JMessageHeadNames.DATA_ENCODER, 
-        		message.getDataByteEncoder()
+        request.headers().set(JMessageHeadNames.DATA_EXCHNAGE_IDENTIFIER, 
+        		JMessage.class.getName()
         		);
         request.headers().set(HttpHeaderNames.CONTENT_LENGTH, bytes.length);
         final String requestId=JUniqueUtils.unique();
         request.headers().set(MessageMetaNames.CONVERSATION_ID, requestId);
+        
+        if(logger.isDebugEnabled()){
+        	logger.debug("client-requset-content ["+requestId+"] : "+new String(bytes,"utf-8"));
+        }
         
         // Set some example cookies.
         request.headers().set(

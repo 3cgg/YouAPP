@@ -121,6 +121,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
             	String contentStr=content.toString(CharsetUtil.UTF_8);
             	if(JStringUtils.isNotNullOrEmpty(contentStr)){
         			dataStringBuilder.append(contentStr);
+        			System.out.println("accept data---->:"+contentStr);
         		}
                 buf.append("--part--"+contentStr+"--part--");
                 buf.append("\r\n");

@@ -29,7 +29,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 	public void testMul() throws Exception{
 		int ooo=0;
 		System.out.println(ooo);
-		for(int i=0;i<23;i++){
+		for(int i=0;i<129;i++){
 			new Thread(new Runnable() {
 				
 				@Override

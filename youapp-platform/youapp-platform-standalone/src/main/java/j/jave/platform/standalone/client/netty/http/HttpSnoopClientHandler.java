@@ -1,5 +1,6 @@
 package j.jave.platform.standalone.client.netty.http;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpContent;
@@ -12,6 +13,7 @@ import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.sync.JSyncMonitorRegisterService;
 import j.jave.kernal.jave.sync.JSyncMonitorWakeupEvent;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 
@@ -27,10 +29,8 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
 	
 	private StringBuffer stringBuffer=new StringBuffer();
 	
-	
-	private boolean isKeepLive=true;
-	
 	private HttpResponse response;
+	
     @Override
     public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) {
         if (msg instanceof HttpResponse) {
@@ -39,8 +39,6 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
             stringBuffer.append("STATUS: " + response.status());
             stringBuffer.append("VERSION: " + response.protocolVersion());
             stringBuffer.append("\r\n");
-            
-            isKeepLive=HttpUtil.isKeepAlive(response);
             
             if (!response.headers().isEmpty()) {
                 for (String name: response.headers().names()) {
@@ -58,18 +56,19 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
             }
         }
         if (msg instanceof HttpContent) {
-            HttpContent content = (HttpContent) msg;
-            if(!(content instanceof LastHttpContent)){
-            	if(!isKeepLive){
-            		data=content.content().toString(CharsetUtil.UTF_8);
-            	}
-            	stringBuffer.append(data);
+            HttpContent httpContent = (HttpContent) msg;
+
+            ByteBuf content = httpContent.content();
+            if (content.isReadable()) {
+            	String contentStr=content.toString(CharsetUtil.UTF_8);
+            	if(JStringUtils.isNotNullOrEmpty(contentStr)){
+        			data=contentStr;
+        		}
+            	stringBuffer.append(contentStr);
+            	stringBuffer.append("\r\n");
             }
-            if (content instanceof LastHttpContent) {
+            if (httpContent instanceof LastHttpContent) {
                 stringBuffer.append("} END OF CONTENT");
-                if(isKeepLive){
-                	data=content.content().toString(CharsetUtil.UTF_8);
-                }
 //                ctx.close();
             String requestId=response.headers().get(
             		MessageMetaNames.CONVERSATION_ID, MessageMetaNames.CONVERSATION_ID_MISSING);

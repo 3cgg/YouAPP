@@ -18,6 +18,7 @@ public class HttpSnoopServerInitializer extends ChannelInitializer<SocketChannel
     @Override
     public void initChannel(SocketChannel ch) {
         ChannelPipeline p = ch.pipeline();
+        System.out.println("---server channel->"+ch);
         if (sslCtx != null) {
             p.addLast(sslCtx.newHandler(ch.alloc()));
         }

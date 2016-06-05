@@ -3,7 +3,6 @@ package j.jave.kernal.jave.sync;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JCacheService;
@@ -102,7 +101,7 @@ implements JService,JSyncMonitorWakeupListener
 				return false;
 			}
 			event.setCount(count+1);
-			JServiceHubDelegate.get().addDelayEvent(event);
+			syncEventQueuePipeline.addAPPEvent(event);
 			return false;
 		}
 		

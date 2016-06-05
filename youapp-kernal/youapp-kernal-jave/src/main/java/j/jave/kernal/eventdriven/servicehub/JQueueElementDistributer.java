@@ -128,7 +128,7 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 										int index=0;
 										@Override
 										public Thread newThread(Runnable r) {
-											return new Thread(r,"queue-ele-execute-thread-"+(++index));
+											return new Thread(r,"queue-element-execute-thread-("+(getName())+")-"+(++index));
 										}
 									},new ThreadPoolExecutor.AbortPolicy());
 				}

@@ -46,7 +46,7 @@ class JServiceEventProcessor {
 		return eventProcessor;
 	}
 
-	private JEventQueuePipeline eventQueuePipeChain=new JEventQueuePipeline("-EVENT-CORE");
+	private JEventQueuePipeline eventQueuePipeline=new JEventQueuePipeline("EVENT-CORE");
 
 	/*
 	 * others begin
@@ -125,7 +125,7 @@ class JServiceEventProcessor {
 				JAPPEventOperator.addAttachedAsyncCallback(event, asyncCallback);
 			}
 		}
-		eventQueuePipeChain.addAPPEvent(event);
+		eventQueuePipeline.addAPPEvent(event);
 	}
 	
 	

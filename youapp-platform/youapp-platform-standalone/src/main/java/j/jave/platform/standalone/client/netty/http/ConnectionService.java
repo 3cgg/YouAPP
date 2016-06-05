@@ -17,8 +17,10 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import j.jave.kernal.dataexchange.channel.JMessage;
 import j.jave.kernal.dataexchange.impl.JMessageHeadNames;
+import j.jave.kernal.dataexchange.model.DefaultMessageMeta;
 import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -122,12 +124,23 @@ class ConnectionService {
         request.headers().set(JMessageHeadNames.DATA_EXCHNAGE_IDENTIFIER, 
         		JMessage.class.getName()
         		);
+
         request.headers().set(HttpHeaderNames.CONTENT_LENGTH, bytes.length);
         final String requestId=JUniqueUtils.unique();
         request.headers().set(MessageMetaNames.CONVERSATION_ID, requestId);
         
         if(logger.isDebugEnabled()){
-        	logger.debug("client-requset-content ["+requestId+"] : "+new String(bytes,"utf-8"));
+        	String s=new String(bytes,"utf-8");
+        	logger.debug("client-requset-content ["+requestId+"] : "+s);
+        	String base64Str=JJSON.get().parse(s, JMessage.class).getData();
+        	byte[] realDataBytes=JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(base64Str);
+        	
+        	s=new String(realDataBytes,"utf-8");
+        	base64Str=JJSON.get().parse(s, DefaultMessageMeta.class).getData();
+        	realDataBytes=JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(base64Str);
+        
+        	logger.debug("request real data->"+new String(realDataBytes,"utf-8"));
+        	
         }
         
         // Set some example cookies.

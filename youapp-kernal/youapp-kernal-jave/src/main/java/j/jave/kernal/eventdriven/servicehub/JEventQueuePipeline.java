@@ -40,7 +40,7 @@ public class JEventQueuePipeline {
 		this.name = name;
 	}
 
-	protected void initPipe(){
+	protected void initPipeline(){
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEventResultGettingPipe.class, ++order);
@@ -62,7 +62,7 @@ public class JEventQueuePipeline {
 	
 	public JEventQueuePipeline(String name){
 		this.name=name;
-		initPipe();
+		initPipeline();
 	}
 	
 	
@@ -71,7 +71,8 @@ public class JEventQueuePipeline {
 			JEventQueuePipe eventQueuePipe= clazz.newInstance();
 			eventQueuePipe.setOrder(order);
 			eventQueuePipe.setName(name);
-			eventQueuePipe.setEventQueuePipeChain(this);
+			eventQueuePipe.setEventQueuePipeline(this);
+			eventQueuePipe.initialize();
 			eventQueuePipes.add(eventQueuePipe);
 			return eventQueuePipe;
 		} catch (Exception e) {

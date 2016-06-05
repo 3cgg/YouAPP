@@ -29,7 +29,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 	public void testMul() throws Exception{
 		int ooo=0;
 		System.out.println(ooo);
-		for(int i=0;i<109;i++){
+		for(int i=0;i<23;i++){
 			new Thread(new Runnable() {
 				
 				@Override
@@ -63,8 +63,10 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			pageRequest.setPageSize(9999);
 			
 			map.put("page", pageRequest);
-			
-			map.put("name", "BMW-"+count++);
+			synchronized (this) {
+				map.put("name", "BMW-"+count++);
+				System.out.println("============>"+map.get("name"));
+			}
 			
 			String base64String=base64Service.encodeBase64String(JJSON.get().formatObject(map).getBytes("utf-8"));
 			

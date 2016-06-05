@@ -13,12 +13,12 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
  */
 public abstract class JEventQueuePipe {
 	
-	/**
-	 * be put in the pipe chain.
-	 */
-	private JEventQueuePipeline eventQueuePipeChain;
-	
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
+	
+	/**
+	 * be put in the pipeline.
+	 */
+	private JEventQueuePipeline eventQueuePipeline;
 	
 	/**
 	 * the unique identification realted to this pipe.
@@ -35,9 +35,18 @@ public abstract class JEventQueuePipe {
 	 */
 	private String name;
 	
-	private final JEventExecutionQueueElementDistributer queueDistributeProcessor
-	=new JEventExecutionQueueElementDistributer(getHandler(),getQueueDistributeProcessorConfig(),this);
+	private JEventExecutionQueueElementDistributer queueDistributeProcessor;
 	
+	public JEventQueuePipe() {
+	}
+	
+	void initialize(){
+		JQueueDistributeProcessorConfig config=getQueueDistributeProcessorConfig();
+		config.setName(config.getName()+"-"+getName());
+		queueDistributeProcessor
+		=new JEventExecutionQueueElementDistributer(getHandler(),config,this);
+	}
+
 	/**
 	 * configure the queue distributing processor
 	 * @return
@@ -51,7 +60,7 @@ public abstract class JEventQueuePipe {
 	protected abstract JAbstractEventExecutionHandler getHandler();
 	
 	private final JEventQueuePipe next(){
-		return eventQueuePipeChain.next(this);
+		return eventQueuePipeline.next(this);
 	}
 	
 	/**
@@ -121,8 +130,8 @@ public abstract class JEventQueuePipe {
 		this.order = order;
 	}
 	
-	void setEventQueuePipeChain(JEventQueuePipeline eventQueuePipeChain) {
-		this.eventQueuePipeChain = eventQueuePipeChain;
+	void setEventQueuePipeline(JEventQueuePipeline eventQueuePipeline) {
+		this.eventQueuePipeline = eventQueuePipeline;
 	}
 	
 	public String getName() {

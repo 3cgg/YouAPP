@@ -29,6 +29,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -40,6 +41,9 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 
 	private static final JLogger logger=JLoggerFactory.getLogger(HttpSnoopServerHandler.class);
 	
+	public HttpSnoopServerHandler() {
+		System.out.println("-----------initialize server handler-----"+JUniqueUtils.unique());
+	}
 	
     private HttpRequest request;
     /** Buffer that stores the response content */
@@ -58,6 +62,13 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
+    	if(logger.isDebugEnabled()){
+    		if(JStringUtils.isNotNullOrEmpty(dataStringBuilder.toString())){
+        		logger.debug("=========has data ========="+dataStringBuilder.toString());
+        	}
+    	}
+    	
+    	
         if (msg instanceof HttpRequest) {
             HttpRequest request = this.request = (HttpRequest) msg;
 

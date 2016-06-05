@@ -7,15 +7,14 @@ import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline;
 public class JSyncEventQueuePipeline extends JEventQueuePipeline {
 
 	public JSyncEventQueuePipeline(String name) {
-		super(name);
+		super("Sync-Monitor");
 	}
 	
 	@Override
-	protected void initPipe() {
+	protected void initPipeline() {
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
 		register(JEventQueueEndPipe.class, ++order);
-		setName("Sync-Monitor");
 	}
 	
 	@Override

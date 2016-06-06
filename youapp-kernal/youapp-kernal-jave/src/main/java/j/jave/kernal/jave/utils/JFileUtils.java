@@ -105,8 +105,17 @@ public abstract class JFileUtils {
 	public static byte[] getBytes(File file) {
 		try {
 
-			if (file == null || !file.isFile())
+			if (file == null ){
 				return null;
+			}
+			
+			if(!file.exists()){
+				throw new IllegalArgumentException("the file does not exist.");
+			}
+			
+			if(file.exists()&&file.isDirectory()){
+				throw new IllegalArgumentException("the file is directory : "+file.getPath());
+			}
 
 			ByteArrayOutputStream bos = null;
 			FileInputStream fis = null;

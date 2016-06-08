@@ -1,5 +1,6 @@
 package test.com.youappcorp.project.param;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
@@ -17,6 +18,10 @@ import com.youappcorp.project.param.service.ParamService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-context.xml"})
 public class TestJpaParam {
+	
+	static {
+		JServiceFactoryManager.get().registerAllServices();
+	}
 	
 	@Autowired
 	private TestJpaParamServiceImpl paramService;

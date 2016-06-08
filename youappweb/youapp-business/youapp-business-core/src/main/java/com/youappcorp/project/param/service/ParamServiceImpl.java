@@ -43,13 +43,31 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	@Autowired
 	private ParamTypeJPARepo paramTypeJPARepo;
 	
+//	@Autowired
+//	private UserService userService;
+	
 	@Override
 	public void saveParam(ServiceContext context, ParamType paramType,
 			ParamCode paramCode) throws BusinessException {
 		try{
+			
 			saveParamType(context, paramType);
 			paramCode.setTypeId(paramType.getId());
 			internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			
+			
+//			User user=new User();
+//			user.setUserName("test-user-name-"+new java.util.Date().getTime());
+//			userService.saveUser(context, user);
+//			
+//
+//			if(user!=null){
+//				throw new RuntimeException("ROLL-------------");
+//			}
+			
+			
+			
+			System.out.println("OK");
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);

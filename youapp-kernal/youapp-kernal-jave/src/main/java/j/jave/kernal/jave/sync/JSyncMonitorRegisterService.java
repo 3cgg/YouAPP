@@ -52,6 +52,10 @@ implements JService,JSyncMonitorWakeupListener
 		sync(monitor,syncConfig, null);
 	}
 	
+	public void sync(JSyncMonitor monitor){
+		sync(monitor, new JSyncConfig(defaultWaitTime));
+	}
+	
 	private ReentrantLock lock=new ReentrantLock();
 	
 	public void sync(JSyncMonitor monitor, JSyncConfig syncConfig,JCacheService cacheService ){

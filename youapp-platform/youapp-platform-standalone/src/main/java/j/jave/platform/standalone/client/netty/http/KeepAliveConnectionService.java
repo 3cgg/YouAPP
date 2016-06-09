@@ -7,10 +7,12 @@ import j.jave.kernal.dataexchange.channel.JMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeepAliveConnectionService implements ConnectionService {
-
-	private DefaultConnectionService defaultConnectionService;
+public class KeepAliveConnectionService extends AbstractConnectionService {
 	
+	public KeepAliveConnectionService(String url) {
+		super(url);
+	}
+
 	@Override
 	public byte[] request(JMessage message, Map<String, Object> heads,
 			byte[] bytes) throws Exception {
@@ -23,7 +25,6 @@ public class KeepAliveConnectionService implements ConnectionService {
 
 	@Override
 	public ConnectionService connect(String url) throws Exception {
-		defaultConnectionService=DefaultConnectionService.get(url);
 		defaultConnectionService.connect();
 		return this;
 	}

@@ -11,6 +11,7 @@ import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 	public void testMul() throws Exception{
 		int ooo=0;
 		System.out.println(ooo);
-		for(int i=0;i<129;i++){
+		for(int i=0;i<159;i++){
 			new Thread(new Runnable() {
 				
 				@Override
@@ -54,15 +55,15 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			
 			
 			Map<String, Object> map=new HashMap<String, Object>();
-			map.put("default", JConfiguration.get());
-			map.put("a", "b");
-			map.put("h", 90);
-			
-			JPageRequest pageRequest=new JPageRequest();
-			pageRequest.setPageNumber(1111);
-			pageRequest.setPageSize(9999);
-			
-			map.put("page", pageRequest);
+			map.put(JUniqueUtils.unique(), JUniqueUtils.unique());
+//			map.put("a", "b");
+//			map.put("h", 90);
+//			
+//			JPageRequest pageRequest=new JPageRequest();
+//			pageRequest.setPageNumber(1111);
+//			pageRequest.setPageSize(9999);
+//			
+//			map.put("page", pageRequest);
 			synchronized (this) {
 				map.put("name", "BMW-"+count++);
 				System.out.println("============>"+map.get("name"));

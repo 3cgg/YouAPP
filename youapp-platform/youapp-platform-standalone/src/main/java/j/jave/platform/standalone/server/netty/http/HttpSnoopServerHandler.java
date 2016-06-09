@@ -28,10 +28,12 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -53,6 +55,11 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
     
     private ServerExecutorService serverExecutorService=JServiceHubDelegate.get()
 			.getService(this, ServerExecutorService.class);
+	
+    private volatile String currentUnique;
+
+    private JDefaultHashCacheService hashCacheService=JServiceHubDelegate.get()
+			.getService(this, JDefaultHashCacheService.class);
 	
     
     @Override
@@ -95,7 +102,12 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
                 }
                 buf.append("\r\n");
             }
-
+            
+            String unique=headers.get(MessageMetaNames.CONVERSATION_ID);
+            
+            currentUnique=unique;
+            hashCacheService.putNeverExpired(currentUnique, "");
+            
             QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
             Map<String, List<String>> params = queryStringDecoder.parameters();
             if (!params.isEmpty()) {
@@ -119,8 +131,10 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
             if (content.isReadable()) {
             	buf.append("CONTENT: ");
             	String contentStr=content.toString(CharsetUtil.UTF_8);
+            	System.out.println("rrrrrqqqqqqqqqsssssssttttt==>LastHttpContent("+(msg instanceof LastHttpContent)+")"+contentStr);
             	if(JStringUtils.isNotNullOrEmpty(contentStr)){
         			dataStringBuilder.append(contentStr);
+        			hashCacheService.putNeverExpired(currentUnique, hashCacheService.get(currentUnique)+contentStr);
         			System.out.println("accept data---->:"+contentStr);
         		}
                 buf.append("--part--"+contentStr+"--part--");
@@ -142,7 +156,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
                     }
                     buf.append("\r\n");
                 }
-
+                System.out.println("fffffffffuuuuuuuuullllllllll===>"+hashCacheService.get(currentUnique));
                 if (!writeResponse(trailer, ctx)) {
                     // If keep-alive is off, close the connection once the content is fully written.
                     ctx.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
@@ -165,7 +179,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
     private boolean writeResponse(HttpObject currentObj, ChannelHandlerContext ctx) {
     	byte[] bytes=null;
     	try{
-    		Object object=serverExecutorService.execute(dataStringBuilder.toString().getBytes("utf-8"));
+    		Object object=serverExecutorService.execute(String.valueOf(hashCacheService.get(currentUnique)).getBytes("utf-8"));
     		bytes=JJSON.get().formatObject(object).getBytes("utf-8");
     	}catch(Exception e){
     		if(logger.isDebugEnabled()){

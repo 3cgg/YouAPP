@@ -26,11 +26,23 @@ class ConnectionPoolService {
 			if(logger.isDebugEnabled()){
 				logger.debug("got keep-alive connection from pool : "+url);
 			}
-			return connectionServices.get(unique);
+			ConnectionService connectionService= connectionServices.get(unique);
+			if(connectionService.isActive()){
+				return connectionService;
+			}
 		}
 		initializeConnectionLock.lockInterruptibly();
 		try{
-			ConnectionService connectionService=  new KeepAliveConnectionService();
+			if(connectionServices.containsKey(unique)){
+				ConnectionService connectionService= connectionServices.get(unique);
+				if(connectionService.isActive()){
+					return connectionService;
+				}
+			}
+			connectionServices.remove(unique);
+			ConnectionService connectionService=  new KeepAliveConnectionService(url);
+			connectionService.connect(url);
+			connectionService.await();
 			connectionServices.put(unique, connectionService);
 			return connectionService;
 		}finally{

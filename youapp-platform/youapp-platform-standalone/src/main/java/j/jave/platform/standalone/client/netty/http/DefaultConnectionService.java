@@ -3,10 +3,17 @@ package j.jave.platform.standalone.client.netty.http;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpContentDecompressor;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
@@ -24,8 +31,12 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
+import j.jave.kernal.jave.sync.JDefaultSyncMonitor;
+import j.jave.kernal.jave.sync.JSyncConfig;
 import j.jave.kernal.jave.sync.JSyncMonitor;
 import j.jave.kernal.jave.sync.JSyncMonitorRegisterService;
+import j.jave.kernal.jave.sync.JSyncMonitorWakeupEvent;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.net.URI;
@@ -51,16 +62,92 @@ class DefaultConnectionService {
 	private URI uri=null;
 	
 	// Make the connection attempt.
-    private Channel ch =null;
+    private volatile Channel ch =null;
 	
-	private DefaultConnectionService(String url) {
+    private volatile String asyncChannelActiveNotifyUnique;
+    
+	DefaultConnectionService(String url) {
 		this.url = url;
 	}
 	
-	public static DefaultConnectionService get(String url) throws Exception{
-		return new DefaultConnectionService(url);
+	private class HttpSnoopClientInitializer extends ChannelInitializer<SocketChannel> {
+
+	    private final SslContext sslCtx;
+
+	    public HttpSnoopClientInitializer(SslContext sslCtx) {
+	        this.sslCtx = sslCtx;
+	    }
+
+	    @Override
+	    public void initChannel(SocketChannel ch) {
+	        ChannelPipeline p = ch.pipeline();
+
+	        // Enable HTTPS if necessary.
+	        if (sslCtx != null) {
+	            p.addLast(sslCtx.newHandler(ch.alloc()));
+	        }
+
+	        p.addLast(new HttpClientCodec());
+
+	        // Remove the following line if you don't want automatic content decompression.
+	        p.addLast(new HttpContentDecompressor());
+
+	        // Uncomment the following line if you don't want to handle HttpContents.
+	        //p.addLast(new HttpObjectAggregator(1048576));
+
+	        p.addLast(new HttpSnoopClientHandler());
+	        
+	        p.addLast(new ChannelInboundHandlerAdapter(){
+	        	@Override
+	        	public void channelActive(ChannelHandlerContext ctx)
+	        			throws Exception {
+	        		super.channelActive(ctx);
+	        		if(JStringUtils.isNotNullOrEmpty(asyncChannelActiveNotifyUnique)){
+	        			syncMonitorRegisterService.wakeup(new JSyncMonitorWakeupEvent(this, asyncChannelActiveNotifyUnique));
+	        		}
+	        	}
+	        });
+	    }
 	}
 	
+	/**
+	 * await until the channel is active before timeout.
+	 * @return
+	 * @see DefaultConnectionService#isActive()
+	 */
+	public DefaultConnectionService await(int timeout){
+		
+		if(isActive()){
+			return this;
+		}
+		boolean forceWait=timeout<1;
+		do{
+			final JDefaultSyncMonitor defaultSyncMonitor=new JDefaultSyncMonitor();
+			this.asyncChannelActiveNotifyUnique=defaultSyncMonitor.unique();
+	        syncMonitorRegisterService.sync(defaultSyncMonitor,new JSyncConfig(timeout));
+		}while(forceWait);
+
+		if(isActive()){
+        	return this;
+        }
+        else{
+        	throw new IllegalStateException("Channle is not active.");
+        }
+	}
+	
+	/**
+	 * throw {@link IllegalStateException} if channel is not connected or registered.
+	 * @throws IllegalStateException 
+	 * @return
+	 */
+	boolean isActive(){
+		if(ch==null){
+			throw new IllegalStateException("Channel is not connected/registered.");
+		}
+		else{
+			return ch.isActive();
+		}
+	}
     
     private static class ChannelFutureSync implements JSyncMonitor{
     	
@@ -89,7 +176,7 @@ class DefaultConnectionService {
         request.headers().set(HttpHeaderNames.HOST, host);
         Object headVal=null;
         //is keep-alive
-        if((headVal=heads.get(HttpHeaderNames.CONNECTION))!=null){
+        if((headVal=heads.get(HttpHeaderNames.CONNECTION.toString()))!=null){
         	request.headers().set(HttpHeaderNames.CONNECTION, String.valueOf(headVal));
         }
         

@@ -18,4 +18,14 @@ interface ConnectionService {
 
 	ConnectionService connect(String url) throws Exception;
 
+	public boolean isActive();
+	
+	public ConnectionService await(int timeout);
+	
+	/**
+	 * forward to {@link #await(int)} , await until the connection is active.
+	 * @return
+	 */
+	public ConnectionService await();
+	
 }

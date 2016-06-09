@@ -7,9 +7,11 @@ import j.jave.kernal.dataexchange.channel.JMessage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OnceConnectionService implements ConnectionService {
+public class OnceConnectionService extends AbstractConnectionService {
 
-	private DefaultConnectionService defaultConnectionService;
+	public OnceConnectionService(String url) {
+		super(url);
+	}
 	
 	@Override
 	public byte[] request(JMessage message, Map<String, Object> heads,
@@ -23,7 +25,6 @@ public class OnceConnectionService implements ConnectionService {
 
 	@Override
 	public ConnectionService connect(String url) throws Exception {
-		defaultConnectionService=DefaultConnectionService.get(url);
 		defaultConnectionService.connect();
 		return this;
 	}

@@ -7,6 +7,10 @@ public class JSyncConfig {
 	public JSyncConfig() {
 	}
 	
+	/**
+	 *  in milliseconds
+	 * @param waitTime in milliseconds
+	 */
 	public JSyncConfig(int waitTime) {
 		super();
 		this.waitTime = waitTime;

@@ -26,6 +26,7 @@ import j.jave.kernal.dataexchange.impl.JMessageHeadNames;
 import j.jave.kernal.dataexchange.model.DefaultMessageMeta;
 import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
@@ -41,7 +42,6 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 class DefaultConnectionService {
 
@@ -52,6 +52,8 @@ class DefaultConnectionService {
 	
 	private final static JSyncMonitorRegisterService syncMonitorRegisterService=
 			JServiceHubDelegate.get().getService(new Object(), JSyncMonitorRegisterService.class);
+	
+	private final static JBase64 BASE64=JBase64FactoryProvider.getBase64Factory().getBase64();
 	
 	private String url;
 	
@@ -131,7 +133,7 @@ class DefaultConnectionService {
         	return this;
         }
         else{
-        	throw new IllegalStateException("Channle is not active.");
+        	throw new IllegalStateException("Channel is not active.");
         }
 	}
 	
@@ -194,13 +196,13 @@ class DefaultConnectionService {
         		String s=new String(bytes,"utf-8");
             	logger.debug("client-requset-content ["+requestId+"] : "+s);
             	String base64Str=JJSON.get().parse(s, JMessage.class).getData();
-            	byte[] realDataBytes=JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(base64Str);
+            	byte[] realDataBytes=BASE64.decodeBase64(base64Str);
             	
             	s=new String(realDataBytes,"utf-8");
             	base64Str=JJSON.get().parse(s, DefaultMessageMeta.class).getData();
-            	realDataBytes=JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(base64Str);
+            	realDataBytes=BASE64.decodeBase64(base64Str);
             
-            	logger.debug("request real data->"+new String(realDataBytes,"utf-8"));
+            	logger.debug("client-requset-content-inner-data ["+requestId+"] : "+new String(realDataBytes,"utf-8"));
         	}catch(Exception e){
         	}
         }
@@ -225,24 +227,12 @@ class DefaultConnectionService {
 //		});
         final ChannelFutureSync sync=new ChannelFutureSync(requestId);
         syncMonitorRegisterService.sync(sync, defaultHashCacheService);
-        return ((String)defaultHashCacheService.get(requestId)).getBytes("utf-8");
+        ResponseContext responseContext=(ResponseContext) defaultHashCacheService.get(requestId);
+        return responseContext.getRealData().getBytes("utf-8");
     }
     
-    private ReentrantLock lock=new ReentrantLock();
-    
 	public void connect() throws Exception {
-    	
-    	if(ch==null
-    			||(ch!=null&&!ch.isActive())){
-    		lock.lockInterruptibly();
-    		try{
-    			retryConnect();
-    		}finally{
-    			if(lock.isHeldByCurrentThread()){
-    				lock.unlock();
-    			}
-    		}
-    	}
+		retryConnect();
     }
     
 	public static int getPort(URI uri){

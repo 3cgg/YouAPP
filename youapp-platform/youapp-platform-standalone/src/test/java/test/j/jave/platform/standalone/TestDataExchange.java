@@ -1,6 +1,5 @@
 package test.j.jave.platform.standalone;
 
-import j.jave.kernal.JConfiguration;
 import j.jave.kernal.dataexchange.impl.JByteDecoder;
 import j.jave.kernal.dataexchange.impl.JDefaultMessageMetaSenderBuilder;
 import j.jave.kernal.dataexchange.impl.JEncoderRegisterService;
@@ -30,7 +29,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 	public void testMul() throws Exception{
 		int ooo=0;
 		System.out.println(ooo);
-		for(int i=0;i<159;i++){
+		for(int i=0;i<173;i++){
 			new Thread(new Runnable() {
 				
 				@Override
@@ -56,14 +55,14 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			
 			Map<String, Object> map=new HashMap<String, Object>();
 			map.put(JUniqueUtils.unique(), JUniqueUtils.unique());
-//			map.put("a", "b");
-//			map.put("h", 90);
-//			
-//			JPageRequest pageRequest=new JPageRequest();
-//			pageRequest.setPageNumber(1111);
-//			pageRequest.setPageSize(9999);
-//			
-//			map.put("page", pageRequest);
+			map.put("a", "b");
+			map.put("h", 90);
+			
+			JPageRequest pageRequest=new JPageRequest();
+			pageRequest.setPageNumber(1111);
+			pageRequest.setPageSize(9999);
+			
+			map.put("page", pageRequest);
 			synchronized (this) {
 				map.put("name", "BMW-"+count++);
 				System.out.println("============>"+map.get("name"));

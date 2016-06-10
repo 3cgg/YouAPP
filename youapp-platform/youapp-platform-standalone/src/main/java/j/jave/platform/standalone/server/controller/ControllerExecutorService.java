@@ -58,7 +58,7 @@ implements JService {
 					mappingMeta.getMethodParamClasses(), argums);
 			if(LOGGER.isDebugEnabled()){
 				try{
-					LOGGER.debug("time of processing request in action is :"+JDateUtils.getTimeOffset(stopWatch.getTime()));
+					LOGGER.debug("time of processing request in controller is :"+stopWatch.getTime()+" - "+JDateUtils.getTimeOffset(stopWatch.getTime()));
 				}catch(Exception e){
 					LOGGER.error("error to get time.");
 				}

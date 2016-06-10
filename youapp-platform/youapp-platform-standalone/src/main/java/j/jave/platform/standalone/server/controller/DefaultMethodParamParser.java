@@ -26,10 +26,13 @@ public class DefaultMethodParamParser implements MethodParamParser {
 			MappingMeta mappingMeta, byte[] data) throws Exception{
 		MethodParamMeta[] methodParamMetas= mappingMeta.getMethodParams();
 		Object[] params=new Object[methodParamMetas.length];
+		
+		String jsonString=new String(data,"UTF-8");
+		
 		if(logger.isDebugEnabled()){
-			logger.debug("real data->:"+new String(data,"UTF-8"));
+			logger.debug("the data that is passed to the controller :"+jsonString);
 		}
-		Map map= JJSON.get().parse(new String(data,"UTF-8"));
+		Map map= JJSON.get().parse(jsonString);
 		for(int i=0;i<methodParamMetas.length;i++){
 			MethodParamMeta methodParamMeta=methodParamMetas[i];
 			String name=methodParamMeta.getName();

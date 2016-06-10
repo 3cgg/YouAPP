@@ -2,6 +2,7 @@ package j.jave.kernal.jave.sync;
 
 import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JEventQueueEventExecutingPipe;
+import j.jave.kernal.eventdriven.servicehub.JEventQueueEventResultCallBackPipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline;
 
 public class JSyncEventQueuePipeline extends JEventQueuePipeline {
@@ -14,6 +15,7 @@ public class JSyncEventQueuePipeline extends JEventQueuePipeline {
 	protected void initPipeline() {
 		int order=-1; 
 		register(JEventQueueEventExecutingPipe.class, ++order);
+		register(JEventQueueEventResultCallBackPipe.class, ++order);
 		register(JEventQueueEndPipe.class, ++order);
 	}
 	

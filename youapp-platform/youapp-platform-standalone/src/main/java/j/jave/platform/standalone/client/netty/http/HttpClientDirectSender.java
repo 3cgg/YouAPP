@@ -9,6 +9,7 @@ public class HttpClientDirectSender extends JDirectSender {
 	protected byte[] doSend(JMessage message) throws Exception {
 //		ConnectionService connectionService= new OnceConnectionService(message.getUrl());
 //		connectionService.connect(message.getUrl());
+//		connectionService.await();
 		
 		ConnectionService connectionService= ConnectionPoolService.get(message.getUrl());
 		

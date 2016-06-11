@@ -1,6 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JQueueElement;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer.JQueueElementDistributerConfig;
@@ -76,15 +76,15 @@ implements JServiceMonitorService{
 	
 	
 	private static class TemporayObject implements JQueueElement ,Comparable<TemporayObject>{
-		private JAPPEvent<?> event;
+		private JYouAPPEvent<?> event;
 		
 		private TemporayCallback temporayCallback;
 		
-		public TemporayObject(JAPPEvent<?> event) {
+		public TemporayObject(JYouAPPEvent<?> event) {
 			this.event = event;
 		}
 		
-		public TemporayObject(JAPPEvent<?> event,TemporayCallback temporayCallback) {
+		public TemporayObject(JYouAPPEvent<?> event,TemporayCallback temporayCallback) {
 			this.event = event;
 			this.temporayCallback=temporayCallback;
 		}

@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.filedistribute.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 import j.jave.kernal.jave.io.JFile;
 
@@ -12,7 +12,7 @@ import j.jave.kernal.jave.io.JFile;
  * @author J
  */
 @JListenerOnEvent(name=JFileDistStoreListener.class)
-public class JFileDistStoreEvent extends JAPPEvent<JFileDistStoreEvent> {
+public class JFileDistStoreEvent extends JYouAPPEvent<JFileDistStoreEvent> {
 
 	private JFile file;
 	

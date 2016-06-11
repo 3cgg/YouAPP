@@ -101,7 +101,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	 * @param event
 	 * @return <code>EventExecutionResult</code> , all listener returned. at least an empty object array if no listener found.
 	 */ 
-	public EventExecutionResult executeEventOnListener(JAPPEvent<?> event){
+	public EventExecutionResult executeEventOnListener(JYouAPPEvent<?> event){
 		EventExecutionResult eventExecutionResult=new EventExecutionResult();
 		try{
 			Object[] objects=null;
@@ -204,7 +204,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		
 		services.put(clazz, serviceFactory);
 		serviceHubManager.addNewService(clazz);
-		trigger(new JServiceListenerDetectEvent(this, JAPPEvent.HIGEST, clazz,serviceFactory.getClass()));
+		trigger(new JServiceListenerDetectEvent(this, JYouAPPEvent.HIGEST, clazz,serviceFactory.getClass()));
 		return true;
 	}
 	

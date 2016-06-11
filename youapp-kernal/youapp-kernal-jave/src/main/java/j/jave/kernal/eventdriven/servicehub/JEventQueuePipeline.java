@@ -137,7 +137,7 @@ public class JEventQueuePipeline {
 	 * JAPPEvent entrance.
 	 * @param appEvent
 	 */
-	protected void addAPPEvent(JAPPEvent<? > appEvent){
+	protected void addAPPEvent(JYouAPPEvent<? > appEvent){
 		JEventQueuePipe eventQueuePipe=next(null);
 		try{
 			eventQueuePipe.addAPPEvent(appEvent);

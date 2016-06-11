@@ -83,17 +83,17 @@ class JServiceEventProcessor {
 	 * put the event in the event queue, can release the thread, i.e. asynchronous
 	 * @param event
 	 */
-	public void addDelayEvent(JAPPEvent<?> event){
-		addDelayEvent(event, null, false);
+	public void addDelayEvent(JYouAPPEvent<?> event){
+		addDelayEvent(event, JYouAPPEvent.NOTHING, false);
 	}
 	
 	/**
 	 * put the event in the event queue, can release the thread, i.e. asynchronous
-	 * the method is the same as {@link #addDelayEvent(JAPPEvent, JAsyncCallback, override)} with the override parameter default true
+	 * the method is the same as {@link #addDelayEvent(JYouAPPEvent, JAsyncCallback, override)} with the override parameter default true
 	 * @param event
 	 * @param asyncCallback 
 	 */
-	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback){
+	public void addDelayEvent(JYouAPPEvent<?> event,JAsyncCallback asyncCallback){
 		addDelayEvent(event, asyncCallback, true);
 	}
 	
@@ -103,28 +103,8 @@ class JServiceEventProcessor {
 	 * @param asyncCallback 
 	 * @param override if override the predefined callback if any.
 	 */
-	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
-		
-		//clear the callback chain.
-		JAPPEventOperator.clearAttachedAsyncCallbackChain(event);
-		
-		if(override){
-			//put the custom callback.
-			if(asyncCallback!=null){
-				JAPPEventOperator.addAttachedAsyncCallback(event, asyncCallback);
-			}
-		}
-		else{
-			// put predefined callback into the callback chain.
-			if(event.getAsyncCallback()!=null){
-				JAPPEventOperator.addAttachedAsyncCallback(event, event.getAsyncCallback());
-			}
-			
-			//put the custom callback.
-			if(asyncCallback!=null){
-				JAPPEventOperator.addAttachedAsyncCallback(event, asyncCallback);
-			}
-		}
+	public void addDelayEvent(JYouAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
+		event.addAsyncCallback(asyncCallback, override);
 		eventQueuePipeline.addAPPEvent(event);
 	}
 	
@@ -134,7 +114,7 @@ class JServiceEventProcessor {
 	 * @param event
 	 * @return EventExecutionResult , all listener returned. at least an empty object array if no listener found.
 	 */
-	public EventExecutionResult addImmediateEvent(JAPPEvent<?> event){
+	public EventExecutionResult addImmediateEvent(JYouAPPEvent<?> event){
 		return serviceHub.executeEventOnListener(event);
 	}
 	

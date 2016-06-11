@@ -11,7 +11,7 @@ package j.jave.kernal.eventdriven.servicehub;
  */
 @SuppressWarnings("serial")
 @JListenerOnEvent(name=JServiceGetListener.class)
-class JServiceGetEvent extends JAPPEvent<JServiceGetEvent> {
+class JServiceGetEvent extends JYouAPPEvent<JServiceGetEvent> {
 
 	private final Class<?> serviceName;
 	

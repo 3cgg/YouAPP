@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.container.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JContainerUniquesGetListener.class)
-public class JContainerUniquesGetEvent extends JAPPEvent<JContainerUniquesGetEvent> {
+public class JContainerUniquesGetEvent extends JYouAPPEvent<JContainerUniquesGetEvent> {
 	
 	public JContainerUniquesGetEvent(Object source, int priority, String unique) {
 		super(source, priority, unique);

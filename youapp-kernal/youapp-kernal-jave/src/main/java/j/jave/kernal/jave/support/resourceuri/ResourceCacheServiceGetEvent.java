@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.support.resourceuri;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=ResourceCacheServiceGetListener.class)
-public class ResourceCacheServiceGetEvent extends JAPPEvent<ResourceCacheServiceGetEvent> {
+public class ResourceCacheServiceGetEvent extends JYouAPPEvent<ResourceCacheServiceGetEvent> {
 
 	/**
 	 * @param source

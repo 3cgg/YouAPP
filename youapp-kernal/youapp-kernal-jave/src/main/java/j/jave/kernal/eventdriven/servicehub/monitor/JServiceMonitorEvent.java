@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 import j.jave.kernal.jave.service.JService;
 
@@ -15,7 +15,7 @@ import java.util.Set;
  * @author J
  */
 @JListenerOnEvent(name=JServiceMonitorListener.class)
-public class JServiceMonitorEvent extends JAPPEvent<JServiceMonitorEvent> {
+public class JServiceMonitorEvent extends JYouAPPEvent<JServiceMonitorEvent> {
 	
 	private Class<? extends JService>[] service;
 	

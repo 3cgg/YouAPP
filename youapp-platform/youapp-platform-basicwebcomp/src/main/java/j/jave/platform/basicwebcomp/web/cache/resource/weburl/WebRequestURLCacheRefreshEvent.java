@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.web.cache.resource.weburl;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=WebRequestURLCacheRefreshListener.class)
-public class WebRequestURLCacheRefreshEvent extends JAPPEvent<WebRequestURLCacheRefreshEvent> {
+public class WebRequestURLCacheRefreshEvent extends JYouAPPEvent<WebRequestURLCacheRefreshEvent> {
 
 	public WebRequestURLCacheRefreshEvent(Object source) {
 		super(source);

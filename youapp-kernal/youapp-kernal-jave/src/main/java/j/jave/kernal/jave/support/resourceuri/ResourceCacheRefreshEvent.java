@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.support.resourceuri;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=ResourceCacheRefreshListener.class)
-public class ResourceCacheRefreshEvent extends JAPPEvent<ResourceCacheRefreshEvent> {
+public class ResourceCacheRefreshEvent extends JYouAPPEvent<ResourceCacheRefreshEvent> {
 
 	private static final long serialVersionUID = -8985852127417839487L;
 

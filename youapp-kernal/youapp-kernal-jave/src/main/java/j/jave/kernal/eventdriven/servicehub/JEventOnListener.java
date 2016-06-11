@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * the annotation uses to make the program know what event listener on. 
- * it is the bridge of {@link JAPPListener} and {@link JAPPEvent}
+ * it is the bridge of {@link JAPPListener} and {@link JYouAPPEvent}
  * <strong> Note that the class only used together with {@link JAPPListener} </strong>
  * @author J
  */
@@ -18,6 +18,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JEventOnListener {
 
-	Class<? extends JAPPEvent<?>> name();
+	Class<? extends JYouAPPEvent<?>> name();
 	
 }

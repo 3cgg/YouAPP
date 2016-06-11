@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.access.subhub;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=SessionUserGetListener.class)
-public class SessionUserGetEvent extends JAPPEvent<SessionUserGetEvent> {
+public class SessionUserGetEvent extends JYouAPPEvent<SessionUserGetEvent> {
 
 	/**
 	 * @param source

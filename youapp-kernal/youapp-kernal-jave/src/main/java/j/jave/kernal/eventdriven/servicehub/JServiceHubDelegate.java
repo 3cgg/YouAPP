@@ -85,25 +85,24 @@ public class JServiceHubDelegate {
 	 * if the event contains asynchronous event callback , the callback will be triggered in the later as a different thread.
 	 * @param event
 	 */
-	public void addDelayEvent(JAPPEvent<?> event){
-		propagateEventRequestStartNotifyEvent(event);
-		serviceEventProcessor.addDelayEvent(event);
+	public void addDelayEvent(JYouAPPEvent<?> event){
+		addDelayEvent(event, JYouAPPEvent.NOTHING, false);
 	}
 	
-	public void propagateEventRequestStartNotifyEvent(JAPPEvent<?> event){
+	public void propagateEventRequestStartNotifyEvent(JYouAPPEvent<?> event){
 		if(!JEventRequestStartNotifyEvent.class.isInstance(event)
 				&&!JEventRequestEndNotifyEvent.class.isInstance(event)){
 			if(event.isTrack()){
-				serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JAPPEvent.HIGEST,event));
+				serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JYouAPPEvent.HIGEST,event));
 			}
 		}
 	}
 	
-	public void propagateEventRequestEndNotifyEvent(JAPPEvent<?> event){
+	public void propagateEventRequestEndNotifyEvent(JYouAPPEvent<?> event){
 		if(!JEventRequestEndNotifyEvent.class.isInstance(event)
 				&&!JEventRequestStartNotifyEvent.class.isInstance(event)){
 			if(event.isTrack()){
-				serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JAPPEvent.LOWEST,event));
+				serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JYouAPPEvent.LOWEST,event));
 			}
 		}
 	}
@@ -116,9 +115,8 @@ public class JServiceHubDelegate {
 	 * @param event
 	 * @param asyncCallback  the parameter override the predefined callback in the event instance if any.
 	 */
-	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback){
-		propagateEventRequestStartNotifyEvent(event);
-		serviceEventProcessor.addDelayEvent(event,asyncCallback);
+	public void addDelayEvent(JYouAPPEvent<?> event,JAsyncCallback asyncCallback){
+		addDelayEvent(event, asyncCallback, false);
 	}
 	
 	/**
@@ -130,7 +128,7 @@ public class JServiceHubDelegate {
 	 * @param asyncCallback  the parameter override the predefined callback in the event instance if any.
 	 * @param override override the predefined callback if true , otherwise append callback in callback chain.
 	 */
-	public void addDelayEvent(JAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
+	public void addDelayEvent(JYouAPPEvent<?> event,JAsyncCallback asyncCallback,boolean override){
 		propagateEventRequestStartNotifyEvent(event);
 		serviceEventProcessor.addDelayEvent(event,asyncCallback,override);
 	}
@@ -141,7 +139,7 @@ public class JServiceHubDelegate {
 	 * <p>any exception which occurs in the runtime can be thrown for the caller.
 	 * @param event
 	 */
-	public Object[] addImmediateEvent(JAPPEvent<?> event){
+	public Object[] addImmediateEvent(JYouAPPEvent<?> event){
 		propagateEventRequestStartNotifyEvent(event);
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
 		propagateEventRequestEndNotifyEvent(event);
@@ -162,7 +160,7 @@ public class JServiceHubDelegate {
 	 * @see {@link ClassCastException}
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T addImmediateEvent(JAPPEvent<?> event,Class<T> clazz) throws JEventException{
+	public <T> T addImmediateEvent(JYouAPPEvent<?> event,Class<T> clazz) throws JEventException{
 		propagateEventRequestStartNotifyEvent(event);
 		EventExecutionResult eventExecutionResult=serviceEventProcessor.addImmediateEvent(event);
 		propagateEventRequestEndNotifyEvent(event);

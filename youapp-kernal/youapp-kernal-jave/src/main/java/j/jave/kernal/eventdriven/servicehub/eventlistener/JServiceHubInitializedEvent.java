@@ -4,7 +4,7 @@
 package j.jave.kernal.eventdriven.servicehub.eventlistener;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
  * @author J
  */
 @JListenerOnEvent(name=JServiceHubInitializedListener.class)
-public class JServiceHubInitializedEvent extends JAPPEvent<JServiceHubInitializedEvent> {
+public class JServiceHubInitializedEvent extends JYouAPPEvent<JServiceHubInitializedEvent> {
 	
 	private final JConfiguration configuration;
 	

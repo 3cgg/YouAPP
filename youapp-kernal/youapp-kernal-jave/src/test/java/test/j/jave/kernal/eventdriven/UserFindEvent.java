@@ -3,14 +3,14 @@
  */
 package test.j.jave.kernal.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=UserFindListener.class)
-public class UserFindEvent extends JAPPEvent<UserFindEvent> {
+public class UserFindEvent extends JYouAPPEvent<UserFindEvent> {
 	
 	private String name;
 	

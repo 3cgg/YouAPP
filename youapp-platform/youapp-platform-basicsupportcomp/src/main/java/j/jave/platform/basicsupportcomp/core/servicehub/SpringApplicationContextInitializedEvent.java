@@ -4,7 +4,7 @@
 package j.jave.platform.basicsupportcomp.core.servicehub;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 import org.springframework.context.ApplicationContext;
@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
  * @author J
  */
 @JListenerOnEvent(name=SpringApplicationContextInitializedListener.class)
-public class SpringApplicationContextInitializedEvent extends JAPPEvent<SpringApplicationContextInitializedEvent> {
+public class SpringApplicationContextInitializedEvent extends JYouAPPEvent<SpringApplicationContextInitializedEvent> {
 	
 	private final JConfiguration configuration;
 	

@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.memcached.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 
 
 /**
  * notify the memcache system to store .
  * @author J
  */
-public abstract class JMemcachedDisEvent<T extends JMemcachedDisEvent<T>> extends JAPPEvent<JMemcachedDisEvent<T>>{
+public abstract class JMemcachedDisEvent<T extends JMemcachedDisEvent<T>> extends JYouAPPEvent<JMemcachedDisEvent<T>>{
 
 	public enum TYPE{
 		/**

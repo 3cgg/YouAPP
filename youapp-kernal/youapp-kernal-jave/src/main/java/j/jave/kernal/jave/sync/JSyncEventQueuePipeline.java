@@ -1,9 +1,9 @@
 package j.jave.kernal.jave.sync;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JEventQueueEventExecutingPipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueueEventResultCallBackPipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 
 public class JSyncEventQueuePipeline extends JEventQueuePipeline {
 
@@ -20,7 +20,7 @@ public class JSyncEventQueuePipeline extends JEventQueuePipeline {
 	}
 	
 	@Override
-	public void addAPPEvent(JAPPEvent<?> appEvent) {
+	public void addAPPEvent(JYouAPPEvent<?> appEvent) {
 		super.addAPPEvent(appEvent);
 	}
 	

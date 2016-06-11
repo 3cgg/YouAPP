@@ -91,7 +91,7 @@ public class TestEvent  extends TestEventSupport{
 		System.out.println(object);
 		
 		JServiceHubMonitorEvent serviceHubMonitorEvent2=new JServiceHubMonitorEvent(this);
-		serviceHubMonitorEvent2.setAsyncCallback(new JAsyncCallback() {
+		serviceHubMonitorEvent2.addAsyncCallback(new JAsyncCallback() {
 			@Override
 			public void callback(EventExecutionResult result, JEventExecution eventExecution) {
 				System.out.println("---------"+eventExecution);

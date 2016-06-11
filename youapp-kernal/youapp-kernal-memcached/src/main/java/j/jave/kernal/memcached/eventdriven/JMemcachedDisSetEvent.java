@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.memcached.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 
@@ -36,7 +36,7 @@ public class JMemcachedDisSetEvent extends JMemcachedDisEvent<JMemcachedDisSetEv
 	 */
 	public JMemcachedDisSetEvent(Object source, String unique,
 			String key, Object value) {
-		super(source, JAPPEvent.NORMAL, unique, key, value, 0, TYPE.SET);
+		super(source, JYouAPPEvent.NORMAL, unique, key, value, 0, TYPE.SET);
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public class JMemcachedDisSetEvent extends JMemcachedDisEvent<JMemcachedDisSetEv
 	 */
 	public JMemcachedDisSetEvent(Object source, String unique,
 			String key, Object value,int expiry) {
-		super(source, JAPPEvent.NORMAL, unique, key, value, expiry, TYPE.SET);
+		super(source, JYouAPPEvent.NORMAL, unique, key, value, expiry, TYPE.SET);
 	}
 
 }

@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.jave.sync;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JSyncMonitorWakeupListener.class)
-public class JSyncMonitorWakeupEvent extends JAPPEvent<JSyncMonitorWakeupEvent> {
+public class JSyncMonitorWakeupEvent extends JYouAPPEvent<JSyncMonitorWakeupEvent> {
 	
 	private String syncMonitorUnique;
 	

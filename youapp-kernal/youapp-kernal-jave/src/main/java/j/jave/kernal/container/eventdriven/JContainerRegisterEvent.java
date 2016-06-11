@@ -4,14 +4,14 @@
 package j.jave.kernal.container.eventdriven;
 
 import j.jave.kernal.container.JContainer;
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JContainerRegisterListener.class)
-public class JContainerRegisterEvent extends JAPPEvent<JContainerRegisterEvent> {
+public class JContainerRegisterEvent extends JYouAPPEvent<JContainerRegisterEvent> {
 
 	private JContainer container;
 	

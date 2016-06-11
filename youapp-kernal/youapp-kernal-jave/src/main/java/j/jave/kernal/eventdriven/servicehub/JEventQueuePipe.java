@@ -142,7 +142,7 @@ public abstract class JEventQueuePipe {
 		this.name = name;
 	}
 
-	void addAPPEvent(JAPPEvent<? > appEvent){
+	void addAPPEvent(JYouAPPEvent<? > appEvent){
 		throw new JOperationNotSupportedException("not supported.");
 	}
 	

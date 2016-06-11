@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.eventdriven.servicehub.eventlistener;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JServiceUninstallListener.class)
-public class JServiceUninstallEvent extends JAPPEvent<JServiceUninstallEvent> {
+public class JServiceUninstallEvent extends JYouAPPEvent<JServiceUninstallEvent> {
 
 	private static final long serialVersionUID = -4047669203423811947L;
 	

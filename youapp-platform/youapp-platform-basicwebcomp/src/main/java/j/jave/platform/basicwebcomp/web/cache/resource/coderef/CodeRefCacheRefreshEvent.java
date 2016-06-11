@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.web.cache.resource.coderef;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=CodeRefCacheRefreshListener.class)
-public class CodeRefCacheRefreshEvent extends JAPPEvent<CodeRefCacheRefreshEvent> {
+public class CodeRefCacheRefreshEvent extends JYouAPPEvent<CodeRefCacheRefreshEvent> {
 
 	public CodeRefCacheRefreshEvent(Object source) {
 		super(source);

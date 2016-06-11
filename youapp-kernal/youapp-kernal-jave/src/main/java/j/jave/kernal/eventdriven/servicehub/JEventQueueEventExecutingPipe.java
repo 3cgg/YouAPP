@@ -5,7 +5,7 @@ import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistribut
 import j.jave.kernal.eventdriven.servicehub.JEventExecutionQueueElementDistributer.JQueueDistributeProcessorConfig;
 
 /**
- * retrieve the {@link JAPPEvent} driven by the {@link JServiceEventProcessor},
+ * retrieve the {@link JYouAPPEvent} driven by the {@link JServiceEventProcessor},
  * default the event pipe is the first element in the {@link JEventQueuePipeline}.
  * the pipe does not support {@link #addEventExecution(JEventExecution)}.
  * @author J
@@ -40,10 +40,10 @@ public class JEventQueueEventExecutingPipe extends JEventQueuePipe{
 		};
 	}
 	
-	void addAPPEvent(JAPPEvent<? > appEvent){
+	void addAPPEvent(JYouAPPEvent<? > appEvent){
 		JEventExecution eventInfo=new JEventExecution();
 		eventInfo.setEvent(appEvent);
-		eventInfo.addAsyncCallbacks(appEvent.getAttachedAsyncCallbackChain());
+		eventInfo.addAsyncCallbacks(appEvent.getBackendAsyncCallbacks());
 		eventInfo.setProcessed(false);
 		eventInfo.setPhase(Phase.EVENT_CONSUME_READY);
 		addEventExecution(eventInfo);

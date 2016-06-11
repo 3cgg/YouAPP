@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.dataexchange.channel;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JMessageSendingListener.class)
-public class JMessageSendingEvent extends JAPPEvent<JMessageSendingEvent> {
+public class JMessageSendingEvent extends JYouAPPEvent<JMessageSendingEvent> {
 	
 	private final JResponseFuture responseFuture;
 	

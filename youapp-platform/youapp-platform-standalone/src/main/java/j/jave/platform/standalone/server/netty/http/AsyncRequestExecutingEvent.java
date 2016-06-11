@@ -3,14 +3,14 @@
  */
 package j.jave.platform.standalone.server.netty.http;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=AsyncRequestExecutingListener.class)
-public class AsyncRequestExecutingEvent extends JAPPEvent<AsyncRequestExecutingEvent> {
+public class AsyncRequestExecutingEvent extends JYouAPPEvent<AsyncRequestExecutingEvent> {
 	
 	private final RequestContext requestContext;
 	

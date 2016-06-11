@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JServiceHubMonitorListener.class)
-public class JServiceHubMonitorEvent extends JAPPEvent<JServiceHubMonitorEvent> {
+public class JServiceHubMonitorEvent extends JYouAPPEvent<JServiceHubMonitorEvent> {
 	private boolean refresh;
 	public JServiceHubMonitorEvent(Object source) {
 		super(source);

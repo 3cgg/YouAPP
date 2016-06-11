@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.eventdriven.servicehub.notify;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 import java.util.Date;
@@ -12,23 +12,23 @@ import java.util.Date;
  * @author J
  */
 @JListenerOnEvent(name=JEventRequestEndNotifyListener.class)
-public class JEventRequestEndNotifyEvent extends JAPPEvent<JEventRequestEndNotifyEvent> {
+public class JEventRequestEndNotifyEvent extends JYouAPPEvent<JEventRequestEndNotifyEvent> {
 	
-	private final JAPPEvent<?> event;
+	private final JYouAPPEvent<?> event;
 	
 	private final Date time=new Date();
 	
-	public JEventRequestEndNotifyEvent(Object source,JAPPEvent<?> event) {
+	public JEventRequestEndNotifyEvent(Object source,JYouAPPEvent<?> event) {
 		super(source);
 		this.event=event;
 	}
 
-	public JEventRequestEndNotifyEvent(Object source,int priority ,JAPPEvent<?> event) {
+	public JEventRequestEndNotifyEvent(Object source,int priority ,JYouAPPEvent<?> event) {
 		super(source,priority);
 		this.event=event;
 	}
 	
-	public JAPPEvent<?> getEvent() {
+	public JYouAPPEvent<?> getEvent() {
 		return event;
 	}
 	

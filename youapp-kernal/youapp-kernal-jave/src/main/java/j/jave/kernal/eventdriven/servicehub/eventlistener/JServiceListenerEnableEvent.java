@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.eventdriven.servicehub.eventlistener;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JAPPListener;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=JServiceListenerEnableListener.class)
-public class JServiceListenerEnableEvent extends JAPPEvent<JServiceListenerEnableEvent> {
+public class JServiceListenerEnableEvent extends JYouAPPEvent<JServiceListenerEnableEvent> {
 
 	private static final long serialVersionUID = -4047669203423811947L;
 	

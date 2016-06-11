@@ -102,8 +102,7 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
 	            JSyncMonitorWakeupEvent syncMonitorWakeupEvent=
 	            			new JSyncMonitorWakeupEvent(this, responseContext.getConversationId());
 	            syncMonitorWakeupEvent.setData(responseContext);
-	            syncMonitorWakeupEvent.getAttachedAsyncCallbackChain()
-	            .add(new JAsyncCallback() {
+	            syncMonitorWakeupEvent.addAsyncCallback(new JAsyncCallback() {
 					
 					@Override
 					public void callback(EventExecutionResult result,

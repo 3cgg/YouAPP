@@ -3,7 +3,7 @@
  */
 package j.jave.platform.basicwebcomp.web.cache.response;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -11,7 +11,7 @@ import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
  * @author J
  */
 @JListenerOnEvent(name=ResponseCacheRefreshListener.class)
-public class ResponseCacheRefreshEvent extends JAPPEvent<ResponseCacheRefreshEvent> {
+public class ResponseCacheRefreshEvent extends JYouAPPEvent<ResponseCacheRefreshEvent> {
 
 	private static final long serialVersionUID = -8985852127417839487L;
 

@@ -26,7 +26,7 @@ public class JEventExecution implements Comparable<JEventExecution>
 	/**
 	 * the source event.
 	 */
-	private JAPPEvent<?> event;
+	private JYouAPPEvent<?> event;
 	
 	/**
 	 * the result, generally the result is represented as Object Array.
@@ -117,10 +117,10 @@ public class JEventExecution implements Comparable<JEventExecution>
 		this.asyncCallbackChain.add(asyncCallback);
 	}
 	
-	public JAPPEvent<?> getEvent() {
+	public JYouAPPEvent<?> getEvent() {
 		return event;
 	}
-	public void setEvent(JAPPEvent<?> event) {
+	public void setEvent(JYouAPPEvent<?> event) {
 		this.event = event;
 	}
 	public Object getResult() {

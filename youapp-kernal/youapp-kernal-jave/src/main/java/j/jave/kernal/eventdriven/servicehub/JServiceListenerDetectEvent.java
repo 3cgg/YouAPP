@@ -8,7 +8,7 @@ package j.jave.kernal.eventdriven.servicehub;
  * @author J
  */
 @JListenerOnEvent(name=JServiceListenerDetectListener.class)
-class JServiceListenerDetectEvent extends JAPPEvent<JServiceListenerDetectEvent> {
+class JServiceListenerDetectEvent extends JYouAPPEvent<JServiceListenerDetectEvent> {
 
 	private static final long serialVersionUID = -4047669203423811947L;
 	

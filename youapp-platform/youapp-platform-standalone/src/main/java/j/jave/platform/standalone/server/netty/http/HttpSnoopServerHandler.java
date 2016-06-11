@@ -165,7 +165,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
                 
 				if(requestContext.isOnlyTest()){
 					AsyncTestRequestExecutingEvent asyncTestRequestExecutingEvent=new AsyncTestRequestExecutingEvent(this, requestContext);
-					asyncTestRequestExecutingEvent.setAsyncCallback(new JAsyncCallback() {
+					asyncTestRequestExecutingEvent.addAsyncCallback(new JAsyncCallback() {
 						@Override
 						public void callback(EventExecutionResult result,
 								JEventExecution eventExecution) {
@@ -177,7 +177,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 				}
 				else{
 					AsyncRequestExecutingEvent asyncRequestExecutingEvent=new AsyncRequestExecutingEvent(this, requestContext);
-	                asyncRequestExecutingEvent.setAsyncCallback(new JAsyncCallback() {
+	                asyncRequestExecutingEvent.addAsyncCallback(new JAsyncCallback() {
 						@Override
 						public void callback(EventExecutionResult result,
 								JEventExecution eventExecution) {

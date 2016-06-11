@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.eventdriven.servicehub.notify;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
  * @author J
  */
 @JListenerOnEvent(name=JServicesRegisterStartNotifyListener.class)
-public class JServicesRegisterStartNotifyEvent extends JAPPEvent<JServicesRegisterStartNotifyEvent> {
+public class JServicesRegisterStartNotifyEvent extends JYouAPPEvent<JServicesRegisterStartNotifyEvent> {
 	
 	private final Date time=new Date();
 	

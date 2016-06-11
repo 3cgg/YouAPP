@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.eventdriven.servicehub.eventlistener;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPEvent;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
  * @author J
  */
 @JListenerOnEvent(name=JServicesOnListenerListener.class)
-public class JServicesOnListenerEvent extends JAPPEvent<JServicesOnListenerEvent> {
+public class JServicesOnListenerEvent extends JYouAPPEvent<JServicesOnListenerEvent> {
 	
 	private final Class<?> listenerClass;
 	

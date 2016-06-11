@@ -4,12 +4,11 @@
 
 	<parent>
 		<groupId>youapp</groupId>
-		<artifactId>youapp-global-pom</artifactId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp</groupId>
 	<artifactId>youappcrawl</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
@@ -17,17 +16,7 @@
 	<name>youappcrawl</name>
 	<url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>net.sourceforge.htmlunit</groupId>
@@ -36,8 +25,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
-			<artifactId>youapp-kernal-xmldb</artifactId>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 

@@ -3,14 +3,15 @@
  */
 package com.youappcorp.project.usermanager.service;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.basicsupportcomp.support.security.subhub.DESedeCipherService;
 import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
 import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.securityutil.securityclient.JRSSecurityHelper;
 
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 	
 	@Autowired
 	private UserRepo<?> userMapper;
+	
+	private DESedeCipherService deSedeCipherService=
+			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
 	
 	@Override
 	public User getUserByNameAndPassword(String userName, String password) {
@@ -114,7 +118,7 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 			}
 			
 			String passwrod=user.getPassword().trim();
-			String encriptPassword=JRSSecurityHelper.encryptOnDESede(passwrod);
+			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			user.setPassword(encriptPassword);
 			user.setUserName(user.getUserName().trim());
 			saveUser(context, user);  // with encrypted password 

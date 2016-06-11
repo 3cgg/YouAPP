@@ -21,7 +21,6 @@
 		<module>youapp-platform-basicsupportcomp</module>
 		<module>youapp-platform-ormmybatis</module>
 		<module>youapp-platform-basicwebcomp</module>
-		<module>../youapp-util/youapp-util-security/youapp-util-security-client</module>
     	<module>youapp-platform-standalone</module>
   </modules>
 

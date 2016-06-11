@@ -9,7 +9,7 @@ import j.jave.kernal.security.service.JDefaultMD5CipherService.JMD5CipherService
 
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.framework.inner.support.rs.security.JSecurityServiceImpl")
+@Service(value="j.jave.securityutil.securityservice.JSecurityServiceImpl")
 public class JSecurityServiceImpl implements JSecurityService, JDESedeCipherServiceSupport ,JMD5CipherServiceSupport{
 	
 	private JDESedeCipherService desedeCipherService=JServiceHubDelegate.get().getService(this, JDESedeCipherService.class);;

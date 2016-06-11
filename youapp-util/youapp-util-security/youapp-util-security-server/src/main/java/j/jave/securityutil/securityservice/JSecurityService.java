@@ -1,6 +1,7 @@
 package j.jave.securityutil.securityservice;
 
 import j.jave.kernal.jave.security.exception.JSecurityException;
+import j.jave.kernal.jave.service.JService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,7 +12,7 @@ import javax.ws.rs.Produces;
 
 @Path(value="/security")
 @Produces
-public interface JSecurityService {
+public interface JSecurityService extends JService {
 	
 	/**
 	 * encrypt the value using DESede-algorithm

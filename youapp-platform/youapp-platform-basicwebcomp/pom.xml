@@ -22,12 +22,6 @@
 			<artifactId>youapp-platform-basicsupportcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>youapp.util.security</groupId>
-			<artifactId>youapp-util-securityclient</artifactId>
-			<version>${util.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

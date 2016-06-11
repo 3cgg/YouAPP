@@ -13,7 +13,7 @@
 	<version>${kernal.version}</version>
 	<packaging>jar</packaging>
 
-	<name>youapp.kernal.youapp-kernal-jave</name>
+	<name>youapp.kernal.kernal-jave</name>
 
 	<dependencies>
 

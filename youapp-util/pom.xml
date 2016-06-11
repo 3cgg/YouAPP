@@ -17,7 +17,7 @@
 	<url>http://maven.apache.org</url>
 
 	<modules>
-		<module>../youapp-platform</module>
+		<module>../youapp-kernal</module>
 		<module>youapp-util-security</module>
 		<module>youapp-util-poi</module>
 		<module>youapp-util-surround</module>

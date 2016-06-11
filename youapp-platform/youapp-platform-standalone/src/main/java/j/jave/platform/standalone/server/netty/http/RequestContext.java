@@ -11,6 +11,11 @@ public class RequestContext extends AbstractContext{
 	
 	private transient LastHttpContent lastHttpContent  ;
 	
+	/**
+	 * the unique identifier of request.
+	 */
+	private String requestUnique;
+	
 	public HttpRequest getRequest() {
 		return request;
 	}
@@ -25,6 +30,14 @@ public class RequestContext extends AbstractContext{
 
 	public void setLastHttpContent(LastHttpContent lastHttpContent) {
 		this.lastHttpContent = lastHttpContent;
+	}
+
+	public String getRequestUnique() {
+		return requestUnique;
+	}
+
+	public void setRequestUnique(String requestUnique) {
+		this.requestUnique = requestUnique;
 	}
 	
 }

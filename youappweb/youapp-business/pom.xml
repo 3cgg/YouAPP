@@ -1,27 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp</groupId>
-		  <artifactId>youappweb</artifactId>
-		  <version>0.0.0</version>
+		<groupId>youapp.youappweb</groupId>
+		<artifactId>pom-conf</artifactId>
+		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
-  <artifactId>youapp-business</artifactId>
-  <version>2.0.0</version>
-  <packaging>pom</packaging>
 
-  <name>youapp-business</name>
-  <url>http://maven.apache.org</url>
+	<groupId>youapp.youappweb.business</groupId>
+	<artifactId>pom-conf</artifactId>
+	<packaging>pom</packaging>
 
-  <properties>
-  	
-  </properties>
+	<name>youapp-business</name>
+	<url>http://maven.apache.org</url>
 
-  <modules>
-  	<module>youapp-business-bill</module>
-  	<module>youapp-business-core</module>
-  </modules>
+	<modules>
+		<module>youapp-business-bill</module>
+		<module>youapp-business-core</module>
+	</modules>
 </project>

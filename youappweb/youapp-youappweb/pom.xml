@@ -5,24 +5,23 @@
 
 
 	<parent>
-		<groupId>youapp</groupId>
-		  <artifactId>youappweb</artifactId>
+		<groupId>youapp.youappweb</groupId>
+		  <artifactId>pom-conf</artifactId>
 		  <version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp</groupId>
 	<artifactId>youapp-youappweb</artifactId>
-	<version>${j.version}</version>
+	<version>${youapp.webwar.version}</version>
 	<packaging>war</packaging>
 
-	<name>jframework-youapp-war</name>
+	<name>youappweb-war</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
 		
 		<dependency>
-			<groupId>youapp.youapp-platform</groupId>
+			<groupId>youapp.platform</groupId>
 			<artifactId>youapp-platform-basicwebcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
@@ -73,7 +72,6 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-jsp</artifactId>
-			<version>${jetty.version}</version>
 			<scope>provided</scope>
 		</dependency>
 

@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp</groupId>
-		<artifactId>youapp-util</artifactId>
+		<groupId>youapp.util</groupId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-util.surround</groupId>
 	<artifactId>youapp-util-surround</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
@@ -18,21 +17,21 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-		
+
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>youapp.youapp-util.poi</groupId>
+			<groupId>youapp.util</groupId>
 			<artifactId>youapp-util-poi</artifactId>
-			<version>0.0.1</version>
+			<version>${util.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		
+
+
 	</dependencies>
 
 </project>

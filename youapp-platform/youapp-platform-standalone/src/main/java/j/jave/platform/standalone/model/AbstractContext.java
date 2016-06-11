@@ -19,9 +19,9 @@ public class AbstractContext implements JModel{
 	private String fullData="";
 	
 	/**
-	 * the request unique identifier.
+	 * the request-response unique identifier. 
 	 */
-	private String unique;
+	private String conversationId;
 	
 	private boolean onlyTest; 
 	
@@ -56,15 +56,15 @@ public class AbstractContext implements JModel{
 	public void setFullData(String fullData) {
 		this.fullData = fullData;
 	}
-
-	public String getUnique() {
-		return unique;
-	}
-
-	public void setUnique(String unique) {
-		this.unique = unique;
-	}
 	
+	public String getConversationId() {
+		return conversationId;
+	}
+
+	public void setConversationId(String conversationId) {
+		this.conversationId = conversationId;
+	}
+
 	public AbstractContext appendRealData(String realData){
 		this.realData=this.realData+realData;
 		return this;

@@ -3,37 +3,35 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp</groupId>
-		<artifactId>youapp-util</artifactId>
+		<groupId>youapp.util</groupId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-util.poi</groupId>
 	<artifactId>youapp-util-poi</artifactId>
-	<version>0.0.1</version>
+	<version>${util.version}</version>
 	<packaging>jar</packaging>
 
 	<name>youapp.youapp-util.poi</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-		
+
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
-			<version>3.14</version>
 		</dependency>
-				
-		
-		
+
+
+
 	</dependencies>
 
 </project>

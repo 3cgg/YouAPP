@@ -43,13 +43,12 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
             responseContext.setResponse(response);
             responseContext.setChannelHandlerContext(ctx);
             
-        	String unique=response.headers().get(
+        	String conversationId=response.headers().get(
             		MessageMetaNames.CONVERSATION_ID);
-        	if(JStringUtils.isNullOrEmpty(unique)){
-            	// FOR BROWSER REQUEST
-            	unique=JUniqueUtils.unique();
+        	if(JStringUtils.isNullOrEmpty(conversationId)){
+            	throw new IllegalStateException("the conversation id is is missing.");
             }
-        	responseContext.setUnique(unique);
+        	responseContext.setConversationId(conversationId);
         	
         	//generate new unique , avoid hiding actual request unique identifier. 
             currentUnique=JUniqueUtils.unique();
@@ -101,7 +100,7 @@ public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObje
                 }
                 
 	            JSyncMonitorWakeupEvent syncMonitorWakeupEvent=
-	            			new JSyncMonitorWakeupEvent(this, responseContext.getUnique());
+	            			new JSyncMonitorWakeupEvent(this, responseContext.getConversationId());
 	            syncMonitorWakeupEvent.setData(responseContext);
 	            syncMonitorWakeupEvent.getAttachedAsyncCallbackChain()
 	            .add(new JAsyncCallback() {

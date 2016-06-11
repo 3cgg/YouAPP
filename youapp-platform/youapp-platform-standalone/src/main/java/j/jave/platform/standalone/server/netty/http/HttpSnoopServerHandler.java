@@ -60,17 +60,18 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
             requestContext.setRequest(request);
             requestContext.setChannelHandlerContext(ctx);
             
-            String unique=request.headers().get(MessageMetaNames.CONVERSATION_ID);
+            String conversationId=request.headers().get(MessageMetaNames.CONVERSATION_ID);
             
-            if(JStringUtils.isNullOrEmpty(unique)){
+            if(JStringUtils.isNullOrEmpty(conversationId)){
             	// FOR BROWSER REQUEST
-            	unique=JUniqueUtils.unique();
+            	conversationId=JUniqueUtils.unique();
             	requestContext.setOnlyTest(true);
             }
+            requestContext.setConversationId(conversationId);
             
-            currentUnique=unique;
-            requestContext.setUnique(unique);
-            hashCacheService.putNeverExpired(unique, requestContext);
+            currentUnique=JUniqueUtils.unique();
+            requestContext.setRequestUnique(currentUnique);
+            hashCacheService.putNeverExpired(currentUnique, requestContext);
             
             
             if (HttpUtil.is100ContinueExpected(request)) {
@@ -169,7 +170,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 						public void callback(EventExecutionResult result,
 								JEventExecution eventExecution) {
 							AsyncTestRequestExecutingEvent asyncTestRequestExecutingEvent= (AsyncTestRequestExecutingEvent) eventExecution.getEvent();
-							hashCacheService.remove(asyncTestRequestExecutingEvent.getRequestContext().getUnique());
+							hashCacheService.remove(asyncTestRequestExecutingEvent.getRequestContext().getRequestUnique());
 						}
 					});
 	                JServiceHubDelegate.get().addDelayEvent(asyncTestRequestExecutingEvent);
@@ -181,7 +182,7 @@ public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> 
 						public void callback(EventExecutionResult result,
 								JEventExecution eventExecution) {
 							AsyncRequestExecutingEvent asyncRequestExecutingEvent= (AsyncRequestExecutingEvent) eventExecution.getEvent();
-							hashCacheService.remove(asyncRequestExecutingEvent.getRequestContext().getUnique());
+							hashCacheService.remove(asyncRequestExecutingEvent.getRequestContext().getRequestUnique());
 						}
 					});
 	                JServiceHubDelegate.get().addDelayEvent(asyncRequestExecutingEvent);

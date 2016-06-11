@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp</groupId>
-		<artifactId>youapp-kernal</artifactId>
+		<groupId>youapp.kernal</groupId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-kernal</groupId>
 	<artifactId>youapp-kernal-sqlautoloader</artifactId>
 	<version>${kernal.version}</version>
 	<packaging>jar</packaging>
@@ -18,7 +17,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>

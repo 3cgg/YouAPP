@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp.youapp-util</groupId>
-		  <artifactId>security</artifactId>
+		<groupId>youapp.util.security</groupId>
+		  <artifactId>pom-conf</artifactId>
 		  <version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-util.security</groupId>
 	<artifactId>youapp-util-securityclient</artifactId>
 	<version>${util.security.version}</version>
 	<packaging>jar</packaging>
@@ -20,7 +19,7 @@
 	<dependencies>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>

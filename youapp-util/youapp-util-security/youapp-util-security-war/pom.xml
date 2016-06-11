@@ -5,13 +5,12 @@
 
 
 	<parent>
-		<groupId>youapp.youapp-util</groupId>
-		  <artifactId>security</artifactId>
-		  <version>0.0.0</version>
+		<groupId>youapp.util.security</groupId>
+		<artifactId>pom-conf</artifactId>
+		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-util.security</groupId>
 	<artifactId>youapp-util-securitywar</artifactId>
 	<version>${util.security.version}</version>
 	<packaging>war</packaging>
@@ -22,7 +21,7 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>youapp.youapp-util.security</groupId>
+			<groupId>youapp.util.security</groupId>
 			<artifactId>youapp-util-securityserver</artifactId>
 			<version>${util.security.version}</version>
 			<type>jar</type>
@@ -31,32 +30,31 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-transports-http-jetty</artifactId>
-			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 
 	</dependencies>
 
-	
+
 	<build>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.6</version>
-					<configuration>
-						<warName>ws</warName>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.2</version>
-				</plugin>
-	
-			</plugins>
-			<finalName>ws</finalName>
-		</build>
-		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<warName>ws</warName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+			</plugin>
+
+		</plugins>
+		<finalName>ws</finalName>
+	</build>
+
 </project>

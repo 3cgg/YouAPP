@@ -1,29 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>youapp</groupId>
-		<artifactId>youapp-global-pom</artifactId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-  <groupId>youapp</groupId>
-  <artifactId>youappweb</artifactId>
-  <version>0.0.0</version>
-  <packaging>pom</packaging>
+	<groupId>youapp.youappweb</groupId>
+	<artifactId>pom-conf</artifactId>
+	<packaging>pom</packaging>
 
-  <name>youappweb</name>
-  <url>http://maven.apache.org</url>
+	<name>youappweb</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<youapp.bussiness.version>1.0.0</youapp.bussiness.version>
+		<youapp.webwar.version>1.0.0</youapp.webwar.version>
+	</properties>
 
 	<modules>
 		<module>../youapp-platform</module>
 		<module>youapp-business</module>
 	</modules>
-  
+
 </project>

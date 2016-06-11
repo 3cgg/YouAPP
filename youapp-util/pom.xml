@@ -1,31 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>youapp</groupId>
-		<artifactId>youapp-global-pom</artifactId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-  <groupId>youapp</groupId>
-  <artifactId>youapp-util</artifactId>
-  <version>0.0.0</version>
-  <packaging>pom</packaging>
+	<groupId>youapp.util</groupId>
+	<artifactId>pom-conf</artifactId>
+	<packaging>pom</packaging>
 
-  <name>youapp.youapp-util</name>
-  <url>http://maven.apache.org</url> 
+	<name>youapp.youapp-util</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
-  <modules>
-  	<module>../youapp-platform</module>
-  	<module>youapp-util-security</module>
-	<module>youapp-util-poi</module>
-	<module>youapp-util-surround</module>
-  </modules>
-  
+	<modules>
+		<module>../youapp-platform</module>
+		<module>youapp-util-security</module>
+		<module>youapp-util-poi</module>
+		<module>youapp-util-surround</module>
+	</modules>
+
 </project>

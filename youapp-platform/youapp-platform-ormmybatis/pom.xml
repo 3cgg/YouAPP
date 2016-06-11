@@ -3,50 +3,40 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>youapp</groupId>
-		  <artifactId>youapp-platform</artifactId>
+		<groupId>youapp.platform</groupId>
+		  <artifactId>pom-conf</artifactId>
 		  <version>0.0.0</version>
 		  <relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-platform</groupId>
 	<artifactId>youapp-platform-ormmybatis</artifactId>
 	<version>${platform.version}</version>
 	<packaging>jar</packaging>
 
 	<name>youapp.youapp-platform.orm-mybatis</name>
 	<url>http://maven.apache.org</url>
-	
-	<properties>
-		<mybatis.version>3.2.8</mybatis.version>
-		<mybatis.spring.version>1.2.2</mybatis.spring.version>
-		<h2.version>1.4.185</h2.version>
-	</properties>
 
 	<dependencies>
-
+	
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis.spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>${h2.version}</version>
 		</dependency>
 
 	</dependencies>

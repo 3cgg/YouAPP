@@ -4,22 +4,17 @@
 
 	<parent>
 		<groupId>youapp</groupId>
-		<artifactId>youapp-global-pom</artifactId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp</groupId>
-	<artifactId>youapp-platform</artifactId>
-	<version>0.0.0</version>
+	<groupId>youapp.platform</groupId>
+	<artifactId>pom-conf</artifactId>
 	<packaging>pom</packaging>
 
 	<name>youapp-platform</name>
 	<url>http://maven.apache.org</url>
-
-	<properties>
-		<platform.version>3.0.0</platform.version>
-	</properties>
 	
 	<modules>
 		<module>../youapp-kernal</module>
@@ -27,7 +22,7 @@
 		<module>youapp-platform-ormmybatis</module>
 		<module>youapp-platform-basicwebcomp</module>
 		<module>../youapp-util/youapp-util-security/youapp-util-security-client</module>
-    <module>youapp-platform-standalone</module>
+    	<module>youapp-platform-standalone</module>
   </modules>
 
 </project>

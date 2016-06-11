@@ -4,17 +4,16 @@
 	
 	<parent>
 		<groupId>youapp</groupId>
-		<artifactId>youapp-global-pom</artifactId>
+		<artifactId>pom-conf</artifactId>
 		<version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
-	<groupId>youapp</groupId>
-	<artifactId>youapp-kernal</artifactId>
-	<version>0.0.0</version>
+	<groupId>youapp.kernal</groupId>
+	<artifactId>pom-conf</artifactId>
 	<packaging>pom</packaging>
 	
-	<name>youapp.youapp-kernel</name>
+	<name>youapp.kernal-pom-conf</name>
 
 	<properties>
 	</properties>

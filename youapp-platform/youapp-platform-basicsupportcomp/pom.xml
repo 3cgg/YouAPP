@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp</groupId>
-		  <artifactId>youapp-platform</artifactId>
+		<groupId>youapp.platform</groupId>
+		  <artifactId>pom-conf</artifactId>
 		  <version>0.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youapp-platform</groupId>
 	<artifactId>youapp-platform-basicsupportcomp</artifactId>
 	<version>${platform.version}</version>
 	<packaging>jar</packaging>
@@ -19,31 +18,31 @@
 	<dependencies>
 	
 		<dependency>
-		  	<groupId>youapp.youapp-platform</groupId>
+		  	<groupId>youapp.platform</groupId>
 		 	<artifactId>youapp-platform-ormmybatis</artifactId>
 		  	<version>${platform.version}</version>
 		  </dependency>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-ehcache</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-memcached</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 		
 		<dependency>
-			<groupId>youapp.youapp-kernal</groupId>
+			<groupId>youapp.kernal</groupId>
 			<artifactId>youapp-kernal-sqlautoloader</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>

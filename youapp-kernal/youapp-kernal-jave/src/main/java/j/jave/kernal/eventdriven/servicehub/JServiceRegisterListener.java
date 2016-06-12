@@ -9,7 +9,7 @@ package j.jave.kernal.eventdriven.servicehub;
  * @author J
  */
 @JEventOnListener(name=JServiceRegisterEvent.class)
-interface JServiceRegisterListener extends JAPPListener {
+interface JServiceRegisterListener extends JYouAPPListener {
 	
 	public void trigger(JServiceRegisterEvent event);
 	

@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 /**
  * the annotation uses to make the program know what event listener on. 
- * it is the bridge of {@link JAPPListener} and {@link JYouAPPEvent}
- * <strong> Note that the class only used together with {@link JAPPListener} </strong>
+ * it is the bridge of {@link JYouAPPListener} and {@link JYouAPPEvent}
+ * <strong> Note that the class only used together with {@link JYouAPPListener} </strong>
  * @author J
  */
 @Target(ElementType.TYPE)

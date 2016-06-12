@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.support.resourceuri;
 
-import j.jave.kernal.eventdriven.servicehub.JAPPListener;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPListener;
 import j.jave.kernal.eventdriven.servicehub.JEventOnListener;
 
 /**
@@ -13,6 +13,6 @@ import j.jave.kernal.eventdriven.servicehub.JEventOnListener;
  * @see WebRequestURLCacheServiceFactory
  */
 @JEventOnListener(name=ResourceCacheServiceGetEvent.class)
-public interface ResourceCacheServiceGetListener extends JAPPListener {
+public interface ResourceCacheServiceGetListener extends JYouAPPListener {
 	ResourceCacheService trigger(ResourceCacheServiceGetEvent event); 
 }

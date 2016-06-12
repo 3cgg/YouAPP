@@ -110,7 +110,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			if(eventListener==null){
 				throw new IllegalStateException(eventClass.getName()+" must be modified by annotaion @JEventListener");
 			}
-			Class<? extends JAPPListener>  runningListener=eventListener.name();
+			Class<? extends JYouAPPListener>  runningListener=eventListener.name();
 			List<ServiceOrdered> serviceClasses= listenerServices.get(runningListener);
 			
 			if(serviceClasses!=null&&!serviceClasses.isEmpty()){
@@ -121,12 +121,12 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 					Class<?> serviceClass=serviceOrdered.serviceClass;
 					if(serviceHubManager.isEnable(serviceClass, runningListener)){
 						received=true;
-						JAPPListener listener=null;
+						JYouAPPListener listener=null;
 						if(JServiceInstallListener.class==runningListener){
-							listener=(JAPPListener)services.get(serviceClass).getService();
+							listener=(JYouAPPListener)services.get(serviceClass).getService();
 						}
 						else{
-							listener=(JAPPListener) getService(serviceClass);
+							listener=(JYouAPPListener) getService(serviceClass);
 						}
 						LOGGER.info("{ "+listener.getClass().getName()+" service } listenered on the event : "
 								+event.getUnique()+"-|-"+event.getClass().getName());
@@ -252,7 +252,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			}
 		}
 		
-		List<Class<?>> listenerClasses= JClassUtils.getAllInterfaces(serviceClass, JAPPListener.class);
+		List<Class<?>> listenerClasses= JClassUtils.getAllInterfaces(serviceClass, JYouAPPListener.class);
 		if(listenerClasses.size()>0){
 			for(int i=0;i<listenerClasses.size();i++){
 				Class<?> listenerClass=listenerClasses.get(i);
@@ -342,7 +342,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		class ServiceControlModel{
 			boolean active=true;
 			boolean install=true;
-			List<Class<? extends JAPPListener>> disabled=new ArrayList<Class<? extends JAPPListener>>(6);
+			List<Class<? extends JYouAPPListener>> disabled=new ArrayList<Class<? extends JYouAPPListener>>(6);
 		}
 		
 		boolean addNewService(Class<?> service){
@@ -355,7 +355,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
 			serviceControlModel.install=false;
 			serviceControlModel.active=false;
-			serviceControlModel.disabled=new ArrayList<Class<? extends JAPPListener>>();
+			serviceControlModel.disabled=new ArrayList<Class<? extends JYouAPPListener>>();
 			return true;
 		}
 		
@@ -367,13 +367,13 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		}
 		
 		
-		boolean disableServiceListener(Class<?> service,Class<? extends JAPPListener> listener){
+		boolean disableServiceListener(Class<?> service,Class<? extends JYouAPPListener> listener){
 			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
 			serviceControlModel.disabled.add(listener);
 			return true;
 		}
 		
-		boolean enableServiceListener(Class<?> service,Class<? extends JAPPListener> listener){
+		boolean enableServiceListener(Class<?> service,Class<? extends JYouAPPListener> listener){
 			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
 			serviceControlModel.disabled.remove(listener);
 			return true;
@@ -394,12 +394,12 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 			return !serviceControlModel.install;
 		}
 		
-		boolean isEnable(Class<?> service,Class<? extends JAPPListener> listener){
+		boolean isEnable(Class<?> service,Class<? extends JYouAPPListener> listener){
 			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
 			return !serviceControlModel.disabled.contains(listener);
 		}
 		
-		boolean isDisable(Class<?> service,Class<? extends JAPPListener> listener){
+		boolean isDisable(Class<?> service,Class<? extends JYouAPPListener> listener){
 			ServiceControlModel serviceControlModel= serviceControlModels.get(service);
 			return serviceControlModel.disabled.contains(listener);
 		}

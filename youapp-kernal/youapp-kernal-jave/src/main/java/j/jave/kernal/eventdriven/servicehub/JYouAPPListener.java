@@ -9,7 +9,7 @@ import j.jave.kernal.jave.eventdriven.JEventListener;
  *<p>
  * @author J
  */
-public interface JAPPListener extends JEventListener {
+public interface JYouAPPListener extends JEventListener {
 
 
 	

@@ -4,7 +4,7 @@
 package j.jave.kernal.eventdriven.servicehub.eventlistener;
 
 import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
-import j.jave.kernal.eventdriven.servicehub.JAPPListener;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPListener;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 
 /**
@@ -17,15 +17,15 @@ public class JServiceListenerDisableEvent extends JYouAPPEvent<JServiceListenerD
 	
 	private final Class<?> serviceClass;
 	
-	private final Class<? extends JAPPListener> listener;
+	private final Class<? extends JYouAPPListener> listener;
 	
-	public JServiceListenerDisableEvent(Object source,Class<?> serviceClass,Class<? extends JAPPListener> listener) {
+	public JServiceListenerDisableEvent(Object source,Class<?> serviceClass,Class<? extends JYouAPPListener> listener) {
 		super(source);
 		this.serviceClass=serviceClass;
 		this.listener=listener;
 	}
 
-	public JServiceListenerDisableEvent(Object source,int priority ,Class<?> serviceClass,Class<? extends JAPPListener> listener) {
+	public JServiceListenerDisableEvent(Object source,int priority ,Class<?> serviceClass,Class<? extends JYouAPPListener> listener) {
 		super(source,priority);
 		this.serviceClass=serviceClass;
 		this.listener=listener;
@@ -35,7 +35,7 @@ public class JServiceListenerDisableEvent extends JYouAPPEvent<JServiceListenerD
 		return serviceClass;
 	}
 	
-	public Class<? extends JAPPListener> getListener() {
+	public Class<? extends JYouAPPListener> getListener() {
 		return listener;
 	}
 }

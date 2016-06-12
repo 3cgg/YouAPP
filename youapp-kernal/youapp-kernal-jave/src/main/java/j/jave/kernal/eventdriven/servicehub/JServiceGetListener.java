@@ -11,7 +11,7 @@ import j.jave.kernal.jave.service.JService;
  * @author J
  */
 @JEventOnListener(name=JServiceGetEvent.class)
-interface JServiceGetListener extends JAPPListener {
+interface JServiceGetListener extends JYouAPPListener {
 	
 	public JService trigger(JServiceGetEvent event);
 	

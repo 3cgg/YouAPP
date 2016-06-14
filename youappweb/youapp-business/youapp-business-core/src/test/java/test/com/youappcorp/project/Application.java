@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.BeansException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -17,6 +18,7 @@ import org.springframework.boot.context.embedded.ServletListenerRegistrationBean
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -52,8 +54,16 @@ public class Application extends SpringBootServletInitializer implements Embedde
     
     
     @Configuration
-    static class Restbucks extends SpringBootServletInitializer {
+    static class Restbucks extends SpringBootServletInitializer implements ApplicationContextAware {
 
+    	ApplicationContext ctx;
+    	
+    	@Override
+    	public void setApplicationContext(ApplicationContext applicationContext)
+    			throws BeansException {
+    		this.ctx=applicationContext;
+    	}
+    	
         protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
             return builder.sources(Restbucks.class);
         }

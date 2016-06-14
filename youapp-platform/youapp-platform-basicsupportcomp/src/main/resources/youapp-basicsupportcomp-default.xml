@@ -2,11 +2,12 @@
 <configuration>
 
 <!-- xmldb properties  -->
-
+<!-- 
 <property>
   <name>youapp.memcache.memory.instead.of.service</name>
   <value></value>
   <description>memcache instead of the memory cache service</description>
 </property>
-
+ -->
+ 
 </configuration>

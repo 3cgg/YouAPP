@@ -10,12 +10,6 @@
 </property>
 
 <property>
-  <name>youapp.memcache.memory.instead.of.service</name>
-  <value>com.youappcorp.project.websupport.service.MemoryInsteadOfMemcachedDelegateServiceProvider</value>
-  <description>memcache instead of the memory cache service</description>
-</property>
-
-<property>
   <name>databind.property.ext.handler.classes</name>
   <value>j.jave.platform.basicwebcomp.web.proext.CodeExtendHandler,
   j.jave.platform.basicwebcomp.web.proext.ObjectExtendHandler

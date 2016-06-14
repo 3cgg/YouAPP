@@ -73,4 +73,8 @@ implements JService , JCacheService{
 		return hashCacheService.put(key, expiry, getSerialObject(value));
 	}
 	
+	@Override
+	public JInMemorySerializableCacheService getService() {
+		return this;
+	}
 }

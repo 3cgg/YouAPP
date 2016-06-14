@@ -14,9 +14,9 @@ import net.sf.cglib.proxy.MethodProxy;
 
 class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 	
-	public static final JLogger logger =JLoggerFactory.getLogger(JServiceLazyProxy.class); 
+	public static final JLogger S_LOGGER =JLoggerFactory.getLogger(JServiceLazyProxy.class); 
 	
-	private JLogger LOGGER;
+	private JLogger logger;
 
 	private Object target;
 	
@@ -27,7 +27,7 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 	@SuppressWarnings("unchecked")
 	public static <T> T proxy(Object enventSource, Class<T> clazz){
 		
-		logger.debug("initialize proxy for , interface : "+clazz.getName());
+		S_LOGGER.info("initialize proxy for , interface : "+clazz.getName());
 		try{
 			T proxyT=null;
 			JServiceLazyProxy proxy=new JServiceLazyProxy();
@@ -46,35 +46,32 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 			return proxyT;
 			
 		}catch (Exception e) {
-			logger.error("initialized proxy fail : ",e);
+			S_LOGGER.error("initialized proxy fail : ",e);
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private final Lock lock=new ReentrantLock();
-	
-	private void logging(String message){
-		if(LOGGER!=null){
-			LOGGER.debug(message);
-		}
-		else{
-			System.out.println(message);
-		}
+	private JLogger getLogger(){
+		return logger==null?S_LOGGER:logger;
 	}
+	
+	private final Lock lock=new ReentrantLock();
 	
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 		try{
-			logging("--------------------------------invoke method (JDK) : ("+method.getName()+")...........................");
+			if(S_LOGGER.isDebugEnabled()){
+				getLogger().debug("--------------------------------invoke method (JDK) : ("+method.getName()+")...........................");
+			}
 			if(target==null){
 				try{
 					lock.lock();
 					if(target==null){
-						logging(" getting service from hub (JDK) : "+serviceClass.getName());
-						LOGGER=JLoggerFactory.getLogger(serviceClass.getName());
+						S_LOGGER.info(" getting service from hub (JDK) : "+serviceClass.getName());
+						logger=JLoggerFactory.getLogger(serviceClass.getName());
 						target=JServiceHubDelegate.get().getActualService(enventSource, serviceClass);
-						logging(" had get service from hub (JDK) : "+String.valueOf(target));
+						S_LOGGER.info(" had get service from hub (JDK) : "+String.valueOf(target));
 					}
 				}finally{
 					lock.unlock();
@@ -82,7 +79,7 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 			}
 			return method.invoke(target, args);
 		}catch (Exception e) {
-			LOGGER.error("invoke proxy exception : ", e);
+			getLogger().error("invoke proxy exception : ", e);
 			if(e.getCause()!=null){
 				throw e.getCause();
 			}
@@ -94,15 +91,17 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 	public Object intercept(Object obj, Method method, Object[] args,
 			MethodProxy proxy) throws Throwable {
 		try{
-			logging("--------------------------------invoke method (cglib): ("+method.getName()+")...........................");
+			if(S_LOGGER.isDebugEnabled()){
+				getLogger().debug("--------------------------------invoke method (cglib): ("+method.getName()+")...........................");
+			}
 			if(target==null){
 				try{
 					lock.lock();
 					if(target==null){
-						logging(" getting service from hub (cglib) : "+serviceClass.getName());
-						LOGGER=JLoggerFactory.getLogger(serviceClass.getName());
+						S_LOGGER.info(" getting service from hub (cglib) : "+serviceClass.getName());
+						logger=JLoggerFactory.getLogger(serviceClass.getName());
 						target=JServiceHubDelegate.get().getActualService(enventSource, serviceClass);
-						logging(" had get service from hub (cglib) : "+String.valueOf(target));
+						S_LOGGER.info(" had get service from hub (cglib) : "+String.valueOf(target));
 					}
 				}finally{
 					lock.unlock();
@@ -110,7 +109,7 @@ class JServiceLazyProxy implements InvocationHandler, MethodInterceptor {
 			}
 			return proxy.invoke(target, args);
 		}catch (Exception e) {
-			LOGGER.error("invoke proxy exception : ", e);
+			getLogger().error("invoke proxy exception : ", e);
 			if(e.getCause()!=null){
 				throw e.getCause();
 			}

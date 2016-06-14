@@ -4,18 +4,22 @@
 package j.jave.platform.basicsupportcomp.support.ehcache.subhub;
 
 import j.jave.kernal.ehcache.JDefaultEhcacheService;
-import j.jave.kernal.ehcache.JEhcacheService;
-import j.jave.kernal.ehcache.JEhcacheServiceAware;
+import j.jave.kernal.ehcache.ext.JEhcacheInterfaceProvider;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 
 import org.springframework.stereotype.Service;
 
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicsupportcomp.support.ehcache.subhub.DefaultEhcacheServiceImpl")
-public class DefaultEhcacheServiceImpl implements EhcacheDelegateService,JEhcacheServiceAware {
+@Service(DefaultEhcacheDelegateService.BEAN_NAME)
+public class DefaultEhcacheDelegateService implements EhcacheDelegateService {
 
-	private JDefaultEhcacheService defaultEhcacheService;
+	public static final String BEAN_NAME="defaultEhcacheDelegateService";
+	
+	
+	private JDefaultEhcacheService defaultEhcacheService
+	=JServiceHubDelegate.get().getService(this, JEhcacheInterfaceProvider.get().getServiceInterface());
 	
 	@Override
 	public Object put(String key, Object object) {
@@ -30,16 +34,6 @@ public class DefaultEhcacheServiceImpl implements EhcacheDelegateService,JEhcach
 	@Override
 	public Object remove(String key) {
 		return defaultEhcacheService.remove(key);
-	}
-	
-	@Override
-	public void setEhcacheService(JEhcacheService ehcacheService) {
-		this.defaultEhcacheService = (JDefaultEhcacheService) ehcacheService;
-	}
-	
-	@Override
-	public JEhcacheService getEhcacheService() {
-		return this.defaultEhcacheService;
 	}
 
 	@Override

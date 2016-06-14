@@ -11,22 +11,14 @@ import j.jave.kernal.ehcache.JDefaultEhcacheServiceConfiguration;
  */
 public class SpringEhcacheConfiguration extends JDefaultEhcacheServiceConfiguration{
 
-	protected String ehcacheBeanName;
-	
-	/**
-	 * @param ehcacheBeanName the ehcacheBeanName to set
-	 */
-	public void setEhcacheBeanName(String ehcacheBeanName) {
-		this.ehcacheBeanName = ehcacheBeanName;
-	}
-	
-	/**
-	 * @return the ehcacheBeanName
-	 */
-	public String getEhcacheBeanName() {
-		return ehcacheBeanName;
+	protected String ehcacheFactoryBeanName;
+
+	public String getEhcacheFactoryBeanName() {
+		return ehcacheFactoryBeanName;
 	}
 
-	
+	public void setEhcacheFactoryBeanName(String ehcacheFactoryBeanName) {
+		this.ehcacheFactoryBeanName = ehcacheFactoryBeanName;
+	}
 
 }

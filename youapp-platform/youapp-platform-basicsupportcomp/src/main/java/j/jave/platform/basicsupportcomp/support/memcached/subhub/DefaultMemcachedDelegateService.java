@@ -2,32 +2,22 @@ package j.jave.platform.basicsupportcomp.support.memcached.subhub;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.memcached.JDefaultMemcachedDisService;
-import j.jave.kernal.memcached.JMemcachedDisService;
-import j.jave.kernal.memcached.JMemcachedDisServiceAware;
 import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisDeleteEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
+import j.jave.kernal.memcached.ext.JMemcacheInterfaceProvider;
 
 import org.springframework.stereotype.Service;
 
-@Service(value=DefaultMemcachedService.BEAN_NAME)
-public class DefaultMemcachedService implements MemcachedDelegateService,JMemcachedDisServiceAware {
+@Service(value=DefaultMemcachedDelegateService.BEAN_NAME)
+public class DefaultMemcachedDelegateService implements MemcachedDelegateService {
 	
-	public static final String BEAN_NAME="j.jave.platform.basicsupportcomp.support.memcached.subhub.DefaultMemcachedServiceImpl";
+	public static final String BEAN_NAME="defaultMemcachedDelegateService";
 	
 	private JDefaultMemcachedDisService defaultMemcachedDisService
-	=JServiceHubDelegate.get().getService(this, JDefaultMemcachedDisService.class); 
+	=JServiceHubDelegate.get().getService(this, JMemcacheInterfaceProvider.get().getServiceInterface()); 
 
-	@Override
-	public void setMemcachedDisService(JMemcachedDisService memcachedDisService) {
-	}
-	
-	@Override
-	public JMemcachedDisService getMemcachedDisService() {
-		return this.defaultMemcachedDisService;
-	}
-	
 	@Override
 	public Object set(String key, int expiry, Object value) {
 		return defaultMemcachedDisService.set(key, expiry, value);

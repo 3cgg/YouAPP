@@ -8,4 +8,6 @@ public class JMemcacheProperties {
 	
 	public static final String DEFAULT_MEMCACHE_ENABLE="youapp.default.memcache.enable";
 	
+	public static final String DEFAULT_MEMCACHE_SERVICE_INTERFACE="youapp.default.memcache.service.interface";
+	
 }

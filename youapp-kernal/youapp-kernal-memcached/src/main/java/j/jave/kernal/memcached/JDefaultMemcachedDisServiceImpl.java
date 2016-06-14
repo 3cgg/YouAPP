@@ -6,10 +6,10 @@ package j.jave.kernal.memcached;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.JObjectLoop;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisAddEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisDeleteEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisSetEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisDeleteEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -189,8 +189,10 @@ public class JDefaultMemcachedDisServiceImpl implements JDefaultMemcachedDisServ
 	}
 
 	@Override
-	public void put(String key, int expiry, Object value) {
+	public Object put(String key, int expiry, Object value) {
+		Object obj=get(key);
 		add(key, expiry, value);
+		return obj;
 	}
 
 	

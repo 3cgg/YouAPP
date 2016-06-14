@@ -25,4 +25,10 @@
   <description> on/off the default memcache</description>
 </property>
 
+<property>
+  <name>youapp.default.memcache.service.interface</name>
+  <value>j.jave.kernal.memcached.JDefaultMemcachedDisService</value>
+  <description>the interface/concrete class , that's expected memcache namespace(defined by  interface/concrete class)</description>
+</property>
+
 </configuration>

@@ -9,6 +9,6 @@ import j.jave.kernal.ehcache.JEhcacheService;
  * @author J
  *
  */
-public interface EhcacheService extends JEhcacheService {
+public interface EhcacheDelegateService extends JEhcacheService {
 
 }

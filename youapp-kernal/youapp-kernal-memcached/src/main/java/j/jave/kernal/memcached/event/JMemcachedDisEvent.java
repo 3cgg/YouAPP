@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.kernal.memcached.eventdriven;
+package j.jave.kernal.memcached.event;
 
 import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 

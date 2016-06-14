@@ -11,7 +11,7 @@ import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
 import j.jave.kernal.jave.support.resourceuri.InitialResource;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
 import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
-import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
+import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService;
 import j.jave.platform.basicwebcomp.WebCompProperties;
 
 import java.util.HashSet;
@@ -22,7 +22,7 @@ JSingleStaticMemoryCacheIO<M>,InitialResource{
 
 	private JCacheService cacheService=null;
 	{
-		String cacheImpl=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_RESOURCE_CACHE_SERVICE_INTERFACE, EhcacheService.class.getName());
+		String cacheImpl=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_RESOURCE_CACHE_SERVICE_INTERFACE, EhcacheDelegateService.class.getName());
 		cacheService=JServiceHubDelegate.get().getService(this, JClassUtils.load(cacheImpl));
 	}
 	private static DefaultIdentifierGenerator defaultIdentifierGenerator=new DefaultIdentifierGenerator();

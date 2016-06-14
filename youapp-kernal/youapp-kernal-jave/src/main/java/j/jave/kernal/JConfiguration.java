@@ -194,6 +194,11 @@ public class JConfiguration extends HashMap<String, Object>{
 		return object;
 	}
 	
+	public String getString(String  key){
+		Object obj=get(key);
+		return (String) obj;
+	}
+	
 	public String getString(String  key, String defaultValue){
 		Object obj=get(key, defaultValue);
 		return (String) obj;

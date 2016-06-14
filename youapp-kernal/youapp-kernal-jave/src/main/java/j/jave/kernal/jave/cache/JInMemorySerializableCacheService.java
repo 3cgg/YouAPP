@@ -1,17 +1,16 @@
-package com.youappcorp.project.websupport.service;
+package j.jave.kernal.jave.cache;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.service.JCacheService;
+import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.jave.utils.JObjectSerializableUtils;
-import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
-import j.jave.kernal.memcached.event.JMemcachedDisDeleteEvent;
-import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
-import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
-import j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateServiceProvider;
 
-public class MemoryInsteadOfMemcachedDelegateServiceProvider
-	implements MemcachedDelegateServiceProvider{
+public class JInMemorySerializableCacheService
+extends JServiceFactorySupport<JInMemorySerializableCacheService>
+implements JService , JCacheService{
 
 	public static class SerialObject{
 		private String className;
@@ -34,24 +33,10 @@ public class MemoryInsteadOfMemcachedDelegateServiceProvider
 	private JDefaultHashCacheService hashCacheService=
 			JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 
-	@Override
-	public Object set(String key, int expiry, Object value) {
-		return hashCacheService.putNeverExpired(key, getSerialObject(value));
-	}
-
+	
 	@Override
 	public Object get(String key) {
 		return getInnerObject((SerialObject)hashCacheService.get(key));
-	}
-
-	@Override
-	public void add(String key, int expiry, Object value) {
-		hashCacheService.putNeverExpired(key, getSerialObject(value));
-	}
-
-	@Override
-	public void delete(String key) {
-		hashCacheService.remove(key);
 	}
 
 	@Override
@@ -84,28 +69,8 @@ public class MemoryInsteadOfMemcachedDelegateServiceProvider
 	}
 
 	@Override
-	public Object trigger(JMemcachedDisAddEvent event) {
-		return putNeverExpired(event.getKey(), event.getValue());
-	}
-
-	@Override
-	public Object trigger(JMemcachedDisDeleteEvent event) {
-		return remove(event.getKey());
-	}
-
-	@Override
-	public Object trigger(JMemcachedDisSetEvent event) {
-		return putNeverExpired(event.getKey(), event.getValue());
-	}
-
-	@Override
-	public Object trigger(JMemcachedDisGetEvent event) {
-		return get(event.getKey());
-	}
-
-	@Override
-	public void put(String key, int expiry, Object value) {
-		put(key, expiry, value);
+	public Object put(String key, int expiry, Object value) {
+		return hashCacheService.put(key, expiry, getSerialObject(value));
 	}
 	
 }

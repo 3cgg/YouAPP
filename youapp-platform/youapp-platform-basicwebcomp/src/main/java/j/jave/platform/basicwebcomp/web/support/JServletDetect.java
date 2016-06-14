@@ -7,7 +7,7 @@ import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.support.detect.JResourceDetector;
-import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
+import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -33,16 +33,16 @@ public class JServletDetect implements JResourceDetector<JServletProvider> , JSe
 	
 	private JServletFilter servletFilter;
 	
-	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
+	private EhcacheDelegateService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheDelegateService.class);;
 	
 	@Override
-	public EhcacheService getEhcacheService() {
+	public EhcacheDelegateService getEhcacheService() {
 		return ehcacheService;
 	}
 	
 	@Override
 	public void setEhcacheService(JEhcacheService ehcacheService) {
-		this.ehcacheService=(EhcacheService) ehcacheService;
+		this.ehcacheService=(EhcacheDelegateService) ehcacheService;
 	}
 	
 

@@ -40,9 +40,10 @@ implements JCacheService {
 	}
 
 	@Override
-	public void put(String key, int expiry, Object value) {
-		putNeverExpired(key, value);
+	public Object put(String key, int expiry, Object value) {
+		Object obj=putNeverExpired(key, value);
 		LOGGER.warn("currently, hash cache doesnot support expired time, so the cache object is never expired.");
+		return obj;
 	}
 
 }

@@ -73,6 +73,7 @@ public abstract class JAssert {
 	 * @throws IllegalArgumentException if the object is not {@code null}
 	 */
 	public static void isNotEmpty(String object) {
+		isNotNull(object);
 		isNotEmpty(object, "[Assertion failed] - the object argument must not be empty");
 	}
 	

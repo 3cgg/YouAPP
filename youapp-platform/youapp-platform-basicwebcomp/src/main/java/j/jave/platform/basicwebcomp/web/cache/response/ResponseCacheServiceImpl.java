@@ -6,7 +6,7 @@ package j.jave.platform.basicwebcomp.web.cache.response;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.memory.JSingleDynamicMemoryCacheIO;
-import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
+import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService;
 import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +23,19 @@ public class ResponseCacheServiceImpl
 	/**
 	 * cache service . 
 	 */
-	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
+	private EhcacheDelegateService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheDelegateService.class);;
 	
 	@Autowired
 	private WebRequestURLCacheService webRequestURLCacheService;
 	
 	@Override
-	public EhcacheService getEhcacheService() {
+	public EhcacheDelegateService getEhcacheService() {
 		return ehcacheService;
 	}
 	
 	@Override
 	public void setEhcacheService(JEhcacheService ehcacheService) {
-		this.ehcacheService=(EhcacheService) ehcacheService;
+		this.ehcacheService=(EhcacheDelegateService) ehcacheService;
 	}
 	
 	@Override

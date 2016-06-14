@@ -1,10 +1,10 @@
 package j.jave.kernal.memcached;
 
 import j.jave.kernal.jave.service.JCacheService;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisAddListener;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisDeleteListener;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetListener;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisSetListener;
+import j.jave.kernal.memcached.event.JMemcachedDisAddListener;
+import j.jave.kernal.memcached.event.JMemcachedDisDeleteListener;
+import j.jave.kernal.memcached.event.JMemcachedDisGetListener;
+import j.jave.kernal.memcached.event.JMemcachedDisSetListener;
 
 
 /**

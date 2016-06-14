@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author J
  */
 @Service(value="j.jave.platform.basicsupportcomp.support.ehcache.subhub.DefaultEhcacheServiceImpl")
-public class DefaultEhcacheServiceImpl implements EhcacheService,JEhcacheServiceAware {
+public class DefaultEhcacheServiceImpl implements EhcacheDelegateService,JEhcacheServiceAware {
 
 	private JDefaultEhcacheService defaultEhcacheService;
 	
@@ -53,8 +53,8 @@ public class DefaultEhcacheServiceImpl implements EhcacheService,JEhcacheService
 	}
 
 	@Override
-	public void put(String key, int expiry, Object value) {
-		defaultEhcacheService.put(key, expiry, value);
+	public Object put(String key, int expiry, Object value) {
+		return defaultEhcacheService.put(key, expiry, value);
 	}
 
 }

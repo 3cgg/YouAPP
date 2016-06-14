@@ -15,4 +15,11 @@
   <description>youapp ehcache config file</description>
 </property>
 
+<property>
+  <name>youapp.default.ehcache.service.interface</name>
+  <value>j.jave.kernal.ehcache.JDefaultEhcacheService</value>
+  <description>the interface/concrete class , that's expected ehcache namespace(defined by interface/concrete class)</description>
+</property>
+
+
 </configuration>

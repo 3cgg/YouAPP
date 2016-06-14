@@ -37,7 +37,8 @@ public interface JCacheService extends JService{
 	 * @param key
 	 * @param expiry , in seconds. i.e. 30*60 means thirty minutes.
 	 * @param value
+	 * @return the previous object related to the key if any
 	 */
-	public void put(String key , int expiry, Object value) ;
+	public Object put(String key , int expiry, Object value) ;
 	
 }

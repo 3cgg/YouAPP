@@ -6,7 +6,7 @@ package j.jave.platform.basicwebcomp.web.cache.response;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheService;
+import j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService;
 
 /**
  * @author J
@@ -17,16 +17,16 @@ public abstract class AbstractResponseEhcacheCacheService
 	/**
 	 * cache service . 
 	 */
-	private EhcacheService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheService.class);;
+	private EhcacheDelegateService ehcacheService=JServiceHubDelegate.get().getService(this, EhcacheDelegateService.class);;
 	
 	@Override
-	public EhcacheService getEhcacheService() {
+	public EhcacheDelegateService getEhcacheService() {
 		return ehcacheService;
 	}
 	
 	@Override
 	public void setEhcacheService(JEhcacheService ehcacheService) {
-		this.ehcacheService=(EhcacheService) ehcacheService;
+		this.ehcacheService=(EhcacheDelegateService) ehcacheService;
 	}
 
 	@Override

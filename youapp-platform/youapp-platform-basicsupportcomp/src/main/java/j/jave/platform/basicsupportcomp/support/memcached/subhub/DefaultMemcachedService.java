@@ -2,25 +2,25 @@ package j.jave.platform.basicsupportcomp.support.memcached.subhub;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.memcached.JDefaultMemcachedDisService;
-import j.jave.kernal.memcached.JDefaultMemcachedDisServiceImpl;
 import j.jave.kernal.memcached.JMemcachedDisService;
 import j.jave.kernal.memcached.JMemcachedDisServiceAware;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisAddEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisDeleteEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisGetEvent;
-import j.jave.kernal.memcached.eventdriven.JMemcachedDisSetEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisDeleteEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
+import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
 
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateServiceImpl")
-public class MemcachedDelegateServiceImpl implements MemcachedDelegateService,JMemcachedDisServiceAware {
+@Service(value=DefaultMemcachedService.BEAN_NAME)
+public class DefaultMemcachedService implements MemcachedDelegateService,JMemcachedDisServiceAware {
+	
+	public static final String BEAN_NAME="j.jave.platform.basicsupportcomp.support.memcached.subhub.DefaultMemcachedServiceImpl";
 	
 	private JDefaultMemcachedDisService defaultMemcachedDisService
 	=JServiceHubDelegate.get().getService(this, JDefaultMemcachedDisService.class); 
 
 	@Override
 	public void setMemcachedDisService(JMemcachedDisService memcachedDisService) {
-		this.defaultMemcachedDisService = (JDefaultMemcachedDisServiceImpl) memcachedDisService;
 	}
 	
 	@Override
@@ -86,7 +86,7 @@ public class MemcachedDelegateServiceImpl implements MemcachedDelegateService,JM
 	}
 
 	@Override
-	public void put(String key, int expiry, Object value) {
-		defaultMemcachedDisService.put(key, expiry, value);
+	public Object put(String key, int expiry, Object value) {
+		return defaultMemcachedDisService.put(key, expiry, value);
 	}
 }

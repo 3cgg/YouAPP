@@ -561,6 +561,12 @@ public abstract class JClassUtils {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param className
+	 * @return
+	 *  @throws JClassException
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> load(String className){
 		try {

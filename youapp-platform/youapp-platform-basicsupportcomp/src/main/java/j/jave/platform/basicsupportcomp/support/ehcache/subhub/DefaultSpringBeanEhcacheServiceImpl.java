@@ -23,10 +23,10 @@ import org.springframework.stereotype.Service;
  *</bean>
  * @author Administrator
  */
-@Service(value="defaultSpringBeanEhcacheServiceImpl")
-public class DefaultSpringBeanEhcacheServiceImpl extends JAbstractEhcacheService implements EhcacheService ,SpringEhcacheAware{
+@Service(value=DefaultSpringBeanEhcacheServiceImpl.BEAN_NAME)
+public class DefaultSpringBeanEhcacheServiceImpl extends JAbstractEhcacheService implements EhcacheDelegateService ,SpringEhcacheAware{
 	
-	
+	static final String BEAN_NAME="defaultSpringBeanEhcacheServiceImpl";
 	
 	private static final String DEFAULT_CACHE_NAME="THE NAME IS NOT MISSING.";
 	

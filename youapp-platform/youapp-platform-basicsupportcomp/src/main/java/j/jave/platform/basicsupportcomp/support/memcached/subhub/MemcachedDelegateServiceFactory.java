@@ -11,6 +11,7 @@ import j.jave.platform.basicsupportcomp.BasicSupportCompProperties;
 import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service(value="j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateServiceFactory")
@@ -20,7 +21,8 @@ public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport
 	private MemcachedDelegateServiceProvider delegateServiceProvider;
 	
 	@Autowired
-	private MemcachedDelegateService memcachedService;
+	@Qualifier(DefaultMemcachedService.BEAN_NAME)
+	private MemcachedDelegateService defaultMemcachedDelegateService;
 	
 	private Object sync=new Object();
 	
@@ -37,8 +39,8 @@ public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport
 						instance=delegateServiceProvider;
 					}
 					else {
-						String config=JConfiguration.get().getString(BasicSupportCompProperties.YOUAPP_MEMECACHE_MEMORY_INSTEAD_OF_SERVICE,
-									"");
+						String config=JConfiguration.get().getString(
+								BasicSupportCompProperties.YOUAPP_MEMECACHE_MEMORY_INSTEAD_OF_SERVICE);
 						if(JStringUtils.isNotNullOrEmpty(config)){
 							try {
 								instance=(MemcachedDelegateService) JClassUtils.load(config).newInstance();
@@ -49,7 +51,7 @@ public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport
 						}
 						else{
 							// use default
-							instance=memcachedService;
+							instance=defaultMemcachedDelegateService;
 						}
 					}
 				}

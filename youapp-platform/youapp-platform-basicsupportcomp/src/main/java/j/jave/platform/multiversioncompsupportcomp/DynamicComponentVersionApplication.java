@@ -78,10 +78,10 @@ public class DynamicComponentVersionApplication extends ComponentVersionApplicat
 			inputStream=urlClassLoader.findResource(ComponentProperties.PROPERTY_LOCATION).openStream();
 			JInputStreamWrapperSource inputStreamWrapperSource=new JInputStreamWrapperSource(inputStream);
 			Properties properties= JPropertiesUtils.loadProperties(inputStreamWrapperSource);
-			app=JPropertiesUtils.getKey(ComponentProperties.APP_NAME, properties);
-			component=JPropertiesUtils.getKey(ComponentProperties.COMPONENT_NAME, properties);
-			version=JPropertiesUtils.getKey(ComponentProperties.COMPONENT_VERSION, properties);
-			urlPrefix=JPropertiesUtils.getKey(ComponentProperties.COMPONENT_URL_PREFIX, properties);
+			app=JPropertiesUtils.getKey(ComponentMetaNames.APP_NAME, properties);
+			component=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_NAME, properties);
+			version=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_VERSION, properties);
+			urlPrefix=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_URL_PREFIX, properties);
 			
 			if(JStringUtils.isNotNullOrEmpty(urlPrefix)
 					&&!(urlPrefix.startsWith("/")&&urlPrefix.endsWith("/"))){

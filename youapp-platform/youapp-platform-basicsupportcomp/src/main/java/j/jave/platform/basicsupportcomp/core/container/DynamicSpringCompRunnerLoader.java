@@ -3,6 +3,7 @@ package j.jave.platform.basicsupportcomp.core.container;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JRunnerLoader;
 import j.jave.kernal.container.JMicroContainerConfig;
+import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 
@@ -27,7 +28,12 @@ public class DynamicSpringCompRunnerLoader implements JRunnerLoader{
 	}
 	
 	public JRunner load(JMicroContainerConfig envContainerConfig) {
-		DynamicComponentVersionApplication componentVersionApplication=  ComponentVersionSpringApplicationSupport.loadComponent(applicationContext, jarUrls);
+		DynamicComponentVersionApplication componentVersionApplication=null;
+		try {
+			componentVersionApplication = ComponentVersionSpringApplicationSupport.loadComponent(applicationContext, jarUrls);
+		} catch (Exception e) {
+			throw new JInitializationException(e);
+		}
 		DynamicSpringCompRunner springCompRunner=new DynamicSpringCompRunner(componentVersionApplication.getApplicationContext(),springCompMicroContainerConfig);
 		return springCompRunner;
 	};

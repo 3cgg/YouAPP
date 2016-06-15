@@ -9,11 +9,13 @@ import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupp
 
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.mybatis.plugin.pageable.PageableSupportService")
+@Service(PageableSupportService.BEAN_NAME)
 @JServiceOrder(value=999)
 public class PageableSupportService extends SpringServiceFactorySupport<PageableSupportService>
 implements JService{
 
+	public static final String BEAN_NAME="j.jave.platform.mybatis.plugin.pageable.PageableSupportService";
+	
 	private JCacheService cacheService=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 	
 	public JCacheService getCacheService() {

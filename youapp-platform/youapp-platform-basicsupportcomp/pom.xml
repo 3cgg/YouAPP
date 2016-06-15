@@ -16,12 +16,6 @@
 	<name>youapp.youapp-platform.basicsupportcomp</name>
 
 	<dependencies>
-	
-		<dependency>
-		  	<groupId>youapp.platform</groupId>
-		 	<artifactId>youapp-platform-ormmybatis</artifactId>
-		  	<version>${platform.version}</version>
-		  </dependency>
 		
 		<dependency>
 			<groupId>youapp.kernal</groupId>

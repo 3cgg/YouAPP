@@ -3,6 +3,7 @@ package j.jave.platform.multiversioncompsupportcomp.jnterface;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JInputStreamWrapperSource;
 import j.jave.kernal.jave.utils.JPropertiesUtils;
+import j.jave.platform.multiversioncompsupportcomp.ComponentMetaNames;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.multiversioncompsupportcomp.ComponentVersionSpringApplicationSupport.ComponentProperties;
 
@@ -41,12 +42,12 @@ public abstract class JKey {
 		try {
 			JInputStreamWrapperSource inputStreamWrapperSource=new JInputStreamWrapperSource(inputStream);
 			Properties properties= JPropertiesUtils.loadProperties(inputStreamWrapperSource);
-			app = JPropertiesUtils.getKey(ComponentProperties.APP_NAME,
+			app = JPropertiesUtils.getKey(ComponentMetaNames.APP_NAME,
 					properties);
 			component = JPropertiesUtils.getKey(
-					ComponentProperties.COMPONENT_NAME, properties);
+					ComponentMetaNames.COMPONENT_NAME, properties);
 			version = Integer.parseInt(JPropertiesUtils.getKey(
-					ComponentProperties.COMPONENT_VERSION, properties));
+					ComponentMetaNames.COMPONENT_VERSION, properties));
 		} catch (Exception e) {
 			throw new JInitializationException(e);
 		}

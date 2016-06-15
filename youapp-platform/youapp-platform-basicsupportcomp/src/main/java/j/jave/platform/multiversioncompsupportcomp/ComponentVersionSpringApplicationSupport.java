@@ -1,5 +1,6 @@
 package j.jave.platform.multiversioncompsupportcomp;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JAssert;
@@ -10,13 +11,15 @@ import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.ibatis.io.Resources;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public abstract class ComponentVersionSpringApplicationSupport {
 	
 	public static final JLogger LOGGER=JLoggerFactory.getLogger(ComponentVersionSpringApplicationSupport.class);
+	
+	private static final ComponentVersionPostService postService=JServiceHubDelegate
+			.get().getService(new Object(), ComponentVersionPostService.class);
 	
 	/**
 	 * predefined configuration of spring etc.
@@ -25,10 +28,6 @@ public abstract class ComponentVersionSpringApplicationSupport {
 	public static interface Component{
 		public static final String CONFIG_LOCATION="config/";
 		public static final String SPRING_LOCATION=CONFIG_LOCATION+"spring/";
-		
-		public static final String YOUAPP_WEB_APP_NAME_KEY="_youapp_app_name";
-		public static final String YOUAPP_WEB_COM_NAME_KEY="_youapp_com_name";
-		public static final String YOUAPP_WEB_COM_VER_KEY="_youapp_com_ver";
 	}
 	
 	/**
@@ -40,25 +39,29 @@ public abstract class ComponentVersionSpringApplicationSupport {
 		
 		public static final String PROPERTY_LOCATION=Component.CONFIG_LOCATION+"component-version.properties";
 		
-		public static final String APP_NAME="j.jave.platform.components.multi.version.app.name";
-		
-		public static final String COMPONENT_NAME="j.jave.platform.components.multi.version.component.name";
-		
-		public static final String COMPONENT_VERSION="j.jave.platform.components.multi.version.component.version";
-		
-		public static final String COMPONENT_URL_PREFIX="j.jave.platform.components.multi.version.component.controller.prefix";
-		
 	}
 	
 	private static Map<String, ComponentVersionApplication> componentVersions=new ConcurrentHashMap<String, ComponentVersionApplication>();
 	
-	public static DynamicComponentVersionApplication loadComponent(ApplicationContext parent,URL[] jarUrls){
+	/**
+	 * load dynamic component application. 
+	 * @param parent
+	 * @param jarUrls
+	 * @return
+	 */
+	public static DynamicComponentVersionApplication loadComponent(ApplicationContext parent,URL[] jarUrls) throws Exception{
 		DynamicComponentVersionApplication application=new DynamicComponentVersionApplication((ConfigurableApplicationContext)parent, jarUrls);
-		Resources.setCustomeClassLoader(application.unique(), application.getUrlClassLoader());
+		//processing before initialization
+		postService.before(application);
+		
 		SpringDynamicJARApplicationContext springDynamicJARApplicationCotext= application.load();
 		String key=application.unique();
 		componentVersions.put(key, application);
 		SpringContextSupport.setApplicationContext(springDynamicJARApplicationCotext, key);
+		
+		//processing after initialization 
+		postService.afterComplete(application);
+		
 		return application;
 	}
 	
@@ -70,10 +73,10 @@ public abstract class ComponentVersionSpringApplicationSupport {
 		return componentVersions.get(key);
 	}
 	
-	public static void removeComponent(String key){
-		componentVersions.remove(key);
-		Resources.removeCustomClassLoader(key);
+	public static void removeComponent(String key) throws Exception{
+		ComponentVersionApplication old= componentVersions.remove(key);
 		SpringContextSupport.removeApplicationContext(key);
+		postService.cleanupAfterDestroy((DynamicComponentVersionApplication)old);
 	}
 	
 	

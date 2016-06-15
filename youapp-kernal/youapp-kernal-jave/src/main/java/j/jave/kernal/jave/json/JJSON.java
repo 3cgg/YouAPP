@@ -10,9 +10,8 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig.Feature;
-import org.codehaus.jackson.type.TypeReference;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
@@ -26,7 +25,7 @@ public class JJSON {
 	ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 	{
 		//always default
-		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
+//		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
 	}
 	private static JJSON json;
 	

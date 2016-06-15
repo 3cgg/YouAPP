@@ -23,6 +23,12 @@
 			<artifactId>youapp-kernal-jave</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>youapp.platform</groupId>
+			<artifactId>youapp-platform-basicwebcomp</artifactId>
+			<version>${platform.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.mybatis</groupId>

@@ -14,8 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -31,7 +31,6 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
-import org.hibernate.mapping.Map;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
@@ -116,7 +115,7 @@ public class SimplePageablePlugin implements Interceptor {
 					pageable=(SimplePageRequest) params;
 				}
 				else if(Map.class.isInstance(params)){
-					HashMap<String, Object> runtimeParams = (HashMap<String, Object>) params;
+					Map<String, Object> runtimeParams = (Map<String, Object>) params;
 					if(JCollectionUtils.hasInMap(runtimeParams)){
 						for (Object obj : runtimeParams.values()) {
 							if (SimplePageRequest.class.isInstance(obj)) {

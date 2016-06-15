@@ -22,6 +22,12 @@
 			<artifactId>youapp-platform-basicwebcomp</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>youapp.platform</groupId>
+            <artifactId>youapp-platform-ormmybatis</artifactId>
+            <version>${platform.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>

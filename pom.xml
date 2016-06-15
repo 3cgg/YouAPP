@@ -9,7 +9,7 @@
 		<spring.boot.version>1.3.3.RELEASE</spring.boot.version>
 
 		<httpclient.version>4.3.6</httpclient.version>
-		<jackson.version>1.9.13</jackson.version>
+		<jackson.version>2.6.5</jackson.version>
 		<junit.version>4.12</junit.version>
 		<mybatis.version>3.2.8</mybatis.version>
 		<mybatis.spring.version>1.2.2</mybatis.spring.version>
@@ -169,19 +169,14 @@
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 			</dependency>
-
-
+			
+			<!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-asl</artifactId>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-asl</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
 
 			<dependency>
 				<groupId>com.google.zxing</groupId>

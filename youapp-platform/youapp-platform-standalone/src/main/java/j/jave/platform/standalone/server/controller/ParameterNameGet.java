@@ -42,10 +42,10 @@ public class ParameterNameGet {
             classReader.accept(new ClassVisitor(Opcodes.ASM4) {  
                 @Override  
                 public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {  
-                    
-                	LOGGER.debug("method name : "+name+" ; access : "+access 
-                				+" ; desc : "+desc +"; signature : "+signature+JJSON.get().formatObject(exceptions));
-                	
+                    if(LOGGER.isDebugEnabled()){
+	                	LOGGER.debug("method name : "+name+" ; access : "+access 
+	                				+" ; desc : "+desc +"; signature : "+signature+JJSON.get().formatObject(exceptions));
+                    }
                 	Type[] argumentTypes = Type.getArgumentTypes(desc);  
                     if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {  
                         return null;  

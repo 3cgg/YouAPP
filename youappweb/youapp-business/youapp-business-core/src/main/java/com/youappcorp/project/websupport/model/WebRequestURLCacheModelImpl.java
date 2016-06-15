@@ -1,6 +1,6 @@
 package com.youappcorp.project.websupport.model;
 
-import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
+import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 
 import java.util.List;
 

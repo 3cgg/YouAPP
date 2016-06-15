@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.bill.sql;
 
-import j.jave.platform.basicsupportcomp.core.autoloader.AbstractSQLDDLLoader;
+import j.jave.platform.sps.core.autoloader.AbstractSQLDDLLoader;
 
 import java.util.List;
 

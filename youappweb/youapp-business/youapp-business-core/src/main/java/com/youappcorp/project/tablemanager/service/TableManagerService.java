@@ -2,8 +2,9 @@ package com.youappcorp.project.tablemanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.platform.basicwebcomp.core.model.Criteria;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.data.web.model.Criteria;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+
 import com.youappcorp.project.tablemanager.model.Column;
 import com.youappcorp.project.tablemanager.model.Record;
 import com.youappcorp.project.tablemanager.model.Table;

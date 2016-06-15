@@ -19,13 +19,13 @@
 
 		<dependency>
 			<groupId>youapp.platform</groupId>
-			<artifactId>youapp-platform-basicwebcomp</artifactId>
+			<artifactId>youapp-platform-webmvc</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>youapp.platform</groupId>
-            <artifactId>youapp-platform-ormmybatis</artifactId>
+            <artifactId>youapp-platform-mybatis</artifactId>
             <version>${platform.version}</version>
 		</dependency>
 

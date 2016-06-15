@@ -1,8 +1,8 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.basicsupportcomp.core.servicehub.SkipServiceNameCheck;
-import j.jave.platform.basicsupportcomp.core.servicehub.SpringServiceFactorySupport;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.sps.core.servicehub.SkipServiceNameCheck;
+import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

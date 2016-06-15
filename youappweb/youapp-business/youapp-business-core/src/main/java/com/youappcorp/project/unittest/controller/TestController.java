@@ -1,7 +1,7 @@
 package com.youappcorp.project.unittest.controller;
 
-import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.util.HashMap;
 import java.util.Map;

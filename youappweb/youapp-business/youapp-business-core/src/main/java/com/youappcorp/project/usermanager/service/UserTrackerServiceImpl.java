@@ -1,8 +1,8 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
-import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.InternalServiceSupport;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.sql.Timestamp;
 import java.util.Date;

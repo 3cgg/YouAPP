@@ -1,7 +1,7 @@
 package test.com.youappcorp.project.tablemanager;
 
-import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 

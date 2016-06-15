@@ -2,8 +2,8 @@ package com.youappcorp.project.usermanager.controller;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JDateUtils;
-import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.util.ArrayList;
 import java.util.Iterator;

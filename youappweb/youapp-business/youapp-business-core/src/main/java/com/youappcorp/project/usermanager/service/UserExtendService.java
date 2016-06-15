@@ -4,8 +4,8 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.basicwebcomp.core.service.Service;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.User;

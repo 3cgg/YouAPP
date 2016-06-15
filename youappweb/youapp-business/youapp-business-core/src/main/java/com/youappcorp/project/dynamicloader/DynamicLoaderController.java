@@ -2,15 +2,15 @@ package com.youappcorp.project.dynamicloader;
 
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.platform.basicsupportcomp.core.container.DynamicSpringContainerConfig;
-import j.jave.platform.basicsupportcomp.core.container.SpringContainerConfig;
-import j.jave.platform.basicsupportcomp.core.context.SpringContextSupport;
-import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
-import j.jave.platform.basicwebcomp.web.youappmvc.container.InnerHttpInvokeContainer;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
-import j.jave.platform.multiversioncompsupportcomp.ComponentVersionTestApplication;
-import j.jave.platform.multiversioncompsupportcomp.DynamicComponentVersionApplication;
+import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
+import j.jave.platform.sps.core.container.SpringContainerConfig;
+import j.jave.platform.sps.core.context.SpringContextSupport;
+import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
+import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
+import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.io.File;
 import java.net.MalformedURLException;

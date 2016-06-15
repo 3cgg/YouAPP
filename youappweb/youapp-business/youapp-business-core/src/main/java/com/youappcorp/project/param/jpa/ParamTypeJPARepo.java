@@ -1,7 +1,7 @@
 package com.youappcorp.project.param.jpa;
 
 import j.jave.kernal.jave.model.support.JModelRepo;
-import j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepository;
+import j.jave.platform.webcomp.spirngjpa.JSpringJpaRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

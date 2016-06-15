@@ -2,9 +2,9 @@ package com.youappcorp.project.bill.controller;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
-import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

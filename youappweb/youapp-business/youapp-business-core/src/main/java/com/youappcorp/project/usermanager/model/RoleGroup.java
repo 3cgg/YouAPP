@@ -6,7 +6,7 @@ package com.youappcorp.project.usermanager.model;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+import j.jave.platform.webcomp.spirngjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.youappcorp.project.websupport.model;
 
-import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModel;
-import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModelUtil;
+import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModel;
+import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModelUtil;
 
 public class CodeTableCacheModel implements CodeRefCacheModel {
 	

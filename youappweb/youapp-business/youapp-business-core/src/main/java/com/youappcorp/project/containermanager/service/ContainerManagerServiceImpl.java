@@ -2,9 +2,9 @@ package com.youappcorp.project.containermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceSupport;
+import j.jave.platform.webcomp.spirngjpa.query.QueryBuilder;
 
 import java.util.Collections;
 import java.util.HashMap;

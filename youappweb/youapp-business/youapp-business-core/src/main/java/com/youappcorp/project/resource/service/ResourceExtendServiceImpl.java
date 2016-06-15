@@ -2,8 +2,8 @@ package com.youappcorp.project.resource.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.InternalServiceSupport;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 

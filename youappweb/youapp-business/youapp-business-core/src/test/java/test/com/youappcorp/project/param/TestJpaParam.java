@@ -1,7 +1,7 @@
 package test.com.youappcorp.project.param;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
 

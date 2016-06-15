@@ -1,6 +1,6 @@
 package com.youappcorp.project.containermanager.model;
 
-import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.SimplePageCriteria;
 
 public class URLMappingMetaCriteria extends SimplePageCriteria {
 

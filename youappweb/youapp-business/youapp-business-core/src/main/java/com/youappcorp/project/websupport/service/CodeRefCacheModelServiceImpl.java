@@ -1,8 +1,8 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
-import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModel;
-import j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheModelService;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
+import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModel;
+import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModelService;
 
 import java.util.List;
 

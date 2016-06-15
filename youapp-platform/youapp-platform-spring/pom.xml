@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>youapp.platform</groupId>
+		  <artifactId>pom-conf</artifactId>
+		  <version>0.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>youapp-platform-spring</artifactId>
+	<version>${platform.version}</version>
+	<packaging>jar</packaging>
+
+	<name>youapp-platform-spring</name>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>youapp.platform</groupId>
+			<artifactId>youapp-platform-data</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-jave</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-ehcache</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-memcached</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-sqlautoloader</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+</project>

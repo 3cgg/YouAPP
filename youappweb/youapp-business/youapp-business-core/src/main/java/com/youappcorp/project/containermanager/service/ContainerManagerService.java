@@ -1,7 +1,7 @@
 package com.youappcorp.project.containermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.basicwebcomp.access.subhub.SessionUserGetEvent;
-import j.jave.platform.basicwebcomp.access.subhub.SessionUserService;
-import j.jave.platform.basicwebcomp.access.subhub.SessionUserServiceFactory;
-import j.jave.platform.basicwebcomp.core.service.DefaultSessionUser;
-import j.jave.platform.basicwebcomp.core.service.SessionUser;
+import j.jave.platform.webcomp.access.subhub.SessionUserGetEvent;
+import j.jave.platform.webcomp.access.subhub.SessionUserService;
+import j.jave.platform.webcomp.access.subhub.SessionUserServiceFactory;
+import j.jave.platform.webcomp.core.service.DefaultSessionUser;
+import j.jave.platform.webcomp.core.service.SessionUser;
 
 import org.springframework.stereotype.Service;
 

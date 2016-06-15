@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.resource.sql;
 
-import j.jave.platform.basicsupportcomp.core.autoloader.AbstractSQLDMLLoader;
+import j.jave.platform.sps.core.autoloader.AbstractSQLDMLLoader;
 
 import java.util.List;
 

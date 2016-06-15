@@ -1,7 +1,7 @@
 package com.youappcorp.project.resource.service;
 
-import j.jave.platform.basicwebcomp.core.service.Service;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 

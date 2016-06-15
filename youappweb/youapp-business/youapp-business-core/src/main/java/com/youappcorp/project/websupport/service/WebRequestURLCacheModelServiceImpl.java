@@ -1,10 +1,10 @@
 package com.youappcorp.project.websupport.service;
 
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.platform.basicwebcomp.core.service.DefaultServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
-import j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheModelService;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
+import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModelService;
 
 import java.util.ArrayList;
 import java.util.List;

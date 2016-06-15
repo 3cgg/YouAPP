@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.SimplePageCriteria;
 
 /**
  * @author J

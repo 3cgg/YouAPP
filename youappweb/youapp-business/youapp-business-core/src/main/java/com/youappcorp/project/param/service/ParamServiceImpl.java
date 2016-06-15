@@ -4,9 +4,9 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
-import j.jave.platform.basicwebcomp.spirngjpa.query.QueryBuilder;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceSupport;
+import j.jave.platform.webcomp.spirngjpa.query.QueryBuilder;
 
 import java.util.HashMap;
 import java.util.List;

@@ -5,8 +5,8 @@ package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.basicwebcomp.core.service.InternalServiceSupport;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.InternalServiceSupport;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

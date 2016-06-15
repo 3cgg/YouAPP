@@ -1,8 +1,8 @@
 package test.com.youappcorp.project;
 
-import j.jave.platform.basicwebcomp.web.listener.SimpleServiceRegisterContextListener;
-import j.jave.platform.basicwebcomp.web.youappmvc.listener.MvcClassPathListener;
-import j.jave.platform.basicwebcomp.web.youappmvc.servlet.MvcServiceServlet;
+import j.jave.platform.webcomp.web.listener.SimpleServiceRegisterContextListener;
+import j.jave.platform.webcomp.web.youappmvc.listener.MvcClassPathListener;
+import j.jave.platform.webcomp.web.youappmvc.servlet.MvcServiceServlet;
 
 import java.util.Arrays;
 import java.util.HashMap;

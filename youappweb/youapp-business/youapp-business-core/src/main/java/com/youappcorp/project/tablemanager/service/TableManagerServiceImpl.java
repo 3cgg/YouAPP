@@ -11,8 +11,8 @@ import j.jave.kernal.jave.model.support.JTable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
-import j.jave.platform.basicwebcomp.core.model.Criteria;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.data.web.model.Criteria;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

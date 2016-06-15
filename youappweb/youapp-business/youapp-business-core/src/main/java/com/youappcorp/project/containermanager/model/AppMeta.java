@@ -1,6 +1,6 @@
 package com.youappcorp.project.containermanager.model;
 
-import j.jave.platform.basicwebcomp.spirngjpa.JJpaBaseModel;
+import j.jave.platform.webcomp.spirngjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

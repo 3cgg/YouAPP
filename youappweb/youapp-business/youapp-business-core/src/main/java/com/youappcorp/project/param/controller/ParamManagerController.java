@@ -1,8 +1,8 @@
 package com.youappcorp.project.param.controller;
 
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.basicwebcomp.web.model.ResponseModel;
-import j.jave.platform.basicwebcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

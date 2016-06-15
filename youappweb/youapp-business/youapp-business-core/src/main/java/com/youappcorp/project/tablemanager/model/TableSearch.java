@@ -1,6 +1,6 @@
 package com.youappcorp.project.tablemanager.model;
 
-import j.jave.platform.basicwebcomp.core.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.SimplePageCriteria;
 
 /**
  * search criteria model for table manager.

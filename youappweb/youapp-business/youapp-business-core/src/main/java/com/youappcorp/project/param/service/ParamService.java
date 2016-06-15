@@ -5,7 +5,7 @@ package com.youappcorp.project.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 

@@ -82,7 +82,7 @@ select * from USERS where id=#{param1}
 </select>
 
 
-<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.platform.basicwebcomp.core.model.SimplePageCriteria">
+<select id="getUsersByPage"  resultMap="user"  parameterType="j.jave.kernal.jave.model.JPageable">
 	select * from USERS where DELETED='N' 
 	<if test="userName !=null and userName !=''">
 		and USERNAME like CONCAT('%',  #{userName} ,'%')  

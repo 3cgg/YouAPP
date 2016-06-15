@@ -18,10 +18,11 @@
 	
 	<modules>
 		<module>../youapp-kernal</module>
-		<module>youapp-platform-basicsupportcomp</module>
-		<module>youapp-platform-ormmybatis</module>
-		<module>youapp-platform-basicwebcomp</module>
+		<module>youapp-platform-spring</module>
+		<module>youapp-platform-mybatis</module>
+		<module>youapp-platform-webmvc</module>
     	<module>youapp-platform-standalone</module>
+    <module>youapp-platform-data</module>
   </modules>
 
 </project>

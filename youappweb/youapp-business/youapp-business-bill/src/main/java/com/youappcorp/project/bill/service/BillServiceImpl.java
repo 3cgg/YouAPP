@@ -6,8 +6,8 @@ package com.youappcorp.project.bill.service;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.basicwebcomp.core.service.ServiceContext;
-import j.jave.platform.basicwebcomp.core.service.ServiceSupport;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.List;
 

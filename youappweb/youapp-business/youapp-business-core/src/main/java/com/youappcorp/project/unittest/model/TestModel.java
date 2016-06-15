@@ -3,8 +3,8 @@ package com.youappcorp.project.unittest.model;
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.support.databind.proext.JPropertyExtendable;
 import j.jave.kernal.jave.support.databind.proext.annotation.DateFormatExtend;
-import j.jave.platform.basicwebcomp.web.proext.annotation.CodeExtend;
-import j.jave.platform.basicwebcomp.web.proext.annotation.ObjectExtend;
+import j.jave.platform.webcomp.web.proext.annotation.CodeExtend;
+import j.jave.platform.webcomp.web.proext.annotation.ObjectExtend;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

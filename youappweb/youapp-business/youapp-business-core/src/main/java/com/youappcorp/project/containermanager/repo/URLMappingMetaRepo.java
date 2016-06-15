@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.containermanager.repo;
 
-import j.jave.platform.basicwebcomp.spirngjpa.JSpringJpaRepository;
+import j.jave.platform.webcomp.spirngjpa.JSpringJpaRepository;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicwebcomp.web.cache.resource.obectref.ObjectRefCacheServiceFactory")
+@Service(value="ObjectRefCacheServiceFactory")
 public class ObjectRefCacheServiceFactory extends SpringServiceFactorySupport<ObjectRefCacheService> {
 	
 	@Override

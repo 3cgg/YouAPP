@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa;
+package j.jave.platform.jpa.springjpa;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheServiceFactory")
+@Service(value="ResponseCacheServiceFactory")
 public class ResponseCacheServiceFactory extends ResponseEhcacheCacheServiceFactory {
 	
 	@Override

@@ -1,6 +1,6 @@
 package com.youappcorp.project.bill.repo;
 
-import j.jave.platform.webcomp.spirngjpa.JSpringJpaRepository;
+import j.jave.platform.jpa.springjpa.JSpringJpaRepository;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.bill.model;
 
-import j.jave.platform.webcomp.spirngjpa.JJpaBaseModel;
+import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import j.jave.platform.webcomp.web.proext.annotation.CodeExtend;
 
 import java.sql.Timestamp;

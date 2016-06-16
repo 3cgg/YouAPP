@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheServiceFactory")
+@Service(value="EhcacheServiceFactory")
 public class EhcacheServiceFactory extends SpringServiceFactorySupport<EhcacheDelegateService> {
 	
 	public EhcacheServiceFactory() {

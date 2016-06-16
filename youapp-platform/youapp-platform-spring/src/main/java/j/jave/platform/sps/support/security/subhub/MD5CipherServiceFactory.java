@@ -7,7 +7,7 @@ import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.basicsupportcomp.support.security.subhub.MD5CipherServiceFactory")
+@Service(value="MD5CipherServiceFactory")
 public class MD5CipherServiceFactory extends SpringServiceFactorySupport<MD5CipherService> {
 
 	@Autowired(required=false)

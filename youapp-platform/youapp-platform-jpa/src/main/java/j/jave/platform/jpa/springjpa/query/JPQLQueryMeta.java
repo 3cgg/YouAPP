@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa.query;
+package j.jave.platform.jpa.springjpa.query;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

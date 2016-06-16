@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.service.UserService;
 
-@Service(value="com.youappcorp.project.websupport.service.AuthenticationManagerServiceImpl")
+@Service(value="AuthenticationManagerServiceImpl")
 public class AuthenticationManagerServiceImpl extends SpringServiceFactorySupport<AuthenticationManagerService> implements
 		AuthenticationManagerService {
 

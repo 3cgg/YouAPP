@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * @author J
  *
  */
-@Service(value="j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessServiceFactory")
+@Service(value="AuthenticationAccessServiceFactory")
 public class AuthenticationAccessServiceFactory extends SpringServiceFactorySupport<AuthenticationAccessService> {
 
 	public AuthenticationAccessServiceFactory() {

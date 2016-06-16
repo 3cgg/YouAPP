@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.basicsupportcomp.support.memcached.subhub.MemcachedDelegateServiceFactory")
+@Service(value="MemcachedDelegateServiceFactory")
 public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport<MemcachedDelegateService> {
 	
 	@Autowired

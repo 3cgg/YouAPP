@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class PageableSupportService extends SpringServiceFactorySupport<PageableSupportService>
 implements JService{
 
-	public static final String BEAN_NAME="j.jave.platform.mybatis.plugin.pageable.PageableSupportService";
+	public static final String BEAN_NAME="PageableSupportService";
 	
 	private JCacheService cacheService=JServiceHubDelegate.get().getService(this, JDefaultHashCacheService.class);
 	

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheServiceFactory")
+@Service(value="WebRequestURLCacheServiceFactory")
 public class WebRequestURLCacheServiceFactory extends SpringServiceFactorySupport<WebRequestURLCacheService> {
 	
 	@Override

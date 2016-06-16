@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa;
+package j.jave.platform.jpa.springjpa;
 
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.persist.JIPersist;

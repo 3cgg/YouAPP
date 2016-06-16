@@ -8,7 +8,7 @@ import j.jave.platform.webcomp.core.service.SessionUser;
 
 import org.springframework.stereotype.Service;
 
-@Service(value="com.youappcorp.project.websupport.service.SessionUserServiceImpl")
+@Service(value="SessionUserServiceImpl")
 public class SessionUserServiceImpl extends SessionUserServiceFactory implements SessionUserService{
 
 	public SessionUserServiceImpl() {

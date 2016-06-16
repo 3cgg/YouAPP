@@ -17,7 +17,7 @@ implements SpringApplicationServiceNameCheckService{
 		}
 		
 		Service service=clazz.getAnnotation(Service.class);
-		String name=clazz.getName();
+		String name=clazz.getSimpleName();
 		String serviceName=null;
 		if(service!=null&&JStringUtils.isNotNullOrEmpty(serviceName=service.value())){
 			return name.equals(serviceName);

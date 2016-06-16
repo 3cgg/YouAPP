@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa.query;
+package j.jave.platform.jpa.springjpa.query;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

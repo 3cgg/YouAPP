@@ -7,7 +7,7 @@ import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.basicwebcomp.access.subhub.AuthenticationHookDelegateService")
+@Service(value="AuthenticationHookDelegateService")
 public class AuthenticationHookDelegateService 
 extends SpringServiceFactorySupport<AuthenticationHookDelegateService>
 implements JService,AuthenticationHookService

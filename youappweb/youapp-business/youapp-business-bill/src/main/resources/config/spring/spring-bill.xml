@@ -26,7 +26,7 @@
 	<jpa:repositories
             base-package="com.youappcorp.project.bill"
             repository-impl-postfix="Impl"
-            factory-class="j.jave.platform.webcomp.spirngjpa.JSpringJpaRepositoryFactoryBean" 
+            factory-class="j.jave.platform.jpa.springjpa.JSpringJpaRepositoryFactoryBean" 
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager">
             

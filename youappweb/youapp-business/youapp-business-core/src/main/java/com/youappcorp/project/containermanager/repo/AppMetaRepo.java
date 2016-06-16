@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.containermanager.repo;
 
-import j.jave.platform.webcomp.spirngjpa.JSpringJpaRepository;
+import j.jave.platform.jpa.springjpa.JSpringJpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -23,6 +23,7 @@
 		<module>youapp-platform-webmvc</module>
     	<module>youapp-platform-standalone</module>
     <module>youapp-platform-data</module>
+    <module>youapp-platform-jpa</module>
   </modules>
 
 </project>

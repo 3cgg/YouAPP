@@ -7,7 +7,7 @@ import j.jave.platform.webcomp.web.youappmvc.service.PageableServiceFactory;
 
 import org.springframework.stereotype.Service;
 
-@Service(value="j.jave.platform.basicwebcomp.web.youappmvc.plugins.pageable.JQueryDataTablePageService")
+@Service(value="JQueryDataTablePageService")
 public class JQueryDataTablePageService extends PageableServiceFactory<PageableService> implements PageableService {
 
 	@Override

@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa;
+package j.jave.platform.jpa.springjpa;
 
 import static org.springframework.core.GenericTypeResolver.resolveParameterType;
 import static org.springframework.data.repository.util.ClassUtils.isGenericRepositoryInterface;

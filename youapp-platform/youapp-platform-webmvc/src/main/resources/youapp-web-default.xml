@@ -11,10 +11,10 @@
 
 <property>
   <name>youapp.mvc.resource.cache.service.interface</name>
-  <value>j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService</value>
+  <value>j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService</value>
   <description>indicate which cache implementation to be used.
   "j.jave.kernal.memcached.JDefaultMemcachedDisService",
-  "j.jave.platform.basicsupportcomp.support.ehcache.subhub.EhcacheDelegateService"</description>
+  "j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService"</description>
 </property>
 
 <property>

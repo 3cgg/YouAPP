@@ -1,4 +1,4 @@
-package j.jave.platform.webcomp.spirngjpa.query;
+package j.jave.platform.jpa.springjpa.query;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;

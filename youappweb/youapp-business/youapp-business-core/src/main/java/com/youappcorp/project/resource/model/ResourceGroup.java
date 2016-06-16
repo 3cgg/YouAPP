@@ -3,7 +3,7 @@ package com.youappcorp.project.resource.model;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.platform.webcomp.spirngjpa.JJpaBaseModel;
+import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

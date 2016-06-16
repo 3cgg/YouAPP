@@ -1,4 +1,4 @@
-package j.jave.platform.jpa;
+package test.j.jave.platform.jpa.springjpa;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

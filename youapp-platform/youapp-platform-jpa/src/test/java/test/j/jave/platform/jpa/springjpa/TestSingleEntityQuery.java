@@ -20,7 +20,7 @@ public class TestSingleEntityQuery extends TestCase {
 	@Test
 	public void testCond(){
 		
-		Condition condition=new Condition(JJpaBaseModel.class,LinkType.AND)
+		Condition condition=new Condition(JJpaBaseModel.class)
 		.equals("id", JUniqueUtils.unique())
 		.larger("createTime", new Date())
 		.largerAndEquals("createTime", new Date())
@@ -32,7 +32,8 @@ public class TestSingleEntityQuery extends TestCase {
 		.larger("createTime", new Date(),LinkType.OR)
 		.link(LinkType.AND)
 		.equals("id", JUniqueUtils.unique())
-		.larger("createTime", new Date(),LinkType.OR);
+		.larger("createTime", new Date(),LinkType.OR)
+		;
 		String whereClause= condition.toWhereClause();
 		Map<String, Object> params=condition.toParams();
 		
@@ -59,13 +60,16 @@ public class TestSingleEntityQuery extends TestCase {
 	@Test
 	public void testSQL(){
 		SingleEntityQueryMeta singleEntityQuery=new SingleEntityQueryMeta(JJpaBaseModel.class);
-		singleEntityQuery.condition(LinkType.AND)
+		singleEntityQuery.condition()
 				.equals("id", JUniqueUtils.unique())
 				.larger("createTime", new Date())
 				.largerAndEquals("createTime", new Date())
 				.smaller("updateTime", new Date())
 				.smallerAndEqual("updateTime", new Date())
-				.notEquals("deleted", "0");
+				.notEquals("deleted", "0")
+				.link(LinkType.OR)
+				.equals("id", JUniqueUtils.unique())
+				.larger("createTime", new Date(),LinkType.OR);
 		singleEntityQuery.order()
 		.asc("id")
 		.desc("createTime")

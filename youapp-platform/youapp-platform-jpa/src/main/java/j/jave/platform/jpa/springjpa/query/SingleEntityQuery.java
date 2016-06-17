@@ -2,14 +2,13 @@ package j.jave.platform.jpa.springjpa.query;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.jpa.springjpa.query.Condition.LinkType;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
 public class SingleEntityQuery {
-
+	
 	private SingleEntityQueryMeta singleEntityQueryMeta;
 	
 	private EntityManager entityManager;
@@ -20,12 +19,12 @@ public class SingleEntityQuery {
 		this.entityManager = entityManager;
 	}
 	
-	public Condition condition(LinkType linkType){
-		return singleEntityQueryMeta.condition(linkType);
-	}
-	
 	public Condition condition(){
 		return singleEntityQueryMeta.condition();
+	}
+	
+	public Condition conditionDefault(){
+		return singleEntityQueryMeta.conditionDefault();
 	}
 	
 	public Order order() {

@@ -1,12 +1,13 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import java.util.Map;
-
 import j.jave.kernal.jave.model.JModel;
-import j.jave.platform.jpa.springjpa.query.Condition.LinkType;
+
+import java.util.Map;
 
 public class SingleEntityQueryMeta implements JModel {
 
+	public static final String ALIAS="als";
+	
 	private Class<?> entityClass;
 	
 	private Condition condition;
@@ -28,18 +29,17 @@ public class SingleEntityQueryMeta implements JModel {
 		this.singleEntityQuery = singleEntityQuery;
 	}
 	
-	public Condition condition(LinkType linkType){
-		condition= new Condition(entityClass,linkType);
-		condition.setSingleEntityQuery(singleEntityQuery);
-		return condition;
-	}
-	
 	public Condition condition(){
 		condition= new Condition(entityClass);
 		condition.setSingleEntityQuery(singleEntityQuery);
 		return condition;
 	}
 	
+	public Condition conditionDefault(){
+		condition= new Condition(entityClass).equals("deleted","N");
+		condition.setSingleEntityQuery(singleEntityQuery);
+		return condition;
+	}
 	
 	public Order order() {
 		order=new Order(entityClass);
@@ -48,7 +48,14 @@ public class SingleEntityQueryMeta implements JModel {
 	}
 	
 	public String toJPQL(){
-		return "from "+entityClass.getSimpleName()+" where 1=1 "+condition.toWhereClause()+order.toOrderClause();
+		String clause="from "+entityClass.getSimpleName()+" "+ALIAS;
+		if(condition!=null){
+			clause=clause+" "+condition.toWhereClause();
+		}
+		if(order!=null){
+			clause=clause+" "+order.toOrderClause();
+		}
+		return clause;
 	}
 	
 	public Map<String, Object> toParams(){

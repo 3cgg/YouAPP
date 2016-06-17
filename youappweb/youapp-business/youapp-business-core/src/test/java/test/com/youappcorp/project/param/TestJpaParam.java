@@ -1,9 +1,14 @@
 package test.com.youappcorp.project.param;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
+import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.utils.JAssert;
+import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.SimplePageRequest;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
+import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.param.service.InternalParamCodeServiceImpl;
 import com.youappcorp.project.param.service.ParamService;
 
 
@@ -28,6 +35,26 @@ public class TestJpaParam {
 	
 	@Autowired
 	private ParamService paramS;
+	
+	@Autowired
+	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;
+	
+	
+	@Test
+	public void testCondition(){
+		
+		List<ParamCode> paramCodes= internalParamCodeServiceImpl.singleEntityQuery()
+		.conditionDefault().ready().executeList();
+		
+		SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
+		simplePageCriteria.setPageNumber(0);
+		simplePageCriteria.setPageSize(10);
+		JPage<ParamCode> paramCodePage= internalParamCodeServiceImpl.singleEntityQuery()
+				.conditionDefault().ready().executePageable(simplePageCriteria);
+		
+		JAssert.isNotNull(paramCodes);
+		JAssert.isNotNull(paramCodePage);
+	}
 	
 	@Test
 	public void aram(){

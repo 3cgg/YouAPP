@@ -49,7 +49,7 @@ public class Order implements JModel {
 	}
 	
 	private Order append(String property,String orderType){
-		orderClause.add(property+" "+orderType);
+		orderClause.add(SingleEntityQueryMeta.ALIAS+"."+property+" "+orderType);
 		return this;
 	}
 	

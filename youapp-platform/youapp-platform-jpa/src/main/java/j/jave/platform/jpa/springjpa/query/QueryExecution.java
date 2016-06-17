@@ -7,6 +7,7 @@ import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JPageRequest;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -200,7 +201,7 @@ public abstract class QueryExecution {
 			Query countQuery=queryMeta.getCountQuery();
 			JAssert.isNotNull(countQuery, "count query not found.");
 			
-			if(queryMeta.getCountParams()!=null){
+			if(JCollectionUtils.hasInMap(queryMeta.getCountParams())){
 				//use count parameters if exists
 				setQueryParameters(countQuery, queryMeta.getCountParams());
 			}

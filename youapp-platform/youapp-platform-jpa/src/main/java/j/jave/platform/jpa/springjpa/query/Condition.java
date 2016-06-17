@@ -35,15 +35,14 @@ public class Condition implements JModel {
 	private Condition pre;
 	
 	public Condition(Class<?> entityClass) {
-		this(entityClass,LinkType.AND);
+		this(entityClass,LinkType.ROOT);
 	}
 	
-	public Condition(Class<?> entityClass,LinkType linkType) {
-		this.entityClass=entityClass;
-		this.linkType=linkType;
+	private Condition(Class<?> entityClass,LinkType linkType) {
+		this(entityClass, linkType, null);
 	}
 	
-	public Condition(Class<?> entityClass,LinkType linkType,Condition previousCondition) {
+	private Condition(Class<?> entityClass,LinkType linkType,Condition previousCondition) {
 		this.entityClass=entityClass;
 		this.linkType=linkType;
 		this.pre=previousCondition;
@@ -74,9 +73,9 @@ public class Condition implements JModel {
 		return allParams;
 	}
 	
-	private String toSliceClause(){
+	public String toSliceClause(){
 		StringBuffer stringBuffer=new StringBuffer("");
-		String prefix=linkType.name();
+		String prefix=LinkType.ROOT==linkType?"":linkType.name();
 		for(String clause:conditionSliceClauses){
 			stringBuffer.append(" "+clause+" ");
 		}
@@ -84,17 +83,47 @@ public class Condition implements JModel {
 		return " "+prefix+" ("+inner+")";
 	}
 	
-	public String toWhereClause(){
+	/**
+	 * include this condition
+	 * @return
+	 */
+	private String toPreWholeClause(){
 		if(pre==null){
 			return toSliceClause();
 		}
-		String preSliceClause=pre.toWhereClause();
+		String preSliceClause=pre.toPreWholeClause();
 		String thisSliceClause=toSliceClause();
 		return preSliceClause+ thisSliceClause;
 	}
 	
+	/**
+	 * exclude this condition.
+	 * @param thisCondition
+	 * @return
+	 */
+	private String toNextWholeClause(Condition thisCondition){
+		if(next==null){
+			if(this!=thisCondition){
+				return toSliceClause();
+			}
+			else{
+				return "";
+			}
+		}
+		String nextSliceClause=next.toNextWholeClause(thisCondition);
+		String thisSliceClause="";
+		if(this!=thisCondition){
+			thisSliceClause=toSliceClause();
+		}
+		return thisSliceClause+nextSliceClause;
+	}
+	
+	public String toWhereClause(){
+		return " where "+toPreWholeClause()+toNextWholeClause(this);
+	}
+	
 	public static enum LinkType{
-		AND("AND"),OR("OR");
+		AND("AND"),OR("OR"),ROOT("ROOT");
 		private LinkType(String type){
 			
 		}
@@ -120,7 +149,7 @@ public class Condition implements JModel {
 			linkTypeName="";
 			rootUsed=true;
 		}
-		conditionSliceClauses.add(linkTypeName+" "+property+opeType+" :"+property);
+		conditionSliceClauses.add(linkTypeName+" "+SingleEntityQueryMeta.ALIAS+"."+property+opeType+" :"+property);
 		params.put(property, value);
 		return this;
 	}

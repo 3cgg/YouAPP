@@ -149,8 +149,9 @@ public class Condition implements JModel {
 			linkTypeName="";
 			rootUsed=true;
 		}
-		conditionSliceClauses.add(linkTypeName+" "+SingleEntityQueryMeta.ALIAS+"."+property+opeType+" :"+property);
-		params.put(property, value);
+		String paramString=property+"_pm_";
+		conditionSliceClauses.add(linkTypeName+" "+SingleEntityQueryMeta.ALIAS+"."+property+opeType+" :"+paramString);
+		params.put(paramString, value);
 		return this;
 	}
 	

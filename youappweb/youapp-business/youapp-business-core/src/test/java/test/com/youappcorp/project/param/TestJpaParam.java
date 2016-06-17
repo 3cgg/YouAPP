@@ -5,10 +5,13 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.data.web.model.SimplePageCriteria;
 import j.jave.platform.data.web.model.SimplePageRequest;
+import j.jave.platform.jpa.springjpa.query.QueryBuilder;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,18 +42,28 @@ public class TestJpaParam {
 	@Autowired
 	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;
 	
+	@Autowired
+	private EntityManager em;
 	
 	@Test
 	public void testCondition(){
 		
 		List<ParamCode> paramCodes= internalParamCodeServiceImpl.singleEntityQuery()
-		.conditionDefault().ready().executeList();
+		.condition().equals("description","女").ready().executeList();
 		
+		List<ParamCode>  paramCodes2= QueryBuilder.get(em).setJpql("from ParamCode s where s.name='女'")
+		.build().execute();
+		
+		List<ParamCode> paramCodes3= QueryBuilder.get(em).setNativeSql("select *  from PARAM_CODE paramcode0_ where paramcode0_.DELETED='N' and paramcode0_.NAME='男'")
+				.build().execute();
+		
+		JAssert.isNotNull(paramCodes2);
+		JAssert.isNotNull(paramCodes3);
 		SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
 		simplePageCriteria.setPageNumber(0);
 		simplePageCriteria.setPageSize(10);
 		JPage<ParamCode> paramCodePage= internalParamCodeServiceImpl.singleEntityQuery()
-				.conditionDefault().ready().executePageable(simplePageCriteria);
+				.conditionDefault().equals("name","G").ready().executePageable(simplePageCriteria);
 		
 		JAssert.isNotNull(paramCodes);
 		JAssert.isNotNull(paramCodePage);

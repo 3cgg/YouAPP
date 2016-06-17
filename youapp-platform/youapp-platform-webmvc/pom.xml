@@ -22,6 +22,12 @@
 			<artifactId>youapp-platform-spring</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>youapp.platform</groupId>
+			<artifactId>youapp-platform-jpa</artifactId>
+			<version>${platform.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

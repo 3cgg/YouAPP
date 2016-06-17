@@ -10,14 +10,24 @@ public class Order implements JModel {
 
 	private Class<?> entityClass;
 	
+	private SingleEntityQuery singleEntityQuery;
+	
 	public Order(Class<?> entityClass) {
 		this.entityClass=entityClass;
+	}
+	
+	void setSingleEntityQuery(SingleEntityQuery singleEntityQuery) {
+		this.singleEntityQuery = singleEntityQuery;
 	}
 	
 	private List<String> orderClause=new ArrayList<String>();
 	
 	private boolean validate(String property) throws IllegalArgumentException{
 		return true;
+	}
+	
+	public SingleEntityQuery ready(){
+		return singleEntityQuery;
 	}
 	
 	public String toOrderClause(){

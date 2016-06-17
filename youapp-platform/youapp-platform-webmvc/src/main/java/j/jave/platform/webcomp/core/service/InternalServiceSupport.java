@@ -13,7 +13,9 @@ import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.web.model.SimplePageRequest;
+import j.jave.platform.jpa.springjpa.query.SingleEntityQuery;
 
+import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +36,14 @@ import org.springframework.data.domain.Page;
 public abstract class InternalServiceSupport<T extends JBaseModel> implements Service<T,String>{
 	
 	protected final JLogger logger=JLoggerFactory.getLogger(getClass());
+	
+	protected Class<?> entityClass=null;
+	
+	public InternalServiceSupport() {
+		ParameterizedType type= (ParameterizedType) this.getClass().getGenericSuperclass();
+		entityClass=(Class<T>) type.getActualTypeArguments()[0];
+	}
+	
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -166,5 +176,11 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 	public List<T> getAllModels(ServiceContext context){
 		return getRepo().getAllModels();
 	}
+	
+	
+	public SingleEntityQuery singleEntityQuery(){
+		return new SingleEntityQuery(entityClass, em);
+	}
+	
 	
 }

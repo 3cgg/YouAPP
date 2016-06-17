@@ -3,11 +3,12 @@ package test.j.jave.platform.jpa.springjpa;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import j.jave.platform.jpa.springjpa.query.Condition;
-import j.jave.platform.jpa.springjpa.query.SingleEntityQuery;
+import j.jave.platform.jpa.springjpa.query.SingleEntityQueryMeta;
 import j.jave.platform.jpa.springjpa.query.Condition.LinkType;
 import j.jave.platform.jpa.springjpa.query.Order;
 
 import java.util.Date;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -19,16 +20,24 @@ public class TestSingleEntityQuery extends TestCase {
 	@Test
 	public void testCond(){
 		
-		String whereClause=new Condition(JJpaBaseModel.class,LinkType.AND)
+		Condition condition=new Condition(JJpaBaseModel.class,LinkType.AND)
 		.equals("id", JUniqueUtils.unique())
 		.larger("createTime", new Date())
 		.largerAndEquals("createTime", new Date())
 		.smaller("updateTime", new Date())
 		.smallerAndEqual("updateTime", new Date())
 		.notEquals("deleted", "0")
-		.toWhereClause();
+		.link(LinkType.OR)
+		.equals("id", JUniqueUtils.unique())
+		.larger("createTime", new Date(),LinkType.OR)
+		.link(LinkType.AND)
+		.equals("id", JUniqueUtils.unique())
+		.larger("createTime", new Date(),LinkType.OR);
+		String whereClause= condition.toWhereClause();
+		Map<String, Object> params=condition.toParams();
 		
-		System.out.println(whereClause);
+		
+		System.out.println(whereClause+params);
 		
 	}
 	
@@ -49,7 +58,7 @@ public class TestSingleEntityQuery extends TestCase {
 	
 	@Test
 	public void testSQL(){
-		SingleEntityQuery singleEntityQuery=new SingleEntityQuery(JJpaBaseModel.class);
+		SingleEntityQueryMeta singleEntityQuery=new SingleEntityQueryMeta(JJpaBaseModel.class);
 		singleEntityQuery.condition(LinkType.AND)
 				.equals("id", JUniqueUtils.unique())
 				.larger("createTime", new Date())
@@ -69,5 +78,18 @@ public class TestSingleEntityQuery extends TestCase {
 		System.out.println(sql);
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

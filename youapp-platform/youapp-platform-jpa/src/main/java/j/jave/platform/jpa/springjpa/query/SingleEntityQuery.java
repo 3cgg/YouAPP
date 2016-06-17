@@ -1,33 +1,50 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.jpa.springjpa.query.Condition.LinkType;
 
-public class SingleEntityQuery implements JModel {
+import java.util.List;
 
-	private Class<?> entityClass;
+import javax.persistence.EntityManager;
+
+public class SingleEntityQuery {
+
+	private SingleEntityQueryMeta singleEntityQueryMeta;
 	
-	private Condition condition;
-	
-	private Order order;
-	
-	public SingleEntityQuery(Class<?> entityClass) {
-		this.entityClass=entityClass;
+	private EntityManager entityManager;
+
+	public SingleEntityQuery(Class<?> entityClass,
+			EntityManager entityManager) {
+		this.singleEntityQueryMeta = new SingleEntityQueryMeta(entityClass,this);
+		this.entityManager = entityManager;
 	}
-
+	
 	public Condition condition(LinkType linkType){
-		condition= new Condition(entityClass);
-		return condition;
+		return singleEntityQueryMeta.condition(linkType);
+	}
+	
+	public Condition condition(){
+		return singleEntityQueryMeta.condition();
 	}
 	
 	public Order order() {
-		order=new Order(entityClass);
-		return order;
+		return singleEntityQueryMeta.order();
 	}
 	
-	public String toJPQL(){
-		return "from "+entityClass.getSimpleName()+" where 1=1 and "+condition.toWhereClause()+order.toOrderClause();
+	public <T> List<T> executeList(){
+		return QueryBuilder.get(entityManager)
+		.setJpql(singleEntityQueryMeta.toJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.build().execute();
 	}
 	
+	public <T> JPage<T> executePageable(JPageable pageable){
+		return QueryBuilder.get(entityManager)
+		.setJpql(singleEntityQueryMeta.toJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.setPageable(pageable)
+		.build().execute();
+	}
 	
 }

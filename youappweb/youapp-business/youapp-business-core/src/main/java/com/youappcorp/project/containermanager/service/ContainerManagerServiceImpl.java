@@ -2,7 +2,6 @@ package com.youappcorp.project.containermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.jpa.springjpa.query.QueryBuilder;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
@@ -73,7 +72,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		String jpql="from URLMappingMeta where appId= :appId and deleted=1";
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("appId", appId);
-		return QueryBuilder.get(getEntityManager())
+		return queryBuilder()
 		.setJpql(jpql)
 		.setParams(params)
 		.build().execute();
@@ -118,7 +117,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 			params.put("urlDesc", "%"+urlMappingMetaCriteria.getUrlDesc()+"%");
 		}
 		
-		return QueryBuilder.get(getEntityManager())
+		return queryBuilder()
 		.setNativeSql(nativeSql.toString())
 		.setParams(params)
 		.setPageable(urlMappingMetaCriteria)

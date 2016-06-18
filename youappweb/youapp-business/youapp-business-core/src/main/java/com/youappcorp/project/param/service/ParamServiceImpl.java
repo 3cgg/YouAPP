@@ -4,7 +4,6 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.jpa.springjpa.query.QueryBuilder;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
@@ -93,13 +92,13 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		String nativeSql=
 				"SELECT PT.CODE TYPE, PC.CODE,PC.NAME from PARAM_CODE PC , PARAM_TYPE PT"
 				+ " WHERE PC.TYPEID = PT.ID";
-		List<CodeTableCacheModel> codes=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
+		List<CodeTableCacheModel> codes=queryBuilder().setNativeSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
 		.build().execute();
 		
 		nativeSql=
 				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT";
-		List<CodeTableCacheModel> types=QueryBuilder.get(getEntityManager()).setNativeSql(nativeSql)
+		List<CodeTableCacheModel> types=queryBuilder().setNativeSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
 		.build().execute();
 		codes.addAll(types);
@@ -117,7 +116,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 			params.put("code", paramCode.getCode());
 			params.put("typeId", paramCode.getTypeId());
 			
-			long count=QueryBuilder.get(getEntityManager())
+			long count=queryBuilder()
 			.setJpql(jpql)
 			.setParams(params)
 			.build().execute();
@@ -143,7 +142,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 			params.put("id", paramType.getId());
 			params.put("code", paramType.getCode());
 			
-			long count=QueryBuilder.get(getEntityManager())
+			long count=queryBuilder()
 			.setJpql(jpql)
 			.setParams(params)
 			.build().execute();
@@ -225,7 +224,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		Map<String , Object> params=new HashMap<String, Object>();
 		params.put("code", paramCriteria.getCode());
 		
-		return QueryBuilder.get(getEntityManager())
+		return queryBuilder()
 		.setJpql(jpql)
 		.setPageable(paramCriteria)
 		.setParams(params)

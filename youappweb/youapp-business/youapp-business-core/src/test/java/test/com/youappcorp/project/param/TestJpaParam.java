@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.data.web.model.SimplePageCriteria;
-import j.jave.platform.data.web.model.SimplePageRequest;
 import j.jave.platform.jpa.springjpa.query.QueryBuilder;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 

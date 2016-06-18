@@ -169,10 +169,6 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 		return ServiceSupportUtil.toPageRequest(pageable);
 	}
 	
-	protected EntityManager getEntityManager() {
-		return em;
-	}
-	
 	public List<T> getAllModels(ServiceContext context){
 		return getRepo().getAllModels();
 	}
@@ -181,6 +177,5 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 	public SingleEntityQuery singleEntityQuery(){
 		return new SingleEntityQuery(entityClass, em);
 	}
-	
 	
 }

@@ -7,6 +7,7 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.data.web.model.SimplePageRequest;
+import j.jave.platform.jpa.springjpa.query.QueryBuilder;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,8 +39,8 @@ public abstract class ServiceSupport implements JService{
 		return ServiceSupportUtil.toPageRequest(pageable);
 	}
 	
-	protected EntityManager getEntityManager() {
-		return em;
+	protected QueryBuilder queryBuilder(){
+		return QueryBuilder.get(em);
 	}
 	
 }

@@ -22,18 +22,18 @@
     <bean id="dataSource"   primary="true"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
         <property name="driverClassName" value="${youapp.database.driver}" />  
-        <property name="url" value="jdbc:mysql://localhost:3306/youapp" />  
+        <property name="url" value="jdbc:mysql://localhost:3306/youapp?characterEncoding=UTF-8" />  
         <property name="username" value="root" />  
-        <property name="password" value="zhongjin" />  
+        <property name="password" value="jiazhongjin" />  
     </bean>  
   
   	
   	<bean id="dataSourceBack"  
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
         <property name="driverClassName" value="${youapp.database.driver}" />  
-        <property name="url" value="jdbc:mysql://localhost:3306/youappbak" />  
+        <property name="url" value="jdbc:mysql://localhost:3306/youappbak?characterEncoding=UTF-8" />  
         <property name="username" value="root" />  
-        <property name="password" value="zhongjin" />  
+        <property name="password" value="jiazhongjin" />  
     </bean> 
   
   

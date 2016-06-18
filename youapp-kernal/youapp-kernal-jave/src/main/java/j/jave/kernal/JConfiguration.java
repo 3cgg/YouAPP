@@ -1,21 +1,25 @@
 package j.jave.kernal;
 
 import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JClassPathUtils;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JJARUtils;
+import j.jave.kernal.jave.utils.JLangUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.xml.node.JW3CStandardGetter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -38,6 +42,8 @@ public class JConfiguration extends HashMap<String, Object>{
 	private final static JConfig defaultConfig=new JConfig();
 	
 	private static class JConfig extends HashMap<String, String>{
+				
+		public Map<String, JConfigMeta> configMetas=new HashMap<String, JConfigMeta>();
 		
 		private void processJarFile(File file) throws Exception{
 			final String jarFilePath=file.getAbsolutePath();
@@ -148,8 +154,19 @@ public class JConfiguration extends HashMap<String, Object>{
 					org.w3c.dom.Node node = (org.w3c.dom.Node) iterator.next();
 					String name=getValueByKey("name", node);
 					if(JStringUtils.isNotNullOrEmpty(name)){
+						JConfigMeta configMeta=new JConfigMeta();
 						String value=getValueByKey("value", node);
 						JConfig.this.put(name, value);
+						String desc=getValueByKey("description", node);
+						String override=getValueByKey("override", node);
+						configMeta.setName(name);
+						configMeta.setValue(value);
+						configMeta.setDescription(desc);
+						if(JStringUtils.isNotNullOrEmpty(override)){
+							boolean isOverride=JLangUtils.booleanValue(override);
+							configMeta.setOverride(isOverride);
+						}
+						configMetas.put(name, configMeta);
 					}
 				}
 			}
@@ -207,13 +224,7 @@ public class JConfiguration extends HashMap<String, Object>{
 	public Boolean getBoolean(String  key, boolean defaultValue){
 		Object obj=get(key, defaultValue);
 		if(!Boolean.class.isInstance(obj)){
-			if("on".equals(String.valueOf(obj).trim())){
-				return true;
-			}
-			if("off".equals(String.valueOf(obj).trim())){
-				return false;
-			}
-			return Boolean.valueOf(String.valueOf(obj));
+			return JLangUtils.booleanValue(String.valueOf(obj));
 		}
 		return (Boolean)obj;
 	}
@@ -260,4 +271,19 @@ public class JConfiguration extends HashMap<String, Object>{
 		return keys;
 	}
 	
+	public Map<String, JConfigMeta> getAllConfigMetas(){
+		return Collections.unmodifiableMap(defaultConfig.configMetas);
+	}
+	
+	/**
+	 * get the JSON format of all configurations
+	 * @return
+	 */
+	public String getAllConfigMetaJSON(){
+		return JJSON.get().formatObject(defaultConfig.configMetas);
+	}
+	
+	public JConfigMeta getConfigMetas(String key){
+		return defaultConfig.configMetas.get(key);
+	}
 }

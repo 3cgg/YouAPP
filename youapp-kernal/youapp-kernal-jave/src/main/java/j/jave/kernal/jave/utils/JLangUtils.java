@@ -13,5 +13,20 @@ public class JLangUtils {
 		return obj1 == null ? obj2 == null : obj1.equals(obj2);
 	}
 	
+	/**
+	 * parse the input string(case sensitive) to boolean, <strong>rule: on/true==true; off/false==false</strong>
+	 * @param string  on/off , false/true 
+	 * @return
+	 */
+	public static boolean booleanValue(String string){
+		JAssert.isNotEmpty(string);
+		if("on".equals(string.trim())){
+			return true;
+		}
+		if("off".equals(string.trim())){
+			return false;
+		}
+		return Boolean.valueOf(string);
+	}
 	
 }

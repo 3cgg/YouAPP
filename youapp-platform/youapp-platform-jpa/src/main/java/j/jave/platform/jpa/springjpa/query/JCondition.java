@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Condition implements JModel {
+public class JCondition implements JModel {
 
 	/**
 	 * how to link this condition.
 	 */
 	private LinkType linkType;  
 	
-	private SingleEntityQuery singleEntityQuery;
+	private JSingleEntityQuery singleEntityQuery;
 	
 	private Class<?> entityClass;
 	
@@ -27,28 +27,28 @@ public class Condition implements JModel {
 	/**
 	 * next condition
 	 */
-	private Condition next;
+	private JCondition next;
 	
 	/**
 	 * previous condition
 	 */
-	private Condition pre;
+	private JCondition pre;
 	
-	public Condition(Class<?> entityClass) {
+	public JCondition(Class<?> entityClass) {
 		this(entityClass,LinkType.ROOT);
 	}
 	
-	private Condition(Class<?> entityClass,LinkType linkType) {
+	private JCondition(Class<?> entityClass,LinkType linkType) {
 		this(entityClass, linkType, null);
 	}
 	
-	private Condition(Class<?> entityClass,LinkType linkType,Condition previousCondition) {
+	private JCondition(Class<?> entityClass,LinkType linkType,JCondition previousCondition) {
 		this.entityClass=entityClass;
 		this.linkType=linkType;
 		this.pre=previousCondition;
 	}
 	
-	void setSingleEntityQuery(SingleEntityQuery singleEntityQuery) {
+	void setSingleEntityQuery(JSingleEntityQuery singleEntityQuery) {
 		this.singleEntityQuery = singleEntityQuery;
 	}
 	
@@ -101,7 +101,7 @@ public class Condition implements JModel {
 	 * @param thisCondition
 	 * @return
 	 */
-	private String toNextWholeClause(Condition thisCondition){
+	private String toNextWholeClause(JCondition thisCondition){
 		if(next==null){
 			if(this!=thisCondition){
 				return toSliceClause();
@@ -140,7 +140,7 @@ public class Condition implements JModel {
 		String LIKE=" like ";
 	}
 	
-	private Condition append(String property,Object value,String opeType,LinkType... linkType){
+	private JCondition append(String property,Object value,String opeType,LinkType... linkType){
 		validate(property);
 		String linkTypeName=null;
 		if(rootUsed){
@@ -150,7 +150,7 @@ public class Condition implements JModel {
 			rootUsed=true;
 		}
 		String paramString=property+"_pm_";
-		conditionSliceClauses.add(linkTypeName+" "+SingleEntityQueryMeta.ALIAS+"."+property+opeType+" :"+paramString);
+		conditionSliceClauses.add(linkTypeName+" "+JSingleEntityQueryMeta.ALIAS+"."+property+opeType+" :"+paramString);
 		params.put(paramString, value);
 		return this;
 	}
@@ -159,53 +159,53 @@ public class Condition implements JModel {
 	 * link to another condition, 
 	 * such as <p> (1=1 and 1=2) <strong>[first condition]</strong> or (1=1 and 1=2)<strong>[second condition]</strong>           
 	 */
-	public Condition link(LinkType linkType){
-		next=new Condition(entityClass, linkType,this);
+	public JCondition link(LinkType linkType){
+		next=new JCondition(entityClass, linkType,this);
 		return next;
 	}
 	
-	public SingleEntityQuery ready(){
+	public JSingleEntityQuery ready(){
 		return singleEntityQuery;
 	}
 	
-	public Condition startLikes(String property,String value,LinkType... linkType){
+	public JCondition startLikes(String property,String value,LinkType... linkType){
 		return append(property, value+"%", Ope.LIKE,linkType);
 	}
 	
-	public Condition endLikes(String property,String value,LinkType... linkType){
+	public JCondition endLikes(String property,String value,LinkType... linkType){
 		return append(property, "%"+value, Ope.LIKE,linkType);
 	}
 	
-	public Condition likes(String property,String value,LinkType... linkType){
+	public JCondition likes(String property,String value,LinkType... linkType){
 		return append(property, "%"+value+"%", Ope.LIKE,linkType);
 	}
 	
-	public Condition equals(String property,Object value,LinkType... linkType){
+	public JCondition equals(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.EQUAL,linkType);
 		return this;
 	}
 	
-	public Condition notEquals(String property,Object value,LinkType... linkType){
+	public JCondition notEquals(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.NOT_EQUAL,linkType);
 		return this;
 	}
 	
-	public Condition larger(String property,Object value,LinkType... linkType){
+	public JCondition larger(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.LARGER,linkType);
 		return this;
 	}
 
-	public Condition largerAndEquals(String property,Object value,LinkType... linkType){
+	public JCondition largerAndEquals(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.LARGER_EQUAL,linkType);
 		return this;
 	}
 	
-	public Condition smaller(String property,Object value,LinkType... linkType){
+	public JCondition smaller(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.SMALLER,linkType);
 		return this;
 	}
 	
-	public Condition smallerAndEqual(String property,Object value,LinkType... linkType){
+	public JCondition smallerAndEqual(String property,Object value,LinkType... linkType){
 		append(property, value, Ope.SMALLER_EQUAL,linkType);
 		return this;
 	}

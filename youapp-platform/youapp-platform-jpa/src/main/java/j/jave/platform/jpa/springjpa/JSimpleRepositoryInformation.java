@@ -150,7 +150,7 @@ public class JSimpleRepositoryInformation implements RepositoryInformation{
 		for (Method method : getRepositoryInterface().getMethods()) {
 			method = ClassUtils.getMostSpecificMethod(method, getRepositoryInterface());
 			if (isQueryMethodCandidate(method)) {
-				Annotation annotation=method.getAnnotation(ExcludeQuery.class);
+				Annotation annotation=method.getAnnotation(JExcludeQuery.class);
 				if(annotation==null){
 					result.add(method);
 				}

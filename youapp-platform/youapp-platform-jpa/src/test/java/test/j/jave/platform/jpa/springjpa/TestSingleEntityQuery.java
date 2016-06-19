@@ -2,10 +2,10 @@ package test.j.jave.platform.jpa.springjpa;
 
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-import j.jave.platform.jpa.springjpa.query.Condition;
-import j.jave.platform.jpa.springjpa.query.SingleEntityQueryMeta;
-import j.jave.platform.jpa.springjpa.query.Condition.LinkType;
-import j.jave.platform.jpa.springjpa.query.Order;
+import j.jave.platform.jpa.springjpa.query.JCondition;
+import j.jave.platform.jpa.springjpa.query.JSingleEntityQueryMeta;
+import j.jave.platform.jpa.springjpa.query.JCondition.LinkType;
+import j.jave.platform.jpa.springjpa.query.JOrder;
 
 import java.util.Date;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class TestSingleEntityQuery extends TestCase {
 	@Test
 	public void testCond(){
 		
-		Condition condition=new Condition(JJpaBaseModel.class)
+		JCondition condition=new JCondition(JJpaBaseModel.class)
 		.equals("id", JUniqueUtils.unique())
 		.larger("createTime", new Date())
 		.largerAndEquals("createTime", new Date())
@@ -45,7 +45,7 @@ public class TestSingleEntityQuery extends TestCase {
 	@Test
 	public void testOrder(){
 		
-		String orderClause=new Order(JJpaBaseModel.class)
+		String orderClause=new JOrder(JJpaBaseModel.class)
 		.asc("id")
 		.desc("createTime")
 		.asc("createTime")
@@ -59,7 +59,7 @@ public class TestSingleEntityQuery extends TestCase {
 	
 	@Test
 	public void testSQL(){
-		SingleEntityQueryMeta singleEntityQuery=new SingleEntityQueryMeta(JJpaBaseModel.class);
+		JSingleEntityQueryMeta singleEntityQuery=new JSingleEntityQueryMeta(JJpaBaseModel.class);
 		singleEntityQuery.condition()
 				.equals("id", JUniqueUtils.unique())
 				.larger("createTime", new Date())

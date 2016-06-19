@@ -5,13 +5,13 @@ import javax.persistence.Query;
 
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-class JPQLQueryMeta extends QueryMeta{
+public class JJPQLQuery extends JQuery<JJPQLQuery>{
 
 	private String jpql;
 	
 	private String countSql;
 	
-	public JPQLQueryMeta(EntityManager em) {
+	public JJPQLQuery(EntityManager em) {
 		super(em);
 	}
 	
@@ -28,12 +28,12 @@ class JPQLQueryMeta extends QueryMeta{
 	}
 
 	@Override
-	public Query getCountQuery() {
+	Query getCountQuery() {
 		return em.createQuery(getCountQueryString());
 	}
 
 	@Override
-	public Query getQuery() {
+	Query getQuery() {
 		if(result!=null){
 			return em.createQuery(jpql,result);
 		}
@@ -44,12 +44,14 @@ class JPQLQueryMeta extends QueryMeta{
 		return jpql;
 	}
 
-	public void setJpql(String jpql) {
+	public JJPQLQuery setJpql(String jpql) {
 		this.jpql = jpql;
+		return this;
 	}
 
-	public void setCountSql(String countSql) {
+	public JJPQLQuery setCountSql(String countSql) {
 		this.countSql = countSql;
+		return this;
 	}
 	
 	

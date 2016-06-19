@@ -4,7 +4,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.data.web.model.SimplePageCriteria;
-import j.jave.platform.jpa.springjpa.query.QueryBuilder;
+import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
@@ -50,11 +50,13 @@ public class TestJpaParam {
 		List<ParamCode> paramCodes= internalParamCodeServiceImpl.singleEntityQuery()
 		.condition().equals("description","女").ready().executeList();
 		
-		List<ParamCode>  paramCodes2= QueryBuilder.get(em).setJpql("from ParamCode s where s.name='女'")
-		.build().execute();
+		List<ParamCode>  paramCodes2= JQueryBuilder.get(em).
+				jpqlQuery().setJpql("from ParamCode s where s.name='女'")
+		.execute();
 		
-		List<ParamCode> paramCodes3= QueryBuilder.get(em).setNativeSql("select *  from PARAM_CODE paramcode0_ where paramcode0_.DELETED='N' and paramcode0_.NAME='男'")
-				.build().execute();
+		List<ParamCode> paramCodes3= JQueryBuilder.get(em).
+				nativeQuery().setSql("select *  from PARAM_CODE paramcode0_ where paramcode0_.DELETED='N' and paramcode0_.NAME='男'")
+				.execute();
 		
 		JAssert.isNotNull(paramCodes2);
 		JAssert.isNotNull(paramCodes3);
@@ -66,6 +68,15 @@ public class TestJpaParam {
 		
 		JAssert.isNotNull(paramCodes);
 		JAssert.isNotNull(paramCodePage);
+		
+		Object afc=null;
+		
+//		afc=JQueryBuilder.get(em).jpqlQuery()
+//		.setJpql("update ParamCode s  set s.description ='DE-UPDATE-SQL' where s.name='女' ")
+//		.setUpdate(true)
+//		.execute();
+		
+		JAssert.isNotNull(afc);
 	}
 	
 	@Test

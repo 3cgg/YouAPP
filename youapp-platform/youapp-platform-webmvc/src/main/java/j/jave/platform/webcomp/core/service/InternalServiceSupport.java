@@ -13,7 +13,7 @@ import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.web.model.SimplePageRequest;
-import j.jave.platform.jpa.springjpa.query.SingleEntityQuery;
+import j.jave.platform.jpa.springjpa.query.JSingleEntityQuery;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;
@@ -174,8 +174,8 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements Se
 	}
 	
 	
-	public SingleEntityQuery singleEntityQuery(){
-		return new SingleEntityQuery(entityClass, em);
+	public JSingleEntityQuery singleEntityQuery(){
+		return new JSingleEntityQuery(entityClass, em);
 	}
 	
 }

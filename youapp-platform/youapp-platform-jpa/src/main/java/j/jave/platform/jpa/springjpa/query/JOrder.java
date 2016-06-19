@@ -6,17 +6,17 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order implements JModel {
+public class JOrder implements JModel {
 
 	private Class<?> entityClass;
 	
-	private SingleEntityQuery singleEntityQuery;
+	private JSingleEntityQuery singleEntityQuery;
 	
-	public Order(Class<?> entityClass) {
+	public JOrder(Class<?> entityClass) {
 		this.entityClass=entityClass;
 	}
 	
-	void setSingleEntityQuery(SingleEntityQuery singleEntityQuery) {
+	void setSingleEntityQuery(JSingleEntityQuery singleEntityQuery) {
 		this.singleEntityQuery = singleEntityQuery;
 	}
 	
@@ -26,7 +26,7 @@ public class Order implements JModel {
 		return true;
 	}
 	
-	public SingleEntityQuery ready(){
+	public JSingleEntityQuery ready(){
 		return singleEntityQuery;
 	}
 	
@@ -48,18 +48,18 @@ public class Order implements JModel {
 		}
 	}
 	
-	private Order append(String property,String orderType){
-		orderClause.add(SingleEntityQueryMeta.ALIAS+"."+property+" "+orderType);
+	private JOrder append(String property,String orderType){
+		orderClause.add(JSingleEntityQueryMeta.ALIAS+"."+property+" "+orderType);
 		return this;
 	}
 	
-	public Order asc(String property){
+	public JOrder asc(String property){
 		validate(property);
 		append(property, OrderType.ASC.name());
 		return this;
 	}
 	
-	public Order desc(String property){
+	public JOrder desc(String property){
 		validate(property);
 		append(property, OrderType.DESC.name());
 		return this;

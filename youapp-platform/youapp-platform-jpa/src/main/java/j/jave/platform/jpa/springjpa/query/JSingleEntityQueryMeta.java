@@ -4,45 +4,45 @@ import j.jave.kernal.jave.model.JModel;
 
 import java.util.Map;
 
-public class SingleEntityQueryMeta implements JModel {
+public class JSingleEntityQueryMeta implements JModel {
 
 	public static final String ALIAS="als";
 	
 	private Class<?> entityClass;
 	
-	private Condition condition;
+	private JCondition condition;
 	
-	private Order order;
+	private JOrder order;
 	
-	private SingleEntityQuery singleEntityQuery;
+	private JSingleEntityQuery singleEntityQuery;
 	
-	public SingleEntityQueryMeta(Class<?> entityClass) {
+	public JSingleEntityQueryMeta(Class<?> entityClass) {
 		this.entityClass=entityClass;
 	}
 	
-	public SingleEntityQueryMeta(Class<?> entityClass,SingleEntityQuery singleEntityQuery) {
+	public JSingleEntityQueryMeta(Class<?> entityClass,JSingleEntityQuery singleEntityQuery) {
 		this.entityClass=entityClass;
 		this.singleEntityQuery=singleEntityQuery;
 	}
 	
-	void setSingleEntityQuery(SingleEntityQuery singleEntityQuery) {
+	void setSingleEntityQuery(JSingleEntityQuery singleEntityQuery) {
 		this.singleEntityQuery = singleEntityQuery;
 	}
 	
-	public Condition condition(){
-		condition= new Condition(entityClass);
+	public JCondition condition(){
+		condition= new JCondition(entityClass);
 		condition.setSingleEntityQuery(singleEntityQuery);
 		return condition;
 	}
 	
-	public Condition conditionDefault(){
-		condition= new Condition(entityClass).equals("deleted","N");
+	public JCondition conditionDefault(){
+		condition= new JCondition(entityClass).equals("deleted","N");
 		condition.setSingleEntityQuery(singleEntityQuery);
 		return condition;
 	}
 	
-	public Order order() {
-		order=new Order(entityClass);
+	public JOrder order() {
+		order=new JOrder(entityClass);
 		order.setSingleEntityQuery(singleEntityQuery);
 		return order;
 	}

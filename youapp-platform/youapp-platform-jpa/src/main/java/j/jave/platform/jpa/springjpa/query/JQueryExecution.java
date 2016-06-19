@@ -19,13 +19,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 
-public abstract class QueryExecution {
+abstract class JQueryExecution {
 	
 	protected JLogger logger=JLoggerFactory.getLogger(getClass());
 	
-	protected QueryMeta queryMeta;
+	protected JQuery<?> queryMeta;
 	
-	public QueryExecution(QueryMeta queryMeta) {
+	public JQueryExecution(JQuery<?> queryMeta) {
 		this.queryMeta = queryMeta;
 	}
 
@@ -73,8 +73,8 @@ public abstract class QueryExecution {
 			String paramName=param.getName();
 			Object value=params.get(paramName);
 			
-			if(JpaDateParam.class.isInstance(value)){
-				JpaDateParam jpaDateParam= (JpaDateParam) value;
+			if(JJpaDateParam.class.isInstance(value)){
+				JJpaDateParam jpaDateParam= (JJpaDateParam) value;
 //				if(String.class.isInstance(paramName)){
 				query.setParameter(paramName, jpaDateParam.getDate(), jpaDateParam.getTemporalType());
 //				}
@@ -82,8 +82,8 @@ public abstract class QueryExecution {
 //					query.setParameter((Integer)paramName, jpaDateParam.getDate(), jpaDateParam.getTemporalType());
 //				}
 			}
-			else if(JpaCalendarParam.class.isInstance(value)){
-				JpaCalendarParam jpaCalendarParam= (JpaCalendarParam) value;
+			else if(JJpaCalendarParam.class.isInstance(value)){
+				JJpaCalendarParam jpaCalendarParam= (JJpaCalendarParam) value;
 //				if(String.class.isInstance(paramName)){
 				query.setParameter(paramName, jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
 //				}
@@ -112,8 +112,8 @@ public abstract class QueryExecution {
 	 */
 	private boolean setUnspecifiedQueryParameterAsPossible(Query query, Map<?, Object> params) {
 		for (Map.Entry<?, Object> entry : params.entrySet()){
-			if(JpaDateParam.class.isInstance(entry.getValue())){
-				JpaDateParam jpaDateParam= (JpaDateParam) entry.getValue();
+			if(JJpaDateParam.class.isInstance(entry.getValue())){
+				JJpaDateParam jpaDateParam= (JJpaDateParam) entry.getValue();
 				if(String.class.isInstance(entry.getKey())){
 					query.setParameter((String)entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
 				}
@@ -121,8 +121,8 @@ public abstract class QueryExecution {
 					query.setParameter((Integer)entry.getKey(), jpaDateParam.getDate(), jpaDateParam.getTemporalType());
 				}
 			}
-			else if(JpaCalendarParam.class.isInstance(entry.getValue())){
-				JpaCalendarParam jpaCalendarParam= (JpaCalendarParam) entry.getValue();
+			else if(JJpaCalendarParam.class.isInstance(entry.getValue())){
+				JJpaCalendarParam jpaCalendarParam= (JJpaCalendarParam) entry.getValue();
 				if(String.class.isInstance(entry.getKey())){
 					query.setParameter((String)entry.getKey(), jpaCalendarParam.getCalendar(), jpaCalendarParam.getTemporalType());
 					
@@ -144,8 +144,8 @@ public abstract class QueryExecution {
 		return true;
 	}
 	
-	static class UpdateExecution extends QueryExecution{
-		public UpdateExecution(QueryMeta queryMeta) {
+	static class UpdateExecution extends JQueryExecution{
+		public UpdateExecution(JQuery<?> queryMeta) {
 			super(queryMeta);
 		}
 
@@ -158,8 +158,8 @@ public abstract class QueryExecution {
 		}
 	}
 	
-	static class SingleExecution extends QueryExecution{
-		public SingleExecution(QueryMeta queryMeta) {
+	static class SingleExecution extends JQueryExecution{
+		public SingleExecution(JQuery<?> queryMeta) {
 			super(queryMeta);
 		}
 
@@ -174,8 +174,8 @@ public abstract class QueryExecution {
 		}
 	}
 	
-	static class ListExecution extends QueryExecution{
-		public ListExecution(QueryMeta queryMeta) {
+	static class ListExecution extends JQueryExecution{
+		public ListExecution(JQuery<?> queryMeta) {
 			super(queryMeta);
 		}
 
@@ -189,9 +189,9 @@ public abstract class QueryExecution {
 	}
 	
 	
-	static class PagedExecution extends QueryExecution {
+	static class PagedExecution extends JQueryExecution {
 		
-		public PagedExecution(QueryMeta queryMeta) {
+		public PagedExecution(JQuery<?> queryMeta) {
 			super(queryMeta);
 		}
 

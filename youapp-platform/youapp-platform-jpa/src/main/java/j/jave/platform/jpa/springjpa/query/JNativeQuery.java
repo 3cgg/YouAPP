@@ -8,13 +8,13 @@ import javax.persistence.Query;
 
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-class NativeQueryMeta extends QueryMeta {
+public class JNativeQuery extends JQuery<JNativeQuery> {
 
 	private String sql;
 	
 	private String countSql;
 	
-	public NativeQueryMeta(EntityManager em) {
+	public JNativeQuery(EntityManager em) {
 		super(em);
 	}
 
@@ -37,12 +37,12 @@ class NativeQueryMeta extends QueryMeta {
 	}
 
 	@Override
-	public Query getCountQuery() {
+	Query getCountQuery() {
 		return em.createNativeQuery(getCountQueryString());
 	}
 	
 	@Override
-	public Query getQuery() {
+	Query getQuery() {
 		if(result!=null){
 			return em.createNativeQuery(sql,result);
 		}
@@ -56,16 +56,18 @@ class NativeQueryMeta extends QueryMeta {
 		return sql;
 	}
 
-	public void setSql(String sql) {
+	public JNativeQuery setSql(String sql) {
 		this.sql = sql;
+		return this;
 	}
 
 	public String getCountSql() {
 		return countSql;
 	}
 
-	public void setCountSql(String countSql) {
+	public JNativeQuery setCountSql(String countSql) {
 		this.countSql = countSql;
+		return this;
 	}
 	
 }

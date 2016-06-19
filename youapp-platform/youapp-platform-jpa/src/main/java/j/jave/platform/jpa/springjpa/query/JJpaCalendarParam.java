@@ -1,21 +1,21 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.TemporalType;
 
-public class JpaDateParam {
+public class JJpaCalendarParam {
 
-	private Date date;
+	private Calendar calendar;
 	
 	private TemporalType temporalType;
 
-	public Date getDate() {
-		return date;
+	public Calendar getCalendar() {
+		return calendar;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
 	}
 
 	public TemporalType getTemporalType() {

@@ -11,9 +11,9 @@ import javax.persistence.Query;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-class NamedQueryMeta extends QueryMeta {
+public class JNamedQuery extends JQuery<JNamedQuery> {
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(NamedQueryMeta.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(JNamedQuery.class);
 	
 	private String namedSql;
 	
@@ -23,7 +23,7 @@ class NamedQueryMeta extends QueryMeta {
 	
 	private String countSql;
 	
-	public NamedQueryMeta(EntityManager em) {
+	public JNamedQuery(EntityManager em) {
 		super(em);
 	}
 	
@@ -82,7 +82,7 @@ class NamedQueryMeta extends QueryMeta {
 	}
 
 	@Override
-	public Query getCountQuery() {
+	Query getCountQuery() {
 		boolean namedCountQueryIsPresent=false;
 		if(JStringUtils.isNotNullOrEmpty(countNamedSql)){
 			namedCountQueryIsPresent=hasNamedQuery(em, countNamedSql);
@@ -105,19 +105,21 @@ class NamedQueryMeta extends QueryMeta {
 	}
 	
 	@Override
-	public Query getQuery() {
+	Query getQuery() {
 		if(result!=null){
 			return em.createNamedQuery(namedSql,result);
 		}
 		return em.createNamedQuery(namedSql);
 	}
 
-	public void setNamedSql(String namedSql) {
+	public JNamedQuery setNamedSql(String namedSql) {
 		this.namedSql = namedSql;
+		return this;
 	}
 
-	public void setCountNamedSql(String countNamedSql) {
+	public JNamedQuery setCountNamedSql(String countNamedSql) {
 		this.countNamedSql = countNamedSql;
+		return this;
 	}
 
 	public String getNamedSql() {

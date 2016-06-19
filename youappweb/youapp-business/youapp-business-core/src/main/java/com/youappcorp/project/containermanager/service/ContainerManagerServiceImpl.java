@@ -73,9 +73,9 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("appId", appId);
 		return queryBuilder()
-		.setJpql(jpql)
+		.jpqlQuery().setJpql(jpql)
 		.setParams(params)
-		.build().execute();
+		.execute();
 	}
 	
 	@Override
@@ -118,10 +118,10 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		}
 		
 		return queryBuilder()
-		.setNativeSql(nativeSql.toString())
+		.nativeQuery().setSql(nativeSql.toString())
 		.setParams(params)
 		.setPageable(urlMappingMetaCriteria)
-		.build().execute();
+		.execute();
 		
 	}
 }

@@ -7,43 +7,43 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-public class SingleEntityQuery {
+public class JSingleEntityQuery {
 	
-	private SingleEntityQueryMeta singleEntityQueryMeta;
+	private JSingleEntityQueryMeta singleEntityQueryMeta;
 	
 	private EntityManager entityManager;
 
-	public SingleEntityQuery(Class<?> entityClass,
+	public JSingleEntityQuery(Class<?> entityClass,
 			EntityManager entityManager) {
-		this.singleEntityQueryMeta = new SingleEntityQueryMeta(entityClass,this);
+		this.singleEntityQueryMeta = new JSingleEntityQueryMeta(entityClass,this);
 		this.entityManager = entityManager;
 	}
 	
-	public Condition condition(){
+	public JCondition condition(){
 		return singleEntityQueryMeta.condition();
 	}
 	
-	public Condition conditionDefault(){
+	public JCondition conditionDefault(){
 		return singleEntityQueryMeta.conditionDefault();
 	}
 	
-	public Order order() {
+	public JOrder order() {
 		return singleEntityQueryMeta.order();
 	}
 	
 	public <T> List<T> executeList(){
-		return QueryBuilder.get(entityManager)
+		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())
 		.setParams(singleEntityQueryMeta.toParams())
-		.build().execute();
+		.execute();
 	}
 	
 	public <T> JPage<T> executePageable(JPageable pageable){
-		return QueryBuilder.get(entityManager)
+		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())
 		.setParams(singleEntityQueryMeta.toParams())
 		.setPageable(pageable)
-		.build().execute();
+		.execute();
 	}
 	
 }

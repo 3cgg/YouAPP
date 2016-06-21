@@ -31,19 +31,26 @@ public class JSingleEntityQuery {
 		return singleEntityQueryMeta.order();
 	}
 	
-	public <T> List<T> executeList(){
+	public <T> List<T> models(){
 		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())
 		.setParams(singleEntityQueryMeta.toParams())
-		.execute();
+		.models();
 	}
 	
-	public <T> JPage<T> executePageable(JPageable pageable){
+	public <T> T model(){
+		return JQueryBuilder.get(entityManager).jpqlQuery()
+		.setJpql(singleEntityQueryMeta.toJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.model();
+	}
+	
+	public <T> JPage<T> modelPage(JPageable pageable){
 		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())
 		.setParams(singleEntityQueryMeta.toParams())
 		.setPageable(pageable)
-		.execute();
+		.modelPage();
 	}
 	
 }

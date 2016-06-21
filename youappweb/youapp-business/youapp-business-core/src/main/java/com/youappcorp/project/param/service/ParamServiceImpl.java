@@ -94,13 +94,13 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 				+ " WHERE PC.TYPEID = PT.ID";
 		List<CodeTableCacheModel> codes=queryBuilder().nativeQuery().setSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
-		.execute();
+		.models();
 		
 		nativeSql=
 				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT";
 		List<CodeTableCacheModel> types=queryBuilder().nativeQuery().setSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
-		.execute();
+		.models();
 		codes.addAll(types);
 		return codes;
 	}
@@ -119,7 +119,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 			long count=queryBuilder()
 			.jpqlQuery().setJpql(jpql)
 			.setParams(params)
-			.execute();
+			.model();
 			if(count>1){
 				throw new BusinessException("param type already exists.");
 			}
@@ -145,7 +145,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 			long count=queryBuilder()
 			.jpqlQuery().setJpql(jpql)
 			.setParams(params)
-			.execute();
+			.model();
 			if(count>1){
 				throw new BusinessException("param type already exists.");
 			}
@@ -228,7 +228,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		.jpqlQuery().setJpql(jpql)
 		.setPageable(paramCriteria)
 		.setParams(params)
-		.execute();
+		.modelPage();
 	}
 	
 }

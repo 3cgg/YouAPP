@@ -1,9 +1,11 @@
 package j.jave.platform.jpa.springjpa.query;
 
+import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JAssert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -107,7 +109,7 @@ public abstract class JQuery<T extends JQuery<T>> {
 		return result;
 	}
 
-	public T setResult(Class<?> result) {
+	private T setResult(Class<?> result) {
 		this.result = result;
 		return (T) this;
 	}
@@ -148,10 +150,112 @@ public abstract class JQuery<T extends JQuery<T>> {
 		return useAlias;
 	}
 	
-	public <M> M executeMap(){
+	/**
+	 * alias as key, column value as value. 
+	 * <p><strong>the select clause must contain alias for each column</strong>
+	 * @return
+	 */
+	public List<Map<String, Object>> maps(){
+		setSingle(false);
 		return ready().executeMap();
 	}
 	
+	/**
+	 * alias as key, column value as value. 
+	 * <p><strong>the select clause must contain alias for each column</strong>
+	 * @return
+	 */
+	public Map<String, Object> map(){
+		setSingle(true);
+		return ready().executeMap();
+	}
+	
+	/**
+	 * pageable Map
+	 * <p><strong>the select clause must contain alias for each column</strong>
+	 * @param pageable
+	 * @return
+	 */
+	public JPage<Map<String, Object>> mapPage(JPageable pageable){
+		setPageable(pageable);
+		setSingle(false);
+		return execute();
+	}
+	
+	/**
+	 * convenience to {@link #mapPage(JPageable)}
+	 * @return
+	 */
+	public JPage<Map<String, Object>> mapPage(){
+		return mapPage(pageable);
+	}
+	
+	/**
+	 * the result is a POJO
+	 * @param resultClass expected type
+	 * @return a POJO
+	 */
+	public <M> M model(Class<M> resultClass){
+		return setResult(resultClass)
+					.setSingle(true)
+						.execute();
+	}
+	
+	public <M> M model(){
+		return model(null);
+	}
+	
+	/**
+	 * the result is a set of POJOs.
+	 * @param resultClass expected type
+	 * @return POJOs 
+	 */
+	public <M> List<M> models(Class<M> resultClass){
+		return setResult(resultClass)
+					.setSingle(false)
+						.execute();
+	}
+	
+	public <M> List<M> models(){
+		return models(null);
+	}
+	
+	/**
+	 * the pageable set of POJOs
+	 * @param pageable 
+	 * @param resultClass expected type
+	 * @return
+	 */
+	public <M> JPage<M> modelPage(JPageable pageable,Class<M> resultClass){
+		return setResult(resultClass)
+					.setPageable(pageable)
+						.setSingle(false)
+						.execute();
+	}
+	
+	public <M> JPage<M> modelPage(JPageable pageable){
+		return modelPage(pageable, null);
+	}
+	
+	/**
+	 * convenience to {@link #modelPage(JPageable, Class)}
+	 * @param resultClass
+	 * @return
+	 */
+	public <M> JPage<M> modelPage(Class<M> resultClass){
+		return modelPage(pageable, resultClass);
+	}
+	
+	public <M> JPage<M> modelPage(){
+		return modelPage(pageable, null);
+	}
+	
+	/**
+	 * use {@link #model()} ,{@link #models()} instead of this, strongly recommended never use this method.
+	 * @see JQuery#model()
+	 * @see #models()
+	 */
+	@Deprecated
 	public <M> M execute(){
 		return ready().execute();
 	}

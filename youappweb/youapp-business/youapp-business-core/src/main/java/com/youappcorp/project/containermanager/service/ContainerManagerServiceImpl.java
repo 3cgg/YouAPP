@@ -75,7 +75,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		return queryBuilder()
 		.jpqlQuery().setJpql(jpql)
 		.setParams(params)
-		.execute();
+		.models();
 	}
 	
 	@Override
@@ -121,7 +121,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		.nativeQuery().setSql(nativeSql.toString())
 		.setParams(params)
 		.setPageable(urlMappingMetaCriteria)
-		.execute();
+		.modelPage();
 		
 	}
 }

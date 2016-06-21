@@ -34,10 +34,7 @@ public class JJPQLQuery extends JQuery<JJPQLQuery>{
 
 	@Override
 	Query getQuery() {
-		if(result!=null){
-			return em.createQuery(jpql,result);
-		}
-		return em.createQuery(jpql);
+		return spiQueryService.createJPQLQuery(jpql, this);
 	}
 
 	public String getJpql() {

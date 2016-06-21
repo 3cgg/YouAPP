@@ -10,6 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 public abstract class JQuery<T extends JQuery<T>> {
+	
+	protected static JSPIQueryService spiQueryService
+	=JSPIQueryServiceUtil.getSPIQueryService();
 
 	protected Map<?, Object> params=new HashMap<Object, Object>();
 	
@@ -46,6 +49,16 @@ public abstract class JQuery<T extends JQuery<T>> {
 	 * like 'update table set ... ; insert table ...'
 	 */
 	protected boolean update=false;
+	
+	/**
+	 * whether to use alias , the resultset is {@link Map}
+	 */
+	protected boolean useAlias;
+	
+//	/**
+//	 * whether to user SPI(Hibernate , Eclipse Link etc.)
+//	 */
+//	protected boolean useSpi=true;
 
 	public JQuery(EntityManager em) {
 		super();
@@ -112,6 +125,10 @@ public abstract class JQuery<T extends JQuery<T>> {
 		this.resultSetMapping = resultSetMapping;
 		return (T) this;
 	}
+	
+	public String getResultSetMapping() {
+		return resultSetMapping;
+	}
 
 	/**
 	 * set true if the sql is update of insert 
@@ -127,6 +144,13 @@ public abstract class JQuery<T extends JQuery<T>> {
 		return update;
 	}
 	
+	public boolean isUseAlias() {
+		return useAlias;
+	}
+	
+	public <M> M executeMap(){
+		return ready().executeMap();
+	}
 	
 	public <M> M execute(){
 		return ready().execute();

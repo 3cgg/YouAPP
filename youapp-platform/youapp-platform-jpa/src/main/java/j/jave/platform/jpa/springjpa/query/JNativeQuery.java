@@ -43,13 +43,7 @@ public class JNativeQuery extends JQuery<JNativeQuery> {
 	
 	@Override
 	Query getQuery() {
-		if(result!=null){
-			return em.createNativeQuery(sql,result);
-		}
-		if(resultSetMapping!=null){
-			return em.createNativeQuery(sql,resultSetMapping);
-		}
-		return em.createNativeQuery(sql);
+		return spiQueryService.createNativeQuery(sql, this);
 	}
 
 	public String getSql() {

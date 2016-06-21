@@ -106,10 +106,7 @@ public class JNamedQuery extends JQuery<JNamedQuery> {
 	
 	@Override
 	Query getQuery() {
-		if(result!=null){
-			return em.createNamedQuery(namedSql,result);
-		}
-		return em.createNamedQuery(namedSql);
+		return spiQueryService.createNamedQuery(namedSql, this);
 	}
 
 	public JNamedQuery setNamedSql(String namedSql) {

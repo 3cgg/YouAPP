@@ -23,12 +23,20 @@ abstract class JQueryExecution {
 	
 	protected JLogger logger=JLoggerFactory.getLogger(getClass());
 	
-	protected JQuery<?> queryMeta;
+	protected JQuery<?> _query;
 	
-	public JQueryExecution(JQuery<?> queryMeta) {
-		this.queryMeta = queryMeta;
+	protected static JSPIQueryService spiQueryService
+	=JSPIQueryServiceUtil.getSPIQueryService();
+	
+	public JQueryExecution(JQuery<?> _query) {
+		this._query = _query;
 	}
 
+	public <T> T executeMap(){
+		this._query.useAlias=true;
+		return execute();
+	}
+	
 
 	public <T> T execute(){
 		T result=null;
@@ -145,76 +153,78 @@ abstract class JQueryExecution {
 	}
 	
 	static class UpdateExecution extends JQueryExecution{
-		public UpdateExecution(JQuery<?> queryMeta) {
-			super(queryMeta);
+		public UpdateExecution(JQuery<?> _query) {
+			super(_query);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Object doExecute() {
-			Query query=queryMeta.getQuery();
-			setQueryParameters(query, queryMeta.getParams());
+			Query query=_query.getQuery();
+			setQueryParameters(query, _query.getParams());
 			return query.executeUpdate();
 		}
 	}
 	
 	static class SingleExecution extends JQueryExecution{
-		public SingleExecution(JQuery<?> queryMeta) {
-			super(queryMeta);
+		public SingleExecution(JQuery<?> _query) {
+			super(_query);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Object doExecute() {
-			Query query=queryMeta.getQuery();
-			setQueryParameters(query, queryMeta.getParams());
-			Object object= query.getSingleResult();
-			Class<?> result=queryMeta.getResult();
-			return result==null?object:result.cast(object);
+			Query query=_query.getQuery();
+			setQueryParameters(query, _query.getParams());
+//			Object object= query.getSingleResult();
+//			Class<?> result=_query.getResult();
+//			return result==null?object:result.cast(object);
+			return spiQueryService.getSingleResult(query, _query);
 		}
 	}
 	
 	static class ListExecution extends JQueryExecution{
-		public ListExecution(JQuery<?> queryMeta) {
-			super(queryMeta);
+		public ListExecution(JQuery<?> _query) {
+			super(_query);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		protected List<?> doExecute() {
-			Query query=queryMeta.getQuery();
-			setQueryParameters(query, queryMeta.getParams());
-			return query.getResultList();
+			Query query=_query.getQuery();
+			setQueryParameters(query, _query.getParams());
+//			return query.getResultList();
+			return spiQueryService.getResultList(query, _query);
 		}
 	}
 	
 	
 	static class PagedExecution extends JQueryExecution {
 		
-		public PagedExecution(JQuery<?> queryMeta) {
-			super(queryMeta);
+		public PagedExecution(JQuery<?> _query) {
+			super(_query);
 		}
 
 		@Override
 		protected JPageImpl doExecute() {
-			JPageable pageable=queryMeta.getPageable();
-			Query countQuery=queryMeta.getCountQuery();
+			JPageable pageable=_query.getPageable();
+			Query countQuery=_query.getCountQuery();
 			JAssert.isNotNull(countQuery, "count query not found.");
 			
-			if(JCollectionUtils.hasInMap(queryMeta.getCountParams())){
+			if(JCollectionUtils.hasInMap(_query.getCountParams())){
 				//use count parameters if exists
-				setQueryParameters(countQuery, queryMeta.getCountParams());
+				setQueryParameters(countQuery, _query.getCountParams());
 			}
 			else{
-				setQueryParameters(countQuery, queryMeta.getParams());
+				setQueryParameters(countQuery, _query.getParams());
 			}
 			if(logger.isDebugEnabled()){
-				Map<?, Object> debugParams=queryMeta.getCountParams();
+				Map<?, Object> debugParams=_query.getCountParams();
 				if(debugParams==null){
-					debugParams=queryMeta.getParams();
+					debugParams=_query.getParams();
 				}
 				logger.debug("ready to execute count computing (sql) : "
-								+queryMeta.getCountQueryString()
+								+_query.getCountQueryString()
 								+"\n"+JJSON.get().formatObject(debugParams));
 			}
 			
@@ -231,22 +241,23 @@ abstract class JQueryExecution {
 			int tempTotalPageNumber=JPageImpl.caculateTotalPageNumber(count, pageSize);
 			pageNumber=pageNumber>tempTotalPageNumber?tempTotalPageNumber:pageNumber;
 			
-			Query query=queryMeta.getQuery();
-			setQueryParameters(query, queryMeta.getParams());
+			Query query=_query.getQuery();
+			setQueryParameters(query, _query.getParams());
 			int startPosition=pageNumber*pageSize;
 			query.setFirstResult(startPosition);
 			query.setMaxResults(pageSize);
 			
 			if(logger.isDebugEnabled()){
-				Map<Object, Object> debugParams=new WeakHashMap<Object, Object>(queryMeta.getParams());
+				Map<Object, Object> debugParams=new WeakHashMap<Object, Object>(_query.getParams());
 				debugParams.put("debug-startPosition", startPosition);
 				debugParams.put("debug-pageSize", pageSize);
 				logger.debug("ready to execute resultset computing (sql) : "
-								+queryMeta.getQueryString()
+								+_query.getQueryString()
 								+"\n"+JJSON.get().formatObject(debugParams));
 			}
 			
-			List list= query.getResultList();
+//			List list= query.getResultList();
+			List list=spiQueryService.getResultList(query, _query);
 			JPageImpl page=new JPageImpl();
 			page.setContent(list);
 			page.setTotalRecordNumber(count);

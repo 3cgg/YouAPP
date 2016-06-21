@@ -266,11 +266,11 @@ public abstract class JQuery<T extends JQuery<T>> {
 		if(isPageable()){
 			queryExecution=new JQueryExecution.PagedExecution(this);
 		}
-		else if(isSingle()){
-			queryExecution=new JQueryExecution.SingleExecution(this);
-		}
 		else if(isUpdate()){
 			queryExecution=new JQueryExecution.UpdateExecution(this);
+		}
+		else if(isSingle()){
+			queryExecution=new JQueryExecution.SingleExecution(this);
 		}
 		else{
 			queryExecution=new JQueryExecution.ListExecution(this);

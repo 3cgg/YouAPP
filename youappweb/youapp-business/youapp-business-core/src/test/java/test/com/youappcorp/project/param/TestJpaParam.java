@@ -49,84 +49,82 @@ public class TestJpaParam {
 	public void testCondition(){
 		
 		try{
-			List<ParamCode>  paramCodes= internalParamCodeServiceImpl.singleEntityQuery()
-			.condition().equals("description","女").ready().models();
-			JAssert.isNotNull(paramCodes);
+//			List<ParamCode>  paramCodes= internalParamCodeServiceImpl.singleEntityQuery()
+//			.condition().equals("description","女").ready().models();
+//			JAssert.isNotNull(paramCodes);
+//			
+//			List<ParamCode> paramCodes1= JQueryBuilder.get(em).
+//					jpqlQuery().setJpql("from ParamCode s where s.name='女'")
+//			.models();
+//			JAssert.isNotNull(paramCodes1);
+//			
+//			
+//			List<ParamCode> paramCodes3= JQueryBuilder.get(em).
+//					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
+//					.models(ParamCode.class);
+//			
+//			JAssert.isNotNull(paramCodes3);
+//			
+//			
+//			List<Map<String, Object>> paramCodes5= JQueryBuilder.get(em).
+//					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
+//					.maps();
+//			
+//			JAssert.isNotNull(paramCodes5);
+//			
+//			
+//			Map<String, Object> paramCodes6= JQueryBuilder.get(em).
+//					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
+//					.setSingle(true)
+//					.map();
+//			
+//			JAssert.isNotNull(paramCodes6);
+//			
+//			List<ParamCode> paramCodes4= JQueryBuilder.get(em).
+//					nativeQuery().setSql("select "
+//							+ " a.TYPEID as typeId , a.CODE as code "
+//							+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
+//					.models(ParamCode.class);
+//			JAssert.isNotNull(paramCodes4);
+//			
+//			Map<String, Object> object=JQueryBuilder.get(em).
+//			nativeQuery().setSql("select "
+//					+ " a.TYPEID as typeId , a.CODE as code "
+//					+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
+//			.map();
+//			
+//			JAssert.isNotNull(object);
+//			
+//			List<Map<String, Object>>  object1= JQueryBuilder.get(em).
+//			nativeQuery().setSql("select "
+//					+ " a.TYPEID as typeId , a.CODE as code "
+//					+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
+//			.maps();
+//			
+//			JAssert.isNotNull(object1);
+//			
+//			
+//			
+//			SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
+//			simplePageCriteria.setPageNumber(0);
+//			simplePageCriteria.setPageSize(10);
+//			JPage<ParamCode> paramCodePage= internalParamCodeServiceImpl.singleEntityQuery()
+//					.conditionDefault().equals("name","G").ready().modelPage(simplePageCriteria);
+//			
+//			JAssert.isNotNull(paramCodes);
+//			JAssert.isNotNull(paramCodePage);
+//			
+//			JPage<ParamCode> paramCodePage1= internalParamCodeServiceImpl.singleEntityQuery()
+//					.conditionDefault().equals("name","女").ready()
+//						.modelPage(simplePageCriteria);
+//			
+//			JAssert.isNotNull(paramCodePage1);
 			
-			List<ParamCode> paramCodes1= JQueryBuilder.get(em).
-					jpqlQuery().setJpql("from ParamCode s where s.name='女'")
-			.models();
-			JAssert.isNotNull(paramCodes1);
 			
-			
-			List<ParamCode> paramCodes3= JQueryBuilder.get(em).
-					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
-					.models(ParamCode.class);
-			
-			JAssert.isNotNull(paramCodes3);
-			
-			
-			List<Map<String, Object>> paramCodes5= JQueryBuilder.get(em).
-					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
-					.maps();
-			
-			JAssert.isNotNull(paramCodes5);
-			
-			
-			Map<String, Object> paramCodes6= JQueryBuilder.get(em).
-					jpqlQuery().setJpql("select typeId as typeId , code as code from ParamCode s where s.name='女'")
-					.setSingle(true)
-					.map();
-			
-			JAssert.isNotNull(paramCodes6);
-			
-			List<ParamCode> paramCodes4= JQueryBuilder.get(em).
-					nativeQuery().setSql("select "
-							+ " a.TYPEID as typeId , a.CODE as code "
-							+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
-					.models(ParamCode.class);
-			JAssert.isNotNull(paramCodes4);
-			
-			Map<String, Object> object=JQueryBuilder.get(em).
-			nativeQuery().setSql("select "
-					+ " a.TYPEID as typeId , a.CODE as code "
-					+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
-			.map();
-			
-			JAssert.isNotNull(object);
-			
-			List<Map<String, Object>>  object1= JQueryBuilder.get(em).
-			nativeQuery().setSql("select "
-					+ " a.TYPEID as typeId , a.CODE as code "
-					+ " from PARAM_CODE a where a.DELETED='N' and a.NAME='男'")
-			.maps();
-			
-			JAssert.isNotNull(object1);
-			
-			
-			
-			SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
-			simplePageCriteria.setPageNumber(0);
-			simplePageCriteria.setPageSize(10);
-			JPage<ParamCode> paramCodePage= internalParamCodeServiceImpl.singleEntityQuery()
-					.conditionDefault().equals("name","G").ready().modelPage(simplePageCriteria);
-			
-			JAssert.isNotNull(paramCodes);
-			JAssert.isNotNull(paramCodePage);
-			
-			JPage<ParamCode> paramCodePage1= internalParamCodeServiceImpl.singleEntityQuery()
-					.conditionDefault().equals("name","女").ready()
-						.modelPage(simplePageCriteria);
-			
-			JAssert.isNotNull(paramCodePage1);
-			
-			
-			Object afc=null;
-			
-	//		afc=JQueryBuilder.get(em).jpqlQuery()
-	//		.setJpql("update ParamCode s  set s.description ='DE-UPDATE-SQL' where s.name='女' ")
-	//		.setUpdate(true)
-	//		.execute();
+			Object afc=JQueryBuilder.get(em).jpqlQuery()
+			.setJpql("update ParamCode s  set s.description ='00' where s.name='女' ")
+			.setUpdate(true)
+			.model();
 			
 			JAssert.isNotNull(afc);
 		}catch(Exception e){

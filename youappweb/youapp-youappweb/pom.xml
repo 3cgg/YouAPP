@@ -22,7 +22,7 @@
 		
 		<dependency>
 			<groupId>youapp.platform</groupId>
-			<artifactId>youapp-platform-basicwebcomp</artifactId>
+			<artifactId>youapp-platform-webmvc</artifactId>
 			<version>${platform.version}</version>
 		</dependency>
 		

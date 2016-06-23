@@ -141,6 +141,7 @@ public class JCondition implements JModel {
 	}
 	
 	private JCondition append(String property,Object value,String opeType,LinkType... linkType){
+		if(value==null) return this;
 		validate(property);
 		String linkTypeName=null;
 		if(rootUsed){

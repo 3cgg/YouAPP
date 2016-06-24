@@ -1,6 +1,6 @@
 package com.youappcorp.project.resource.service;
 
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.Resource;
 
-public interface ResourceService extends Service<Resource, String> {
+public interface ResourceService extends InternalService<Resource, String> {
 
 	/**
 	 * get all resources from <code>RESOURCE</code> table. not any filter.

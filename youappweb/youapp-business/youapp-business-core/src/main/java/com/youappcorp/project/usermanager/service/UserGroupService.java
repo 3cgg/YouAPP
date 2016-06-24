@@ -1,7 +1,7 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserGroup;
 
-public interface UserGroupService extends Service<UserGroup, String> {
+public interface UserGroupService extends InternalService<UserGroup, String> {
 	
 	List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,String userId);
 	

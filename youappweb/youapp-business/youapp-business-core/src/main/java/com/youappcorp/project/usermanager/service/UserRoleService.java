@@ -1,7 +1,7 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserRole;
 
-public interface UserRoleService extends Service<UserRole, String> {
+public interface UserRoleService extends InternalService<UserRole, String> {
 
 	
 	List<UserRole> getUserRolesByUserId(ServiceContext serviceContext,String userId);

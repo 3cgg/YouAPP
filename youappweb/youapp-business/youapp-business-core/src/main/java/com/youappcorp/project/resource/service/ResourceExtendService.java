@@ -1,7 +1,7 @@
 package com.youappcorp.project.resource.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.ResourceExtend;
 
-public interface ResourceExtendService extends Service<ResourceExtend, String> {
+public interface ResourceExtendService extends InternalService<ResourceExtend, String> {
 
 	/**
 	 * save resource extend. if the extend does not tie to any resource, we need save resource first.

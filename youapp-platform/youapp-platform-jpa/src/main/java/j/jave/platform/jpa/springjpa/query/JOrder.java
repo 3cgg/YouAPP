@@ -23,7 +23,7 @@ public class JOrder implements JModel {
 	private List<String> orderClause=new ArrayList<String>();
 	
 	private boolean validate(String property) throws IllegalArgumentException{
-		return true;
+		return JEntityUtilService.get().getEntityValidateService().propertyExists(property,entityClass);
 	}
 	
 	public JSingleEntityQuery ready(){

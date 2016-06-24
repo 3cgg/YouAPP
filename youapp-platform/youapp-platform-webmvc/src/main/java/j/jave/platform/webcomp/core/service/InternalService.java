@@ -14,7 +14,7 @@ import java.io.Serializable;
  *
  * @param <T>
  */
-public interface Service<T extends JModel,ID extends Serializable> extends JService {
+public interface InternalService<T extends JModel,ID extends Serializable> extends JService {
 
 	/**
 	 * insert record . not include other business. 

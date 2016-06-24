@@ -6,7 +6,7 @@ package com.youappcorp.project.usermanager.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import com.youappcorp.project.usermanager.model.User;
 /**
  * @author J
  */
-public interface UserService extends Service<User, String> {
+public interface UserService extends InternalService<User, String> {
 
 	/**
 	 * get user by name & password 

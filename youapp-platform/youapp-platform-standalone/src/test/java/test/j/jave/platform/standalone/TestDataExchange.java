@@ -71,7 +71,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			String base64String=base64Service.encodeBase64String(JJSON.get().formatObject(map).getBytes("utf-8"));
 			
 			String jsonString=JDefaultMessageMetaSenderBuilder.get()
-			.setURL("http://127.0.0.1:8080/example/getCar")
+			.setURL("http://127.0.0.1:8080/unit/getUnitName")
 			.setBase64String(base64String)
 			.setDataByteEncoder("JSON")
 			.setReceiveByteDecoder(new JByteDecoder() {

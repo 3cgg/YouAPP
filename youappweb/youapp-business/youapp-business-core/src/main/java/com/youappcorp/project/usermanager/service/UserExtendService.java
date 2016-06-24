@@ -4,7 +4,7 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import com.youappcorp.project.BusinessException;
@@ -14,7 +14,7 @@ import com.youappcorp.project.usermanager.model.UserExtend;
 /**
  * @author J
  */
-public interface UserExtendService extends Service<UserExtend, String> {
+public interface UserExtendService extends InternalService<UserExtend, String> {
 	
 	
 	/**

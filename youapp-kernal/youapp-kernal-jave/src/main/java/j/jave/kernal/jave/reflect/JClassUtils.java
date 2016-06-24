@@ -8,7 +8,9 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JNumberUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 
+import java.beans.Introspector;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * utils collection for relfecting class. 
@@ -30,18 +32,15 @@ public abstract class JClassUtils {
 	 * @param property
 	 * @param model
 	 * @return
+	 * @see JPropertyNotFoundException
+	 * @see JClassException
 	 */
 	public static Object get(String property, Object model) {
+		Method method=findGetterMethod(model.getClass(), property);
 		try {
-			Class<?> clazz = model.getClass();
-			Field field=getField(property, clazz,true);
-			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
-			String getterName=getterName(property, field.getType() ==boolean.class);
-			Method method=getMethod(getterName, clazz, true);
-			JAssert.isNotNull(method, "cannot find getter method for property "+property);
 			return method.invoke(model);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new JClassException(e);
 		}
 	}
 	
@@ -64,98 +63,143 @@ public abstract class JClassUtils {
 		}
 	}
 	
-	
 	/**
-	 * all properties
-	 * @param property
+	 * 
+	 * @param containerClass
+	 * @param propertyName
 	 * @return
+	 * @see JPropertyNotFoundException
 	 */
-	public static String getterName(String property) {
-		if (JStringUtils.isNotNullOrEmpty(property)) {
-			
-			if(property.length()>1){
-				String second=""+property.charAt(1);
-				if(Pattern.matches("[A-Z]", second)){
-					return "get"+property;
-				}
-				else{
-					return "get"+property.substring(0, 1).toUpperCase()
-							+ property.substring(1);
-				}
+	public static Method findGetterMethod(Class<?> containerClass, String propertyName) {
+		Class<?> checkClass = containerClass;
+		Method getter = null;
+
+		// check containerClass, and then its super types (if any)
+		while ( getter == null && checkClass != null ) {
+			if ( checkClass.equals( Object.class ) ) {
+				break;
 			}
-			else{
-				return  "get" + property.toUpperCase();
+
+			getter = getGetterOrNull( checkClass, propertyName );
+			checkClass = checkClass.getSuperclass();
+		}
+
+		// if no getter found yet, check all implemented interfaces
+		if ( getter == null ) {
+			for ( Class<?> theInterface : containerClass.getInterfaces() ) {
+				getter = getGetterOrNull( theInterface, propertyName );
+				if ( getter != null ) {
+					break;
+				}
 			}
 		}
+
+		if ( getter == null ) {
+			throw new JPropertyNotFoundException(
+					String.format(
+							Locale.ROOT,
+							"Could not locate getter method for property [%s#%s]",
+							containerClass.getName(),
+							propertyName
+					)
+			);
+		}
+
+		getter.setAccessible( true );
+		return getter;
+	}
+	
+	private static Method getGetterOrNull(Class<?> containerClass, String propertyName) {
+		for ( Method method : containerClass.getDeclaredMethods() ) {
+			// if the method has parameters, skip it
+			if ( method.getParameterTypes().length != 0 ) {
+				continue;
+			}
+
+			// if the method is a "bridge", skip it
+			if ( method.isBridge() ) {
+				continue;
+			}
+
+			final String methodName = method.getName();
+
+			// try "get"
+			if ( methodName.startsWith( "get" ) ) {
+				final String stemName = methodName.substring( 3 );
+				final String decapitalizedStemName = Introspector.decapitalize( stemName );
+				if ( stemName.equals( propertyName ) || decapitalizedStemName.equals( propertyName ) ) {
+					verifyNoIsVariantExists( containerClass, propertyName, method, stemName );
+					return method;
+				}
+
+			}
+
+			// if not "get", then try "is"
+			if ( methodName.startsWith( "is" ) ) {
+				final String stemName = methodName.substring( 2 );
+				String decapitalizedStemName = Introspector.decapitalize( stemName );
+				if ( stemName.equals( propertyName ) || decapitalizedStemName.equals( propertyName ) ) {
+					verifyNoGetVariantExists( containerClass, propertyName, method, stemName );
+					return method;
+				}
+			}
+		}
+
 		return null;
 	}
 	
-	
-	
-	/**
-	 * only for property that is not boolean type.
-	 * @param property
-	 * @return
-	 */
-	public static String getterName(String property,boolean isBoolean) {
-		
-		if(!isBoolean){
-			return getterName(property);
+	private static void verifyNoGetVariantExists(
+			Class<?> containerClass,
+			String propertyName,
+			Method isMethod,
+			String stemName) {
+		// verify that the Class does not also define a method with the same stem name with 'is'
+		try {
+			final Method getMethod = containerClass.getDeclaredMethod( "get" + stemName );
+			// No such method should throw the caught exception.  So if we get here, there was
+			// such a method.
+			checkGetAndIsVariants( containerClass, propertyName, getMethod, isMethod );
 		}
-		String regex="is[A-Z][a-zA-Z_]*";
-		if(Pattern.matches(regex, property)){
-			// start with is[A-Z]
-			return property;
+		catch (NoSuchMethodException ignore) {
 		}
-		else{
-			if(property.length()>1){
-				String second=""+property.charAt(1);
-				if(Pattern.matches("[A-Z]", second)){
-					return "is"+property;
-				}
-				else{
-					return "is"+property.substring(0, 1).toUpperCase()
-							+ property.substring(1);
-				}
-			}
-			else{
-				return "is"+property.toLowerCase();
-			}
-			
+	}
+	
+	private static void verifyNoIsVariantExists(
+			Class<?> containerClass,
+			String propertyName,
+			Method getMethod,
+			String stemName) {
+		// verify that the Class does not also define a method with the same stem name with 'is'
+		try {
+			final Method isMethod = containerClass.getDeclaredMethod( "is" + stemName );
+			// No such method should throw the caught exception.  So if we get here, there was
+			// such a method.
+			checkGetAndIsVariants( containerClass, propertyName, getMethod, isMethod );
+		}
+		catch (NoSuchMethodException ignore) {
 		}
 	}
 	
 	
-	/**
-	 * all properties 
-	 * @param property
-	 * @return
-	 */
-	public static String setterName(String property,boolean isBoolean) {
-		
-		if(!isBoolean){
-			return setterName(property);
-		}
-		String regex="is[A-Z][a-zA-Z_]*";
-		if(Pattern.matches(regex, property)){
-			// start with is[A-Z]
-			return "set"+property.substring(2);
-		}
-		else{
-			if(property.length()>1){
-				String second=""+property.charAt(1);
-				if(Pattern.matches("[A-Z]", second)){
-					return "set"+property;
-				}
-				else{
-					return "set"+property.substring(0, 1).toUpperCase()
-							+ property.substring(1);
-				}
-			}
-			else{
-				return "set"+property.toLowerCase();
-			}
-			
+	private static void checkGetAndIsVariants(
+			Class<?> containerClass,
+			String propertyName,
+			Method getMethod,
+			Method isMethod) {
+		// Check the return types.  If they are the same, its ok.  If they are different
+		// we are in a situation where we could not reasonably know which to use.
+		if ( !isMethod.getReturnType().equals( getMethod.getReturnType() ) ) {
+			throw new JPropertyNotFoundException(
+					String.format(
+							Locale.ROOT,
+							"In trying to locate getter for property [%s], Class [%s] defined " +
+									"both a `get` [%s] and `is` [%s] variant",
+							propertyName,
+							containerClass.getName(),
+							getMethod.toString(),
+							isMethod.toString()
+					)
+			);
 		}
 	}
 	
@@ -165,19 +209,85 @@ public abstract class JClassUtils {
 	 * @param value
 	 * @param model
 	 * @return
+	 * @see JPropertyNotFoundException
+	 * @see JClassException
 	 */
 	public static void set(String property,Object value,Object model) {
+		Method method=findSetterMethod(model.getClass(),property, getType(model, property));
 		try {
-			Class<?> clazz = model.getClass();
-			Field field=getField(property, clazz,true);
-			JAssert.isNotNull(field, "cannot find field in the class :  "+clazz);
-			String setterName=setterName(property, field.getType() ==boolean.class);
-			Method method=getMethod(setterName, clazz, true, field.getType());
-			JAssert.isNotNull(method, "cannot find setter method for property "+property);
 			method.invoke(model, value);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new JClassException(e);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param containerClass
+	 * @param propertyName
+	 * @param propertyType
+	 * @return
+	 * @see JPropertyNotFoundException
+	 */
+	public static Method findSetterMethod(Class<?> containerClass, String propertyName, 
+			Class<?> propertyType) {
+		Class<?> checkClass = containerClass;
+		Method setter = null;
+
+		// check containerClass, and then its super types (if any)
+		while ( setter == null && checkClass != null ) {
+			if ( checkClass.equals( Object.class ) ) {
+				break;
+			}
+
+			setter = setterOrNull( checkClass, propertyName, propertyType );
+			checkClass = checkClass.getSuperclass();
+		}
+
+		// if no setter found yet, check all implemented interfaces
+		if ( setter == null ) {
+			for ( Class<?> theInterface : containerClass.getInterfaces() ) {
+				setter = setterOrNull( theInterface, propertyName, propertyType );
+				if ( setter != null ) {
+					break;
+				}
+			}
+		}
+
+		if ( setter == null ) {
+			throw new JPropertyNotFoundException(
+					String.format(
+							Locale.ROOT,
+							"Could not locate setter method for property [%s#%s]",
+							containerClass.getName(),
+							propertyName
+					)
+			);
+		}
+
+		setter.setAccessible( true );
+		return setter;
+	}
+
+	private static Method setterOrNull(Class<?> theClass, String propertyName, 
+			Class<?> propertyType) {
+		Method potentialSetter = null;
+
+		for ( Method method : theClass.getDeclaredMethods() ) {
+			final String methodName = method.getName();
+			if ( method.getParameterTypes().length == 1 && methodName.startsWith( "set" ) ) {
+				final String testOldMethod = methodName.substring( 3 );
+				final String testStdMethod = Introspector.decapitalize( testOldMethod );
+				if ( testStdMethod.equals( propertyName ) || testOldMethod.equals( propertyName ) ) {
+					potentialSetter = method;
+					if ( propertyType == null || method.getParameterTypes()[0].equals( propertyType ) ) {
+						break;
+					}
+				}
+			}
+		}
+
+		return potentialSetter;
 	}
 	
 	/**
@@ -275,32 +385,6 @@ public abstract class JClassUtils {
 			}
 		}
 		return method;
-	}
-	
-	
-	/**
-	 * for all property whether or not it is boolean type.
-	 *
-	 * @param property
-	 * @return
-	 */
-	public static String setterName(String property) {
-		if (JStringUtils.isNotNullOrEmpty(property)) {
-			if(property.length()>1){
-				String second=""+property.charAt(1);
-				if(Pattern.matches("[A-Z]", second)){
-					return "set"+property;
-				}
-				else{
-					return "set"+property.substring(0, 1).toUpperCase()
-							+ property.substring(1);
-				}
-			}
-			else{
-				return  "set" + property.toUpperCase();
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -614,7 +698,7 @@ public abstract class JClassUtils {
 		List<Field> fields=new ArrayList<Field>();
 		Class<?> superClass=clazz;
 		
-		if(modifiers!=null&&modifiers.length==0&&modifiers[0]==Modifier.PUBLIC){
+		if(modifiers!=null&&modifiers.length==1&&modifiers[0]==Modifier.PUBLIC){
 			if(deep){
 				Collections.addAll(fields, superClass.getFields());
 				return fields;
@@ -628,7 +712,7 @@ public abstract class JClassUtils {
 				if(!isAccessable(field)){
 					field.setAccessible(true);
 				}
-				boolean exists=false;
+				boolean exists=modifiers.length==0;
 				if(modifiers!=null&&modifiers.length>0){
 					for(int mdf=0;mdf<modifiers.length;mdf++){
 						if(field.getModifiers()==modifiers[mdf]){

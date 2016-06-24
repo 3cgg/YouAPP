@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JCondition implements JModel {
-
+	
 	/**
 	 * how to link this condition.
 	 */
@@ -54,7 +54,7 @@ public class JCondition implements JModel {
 	
 	
 	private boolean validate(String property) throws IllegalArgumentException{
-		return true;
+		return JEntityUtilService.get().getEntityValidateService().propertyExists(property,entityClass);
 	}
 	
 	public Map<String, Object> getParams() {

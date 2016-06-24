@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import com.youappcorp.project.usermanager.model.UserTracker;
 /**
  * @author J
  */
-public interface UserTrackerService extends Service<UserTracker, String>{
+public interface UserTrackerService extends InternalService<UserTracker, String>{
 
 	/**
 	 * get all trackers what time login, which client login. 

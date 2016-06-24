@@ -1,7 +1,7 @@
 package com.youappcorp.project.resource.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.platform.webcomp.core.service.Service;
+import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.resource.model.ResourceGroup;
 
-public interface ResourceGroupService extends Service<ResourceGroup, String> {
+public interface ResourceGroupService extends InternalService<ResourceGroup, String> {
 
 
 	

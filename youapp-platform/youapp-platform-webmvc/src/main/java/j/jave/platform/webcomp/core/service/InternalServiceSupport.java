@@ -33,7 +33,7 @@ import org.springframework.data.domain.Page;
  *
  * @param <T>
  */
-public abstract class InternalServiceSupport<T extends JBaseModel> implements Service<T,String>{
+public abstract class InternalServiceSupport<T extends JBaseModel> implements InternalService<T,String>{
 	
 	protected final JLogger logger=JLoggerFactory.getLogger(getClass());
 	

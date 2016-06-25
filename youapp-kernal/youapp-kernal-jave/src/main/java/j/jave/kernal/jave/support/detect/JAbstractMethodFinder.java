@@ -4,11 +4,11 @@
 package j.jave.kernal.jave.support.detect;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support._package.JClassProvidedScanner;
 import j.jave.kernal.jave.support._package.JClassesScanConfig;
 import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
 import j.jave.kernal.jave.support._package.JClassesScanner;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
+import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,8 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author J
  * @param <T>  the same as generic of {@link JMethodInfoGen }
  */
-public class JMethodDetector<T> extends JClassesScanDefaultConfiguration 
-	implements JClassesScanConfig ,JMethodInfoProvider<T> {
+public abstract class JAbstractMethodFinder<T> extends JClassesScanDefaultConfiguration 
+	implements JClassesScanConfig ,JResourceFinder<JMethodInfoProvider<T>> {
 
 	public static interface JMethodFilter{
 		
@@ -58,31 +58,11 @@ public class JMethodDetector<T> extends JClassesScanDefaultConfiguration
 	
 	private static final JMethodFilter defaultMethodFilter=new JDefaultMethodFilter();
 	
-	private JMethodInfoGen<T> methodInfoGen;
+	private static final JDefaultMethodMetaGen defaultMethodInfo=new JDefaultMethodMetaGen();
 	
-//	private static final JMethodInfoGen<String> defaultMethodInfo=new JMethodInfoGen<String>() {
-//		@Override
-//		public String getInfo(Method method, Class<?> classIncudeMethod) {
-//			return method.getName();
-//		}
-//	};
+	private JMethodFilter methodFilter=defaultMethodFilter;
 	
-	private JMethodFilter methodFilter=null;
-	
-	public JMethodDetector(JMethodInfoGen<T> methodInfoGen) {
-		methodFilter=defaultMethodFilter;
-		this.methodInfoGen=methodInfoGen;
-	} 
-	
-	/**
-	 * 
-	 * @param methodFilter implementation of {@link JMethodFilter}
-	 * @param methodInfoGen implementation of {@link JMethodInfoGen}
-	 */
-	public JMethodDetector(JMethodFilter methodFilter,JMethodInfoGen<T> methodInfoGen) {
-		this.methodFilter=methodFilter;
-		this.methodInfoGen=methodInfoGen;
-	} 
+	private JMethodInfoGen<T> methodInfoGen= (JMethodInfoGen<T>) defaultMethodInfo;
 	
 	/**
 	 * @param methodFilter the methodFilter to set
@@ -98,16 +78,6 @@ public class JMethodDetector<T> extends JClassesScanDefaultConfiguration
 		this.methodInfoGen = methodInfoGen;
 	}
 	
-	
-	private JClassesScanner packageScan=null;
-	
-	/**
-	 * @param packageScan the packageScan to set
-	 */
-	public void setPackageScan(JClassesScanner packageScan) {
-		this.packageScan = packageScan;
-	}
-	
 	/**
 	 * ANY expected value from {@link JMethodInfoGen}
 	 */
@@ -118,65 +88,6 @@ public class JMethodDetector<T> extends JClassesScanDefaultConfiguration
 	 * VALUE : ANY expected value from {@link JMethodInfoGen}.
 	 */
 	private Map<Class<?>, List<T>> classMethodInfos=new ConcurrentHashMap<Class<?>, List<T>>();
-	
-	/**
-	 * @return the methodInfos
-	 */
-	public List<T> getMethodInfos() {
-		return  methodInfos;
-	}
-	
-	/**
-	 * @return the classMethodInfos
-	 */
-	public Map<Class<?>, List<T>> getClassMethodInfos() {
-		return classMethodInfos;
-	}
-	
-	/**
-	 * detect classes via {@code packageScan} field, which set previously.
-	 * @param superClass
-	 */
-	public void detect(){
-		Set<Class<?>> classes=packageScan.scan();
-		// filter on the classes 
-		processClasses(classes);
-	}
-	
-	/**
-	 * detect classes via {@link JClassProvidedScanner }.
-	 * @param clazz
-	 */
-	public void detect(Class<?>... clazz){
-		JClassProvidedScanner classProvidedScan = new JClassProvidedScanner(clazz);
-		Set<Class<?>> classes=classProvidedScan.scan();
-		// filter on the classes 
-		processClasses(classes);
-	}
-	
-	/**
-	 * detect classes via {@link JDefaultClassesScanner }.
-	 * @param superClass
-	 * @param scanOnClasspath  only true accepted.
-	 */
-	public void detect(Class<?> superClass,boolean scanOnClasspath){
-		if(superClass==null)
-			throw new IllegalArgumentException("null param not supported.");
-		if(!scanOnClasspath){
-			throw new IllegalArgumentException("only true supported.");
-		}
-		// initialize all 
-		JDefaultClassesScanner defaultPackageScan = new JDefaultClassesScanner(
-				superClass);
-		defaultPackageScan.setIncludePackages(includePackages);
-		defaultPackageScan.setExpression(expression);
-		defaultPackageScan.setIncludeClassNames(includeClassNames);
-		defaultPackageScan.setClassLoader(classLoader);
-		Set<Class<?>> classes=defaultPackageScan.scan();
-		
-		// filter on the classes 
-		processClasses(classes);
-	}
 
 	private void processClasses(Set<Class<?>> classes) {
 		if(classes!=null){ 
@@ -208,6 +119,58 @@ public class JMethodDetector<T> extends JClassesScanDefaultConfiguration
 			infos.add(obj);
 			classMethodInfos.put(clazz, infos);
 		}
+	}
+	
+	protected void doClean(){
+		
+	}
+
+	public final JMethodInfoProvider<T> refresh(){
+		clean();
+		return find();
+	}
+	
+	private void clean(){
+		methodInfos=new ArrayList<T>();
+		classMethodInfos=new ConcurrentHashMap<Class<?>, List<T>>();
+		doClean();
+	}
+	
+	protected abstract JClassesScanner classesScanner();
+	
+	/**
+	 * @param clazz
+	 */
+	private void doFind(){
+		Set<Class<?>> classes=classesScanner().scan();
+		// filter on the classes 
+		processClasses(classes);
+	}
+	
+	@Override
+	public JMethodInfoProvider<T> find() {
+		doFind();
+		return wrap();
+	}
+
+	private JMethodInfoProvider<T> wrap() {
+		return new JMethodInfoProvider<T>(){
+			@Override
+			public List<T> getMethodInfos() {
+				return JAbstractMethodFinder.this.methodInfos;
+			}
+
+			@Override
+			public Map<Class<?>, List<T>> getClassMethodInfos() {
+				return JAbstractMethodFinder.this.classMethodInfos;
+			}
+			
+		};
+	}
+	
+	@Override
+	public JMethodInfoProvider<T> cache() {
+		return wrap();
 	}
 	
 }

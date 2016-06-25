@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.jave.support.parser.JParser;
+import j.jave.kernal.jave.service.JService;
 import j.jave.platform.data.web.mapping.MappingMeta;
 
 /**
@@ -9,8 +9,8 @@ import j.jave.platform.data.web.mapping.MappingMeta;
  * @author J
  *
  */
-public interface ControllerObjectParser extends JParser{
+public interface ControllerObjectGetter extends JService{
 
-	Object parse(MappingMeta mappingMeta) throws Exception;
+	Object getObjet(MappingMeta mappingMeta) throws Exception;
 	
 }

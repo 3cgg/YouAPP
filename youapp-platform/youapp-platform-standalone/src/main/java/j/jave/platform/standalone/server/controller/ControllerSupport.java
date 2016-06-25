@@ -18,9 +18,8 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 	
 	@Override
 	public Object trigger(ControllerServiceFindingEvent event) {
-    	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
-		mappingDetector.detect();
-		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
+    	ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(getClass());
+		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
 		for(MappingMeta meta:mappingMetas){
 			String controllerServiceName=getControllerServiceName();
 			if(JStringUtils.isNullOrEmpty(controllerServiceName)){

@@ -14,15 +14,15 @@ import java.util.Set;
  */
 public class JFileSystemDefaultScanner extends JAbstractClassesScanner implements JClassesScanner{
 	
-	private Class<?> superClass;
+	private Class<?>[] superClasses;
 	
 	public JFileSystemDefaultScanner(File file) {
 		super(file);
 	}
 	
-	public JFileSystemDefaultScanner(File file,Class<?> superClass) {
+	public JFileSystemDefaultScanner(File file,Class<?>... superClasses) {
 		super(file);
-		this.superClass=superClass;
+		this.superClasses=superClasses;
 	}
 	
 	@Override
@@ -62,9 +62,12 @@ public class JFileSystemDefaultScanner extends JAbstractClassesScanner implement
 				String classPathPath=this.file.toURI().toString();
 				String className=fileURIPath.substring(classPathPath.length()).replace("/", ".").replace(".class", "");
 				Class<?> clazz = JClassUtils.load(className, classLoader);
-				if(superClass!=null){
-					if(JClassUtils.isAssignable(superClass, clazz, true)){
-						classes.add(clazz);
+				if(JCollectionUtils.hasInArray(superClasses)){
+					for(Class<?> superClass:superClasses){
+						if(JClassUtils.isAssignable(superClass, clazz, true)){
+							classes.add(clazz);
+							break;
+						}
 					}
 				}
 				else{

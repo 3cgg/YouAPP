@@ -12,7 +12,7 @@ import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUser;
-import j.jave.platform.webcomp.web.util.ClassProvidedMappingDetector;
+import j.jave.platform.webcomp.web.util.ClassProvidedMappingFinder;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
@@ -121,9 +121,8 @@ public abstract class ControllerSupport implements YouappController,Initializing
     		prefix=springDynamicJARApplicationCotext.getComponentVersionApplication().getUrlPrefix();
     	}
     	
-    	ClassProvidedMappingDetector mappingDetector=new ClassProvidedMappingDetector(getClass());
-		mappingDetector.detect();
-		List<MappingMeta> mappingMetas= mappingDetector.getMappingMetas();
+    	ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(getClass());
+		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
 		for(MappingMeta meta:mappingMetas){
 			meta.setControllerName(beanName);
 			if(!meta.getPath().startsWith(prefix)){

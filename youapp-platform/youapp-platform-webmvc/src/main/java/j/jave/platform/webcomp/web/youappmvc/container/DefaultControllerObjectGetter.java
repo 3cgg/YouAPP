@@ -10,10 +10,10 @@ import j.jave.platform.data.web.mapping.MappingMeta;
  * @author J
  *
  */
-public class DefaultControllerObjectParser implements ControllerObjectParser {
+public class DefaultControllerObjectGetter implements ControllerObjectGetter {
 
 	@Override
-	public Object parse(MappingMeta mappingMeta) throws Exception {
+	public Object getObjet(MappingMeta mappingMeta) throws Exception {
 		Class<?> controllerClass=mappingMeta.getClazz();
 		String controllerClassName=controllerClass.getName();
 		String testControllerClassName="test."+controllerClassName;

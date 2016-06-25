@@ -1,8 +1,8 @@
 package j.jave.kernal.jave.support.random;
 
-import j.jave.kernal.jave.support.detect.JFieldDetector;
+import j.jave.kernal.jave.support.detect.JAbstractFieldFinder;
 import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
-import j.jave.kernal.jave.support.detect.JFieldOnSingleClassDetector;
+import j.jave.kernal.jave.support.detect.JFieldOnSingleClassFinder;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.lang.reflect.Field;
@@ -23,10 +23,10 @@ public class JSimpleObjectRandomBinder  extends JAbstractClassFieldBinder{
 				return fieldRelated;
 			}
 		};
-		JFieldDetector<FieldRelated> fieldDetect=new JFieldOnSingleClassDetector<FieldRelated>(fieldInfo);
-		fieldDetect.detect(object.getClass());
+		JAbstractFieldFinder<FieldRelated> fieldFinder=new JFieldOnSingleClassFinder<FieldRelated>(object.getClass());
+		fieldFinder.setFieldInfo(fieldInfo);
 		
-		List<FieldRelated>  fieldRelateds=  fieldDetect.getFieldInfos();
+		List<FieldRelated>  fieldRelateds=  fieldFinder.find().getFieldInfos();
 		
 		JCollectionUtils.each(fieldRelateds, new JCollectionUtils.CollectionCallback<FieldRelated>() {
 			@Override

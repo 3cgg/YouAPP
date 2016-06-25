@@ -6,7 +6,6 @@ package j.jave.platform.webcomp.web.support;
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.support.detect.JResourceDetector;
 import j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService;
 
 import java.util.Iterator;
@@ -25,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author J
  * @see JServletContext 
  */
-public class JServletDetect implements JResourceDetector<JServletProvider> , JServletProvider , JServletStaticMemoryCacheIO ,JEhcacheServiceAware {
+public class JServletContextDetector implements JServletProvider , JServletStaticMemoryCacheIO ,JEhcacheServiceAware {
 
 	private final HttpServletRequest request;
 	
@@ -46,7 +45,7 @@ public class JServletDetect implements JResourceDetector<JServletProvider> , JSe
 	}
 	
 
-	public JServletDetect(HttpServletRequest request) {
+	public JServletContextDetector(HttpServletRequest request) {
 		this.request=request;
 		initFilterFilter();
 		initServletFilter();
@@ -83,24 +82,10 @@ public class JServletDetect implements JResourceDetector<JServletProvider> , JSe
 		};
 	}
 	
-	public JServletDetect(HttpServletRequest request,JFilterFilter filterFilter,JServletFilter servletFilter) {
+	public JServletContextDetector(HttpServletRequest request,JFilterFilter filterFilter,JServletFilter servletFilter) {
 		this.request=request;
 		this.filterFilter=filterFilter;
 		this.servletFilter=servletFilter;
-	}
-	
-	@Override
-	public JServletProvider detect() {
-		return this;
-	}
-
-	
-	/**
-	 * never refresh , still use old.
-	 */
-	@Override
-	public JServletProvider refresh() {
-		return detect();
 	}
 
 	volatile JServletContext servletContext=null;

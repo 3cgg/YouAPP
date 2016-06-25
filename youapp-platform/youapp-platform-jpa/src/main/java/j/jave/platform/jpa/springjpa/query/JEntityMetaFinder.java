@@ -2,7 +2,7 @@ package j.jave.platform.jpa.springjpa.query;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.reflect.JPropertyNotFoundException;
-import j.jave.kernal.jave.support.detect.JFind;
+import j.jave.kernal.jave.support.detect.JFinder;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -13,7 +13,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 
-public class JEntityMetaFinder implements JFind<JEntityModelMeta>{
+public class JEntityMetaFinder implements JFinder<JEntityModelMeta>{
 
 	private Class<?> entityClass;
 	

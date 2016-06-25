@@ -1,9 +1,10 @@
 package j.jave.platform.webcomp.web.util;
 
-import j.jave.kernal.jave.support.detect.JMethodDetector;
+import j.jave.kernal.jave.support.detect.JAbstractMethodFinder;
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider;
+import j.jave.kernal.jave.support.detect.JMethodOnSingleClassFinder;
 import j.jave.kernal.jave.support.detect.JProvider;
-import j.jave.kernal.jave.support.detect.JResourceDetector;
+import j.jave.kernal.jave.support.detect.JResourceFinder;
 import j.jave.platform.data.web.mapping.MappingMeta;
 
 import java.util.List;
@@ -14,20 +15,20 @@ import java.util.List;
  * @see {@link JMethodInfoProvider}
  * @author J
  */
-public class ClassProvidedMappingDetector implements JProvider, JResourceDetector<ClassProvidedMappingDetector> {
-	private JMethodDetector<MappingMeta> methodDetector;
+public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<ClassProvidedMappingFinder> {
+	
+	private JAbstractMethodFinder<MappingMeta> methodFinder;
 	
 	private Class<?> thisClass;
 	
-	public ClassProvidedMappingDetector(Class<?> clazz){
+	public ClassProvidedMappingFinder(Class<?> clazz){
 		this.thisClass=clazz;
-		initMethodDetector();
 	}
 
-	private void initMethodDetector(){
+	private void clean(){
 		MappingMetaInfoGen mappingMetaInfoGen=new MappingMetaInfoGen(thisClass.getClassLoader());
-		methodDetector=new JMethodDetector<MappingMeta>(MappingDetector.methodFilter,
-				mappingMetaInfoGen);
+		methodFinder=new JMethodOnSingleClassFinder<MappingMeta>(thisClass);
+		methodFinder.setMethodInfo(mappingMetaInfoGen);
 	}
 	
 //	private volatile boolean flag=true;
@@ -38,7 +39,7 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 	 * the same one returned if call subsequently.
 	 * @return
 	 */
-	public synchronized ClassProvidedMappingDetector detect(){
+	public synchronized ClassProvidedMappingFinder find(){
 //		if(flag){
 //			synchronized (lock) {
 //				if(flag){
@@ -47,7 +48,8 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 //				}
 //			}
 //		}
-		methodDetector.detect(thisClass);
+		clean();
+		methodFinder.find();
 		return this;
 	}
 	
@@ -56,14 +58,19 @@ public class ClassProvidedMappingDetector implements JProvider, JResourceDetecto
 	 * force refresh the resources. scan and wrap resources every time , 
 	 * a new {@link JMethodInfoProvider} returned every time. 
 	 */
-	public synchronized ClassProvidedMappingDetector refresh(){
-		initMethodDetector();
-		detect();
+	public synchronized ClassProvidedMappingFinder refresh(){
+		clean();
+		methodFinder.refresh();
+		return this;
+	}
+	
+	@Override
+	public ClassProvidedMappingFinder cache() {
 		return this;
 	}
 	
 	public List<MappingMeta> getMappingMetas(){
-		return methodDetector.getMethodInfos();
+		return methodFinder.cache().getMethodInfos();
 	}
 	
 //	private static MappingDetector mappingDetector;

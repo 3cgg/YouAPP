@@ -175,7 +175,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesScannerUtil.getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.implementer(defaultScan.scan(), clazz));
 				}
 				else{
 					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile);
@@ -183,7 +183,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 					if(this.packageName!=null){
 						defaultScan.setIncludePackages(new String[]{this.packageName});
 					}
-					classes.addAll(JClassesScannerUtil.getImplements(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.implementer(defaultScan.scan(), clazz));
 				}
 			}
 		}

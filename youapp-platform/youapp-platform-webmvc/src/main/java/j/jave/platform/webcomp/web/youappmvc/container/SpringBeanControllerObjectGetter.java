@@ -10,16 +10,16 @@ import org.springframework.context.ApplicationContext;
  * @author J
  *
  */
-public class SpringBeanControllerObjectParser implements ControllerObjectParser {
+public class SpringBeanControllerObjectGetter implements ControllerObjectGetter {
 
 	private ApplicationContext applicationContext;
 	
-	public SpringBeanControllerObjectParser(ApplicationContext applicationContext) {
+	public SpringBeanControllerObjectGetter(ApplicationContext applicationContext) {
 		this.applicationContext=applicationContext;
 	}
 	
 	@Override
-	public Object parse(MappingMeta mappingMeta) throws Exception {
+	public Object getObjet(MappingMeta mappingMeta) throws Exception {
 		String controllerBeanName=mappingMeta.getControllerName();
 		String testControllerBeanName="test/"+controllerBeanName;
 		return applicationContext.getBean(testControllerBeanName);

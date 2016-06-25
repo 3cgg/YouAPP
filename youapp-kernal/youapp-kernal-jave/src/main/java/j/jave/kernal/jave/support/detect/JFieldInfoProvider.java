@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.support.detect;
 
-import j.jave.kernal.jave.support.detect.JMethodDetector.JMethodFilter;
+import j.jave.kernal.jave.support.detect.JAbstractMethodFinder.JMethodFilter;
 
 import java.lang.reflect.Field;
 import java.util.List;

@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.support.detect;
 
-import j.jave.kernal.jave.support.detect.JFieldDetector.JFieldFilter;
+import j.jave.kernal.jave.support.detect.JAbstractFieldFinder.JFieldFilter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

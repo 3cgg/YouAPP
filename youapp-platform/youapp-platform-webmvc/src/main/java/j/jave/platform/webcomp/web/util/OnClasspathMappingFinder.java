@@ -2,12 +2,13 @@ package j.jave.platform.webcomp.web.util;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support.detect.JMethodDetector;
-import j.jave.kernal.jave.support.detect.JMethodDetector.JMethodFilter;
+import j.jave.kernal.jave.support.detect.JAbstractMethodFinder;
+import j.jave.kernal.jave.support.detect.JAbstractMethodFinder.JMethodFilter;
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider;
 import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
+import j.jave.kernal.jave.support.detect.JMethodOnClassPathFinder;
 import j.jave.kernal.jave.support.detect.JProvider;
-import j.jave.kernal.jave.support.detect.JResourceDetector;
+import j.jave.kernal.jave.support.detect.JResourceFinder;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
@@ -25,8 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @see {@link JMethodInfoProvider}
  * @author J
  */
-public class MappingDetector implements JProvider, JResourceDetector<MappingDetector> {
-	private JMethodDetector<MappingMeta> methodDetector;
+public class OnClasspathMappingFinder implements JProvider, JResourceFinder<OnClasspathMappingFinder> {
+	
+	private JAbstractMethodFinder<MappingMeta> methodFinder;
 	
 	private JConfiguration configuration;
 	
@@ -71,23 +73,25 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	
 	JMethodInfoGen<MappingMeta> methodInfo;
 	
-	public MappingDetector(ClassLoader classLoader){
+	public OnClasspathMappingFinder(ClassLoader classLoader){
 		this(JConfiguration.get(),classLoader);
 	}
 	
-	public MappingDetector(JConfiguration configuration,ClassLoader classLoader){
+	public OnClasspathMappingFinder(JConfiguration configuration,ClassLoader classLoader){
 		this.configuration=configuration;
 		this.classLoader=classLoader;
-		initMethodDetector();
-		String superClassString=configuration.getString(WebCompProperties.CONTROLLER_SUPER_CLASS, ControllerSupport.class.getName());
-		superClass=JClassUtils.load(superClassString);
 	}
 
-	private void initMethodDetector(){
-		this.methodInfo=new MappingMetaInfoGen(classLoader);
-		methodDetector=new JMethodDetector<MappingMeta>(methodFilter,methodInfo);
+	private void clean(){
+		String superClassString=configuration.getString(WebCompProperties.CONTROLLER_SUPER_CLASS, ControllerSupport.class.getName());
+		superClass=JClassUtils.load(superClassString);
+		methodInfo=new MappingMetaInfoGen(classLoader);
 		String controllerPackage=configuration.getString(WebCompProperties.CONTROLLER_PACKAGE, "j.jave");
-		methodDetector.setIncludePackages(controllerPackage.split(";"));
+		String[] includePacks=controllerPackage.split(";");
+		methodFinder=new JMethodOnClassPathFinder(superClass);
+		methodFinder.setIncludePackages(includePacks);
+		methodFinder.setMethodFilter(methodFilter);
+		methodFinder.setMethodInfo(methodInfo);
 	}
 	
 //	private volatile boolean flag=true;
@@ -98,16 +102,14 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	 * the same one returned if call subsequently.
 	 * @return
 	 */
-	public synchronized MappingDetector detect(){
-//		if(flag){
-//			synchronized (lock) {
-//				if(flag){
-//					methodDetector.detect(superClass, true);
-//					flag=false;
-//				}
-//			}
-//		}
-		methodDetector.detect(superClass, true);
+	public synchronized OnClasspathMappingFinder find(){
+		clean();
+		methodFinder.find();
+		return this;
+	}
+	
+	@Override
+	public OnClasspathMappingFinder cache() {
 		return this;
 	}
 	
@@ -116,14 +118,14 @@ public class MappingDetector implements JProvider, JResourceDetector<MappingDete
 	 * force refresh the resources. scan and wrap resources every time , 
 	 * a new {@link JMethodInfoProvider} returned every time. 
 	 */
-	public synchronized MappingDetector refresh(){
-		initMethodDetector();
-		detect();
+	public synchronized OnClasspathMappingFinder refresh(){
+		clean();
+		methodFinder.refresh();
 		return this;
 	}
 	
 	public List<MappingMeta> getMappingMetas(){
-		return methodDetector.getMethodInfos();
+		return methodFinder.cache().getMethodInfos();
 	}
 	
 //	private static MappingDetector mappingDetector;

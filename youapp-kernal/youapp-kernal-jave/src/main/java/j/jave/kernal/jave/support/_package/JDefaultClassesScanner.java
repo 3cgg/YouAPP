@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * scan all sub-classes , extends a super class or implements an interface, via passing a predefined class loader,otherwise uses the default
+ * scan all sub-classes , include interface, abstract class etc, via passing a predefined class loader,otherwise uses the default
  * current thread class loader. 
  * And you can also provide the files from which you want to  load,to prevent loading files from the class path.
  * The default scanner delegates the tasks to {@link JJARDefaultScanner} or {@link JFileSystemDefaultScanner}.
@@ -24,15 +24,15 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 	
 	private static final JLogger LOGGER =JLoggerFactory.getLogger(JDefaultClassesScanner.class);
 	
-	private final Class<?> clazz;
+	private final Class<?>[] clazzes;
 	
 	private Collection<File> files;
 	
 	/**
 	 * @param clazz super-class, or super-interface
 	 */
-	public JDefaultClassesScanner(Class<?> clazz) {
-		this(clazz,null);
+	public JDefaultClassesScanner(Class<?>... clazzes) {
+		this(null,clazzes);
 	}
 	
 	/**
@@ -40,8 +40,8 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 	 * @param clazz super-class or super-interface
 	 * @param files all files from which the scanner scan. if null, all files in the class path are loaded.
 	 */
-	public JDefaultClassesScanner(Class<?> clazz,Collection<File> files) {
-		this.clazz=clazz;
+	public JDefaultClassesScanner(Collection<File> files,Class<?>... clazzes) {
+		this.clazzes=clazzes;
 		if(files==null){
 			try{
 				this.files= JClassPathUtils.getRuntimeClassPathFiles();
@@ -67,16 +67,16 @@ public class JDefaultClassesScanner extends JClassesScanDefaultConfiguration imp
 				String fileName=classPathFile.getName();
 				
 				if(fileName.endsWith(".jar")){
-					JJARDefaultScanner defaultScan=new JJARDefaultScanner(classPathFile,clazz);
+					JJARDefaultScanner defaultScan=new JJARDefaultScanner(classPathFile,clazzes);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesScannerUtil.getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.subClass(defaultScan.scan(), clazzes));
 				}
 				else{
-					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile,clazz);
+					JFileSystemDefaultScanner defaultScan=new JFileSystemDefaultScanner(classPathFile,clazzes);
 					defaultScan.setClassLoader(classLoader);
 					defaultScan.setIncludePackages(includePackages);
-					classes.addAll(JClassesScannerUtil.getSubClass(defaultScan, clazz));
+					classes.addAll(JClassesScannerUtil.subClass(defaultScan.scan(), clazzes));
 				}
 			}
 		}

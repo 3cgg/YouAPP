@@ -1,9 +1,11 @@
 package j.jave.kernal.jave.support.detect;
 
+import j.jave.kernal.jave.model.JModel;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-public class JDefaultFieldMeta {
+public class JDefaultFieldMeta implements JModel{
 
 	private String fieldName;
 	

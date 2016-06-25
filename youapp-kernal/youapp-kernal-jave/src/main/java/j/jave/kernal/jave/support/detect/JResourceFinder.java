@@ -8,14 +8,13 @@ package j.jave.kernal.jave.support.detect;
  * @author J
  * @param <T> extends {@link JProvider}
  */
-public interface JResourceDetector<T extends JProvider> {
-
+public interface JResourceFinder<T extends JProvider> extends JFinder<T> {
+	
 	/**
-	 * get all resource informations fist time, 
-	 * the same one returned if call subsequently.
+	 * return cache
 	 * @return {@link JProvider}
 	 */
-	public T detect();
+	public T cache();
 	
 	/**
 	 * force refresh the resources. scan and wrap resources every time. 

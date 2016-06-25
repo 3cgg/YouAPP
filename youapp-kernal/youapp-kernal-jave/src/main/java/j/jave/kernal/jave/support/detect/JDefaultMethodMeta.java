@@ -1,8 +1,10 @@
 package j.jave.kernal.jave.support.detect;
 
+import j.jave.kernal.jave.model.JModel;
+
 import java.lang.annotation.Annotation;
 
-public class JDefaultMethodMeta {
+public class JDefaultMethodMeta implements JModel {
 
 	private String methodName;
 	

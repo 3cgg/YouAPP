@@ -53,14 +53,14 @@ class InnerHttpInvokeTestContainer implements JExecutor,JIdentifier,JContainer,J
 		this.innerHttpInvokeContainer=innerHttpInvokeContainer;
 	}
 
-	ControllerObjectParser controllerObjectParser=new DefaultControllerObjectParser();
+	ControllerObjectGetter controllerObjectGetter=new DefaultControllerObjectGetter();
 			
 	protected Object getControllerObject(String unique,
 			MappingMeta mappingMeta, Object object) throws Exception {
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("------------GET TEST OBJECT--------->"+JJSON.get().formatObject(mappingMeta));
 		}
-		return controllerObjectParser.parse(mappingMeta);
+		return controllerObjectGetter.getObjet(mappingMeta);
 	}
 
 	public String getUnique() {

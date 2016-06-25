@@ -1,6 +1,7 @@
 package j.jave.kernal.jave.support._package;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,15 +18,15 @@ import java.util.jar.JarFile;
  */
 public class JJARDefaultScanner extends JAbstractClassesScanner implements JClassesScanner{
 	
-	private Class<?> superClass;
+	private Class<?>[] superClasses;
 	
 	public JJARDefaultScanner(File file) {
 		super(file);
 	}
 	
-	public JJARDefaultScanner(File file,Class<?> superClass) {
+	public JJARDefaultScanner(File file,Class<?>... superClasses) {
 		super(file);
-		this.superClass=superClass;
+		this.superClasses=superClasses;
 	}
 	
 	
@@ -56,9 +57,12 @@ public class JJARDefaultScanner extends JAbstractClassesScanner implements JClas
 				if(className.endsWith(".class")&&matches(className)){
 					String clazzName=jarEntry.getName().replace(".class", "").replace("/", ".");
 					Class<?> clazz=JClassUtils.load(clazzName, classLoader);
-					if(superClass!=null){
-						if(JClassUtils.isAssignable(superClass, clazz, true)){
-							classes.add(clazz);
+					if(JCollectionUtils.hasInArray(superClasses)){
+						for(Class<?> superClass:superClasses){
+							if(JClassUtils.isAssignable(superClass, clazz, true)){
+								classes.add(clazz);
+								break;
+							}
 						}
 					}
 					else{

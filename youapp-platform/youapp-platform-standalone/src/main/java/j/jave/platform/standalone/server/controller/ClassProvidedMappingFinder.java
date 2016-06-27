@@ -1,10 +1,10 @@
 package j.jave.platform.standalone.server.controller;
 
+import j.jave.kernal.jave.support.JProvider;
 import j.jave.kernal.jave.support.JResourceFinder;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
 import j.jave.kernal.jave.support._package.JMethodInfoProvider;
 import j.jave.kernal.jave.support._package.JMethodOnSingleClassFinder;
-import j.jave.kernal.jave.support._package.JProvider;
 
 import java.util.List;
 

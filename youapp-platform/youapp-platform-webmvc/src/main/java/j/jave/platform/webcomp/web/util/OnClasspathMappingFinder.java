@@ -2,11 +2,11 @@ package j.jave.platform.webcomp.web.util;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.support.JProvider;
 import j.jave.kernal.jave.support.JResourceFinder;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
 import j.jave.kernal.jave.support._package.JMethodInfoProvider;
 import j.jave.kernal.jave.support._package.JMethodOnClassPathFinder;
-import j.jave.kernal.jave.support._package.JProvider;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder.JMethodFilter;
 import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.platform.data.web.mapping.MappingMeta;

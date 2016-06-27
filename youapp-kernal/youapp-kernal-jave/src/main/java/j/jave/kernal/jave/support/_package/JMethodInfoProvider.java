@@ -3,6 +3,7 @@
  */
 package j.jave.kernal.jave.support._package;
 
+import j.jave.kernal.jave.support.JProvider;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder.JMethodFilter;
 
 import java.lang.reflect.Method;

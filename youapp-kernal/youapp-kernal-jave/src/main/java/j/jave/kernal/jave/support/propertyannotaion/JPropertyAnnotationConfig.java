@@ -5,8 +5,14 @@ import java.util.List;
 
 public class JPropertyAnnotationConfig {
 
+	/**
+	 * how to process on different annotation.
+	 */
 	private List<? extends JPropertyAnnotationHandler> propertyAnnotationHandlers=new ArrayList<JPropertyAnnotationHandler>();
 	
+	/**
+	 * which class(sub-class) can be processing
+	 */
 	private List<Class<?>> classIdentifiers=new ArrayList<Class<?>>(2);
 
 	public List<? extends JPropertyAnnotationHandler> getPropertyAnnotationHandlers() {

@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.validate.annotationvalidator;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JDouble;
 
@@ -17,7 +17,7 @@ public class JDoubleAnnotationValidatorHandler implements JPropertyAnnotationVal
 		return needValidating;
 	}
 
-	private JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+	private JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 	
 	@Override
 	public Object handle(Field field, Object object) {
@@ -29,7 +29,7 @@ public class JDoubleAnnotationValidatorHandler implements JPropertyAnnotationVal
 			if(value!=null){
 				double val=-1;
 				try {
-					val = dataConvertor.convert(Double.class, value).doubleValue();
+					val = dataParser.parse(Double.class, value).doubleValue();
 				} catch (NumberFormatException e) {
 					throw new JValidatingException(
 							"field["+ field.getName() + "] in the class["+ object.getClass() + "] value is not "

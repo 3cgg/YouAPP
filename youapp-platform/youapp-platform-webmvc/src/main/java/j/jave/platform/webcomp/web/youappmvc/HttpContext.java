@@ -7,7 +7,7 @@ import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelDecoder;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.support.databind.JDataBindException;
+import j.jave.kernal.jave.support.databind.JDataBindingException;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
@@ -163,7 +163,7 @@ public class HttpContext implements JModel {
 					objectTransModel=OBJECT_TRANS_MODEL_DECODER.encode(messageMeta);
 					protocol=objectTransModel.getProtocol();
 				}catch(Exception e){
-					throw new JDataBindException(e);
+					throw new JDataBindingException(e);
 				}
 //				protocol=JProtocol.valueOf(protocolHead);
 //				if(JProtocol.BROWSER!=protocol){

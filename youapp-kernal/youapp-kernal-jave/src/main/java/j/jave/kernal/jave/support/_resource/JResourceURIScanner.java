@@ -1,5 +1,7 @@
 package j.jave.kernal.jave.support._resource;
 
+import j.jave.kernal.jave.support.JScanner;
+
 import java.net.URI;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * @author J
  *
  */
-public interface JResourceURIScanner {
+public interface JResourceURIScanner extends JScanner<List<URI>> {
 
 	List<URI> scan();
 

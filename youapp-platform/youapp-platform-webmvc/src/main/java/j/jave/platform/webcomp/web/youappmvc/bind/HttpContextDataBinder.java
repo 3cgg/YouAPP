@@ -3,8 +3,8 @@ package j.jave.platform.webcomp.web.youappmvc.bind;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.JDataBinder;
-import j.jave.kernal.jave.support.databind.JDataBindException;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.databind.JDataBindingException;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.platform.data.common.MethodParamMeta;
 import j.jave.platform.data.common.MethodParamObject;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
@@ -36,16 +36,16 @@ public class HttpContextDataBinder implements JDataBinder{
 		MethodParamMeta methodParamMeta= methodParamObject.getMethodParamMeta();
 		Class<?> clazz=methodParamMeta.getType();
 		String paramName=methodParamMeta.getName();
-		JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+		JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 		try{
 			if(Map.class.isAssignableFrom(clazz)){
 				methodParamObject.setObject(httpContext.getParameters());
 			}
 			else if(JClassUtils.isSimpleTypeArray(clazz)){
-				methodParamObject.setObject(dataConvertor.convert(clazz, httpContext.getParameterValue(paramName)));
+				methodParamObject.setObject(dataParser.parse(clazz, httpContext.getParameterValue(paramName)));
 			}
 			else if(isSimpleType(clazz)){
-				methodParamObject.setObject(dataConvertor.convert(clazz, httpContext.getParameterValue(paramName)));
+				methodParamObject.setObject(dataParser.parse(clazz, httpContext.getParameterValue(paramName)));
 			}
 			else{
 				RequestParamPopulate requestParamPopulate=new RequestParamPopulate(prefix, httpContext);
@@ -53,7 +53,7 @@ public class HttpContextDataBinder implements JDataBinder{
 				requestParamPopulate.bind(methodParamObject.getObject());
 			}
 		}catch(Exception e){
-			throw new JDataBindException(e);
+			throw new JDataBindingException(e);
 		}
 	}
 	

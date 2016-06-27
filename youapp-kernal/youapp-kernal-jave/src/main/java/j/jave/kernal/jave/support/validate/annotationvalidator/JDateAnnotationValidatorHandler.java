@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.validate.annotationvalidator;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JDate;
 
@@ -19,7 +19,7 @@ public class JDateAnnotationValidatorHandler implements JPropertyAnnotationValid
 	}
 
 	
-	private JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+	private JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 	
 	@Override
 	public Object handle(Field field, Object object) {
@@ -31,7 +31,7 @@ public class JDateAnnotationValidatorHandler implements JPropertyAnnotationValid
 			if(value!=null){
 				long val=-1;
 				try {
-					val = dataConvertor.convert(Date.class, value).getTime();
+					val = dataParser.parse(Date.class, value).getTime();
 				} catch (Exception e) {
 					throw new JValidatingException(
 							"field["+ field.getName() + "] in the class["+ object.getClass() + "] value is not date.");

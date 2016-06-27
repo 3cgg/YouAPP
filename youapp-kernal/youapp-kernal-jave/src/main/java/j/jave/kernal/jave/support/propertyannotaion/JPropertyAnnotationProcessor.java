@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.propertyannotaion;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support.databind.JDataBindException;
+import j.jave.kernal.jave.support.databind.JDataBindingException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -23,7 +23,7 @@ public class JPropertyAnnotationProcessor {
 	void doHandle(Object obj){
 		potentialCount++;
 		if(potentialCount>maxCaculCount){
-			throw new JDataBindException("the object is larger...,the data handleing occurs this<-");
+			throw new JDataBindingException("the object is larger...,the data handleing occurs this<-");
 		}
 	}
 	
@@ -110,7 +110,7 @@ public class JPropertyAnnotationProcessor {
 					getHandler(inObj).doHandle(inObj);
 				}
 			}catch(Exception e){
-				throw new JDataBindException(e);
+				throw new JDataBindingException(e);
 			}
 		}
 	

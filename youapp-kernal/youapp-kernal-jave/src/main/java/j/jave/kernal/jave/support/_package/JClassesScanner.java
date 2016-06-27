@@ -3,6 +3,8 @@
  */
 package j.jave.kernal.jave.support._package;
 
+import j.jave.kernal.jave.support.JScanner;
+
 import java.util.Set;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Set;
  * @author J
  *
  */
-public interface JClassesScanner {
+public interface JClassesScanner extends JScanner<Set<Class<?>>>{
 
 	/**
 	 * 需要缓存这些类 

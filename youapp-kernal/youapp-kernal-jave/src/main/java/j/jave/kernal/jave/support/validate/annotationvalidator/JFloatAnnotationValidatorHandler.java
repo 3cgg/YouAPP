@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.validate.annotationvalidator;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JFloat;
 
@@ -17,7 +17,7 @@ public class JFloatAnnotationValidatorHandler implements JPropertyAnnotationVali
 		return needValidating;
 	}
 
-	private JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+	private JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 	
 	@Override
 	public Object handle(Field field, Object object) {
@@ -29,7 +29,7 @@ public class JFloatAnnotationValidatorHandler implements JPropertyAnnotationVali
 			if(value!=null){
 				float val=-1;
 				try {
-					val = dataConvertor.convert(Float.class, value).floatValue();
+					val = dataParser.parse(Float.class, value).floatValue();
 				} catch (NumberFormatException e) {
 					throw new JValidatingException(
 							"field["+ field.getName() + "] in the class["+ object.getClass() + "] value is not "

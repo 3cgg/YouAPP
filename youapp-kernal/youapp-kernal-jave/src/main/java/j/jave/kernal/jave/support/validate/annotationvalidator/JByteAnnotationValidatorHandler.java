@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.validate.annotationvalidator;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JByte;
 
@@ -17,7 +17,7 @@ public class JByteAnnotationValidatorHandler implements JPropertyAnnotationValid
 		return needValidating;
 	}
 
-	private JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+	private JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 	
 	
 	@Override
@@ -30,7 +30,7 @@ public class JByteAnnotationValidatorHandler implements JPropertyAnnotationValid
 			if(value!=null){
 				byte val=-1;
 				try {
-					val = dataConvertor.convert(Byte.class, value).byteValue();
+					val = dataParser.parse(Byte.class, value).byteValue();
 				} catch (NumberFormatException e) {
 					throw new JValidatingException(
 							"field["+ field.getName() + "] in the class["+ object.getClass() + "] value is not "

@@ -3,9 +3,9 @@ package j.jave.platform.webcomp.web.youappmvc.bind;
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support.JDataBinder;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
 import j.jave.kernal.jave.support.detect.JDefaultFieldMeta;
 import j.jave.kernal.jave.support.detect.JFieldOnSingleClassFinder;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
@@ -26,7 +26,7 @@ public class RequestParamPopulate implements JDataBinder {
 	}
 	
 	public void bind(final Object object) throws Exception {
-		final JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+		final JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 		JFieldOnSingleClassFinder<JDefaultFieldMeta> fieldOnSingleClassFinder
 		=new JFieldOnSingleClassFinder<JDefaultFieldMeta>(object.getClass());
 		List<JDefaultFieldMeta> defaultFieldMetas=fieldOnSingleClassFinder.find().getFieldInfos();
@@ -50,7 +50,7 @@ public class RequestParamPopulate implements JDataBinder {
 								value=new Object[]{value};
 							}
 						}
-						field.set(object, dataConvertor.convert(type, value));
+						field.set(object, dataParser.parse(type, value));
 					}
 				}
 				else if(JClassUtils.isAssignable(Map.class, type)){

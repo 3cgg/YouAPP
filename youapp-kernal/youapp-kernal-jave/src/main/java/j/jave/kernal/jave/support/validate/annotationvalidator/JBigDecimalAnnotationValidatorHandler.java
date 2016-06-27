@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.validate.annotationvalidator;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.dataconvert.JDataConvertor;
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.jave.support.validate.JValidatingException;
 import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JBigDecimal;
 
@@ -18,7 +18,7 @@ public class JBigDecimalAnnotationValidatorHandler implements JPropertyAnnotatio
 		return needValidating;
 	}
 
-	private JDataConvertor dataConvertor=JDataConvertor.build(JConfiguration.get());
+	private JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 	
 	
 	@Override
@@ -31,7 +31,7 @@ public class JBigDecimalAnnotationValidatorHandler implements JPropertyAnnotatio
 			if(value!=null){
 				BigDecimal val=null;
 				try {
-					val = dataConvertor.convert(BigDecimal.class, value);
+					val = dataParser.parse(BigDecimal.class, value);
 				} catch (Exception e) {
 					throw new JValidatingException(
 							"field["+ field.getName() + "] in the class["+ object.getClass() + "] value is not "

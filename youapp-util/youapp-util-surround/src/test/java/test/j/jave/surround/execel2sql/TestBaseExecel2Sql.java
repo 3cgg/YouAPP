@@ -3,7 +3,7 @@ package test.j.jave.surround.execel2sql;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.support.parser.JGenericParser;
-import j.jave.kernal.jave.support.parser.JParseException;
+import j.jave.kernal.jave.support.parser.JParsingException;
 import j.jave.kernal.jave.utils.JIOUtils;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public abstract class TestBaseExecel2Sql implements JGenericParser<String>{
 			logger.info("-----------------------------------end----------------------------------------------------------------------end---------------------------------end ");
 			return str;
 		}catch(Exception e){
-			throw new JParseException(e);
+			throw new JParsingException(e);
 		}
 	}
 	

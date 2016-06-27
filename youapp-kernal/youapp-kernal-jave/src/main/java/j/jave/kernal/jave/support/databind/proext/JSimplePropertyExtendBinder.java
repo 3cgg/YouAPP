@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * only process whose classes that implement the {@link JPropertyExtendable} .
+ * @author J
+ * @see JPropertyExtendable
+ */
 public class JSimplePropertyExtendBinder implements JPropertyExtendBinder{
 	
 	public void bind(Object object) {

@@ -1,7 +1,7 @@
 package j.jave.kernal.jave.support.treeview;
 
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.support.view.JView;
+import j.jave.kernal.jave.support.JView;
 
 import java.util.ArrayList;
 import java.util.Iterator;

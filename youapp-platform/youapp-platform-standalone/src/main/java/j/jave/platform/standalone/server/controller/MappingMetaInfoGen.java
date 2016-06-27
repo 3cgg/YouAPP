@@ -1,6 +1,6 @@
 package j.jave.platform.standalone.server.controller;
 
-import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
+import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

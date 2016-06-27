@@ -2,7 +2,7 @@ package j.jave.platform.jpa.springjpa.query;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.reflect.JPropertyNotFoundException;
-import j.jave.kernal.jave.support.detect.JFinder;
+import j.jave.kernal.jave.support.JFinder;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

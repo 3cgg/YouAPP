@@ -1,10 +1,8 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.support._package.JClassesScanner;
-import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 
 /**
  * default scan all classes that are sub-classes of some other classes {@link #superClasses}

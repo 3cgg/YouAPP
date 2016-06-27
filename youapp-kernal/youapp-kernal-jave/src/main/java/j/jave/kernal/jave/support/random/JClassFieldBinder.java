@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.support.random;
 
-import j.jave.kernal.jave.support.detect.JAbstractFieldFinder.JFieldFilter;
+import j.jave.kernal.jave.support._package.JAbstractFieldFinder.JFieldFilter;
 
 public interface JClassFieldBinder extends JRandomBinder{
 	

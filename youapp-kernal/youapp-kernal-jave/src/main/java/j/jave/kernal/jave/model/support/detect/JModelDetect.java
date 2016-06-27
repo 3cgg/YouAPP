@@ -2,7 +2,7 @@ package j.jave.kernal.jave.model.support.detect;
 
 import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.kernal.jave.support.detect.JFieldOnSingleClassFinder;
+import j.jave.kernal.jave.support._package.JFieldOnSingleClassFinder;
 
 import java.util.List;
 

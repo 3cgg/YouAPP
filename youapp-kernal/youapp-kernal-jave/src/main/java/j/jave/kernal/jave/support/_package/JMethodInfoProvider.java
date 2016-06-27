@@ -1,9 +1,9 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.support.detect.JAbstractMethodFinder.JMethodFilter;
+import j.jave.kernal.jave.support._package.JAbstractMethodFinder.JMethodFilter;
 
 import java.lang.reflect.Method;
 import java.util.List;

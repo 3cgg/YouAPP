@@ -1,6 +1,6 @@
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
+import j.jave.kernal.jave.support._package.JFieldInfoProvider.JFieldInfoGen;
 
 import java.lang.reflect.Field;
 

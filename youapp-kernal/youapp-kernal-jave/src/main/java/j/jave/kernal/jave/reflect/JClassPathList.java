@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.reflect;
 
-import j.jave.kernal.jave.support.view.JView;
+import j.jave.kernal.jave.support.JView;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.util.ArrayList;

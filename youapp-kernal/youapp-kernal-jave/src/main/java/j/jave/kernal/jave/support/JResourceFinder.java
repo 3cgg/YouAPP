@@ -1,7 +1,9 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support;
+
+import j.jave.kernal.jave.support._package.JProvider;
 
 /**
  *  how to load resources. 

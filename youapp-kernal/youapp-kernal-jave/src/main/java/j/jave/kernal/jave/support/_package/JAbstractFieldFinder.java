@@ -1,14 +1,11 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support._package.JClassesScanConfig;
-import j.jave.kernal.jave.support._package.JClassesScanDefaultConfiguration;
-import j.jave.kernal.jave.support._package.JClassesScanner;
-import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
+import j.jave.kernal.jave.support.JResourceFinder;
+import j.jave.kernal.jave.support._package.JFieldInfoProvider.JFieldInfoGen;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

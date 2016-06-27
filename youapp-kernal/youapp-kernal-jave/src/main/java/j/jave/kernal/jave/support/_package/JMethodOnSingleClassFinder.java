@@ -1,11 +1,9 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.support._package.JClassProvidedScanner;
-import j.jave.kernal.jave.support._package.JClassesScanner;
-import j.jave.kernal.jave.support.detect.JMethodInfoProvider.JMethodInfoGen;
+import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 /**
  * default scanner scanning method on the specified class.

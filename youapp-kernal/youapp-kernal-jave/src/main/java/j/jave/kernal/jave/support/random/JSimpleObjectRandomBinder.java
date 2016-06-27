@@ -1,8 +1,8 @@
 package j.jave.kernal.jave.support.random;
 
-import j.jave.kernal.jave.support.detect.JAbstractFieldFinder;
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
-import j.jave.kernal.jave.support.detect.JFieldOnSingleClassFinder;
+import j.jave.kernal.jave.support._package.JAbstractFieldFinder;
+import j.jave.kernal.jave.support._package.JFieldOnSingleClassFinder;
+import j.jave.kernal.jave.support._package.JFieldInfoProvider.JFieldInfoGen;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.lang.reflect.Field;

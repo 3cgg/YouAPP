@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support._package;
 
 /**
  * mark interface.

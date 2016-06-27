@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.support;
 
-import j.jave.kernal.jave.support.detect.JProvider;
+import j.jave.kernal.jave.support._package.JProvider;
 
 /**
  * Servlet context provider.

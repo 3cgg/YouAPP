@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.support.detect;
+package j.jave.kernal.jave.support;
 
 public interface JFinder<T> {
 

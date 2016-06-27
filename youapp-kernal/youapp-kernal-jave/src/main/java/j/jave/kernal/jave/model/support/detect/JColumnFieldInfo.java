@@ -6,7 +6,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.kernal.jave.model.support.JTable;
-import j.jave.kernal.jave.support.detect.JFieldInfoProvider.JFieldInfoGen;
+import j.jave.kernal.jave.support._package.JFieldInfoProvider.JFieldInfoGen;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 

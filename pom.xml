@@ -4,6 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<properties>
+		<youapp.version>0.0.0</youapp.version>
+	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>4.2.5.RELEASE</spring.version>
 		<spring.boot.version>1.3.3.RELEASE</spring.boot.version>
@@ -30,7 +32,7 @@
 
 	<groupId>youapp</groupId>
 	<artifactId>pom-conf</artifactId>
-	<version>0.0.0</version>
+	<version>${youapp.version}</version>
 	<packaging>pom</packaging>
 
 	<name>youapp-global-pom</name>

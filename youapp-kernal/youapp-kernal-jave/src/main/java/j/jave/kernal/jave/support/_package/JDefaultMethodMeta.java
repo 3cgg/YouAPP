@@ -1,10 +1,9 @@
 package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
-public class JDefaultMethodMeta implements JModel {
+public class JDefaultMethodMeta implements JMethodMeta {
 
 	private String methodName;
 	
@@ -13,6 +12,13 @@ public class JDefaultMethodMeta implements JModel {
 	private Annotation[] annotations;
 	
 	private int access;
+	
+	/**
+	 * the scanning class from the method is hit ,  not declared class of the method
+	 */
+	private Class<?> clazz;
+	
+	private Method method;
 
 	public Annotation[] getAnnotations() {
 		return annotations;
@@ -44,6 +50,29 @@ public class JDefaultMethodMeta implements JModel {
 
 	public void setParamMetas(JDefaultParamMeta[] paramMetas) {
 		this.paramMetas = paramMetas;
+	}
+
+	/**
+	 * the scanning class from the field is hit ,  not declared class of the field
+	 * @return
+	 */
+	public Class<?> getClazz() {
+		return clazz;
+	}
+
+	/**
+	 * @param clazz the scanning class from the field is hit ,  not declared class of the field
+	 */
+	public void setClazz(Class<?> clazz) {
+		this.clazz = clazz;
+	}
+
+	public Method getMethod() {
+		return method;
+	}
+
+	public void setMethod(Method method) {
+		this.method = method;
 	}
 	
 }

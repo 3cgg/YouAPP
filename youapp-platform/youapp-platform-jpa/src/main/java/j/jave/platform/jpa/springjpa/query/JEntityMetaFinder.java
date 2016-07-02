@@ -70,7 +70,7 @@ public class JEntityMetaFinder implements JFinder<JEntityModelMeta>{
 			
 			JEntityColumnMeta columnMeta=new JEntityColumnMeta();
 			columnMeta.setAnnotations(field.getAnnotations());
-			columnMeta.setClazz(field.getClass());
+			columnMeta.setClazz(entityClass);
 			columnMeta.setColumn(columnName);
 			columnMeta.setField(field);
 			columnMeta.setFieldName(field.getName());

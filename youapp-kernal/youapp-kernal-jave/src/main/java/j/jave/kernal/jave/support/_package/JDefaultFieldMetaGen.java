@@ -11,7 +11,7 @@ public class JDefaultFieldMetaGen implements JFieldInfoGen<JDefaultFieldMeta> {
 		JDefaultFieldMeta defaultFieldMeta=new JDefaultFieldMeta();
 		defaultFieldMeta.setFieldName(field.getName());
 		defaultFieldMeta.setAccess(field.getModifiers());
-		defaultFieldMeta.setClazz(field.getType());
+		defaultFieldMeta.setClazz(classIncudeField);
 		defaultFieldMeta.setAnnotations(field.getAnnotations());
 		defaultFieldMeta.setField(field);
 		return defaultFieldMeta;

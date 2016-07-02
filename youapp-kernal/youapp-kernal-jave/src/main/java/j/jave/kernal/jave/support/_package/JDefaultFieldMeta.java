@@ -1,14 +1,15 @@
 package j.jave.kernal.jave.support._package;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-public class JDefaultFieldMeta implements JModel{
+public class JDefaultFieldMeta implements JFieldMeta{
 
 	private String fieldName;
 	
+	/**
+	 * the scanning class from the field is hit ,  not declared class of the field
+	 */
 	private Class<?> clazz;
 	
 	private Annotation[] annotations;
@@ -25,10 +26,17 @@ public class JDefaultFieldMeta implements JModel{
 		this.fieldName = fieldName;
 	}
 
+	/**
+	 * the scanning class from the field is hit ,  not declared class of the field
+	 * @return
+	 */
 	public Class<?> getClazz() {
 		return clazz;
 	}
 
+	/**
+	 * @param clazz the scanning class from the field is hit ,  not declared class of the field
+	 */
 	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
 	}

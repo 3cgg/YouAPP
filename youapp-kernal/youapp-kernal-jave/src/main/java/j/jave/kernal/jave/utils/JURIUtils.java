@@ -50,10 +50,13 @@ public abstract class JURIUtils {
 				URLConnection urlConnection= uri.toURL().openConnection();
 				InputStream inputStream = urlConnection.getInputStream();
 				try{
-				bytes=JStringUtils.getBytes(inputStream);
+					bytes=JIOUtils.getBytes(inputStream);
 				}finally{
 					inputStream.close();
 				}
+			}
+			else{
+				throw new JUtilException("only accept ["+SCHEMA_FILE+","+SCHEMA_HTTP+"] , "+uriString); 
 			}
 			return bytes;
 		}catch(Exception e){

@@ -212,7 +212,7 @@ public class JConfiguration extends HashMap<String, Object>{
 	}
 	
 	public String getString(String  key){
-		Object obj=get(key);
+		Object obj=get(key,null);
 		return (String) obj;
 	}
 	

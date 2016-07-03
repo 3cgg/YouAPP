@@ -8,6 +8,7 @@
     <version>${youapp.version}</version>
   </parent>
   <artifactId>youapp-kernal-mock</artifactId>
+  <version>${kernal.version}</version>
   <name>youapp-kernal-mock</name>
   <url>http://maven.apache.org</url>
   

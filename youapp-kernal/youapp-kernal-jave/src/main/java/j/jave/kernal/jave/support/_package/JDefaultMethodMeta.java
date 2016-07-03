@@ -53,7 +53,7 @@ public class JDefaultMethodMeta implements JMethodMeta {
 	}
 
 	/**
-	 * the scanning class from the field is hit ,  not declared class of the field
+	 * the scanning class from the method is hit ,  not declared class of the method
 	 * @return
 	 */
 	public Class<?> getClazz() {
@@ -61,7 +61,7 @@ public class JDefaultMethodMeta implements JMethodMeta {
 	}
 
 	/**
-	 * @param clazz the scanning class from the field is hit ,  not declared class of the field
+	 * @param clazz the scanning class from the method is hit ,  not declared class of the method
 	 */
 	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;

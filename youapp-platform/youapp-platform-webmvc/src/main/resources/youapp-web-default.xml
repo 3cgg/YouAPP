@@ -71,4 +71,10 @@
   <description>the token storage, generally it's used in promising the form is submit only once.</description>
 </property>
 
+<property>
+  <name>youapp.mock.uri.root</name>
+  <value>CLASSPATH</value>
+  <description> CLASSPATH</description>
+</property>
+
 </configuration>

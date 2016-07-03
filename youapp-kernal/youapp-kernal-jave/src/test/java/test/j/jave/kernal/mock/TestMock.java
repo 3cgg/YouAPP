@@ -1,8 +1,6 @@
 package test.j.jave.kernal.mock;
 
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.io.JURIPart;
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 import j.jave.kernal.jave.utils.JURIUtils;
@@ -14,21 +12,13 @@ import j.jave.kernal.mock.JMethodNameAsFileParser;
 import j.jave.kernal.mock.JMockContext;
 import j.jave.kernal.mock.JMockModel;
 import j.jave.kernal.mock.JMockProperties;
-import junit.framework.TestCase;
 
-import org.junit.Before;
 import org.junit.Test;
 
-public class TestMock extends TestCase {
+import test.j.jave.kernal.eventdriven.TestEventSupport;
 
-	private JServiceFactoryManager serviceFactoryManager=JServiceFactoryManager.get();
+public class TestMock extends TestEventSupport {
 
-	protected JServiceHubDelegate serviceHubDelegate=JServiceHubDelegate.get();
-	
-	@Before
-	public void initialize() throws Exception {
-		serviceFactoryManager.registerAllServices();
-	}
 	
 	@Test
 	public void testMock() throws Exception{

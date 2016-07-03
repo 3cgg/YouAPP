@@ -118,4 +118,10 @@
   <description>timeout as seconds.</description>
 </property>
 
+<property>
+  <name>youapp.mock.uri.root</name>
+  <value>CLASSPATH</value>
+  <description> CLASSPATH,customized root </description>
+</property>
+
 </configuration>

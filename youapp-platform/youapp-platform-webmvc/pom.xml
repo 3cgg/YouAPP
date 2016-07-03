@@ -18,12 +18,6 @@
 	<dependencies>
 		
 		<dependency>
-			<groupId>youapp.kernal</groupId>
-			<artifactId>youapp-kernal-mock</artifactId>
-			<version>${kernal.version}</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>youapp.platform</groupId>
 			<artifactId>youapp-platform-spring</artifactId>
 			<version>${platform.version}</version>

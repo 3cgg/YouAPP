@@ -2,14 +2,15 @@ package com.youappcorp.project.dynamicloader;
 
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
-import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.container.DefaultControllerMockObjectGetter;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainerConfig;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeTestContainerConfig;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
 import java.io.File;
@@ -37,7 +38,7 @@ public class DynamicLoaderController extends ControllerSupport {
 			String jarPath="D:\\temp\\"+jarName; //"D:\\temp\\youapp-business-bill-2.0.1.jar"
 			URL url= new File(jarPath).toURI().toURL();
 			URL[] jarUrls=new URL[]{url};
-			DynamicSpringContainerConfig dynamicSpringContainerConfig=new DynamicSpringContainerConfig();
+			InnerHttpInvokeContainerConfig dynamicSpringContainerConfig=new InnerHttpInvokeContainerConfig();
 			dynamicSpringContainerConfig.setJarUrls(jarUrls);
 			dynamicSpringContainerConfig.setApplicationContext(applicationContext);
 			
@@ -53,10 +54,25 @@ public class DynamicLoaderController extends ControllerSupport {
 					dynamicComponentVersionApplication.getVersion(), 
 					dynamicComponentVersionApplication.getUrlPrefix());
 			
-			SpringContainerConfig springContainerConfig=new SpringContainerConfig();
-			springContainerConfig.setApplicationContext(applicationContext);
+			InnerHttpInvokeTestContainerConfig testConfig=new InnerHttpInvokeTestContainerConfig();
+			testConfig.setApplicationContext(applicationContext);
+			testConfig.setJarUrls(jarUrls);
 			
-			requestInvokeContainerDelegateService.newInstance(springContainerConfig, componentVersionTestApplication,
+			requestInvokeContainerDelegateService.newInstance(testConfig, componentVersionTestApplication,
+					(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
+			
+			//startup mock container.
+			ComponentVersionTestApplication mockApplication
+			=new ComponentVersionTestApplication(dynamicComponentVersionApplication.getApp(),
+					dynamicComponentVersionApplication.getComponent()+"-MOCK", 
+					dynamicComponentVersionApplication.getVersion(), 
+					dynamicComponentVersionApplication.getUrlPrefix());
+			
+			InnerHttpInvokeTestContainerConfig mockConfig=new InnerHttpInvokeTestContainerConfig();
+			mockConfig.setApplicationContext(applicationContext);
+			mockConfig.setJarUrls(jarUrls);
+			mockConfig.setControllerObjectGetter(new DefaultControllerMockObjectGetter());
+			requestInvokeContainerDelegateService.newInstance(mockConfig, mockApplication,
 					(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
 			
 			return ResponseModel.newSuccess().setData(true);

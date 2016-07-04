@@ -12,7 +12,6 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
@@ -36,25 +35,27 @@ class InnerHttpInvokeTestContainer implements JExecutor,JIdentifier,JContainer,J
 	
 	private String name;
 	
-	protected final SpringContainerConfig springContainerConfig;
+	protected final InnerHttpInvokeTestContainerConfig testContainerConfig;
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
 	public InnerHttpInvokeTestContainer(
-			SpringContainerConfig springContainerConfig,
+			InnerHttpInvokeTestContainerConfig testContainerConfig,
 			ComponentVersionApplication componentVersionApplication,
 			InnerHttpInvokeContainer innerHttpInvokeContainer ) {
-		this.springContainerConfig=springContainerConfig;
+		this.testContainerConfig=testContainerConfig;
 		this.componentVersionApplication=componentVersionApplication;
-		springContainerConfig.setName(componentVersionApplication.name());
-		springContainerConfig.setUnique(componentVersionApplication.unique());
-		this.name=springContainerConfig.getName();
-		this.unique=springContainerConfig.getUnique();
+		testContainerConfig.setName(componentVersionApplication.name());
+		testContainerConfig.setUnique(componentVersionApplication.unique());
+		this.name=testContainerConfig.getName();
+		this.unique=testContainerConfig.getUnique();
+		this.controllerObjectGetter=testContainerConfig.getControllerObjectGetter();
+		
 		this.innerHttpInvokeContainer=innerHttpInvokeContainer;
 	}
 
-	ControllerObjectGetter controllerObjectGetter=new DefaultControllerObjectGetter();
-			
+	private ControllerObjectGetter controllerObjectGetter=null;
+	
 	protected Object getControllerObject(String unique,
 			MappingMeta mappingMeta, Object object) throws Exception {
 		if(LOGGER.isDebugEnabled()){

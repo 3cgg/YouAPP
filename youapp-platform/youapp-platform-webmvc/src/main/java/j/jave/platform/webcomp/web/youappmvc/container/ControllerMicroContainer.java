@@ -1,9 +1,9 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
 import j.jave.kernal.container.JExecutableURIGenerator;
-import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JMicroContainer;
 import j.jave.kernal.container.JMicroContainerConfig;
+import j.jave.kernal.container.JRunner;
 import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 

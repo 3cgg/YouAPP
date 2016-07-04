@@ -11,7 +11,6 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.container.SpringCompMicroContainer;
 import j.jave.platform.sps.core.container.SpringCompMicroContainerConfig;
-import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
@@ -31,11 +30,11 @@ public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContaine
 	
 	private ControllerMicroContainer controllerMicroContainer;
 	
-	protected final SpringContainerConfig springContainerConfig;
+	protected final InnerHttpInvokeContainerConfig springContainerConfig;
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
-	public InnerHttpInvokeContainer(SpringContainerConfig springContainerConfig,
+	public InnerHttpInvokeContainer(InnerHttpInvokeContainerConfig springContainerConfig,
 			ComponentVersionApplication componentVersionApplication) {
 		this.springContainerConfig=springContainerConfig;
 		this.componentVersionApplication=componentVersionApplication;

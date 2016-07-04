@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
+import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.kernal.container.JRunner;
 import j.jave.kernal.container.JRunnerLoader;
-import j.jave.kernal.container.JMicroContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 
 import org.springframework.context.ApplicationContext;

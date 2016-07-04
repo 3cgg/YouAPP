@@ -9,8 +9,6 @@ import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
-import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
@@ -97,12 +95,12 @@ implements JService{
 	
 	/**
 	 * new a container instance... 
-	 * @param dynamicSpringContainerConfig
+	 * @param config
 	 * @param dynamicComponentVersionApplication
 	 * @return the container unique
 	 */
-	public String newInstance(DynamicSpringContainerConfig dynamicSpringContainerConfig,DynamicComponentVersionApplication dynamicComponentVersionApplication){
-		JContainer container=new InnerHttpInvokeContainer(dynamicSpringContainerConfig,dynamicComponentVersionApplication);
+	public String newInstance(InnerHttpInvokeContainerConfig config,DynamicComponentVersionApplication dynamicComponentVersionApplication){
+		JContainer container=new InnerHttpInvokeContainer(config,dynamicComponentVersionApplication);
 		container.initialize();
 		return container.unique();
 	}
@@ -113,22 +111,22 @@ implements JService{
 	 * @param componentVersionApplication
 	 * @return
 	 */
-	public String newInstance(SpringContainerConfig springContainerConfig,PlatformComponentVersionApplication platformComponentVersionApplication){
-		JContainer container=new InnerHttpInvokeContainer(springContainerConfig,platformComponentVersionApplication);
+	public String newInstance(InnerHttpInvokeContainerConfig config,PlatformComponentVersionApplication platformComponentVersionApplication){
+		JContainer container=new InnerHttpInvokeContainer(config,platformComponentVersionApplication);
 		container.initialize();
 		return container.unique();
 	}
 	
 	/**
 	 * startup test container for the platform functions.
-	 * @param springContainerConfig
+	 * @param config
 	 * @param platformTestComponentVersionApplication
 	 * @return
 	 */
-	public String newInstance(SpringContainerConfig springContainerConfig,
+	public String newInstance(InnerHttpInvokeTestContainerConfig config,
 			ComponentVersionTestApplication componentVersionTestApplication,
 			InnerHttpInvokeContainer innerHttpInvokeContainer){
-		JContainer container=new InnerHttpInvokeTestContainer(springContainerConfig,
+		InnerHttpInvokeTestContainer container=new InnerHttpInvokeTestContainer(config,
 				componentVersionTestApplication,innerHttpInvokeContainer);
 		container.initialize();
 		return container.unique();

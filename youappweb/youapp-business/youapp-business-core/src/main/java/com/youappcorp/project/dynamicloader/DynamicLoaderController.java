@@ -2,6 +2,7 @@ package com.youappcorp.project.dynamicloader;
 
 import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
@@ -38,13 +39,17 @@ public class DynamicLoaderController extends ControllerSupport {
 			String jarPath="D:\\temp\\"+jarName; //"D:\\temp\\youapp-business-bill-2.0.1.jar"
 			URL url= new File(jarPath).toURI().toURL();
 			URL[] jarUrls=new URL[]{url};
-			InnerHttpInvokeContainerConfig dynamicSpringContainerConfig=new InnerHttpInvokeContainerConfig();
+			
+			DynamicSpringContainerConfig dynamicSpringContainerConfig=new DynamicSpringContainerConfig();
 			dynamicSpringContainerConfig.setJarUrls(jarUrls);
 			dynamicSpringContainerConfig.setApplicationContext(applicationContext);
 			
+			InnerHttpInvokeContainerConfig containerConfig=new InnerHttpInvokeContainerConfig();
+			containerConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
+			
 			DynamicComponentVersionApplication dynamicComponentVersionApplication
 				=new DynamicComponentVersionApplication(applicationContext, jarUrls);
-			String unique=requestInvokeContainerDelegateService.newInstance(dynamicSpringContainerConfig, dynamicComponentVersionApplication);
+			String unique=requestInvokeContainerDelegateService.newInstance(containerConfig, dynamicComponentVersionApplication);
 			
 			//startup test container.
 			
@@ -55,9 +60,7 @@ public class DynamicLoaderController extends ControllerSupport {
 					dynamicComponentVersionApplication.getUrlPrefix());
 			
 			InnerHttpInvokeTestContainerConfig testConfig=new InnerHttpInvokeTestContainerConfig();
-			testConfig.setApplicationContext(applicationContext);
-			testConfig.setJarUrls(jarUrls);
-			
+			testConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
 			requestInvokeContainerDelegateService.newInstance(testConfig, componentVersionTestApplication,
 					(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
 			
@@ -69,8 +72,7 @@ public class DynamicLoaderController extends ControllerSupport {
 					dynamicComponentVersionApplication.getUrlPrefix());
 			
 			InnerHttpInvokeTestContainerConfig mockConfig=new InnerHttpInvokeTestContainerConfig();
-			mockConfig.setApplicationContext(applicationContext);
-			mockConfig.setJarUrls(jarUrls);
+			mockConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
 			mockConfig.setControllerObjectGetter(new DefaultControllerMockObjectGetter());
 			requestInvokeContainerDelegateService.newInstance(mockConfig, mockApplication,
 					(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));

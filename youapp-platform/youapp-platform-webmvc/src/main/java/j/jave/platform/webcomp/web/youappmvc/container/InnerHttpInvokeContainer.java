@@ -30,18 +30,18 @@ public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContaine
 	
 	private ControllerMicroContainer controllerMicroContainer;
 	
-	protected final InnerHttpInvokeContainerConfig springContainerConfig;
+	protected final InnerHttpInvokeContainerConfig config;
 	
 	private final ComponentVersionApplication componentVersionApplication;
 	
-	public InnerHttpInvokeContainer(InnerHttpInvokeContainerConfig springContainerConfig,
+	public InnerHttpInvokeContainer(InnerHttpInvokeContainerConfig config,
 			ComponentVersionApplication componentVersionApplication) {
-		this.springContainerConfig=springContainerConfig;
+		this.config=config;
 		this.componentVersionApplication=componentVersionApplication;
-		springContainerConfig.setName(componentVersionApplication.name());
-		springContainerConfig.setUnique(componentVersionApplication.unique());
-		this.name=springContainerConfig.getName();
-		this.unique=springContainerConfig.getUnique();
+		config.setName(componentVersionApplication.name());
+		config.setUnique(componentVersionApplication.unique());
+		this.name=config.getName();
+		this.unique=config.getUnique();
 	}
 	
 	@Override
@@ -127,7 +127,7 @@ public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContaine
 		springCompMicroContainerConfig.setUnique(componentVersionApplication.unique());
 		springCompMicroContainerConfig.setName(componentVersionApplication.name());
 		springCompMicroContainer=new SpringCompMicroContainer
-				(springContainerConfig,springCompMicroContainerConfig,componentVersionApplication);
+				(config.getSpringContainerConfig(),springCompMicroContainerConfig,componentVersionApplication);
 		springCompMicroContainer.initialize();
 	}
 	
@@ -136,7 +136,7 @@ public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContaine
 				new ControllerMicroContainerConfig(springCompMicroContainer.getApplicationCotext());
 		controllerMicroContainerConfig.setName(componentVersionApplication.name());
 		controllerMicroContainerConfig.setUnique(componentVersionApplication.unique());
-		controllerMicroContainer=new ControllerMicroContainer(springContainerConfig, controllerMicroContainerConfig,componentVersionApplication);
+		controllerMicroContainer=new ControllerMicroContainer(config.getSpringContainerConfig(), controllerMicroContainerConfig,componentVersionApplication);
 		controllerMicroContainer.initialize();
 	}
 	

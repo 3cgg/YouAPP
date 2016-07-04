@@ -35,7 +35,7 @@ public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 		resourceInfo.setMethodName(method.getName());
 		RequestMapping classRequestMapping= classIncudeMethod.getAnnotation(RequestMapping.class);
 		RequestMapping methodRequestMapping= method.getAnnotation(RequestMapping.class);
-		
+		if(methodRequestMapping==null){return null;}
 		String[] methodPaths= methodRequestMapping.value();
 		String path="";
 		if(classRequestMapping!=null){

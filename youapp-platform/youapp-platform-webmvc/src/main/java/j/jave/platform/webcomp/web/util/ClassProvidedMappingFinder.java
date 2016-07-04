@@ -3,11 +3,16 @@ package j.jave.platform.webcomp.web.util;
 import j.jave.kernal.jave.support.JProvider;
 import j.jave.kernal.jave.support.JResourceFinder;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
+import j.jave.kernal.jave.support._package.JDefaultMethodFilter;
 import j.jave.kernal.jave.support._package.JMethodInfoProvider;
 import j.jave.kernal.jave.support._package.JMethodOnSingleClassFinder;
 import j.jave.platform.data.web.mapping.MappingMeta;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * detect specified resources , wrap the information via {@link MappingMeta}
@@ -29,6 +34,14 @@ public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<Cl
 		MappingMetaInfoGen mappingMetaInfoGen=new MappingMetaInfoGen(thisClass.getClassLoader());
 		methodFinder=new JMethodOnSingleClassFinder<MappingMeta>(thisClass);
 		methodFinder.setMethodInfo(mappingMetaInfoGen);
+		methodFinder.setMethodFilter(new JDefaultMethodFilter(){
+			@Override
+			public boolean filter(Method method, Class<?> classIncudeMethod) {
+				boolean filter= super.filter(method, classIncudeMethod);
+				Annotation annotation=method.getAnnotation(RequestMapping.class);
+				return filter||annotation==null;
+			}
+		});
 	}
 	
 //	private volatile boolean flag=true;

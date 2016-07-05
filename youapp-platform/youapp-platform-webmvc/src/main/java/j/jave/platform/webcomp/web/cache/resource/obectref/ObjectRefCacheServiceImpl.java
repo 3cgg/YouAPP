@@ -8,9 +8,12 @@ import j.jave.platform.webcomp.web.cache.resource.ResourceCacheServiceSupport;
 
 import org.springframework.stereotype.Service;
 
-@Service("j.jave.platform.basicwebcomp.web.cache.resource.obectref.ObjectRefCacheServiceImpl")
+@Service(ObjectRefCacheServiceImpl.BEAN_NAME)
 public class ObjectRefCacheServiceImpl extends ResourceCacheServiceSupport<ResourceCacheModel, Object>
 		implements ObjectRefCacheService {
+	
+	public static final String BEAN_NAME="default-objectRefCacheServiceImpl";
+	
 
 	private static SimpleStringIdentifierGenerator simpleStringIdentifierGenerator=new SimpleStringIdentifierGenerator(){
 		public String namespace() {

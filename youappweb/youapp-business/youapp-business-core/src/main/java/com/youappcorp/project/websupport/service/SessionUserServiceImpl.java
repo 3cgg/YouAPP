@@ -8,16 +8,18 @@ import j.jave.platform.webcomp.core.service.SessionUser;
 
 import org.springframework.stereotype.Service;
 
-@Service(value="SessionUserServiceImpl")
+@Service(SessionUserServiceImpl.BEAN_NAME)
 public class SessionUserServiceImpl extends SessionUserServiceFactory implements SessionUserService{
 
+	public static final String BEAN_NAME="default-sessionUserServiceImpl";
+	
 	public SessionUserServiceImpl() {
 		super(SessionUserService.class);
 	}
 	
 	@Override
 	protected SessionUserService doGetService() {
-		return getBeanByName(SessionUserServiceImpl.class.getName());
+		return getBeanByName(SessionUserServiceImpl.BEAN_NAME);
 	}
 
 	@Override

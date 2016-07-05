@@ -20,7 +20,7 @@ public class AuthenticationAccessServiceFactory extends SpringServiceFactorySupp
 	
 	@Override
 	public AuthenticationAccessService getService() {
-		return getBeanByName(AuthenticationAccessServiceImpl.class.getName());
+		return getBeanByName(AuthenticationAccessServiceImpl.BEAN_NAME);
 	}
 	
 	@Override

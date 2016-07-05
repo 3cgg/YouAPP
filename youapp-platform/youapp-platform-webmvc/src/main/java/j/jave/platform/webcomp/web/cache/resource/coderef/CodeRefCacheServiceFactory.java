@@ -15,7 +15,7 @@ public class CodeRefCacheServiceFactory extends SpringServiceFactorySupport<Code
 	
 	@Override
 	public CodeRefCacheService getService() {
-		return getBeanByName(CodeRefCacheServiceImpl.class.getName());
+		return getBeanByName(CodeRefCacheServiceImpl.BEAN_NAME);
 	}
 	
 	

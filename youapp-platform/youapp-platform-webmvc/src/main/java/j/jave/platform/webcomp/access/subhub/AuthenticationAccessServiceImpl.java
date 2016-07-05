@@ -20,11 +20,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
-@Service(value="j.jave.platform.basicwebcomp.access.subhub.AuthenticationAccessServiceImpl")
+@Service(value=AuthenticationAccessServiceImpl.BEAN_NAME)
 public class AuthenticationAccessServiceImpl implements AuthenticationAccessService{
+	
+	public static final String BEAN_NAME="default-authenticationAccessServiceImpl";
 	
 	private AuthenticationManagerService authenticationManagerService=
 			JServiceHubDelegate.get().getService(this, AuthenticationManagerService.class);;

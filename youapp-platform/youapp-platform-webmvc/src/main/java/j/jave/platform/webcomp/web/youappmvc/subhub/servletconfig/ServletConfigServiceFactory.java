@@ -21,7 +21,7 @@ public abstract class ServletConfigServiceFactory extends SpringServiceFactorySu
 	
 	@Override
 	public ServletConfigService getService() {
-		return getBeanByName(DefaultServletConfigServiceImpl.class.getName());
+		return getBeanByName(DefaultServletConfigServiceImpl.BEAN_NAME);
 	}
 
 }

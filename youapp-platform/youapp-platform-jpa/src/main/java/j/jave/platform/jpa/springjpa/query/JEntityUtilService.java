@@ -55,10 +55,13 @@ implements JService
 		return this;
 	}
 	
-	private static final JEntityUtilService INSTANCE=JServiceHubDelegate
-			.get().getService(new Object(), JEntityUtilService.class);
+	private static JEntityUtilService INSTANCE=null;
 	
 	public static JEntityUtilService get(){
+		if(INSTANCE==null){
+			INSTANCE=JServiceHubDelegate
+					.get().getService(new Object(), JEntityUtilService.class);
+		}
 		return INSTANCE;
 	}
 	

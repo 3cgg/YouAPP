@@ -3,7 +3,6 @@ package j.jave.platform.sps.core.servicehub;
 import j.jave.kernal.eventdriven.servicehub.JAbstractServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactory;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
@@ -80,9 +79,9 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		
-		if(!serviceNameCheckService.valid(this.getClass())){
-			throw new JInitializationException(" the service/factory'name is not same as class name : "+this.getClass().getName());
-		}
+//		if(!serviceNameCheckService.valid(this.getClass())){
+//			throw new JInitializationException(" the service/factory'name is not same as class name : "+this.getClass().getName());
+//		}
 		
 		if(isCanRegister()){
 			JServiceHubDelegate.get().register(this, registClass, this);

@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 /**
  * @author J
  */
-@Service(value="j.jave.platform.basicwebcomp.web.cache.response.ResponseCacheServiceImpl")
+@Service(value=ResponseCacheServiceImpl.BEAN_NAME)
 public class ResponseCacheServiceImpl 
 	extends AbstractResponseEhcacheCacheService
 		implements JSingleDynamicMemoryCacheIO<ResponseCacheModel>{
 
+	public static final String BEAN_NAME="default-responseCacheServiceImpl";
+	
+	
 	/**
 	 * cache service . 
 	 */

@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
  * implements ServletConfigService , see that for detail information.
  * @author J
  */
-@Service(value="j.jave.platform.basicwebcomp.web.youappmvc.subhub.servletconfig.DefaultServletConfigServiceImpl")
+@Service(value=DefaultServletConfigServiceImpl.BEAN_NAME)
 public class DefaultServletConfigServiceImpl implements ServletConfigService {
+	
+	public static final String BEAN_NAME="defaultServletConfigServiceImpl";
 	
 	@Override
 	public String getLoginPath() {

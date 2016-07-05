@@ -15,7 +15,7 @@ public class WebRequestURLCacheServiceFactory extends SpringServiceFactorySuppor
 	
 	@Override
 	public WebRequestURLCacheService getService() {
-		return getBeanByName(WebRequestURLCacheServiceImpl.class.getName());
+		return getBeanByName(WebRequestURLCacheServiceImpl.BEAN_NAME);
 	}
 	
 	

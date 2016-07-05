@@ -15,7 +15,7 @@ public class ObjectRefCacheServiceFactory extends SpringServiceFactorySupport<Ob
 	
 	@Override
 	public ObjectRefCacheService getService() {
-		return getBeanByName(ObjectRefCacheServiceImpl.class.getName());
+		return getBeanByName(ObjectRefCacheServiceImpl.BEAN_NAME);
 	}
 	
 	

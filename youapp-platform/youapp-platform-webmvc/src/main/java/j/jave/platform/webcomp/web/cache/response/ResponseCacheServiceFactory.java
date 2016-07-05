@@ -13,7 +13,7 @@ public class ResponseCacheServiceFactory extends ResponseEhcacheCacheServiceFact
 	
 	@Override
 	public ResponseEhcacheCacheService getService() {
-		return getBeanByName(ResponseCacheServiceImpl.class.getName());
+		return getBeanByName(ResponseCacheServiceImpl.BEAN_NAME);
 	}
 	
 	@Override

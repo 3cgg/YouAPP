@@ -26,10 +26,12 @@ import org.springframework.stereotype.Service;
  * @see ResponseEhcacheCacheService
  * @see MemoryCachedService
  */
-@Service(value="j.jave.platform.basicwebcomp.web.cache.resource.weburl.WebRequestURLCacheServiceImpl")
+@Service(value=WebRequestURLCacheServiceImpl.BEAN_NAME)
 public class WebRequestURLCacheServiceImpl extends ResourceCacheServiceSupport<WebRequestURLCacheModel,Object> 
 	implements WebRequestURLCacheService,
 	ResourceCacheRefreshListener,WebRequestURLCacheRefreshListener{
+	
+	public static final String BEAN_NAME="default-webRequestURLCacheServiceImpl";
 	
 	@Autowired(required=false)
 	private WebRequestURLCacheModelService webRequestURLCacheModelService;

@@ -11,9 +11,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("j.jave.platform.basicwebcomp.web.cache.resource.coderef.CodeRefCacheServiceImpl")
+@Service(CodeRefCacheServiceImpl.BEAN_NAME)
 public class CodeRefCacheServiceImpl extends ResourceCacheServiceSupport<CodeRefCacheModel, Object>
 		implements CodeRefCacheService<CodeRefCacheModel>,CodeRefCacheRefreshListener {
+	
+	public static final String BEAN_NAME="default-codeRefCacheServiceImpl";
+	
 
 	@Autowired(required=false)
 	private CodeRefCacheModelService codeRefCacheModelService;

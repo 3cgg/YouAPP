@@ -83,18 +83,18 @@
 
 <property>
   <name>databind.property.ext.handler.classes</name>
-  <value>j.jave.kernal.jave.support.databind.proext.DateFormatExtendHandler,
-  j.jave.kernal.jave.support.databind.proext.DateFormatExtendHandler
+  <value>j.jave.kernal.jave.support.databind.proext.JDateFormatExtendHandler,
+  j.jave.kernal.jave.support.databind.proext.JDateFormatExtendHandler
   </value>
-  <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.PropertyExtendHandler} split by comma</description>
+  <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.JPropertyExtendHandler} split by comma</description>
 </property>
 
 <property>
   <name>datavalidate.property.annotation.handler.classes</name>
-  <value>j.jave.kernal.jave.support.validate.propertyvalidator.JFloatAnnotationValidatorHandler,
-  j.jave.kernal.jave.support.validate.propertyvalidator.JLengthAnnotationValidatorHandler
+  <value>j.jave.kernal.jave.support.validate.annotationvalidator.JFloatAnnotationValidatorHandler,
+  j.jave.kernal.jave.support.validate.annotationvalidator.JLengthAnnotationValidatorHandler
   </value>
-  <description>any handler must implements {j.jave.kernal.jave.support.validate.propertyvalidator.JPropertyAnnotationValidatorHandler} split by comma</description>
+  <description>any handler must implements {j.jave.kernal.jave.support.validate.annotationvalidator.JPropertyAnnotationValidatorHandler} split by comma</description>
 </property>
 
 

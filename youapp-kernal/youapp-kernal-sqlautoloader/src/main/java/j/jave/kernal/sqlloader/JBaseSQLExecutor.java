@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * @author J
  *
  */
-public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements JSQLDDLCreate {
+public abstract class JBaseSQLExecutor extends JDefaultSQLConfigure implements JSQLDDLCreate {
 
 	protected final JLogger LOGGER=JLoggerFactory.getLogger(getClass());
 	
@@ -56,7 +56,7 @@ public abstract class JAbstractSQLCreate extends JDefaultSQLConfigure implements
 	 */
 	private Object object=new Object();
 	
-	public JAbstractSQLCreate(String className,String url, String user, String password) {
+	public JBaseSQLExecutor(String className,String url, String user, String password) {
 		this.className=className;
 		this.url=url;
 		this.user=user;

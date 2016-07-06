@@ -18,7 +18,7 @@ import java.util.Properties;
  * default DB properties configuration.
  * @author J
  */
-public class JPropertiesDBConfiguration implements JPropertiesDBConfigure {
+public class JDBConfig implements JDBConfigNames {
 	
 	private String url;
 	
@@ -85,7 +85,7 @@ public class JPropertiesDBConfiguration implements JPropertiesDBConfigure {
 	 * @param inputStream 
 	 */
 	@Override
-	public JPropertiesDBConfiguration parse(InputStream inputStream) {
+	public JDBConfig parse(InputStream inputStream) {
 		try{
 			Properties properties= null;
 			if(inputStream==null){

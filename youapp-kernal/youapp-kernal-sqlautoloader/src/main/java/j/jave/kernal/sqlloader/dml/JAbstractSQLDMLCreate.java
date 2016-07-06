@@ -1,6 +1,6 @@
 package j.jave.kernal.sqlloader.dml;
 
-import j.jave.kernal.sqlloader.JAbstractSQLCreate;
+import j.jave.kernal.sqlloader.JBaseSQLExecutor;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import java.util.Set;
  * @author J
  *
  */
-public abstract class JAbstractSQLDMLCreate extends JAbstractSQLCreate implements JSQLDMLCreate {
+public abstract class JAbstractSQLDMLCreate extends JBaseSQLExecutor implements JSQLDMLCreate {
 	
 	public JAbstractSQLDMLCreate(String className,String url, String user, String password) {
 		super(className, url, user, password);

@@ -1,6 +1,6 @@
 package j.jave.kernal.sqlloader.ddl;
 
-import j.jave.kernal.sqlloader.JAbstractSQLCreate;
+import j.jave.kernal.sqlloader.JBaseSQLExecutor;
 
 /**
  * basic class to create DDL SQL. 
@@ -8,7 +8,7 @@ import j.jave.kernal.sqlloader.JAbstractSQLCreate;
  * @author J
  *
  */
-public abstract class JAbstractSQLDDLCreate extends JAbstractSQLCreate implements JSQLDDLCreate {
+public abstract class JAbstractSQLDDLCreate extends JBaseSQLExecutor implements JSQLDDLCreate {
 	
 	public JAbstractSQLDDLCreate(String className,String url, String user, String password) {
 		super(className, url, user, password);

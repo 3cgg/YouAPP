@@ -3,8 +3,8 @@ package j.jave.kernal.sqlloader.ddl;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.sqlloader.JPropertiesDBConfiguration;
-import j.jave.kernal.sqlloader.JPropertiesDBConfigure;
+import j.jave.kernal.sqlloader.JDBConfig;
+import j.jave.kernal.sqlloader.JDBConfigNames;
 import j.jave.kernal.sqlloader.JSQLLoaderException;
 
 import java.io.InputStream;
@@ -12,12 +12,12 @@ import java.io.InputStream;
 
 /**
  * create concrete <code>JSQLDDLCreate</code> object from properties.
- * see {@link JPropertiesDBConfigure} to know some property-value. 
+ * see {@link JDBConfigNames} to know some property-value. 
  * @author J
  * @see JH2DBSQLDDLCreate
- * @see JPropertiesDBConfigure
+ * @see JDBConfigNames
  */
-public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory implements JPropertiesDBConfigure{
+public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory implements JDBConfigNames{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JPropertiesSQLDDLCreateFactory.class);
 	
@@ -25,7 +25,7 @@ public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory
 	public JSQLDDLCreate getObject() {
 		try {
 			
-			JPropertiesDBConfiguration configuration= parse(null);
+			JDBConfig configuration= parse(null);
 			String driver=configuration.getDriver();
 			String url=configuration.getUrl();
 			String userName=configuration.getUserName();
@@ -57,8 +57,8 @@ public class JPropertiesSQLDDLCreateFactory extends JAbstractSQLDDLCreateFactory
 	}
 
 	@Override
-	public JPropertiesDBConfiguration parse(InputStream inputStream) {
-		return new JPropertiesDBConfiguration().parse(inputStream);
+	public JDBConfig parse(InputStream inputStream) {
+		return new JDBConfig().parse(inputStream);
 	}
 
 }

@@ -29,7 +29,7 @@ import java.io.InputStream;
  * </table>
  * @author J
  */
-public interface JPropertiesDBConfigure {
+public interface JDBConfigNames {
 
 	String URL="youapp.database.url";
 	String DRIVER="youapp.database.driver";
@@ -41,7 +41,7 @@ public interface JPropertiesDBConfigure {
 	
 	String H2="H2";
 	
-	public JPropertiesDBConfiguration parse(InputStream inputStream);
+	public JDBConfig parse(InputStream inputStream);
 	
 	
 }

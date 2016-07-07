@@ -29,4 +29,25 @@ public class JLangUtils {
 		return Boolean.valueOf(string);
 	}
 	
+	/**
+	 * Return a String representation of an object's overall identity.
+	 * @param obj the object (may be {@code null})
+	 * @return the object's identity as String representation,
+	 * or an empty String if the object was {@code null}
+	 */
+	public static String identityToString(Object obj) {
+		if (obj == null) {
+			return "";
+		}
+		return obj.getClass().getName() + "@" + getIdentityHexString(obj);
+	}
+
+	/**
+	 * Return a hex String form of an object's identity hash code.
+	 * @param obj the object
+	 * @return the object's identity code in hex notation
+	 */
+	public static String getIdentityHexString(Object obj) {
+		return Integer.toHexString(System.identityHashCode(obj));
+	}
 }

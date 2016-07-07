@@ -29,7 +29,7 @@ import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.reflect.JReflect;
+import j.jave.kernal.jave.reflect.JReflectionUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JCollectionUtils.EntryCallback;
@@ -130,7 +130,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 						}
 						LOGGER.info("{ "+listener.getClass().getName()+" service } listenered on the event : "
 								+event.getUnique()+"-|-"+event.getClass().getName());
-						objects[i]=JReflect.invoke(listener, "trigger", new Class<?>[]{event.getClass()},new Object[]{event});
+						objects[i]=JReflectionUtils.invoke(listener, "trigger", new Class<?>[]{event.getClass()},new Object[]{event});
 					}
 				}
 				if(!received){

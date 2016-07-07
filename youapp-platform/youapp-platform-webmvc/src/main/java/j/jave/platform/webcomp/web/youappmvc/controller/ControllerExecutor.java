@@ -5,7 +5,7 @@ package j.jave.platform.webcomp.web.youappmvc.controller;
 
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.reflect.JReflect;
+import j.jave.kernal.jave.reflect.JReflectionUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.platform.data.common.MethodParamMeta;
@@ -44,7 +44,7 @@ public class ControllerExecutor implements JService {
 				stopWatch=new StopWatch();
 				stopWatch.start();
 			}
-			navigate=JReflect.invoke(controllerObject, mappingMeta.getMethodName(),
+			navigate=JReflectionUtils.invoke(controllerObject, mappingMeta.getMethodName(),
 					mappingMeta.getMethodParamClasses(), resolveArgs(httpContext, mappingMeta)
 					);
 			if(LOGGER.isDebugEnabled()){

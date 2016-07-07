@@ -6,7 +6,7 @@ package j.jave.platform.standalone.server.controller;
 
 import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.reflect.JReflect;
+import j.jave.kernal.jave.reflect.JReflectionUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
 
@@ -54,7 +54,7 @@ implements JService {
 				stopWatch=new StopWatch();
 				stopWatch.start();
 			}
-			navigate=JReflect.invoke(controllerService, mappingMeta.getMethodName(),
+			navigate=JReflectionUtils.invoke(controllerService, mappingMeta.getMethodName(),
 					mappingMeta.getMethodParamClasses(), argums);
 			if(LOGGER.isDebugEnabled()){
 				try{

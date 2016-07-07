@@ -16,13 +16,16 @@ public class JAtomicResourceProxy implements InvocationHandler {
 	
 	private Object target;
 	
+	private JAtomicResourceSessionGetter sessionGetter; 
+	
 	@SuppressWarnings("unchecked")
-	public static <T> T proxy(Object obj, Class<T> clazz){
+	public static <T> T proxy(Object obj, Class<T> clazz,JAtomicResourceSessionGetter sessionGetter){
 		
 		logger.debug("initialize proxy for  instance object : "+obj.getClass()+" , interface : "+clazz.getName());
 		try{
 			JAtomicResourceProxy proxy=new JAtomicResourceProxy();
 			proxy.target=obj;
+			proxy.sessionGetter=sessionGetter;
 			return (T)java.lang.reflect.Proxy.newProxyInstance
 				(clazz.getClassLoader(), new Class[]{ clazz }, proxy);
 		}catch (Exception e) {
@@ -31,11 +34,15 @@ public class JAtomicResourceProxy implements InvocationHandler {
 		}
 	}
 	
+	public static <T> T proxy(Object obj, Class<T> clazz){
+		return proxy(obj, clazz, new DefaultAtomicResourceSessionGetter());
+	}
+	
 	
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		JAtomicResourceSession atomicResourceSession= JAtomicResourceSessionHolder.getAtomicResourceSession();
+		JAtomicResourceSession atomicResourceSession= sessionGetter.getSession();
 		Monitor.get().in();
 		Throwable throwable=null; 
 		Object object = null;

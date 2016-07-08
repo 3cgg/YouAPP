@@ -12,6 +12,7 @@ import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -820,5 +821,23 @@ public abstract class JClassUtils {
 		}
 		return cl;
 	}
+	
+	/**
+	 * get parameter name
+	 * @param method
+	 * @return
+	 */
+	public static String[] getMethodNames(Method method){
+		Parameter[] parameters= method.getParameters();
+		String[] paramNames=new String[parameters.length];
+		int boundIndex=0;
+		for(Parameter parameter:parameters){
+			paramNames[boundIndex]=parameter.getName();
+			boundIndex++;
+		}
+		return paramNames;
+	}
+	
+	
 	
 }

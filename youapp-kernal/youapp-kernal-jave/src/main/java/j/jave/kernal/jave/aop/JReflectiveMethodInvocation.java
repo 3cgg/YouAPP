@@ -2,13 +2,14 @@ package j.jave.kernal.jave.aop;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-public class JReflectiveMethodInvocation implements MethodInvocation {
+public class JReflectiveMethodInvocation implements JProxyMethodInvocation {
 
 	protected final Object proxy;
 
@@ -125,6 +126,58 @@ public class JReflectiveMethodInvocation implements MethodInvocation {
 	@Override
 	public AccessibleObject getStaticPart() {
 		return this.method;
+	}
+
+	@Override
+	public Object getProxy() {
+		return this.proxy;
+	}
+
+	/**
+	 * This implementation returns a shallow copy of this invocation object,
+	 * including an independent copy of the original arguments array.
+	 * <p>We want a shallow copy in this case: We want to use the same interceptor
+	 * chain and other object references, but we want an independent value for the
+	 * current interceptor index.
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public MethodInvocation invocableClone() {
+		Object[] cloneArguments = null;
+		if (this.arguments != null) {
+			// Build an independent copy of the arguments array.
+			cloneArguments = new Object[this.arguments.length];
+			System.arraycopy(this.arguments, 0, cloneArguments, 0, this.arguments.length);
+		}
+		return invocableClone(cloneArguments);
+	}
+
+	/**
+	 * This implementation returns a shallow copy of this invocation object,
+	 * using the given arguments array for the clone.
+	 * <p>We want a shallow copy in this case: We want to use the same interceptor
+	 * chain and other object references, but we want an independent value for the
+	 * current interceptor index.
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public MethodInvocation invocableClone(Object... arguments) {
+		// Force initialization of the user attributes Map,
+		// for having a shared Map reference in the clone.
+		if (this.userAttributes == null) {
+			this.userAttributes = new HashMap<String, Object>();
+		}
+
+		// Create the MethodInvocation clone.
+		try {
+			JReflectiveMethodInvocation clone = (JReflectiveMethodInvocation) clone();
+			clone.arguments = arguments;
+			return clone;
+		}
+		catch (CloneNotSupportedException ex) {
+			throw new IllegalStateException(
+					"Should be able to clone object of type [" + getClass() + "]: " + ex);
+		}
 	}
 	
 }

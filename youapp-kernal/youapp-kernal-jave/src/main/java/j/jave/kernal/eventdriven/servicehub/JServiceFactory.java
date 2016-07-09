@@ -18,6 +18,18 @@ public interface JServiceFactory<T extends JService> {
 	T getService();	
 	
 	/**
+	 * get service class. 
+	 * @return
+	 */
+	Class<T> getServiceClass();
+	
+	/**
+	 * get service implementation class. 
+	 * @return
+	 */
+	Class<?> getServiceImplClass();
+	
+	/**
 	 * get service name.
 	 * @return
 	 */

@@ -132,7 +132,7 @@ implements JService , AsyncRequestExecutingListener,AsyncTestRequestExecutingLis
 	}
 	
 	@Override
-	public AsyncRequestExecutingService getService() {
+	protected AsyncRequestExecutingService doGetService() {
 		return this;
 	}
 	

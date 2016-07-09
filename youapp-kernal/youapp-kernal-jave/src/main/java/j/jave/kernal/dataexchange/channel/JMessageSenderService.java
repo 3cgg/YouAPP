@@ -53,7 +53,7 @@ implements JService,JMessageSendingListener {
 	
 	
 	@Override
-	public JMessageSenderService getService() {
+	public JMessageSenderService doGetService() {
 		return this;
 	}
 	

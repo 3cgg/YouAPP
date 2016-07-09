@@ -7,6 +7,7 @@ import j.jave.kernal.eventdriven.JOrdered;
 import j.jave.kernal.eventdriven.JServiceOrder;
 import j.jave.kernal.eventdriven.JServiceOrders;
 import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
+import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptor;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallEvent;
@@ -31,11 +32,13 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.reflect.JReflectionUtils;
 import j.jave.kernal.jave.service.JService;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JCollectionUtils.EntryCallback;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +75,17 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	 */
 	private final static Map<Class<?>, List<ServiceOrdered>> listenerServices=new ConcurrentHashMap<Class<?>, List<ServiceOrdered>>();
 
+	public static List<JServiceFactory<?>> interceptorFactories=null;
+	
+	private boolean factoryInstallCompleted=false;
+	
+	void setFactoryInstallCompleted(boolean factoryInstallCompleted) {
+		this.factoryInstallCompleted = factoryInstallCompleted;
+	}
+	
+	boolean isFactoryInstallCompleted() {
+		return factoryInstallCompleted;
+	}
 	
 	public static class ServiceOrdered implements Comparable<ServiceOrdered>{
 		
@@ -160,6 +174,9 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	 */
 	@SuppressWarnings("unchecked")
 	public  <T> T getService(Class<T> clazz){
+		if(JServiceHub.class!=clazz){
+			JAssert.isTrue(factoryInstallCompleted, "factories are not installed completed.");
+		}
 		T service=null;
 		JServiceFactory<?> serviceFactory=services.get(clazz);
 		if(serviceFactory!=null){
@@ -415,7 +432,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 	@Override
 	public void trigger(JServiceRegisterEvent event) {
 		boolean successRegister=register(event.getServiceName(), event.getServiceFactory());
-		if(successRegister){
+		if(successRegister&&isFactoryInstallCompleted()){
 			JServiceAddNotifyEvent serviceAddNotifyEvent=new JServiceAddNotifyEvent(this, event.getServiceName());
 			JServiceHubDelegate.get().addDelayEvent(serviceAddNotifyEvent);
 		}
@@ -513,8 +530,34 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 		return Collections.unmodifiableList(listenerServices.get(listenerClass));
 	}
 	
+	private final Object syncInterceptorFactories=new Object();
 	
-	
+	Collection<JServiceFactory<?>> getInterceptors(){
+		if(interceptorFactories==null){
+			synchronized (syncInterceptorFactories) {
+				if(interceptorFactories==null){
+					interceptorFactories=new ArrayList<JServiceFactory<?>>();
+					for(JServiceFactory<?> factory:services.values()){
+						if(JServiceMethodInterceptor.class.isInstance(factory)){
+							interceptorFactories.add(factory);
+						}
+					}
+				}
+			}
+		}
+		return Collections.unmodifiableCollection(interceptorFactories);
+		
+	}
+
+	@Override
+	public Class<JServiceHub> getServiceClass() {
+		return JServiceHub.class;
+	}
+
+	@Override
+	public Class<?> getServiceImplClass() {
+		return JServiceHub.class;
+	}
 	
 	
 	

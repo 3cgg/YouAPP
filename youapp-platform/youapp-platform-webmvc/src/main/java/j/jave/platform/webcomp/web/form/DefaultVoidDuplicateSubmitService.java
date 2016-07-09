@@ -78,7 +78,12 @@ implements VoidDuplicateSubmitService {
 	}
 	
 	@Override
-	public VoidDuplicateSubmitService getService() {
+	protected VoidDuplicateSubmitService doGetService() {
 		return this;
+	}
+	
+	@Override
+	public Class<?> getServiceImplClass() {
+		return getClass();
 	}
 }

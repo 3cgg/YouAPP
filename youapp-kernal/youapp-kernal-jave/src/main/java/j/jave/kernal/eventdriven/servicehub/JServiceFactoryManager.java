@@ -129,7 +129,7 @@ public final class JServiceFactoryManager{
 				registers.add(JDefaultServiceMonitor.class);
 				
 				//log services register starting time.
-				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterStartNotifyEvent(this));
+//				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterStartNotifyEvent(this));
 				
 				//register services from static resource.
 				for(int i=0;i<staticDefinedServiceFactories.size();i++){
@@ -171,8 +171,10 @@ public final class JServiceFactoryManager{
 					}
 				}
 				
+				JServiceHubDelegate.get().setFactoryInstallCompleted(true);
+				
 				//log services register end time.
-				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterEndNotifyEvent(this));
+//				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterEndNotifyEvent(this));
 				
 				// post process after service hub startup.
 				JServiceHubDelegate.get().addImmediateEvent(new JServiceHubInitializedEvent(this, JConfiguration.get()));

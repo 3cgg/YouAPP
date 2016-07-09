@@ -118,7 +118,7 @@ public class JCglibAopProxy implements JAopProxy {
 				types[x] = callbacks[x].getClass();
 			}
 			// fixedInterceptorMap only populated at this point, after getCallbacks call above
-			enhancer.setCallbackFilter(new ProxyCallbackFilter(
+			enhancer.setCallbackFilter(new JProxyCallbackFilter(
 					this.advised.getConfigurationOnlyCopy(), this.fixedInterceptorMap, this.fixedInterceptorOffset));
 			enhancer.setCallbackTypes(types);
 
@@ -572,7 +572,7 @@ public class JCglibAopProxy implements JAopProxy {
 	/**
 	 * CallbackFilter to assign Callbacks to methods.
 	 */
-	private static class ProxyCallbackFilter implements CallbackFilter {
+	private static class JProxyCallbackFilter implements CallbackFilter {
 
 		private final JAdvisedSupport advised;
 
@@ -580,7 +580,7 @@ public class JCglibAopProxy implements JAopProxy {
 
 		private final int fixedInterceptorOffset;
 
-		public ProxyCallbackFilter(JAdvisedSupport advised, Map<String, Integer> fixedInterceptorMap, int fixedInterceptorOffset) {
+		public JProxyCallbackFilter(JAdvisedSupport advised, Map<String, Integer> fixedInterceptorMap, int fixedInterceptorOffset) {
 			this.advised = advised;
 			this.fixedInterceptorMap = fixedInterceptorMap;
 			this.fixedInterceptorOffset = fixedInterceptorOffset;
@@ -719,10 +719,10 @@ public class JCglibAopProxy implements JAopProxy {
 			if (this == other) {
 				return true;
 			}
-			if (!(other instanceof ProxyCallbackFilter)) {
+			if (!(other instanceof JProxyCallbackFilter)) {
 				return false;
 			}
-			ProxyCallbackFilter otherCallbackFilter = (ProxyCallbackFilter) other;
+			JProxyCallbackFilter otherCallbackFilter = (JProxyCallbackFilter) other;
 			JAdvisedSupport otherAdvised = otherCallbackFilter.advised;
 			if (this.advised == null || otherAdvised == null) {
 				return false;

@@ -10,7 +10,7 @@ implements JCacheService {
 	private JDefaultNewHashCacheService hashCache=JServiceHubDelegate.get().getService(this, JDefaultNewHashCacheService.class);
 	
 	@Override
-	public JDefaultHashCacheService getService() {
+	public JDefaultHashCacheService doGetService() {
 		return this;
 	}
 	

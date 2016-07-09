@@ -60,7 +60,7 @@ implements JSPIQueryService
 	}
 
 	@Override
-	public JHibernateQueryService getService() {
+	public JHibernateQueryService doGetService() {
 		return this;
 	}
 	

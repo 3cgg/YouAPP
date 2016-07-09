@@ -18,7 +18,7 @@ public class JDESedeCipherServiceFactory extends JServiceFactorySupport<JDESedeC
 	private Object sync=new Object();
 	
 	@Override
-	public JDESedeCipherService getService() {
+	protected JDESedeCipherService doGetService() {
 		if(defaultDESedeCipherService==null){
 			synchronized (sync) {
 				if(defaultDESedeCipherService==null){

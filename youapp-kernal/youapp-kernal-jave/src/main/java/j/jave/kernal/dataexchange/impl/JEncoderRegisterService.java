@@ -48,7 +48,7 @@ implements JService
 	}
 	
 	@Override
-	public JEncoderRegisterService getService() {
+	protected JEncoderRegisterService doGetService() {
 		return this;
 	}
 	

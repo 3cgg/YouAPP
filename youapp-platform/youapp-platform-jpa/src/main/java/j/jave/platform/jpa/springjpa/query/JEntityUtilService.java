@@ -51,7 +51,7 @@ implements JService
 	
 	
 	@Override
-	public JEntityUtilService getService() {
+	protected JEntityUtilService doGetService() {
 		return this;
 	}
 	

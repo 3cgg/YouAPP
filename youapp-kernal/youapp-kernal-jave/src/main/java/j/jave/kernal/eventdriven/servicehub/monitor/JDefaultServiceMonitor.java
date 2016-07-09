@@ -1,12 +1,12 @@
 package j.jave.kernal.eventdriven.servicehub.monitor;
 
-import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.JQueueElement;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer.JQueueElementDistributerConfig;
 import j.jave.kernal.eventdriven.servicehub.JQueueElementDistributer.JQueueElementHandler;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceHubInitializedEvent;
 import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
 import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
@@ -116,7 +116,7 @@ implements JServiceMonitorService{
 	}
 	
 	@Override
-	public JServiceMonitorService getService() {
+	protected JServiceMonitorService doGetService() {
 		return this;
 	}
 	
@@ -243,8 +243,5 @@ implements JServiceMonitorService{
 	public JEventProcessingStatus getEventProcessingStatus(String eventId) {
 		return serviceMonitorStorage.getEventProcessingStatus(eventId);
 	}
-	
-	
-	
 	
 }

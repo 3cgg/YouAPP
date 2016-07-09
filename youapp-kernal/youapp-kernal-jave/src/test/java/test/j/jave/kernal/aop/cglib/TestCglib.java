@@ -43,14 +43,20 @@ public class TestCglib extends TestEventSupport {
 			
 			Object object= cglibAopProxy.getProxy();
 			
-			TestLogger4CglibImpl.class.getDeclaredMethod("log", String.class)
+			TestLogger4CglibImpl.class.getDeclaredMethod("equals", Object.class)
 			.invoke(object, "cglib tester.");
+			
+			TestLogger4CglibImpl.class.getDeclaredMethod("hashCode")
+			.invoke(object);
+			
+			TestLogger4CglibImpl.class.getDeclaredMethod("show", String.class)
+			.invoke(object, "cglib static -tester.");
+			
+			
 			System.out.println("end-----");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		
 		
 	}
 	

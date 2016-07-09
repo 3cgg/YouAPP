@@ -18,7 +18,7 @@ public class JDefaultMemcachedDisServiceFactory extends
 	
 	
 	@Override
-	public JDefaultMemcachedDisServiceImpl getService() {
+	public JDefaultMemcachedDisServiceImpl doGetService() {
 		
 		if(instance==null){
 			synchronized (sync) {

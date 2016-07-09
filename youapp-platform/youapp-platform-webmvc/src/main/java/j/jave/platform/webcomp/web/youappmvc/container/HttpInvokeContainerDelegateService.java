@@ -33,7 +33,7 @@ implements JService{
 	}
 	
 	@Override
-	public HttpInvokeContainerDelegateService getService() {
+	protected HttpInvokeContainerDelegateService doGetService() {
 		return get();
 	}
 	

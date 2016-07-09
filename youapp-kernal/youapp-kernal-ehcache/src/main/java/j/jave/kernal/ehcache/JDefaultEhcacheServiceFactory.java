@@ -8,7 +8,7 @@ public class JDefaultEhcacheServiceFactory extends JServiceFactorySupport<JDefau
 	private JDefaultEhcacheService defaultEhcacheService=new JDefaultEhcacheService(JConfiguration.get());
 	
 	@Override
-	public JDefaultEhcacheService getService() {
+	public JDefaultEhcacheService doGetService() {
 		return defaultEhcacheService;
 	}
 	

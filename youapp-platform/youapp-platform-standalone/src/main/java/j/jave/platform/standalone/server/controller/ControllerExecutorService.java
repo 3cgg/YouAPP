@@ -21,7 +21,7 @@ extends JServiceFactorySupport<ControllerExecutorService>
 implements JService {
 	
 	@Override
-	public ControllerExecutorService getService() {
+	protected ControllerExecutorService doGetService() {
 		return actionExecutor;
 	}
 	

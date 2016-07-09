@@ -9,6 +9,8 @@ import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestEndNotifyEvent;
 import j.jave.kernal.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
 import j.jave.kernal.jave.service.JService;
 
+import java.util.Collection;
+
 
 
 /**
@@ -17,7 +19,7 @@ import j.jave.kernal.jave.service.JService;
  */
 public class JServiceHubDelegate {
 
-	private static JServiceHubDelegate serviceHubDelegate=new JServiceHubDelegate();;
+	private static JServiceHubDelegate serviceHubDelegate=new JServiceHubDelegate();
 	private JServiceHubDelegate(){}
 	
 	public static JServiceHubDelegate get(){
@@ -90,19 +92,23 @@ public class JServiceHubDelegate {
 	}
 	
 	public void propagateEventRequestStartNotifyEvent(JYouAPPEvent<?> event){
-		if(!JEventRequestStartNotifyEvent.class.isInstance(event)
-				&&!JEventRequestEndNotifyEvent.class.isInstance(event)){
-			if(event.isTrack()){
-				serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JYouAPPEvent.HIGEST,event));
+		if(isFactoryInstallCompleted()){
+			if(!JEventRequestStartNotifyEvent.class.isInstance(event)
+					&&!JEventRequestEndNotifyEvent.class.isInstance(event)){
+				if(event.isTrack()){
+					serviceEventProcessor.addDelayEvent(new JEventRequestStartNotifyEvent(this,JYouAPPEvent.HIGEST,event));
+				}
 			}
 		}
 	}
 	
 	public void propagateEventRequestEndNotifyEvent(JYouAPPEvent<?> event){
-		if(!JEventRequestEndNotifyEvent.class.isInstance(event)
-				&&!JEventRequestStartNotifyEvent.class.isInstance(event)){
-			if(event.isTrack()){
-				serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JYouAPPEvent.LOWEST,event));
+		if(isFactoryInstallCompleted()){
+			if(!JEventRequestEndNotifyEvent.class.isInstance(event)
+					&&!JEventRequestStartNotifyEvent.class.isInstance(event)){
+				if(event.isTrack()){
+					serviceEventProcessor.addDelayEvent(new JEventRequestEndNotifyEvent(this,JYouAPPEvent.LOWEST,event));
+				}
 			}
 		}
 	}
@@ -197,6 +203,18 @@ public class JServiceHubDelegate {
 	 */
 	public EventExecutionResult getResultByEventId(String eventId){
 		return getAsyncEventResultRepoService().getEventResult(eventId);
+	}
+	
+	Collection<JServiceFactory<?>> getInterceptors(){
+		return JServiceHub.get().getInterceptors();
+	}
+	
+	void setFactoryInstallCompleted(boolean factoryInstallCompleted) {
+		JServiceHub.get().setFactoryInstallCompleted(true);
+	}
+	
+	public boolean isFactoryInstallCompleted() {
+		return JServiceHub.get().isFactoryInstallCompleted();
 	}
 	
 }

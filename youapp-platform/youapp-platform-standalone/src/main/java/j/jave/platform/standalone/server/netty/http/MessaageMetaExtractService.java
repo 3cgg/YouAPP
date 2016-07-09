@@ -32,7 +32,7 @@ implements JService ,JParser
 	}
 	
 	@Override
-	public MessaageMetaExtractService getService() {
+	protected MessaageMetaExtractService doGetService() {
 		return this;
 	}
 

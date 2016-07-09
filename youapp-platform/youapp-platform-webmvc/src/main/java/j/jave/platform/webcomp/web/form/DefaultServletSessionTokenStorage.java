@@ -39,7 +39,7 @@ implements TokenStorageService
 	
 	
 	@Override
-	public DefaultServletSessionTokenStorage getService() {
+	protected DefaultServletSessionTokenStorage doGetService() {
 		return this;
 	}
 }

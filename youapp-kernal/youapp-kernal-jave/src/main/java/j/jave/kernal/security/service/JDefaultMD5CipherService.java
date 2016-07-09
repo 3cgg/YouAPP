@@ -20,7 +20,7 @@ public class JDefaultMD5CipherService extends JServiceFactorySupport<JMD5CipherS
 	}
 
 	@Override
-	public JMD5CipherService getService() {
+	public JMD5CipherService doGetService() {
 		return this;
 	}
 	

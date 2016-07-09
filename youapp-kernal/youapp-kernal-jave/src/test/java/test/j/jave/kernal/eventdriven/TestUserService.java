@@ -15,7 +15,7 @@ public class TestUserService extends JServiceFactorySupport<TestUserService> imp
 	}
 
 	@Override
-	public TestUserService getService() {
+	protected TestUserService doGetService() {
 		return new TestUserService();
 	}
 	

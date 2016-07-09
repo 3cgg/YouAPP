@@ -31,7 +31,7 @@ implements JService
 
 	
 	@Override
-	public JSPIFoundService getService() {
+	public JSPIFoundService doGetService() {
 		return this;
 	}
 	

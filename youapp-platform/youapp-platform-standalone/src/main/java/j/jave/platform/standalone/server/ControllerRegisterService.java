@@ -9,7 +9,7 @@ implements JService{
 	
 	
 	@Override
-	public ControllerRegisterService getService() {
+	protected ControllerRegisterService doGetService() {
 		return this;
 	}
 	

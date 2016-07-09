@@ -74,7 +74,7 @@ implements JService , JCacheService{
 	}
 	
 	@Override
-	public JInMemorySerializableCacheService getService() {
+	public JInMemorySerializableCacheService doGetService() {
 		return this;
 	}
 }

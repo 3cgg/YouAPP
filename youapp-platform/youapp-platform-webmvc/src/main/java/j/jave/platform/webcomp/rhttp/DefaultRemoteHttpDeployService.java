@@ -85,7 +85,7 @@ implements JService {
 	}
 	
 	@Override
-	public DefaultRemoteHttpDeployService getService() {
+	protected DefaultRemoteHttpDeployService doGetService() {
 		return this;
 	}
 }

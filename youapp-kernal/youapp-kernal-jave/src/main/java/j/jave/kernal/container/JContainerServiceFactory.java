@@ -5,7 +5,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 public class JContainerServiceFactory extends JServiceFactorySupport<JContainerService> {
 
 	@Override
-	public JContainerService getService() {
+	protected JContainerService doGetService() {
 		return JContainerService.get();
 	}
 }

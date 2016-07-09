@@ -124,7 +124,7 @@ implements JService,JSyncMonitorWakeupListener
 
 
 	@Override
-	public JSyncMonitorRegisterService getService() {
+	protected JSyncMonitorRegisterService doGetService() {
 		return this;
 	}
 

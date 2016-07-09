@@ -28,7 +28,7 @@ implements JSPIQueryService
 	}
 
 	@Override
-	public JGenericQueryService getService() {
+	public JGenericQueryService doGetService() {
 		return this;
 	}
 

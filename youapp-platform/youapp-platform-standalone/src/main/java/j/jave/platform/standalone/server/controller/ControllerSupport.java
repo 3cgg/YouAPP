@@ -35,7 +35,7 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getService() {
+	protected T doGetService() {
 		return (T) this;
 	}
 }

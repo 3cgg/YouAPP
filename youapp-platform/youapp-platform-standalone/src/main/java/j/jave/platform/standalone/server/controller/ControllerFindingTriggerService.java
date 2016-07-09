@@ -17,7 +17,7 @@ implements JService,JServiceHubInitializedListener{
 	}
 	
 	@Override
-	public ControllerFindingTriggerService getService() {
+	protected ControllerFindingTriggerService doGetService() {
 		return this;
 	}
 	

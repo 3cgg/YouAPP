@@ -36,7 +36,7 @@ implements JJSONMockService {
 	}
 	
 	@Override
-	public JDefaultJSONMockService getService() {
+	public JDefaultJSONMockService doGetService() {
 		return this;
 	}
 }

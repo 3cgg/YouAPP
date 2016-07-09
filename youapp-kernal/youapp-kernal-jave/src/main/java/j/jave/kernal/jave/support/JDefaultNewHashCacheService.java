@@ -15,7 +15,7 @@ implements JCacheService {
 	private ConcurrentHashMap<String, Object> cache=new ConcurrentHashMap<String, Object>();
 	
 	@Override
-	public JDefaultNewHashCacheService getService() {
+	public JDefaultNewHashCacheService doGetService() {
 		return new JDefaultNewHashCacheService();
 	}
 	

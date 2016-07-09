@@ -109,5 +109,15 @@ public  class SpringServiceFactorySupport<T extends JService> extends JAbstractS
 	public T getService() {
 		return (T) springApplicationServiceGetService.getService(applicationContext,this.getClass(),beanName);
 	}
+
+	@Override
+	public Class<T> getServiceClass() {
+		return registClass;
+	}
+
+	@Override
+	public Class<?> getServiceImplClass() {
+		return null;
+	}
 	
 }

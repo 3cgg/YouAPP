@@ -14,7 +14,7 @@ implements JService
 {
 	
 	@Override
-	public ServerExecutorService getService() {
+	protected ServerExecutorService doGetService() {
 		return this;
 	}
 	

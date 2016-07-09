@@ -49,7 +49,7 @@ implements JService
 	
 	
 	@Override
-	public JEntityValidateService getService() {
+	protected JEntityValidateService doGetService() {
 		return this;
 	}
 	

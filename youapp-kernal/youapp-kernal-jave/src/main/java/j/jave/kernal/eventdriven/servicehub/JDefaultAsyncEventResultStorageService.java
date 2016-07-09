@@ -42,7 +42,7 @@ public class JDefaultAsyncEventResultStorageService extends JServiceFactorySuppo
 	}
 	
 	@Override
-	public JDefaultAsyncEventResultStorageService getService() {
+	public JDefaultAsyncEventResultStorageService doGetService() {
 		return EVENT_RESULT_REPO;
 	}
 

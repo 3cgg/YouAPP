@@ -60,7 +60,7 @@ implements TokenStorageService , JServiceHubInitializedListener
 	}
 	
 	@Override
-	public DefaultMemoryTokenStorage getService() {
+	protected DefaultMemoryTokenStorage doGetService() {
 		return this;
 	}
 }

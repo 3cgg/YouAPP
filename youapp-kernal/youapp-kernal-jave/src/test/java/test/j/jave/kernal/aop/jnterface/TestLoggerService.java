@@ -1,4 +1,4 @@
-package test.j.jave.kernal.aop;
+package test.j.jave.kernal.aop.jnterface;
 
 import j.jave.kernal.jave.service.JService;
 

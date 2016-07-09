@@ -113,6 +113,14 @@ public abstract class JReflectionUtils {
 	}
 	
 	/**
+	 * Determine whether the given method is a "toString" method.
+	 * @see java.lang.Object#toString()
+	 */
+	public static boolean isToStringMethod(Method method) {
+		return (method != null && method.getName().equals("toString") && method.getParameterTypes().length == 0);
+	}
+	
+	/**
 	 * Adapt the given arguments to the target signature in the given method,
 	 * if necessary: in particular, if a given vararg argument array does not
 	 * match the array type of the declared vararg parameter in the method.

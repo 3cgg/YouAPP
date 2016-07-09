@@ -1,8 +1,8 @@
-package test.j.jave.kernal.aop;
+package test.j.jave.kernal.aop.cglib;
 
 import j.jave.kernal.jave.aop.JAdvisedSupport;
 import j.jave.kernal.jave.aop.JAspectJAroundAdvice;
-import j.jave.kernal.jave.aop.JJdkDynamicAopProxy;
+import j.jave.kernal.jave.aop.JCglibAopProxy;
 import j.jave.kernal.jave.aop.JSimpleAspectInstanceFactory;
 import j.jave.kernal.jave.aop.JSingletonTargetSource;
 import j.jave.kernal.jave.aop.JTargetSource;
@@ -16,38 +16,36 @@ import org.junit.Test;
 
 import test.j.jave.kernal.eventdriven.TestEventSupport;
 
-public class TestAop extends TestEventSupport {
+public class TestCglib extends TestEventSupport {
 
 	
 	@Test
-	public void testAop(){
+	public void testCglib(){
 		try{
 			JSimpleAspectInstanceFactory simpleAspectInstanceFactory
-			=new JSimpleAspectInstanceFactory(TestLoggerInterceptor.class);
+			=new JSimpleAspectInstanceFactory(TestLogger4CglibInterceptor.class);
 			
-			Method aspectJMethod=TestLoggerInterceptor.class.getMethod("invoke", MethodInvocation.class);
+			Method aspectJMethod=TestLogger4CglibInterceptor.class.getMethod("invoke", MethodInvocation.class);
 			
 			JAspectJAroundAdvice aroundAdvice=new JAspectJAroundAdvice(aspectJMethod, simpleAspectInstanceFactory);
-			aroundAdvice.setAspectName("aop-logger");
+			aroundAdvice.setAspectName("cglib-logger");
 			aroundAdvice.setDeclarationOrder(999);
 			List<Object> interceptors=new ArrayList<Object>();
 			interceptors.add(aroundAdvice);
 			JAdvisedSupport advisedSupport=new JAdvisedSupport();
 			advisedSupport.setInterceptors(interceptors);
-			List<Class<?>> classes=new ArrayList<Class<?>>();
-			classes.add(TestLoggerService.class);
-			advisedSupport.setInterfaces(classes);
 			
-			JTargetSource targetSource=new JSingletonTargetSource(new TestLoggerServiceImpl());
+			JTargetSource targetSource=new JSingletonTargetSource(new TestLogger4CglibImpl());
 			advisedSupport.setTargetSource(targetSource);
 			
-			JJdkDynamicAopProxy jdkDynamicAopProxy=new JJdkDynamicAopProxy(advisedSupport);
+			JCglibAopProxy cglibAopProxy=new JCglibAopProxy(advisedSupport);
 			
-			Object object= jdkDynamicAopProxy.getProxy();
 			
-			TestLoggerService.class.getDeclaredMethod("log", String.class)
-			.invoke(object, "aop tester.");
+			Object object= cglibAopProxy.getProxy();
 			
+			TestLogger4CglibImpl.class.getDeclaredMethod("log", String.class)
+			.invoke(object, "cglib tester.");
+			System.out.println("end-----");
 		}catch(Exception e){
 			e.printStackTrace();
 		}

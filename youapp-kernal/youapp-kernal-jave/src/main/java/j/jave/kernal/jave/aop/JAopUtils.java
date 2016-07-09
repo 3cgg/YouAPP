@@ -1,9 +1,13 @@
 package j.jave.kernal.jave.aop;
 
 import j.jave.kernal.jave.reflect.JReflectionUtils;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 public abstract class JAopUtils {
 
@@ -38,4 +42,139 @@ public abstract class JAopUtils {
 		}
 	}
 	
+	/**
+	 * Determine the complete set of interfaces to proxy for the given AOP configuration.
+	 * <p>This will always add the {@link Advised} interface unless the AdvisedSupport's
+	 * {@link AdvisedSupport#setOpaque "opaque"} flag is on. Always adds the
+	 * {@link org.springframework.aop.SpringProxy} marker interface.
+	 * @return the complete set of interfaces to proxy
+	 * @see Advised
+	 * @see org.springframework.aop.SpringProxy
+	 */
+	public static Class<?>[] completeProxiedInterfaces(JAdvisedSupport advised) {
+		Class<?>[] specifiedInterfaces = advised.getProxiedInterfaces();
+		if (specifiedInterfaces.length == 0) {
+			// No user-specified interfaces: check whether target class is an interface.
+			Class<?> targetClass = advised.getTargetClass();
+			if (targetClass != null) {
+				if (targetClass.isInterface()) {
+					advised.setInterfaces(targetClass);
+				}
+				else if (Proxy.isProxyClass(targetClass)) {
+					advised.setInterfaces(targetClass.getInterfaces());
+				}
+				specifiedInterfaces = advised.getProxiedInterfaces();
+			}
+		}
+//		boolean addSpringProxy = !advised.isInterfaceProxied(SpringProxy.class);
+//		boolean addAdvised = !advised.isOpaque() && !advised.isInterfaceProxied(Advised.class);
+		int nonUserIfcCount = 0;
+//		if (addSpringProxy) {
+//			nonUserIfcCount++;
+//		}
+//		if (addAdvised) {
+//			nonUserIfcCount++;
+//		}
+		Class<?>[] proxiedInterfaces = new Class<?>[specifiedInterfaces.length + nonUserIfcCount];
+		System.arraycopy(specifiedInterfaces, 0, proxiedInterfaces, 0, specifiedInterfaces.length);
+//		if (addSpringProxy) {
+//			proxiedInterfaces[specifiedInterfaces.length] = SpringProxy.class;
+//		}
+//		if (addAdvised) {
+//			proxiedInterfaces[proxiedInterfaces.length - 1] = Advised.class;
+//		}
+		return proxiedInterfaces;
+	}
+	
+	/**
+	 * Adapt the given arguments to the target signature in the given method,
+	 * if necessary: in particular, if a given vararg argument array does not
+	 * match the array type of the declared vararg parameter in the method.
+	 * @param method the target method
+	 * @param arguments the given arguments
+	 * @return a cloned argument array, or the original if no adaptation is needed
+	 * @since 4.2.3
+	 */
+	public static Object[] adaptArgumentsIfNecessary(Method method, Object... arguments) {
+		if (method.isVarArgs() &&JCollectionUtils.hasInArray(arguments)) {
+			Class<?>[] paramTypes = method.getParameterTypes();
+			if (paramTypes.length == arguments.length) {
+				int varargIndex = paramTypes.length - 1;
+				Class<?> varargType = paramTypes[varargIndex];
+				if (varargType.isArray()) {
+					Object varargArray = arguments[varargIndex];
+					if (varargArray instanceof Object[] && !varargType.isInstance(varargArray)) {
+						Object[] newArguments = new Object[arguments.length];
+						System.arraycopy(arguments, 0, newArguments, 0, varargIndex);
+						Class<?> targetElementType = varargType.getComponentType();
+						int varargLength = Array.getLength(varargArray);
+						Object newVarargArray = Array.newInstance(targetElementType, varargLength);
+						System.arraycopy(varargArray, 0, newVarargArray, 0, varargLength);
+						newArguments[varargIndex] = newVarargArray;
+						return newArguments;
+					}
+				}
+			}
+		}
+		return arguments;
+	}
+	
+	/**
+	 * Check equality of the proxies behind the given AdvisedSupport objects.
+	 * Not the same as equality of the AdvisedSupport objects:
+	 * rather, equality of interfaces, advisors and target sources.
+	 */
+	public static boolean equalsInProxy(JAdvisedSupport a, JAdvisedSupport b) {
+		return (a == b ||
+				(equalsProxiedInterfaces(a, b) && equalsAdvisors(a, b) && a.getTargetSource().equals(b.getTargetSource())));
+	}
+
+	/**
+	 * Check equality of the proxied interfaces behind the given AdvisedSupport objects.
+	 */
+	public static boolean equalsProxiedInterfaces(JAdvisedSupport a, JAdvisedSupport b) {
+		return Arrays.equals(a.getProxiedInterfaces(), b.getProxiedInterfaces());
+	}
+
+	/**
+	 * Check equality of the advisors behind the given AdvisedSupport objects.
+	 */
+	public static boolean equalsAdvisors(JAdvisedSupport a, JAdvisedSupport b) {
+		
+//		return Arrays.equals(a.getAdvisors(), b.getAdvisors());
+		return true;
+	}
+	
+	/**
+	 * Determine whether the given method is an "equals" method.
+	 * @see java.lang.Object#equals
+	 */
+	public static boolean isEqualsMethod(Method method) {
+		return JReflectionUtils.isEqualsMethod(method);
+	}
+
+	/**
+	 * Determine whether the given method is a "hashCode" method.
+	 * @see java.lang.Object#hashCode
+	 */
+	public static boolean isHashCodeMethod(Method method) {
+		return JReflectionUtils.isHashCodeMethod(method);
+	}
+
+	/**
+	 * Determine whether the given method is a "toString" method.
+	 * @see java.lang.Object#toString()
+	 */
+	public static boolean isToStringMethod(Method method) {
+		return JReflectionUtils.isToStringMethod(method);
+	}
+
+	/**
+	 * Determine whether the given method is a "finalize" method.
+	 * @see java.lang.Object#finalize()
+	 */
+	public static boolean isFinalizeMethod(Method method) {
+		return (method != null && method.getName().equals("finalize") &&
+				method.getParameterTypes().length == 0);
+	}
 }

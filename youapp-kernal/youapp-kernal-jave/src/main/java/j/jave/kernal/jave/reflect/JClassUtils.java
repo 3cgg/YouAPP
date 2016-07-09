@@ -27,6 +27,30 @@ import java.util.Locale;
  */
 public abstract class JClassUtils {
 
+	/** Suffix for array class names: "[]" */
+	public static final String ARRAY_SUFFIX = "[]";
+
+	/** Prefix for internal array class names: "[" */
+	private static final String INTERNAL_ARRAY_PREFIX = "[";
+
+	/** Prefix for internal non-primitive array class names: "[L" */
+	private static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L";
+
+	/** The package separator character '.' */
+	private static final char PACKAGE_SEPARATOR = '.';
+
+	/** The path separator character '/' */
+	private static final char PATH_SEPARATOR = '/';
+
+	/** The inner class separator character '$' */
+	private static final char INNER_CLASS_SEPARATOR = '$';
+
+	/** The CGLIB class separator character "$$" */
+	public static final String CGLIB_CLASS_SEPARATOR = "$$";
+
+	/** The ".class" file suffix */
+	public static final String CLASS_FILE_SUFFIX = ".class";
+	
 	/**
 	 * get value from object via calling getter method. 
 	 * @param property
@@ -838,6 +862,29 @@ public abstract class JClassUtils {
 		return paramNames;
 	}
 	
-	
+	/**
+	 * Check whether the given object is a CGLIB proxy.
+	 * @param object the object to check
+	 * @see org.springframework.aop.support.AopUtils#isCglibProxy(Object)
+	 */
+	public static boolean isCglibProxy(Object object) {
+		return isCglibProxyClass(object.getClass());
+	}
+
+	/**
+	 * Check whether the specified class is a CGLIB-generated class.
+	 * @param clazz the class to check
+	 */
+	public static boolean isCglibProxyClass(Class<?> clazz) {
+		return (clazz != null && isCglibProxyClassName(clazz.getName()));
+	}
+
+	/**
+	 * Check whether the specified class name is a CGLIB-generated class.
+	 * @param className the class name to check
+	 */
+	public static boolean isCglibProxyClassName(String className) {
+		return (className != null && className.contains(CGLIB_CLASS_SEPARATOR));
+	}
 	
 }

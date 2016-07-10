@@ -887,4 +887,32 @@ public abstract class JClassUtils {
 		return (className != null && className.contains(CGLIB_CLASS_SEPARATOR));
 	}
 	
+	/**
+	 * Determine whether the given field is a "public static final" constant.
+	 * @param field the field to check
+	 */
+	public static boolean isPublicStaticFinal(Field field) {
+		int modifiers = field.getModifiers();
+		return (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers));
+	}
+	
+	/**
+	 * Determine whether the given method is declared by the user or at least pointing to
+	 * a user-declared method.
+	 * <p>Checks {@link Method#isSynthetic()} (for implementation methods) as well as the
+	 * {@code GroovyObject} interface (for interface methods; on an implementation class,
+	 * implementations of the {@code GroovyObject} methods will be marked as synthetic anyway).
+	 * Note that, despite being synthetic, bridge methods ({@link Method#isBridge()}) are considered
+	 * as user-level methods since they are eventually pointing to a user-declared generic method.
+	 * @param method the method to check
+	 * @return {@code true} if the method can be considered as user-declared; [@code false} otherwise
+	 */
+	public static boolean isUserLevelMethod(Method method) {
+		JAssert.notNull(method, "Method must not be null");
+		return (method.isBridge() || (!method.isSynthetic() && !isGroovyObjectMethod(method)));
+	}
+
+	private static boolean isGroovyObjectMethod(Method method) {
+		return method.getDeclaringClass().getName().equals("groovy.lang.GroovyObject");
+	}
 }

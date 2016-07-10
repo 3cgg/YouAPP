@@ -7,7 +7,7 @@ import j.jave.kernal.eventdriven.JOrdered;
 import j.jave.kernal.eventdriven.JServiceOrder;
 import j.jave.kernal.eventdriven.JServiceOrders;
 import j.jave.kernal.eventdriven.exception.JServiceRegisteringException;
-import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptor;
+import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptorFactory;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsEvent;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceExistsListener;
 import j.jave.kernal.eventdriven.servicehub.eventlistener.JServiceInstallEvent;
@@ -538,7 +538,7 @@ JServiceInstallListener,JServiceUninstallListener,JServiceListenerEnableListener
 				if(interceptorFactories==null){
 					interceptorFactories=new ArrayList<JServiceFactory<?>>();
 					for(JServiceFactory<?> factory:services.values()){
-						if(JServiceMethodInterceptor.class.isInstance(factory)){
+						if(JServiceMethodInterceptorFactory.class.isInstance(factory)){
 							interceptorFactories.add(factory);
 						}
 					}

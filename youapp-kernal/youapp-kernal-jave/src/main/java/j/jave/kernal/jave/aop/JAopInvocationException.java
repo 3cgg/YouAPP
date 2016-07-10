@@ -1,6 +1,8 @@
 package j.jave.kernal.jave.aop;
 
-public class JAopInvocationException extends RuntimeException{
+import j.jave.kernal.jave.exception.JNestedRuntimeException;
+
+public class JAopInvocationException extends JNestedRuntimeException{
 
 
 	/**
@@ -18,22 +20,6 @@ public class JAopInvocationException extends RuntimeException{
 	 */
 	public JAopInvocationException(String msg, Throwable cause) {
 		super(msg, cause);
-	}
-
-
-	/**
-	 * Retrieve the innermost cause of this exception, if any.
-	 * @return the innermost exception, or {@code null} if none
-	 * @since 2.0
-	 */
-	public Throwable getRootCause() {
-		Throwable rootCause = null;
-		Throwable cause = getCause();
-		while (cause != null && cause != rootCause) {
-			rootCause = cause;
-			cause = cause.getCause();
-		}
-		return rootCause;
 	}
 	
 }

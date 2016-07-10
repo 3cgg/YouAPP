@@ -1,5 +1,6 @@
 package j.jave.kernal.eventdriven.servicehub;
 
+import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptorFactory;
 import j.jave.kernal.jave.aop.JAopConfigException;
 import j.jave.kernal.jave.aop.JAspectInstanceFactory;
 import j.jave.kernal.jave.utils.JAssert;
@@ -29,7 +30,8 @@ public class JServiceFactoryAspectInstanceFactory implements JAspectInstanceFact
 	@Override
 	public final Object getAspectInstance() {
 		try {
-			return this.interceptorFactory.getService();
+			JServiceMethodInterceptorFactory<?,?> serviceMethodInterceptorFactory=(JServiceMethodInterceptorFactory<?,?>)interceptorFactory;
+			return serviceMethodInterceptorFactory.getInterceptor();
 		}
 		catch (Exception ex) {
 			throw new JAopConfigException("Unable to instantiate aspect class [" + getAspectClass().getName() + "]", ex);

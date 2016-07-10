@@ -1,6 +1,8 @@
 package j.jave.kernal.jave.aop;
 
-public class JAopConfigException extends RuntimeException {
+import j.jave.kernal.jave.exception.JNestedRuntimeException;
+
+public class JAopConfigException extends JNestedRuntimeException {
 
 
 	/**

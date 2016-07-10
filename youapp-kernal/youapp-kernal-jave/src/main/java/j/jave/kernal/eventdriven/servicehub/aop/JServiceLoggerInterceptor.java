@@ -8,7 +8,9 @@ import org.aopalliance.intercept.MethodInvocation;
 
 public class JServiceLoggerInterceptor
 extends JServiceFactorySupport<JServiceLoggerInterceptor>
-implements JServiceMethodInterceptor<JServiceLoggerInterceptor>
+implements JServiceMethodInterceptorFactory<JServiceLoggerInterceptor
+,JServiceLoggerInterceptor>,
+JServiceMethodInterceptor
 {
 
 	protected final JLogger logger=JLoggerFactory.getLogger(getClass());

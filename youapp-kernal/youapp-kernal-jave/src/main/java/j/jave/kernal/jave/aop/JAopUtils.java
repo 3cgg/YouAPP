@@ -1,6 +1,8 @@
 package j.jave.kernal.jave.aop;
 
+import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.reflect.JReflectionUtils;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.lang.reflect.Array;
@@ -176,5 +178,54 @@ public abstract class JAopUtils {
 	public static boolean isFinalizeMethod(Method method) {
 		return (method != null && method.getName().equals("finalize") &&
 				method.getParameterTypes().length == 0);
+	}
+	
+	/**
+	 * Determine the target class of the given bean instance which might be an AOP proxy.
+	 * <p>Returns the target class for an AOP proxy or the plain class otherwise.
+	 * @param candidate the instance to check (might be an AOP proxy)
+	 * @return the target class (or the plain class of the given object as fallback;
+	 * never {@code null})
+	 * @see org.springframework.aop.TargetClassAware#getTargetClass()
+	 * @see org.springframework.aop.framework.AopProxyUtils#ultimateTargetClass(Object)
+	 */
+	public static Class<?> getTargetClass(Object candidate) {
+		JAssert.notNull(candidate, "Candidate object must not be null");
+		Class<?> result = null;
+		if (candidate instanceof JTargetClassAware) {
+			result = ((JTargetClassAware) candidate).getTargetClass();
+		}
+		if (result == null) {
+			result = (isCglibProxy(candidate) ? candidate.getClass().getSuperclass() : candidate.getClass());
+		}
+		return result;
+	}
+	
+	/**
+	 * Check whether the given object is a CGLIB proxy.
+	 * <p>This method goes beyond the implementation of
+	 * {@link ClassUtils#isCglibProxy(Object)} by additionally checking if
+	 * the given object is an instance of {@link JYouAPPProxy}.
+	 * @param object the object to check
+	 * @see ClassUtils#isCglibProxy(Object)
+	 */
+	public static boolean isCglibProxy(Object object) {
+		return (
+				object instanceof JYouAPPProxy 
+				
+				&& JClassUtils.isCglibProxy(object));
+	}
+	
+	/**
+	 * Check whether the given object is a JDK dynamic proxy or a CGLIB proxy.
+	 * <p>This method additionally checks if the given object is an instance
+	 * of {@link JYouAPPProxy}.
+	 * @param object the object to check
+	 * @see #isJdkDynamicProxy
+	 * @see #isCglibProxy
+	 */
+	public static boolean isAopProxy(Object object) {
+		return (object instanceof JYouAPPProxy &&
+				(Proxy.isProxyClass(object.getClass()) || JClassUtils.isCglibProxyClass(object.getClass())));
 	}
 }

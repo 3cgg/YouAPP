@@ -1,6 +1,7 @@
 package j.jave.kernal.eventdriven.servicehub;
 
 import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptor;
+import j.jave.kernal.eventdriven.servicehub.aop.JServiceMethodInterceptorFactory;
 import j.jave.kernal.jave.aop.JAdvisedSupport;
 import j.jave.kernal.jave.aop.JAspectJAroundAdvice;
 import j.jave.kernal.jave.aop.JCglibAopProxy;
@@ -81,7 +82,7 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	}
 
 	@Override
-	public Class<T> getServiceClass() {
+	public Class<?> getServiceClass() {
 		return registClass;
 	}
 	
@@ -96,7 +97,8 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 	@Override
 	public final T getService() {
 		try{
-			if(JServiceMethodInterceptor.class.isAssignableFrom(getServiceImplClass())){
+			if(JServiceMethodInterceptorFactory.class.isAssignableFrom(getServiceImplClass())
+					||JServiceMethodInterceptor.class.isAssignableFrom(getServiceImplClass())){
 				return doGetService();
 			}
 			else{
@@ -108,7 +110,7 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 							Collection<JServiceFactory<?>> factories=JServiceHubDelegate.get().getInterceptors();
 							List<JServiceFactory<?>> targetInterceptorFactories=new ArrayList<JServiceFactory<?>>();
 							for(JServiceFactory<?> factory:factories){
-								JServiceMethodInterceptor<?> methodInterceptor= (JServiceMethodInterceptor<?>) factory.getService();
+								JServiceMethodInterceptorFactory<?,?> methodInterceptor= (JServiceMethodInterceptorFactory<?,?>) factory.getService();
 								if(methodInterceptor.accept(getServiceClass())){
 									targetInterceptorFactories.add(factory);
 								}

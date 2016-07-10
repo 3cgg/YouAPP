@@ -21,7 +21,7 @@ public interface JServiceFactory<T extends JService> {
 	 * get service class. 
 	 * @return
 	 */
-	Class<T> getServiceClass();
+	Class<?> getServiceClass();
 	
 	/**
 	 * get service implementation class. 

@@ -10,7 +10,11 @@ implements JServiceMethodInterceptorFactory<JTransactionInterceptor,JTransaction
 	private JTransactionInterceptor transactionInterceptor=null;
 	{
 		transactionInterceptor=new JTransactionInterceptor();
-		JMatchAlwaysTransactionAttributeSource attributeSource=new JMatchAlwaysTransactionAttributeSource();
+//		JMatchAlwaysTransactionAttributeSource attributeSource=new JMatchAlwaysTransactionAttributeSource();
+		
+		JNameMatchTransactionAttributeSource attributeSource=new JNameMatchTransactionAttributeSource();
+		attributeSource.addTransactionalMethod("*", new JDefaultTransactionAttribute());
+		
 		transactionInterceptor.setTransactionAttributeSource(attributeSource);
 	}
 	@Override

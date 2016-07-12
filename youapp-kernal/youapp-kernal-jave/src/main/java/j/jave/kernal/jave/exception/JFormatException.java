@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.jave.exception;
 
-public class JFormatException extends RuntimeException {
+public class JFormatException extends JNestedRuntimeException {
 
 	public JFormatException(String message){
 		super(message);

@@ -28,7 +28,10 @@ public class JNestedRuntimeException extends RuntimeException {
 		super(msg, cause);
 	}
 
-
+	public JNestedRuntimeException(Throwable cause) {
+		super(cause);
+	}
+	
 	/**
 	 * Return the detail message, including the message from the nested exception
 	 * if there is one.

@@ -17,8 +17,8 @@ public class TestDataSourceEvent  extends TestEventSupport{
 		TestUserService testUserService= serviceHubDelegate.getService(this,TestUserService.class);
 		
 		testUserService.save("test data source interceptor");
-		
-		System.out.println(testUserService.describer());
+		String s=testUserService.describer();
+		System.out.println(s);
 		
 		System.out.println("end");
 		

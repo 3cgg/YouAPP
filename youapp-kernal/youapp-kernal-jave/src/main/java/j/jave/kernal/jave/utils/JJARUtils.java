@@ -24,6 +24,12 @@ import java.util.regex.Pattern;
 public abstract class JJARUtils {
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JJARUtils.class);
 	
+	private static final String URI="jar:%s!/%s";
+	
+	public static String getURI(String jarPath,String innerFilePath){
+		return String.format(URI, jarPath,innerFilePath);
+	}
+	
 	/**
 	 * load all classes in the package defined by {@param packageName} via the {@link ClassLoader} 
 	 * @param jarFile

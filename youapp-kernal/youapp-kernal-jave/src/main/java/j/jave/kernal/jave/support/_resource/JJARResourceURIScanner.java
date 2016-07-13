@@ -3,14 +3,15 @@ package j.jave.kernal.jave.support._resource;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.io.JResourceException;
+import j.jave.kernal.jave.utils.JClassPathUtils;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JFileUtils;
+import j.jave.kernal.jave.utils.JJARUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -24,13 +25,8 @@ import java.util.jar.JarFile;
  * @see JFileNameFilterConfig
  */
 public class JJARResourceURIScanner extends JAbstractResourceURIScanner {
+
 	private final JarFile jarFile;
-	
-	private ClassLoader classLoader=ClassLoader.getSystemClassLoader();
-	
-	public void setClassLoader(ClassLoader classLoader) {
-		this.classLoader = classLoader;
-	}
 	
 	public JJARResourceURIScanner(JarFile jarFile){
 		this.jarFile=jarFile;
@@ -83,6 +79,7 @@ public class JJARResourceURIScanner extends JAbstractResourceURIScanner {
 	
 	@Override
 	public List<URI> scan() {
+		String jarFileURIPath=new File(jarFile.getName()).toURI().toString();
 		List<URI> uris =new ArrayList<URI>(16);
 		Enumeration<JarEntry> jarEntries= jarFile.entries();
 		while(jarEntries.hasMoreElements()){
@@ -90,10 +87,8 @@ public class JJARResourceURIScanner extends JAbstractResourceURIScanner {
 			String fileName=jarEntry.getName();
 			if(validateRelative(fileName)&&validate(JFileUtils.getFileName(fileName))){
 				try {
-					URL url=classLoader.getResource(fileName); 
-					if(url!=null){
-						uris.add(classLoader.getResource(fileName).toURI());
-					}
+					URI uri=new URI(JJARUtils.getURI(jarFileURIPath, fileName));
+					uris.add(uri);
 				} catch (URISyntaxException e) {
 					throw new JResourceException(new JFile(new File(jarFile.getName())), e);
 				}
@@ -102,5 +97,25 @@ public class JJARResourceURIScanner extends JAbstractResourceURIScanner {
 		return uris;
 	}
 	
-	
+	public static void main(String[] args) {
+		try {
+			JJARResourceURIScanner resourceURIScanner=new JJARResourceURIScanner(
+					new URI("file:/d:/youapp-business-bill-1.0.0.jar"));
+			resourceURIScanner.setIncludeFileName("*");
+			resourceURIScanner.scan();
+			
+			List<File> files=JClassPathUtils.getRuntimeClassPathFiles();
+			
+			List<String> filePaths= JClassPathUtils.getRuntimeClassPathFileAbsolutePaths();
+			
+			System.out.println(files.toString()+filePaths.toString());
+		
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
 }

@@ -63,7 +63,6 @@ public class DynamicComponentVersionApplication extends ComponentVersionApplicat
 			@Override
 			public List<URI> scan(URL jar, URLClassLoader classLoader) throws Exception {
 				JJARResourceURIScanner jarResourceScan=new JJARResourceURIScanner(jar.toURI());
-				jarResourceScan.setClassLoader(classLoader);
 				jarResourceScan.setRelativePath(Component.SPRING_LOCATION);
 				return jarResourceScan.scan();
 			}

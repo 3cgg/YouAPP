@@ -136,7 +136,6 @@ public class SpringDynamicJARApplicationContext extends AbstractXmlApplicationCo
 				List<URI> uris=null;
 				if(jarScan==null){
 					JJARResourceURIScanner jarResourceScan=new JJARResourceURIScanner(url.toURI());
-					jarResourceScan.setClassLoader(urlClassLoader);
 					jarResourceScan.setIncludeExpression("spring.*[.]xml");
 					uris=jarResourceScan.scan();
 				}

@@ -3,7 +3,7 @@ package j.jave.platform.webcomp.web.youappmvc.container;
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.JScheme;
+import j.jave.kernal.container.scheme.JScheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;

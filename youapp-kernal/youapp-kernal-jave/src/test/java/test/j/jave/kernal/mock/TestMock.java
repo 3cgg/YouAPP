@@ -34,7 +34,7 @@ public class TestMock extends TestEventSupport {
 		System.out.println(mockModel); 
 		
 		JJSONMockService jsonMockService= new JDefaultJSONMockService();
-		String data=jsonMockService.mockData(mockModel);
+		Object data=jsonMockService.mockData(mockModel);
 		System.out.println(data);
 		
 	}

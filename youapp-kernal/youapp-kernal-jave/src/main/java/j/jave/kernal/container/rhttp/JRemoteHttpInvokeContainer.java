@@ -6,7 +6,7 @@ import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutor;
 import j.jave.kernal.container.JIdentifier;
 import j.jave.kernal.container.JURIExecuteException;
-import j.jave.kernal.container.JScheme;
+import j.jave.kernal.container.scheme.JScheme;
 import j.jave.kernal.http.JHttpFactoryProvider;
 import j.jave.kernal.http.JHttpType;
 import j.jave.kernal.jave.logging.JLogger;

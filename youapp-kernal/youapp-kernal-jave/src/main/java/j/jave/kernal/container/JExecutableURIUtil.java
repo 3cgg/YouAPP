@@ -1,5 +1,7 @@
 package j.jave.kernal.container;
 
+import j.jave.kernal.container.scheme.JScheme;
+
 import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

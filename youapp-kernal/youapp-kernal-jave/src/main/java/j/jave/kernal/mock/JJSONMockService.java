@@ -9,7 +9,7 @@ import j.jave.kernal.jave.service.JService;
  */
 public interface JJSONMockService extends JService {
 
-	String mockData(JMockModel mockModel) throws Exception;
+	Object mockData(JMockModel mockModel) throws Exception;
 	
 	boolean accept(JMockModel mockModel);
 }

@@ -36,7 +36,7 @@ public abstract class JIOUtils {
 	 * extract all bytes from the {@link InputStream}. 	
 	 * @param input
 	 * @return
-	 * @throws IOException	
+	 * @throws JUtilException	
 	 */
 	public static byte[] getBytes(InputStream input) {
 	    ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -53,4 +53,24 @@ public abstract class JIOUtils {
 	    return output.toByteArray();
 	}
 	
+	/**
+	 * extract all bytes from the {@link InputStream}. 	
+	 * @param input
+	 * @param close close the stream if true
+	 * @return
+	 * @throws JUtilException	
+	 */
+	public static byte[] getBytes(InputStream input,boolean close){
+		try{
+			return getBytes(input);
+		}finally{
+			if(close&&input!=null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					throw new JUtilException(e);
+				}
+			}
+		}
+	} 
 }

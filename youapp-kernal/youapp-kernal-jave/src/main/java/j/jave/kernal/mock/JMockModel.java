@@ -7,7 +7,7 @@ public class JMockModel implements JModel {
 	/**
 	 * the data
 	 */
-	private String data ;
+	private Object data ;
 	
 	/**
 	 * where the data locates, its higher than {@link #data()}
@@ -18,12 +18,13 @@ public class JMockModel implements JModel {
 	 * whether to mock the target or not
 	 */
 	boolean mock;
+	
 
-	public String getData() {
+	public Object getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 

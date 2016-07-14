@@ -64,7 +64,7 @@ public class DefaultControllerMockObjectGetter implements ControllerObjectGetter
 			methodMeta.setAnnotations(method.getAnnotations());
 			JMockModel mockModel=mockModelParser.parse(methodMeta, context);
 			JJSONMockService jsonMockService= new JDefaultJSONMockService();
-			String data=jsonMockService.mockData(mockModel);
+			String data=(String) jsonMockService.mockData(mockModel);
 			return JJSON.get().parse(data, method.getReturnType());
 		}
 
@@ -80,7 +80,7 @@ public class DefaultControllerMockObjectGetter implements ControllerObjectGetter
 			methodMeta.setAnnotations(method.getAnnotations());
 			JMockModel mockModel=mockModelParser.parse(methodMeta, context);
 			JJSONMockService jsonMockService= new JDefaultJSONMockService();
-			String data=jsonMockService.mockData(mockModel);
+			String data=(String) jsonMockService.mockData(mockModel);
 			return JJSON.get().parse(data, method.getReturnType());
 		}
 		

@@ -5,7 +5,7 @@ import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutor;
 import j.jave.kernal.container.JIdentifier;
-import j.jave.kernal.container.scheme.JScheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.data.web.mapping.MappingMeta;

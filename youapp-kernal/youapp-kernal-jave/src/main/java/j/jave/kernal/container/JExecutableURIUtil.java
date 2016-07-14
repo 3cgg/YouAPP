@@ -1,7 +1,5 @@
 package j.jave.kernal.container;
 
-import j.jave.kernal.container.scheme.JScheme;
-
 import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -105,6 +103,7 @@ public class JExecutableURIUtil {
 		}
 		uriInfo.setQueryUnique(queryUnique);
 		uriInfo.setQueryPath(queryPath);
+		uriInfo.setWholeUri(uri.toString());
 		return uriInfo;
 	}
 	

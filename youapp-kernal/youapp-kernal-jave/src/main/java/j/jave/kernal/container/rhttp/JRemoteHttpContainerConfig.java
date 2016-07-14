@@ -1,8 +1,8 @@
 package j.jave.kernal.container.rhttp;
 
-import j.jave.kernal.container.ContainerConfig;
+import j.jave.kernal.container.JContainerConfig;
 
-public class JRemoteHttpContainerConfig extends ContainerConfig{
+public class JRemoteHttpContainerConfig extends JContainerConfig{
 	
 	/**
 	 * the target host for the special APP

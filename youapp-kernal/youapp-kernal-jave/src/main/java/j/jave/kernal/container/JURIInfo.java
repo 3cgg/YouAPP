@@ -9,6 +9,8 @@ import j.jave.kernal.jave.model.JModel;
  */
 public class JURIInfo implements JModel {
 
+	private String wholeUri;
+	
 	private String scheme;
 	
 	private String host;
@@ -58,8 +60,13 @@ public class JURIInfo implements JModel {
 	public void setQueryPath(String queryPath) {
 		this.queryPath = queryPath;
 	}
-	
-	
-	
+
+	public String getWholeUri() {
+		return wholeUri;
+	}
+
+	public void setWholeUri(String wholeUri) {
+		this.wholeUri = wholeUri;
+	}
 	
 }

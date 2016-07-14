@@ -3,7 +3,7 @@ package j.jave.kernal.container.rhttp;
 import j.jave.kernal.container.JExecutableURIGenerator;
 import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.scheme.JScheme;
+import j.jave.kernal.container.JScheme;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 
 import java.net.URI;

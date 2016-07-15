@@ -1,23 +1,17 @@
 package j.jave.kernal.jave.support;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JCacheService;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class JDefaultNewHashCacheService extends JServiceFactorySupport<JDefaultNewHashCacheService>
+public class JDefaultNewHashCacheService
 implements JCacheService {
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JDefaultNewHashCacheService.class);
 	
 	private ConcurrentHashMap<String, Object> cache=new ConcurrentHashMap<String, Object>();
-	
-	@Override
-	public JDefaultNewHashCacheService doGetService() {
-		return new JDefaultNewHashCacheService();
-	}
 	
 	@Override
 	public Object putNeverExpired(String key, Object object) {

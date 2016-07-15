@@ -25,18 +25,16 @@ import java.util.concurrent.locks.ReentrantLock;
  * @see JContainerRegisterListener
  * @see JContainerUniquesGetListener
  */
-class JContainerService 
+public class JContainerService 
 	implements JService, JContainerRegisterListener ,JContainerGetListener,JContainerUniquesGetListener{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(JContainerService.class);
 	
-	private static JContainerService containerService=new JContainerService(JConfiguration.get());
-	
-	private JContainerService(JConfiguration configuration) {
+	public JContainerService(JConfiguration configuration) {
+		
 	}
 	
-	static JContainerService get(){
-		return containerService;
+	public JContainerService() {
 	}
 	
 	private Map<String, JContainer> containers=new ConcurrentHashMap<String, JContainer>();

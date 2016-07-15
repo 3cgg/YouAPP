@@ -1,12 +1,18 @@
 package j.jave.kernal.container;
 
+import j.jave.kernal.container._resource.JResourceURIParserService;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+
 import java.net.URI;
 
-public class JResourceContainer implements JExecutor, JContainer {
+public class JResourceContainer implements JExecutor, JContainer,JResourceURIParserGetter<JResourceURIParserService> {
 
 	private JResourceContainerConfig resourceContainerConfig;
 	
 	private JResourceMicroContainer resourceMicroContainer;
+	
+	private JResourceURIParserService resourceURIParserService
+	=JServiceHubDelegate.get().getService(this, JResourceURIParserService.class);
 	
 	public JResourceContainer(JResourceContainerConfig resourceContainerConfig) {
 		this.resourceContainerConfig = resourceContainerConfig;
@@ -19,6 +25,10 @@ public class JResourceContainer implements JExecutor, JContainer {
 		resourceMicroContainerConfig.setName(name());
 		resourceMicroContainerConfig.setUnique(unique());
 		this.resourceMicroContainer=new JResourceMicroContainer(resourceMicroContainerConfig);
+		
+		resourceMicroContainer.initialize();
+		
+		JContainerDelegate.get().register(this);
 	}
 
 	@Override
@@ -43,14 +53,17 @@ public class JResourceContainer implements JExecutor, JContainer {
 
 	@Override
 	public boolean accept(URI uri) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		return resourceMicroContainer.execute(uri, object);
+	}
+
+	@Override
+	public JResourceURIParserService resourceURIParser() {
+		return resourceURIParserService;
 	}
 
 }

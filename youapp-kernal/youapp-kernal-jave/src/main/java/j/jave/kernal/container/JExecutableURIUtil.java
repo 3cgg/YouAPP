@@ -33,7 +33,7 @@ public class JExecutableURIUtil {
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
 	 */
-	public static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.]+)&"+PATH+"=([a-zA-Z:0-9_./]+)$";
+	public static final String REGX="^"+UNIQUE+"=([a-zA-Z:0-9_.-]+)&"+PATH+"=([a-zA-Z:0-9_./]+)$";
 	
 	
 	public static final String getGetRequestURI(String unique,String path,JScheme scheme){

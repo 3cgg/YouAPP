@@ -2,8 +2,7 @@ package j.jave.kernal.container;
 
 import java.net.URI;
 
-public class JResourceMicroContainer implements JMicroContainer,
-		JExecutableURIGenerator {
+public class JResourceMicroContainer implements JMicroContainer {
 
 	private JResourceRunner resourceRunner;
 	
@@ -21,14 +20,12 @@ public class JResourceMicroContainer implements JMicroContainer,
 	
 	@Override
 	public boolean accept(URI uri) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		return resourceRunner.execute(uri, object);
 	}
 
 	@Override
@@ -55,28 +52,7 @@ public class JResourceMicroContainer implements JMicroContainer,
 
 	@Override
 	public void restart() {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public String getGetRequestURI(String unique, String path) {
-		return resourceRunner.getGetRequestURI(unique, path);
-	}
-
-	@Override
-	public String getPutRequestURI(String unique, String path) {
-		return resourceRunner.getPutRequestURI(unique, path);
-	}
-
-	@Override
-	public String getDeleteRequestURI(String unique, String path) {
-		return resourceRunner.getDeleteRequestURI(unique, path);
-	}
-
-	@Override
-	public String getExistRequestURI(String unique, String path) {
-		return resourceRunner.getExistRequestURI(unique, path);
 	}
 
 	@Override

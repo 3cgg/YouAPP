@@ -1,55 +1,41 @@
 package j.jave.kernal.container;
 
+import j.jave.kernal.container._resource.JResourceAccessService;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+
 import java.net.URI;
 
-public class JResourceRunner implements JRunner, JExecutableURIGenerator {
+public class JResourceRunner implements JRunner {
+
+	private JResourceMicroContainerConfig resourceMicroContainerConfig; 
+	
+	private JResourceAccessService resourceAccessService=JServiceHubDelegate.get()
+			.getService(this, JResourceAccessService.class); 
+	
+	public JResourceRunner(
+			JResourceMicroContainerConfig resourceMicroContainerConfig) {
+		super();
+		this.resourceMicroContainerConfig = resourceMicroContainerConfig;
+	}
 
 	@Override
 	public boolean accept(URI uri) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		// TODO Auto-generated method stub
-		return null;
+		return resourceAccessService.execute(uri, object);
 	}
 
 	@Override
 	public String unique() {
-		// TODO Auto-generated method stub
-		return null;
+		return resourceMicroContainerConfig.unique();
 	}
 
 	@Override
 	public String name() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getGetRequestURI(String unique, String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPutRequestURI(String unique, String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getDeleteRequestURI(String unique, String path) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getExistRequestURI(String unique, String path) {
-		// TODO Auto-generated method stub
-		return null;
+		return resourceMicroContainerConfig.name();
 	}
 
 }

@@ -1,13 +1,12 @@
 package j.jave.kernal.jave.support;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.service.JCacheService;
 
 public class JDefaultHashCacheService extends JServiceFactorySupport<JDefaultHashCacheService>
 implements JCacheService {
 	
-	private JDefaultNewHashCacheService hashCache=JServiceHubDelegate.get().getService(this, JDefaultNewHashCacheService.class);
+	private JDefaultNewHashCacheService hashCache=new JDefaultNewHashCacheService();
 	
 	@Override
 	public JDefaultHashCacheService doGetService() {

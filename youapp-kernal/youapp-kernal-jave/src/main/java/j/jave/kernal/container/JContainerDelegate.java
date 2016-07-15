@@ -27,8 +27,8 @@ public class JContainerDelegate {
 		return containerDelegate;
 	}
 	
-	public JContainer getContainer(String unique){
-		return serviceHubDelegate.addImmediateEvent(new JContainerGetEvent(this, unique),JContainer.class);
+	public <M extends JContainer> M getContainer(String unique){
+		return (M) serviceHubDelegate.addImmediateEvent(new JContainerGetEvent(this, unique),JContainer.class);
 	}
 	
 	public boolean accept(URI uri,String containerUnique){

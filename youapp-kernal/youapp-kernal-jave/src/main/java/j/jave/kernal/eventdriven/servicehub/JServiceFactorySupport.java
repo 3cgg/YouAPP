@@ -74,6 +74,9 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 		if(isCanRegister()){
 //			getService();
 			JServiceHubDelegate.get().register(this, registClass, this);
+		
+			afterPostRegister();
+			
 			LOGGER.info("registering service :["+registClass.getName()+"] powered by "+this.getClass().getName());
 		}
 		else{
@@ -81,6 +84,10 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 		}
 	}
 
+	protected void afterPostRegister() throws Exception{
+		
+	}
+	
 	@Override
 	public Class<?> getServiceClass() {
 		return registClass;
@@ -106,6 +113,13 @@ public class JServiceFactorySupport<T extends JService> extends JAbstractService
 				if(proxy==null){
 					synchronized (sync) {
 						if(proxy==null){
+							
+							if(!getServiceClass().isAssignableFrom(getServiceImplClass())){
+								throw new JInitializationException("must set valid implements for class : "+getServiceClass().getName()+", this impl : "+getServiceImplClass().getName());
+							}
+							
+							
+							
 							//get aspectJ
 							Collection<JServiceFactory<?>> factories=JServiceHubDelegate.get().getInterceptors();
 							List<JServiceFactory<?>> targetInterceptorFactories=new ArrayList<JServiceFactory<?>>();

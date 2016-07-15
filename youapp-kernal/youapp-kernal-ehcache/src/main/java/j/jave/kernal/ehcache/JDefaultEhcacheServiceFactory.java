@@ -13,6 +13,11 @@ public class JDefaultEhcacheServiceFactory extends JServiceFactorySupport<JDefau
 	}
 	
 	@Override
+	public Class<?> getServiceImplClass() {
+		return JDefaultEhcacheService.class;
+	}
+	
+	@Override
 	protected boolean isCanRegister() {
 		boolean enable=JConfiguration.get().getBoolean(JEhcacheProperties.DEFAULT_EHCACHE_ENABLE, false);
 		return enable;

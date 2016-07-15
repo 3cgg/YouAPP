@@ -1,16 +1,16 @@
 package j.jave.kernal.container._resource;
 
 import j.jave.kernal.container.JExecutableURIUtil.Type;
+import j.jave.kernal.container.JResourceURIParser;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.support.parser.JParser;
 import j.jave.kernal.jave.utils.JAssert;
 
 import java.net.URI;
 
 public class JResourceURIParserService
 extends JServiceFactorySupport<JResourceURIParserService>
-implements JParser {
+implements JResourceURIParser {
 	
 	private JBeanURIGetService beanURIGetService=new JBeanURIGetService();
 	

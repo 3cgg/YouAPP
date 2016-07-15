@@ -1,6 +1,9 @@
 package test.j.jave.kernal.resource;
 
+import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.JExecutableURIUtil.Type;
+import j.jave.kernal.container.JResourceContainer;
+import j.jave.kernal.container.JResourceContainerConfig;
 import j.jave.kernal.container._resource.JResourceAccessService;
 import j.jave.kernal.container._resource.JResourceURIParserService;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
@@ -21,10 +24,12 @@ public class TestResource extends TestEventSupport {
 	private JResourceAccessService resourceAccessService=JServiceHubDelegate.get()
 			.getService(this, JResourceAccessService.class); 
 	
+	private JContainerDelegate containerDelegate=JContainerDelegate.get();
+	
 	@Test
 	public void testURI(){
 		
-		String file="d:/BugReport.txt";
+		String file="d:/data.sql";
 		
 		
 		try {
@@ -41,6 +46,16 @@ public class TestResource extends TestEventSupport {
 			.execute(parser.parse(new URL("http://www.baidu.com").toURI(), "S"), null);			
 			
 			System.out.println("d");
+			
+			
+			JResourceContainer resourceContainer= containerDelegate.getContainer(JResourceContainerConfig.DEFAULT_UNIQUE);
+			URI exeUri=resourceContainer.resourceURIParser()
+			.parse(new URL("http://www.baidu.com").toURI(), resourceContainer.unique());
+			obj=containerDelegate.execute(exeUri, null, resourceContainer.unique());
+			
+			System.out.println(obj);
+			
+			
 			
 		} catch (Exception e) {
 			

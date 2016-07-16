@@ -1,7 +1,6 @@
 package test.j.jave.kernal.resource;
 
 import j.jave.kernal.container.JContainerDelegate;
-import j.jave.kernal.container.JExecutableURIUtil.Type;
 import j.jave.kernal.container.JResourceContainer;
 import j.jave.kernal.container.JResourceContainerConfig;
 import j.jave.kernal.container._resource.JResourceAccessService;
@@ -50,9 +49,13 @@ public class TestResource extends TestEventSupport {
 			
 			JResourceContainer resourceContainer= containerDelegate.getContainer(JResourceContainerConfig.DEFAULT_UNIQUE);
 			URI exeUri=resourceContainer.resourceURIParser()
-			.parse(new URL("http://www.baidu.com").toURI(), resourceContainer.unique());
+			.parse(new URL("http://www.baidu.com").toURI());
 			obj=containerDelegate.execute(exeUri, null, resourceContainer.unique());
 			
+			System.out.println(obj);
+			
+			
+			obj=resourceAccessService.execute(uri, "");
 			System.out.println(obj);
 			
 			

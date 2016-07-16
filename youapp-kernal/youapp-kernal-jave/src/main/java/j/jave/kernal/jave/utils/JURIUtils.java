@@ -81,19 +81,4 @@ public abstract class JURIUtils {
 		}
 	}
 	
-	/**
-	 * what is URI ROOT
-	 * @param indicator CLASSPATH/...
-	 * @param classLoader how to find class-path
-	 * @return
-	 */
-	public static String getURIRoot(String indicator,ClassLoader classLoader){
-		if("CLASSPATH".equals(indicator)){
-			return classLoader.getResource("").toString();
-		}
-		else{
-			return indicator;
-		}
-	}
-	
 }

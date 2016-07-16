@@ -6,7 +6,6 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.proxy.JSimpleProxy;
 import j.jave.kernal.jave.proxy.JSimpleProxy.Callback;
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
-import j.jave.kernal.jave.utils.JURIUtils;
 import j.jave.kernal.mock.JDefaultJSONMockService;
 import j.jave.kernal.mock.JDefaultMockURIPrefix;
 import j.jave.kernal.mock.JJSONMockModelParser;
@@ -55,7 +54,7 @@ public class DefaultControllerMockObjectGetter implements ControllerObjectGetter
 		public Object invoke(Object proxy, Method method, Object[] args)
 				throws Throwable {
 			
-			JURIPart<JDefaultMethodMeta> pathRoot=new JDefaultMockURIPrefix(JURIUtils.getURIRoot(JConfiguration.get().getString(JMockProperties.YOUAPP_MOCK_URI_ROOT), Thread.currentThread().getContextClassLoader()));
+			JURIPart<JDefaultMethodMeta> pathRoot=new JDefaultMockURIPrefix(JConfiguration.get().getString(JMockProperties.YOUAPP_MOCK_URI_ROOT));
 			JJSONMockModelParser mockModelParser=new JMethodNameAsFileParser(pathRoot);
 			JMockContext context=new JMockContext();
 			JDefaultMethodMeta methodMeta=new JDefaultMethodMeta();
@@ -71,7 +70,7 @@ public class DefaultControllerMockObjectGetter implements ControllerObjectGetter
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args,
 				MethodProxy proxy) throws Throwable {
-			JURIPart<JDefaultMethodMeta> pathRoot=new JDefaultMockURIPrefix(JURIUtils.getURIRoot(JConfiguration.get().getString(JMockProperties.YOUAPP_MOCK_URI_ROOT), Thread.currentThread().getContextClassLoader()));
+			JURIPart<JDefaultMethodMeta> pathRoot=new JDefaultMockURIPrefix(JConfiguration.get().getString(JMockProperties.YOUAPP_MOCK_URI_ROOT));
 			JJSONMockModelParser mockModelParser=new JMethodNameAsFileParser(pathRoot);
 			JMockContext context=new JMockContext();
 			JDefaultMethodMeta methodMeta=new JDefaultMethodMeta();

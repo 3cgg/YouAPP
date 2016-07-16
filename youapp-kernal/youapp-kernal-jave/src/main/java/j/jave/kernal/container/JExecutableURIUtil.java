@@ -25,10 +25,12 @@ public class JExecutableURIUtil {
 	
 	private static final String PATH="path";
 	
+	private static final String HOST="localcontaineruri.com";
+	
 	/**
 	 * controller://get/put/delete?unique=%s&path=%s
 	 */
-	private static final String URI="%s://localhost%s?"+UNIQUE+"=%s&"+PATH+"=%s";
+	private static final String URI="%s://"+HOST+"%s?"+UNIQUE+"=%s&"+PATH+"=%s";
 	
 	/**
 	 * ^unique=([a-zA-Z:0-9_]+)&path=([a-zA-Z:0-9_]+)$
@@ -105,6 +107,10 @@ public class JExecutableURIUtil {
 		uriInfo.setQueryPath(queryPath);
 		uriInfo.setWholeUri(uri.toString());
 		return uriInfo;
+	}
+	
+	public static boolean isWrapped(URI uri){
+		return HOST.equals(uri.getHost());
 	}
 	
 }

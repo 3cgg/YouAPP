@@ -1,32 +1,35 @@
 package j.jave.kernal.mock;
 
-import j.jave.kernal.JConfiguration;
+import j.jave.kernal.container.JContainerDelegate;
+import j.jave.kernal.container.JResourceContainer;
+import j.jave.kernal.container.JResourceContainerConfig;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.http.JHttpBase;
-import j.jave.kernal.http.JHttpFactoryProvider;
-import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.jave.utils.JURIUtils;
 
+import java.net.URI;
 import java.util.Map;
 
 public class JDefaultURIGetDataService 
 extends JServiceFactorySupport<JDefaultURIGetDataService>
 implements JURIGetDataService {
 
-	private JHttpBase<?> HTTP_GET=JHttpFactoryProvider.getHttpFactory(JConfiguration.get())
-			.getHttpGet();
+	JResourceContainer resourceContainer= null;
+	
+	public JResourceContainer getResourceContainer() {
+		if(resourceContainer==null){
+			resourceContainer= JContainerDelegate.get().getContainer(JResourceContainerConfig.DEFAULT_UNIQUE);
+		}
+		return resourceContainer;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getData(String uri, Map<String, Object>... params) throws Exception {
-		Object data=null;
-		if(JStringUtils.isNotNullOrEmpty(uri)){
-			if(JURIUtils.isHttpProtocol(uri)){
-				data=(String) HTTP_GET.execute(uri);
-			}
-			data=new String(JURIUtils.getBytes(uri),"utf-8");
-		}
+		Object data=getResourceContainer().execute(new URI(uri), params);
 		return data;
 	}
 	
+	@Override
+	protected JDefaultURIGetDataService doGetService() {
+		return this;
+	}
 }

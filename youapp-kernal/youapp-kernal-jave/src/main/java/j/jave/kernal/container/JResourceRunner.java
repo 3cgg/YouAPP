@@ -2,6 +2,7 @@ package j.jave.kernal.container;
 
 import j.jave.kernal.container._resource.JResourceAccessService;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.support._resource.JResourceStreamException;
 
 import java.net.URI;
 
@@ -25,7 +26,11 @@ public class JResourceRunner implements JRunner {
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		return resourceAccessService.execute(uri, object);
+		try {
+			return resourceAccessService.execute(uri, object);
+		} catch (Exception e) {
+			throw new JResourceStreamException(e);
+		}
 	}
 
 	@Override

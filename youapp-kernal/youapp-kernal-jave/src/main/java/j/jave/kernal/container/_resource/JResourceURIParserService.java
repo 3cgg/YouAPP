@@ -1,9 +1,10 @@
 package j.jave.kernal.container._resource;
 
+import j.jave.kernal.container.JExecutableURIUtil;
 import j.jave.kernal.container.JExecutableURIUtil.Type;
 import j.jave.kernal.container.JResourceURIParser;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.exception.JOperationNotSupportedException;
+import j.jave.kernal.jave.support._resource.JResourceNotSupportedException;
 import j.jave.kernal.jave.utils.JAssert;
 
 import java.net.URI;
@@ -66,7 +67,7 @@ implements JResourceURIParser {
 	 * @param container
 	 * @param type
 	 * @return
-	 * @throws Exception
+	 * @throws JResourceNotSupportedException
 	 */
 	public URI parse(URI uri,String container,Type type) throws Exception{
 		JAssert.isNotEmpty(container);
@@ -86,7 +87,7 @@ implements JResourceURIParser {
 		if("ftp".equals(scheme)){
 			return new URI(doGetURI(uri.toURL().toString(), container, type, ftpURIGetService));
 		}
-		throw new JOperationNotSupportedException("cannot parser the uri : "+uri.toURL().toString());
+		throw new JResourceNotSupportedException("cannot parser the uri : "+uri.toURL().toString());
 	}
 	
 	/**
@@ -113,9 +114,32 @@ implements JResourceURIParser {
 		return parse4ClassPath(uri, container, Type.GET);
 	}
 	
+	public static final String CLASS_PATH_PREFIX="classpath://";
+	/**
+	 * 
+	 * @param uri  maybe classpath://... or /...
+	 * @param container
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
 	public URI parse4ClassPath(String uri,String container,Type type) throws Exception{
 		JAssert.isNotEmpty(container);
-		return new URI(doGetURI(uri, container, type, classPathURIGetService));
+		String tempURIStr=uri;
+		URI tempURI=null;
+		try{
+			tempURI=new URI(tempURIStr);
+		}catch(Exception e){
+		}
+		if(tempURI!=null){
+			if(JExecutableURIUtil.isWrapped(tempURI)){
+				return tempURI;
+			}
+		}
+		if(tempURIStr.startsWith(CLASS_PATH_PREFIX)){
+			tempURIStr=tempURIStr.replaceFirst(CLASS_PATH_PREFIX, "");
+		}
+		return new URI(doGetURI(tempURIStr, container, type, classPathURIGetService));
 	}
 	
 	public URI parse4Controller(String uri,String container) throws Exception{

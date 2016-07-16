@@ -23,6 +23,11 @@ public class JClassPathProcessorService implements JResourceProcessorService {
 		String queryPath=uriInfo.getQueryPath();
 		byte[] bytes=null;
 		try{
+			if(queryPath.startsWith("/")){
+				do{
+					queryPath=queryPath.substring(1);
+				}while(queryPath.startsWith("/"));
+			}
 			bytes=JIOUtils.getBytes(Thread.currentThread().getContextClassLoader().getResourceAsStream(queryPath), true);
 		}catch(Exception e){
 			throw new JResourceStreamException(queryPath,e);

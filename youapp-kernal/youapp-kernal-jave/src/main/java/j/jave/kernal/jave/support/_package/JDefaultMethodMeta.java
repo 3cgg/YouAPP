@@ -2,12 +2,13 @@ package j.jave.kernal.jave.support._package;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 public class JDefaultMethodMeta implements JMethodMeta {
 
 	private String methodName;
 	
-	private JDefaultParamMeta[] paramMetas;
+	private JDefaultParamMeta[] paramMetas=new JDefaultParamMeta[0];
 	
 	private Annotation[] annotations;
 	
@@ -20,6 +21,29 @@ public class JDefaultMethodMeta implements JMethodMeta {
 	
 	private Method method;
 
+	
+	public JDefaultMethodMeta(){}
+	
+	public JDefaultMethodMeta(Class<?> clazz,Method method){
+		this.method=method;
+		this.access=method.getModifiers();
+		this.annotations=method.getAnnotations();
+		this.clazz=clazz;
+		this.methodName=method.getName();
+		
+		Parameter[] parameters=method.getParameters();
+		JDefaultParamMeta[] defaultParamMetas=new JDefaultParamMeta[parameters.length];
+		for(int i=0;i<parameters.length;i++){
+			Parameter parameter=parameters[i];
+			JDefaultParamMeta defaultParamMeta=new JDefaultParamMeta();
+			defaultParamMeta.setIndex(i);
+			defaultParamMeta.setName(parameter.getName());
+			defaultParamMeta.setType(parameter.getType());
+			defaultParamMetas[i]=defaultParamMeta;
+		}
+		this.paramMetas=defaultParamMetas;
+	}
+	
 	public Annotation[] getAnnotations() {
 		return annotations;
 	}
@@ -73,6 +97,15 @@ public class JDefaultMethodMeta implements JMethodMeta {
 
 	public void setMethod(Method method) {
 		this.method = method;
+	}
+	
+	public Class<?>[] getParameterTypes(){
+		Class<?>[] paramTypes=new Class<?>[paramMetas.length];
+		int i=0;
+		for(JDefaultParamMeta defaultParamMeta:paramMetas){
+			paramTypes[i++]=defaultParamMeta.getType();
+		}
+		return paramTypes;
 	}
 	
 }

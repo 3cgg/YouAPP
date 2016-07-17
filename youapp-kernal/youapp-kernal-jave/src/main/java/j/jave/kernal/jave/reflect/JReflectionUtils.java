@@ -53,8 +53,8 @@ public abstract class JReflectionUtils {
 			clazz=clazz.getSuperclass();
 		}
 		if(targetMethod==null) throw new RuntimeException("Method ["+methodName+"] not found.");			
-		targetMethod.setAccessible(true);
-		return targetMethod.invoke(object, parameters);
+		
+		return invoke(object, targetMethod, parameters);
 	}
 	
 	
@@ -71,10 +71,14 @@ public abstract class JReflectionUtils {
 		Class<?> clazz=object.getClass();
 		Method targetMethod=clazz.getMethod(methodName, parameterTypes);
 		if(targetMethod==null) throw new RuntimeException("Method ["+methodName+"] not found.");			
-		targetMethod.setAccessible(true);
-		return targetMethod.invoke(object, parameters);
+		return invoke(object, targetMethod, parameters);
 	}
 	
+	
+	public static Object invoke(Object object, Method method,Object[] parameters) throws Exception {
+		makeAccessible(method);
+		return method.invoke(object, parameters);
+	}
 	
 	/**
 	 * Make the given method accessible, explicitly setting it accessible if

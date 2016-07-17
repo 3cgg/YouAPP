@@ -8,6 +8,7 @@ import j.jave.kernal.mock.JDefaultMockURIPrefix;
 import j.jave.kernal.mock.JJSONMockModelParser;
 import j.jave.kernal.mock.JJSONMockService;
 import j.jave.kernal.mock.JMethodNameAsFileParser;
+import j.jave.kernal.mock.JMockClassMockModelParser;
 import j.jave.kernal.mock.JMockContext;
 import j.jave.kernal.mock.JMockModel;
 import j.jave.kernal.mock.JMockProperties;
@@ -28,6 +29,22 @@ public class TestMock extends TestEventSupport {
 		JDefaultMethodMeta methodMeta=new JDefaultMethodMeta();
 		methodMeta.setClazz(this.getClass());
 		methodMeta.setMethodName("testMock");
+		JMockModel mockModel=mockModelParser.parse(methodMeta, context);
+		System.out.println(mockModel); 
+		
+		JJSONMockService jsonMockService= new JDefaultJSONMockService();
+		Object data=jsonMockService.mockData(mockModel);
+		System.out.println(data);
+		
+	}
+	
+	@Test
+	public void testClassMock() throws Exception{
+		JJSONMockModelParser mockModelParser=new JMockClassMockModelParser();
+		JMockContext context=new JMockContext();
+		context.put("name", " for mock param");
+		context.put("arg0", " for mock param");
+		JDefaultMethodMeta methodMeta=new JDefaultMethodMeta(SetService.class,SetService.class.getDeclaredMethod("name", String.class));
 		JMockModel mockModel=mockModelParser.parse(methodMeta, context);
 		System.out.println(mockModel); 
 		

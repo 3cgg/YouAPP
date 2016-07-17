@@ -4,6 +4,7 @@ import j.jave.kernal.container.JExecutableURIUtil.Type;
 import j.jave.kernal.container.JResourceContainer.JInnerResourceURIParserService;
 import j.jave.kernal.container._resource.JResourceURIParserService;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import j.jave.kernal.jave.support._resource.JResourceNotSupportedException;
 
 import java.net.URI;
 
@@ -60,7 +61,21 @@ public class JResourceContainer implements JExecutor, JContainer,JResourceURIPar
 
 	@Override
 	public Object execute(URI uri, Object object) {
-		return resourceMicroContainer.execute(uri, object);
+		URI executableURI=uri;
+		if(!JExecutableURIUtil.isWrapped(uri)){
+			String tempURIStr=uri.toString();
+			try{
+				if(tempURIStr.startsWith(JResourceURIParserService.CLASS_PATH_PREFIX)){
+					executableURI=resourceURIParser().parse4ClassPath(tempURIStr);
+				}
+				else{
+					executableURI=resourceURIParser().parse(new URI(tempURIStr));
+				}
+			}catch(Exception e){
+				throw new JResourceNotSupportedException(e);
+			}
+		}
+		return resourceMicroContainer.execute(executableURI, object);
 	}
 
 	@Override

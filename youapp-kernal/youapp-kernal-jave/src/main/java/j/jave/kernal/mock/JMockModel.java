@@ -17,7 +17,7 @@ public class JMockModel implements JModel {
 	/**
 	 * whether to mock the target or not
 	 */
-	boolean mock;
+	boolean mock=true;
 	
 
 	public Object getData() {

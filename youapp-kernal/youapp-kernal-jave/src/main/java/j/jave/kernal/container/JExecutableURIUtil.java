@@ -113,4 +113,15 @@ public class JExecutableURIUtil {
 		return HOST.equals(uri.getHost());
 	}
 	
+	public static boolean isAcceptURI(URI uri){
+		String scheme=uri.getScheme();
+		return JScheme.JAR.getValue().equals(scheme)
+				||JScheme.CLASSPATH.getValue().equals(scheme)
+				||JScheme.FTP.getValue().equals(scheme)
+				||JScheme.HTTP.getValue().equals(scheme)
+				||JScheme.HTTPS.getValue().equals(scheme)
+				||JScheme.CONTROLLER.getValue().equals(scheme)
+				||JScheme.REMOTE_HTTP.getValue().equals(scheme);
+	}
+	
 }

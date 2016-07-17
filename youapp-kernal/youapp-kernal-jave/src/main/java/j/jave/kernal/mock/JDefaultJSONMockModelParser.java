@@ -1,11 +1,10 @@
 package j.jave.kernal.mock;
 
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
-import j.jave.kernal.jave.support.parser.JParser;
 
 import java.lang.annotation.Annotation;
 
-public class JDefaultJSONMockModelParser implements JParser, JJSONMockModelParser{
+public class JDefaultJSONMockModelParser implements JJSONMockModelParser{
 	
 	@Override
 	public JMockModel parse(JDefaultMethodMeta methodMeta,JMockContext context){

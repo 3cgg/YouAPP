@@ -1,6 +1,7 @@
 package j.jave.kernal.jave.model;
 
-public class JOrder {
+
+public class JOrder implements JModel {
 
 	/**
 	 * sort column 

@@ -5,8 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>youapp.youappweb</groupId>
-		<artifactId>pom-conf</artifactId>
-		<version>${youapp.version}</version>
+		  <artifactId>pom-conf</artifactId>
+		  <version>${youapp.version}</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>youapp-html</artifactId>
 	<packaging>war</packaging>

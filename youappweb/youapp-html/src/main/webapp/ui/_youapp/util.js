@@ -160,6 +160,10 @@
 			return JSON.stringify(obj);
 		}
 		
+		this.formJson=function(formId){
+			return JSON.stringify(this.serializeArray(formId));
+		}
+		
 	}
 	
 	window.$_util=new _Util();

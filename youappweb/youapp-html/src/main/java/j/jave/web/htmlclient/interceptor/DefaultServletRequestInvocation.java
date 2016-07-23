@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
+import j.jave.web.htmlclient.plugins.jquerydatatable.PageableInterceptor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,8 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	private static List<ServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<ServletRequestInterceptor>(8);
 	
 	static{
-//		MODEL_INTERCEPTORS.add(new FormTokenValidatorInterceptor());
-//		MODEL_INTERCEPTORS.add(new MultiVersionCheckInterceptor());
+		MODEL_INTERCEPTORS.add(new PageableInterceptor());
+		MODEL_INTERCEPTORS.add(new TempInterceptor());
 	}
 	
 	public DefaultServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {

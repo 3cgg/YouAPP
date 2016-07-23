@@ -2,6 +2,7 @@ package j.jave.web.htmlclient.plugins.jquerydatatable;
 
 import j.jave.web.htmlclient.interceptor.ServletRequestInterceptor;
 import j.jave.web.htmlclient.interceptor.ServletRequestInvocation;
+import j.jave.web.htmlclient.response.ResponseModel;
 
 import java.util.Map;
 
@@ -82,20 +83,20 @@ public class PageableInterceptor implements ServletRequestInterceptor {
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
 		Object obj=servletRequestInvocation.proceed();
-//		if(obj instanceof InvokeResultVO){
-//			InvokeResultVO invokeResultVO=(InvokeResultVO) obj;
-//			if(invokeResultVO.isSuccess()){
-//				Object pageObj=invokeResultVO.getData();
-//				if(isPage(pageObj)){
-//					DataTable dataTable=new DataTable();
-//					dataTable.setDraw(0);
-//					dataTable.setRecordsFiltered(getTotalRecordNumber(pageObj));
-//					dataTable.setRecordsTotal(getTotalRecordNumber(pageObj));
-//					dataTable.setData(getContent(pageObj));
-//					invokeResultVO.setData(dataTable);
-//				}
-//			}
-//		}
+		if(obj instanceof ResponseModel){
+			ResponseModel responseModel=(ResponseModel) obj;
+			if(responseModel.isSuccess()){
+				Object pageObj=responseModel.getData();
+				if(isPage(pageObj)){
+					DataTable dataTable=new DataTable();
+					dataTable.setDraw(0);
+					dataTable.setRecordsFiltered(getTotalRecordNumber(pageObj));
+					dataTable.setRecordsTotal(getTotalRecordNumber(pageObj));
+					dataTable.setData(getContent(pageObj));
+					responseModel.setData(dataTable);
+				}
+			}
+		}
 		return obj;
 	}
 	

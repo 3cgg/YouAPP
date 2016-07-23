@@ -68,126 +68,129 @@ $.fn.extend({
 			processing : options.processing,
 			serverSide : options.serverSide,
 			ajax : function (data, callback, settings) {
-				//debugger;
-				var HtmlMenuOpt ={endpoint:options.url,
-				  		data:options.urlDataFn.apply(),
-				  		success:function(data){
-				  			callback(data);
-				  			
-				  			if(options.ops){
-				  				var _ops=options.ops;
-				  				if(_ops.view){
-				  					$wrap.find('button[name=row_view_btn]')
-				  						.on("click",function(){
-					            		_ops.view($(this).data("rowid"),{});
-					            	});
-				            	}
-				  				
-				            	if(_ops.edit){
-				  					$wrap.find('button[name=row_edit_btn]')
-				  						.on("click",function(){
-					            		_ops.edit($(this).data("rowid"),{});
-					            	});
-				            	}
-				            	
-				            	if(_ops.del){
-				            		$wrap.find('button[name=row_del_btn]')
-				            		.on("click",function(){
-				            			
-				            			$.confirm({
-				            			    title: false,
-				            			    content: '确定删除？',
-				            			    confirm: function(){
-				            			    	_ops.del($(this).data("rowid"),{});
-				            			    },
-				            			    cancel: function(){
-				            			    },
-				            			    confirmButton: '确定',
-				            			    cancelButton: '撤销',
-				            			    onOpen: function(){
-				            			    }
-				            			});
-				            			
-				            		});
-				            	}
-				  				
-				  			}
-				  			
-				  			
-				  			if(options.checkbox){
-					  			
-					  			$chk=$wrap.find('input[type="checkbox"].minimal');
-					  			$allChk=$chk.filter('[name="all"]');
-					  			$subChks=$chk.filter('[name="sub"]');
-					  		//check-box
-			  				  	//iCheck for checkbox and radio inputs
-			  				    $chk.iCheck({
-			  				      checkboxClass: 'icheckbox_minimal-blue',
-			  				      radioClass: 'iradio_minimal-blue'
-			  				    });
-					  		
-					  		
-			  				  $allChk
-			  				  .on('ifChecked', function(event){
-			  					$subChks.iCheck('check');
-			  				  }
-			  				  );
-			  				  
-			  				 $allChk
-			  				  .on('ifUnchecked', function(event){
-			  					var list=$wrap.data("datatables-checked");
-			  					if(list.size()==$subChks.length){
-			  						$subChks.iCheck('uncheck');
-			  					}
-			  				  }
-			  				  );
-			  				  
-					  		
-			  				$subChks
-			  				  .on('ifChecked', function(event){ 
-			  					//debugger;
-			  					var id=$(event.target).val();
-			  					var list=$wrap.data("datatables-checked");
-			  					if(list){
-			  						if(!list.exists(id)){
-				  						list.add(id);
-				  					}
-			  					}
-			  					else{
-			  						list=new List();
-			  						list.add(id);
-			  						$wrap.data("datatables-checked",list);
-			  					}
-			  					
-			  					if(list.size()==$subChks.length){
-			  						$allChk.iCheck('check');
-			  					}
-			  					
-			  				  }
-			  				  );
-			  				 
-			  				$subChks
-			  				  .on('ifUnchecked', function(event){ 
-			  					var id=$(event.target).val();
-			  					var list=$wrap.data("datatables-checked");
-			  					if(list){
-			  						if(list.exists(id)){
-				  						list.remove(id);
-				  					}
-			  					}
-			  					$allChk.iCheck('uncheck');
-			  					}
-			  				  );
-				  			}
-				  		
-				  			},
-				  		page:data.start/data.length,
+				
+				$_util.ajaxGet({
+					url:$_config.getDataEndpoint()+options.url,
+					data:{data:$_util.json($.extend({
+						page:data.start/data.length,
 				  		size:data.length
-				  		};
-				
-				
-		    	kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
-				//debugger;
+				  		},options.urlDataFn.apply()))},
+			  		success:function(data){
+			  			var resp=JSON.parse(data);
+			  			if(!resp.success){
+			  				return;
+			  			}
+			  			callback(resp.data);
+			  			
+			  			if(options.ops){
+			  				var _ops=options.ops;
+			  				if(_ops.view){
+			  					$wrap.find('button[name=row_view_btn]')
+			  						.on("click",function(event){
+				            		_ops.view($(event.target).data("rowid"),{});
+				            	});
+			            	}
+			  				
+			            	if(_ops.edit){
+			  					$wrap.find('button[name=row_edit_btn]')
+			  						.on("click",function(event){
+				            		_ops.edit($(event.target).data("rowid"),{});
+				            	});
+			            	}
+			            	
+			            	if(_ops.del){
+			            		$wrap.find('button[name=row_del_btn]')
+			            		.on("click",function(event){
+			            			
+			            			var jc =$.confirm({
+			            			    title: false,
+			            			    content: '确定删除？',
+			            			    confirm: function(){
+			            			    	_ops.del(this.passData.rowid,{});
+			            			    },
+			            			    cancel: function(){
+			            			    },
+			            			    confirmButton: '确定',
+			            			    cancelButton: '撤销',
+			            			    onOpen: function(){
+			            			    }
+			            			});
+			            			jc.passData={rowid:$(event.target).data("rowid")};
+			            		});
+			            	}
+			  				
+			  			}
+			  			
+			  			
+			  			if(options.checkbox){
+				  			
+				  			$chk=$wrap.find('input[type="checkbox"].minimal');
+				  			$allChk=$chk.filter('[name="all"]');
+				  			$subChks=$chk.filter('[name="sub"]');
+				  		//check-box
+		  				  	//iCheck for checkbox and radio inputs
+		  				    $chk.iCheck({
+		  				      checkboxClass: 'icheckbox_minimal-blue',
+		  				      radioClass: 'iradio_minimal-blue'
+		  				    });
+				  		
+				  		
+		  				  $allChk
+		  				  .on('ifChecked', function(event){
+		  					$subChks.iCheck('check');
+		  				  }
+		  				  );
+		  				  
+		  				 $allChk
+		  				  .on('ifUnchecked', function(event){
+		  					var list=$wrap.data("datatables-checked");
+		  					if(list.size()==$subChks.length){
+		  						$subChks.iCheck('uncheck');
+		  					}
+		  				  }
+		  				  );
+		  				  
+				  		
+		  				$subChks
+		  				  .on('ifChecked', function(event){ 
+		  					//debugger;
+		  					var id=$(event.target).val();
+		  					var list=$wrap.data("datatables-checked");
+		  					if(list){
+		  						if(!list.exists(id)){
+			  						list.add(id);
+			  					}
+		  					}
+		  					else{
+		  						list=$_util.newList();
+		  						list.add(id);
+		  						$wrap.data("datatables-checked",list);
+		  					}
+		  					
+		  					if(list.size()==$subChks.length){
+		  						$allChk.iCheck('check');
+		  					}
+		  					
+		  				  }
+		  				  );
+		  				 
+		  				$subChks
+		  				  .on('ifUnchecked', function(event){ 
+		  					var id=$(event.target).val();
+		  					var list=$wrap.data("datatables-checked");
+		  					if(list){
+		  						if(list.exists(id)){
+			  						list.remove(id);
+			  					}
+		  					}
+		  					$allChk.iCheck('uncheck');
+		  					}
+		  				  );
+			  			}
+			  		
+			  			}
+					
+				});
 			},
 			columns : _columns,
 			sPaginationType: "full_numbers",

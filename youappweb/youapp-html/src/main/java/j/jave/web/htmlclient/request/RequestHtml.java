@@ -1,5 +1,9 @@
 package j.jave.web.htmlclient.request;
 
+import j.jave.web.htmlclient.RequestContext;
+
+import javax.servlet.http.HttpServletRequest;
+
 public class RequestHtml {
 	
 	/**
@@ -14,6 +18,16 @@ public class RequestHtml {
 	 */
 	private String dataUrl;
 	
+	private transient RequestContext request;
+
+	public RequestContext getRequest() {
+		return request;
+	}
+
+	public void setRequest(RequestContext request) {
+		this.request = request;
+	}
+
 	public String getHtmlUrl() {
 		return htmlUrl;
 	}

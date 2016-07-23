@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient.servlet;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.web.htmlclient.DefaultHtmlFileService;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 import j.jave.web.htmlclient.thymeleaf.ThymeleafHtmlFileService;
@@ -11,16 +13,15 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@WebServlet(urlPatterns={"/quicktest/gethtml/*"})
 public class HtmlQuickTestServlet extends HttpServlet{
 
-	private static final Logger LOGGER=LoggerFactory.getLogger(HtmlQuickTestServlet.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(HtmlQuickTestServlet.class);
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {

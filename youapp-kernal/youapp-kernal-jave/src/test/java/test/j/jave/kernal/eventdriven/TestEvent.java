@@ -10,6 +10,7 @@ import j.jave.kernal.eventdriven.servicehub.monitor.JServiceHubMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JServiceMonitorService;
 import j.jave.kernal.jave.service.JService;
+import j.jave.kernal.jave.support.JDefaultHashCacheService;
 import j.jave.kernal.security.service.JMD5CipherService;
 
 import org.junit.Test;
@@ -115,6 +116,16 @@ public class TestEvent  extends TestEventSupport{
 		
 		System.out.println(eventProcessingStatus);
 		
+	}
+	
+	@Test
+	public void testHashCache(){
+		
+		JDefaultHashCacheService cacheService=
+				serviceHubDelegate.getService(this, JDefaultHashCacheService.class);
+		
+		cacheService.putNeverExpired("s", "s");
+		System.out.println("end");
 	}
 	
 }

@@ -3,11 +3,12 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.web.htmlclient.HtmlService;
 import j.jave.web.htmlclient.RequestParamNames;
+import j.jave.web.htmlclient.ServletRequestContext;
 import j.jave.web.htmlclient.SyncHtmlModel;
 import j.jave.web.htmlclient.request.RequestHtml;
-import j.jave.web.htmlclient.request.RequestUrl;
 import j.jave.web.htmlclient.response.SyncHtmlResponse;
 import j.jave.web.htmlclient.response.SyncHtmlResponseService;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
@@ -17,10 +18,12 @@ import java.io.OutputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@WebServlet(urlPatterns={"/get/gethtml/*"})
 public class HtmlServlet extends HttpServlet{
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(HtmlServlet.class);
@@ -46,7 +49,7 @@ public class HtmlServlet extends HttpServlet{
 			throws ServletException, IOException {
 		SyncHtmlResponse syncHtmlResponse=null;
 		try{
-				String requestData=req.getParameter(RequestParamNames.REQUEST_DATA);
+			String requestData=req.getParameter(RequestParamNames.REQUEST_DATA);
 	        
 	        if(LOGGER.isDebugEnabled()){
 	        	LOGGER.debug("the request data-> "+requestData);
@@ -54,12 +57,18 @@ public class HtmlServlet extends HttpServlet{
 	        
 	        if(requestData!=null&&requestData.length()>0){
 	        	
-	        	RequestUrl requestUrl=JJSON.get().parse(requestData, RequestUrl.class);
+	        	RequestHtml requestHtml=JJSON.get().parse(requestData, RequestHtml.class);
 	        	
-	        	RequestHtml requestHtml= requestUrl.getRequest();
+	        	if(JStringUtils.isNotNullOrEmpty(requestHtml.getHtmlUrl())){
+	        		if(!requestHtml.getHtmlUrl().startsWith("/")){
+	        			requestHtml.setHtmlUrl("/"+requestHtml.getHtmlUrl());
+	        		}
+	        	}
+	        	
+	        	requestHtml.setRequest(new ServletRequestContext(req));
 	        	SyncHtmlModel syncHtmlModel= htmlService.getSyncHtmlModel(requestHtml);
 	        	
-	        	syncHtmlResponse= syncHtmlResponseService.getSyncHtmlResponse(requestUrl, syncHtmlModel);
+	        	syncHtmlResponse= syncHtmlResponseService.getSyncHtmlResponse(requestHtml, syncHtmlModel);
 	        }
 	        else{
 	        	throw new RuntimeException("request data is missing.");

@@ -12,7 +12,7 @@ implements JCacheService {
 	public JDefaultHashCacheService doGetService() {
 		return this;
 	}
-	
+
 	@Override
 	public Object putNeverExpired(String key, Object object) {
 		return hashCache.putNeverExpired(key, object);

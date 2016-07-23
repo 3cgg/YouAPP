@@ -16,6 +16,16 @@ public class JFileSystemDefaultScanner extends JAbstractClassesScanner implement
 	
 	private Class<?>[] superClasses;
 	
+	private boolean scanJar=true;
+	
+	public boolean isScanJar() {
+		return scanJar;
+	}
+
+	public void setScanJar(boolean scanJar) {
+		this.scanJar = scanJar;
+	}
+
 	public JFileSystemDefaultScanner(File file) {
 		super(file);
 	}
@@ -57,7 +67,18 @@ public class JFileSystemDefaultScanner extends JAbstractClassesScanner implement
 				}
 			}
 			else{//file
-				if(!file.getName().endsWith(".class")) return ;
+				if(!file.getName().endsWith(".class")){
+					if(file.getName().endsWith(".jar")){
+						JJARDefaultScanner jarScanner=new JJARDefaultScanner(file,superClasses);
+						jarScanner.setClassLoader(this.classLoader);
+						jarScanner.setExpression(this.expression);
+						jarScanner.setIncludeClassNames(this.includeClassNames);
+						jarScanner.setIncludePackages(this.includePackages);
+						jarScanner.setExpression(this.expression);
+						classes.addAll(jarScanner.scan());
+					}
+					return ;
+				}
 				String fileURIPath= file.toURI().toString();
 				String classPathPath=this.file.toURI().toString();
 				String className=fileURIPath.substring(classPathPath.length()).replace("/", ".").replace(".class", "");

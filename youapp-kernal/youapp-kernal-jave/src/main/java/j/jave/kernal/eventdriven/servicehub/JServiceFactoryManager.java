@@ -143,6 +143,7 @@ public final class JServiceFactoryManager{
 				
 				// default scan all package if any possible.
 				JDefaultClassesScanner packageScan=new JDefaultClassesScanner(JServiceFactorySupport.class);
+				packageScan.setExpression(new String[]{"^j[/]jave[/][./_a-zA-Z0-9]+","^com[/]youappcorp[/]project[/][/._a-zA-Z0-9]+"});
 				Set<Class<?>> classes=  packageScan.scan();
 				if(JCollectionUtils.hasInCollect(classes)){
 					for (Iterator<Class<?>> iterator = classes.iterator(); iterator.hasNext();) {

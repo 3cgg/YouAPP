@@ -8,7 +8,7 @@ import j.jave.web.htmlclient.HtmlService;
 import j.jave.web.htmlclient.SyncHtmlModel;
 import j.jave.web.htmlclient.form.DefaultVoidDuplicateSubmitService;
 import j.jave.web.htmlclient.form.VoidDuplicateSubmitService;
-import j.jave.web.htmlclient.request.RequestUrl;
+import j.jave.web.htmlclient.request.RequestHtml;
 
 import java.io.UnsupportedEncodingException;
 
@@ -29,13 +29,13 @@ public class SyncHtmlResponseService {
 		return INSTANCE;
 	}
 	
-	public SyncHtmlResponse error(RequestUrl requestUrl){
+	public SyncHtmlResponse error(RequestHtml requestUrl){
 		
 		SyncHtmlResponse syncHtmlResponse=new SyncHtmlResponse();
 		
 		HtmlDefResponse htmlDefResponse=new HtmlDefResponse();
 		htmlDefResponse.setType(HtmlDefNames.HTML);
-		htmlDefResponse.setLayoutId(requestUrl.getRequest().getLayoutId());
+		htmlDefResponse.setLayoutId(requestUrl.getLayoutId());
 		syncHtmlResponse.setHtmlDef(htmlDefResponse);
 		
 		try {
@@ -45,14 +45,14 @@ public class SyncHtmlResponseService {
 		return syncHtmlResponse;
 	}
 	
-	public SyncHtmlResponse getSyncHtmlResponse(RequestUrl requestUrl,SyncHtmlModel syncHtmlModel){
+	public SyncHtmlResponse getSyncHtmlResponse(RequestHtml requestUrl ,SyncHtmlModel syncHtmlModel){
 		try{
 			SyncHtmlResponse syncHtmlResponse=new SyncHtmlResponse();
 			syncHtmlResponse.setHtml(new String(syncHtmlModel.getHtml(),"utf-8"));
 			
 			HtmlDefResponse htmlDefResponse=new HtmlDefResponse();
 			htmlDefResponse.setType(syncHtmlModel.getHtmlDef().getType());
-			htmlDefResponse.setLayoutId(requestUrl.getRequest().getLayoutId());
+			htmlDefResponse.setLayoutId(requestUrl.getLayoutId());
 			syncHtmlResponse.setHtmlDef(htmlDefResponse);
 			
 			syncHtmlResponse.setToken(JJSON.get().formatObject(voidDuplicateSubmitService.newFormIdentification()));

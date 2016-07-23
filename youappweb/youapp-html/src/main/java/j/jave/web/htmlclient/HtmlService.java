@@ -13,7 +13,7 @@ public class HtmlService {
 	
 	private HtmlFileService htmlFileService=new DefaultHtmlFileService();
 	
-	private DataResourceService dataResourceService=new DefaultDataResourceService();
+	private HtmlViewDataResourceService htmlViewDataResourceService=new HtmlViewDataResourceService();
 	
 	private static class TempHtmlDef{
 		
@@ -39,8 +39,8 @@ public class HtmlService {
 			String uri=requestHtml.getHtmlUrl();
 //			File file=htmlFileService.getFile(uri);
 //			String fileName=JFileUtils.getFileNameNoExtension(file);
-			Map<String, Object> attrs=dataResourceService.data(requestHtml.getDataUrl());
-			String fileDefName="/ui/default.json";
+			Map<String, Object> attrs=htmlViewDataResourceService.data(requestHtml);
+			String fileDefName="/ui/pages/default.json";
 			byte[] htmlDefBytes=htmlFileService.getHtmlFileDef(fileDefName,attrs);
 			HtmlDef htmlDef= JJSON.get().parse(new String(htmlDefBytes,"utf-8"), HtmlDef.class);
 			String layoutId=requestHtml.getLayoutId();

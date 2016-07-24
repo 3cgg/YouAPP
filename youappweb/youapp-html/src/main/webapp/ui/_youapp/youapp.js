@@ -2,7 +2,7 @@
 	function Layout($dom){
 		var $htl=$dom;
 		this.dataHtmlUrls=function(){
-			var all=$_util.newList();
+			var all=$_youapp.$_util.newList();
 			if($htl.attr("data-htmlurl")){
 				all.add($htl);
 			}
@@ -25,9 +25,9 @@
 						layoutId:layoutId,
 						htmlUrl:htmlUrl
 				}
-				$_util.ajaxGet({
-					url:$_config.getHtmlEndpoint(),
-					data:{data:$_util.json(requsetVO)},
+				$_youapp.$_util.ajaxGet({
+					url:$_youapp.$_config.getHtmlEndpoint(),
+					data:{data:$_youapp.$_util.json(requsetVO)},
 					success:function(data){
 						var resp=JSON.parse(data);
 						var layout=new Layout($(resp.html));
@@ -47,7 +47,9 @@
 		}
 		
 		this.draw=function(layoutId){
-			this.appendTo(layoutId);
+			if(layoutId){
+				this.appendTo(layoutId);
+			}
 			this.requset();
 		}
 	}
@@ -58,8 +60,45 @@
 			var layout=new Layout(data);
 			layout.draw(layoutId);
 		}
+		/*
+		 * $_youapp.$_layout.drawTab('Me','MMMEEE','ui/pages/default.html','layoutTab')
+		 * */
+		this.drawTab=function(id,title,htmlurl,tabDomId){
+			var tabContent=new TabContent($('#'+tabDomId));
+			tabContent.draw(id,title,htmlurl);
+			$_youapp.$tabs.tabDomId=$('#'+tabDomId).tabulous({
+				effect: 'scaleUp'
+			});
+			$_youapp.$tabs.tabDomId.active(id);
+		}
 	}
 	
-	window.$_layout=new LayoutDraw();
-	window.$_layout.draw('body',$('body'));
+	
+	function TabContent($tabDom){
+		var $htl=$tabDom;
+		this.getMenu=function(id,title){
+			return $('<li><a id="'+id+'"   href="#'+id+'" title="'+title+'">'+title+'</a></li>');
+		}
+		
+		this.getSlice=function(id,title,htmlurl){
+			return $('<div id="'+id+'">'
+					+'<div data-layoutId="tab-'+id+'" data-htmlUrl="'+htmlurl+'"   style="height: auto;"></div>'
+					+'</div>');
+		}
+		
+		this.draw=function(id,title,htmlurl){
+			
+			var menu=this.getMenu(id,title);
+			var sliceView=this.getSlice(id,title,htmlurl);
+			menu.insertAfter($htl.find('ul.tabul').find('li:last'));
+			sliceView.appendTo($htl.find('div.tabcontainer'));
+			$_youapp.$_layout.draw(null,sliceView);
+		}
+		
+	}
+	
+	
+	window.$_youapp.$_layout=new LayoutDraw();
+	window.$_youapp.$_layout.draw('body',$('body'));
+	window
 })(window);

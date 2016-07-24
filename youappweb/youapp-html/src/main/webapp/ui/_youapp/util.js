@@ -121,11 +121,11 @@
 				    data:_options.data,
 				    async:_options.async,
 				    success: function(data){
-				    	$_util.log('success: '+_options.url);
+				    	$_youapp.$_util.log('success: '+_options.url);
 				    	_options.success(data);
 				    },
 				    error:function(data){
-				    	$_util.log('error: '+_options.url);
+				    	$_youapp.$_util.log('error: '+_options.url);
 				    	_options.error(data);
 				    }
 				});
@@ -166,5 +166,5 @@
 		
 	}
 	
-	window.$_util=new _Util();
+	window.$_youapp.$_util=new _Util();
 })(window);

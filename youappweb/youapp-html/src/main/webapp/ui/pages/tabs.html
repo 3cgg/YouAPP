@@ -1,28 +1,37 @@
-<div id="tabsSys"  class="tabuloustab">
-	<ul class="nav nav-tabs">
-		<li><a href="#tabs-1" title="">Tab 1</a></li>
+
+<!--   height is cal , then the tab calculate height $(window).height()-'data-top'; 
+	if the data property is remove, then auto use the children element height
+-->
+<div id="layoutTabDemo"  class="tabuloustab"  
+data-layoutFor="contentContent" 
+data-layoutId="layoutTab"
+data-top="120"
+data-height="cal"   
+ >
+	<ul class="nav nav-tabs  tabul"  id="tabMenuDemo" >
+		<li><a href="#timeline" title="">Tab1</a></li>
 		<li><a href="#tabs-2" title="">Tab 2</a></li>
 		<li><a href="#tabs-3" title="">Tab 3</a></li>
 	</ul>
-	<div class="tabcontainer">
-		<div id="tabs-1">
+	<div class="tabcontainer"  style="height: 100%"  id="tabContainerDemo">
+		<div id="timeline">
 			<!--tab content-->
-			tab1 content
+					Tab1
 		</div>
 		<div id="tabs-2">
 			<!--tab content-->
-			tab2 content
+				Tab2
 		</div>
 		<div id="tabs-3">
 			<!--tab content-->
-			tab3 content
+			Tab3
 		</div>
 	</div>
 	<!--End tabs container-->
 </div>
 <script type="text/javascript">
 	$(function(){
-		$('#tabsSys').tabulous({
+		$('#layoutTabDemo').tabulous({
 			effect: 'scaleUp'
 		});
 	})

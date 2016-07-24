@@ -23,9 +23,19 @@
     }
 
     Plugin.prototype = {
-    		
-    	getWindowHeight:function(){
-    		return $(window).height()-120;
+    	active:function(id){
+    		this.$elem.find('ul#tabMenu').find('li > a#'+id).trigger('click');
+    	},	
+    	getWindowHeight:function(defaultHeight){
+    		var $ele=this.$elem;
+    		if('cal'==$ele.data('height')){
+    			var top=$ele.data('top');
+    			if(!top){
+    				top=0;
+    			}
+    			return $(window).height()-top;
+    		}
+    		return defaultHeight;
     	},	
         init: function() {
 
@@ -57,13 +67,13 @@
             });
 
 //            containerDiv.css('height',firstdivheight+'px');
-            containerDiv.css('height',this.getWindowHeight()+'px');
+            containerDiv.css('height',this.getWindowHeight(firstdivheight)+'px');
             
             firstchildLink.addClass('tabulous_active');
 
-            links.bind('click', {myOptions: this.options}, function(e) {
+            links.bind('click', {myOptions: this.options,tabObj:this}, function(e) {
                 e.preventDefault();
-
+                var tabObj=e.data.tabObj;
                 var $options = e.data.myOptions;
                 var effect = $options.effect;
 
@@ -94,7 +104,7 @@
 
 
 //                containerDiv.css('height',thisdivwidth+'px');
-                containerDiv.css('height',this.getWindowHeight()+'px');
+                containerDiv.css('height',tabObj.getWindowHeight(thisdivwidth)+'px');
 
             });
 
@@ -113,9 +123,10 @@
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
-        return this.each(function () {
-            new Plugin( this, options );
-        });
+//        return this.each(function () {
+//            new Plugin( this, options );
+//        });
+    	return new Plugin( this, options );
     };
 
 })( jQuery, window, document );

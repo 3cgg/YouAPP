@@ -1,11 +1,13 @@
 <div id="layoutTab"  class="tabuloustab"  
 data-layoutFor="contentContent" 
 data-layoutId="layoutTab"   
->
+data-top="120"
+data-height="cal"
+ >
 	<ul class="nav nav-tabs  tabul"  id="tabMenu" >
-		<li><a href="#timeline" title="">Timeline</a></li>
-		<li><a href="#tabs-2" title="">Tab 2</a></li>
-		<li><a href="#tabs-3" title="">Tab 3</a></li>
+		<li><a href="#timeline" title="Timeline"  id="timeline">Timeline</a></li>
+		<li><a href="#tabs-2" title="T2"  id="tab2">Tab 2</a></li>
+		<li><a href="#tabs-3" title="T3"  id="tab3">Tab 3</a></li>
 	</ul>
 	<div class="tabcontainer"  style="height: 100%"  id="tabContainer">
 		<div id="timeline">
@@ -29,7 +31,8 @@ data-layoutId="layoutTab"
 </div>
 <script type="text/javascript">
 	$(function(){
-		$('#layoutTab').tabulous({
+		$_youapp.$tabs={};
+		$_youapp.$tabs.layoutTab=$('#layoutTab').tabulous({
 			effect: 'scaleUp'
 		});
 	})

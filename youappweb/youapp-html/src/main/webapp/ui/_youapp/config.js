@@ -14,5 +14,5 @@
 		
 	}
 	
-	window.$_config=new _Config();
+	window.$_youapp.$_config=new _Config();
 })(window);

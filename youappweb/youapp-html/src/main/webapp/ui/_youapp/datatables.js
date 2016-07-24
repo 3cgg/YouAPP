@@ -69,9 +69,9 @@ $.fn.extend({
 			serverSide : options.serverSide,
 			ajax : function (data, callback, settings) {
 				
-				$_util.ajaxGet({
-					url:$_config.getDataEndpoint()+options.url,
-					data:{data:$_util.json($.extend({
+				$_youapp.$_util.ajaxGet({
+					url:$_youapp.$_config.getDataEndpoint()+options.url,
+					data:{data:$_youapp.$_util.json($.extend({
 						page:data.start/data.length,
 				  		size:data.length
 				  		},options.urlDataFn.apply()))},
@@ -162,7 +162,7 @@ $.fn.extend({
 			  					}
 		  					}
 		  					else{
-		  						list=$_util.newList();
+		  						list=$_youapp.$_util.newList();
 		  						list.add(id);
 		  						$wrap.data("datatables-checked",list);
 		  					}

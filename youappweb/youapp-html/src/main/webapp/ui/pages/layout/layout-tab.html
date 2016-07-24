@@ -1,0 +1,39 @@
+<div id="layoutTab"  class="tabuloustab"  
+data-layoutFor="contentContent" 
+data-layoutId="layoutTab"   
+>
+	<ul class="nav nav-tabs  tabul"  id="tabMenu" >
+		<li><a href="#timeline" title="">Timeline</a></li>
+		<li><a href="#tabs-2" title="">Tab 2</a></li>
+		<li><a href="#tabs-3" title="">Tab 3</a></li>
+	</ul>
+	<div class="tabcontainer"  style="height: 100%"  id="tabContainer">
+		<div id="timeline">
+			<!--tab content-->
+			<div data-layoutId="tabTimeline"   
+					data-htmlUrl="ui/pages/timeline.html"   style="height: auto;"></div>
+		</div>
+		<div id="tabs-2">
+			<!--tab content-->
+			<div id="sssssssss">
+				tab2 content
+			</div>
+			
+		</div>
+		<div id="tabs-3">
+			<!--tab content-->
+			tab3 content
+		</div>
+	</div>
+	<!--End tabs container-->
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#layoutTab').tabulous({
+			effect: 'scaleUp'
+		});
+	})
+</script>
+
+
+

@@ -86,6 +86,8 @@ p {
 	filter: alpha(opacity=0);
 	filter: alpha(opacity=0);
 	opacity: 0;
+	
+	display: none;
 }
 
 .showscale {
@@ -103,6 +105,8 @@ p {
 	-o-transition-delay: .3s;
 	-ms-transition-delay: .3s;
 	transition-delay: .3s;
+	
+	display: block;
 }
 
 .hideleft {
@@ -114,6 +118,8 @@ p {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
+	
+	display: none;
 }
 
 .showleft {
@@ -131,6 +137,8 @@ p {
 	-o-transition-delay: .3s;
 	-ms-transition-delay: .3s;
 	transition-delay: .3s;
+	
+	display: block;
 }
 
 .hidescaleup {
@@ -142,6 +150,8 @@ p {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
+	
+	display: none;
 }
 
 .showscaleup {
@@ -159,6 +169,8 @@ p {
 	-o-transition-delay: .3s;
 	-ms-transition-delay: .3s;
 	transition-delay: .3s;
+	
+	display: block;
 }
 
 .hideflip {
@@ -177,6 +189,8 @@ p {
 	-o-transform-origin: 50% 50%;
 	-ms-transform-origin: 50% 50%;
 	transform-origin: 50% 50%;
+	
+	display: none;
 }
 
 .showflip {
@@ -201,6 +215,8 @@ p {
 	-o-transform-origin: 50% 50%;
 	-ms-transform-origin: 50% 50%;
 	transform-origin: 50% 50%;
+	
+	display: block;
 }
 
 .tabulous_active {

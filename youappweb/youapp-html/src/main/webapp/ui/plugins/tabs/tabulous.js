@@ -24,8 +24,12 @@
 
     Plugin.prototype = {
     	active:function(id){
-    		this.$elem.find('ul#tabMenu').find('li > a#'+id).trigger('click');
+    		this.$elem.children('ul.tabul').find('li > a#'+id).trigger('click');
     	},	
+    	
+    	exists:function(id){
+    		return this.$elem.children('ul.tabul').find('li > a#'+id).length>0;
+    	},
     	getWindowHeight:function(defaultHeight){
     		var $ele=this.$elem;
     		if('cal'==$ele.data('height')){
@@ -39,11 +43,11 @@
     	},	
         init: function() {
 
-            var links = this.$elem.find('ul#tabMenu').find('li > a');
-            var firstchildLink = this.$elem.find('ul#tabMenu').find('li:first-child').find('a');
-            var lastchildLink = this.$elem.find('ul#tabMenu').find('li:last-child').after('<span class="tabulousclear"></span>');
+            var links = this.$elem.children('ul.tabul').find('li > a');
+            var firstchildLink = this.$elem.children('ul.tabul').children('li:first-child').find('a');
+            var lastchildLink = this.$elem.children('ul.tabul').children('li:last-child').after('<span class="tabulousclear"></span>');
             
-            var notFirstSliceDiv=this.$elem.find('div#tabContainer').children('div').not(':first').not(':nth-child(1)');
+            var notFirstSliceDiv=this.$elem.children('div.tabcontainer').children('div').not(':first').not(':nth-child(1)');
             
             if (this.options.effect == 'scale') {
              tab_content = notFirstSliceDiv.addClass('hidescale');
@@ -55,8 +59,8 @@
                  tab_content = notFirstSliceDiv.addClass('hideflip');
             }
 
-            var containerDiv = this.$elem.find('.tabcontainer#tabContainer');
-            var firstdivheight = containerDiv.find('div:first').height();
+            var containerDiv = this.$elem.find('.tabcontainer');
+            var firstdivheight = containerDiv.children('div:first').height();
 
             var allSlicedivs = containerDiv.children('div');
 
@@ -126,7 +130,10 @@
 //        return this.each(function () {
 //            new Plugin( this, options );
 //        });
-    	return new Plugin( this, options );
+    	var $tab= new Plugin( this, options );
+    	var tabId=$(this).attr('id');
+    	$_youapp.$tabs.tabId=$tab;
+    	return $tab;
     };
 
 })( jQuery, window, document );

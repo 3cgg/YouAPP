@@ -1,0 +1,158 @@
+<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
+	<section class="content-header">
+      <h1>
+       	系统参数
+        <small>列表</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#">系统参数</a></li>
+        <li><a href="#">列表</a></li>
+      </ol>
+    </section>
+    
+	 <!-- Main content -->
+    <section class="content"   id="searchSysParamSection"   ms-controller="sysparam_view">
+      
+      <div class="box box-info">
+            <!-- form start -->
+            <form class="form-horizontal"  id="searchSysParamForm">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="code" class="col-sm-1 control-label">编码</label>
+
+                  <div class="col-sm-5">
+                    <input type="text"  name="code" class="form-control" id="code" placeholder="编码">
+                  </div>
+                  <label for="value" class="col-sm-1 control-label">参数值</label>
+
+                  <div class="col-sm-5">
+                    <input type="text"  name="value" class="form-control" id="value" placeholder="参数值">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="desc" class="col-sm-1 control-label">详细描述</label>
+
+                  <div class="col-sm-11">
+                    <input type="text"  name="desc" class="form-control" id="desc" placeholder="描述">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                	<label for="desc" class="col-sm-1 control-label"></label>
+                	<div class="col-sm-2 col-lg-1">
+	                	<input id="searchSysparamBtn" type="button" class="form-control btn-primary"  value="查询"   >
+	                </div>
+                </div>
+                
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+      
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
+	          >新增</button>
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
+	          >删除（批量）</button>
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body"   id="sysparamList">
+	          <table id="sysparamListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>主键</th>
+						<th>编码</th>
+						<th>参数值</th>
+						<th>描述</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+            </table>
+	          
+	          
+	          <!-- /.row -->
+	        </div>
+      </div>
+    
+    </section>
+    <script type="text/javascript">
+    var sysparamListObj={};
+    $(function() {
+    	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
+			url:"/sysparam/getSysParamsByPage",
+			urlDataFn:function(){
+				return $("#searchSysParamForm").serializeJson();
+			},
+			lengthChange:false,
+			checkbox:true,
+			ops:{
+				view:function(id,rowData){
+                    kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-view.html',{"id":id});
+				},
+				edit:function(id,rowData){
+                    kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-edit.html',{"id":id});
+
+				},
+				del:function(id,rowData){
+					delSysparamById(id);
+				}
+			},
+			columns : [ 
+			{
+				"data" : "id",
+				"orderable" : false,
+				 "width": "15%"
+			}, 
+			{
+				"data" : "code",
+				"width": "10%"
+			},
+			{
+				"data" : "value",
+				"width": "15%"
+			}, 
+			{
+				"data" : "desc",
+				"width": "30%"
+			}
+			
+			]
+		});
+		
+		$("#searchSysparamBtn").on("click",function(){
+			sysparamListObj.listTable.ajax.reload();
+		})
+		
+	});
+		
+	 function  delSysparamById(id){                 
+		 var HtmlMenuOpt ={endpoint:"/sysparam/deleteSysParamById",
+			  		data:{'id':id},
+			  		success:function(data){
+			  			sysparamListObj.listTable.ajax.reload();
+			  			}		
+			  		};
+		  kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
+	}
+	 
+	</script>
+
+	<script type="text/javascript">
+	
+	</script>
+
+
+
+
+
+
+

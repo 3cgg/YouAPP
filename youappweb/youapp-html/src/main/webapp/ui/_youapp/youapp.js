@@ -141,7 +141,7 @@
 	}
 	
 	function HtmlExchange(){
-		this.ajaxGet=function(options){
+		this.htmlView=function(options){
 			var ajax=new Ajax();
 			ajax.request($.extend({},options,{type:'GET'}));
 		}

@@ -1,0 +1,104 @@
+<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
+	<section class="content-header">
+      <h1>
+       	系统参数
+        <small>明细</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#">系统参数</a></li>
+        <li><a href="#">明细</a></li>
+      </ol>
+    </section>
+    
+	 <!-- Main content -->
+    <section class="content"   id="viewSysParamSection"   ms-controller="sysparam_view">
+    
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="button" class="btn btn-primary"
+	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">参数信息</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+	        	<form role="form"  id="viewSysParamForm"   class="form-horizontal">
+	        	<div class="form-group">
+                  <label for="code" class="col-sm-1 control-label">编码</label>
+                  <div class="col-sm-5">
+				  <span id="code"  class="form-control label-form-control">{{data.code}}</span>
+				 </div>
+				  <label for="value" class="col-sm-1 control-label">参数值</label>
+				  <div class="col-sm-5">
+				  	<span id=value  class="form-control label-form-control" >{{data.value}}</span>		
+                 </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="desc" class="col-sm-1 control-label">详情描述</label>
+                  <div class="col-sm-5">
+                  	<span id="desc"  class="form-control label-form-control">{{data.desc}}</span>
+                  </div>
+				  
+                </div>
+	        	</form>
+	        </div>
+      </div>
+    </section>
+    <script type="text/javascript">
+    	//avalon initializing
+	    var uniqueName={};
+	    uniqueName.vm = avalon.define({
+		        $id: "sysparam_view",
+		        data: {}
+		    });
+	    avalon.scan($("#viewSysParamSection")[0], uniqueName.vm);  // void braces
+    </script>
+    
+    <script type="text/javascript">
+    
+    $(function(){
+    	
+    	function getId(){
+        	//return "01a25c91-be3c-42a5-a27f-8415eae1b3ad";
+        	return kjcs.htmlEnt.getparam("id");
+        }
+    	
+    	var HtmlMenuOpt ={endpoint:"/sysparam/getSysParamById",
+		  		data:{"id":getId()},
+		  		success:function(data){
+		  			//alert("code: "+data.code+" , value : "+data.value+" , desc : "+data.desc );
+		  			uniqueName.vm.data=data;
+		  			avalon.scan($("#viewSysParamSection")[0], uniqueName.vm);
+		  			}		
+		  		};
+    	kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
+    });
+    </script>
+	
+	<script type="text/javascript">
+	
+	</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+.table_btn{
+	margin-left: 5px;
+}
+.table.dataTable tbody tr.selected {
+	background-color: #B0BED9;
+}

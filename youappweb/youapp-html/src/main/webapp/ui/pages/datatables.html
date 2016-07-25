@@ -1,33 +1,35 @@
     <!-- Main content -->
     <section class="content">
     
-    	<form id="datatablesForm"></form>
+    <form id="datatablesForm"></form>
       
-      <div class="col-md-12">
-          <!-- Horizontal Form -->
-          <div class="box box-info">
+      <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Horizontal Form</h3>
+              <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
+	          >新增</button>
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
+	          >删除（批量）</button>
             </div>
             <!-- /.box-header -->
-            <table id="datatablesTable" class="table table-striped table-bordered" 
-            		cellspacing="0"   style="width: 100%  ;">
-		        <thead>
-		            <tr>
-		                <th></th>
-		                <th>ID</th>
-		                <th>Code</th>
-		                <th>Value</th>
-		                <th>Desc</th>
-		                <th>Ope</th>
-		            </tr>
-		        </thead>
-            </table>
-            
+            <div class="box-body" >
+	            <table id="datatablesTable" class="table dataTable table-striped row-border cell-border " 
+	            		cellspacing="0"   style="width: 100%  ;">
+			        <thead>
+			            <tr>
+			                <th></th>
+			                <th>ID</th>
+			                <th>Code</th>
+			                <th>Value</th>
+			                <th>Desc</th>
+			                <th>Ope</th>
+			            </tr>
+			        </thead>
+	            </table>
+            </div>
             
           </div>
-          <!-- /.box -->
-      </div>
       
     </section>
     <!-- /.content -->

@@ -44,14 +44,14 @@ p {
 }
 
 .tabcontainer {
-	padding: 40px;
+	/*padding: 40px;*/
 	overflow: hidden;
 	position: relative;
 	background: white;
 }
 
-.tabcontainer div {
-	margin-right: 40px;
+.tabcontainer > div {
+	/*margin-right: 40px;*/
 }
 
 .transition {

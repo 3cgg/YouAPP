@@ -1,7 +1,7 @@
 package j.jave.web.htmlclient.plugins.jquerydatatable;
 
-import j.jave.web.htmlclient.interceptor.ServletRequestInterceptor;
-import j.jave.web.htmlclient.interceptor.ServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.DataRequestServletRequestInterceptor;
+import j.jave.web.htmlclient.interceptor.DataRequestServletRequestInvocation;
 import j.jave.web.htmlclient.response.ResponseModel;
 
 import java.util.Map;
@@ -49,7 +49,7 @@ import java.util.Map;
  * @author JIAZJ
  *
  */
-public class PageableInterceptor implements ServletRequestInterceptor {
+public class PageableInterceptor implements DataRequestServletRequestInterceptor {
 
 	private boolean isPage(Object obj){
 		boolean isPage=false;
@@ -81,7 +81,7 @@ public class PageableInterceptor implements ServletRequestInterceptor {
 	
 	
 	@Override
-	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
+	public Object intercept(DataRequestServletRequestInvocation servletRequestInvocation) {
 		Object obj=servletRequestInvocation.proceed();
 		if(obj instanceof ResponseModel){
 			ResponseModel responseModel=(ResponseModel) obj;

@@ -27,19 +27,30 @@
     		this.$elem.children('ul.tabul').find('li > a#'+id).trigger('click');
     	},	
     	
+    	remove:function(id){
+    		var $li=this.$elem.children('ul.tabul').find('li > a#'+id).parent();
+    		var $container=this.$elem.children('div.tabcontainer').children('div#'+id);
+    		$li.remove();
+    		$container.remove();
+    	},
+    	
     	exists:function(id){
     		return this.$elem.children('ul.tabul').find('li > a#'+id).length>0;
     	},
-    	getWindowHeight:function(defaultHeight){
+    	getWindowHeight:function(slice){
     		var $ele=this.$elem;
     		if('cal'==$ele.data('height')){
     			var top=$ele.data('top');
     			if(!top){
     				top=0;
     			}
-    			return $(window).height()-top;
+    			var windowHeight=$(window).height();
+//    			var documentHeight=$(document).height();
+    			var sliceHeight=slice.height();
+    			return (windowHeight>sliceHeight?windowHeight:sliceHeight)-top;
     		}
-    		return defaultHeight;
+			var sliceHeight=slice.height();
+			return sliceHeight;
     	},	
         init: function() {
 
@@ -60,18 +71,18 @@
             }
 
             var containerDiv = this.$elem.find('.tabcontainer');
-            var firstdivheight = containerDiv.children('div:first').height();
+            var firstSlice = containerDiv.children('div:first');
 
             var allSlicedivs = containerDiv.children('div');
 
             allSlicedivs.css({
-            	'position': 'absolute',
+            	'position': 'relative',
             	'top':'40px',
             	'width': '100%','height': '100%'	
             });
 
 //            containerDiv.css('height',firstdivheight+'px');
-            containerDiv.css('height',this.getWindowHeight(firstdivheight)+'px');
+            containerDiv.css('height',this.getWindowHeight(firstSlice)+'px');
             
             firstchildLink.addClass('tabulous_active');
 
@@ -106,9 +117,9 @@
                     thisform.find('div'+thislink).addClass('make_transist').addClass('showflip');
                 }
 
-
+                var thisSlice=thisform.find('div'+thislink);
 //                containerDiv.css('height',thisdivwidth+'px');
-                containerDiv.css('height',tabObj.getWindowHeight(thisdivwidth)+'px');
+                containerDiv.css('height',tabObj.getWindowHeight(thisSlice)+'px');
 
             });
 

@@ -1,6 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
 import j.jave.web.htmlclient.plugins.jquerydatatable.PageableInterceptor;
+import j.jave.web.htmlclient.request.RequestVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  *
  */
-public class DefaultServletRequestInvocation implements ServletRequestInvocation{
+public class DefaultDataRequestServletRequestInvocation implements DataRequestServletRequestInvocation{
 	
 	private int currentInterceptorIndex = -1;
 	
@@ -27,14 +28,18 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	
 	private String unique;
 	
-	private static List<ServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<ServletRequestInterceptor>(8);
+	private RequestVO requestVO;
+	
+	private static List<DataRequestServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<DataRequestServletRequestInterceptor>(8);
 	
 	static{
+		MODEL_INTERCEPTORS.add(new ExceptionFormatInterceptor());
+		MODEL_INTERCEPTORS.add(new DataExtracterInterceptor());
 		MODEL_INTERCEPTORS.add(new PageableInterceptor());
 		MODEL_INTERCEPTORS.add(new TempInterceptor());
 	}
 	
-	public DefaultServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {
+	public DefaultDataRequestServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {
 		this.httpServletRequest=(HttpServletRequest) servletRequest;
 		this.httpServletResponse=(HttpServletResponse) servletResponse;
 	}
@@ -43,7 +48,7 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	 */
 	@Override
 	public Object proceed() {
-		ServletRequestInterceptor interceptor =
+		DataRequestServletRequestInterceptor interceptor =
 				MODEL_INTERCEPTORS.get(++this.currentInterceptorIndex);
 		return interceptor.intercept(this);
 	}
@@ -74,6 +79,12 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	
 	public String getUnique() {
 		return unique;
+	}
+	public RequestVO getRequestVO() {
+		return requestVO;
+	}
+	public void setRequestVO(RequestVO requestVO) {
+		this.requestVO = requestVO;
 	}
 	
 }

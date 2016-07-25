@@ -3,9 +3,9 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.web.htmlclient.RequestParamNames;
-import j.jave.web.htmlclient.interceptor.DefaultServletRequestInvocation;
-import j.jave.web.htmlclient.interceptor.ServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.DataRequestServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.DefaultDataRequestServletRequestInvocation;
+import j.jave.web.htmlclient.response.ResponseModel;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 
 import java.io.IOException;
@@ -40,23 +40,12 @@ public class DataServlet extends HttpServlet{
 			throws ServletException, IOException {
 		Object respModel=null;
 		try{
-			String requestData=req.getParameter(RequestParamNames.REQUEST_DATA);
-	        
-	        if(LOGGER.isDebugEnabled()){
-	        	LOGGER.debug("the request data-> "+requestData);
-	        }
-	        
-	        if(requestData!=null&&requestData.length()>0){
-	        	
-	        	ServletRequestInvocation invocation=new DefaultServletRequestInvocation(req, resp);
-	        	respModel=invocation.proceed();
-	        }
-	        else{
-	        	throw new RuntimeException("request data is missing.");
-	        }
-	        
+			DataRequestServletRequestInvocation invocation=new DefaultDataRequestServletRequestInvocation(req, resp);
+        	respModel=invocation.proceed();
+        	
 		}catch(Exception e){
-			respModel=e.getMessage();
+			LOGGER.error(e.getMessage(), e);
+			respModel=ResponseModel.newError().setData(e.getMessage());
 		}finally{
 			try{
     			String out=JJSON.get().formatObject(respModel);

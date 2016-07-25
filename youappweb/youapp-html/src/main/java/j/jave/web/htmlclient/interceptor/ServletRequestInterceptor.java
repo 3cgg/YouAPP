@@ -7,7 +7,5 @@ package j.jave.web.htmlclient.interceptor;
  *
  */
 public interface ServletRequestInterceptor {
-
-	public abstract Object intercept(ServletRequestInvocation servletRequestInvocation);
 	
 }

@@ -214,19 +214,14 @@ $.fn.extend({
 			
 			this.ajax=function(data, callback, settings,options,$wrap){
 				//debugger;
-				$_youapp.$_util.ajaxGet({
-					url:$_youapp.$_config.getDataEndpoint()+options.url,
-					data:{data:$_youapp.$_util.json($.extend({
+				$_youapp.$_data.ajaxGet({
+					url:options.url,
+					data:$.extend({
 						page:data.start/data.length,
 				  		size:data.length
-				  		},options.urlDataFn.apply()))},
+				  		},options.urlDataFn.apply()),
 			  		success:function(data){
-			  			var resp=JSON.parse(data);
-			  			if(!resp.success){
-			  				return;
-			  			}
-						new DatatableAjax($wrap,options).ajaxSuccess(resp.data,callback);
-			  			
+						new DatatableAjax($wrap,options).ajaxSuccess(data,callback);
 			  			}
 					
 				});

@@ -75,6 +75,13 @@
 			});
 			$_youapp.$tabs.tabDomId.active(id);
 		}
+		
+		this.removeTab=function(id,tabDomId){
+			if($_youapp.$tabs[tabDomId].exists(id)){
+				$_youapp.$tabs[tabDomId].remove(id);
+			}
+		}
+		
 	}
 	
 	
@@ -104,8 +111,27 @@
 	
 	function DataExchange(){
 		this.ajaxGet=function(options){
-			var ajax=new Ajax();
-			ajax.request($.extend({},options,{type:'GET'}));
+			$_youapp.$_util.ajaxGet({
+				url:$_youapp.$_config.getDataEndpoint()+options.url,
+				data:{data:$_youapp.$_util.json($.extend({},{
+					endpoint:options.url,
+					formData:$_youapp.$_util.json(options.data),
+					paginationData:$_youapp.$_util.json({
+						page:options.data.page,
+						size:options.data.size,
+						orderColumn:'',
+						orderType:''
+					})
+			  		}))},
+		  		success:function(data){
+		  			var resp=JSON.parse(data);
+		  			if(!resp.success){
+		  				return;
+		  			}
+		  			options.success(resp.data);
+		  			}
+				
+			});
 		}
 		
 		this.ajaxPost=function(options){

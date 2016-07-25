@@ -21,14 +21,14 @@ public class DataExtracterInterceptor implements DataRequestServletRequestInterc
 		String requestData=servletRequestInvocation.getHttpServletRequest().getParameter(RequestParamNames.REQUEST_DATA);
         
         if(LOGGER.isDebugEnabled()){
-        	LOGGER.debug("the request data-> "+requestData);
+        	LOGGER.debug("the request data (data)-> "+requestData);
         }
         if(requestData!=null&&requestData.length()>0){
         	RequestVO requestVO=JJSON.get().parse(requestData, RequestVO.class);
         	servletRequestInvocation.setRequestVO(requestVO);
         }
         else{
-        	throw new RuntimeException("request data is missing.");
+        	throw new RuntimeException("request data (data) is missing.");
         }
         return servletRequestInvocation.proceed();
 

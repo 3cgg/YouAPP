@@ -1,21 +1,15 @@
 <!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
-	<section class="content-header">
-      <h1>
-       	系统参数
-        <small>列表</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#">系统参数</a></li>
-        <li><a href="#">列表</a></li>
-      </ol>
-    </section>
-    
 	 <!-- Main content -->
     <section class="content"   id="searchSysParamSection"   ms-controller="sysparam_view">
       
       <div class="box box-info">
-            <!-- form start -->
-            <form class="form-horizontal"  id="searchSysParamForm">
+      	<div class="box-header with-border">
+          <h3 class="box-title"></h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+      	<form class="form-horizontal"  id="searchSysParamForm">
               <div class="box-body">
                 <div class="form-group">
                   <label for="code" class="col-sm-1 control-label">编码</label>
@@ -60,6 +54,11 @@
 	          <button type="submit" class="btn btn-primary btn-sm"
 	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
 	          >删除（批量）</button>
+	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body"   id="sysparamList">
@@ -88,22 +87,24 @@
     var sysparamListObj={};
     $(function() {
     	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
-			url:"/sysparam/getSysParamsByPage",
+			url:"/sample/datatables/getDatatables",
 			urlDataFn:function(){
-				return $("#searchSysParamForm").serializeJson();
+				return $_youapp.$_util.serializeArray("searchSysParamForm");
 			},
 			lengthChange:false,
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-view.html',{"id":id});
+					alert('view '+id);
+                    //kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-                    kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-edit.html',{"id":id});
-
+					alert('edit '+id);
+                    //kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					delSysparamById(id);
+					alert('del '+id);
+					//delSysparamById(id);
 				}
 			},
 			columns : [ 

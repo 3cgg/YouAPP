@@ -3,18 +3,12 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.web.htmlclient.HtmlService;
-import j.jave.web.htmlclient.RequestParamNames;
-import j.jave.web.htmlclient.ServletRequestContext;
-import j.jave.web.htmlclient.SyncHtmlModel;
-import j.jave.web.htmlclient.request.RequestHtml;
-import j.jave.web.htmlclient.response.SyncHtmlResponse;
+import j.jave.web.htmlclient.interceptor.DefaultHtmlRequestServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.HtmlRequestServletRequestInvocation;
 import j.jave.web.htmlclient.response.SyncHtmlResponseService;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -40,75 +34,28 @@ public class HtmlServlet extends HttpServlet{
 		doPost(req, resp);
 	}
 	
-	private HtmlService htmlService=HtmlService.get();
-	
 	private SyncHtmlResponseService syncHtmlResponseService=SyncHtmlResponseService.get();
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		SyncHtmlResponse syncHtmlResponse=null;
+		Object syncHtmlResponse=null;
 		try{
-			String requestData=req.getParameter(RequestParamNames.REQUEST_DATA);
-	        
-	        if(LOGGER.isDebugEnabled()){
-	        	LOGGER.debug("the request data-> "+requestData);
-	        }
-	        
-	        if(requestData!=null&&requestData.length()>0){
-	        	
-	        	RequestHtml requestHtml=JJSON.get().parse(requestData, RequestHtml.class);
-	        	
-	        	if(JStringUtils.isNotNullOrEmpty(requestHtml.getHtmlUrl())){
-	        		if(!requestHtml.getHtmlUrl().startsWith("/")){
-	        			requestHtml.setHtmlUrl("/"+requestHtml.getHtmlUrl());
-	        		}
-	        	}
-	        	
-	        	requestHtml.setRequest(new ServletRequestContext(req));
-	        	SyncHtmlModel syncHtmlModel= htmlService.getSyncHtmlModel(requestHtml);
-	        	
-	        	syncHtmlResponse= syncHtmlResponseService.getSyncHtmlResponse(requestHtml, syncHtmlModel);
-	        }
-	        else{
-	        	throw new RuntimeException("request data is missing.");
-	        }
+			HtmlRequestServletRequestInvocation invocation=new DefaultHtmlRequestServletRequestInvocation(req, resp);
+			syncHtmlResponse=invocation.proceed();
 	        
 		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
 			syncHtmlResponse=syncHtmlResponseService.miniError(e.getMessage());
 		}finally{
 			try{
     			String out=JJSON.get().formatObject(syncHtmlResponse);
-    			writeBytesDirectly(req, resp, out.getBytes("utf-8"));
+    			ServletUtil.writeBytesDirectly(req, resp, out.getBytes("utf-8"));
     		}catch(Exception e){
-    			writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
+    			ServletUtil.writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
     		}
 		}
-		
-
 	}
-	
-	
-	public static final void writeBytesDirectly(HttpServletRequest request,
-			HttpServletResponse response,byte[] bytes){
-		OutputStream outputStream=null;
-		try {
-			outputStream=response.getOutputStream();
-			response.getOutputStream().write(bytes);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			if(outputStream!=null){
-				try {
-					outputStream.flush();
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
 	
 	
 }

@@ -9,7 +9,6 @@ import j.jave.web.htmlclient.response.ResponseModel;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -49,33 +48,15 @@ public class DataServlet extends HttpServlet{
 		}finally{
 			try{
     			String out=JJSON.get().formatObject(respModel);
-    			writeBytesDirectly(req, resp, out.getBytes("utf-8"));
+    			ServletUtil.writeBytesDirectly(req, resp, out.getBytes("utf-8"));
     		}catch(Exception e){
-    			writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
+    			ServletUtil.writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
     		}
 		}
 	}
 	
 	
-	public static final void writeBytesDirectly(HttpServletRequest request,
-			HttpServletResponse response,byte[] bytes){
-		OutputStream outputStream=null;
-		try {
-			outputStream=response.getOutputStream();
-			response.getOutputStream().write(bytes);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			if(outputStream!=null){
-				try {
-					outputStream.flush();
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	
 	
 	
 	

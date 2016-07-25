@@ -15,7 +15,7 @@ import java.util.Map;
  * @author JIAZJ
  *
  */
-public class TempInterceptor implements DataRequestServletRequestInterceptor {
+public class DataTempInterceptor implements DataRequestServletRequestInterceptor {
 	
 	@Override
 	public Object intercept(DataRequestServletRequestInvocation servletRequestInvocation) {

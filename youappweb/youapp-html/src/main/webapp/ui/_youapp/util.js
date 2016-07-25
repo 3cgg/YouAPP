@@ -153,7 +153,7 @@
 		}
 		
 		this.serializeArray=function(formId){
-			$('#'+formId).serializeArray();
+			return $('#'+formId).serializeArray();
 		}
 		
 		this.json=function(obj){

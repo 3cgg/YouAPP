@@ -33,10 +33,10 @@ public class DefaultDataRequestServletRequestInvocation implements DataRequestSe
 	private static List<DataRequestServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<DataRequestServletRequestInterceptor>(8);
 	
 	static{
-		MODEL_INTERCEPTORS.add(new ExceptionFormatInterceptor());
+		MODEL_INTERCEPTORS.add(new DataExceptionFormatInterceptor());
 		MODEL_INTERCEPTORS.add(new DataExtracterInterceptor());
 		MODEL_INTERCEPTORS.add(new PageableInterceptor());
-		MODEL_INTERCEPTORS.add(new TempInterceptor());
+		MODEL_INTERCEPTORS.add(new DataTempInterceptor());
 	}
 	
 	public DefaultDataRequestServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {

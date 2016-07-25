@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
+import j.jave.web.htmlclient.request.RequestHtml;
+
 
 /**
  * 
@@ -7,5 +9,7 @@ package j.jave.web.htmlclient.interceptor;
  */
 public interface HtmlRequestServletRequestInvocation extends ServletRequestInvocation {
 
+	RequestHtml getRequestHtml();
 	
+	void setRequestHtml(RequestHtml requestHtml);
 }

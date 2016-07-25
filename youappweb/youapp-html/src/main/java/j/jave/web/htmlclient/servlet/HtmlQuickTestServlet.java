@@ -7,7 +7,6 @@ import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 import j.jave.web.htmlclient.thymeleaf.ThymeleafHtmlFileService;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,35 +73,12 @@ public class HtmlQuickTestServlet extends HttpServlet{
 			}
 		}finally{
 			try{
-    			writeBytesDirectly(req, resp, bytes);
+				ServletUtil.writeBytesDirectly(req, resp, bytes);
     		}catch(Exception e){
-    			writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
+    			ServletUtil.writeBytesDirectly(req, resp,"the server (json decode) error.".getBytes());
     		}
 		}
 
 	}
-	
-	
-	public static final void writeBytesDirectly(HttpServletRequest request,
-			HttpServletResponse response,byte[] bytes){
-		OutputStream outputStream=null;
-		try {
-			outputStream=response.getOutputStream();
-			response.getOutputStream().write(bytes);
-		}catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			if(outputStream!=null){
-				try {
-					outputStream.flush();
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	
 	
 }

@@ -74,10 +74,13 @@
             var firstSlice = containerDiv.children('div:first');
 
             var allSlicedivs = containerDiv.children('div');
-
+            var slicetop=this.$elem.data('slicetop');
+            if(!slicetop){
+            	slicetop=10;
+            }
             allSlicedivs.css({
             	'position': 'relative',
-            	'top':'40px',
+            	'top':slicetop+'px',
             	'width': '100%','height': '100%'	
             });
 

@@ -9,9 +9,9 @@ import j.jave.web.htmlclient.response.ResponseModel;
  * @author JIAZJ
  *
  */
-public class ExceptionFormatInterceptor implements DataRequestServletRequestInterceptor {
+public class DataExceptionFormatInterceptor implements DataRequestServletRequestInterceptor {
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(ExceptionFormatInterceptor.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(DataExceptionFormatInterceptor.class);
 	
 	@Override
 	public Object intercept(DataRequestServletRequestInvocation servletRequestInvocation) {

@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
+import j.jave.web.htmlclient.request.RequestHtml;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +27,14 @@ public class DefaultHtmlRequestServletRequestInvocation implements HtmlRequestSe
 	
 	private String unique;
 	
+	private RequestHtml requestHtml;
+	
 	private static List<HtmlRequestServletRequestInterceptor> HTML_INTERCEPTORS=new ArrayList<HtmlRequestServletRequestInterceptor>(8);
 	
 	static{
+		HTML_INTERCEPTORS.add(new HtmlExceptionFormatInterceptor());
+		HTML_INTERCEPTORS.add(new HtmlExtracterInterceptor());
+		HTML_INTERCEPTORS.add(new HtmlViewGetterInterceptor());
 	}
 	
 	public DefaultHtmlRequestServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {
@@ -70,6 +77,12 @@ public class DefaultHtmlRequestServletRequestInvocation implements HtmlRequestSe
 	
 	public String getUnique() {
 		return unique;
+	}
+	public RequestHtml getRequestHtml() {
+		return requestHtml;
+	}
+	public void setRequestHtml(RequestHtml requestHtml) {
+		this.requestHtml = requestHtml;
 	}
 	
 }

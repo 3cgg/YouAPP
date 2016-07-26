@@ -7,7 +7,6 @@ public class ServletRequestContext implements RequestContext{
 	private transient HttpServletRequest request;
 	
 	public ServletRequestContext(HttpServletRequest request) {
-		super();
 		this.request = request;
 	}
 

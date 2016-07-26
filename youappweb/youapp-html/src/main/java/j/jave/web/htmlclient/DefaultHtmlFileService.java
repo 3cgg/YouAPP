@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient;
 
+import j.jave.kernal.jave.utils.JFileUtils;
+
 import java.io.File;
 import java.util.Map;
 

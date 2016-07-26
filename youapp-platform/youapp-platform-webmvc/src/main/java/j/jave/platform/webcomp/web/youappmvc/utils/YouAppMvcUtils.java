@@ -7,7 +7,7 @@ import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.platform.webcomp.web.util.JCookieUtils;
 import j.jave.platform.webcomp.web.util.JWebUtils;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
@@ -221,7 +221,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 					FileItemStream fis = fii.next();
 					if (fis.isFormField()) {// FileItemStream同样使用OpenStream获取普通表单的值
 						String fieldName=fis.getFieldName();
-						String value=new String(JStringUtils.getBytes(fis.openStream()),"utf-8");
+						String value=new String(JIOUtils.getBytes(fis.openStream()),"utf-8");
 						if(parameters.containsKey(fieldName)){
 							Object obj=parameters.get(fieldName);
 							if(List.class.isInstance(obj)){ 
@@ -238,7 +238,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 						}
 					} else {
 						String fileName = fis.getName();
-						byte[] bytes=JStringUtils.getBytes(fis.openStream());
+						byte[] bytes=JIOUtils.getBytes(fis.openStream());
 						File file=new File(fileName);
 						JFile jFile=new JFile(file);
 						jFile.setFileContent(bytes);

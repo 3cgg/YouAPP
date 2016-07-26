@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns={"/get/getdata/*"})
-public class DataServlet extends HttpServlet{
+@WebServlet(urlPatterns={"/get/fileupload/*"})
+public class UploaderServlet extends HttpServlet{
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(DataServlet.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(UploaderServlet.class);
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {

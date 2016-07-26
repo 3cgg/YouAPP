@@ -32,7 +32,7 @@ $.fn.extend({
 			var opsGenColumns=[{
 	            "orderable":      false,
 	            "data":           null,
-	            "width":"10%",
+	            "width":"12%",
 	            "title":'操作',
 	            "render": function (data, type, row, meta) {
 	            	var _ops=options.ops;

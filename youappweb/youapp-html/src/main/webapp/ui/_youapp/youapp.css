@@ -7,3 +7,6 @@
 .label-form-control{
 	border: 0 !important;
 }
+.body_font{
+	font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; !important
+}

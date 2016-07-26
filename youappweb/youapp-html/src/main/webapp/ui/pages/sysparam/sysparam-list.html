@@ -89,7 +89,7 @@
     	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
 			url:"/sample/datatables/getDatatables",
 			urlDataFn:function(){
-				return $_youapp.$_util.serializeArray("searchSysParamForm");
+				return $_youapp.$_util.serializeObj("#searchSysParamForm");
 			},
 			lengthChange:false,
 			checkbox:true,

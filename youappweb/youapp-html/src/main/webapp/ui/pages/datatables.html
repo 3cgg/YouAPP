@@ -39,7 +39,7 @@
 		$('#datatablesTable').initDataTable({
 			url:"/sample/datatables/getDatatables",
 			urlDataFn:function(){
-				return $_youapp.$_util.serializeArray('datatablesForm');
+				return $_youapp.$_util.serializeObj('#datatablesForm');
 			},
 			lengthChange:false,
 			checkbox:true,

@@ -152,16 +152,47 @@
 			}
 		}
 		
-		this.serializeArray=function(formId){
-			return $('#'+formId).serializeArray();
+		this.serializeObj=function(formSelector){
+			var obj={};
+			var arrays= $(formSelector).serializeArray();
+			for(var i=0;i<arrays.length;i++){
+				var ele=arrays[i];
+				var eleName=ele.name;
+				var eleValue=ele.value;
+				if(obj[eleName]){
+					var val=obj[eleName];
+					if(val.constructor===List){
+						val.add(eleValue);
+					}
+					else{
+						var tep=val;
+						val=this.newList();
+						val.add(tep);
+						val.add(eleValue);
+						obj[eleName]=val;
+					}
+				}
+				else{
+					obj[eleName]=eleValue;
+				}
+			}
+			
+			for(var i in obj){ 
+				var ele=i;
+				var val=obj[ele];
+				if(val.constructor===List){
+					obj[ele]=val.removeNull();
+				}
+			}
+			return obj;
 		}
 		
 		this.json=function(obj){
 			return JSON.stringify(obj);
 		}
 		
-		this.formJson=function(formId){
-			return JSON.stringify(this.serializeArray(formId));
+		this.formJson=function(formSelector){
+			return JSON.stringify(this.serializeObj(formSelector));
 		}
 		
 	}

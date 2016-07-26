@@ -47,6 +47,13 @@ public class HtmlService {
 			if(layoutId!=null&&!layoutId.equals("")){
 				
 			}
+			String paramMark="?param=";
+			int paramMarkIndex=-1;
+			if((paramMarkIndex=uri.indexOf(paramMark))!=-1){
+				String paramJson=uri.substring(paramMarkIndex+paramMark.length());
+				attrs.putAll(JJSON.get().parse(paramJson));
+				uri=uri.substring(0, paramMarkIndex);
+			}
 			SyncHtmlModel syncHtmlModel=new SyncHtmlModel();
 			syncHtmlModel.setHtmlDef(htmlDef);
 			syncHtmlModel.setHtml(htmlFileService.getHtmlFile(uri,attrs));

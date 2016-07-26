@@ -49,7 +49,7 @@
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
+	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-add.html");'
 	          >新增</button>
 	          <button type="submit" class="btn btn-primary btn-sm"
 	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
@@ -85,7 +85,7 @@
     </section>
     <script type="text/javascript">
     var sysparamListObj={};
-    $(function() {
+    $_youapp.execute(function() {
     	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
 			url:"/sample/datatables/getDatatables",
 			urlDataFn:function(){
@@ -95,16 +95,13 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-					alert('view '+id);
-                    //kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-view.html',{"id":id});
+                    $('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					alert('edit '+id);
-                    //kjcs.htmlEnt.skiphtml('/ui/sysparam/sysparam-edit.html',{"id":id});
+					$('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					alert('del '+id);
-					//delSysparamById(id);
+					delSysparamById(id);
 				}
 			},
 			columns : [ 

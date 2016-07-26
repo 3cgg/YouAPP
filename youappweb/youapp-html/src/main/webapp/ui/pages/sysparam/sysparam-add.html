@@ -19,7 +19,7 @@
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-list.html");'
+	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -90,27 +90,27 @@
 			// initialize component style...
 		});
 		
-		$(function (){
+		$_youapp.execute(function (){
 			 $("#addSysParamForm").validate({
-			rules: {
-				'code': {
-					   required: true,
-					   maxlength:64
-				   },
-			   'value': {
-				   required: true,
-				   maxlength:128
-			   },
-			   'desc': {
-				   required: true,
-				   maxlength:2000
-			   }
-			  },
-			  submitHandler:function(form){
-				kjcs.ajaxEnt.submitForm(addSysParamForm);
-		        } 
-			    });
-		});
+					rules: {
+						'code': {
+							   required: true,
+							   maxlength:64
+						   },
+					   'value': {
+						   required: true,
+						   maxlength:128
+					   },
+					   'desc': {
+						   required: true,
+						   maxlength:2000
+					   }
+					  },
+					  submitHandler:function(form){
+						kjcs.ajaxEnt.submitForm(addSysParamForm);
+				        } 
+					    });
+				})
 	</script>
 
 <script type="text/javascript">

@@ -47,10 +47,11 @@
     			var windowHeight=$(window).height();
 //    			var documentHeight=$(document).height();
     			var sliceHeight=slice.height();
-    			return (windowHeight>sliceHeight?windowHeight:sliceHeight)-top;
+//    			return (windowHeight>sliceHeight?windowHeight:sliceHeight)-top;
+    			return '100%';
     		}
 			var sliceHeight=slice.height();
-			return sliceHeight;
+			return sliceHeight+'px';
     	},	
         init: function() {
 
@@ -70,7 +71,7 @@
                  tab_content = notFirstSliceDiv.addClass('hideflip');
             }
 
-            var containerDiv = this.$elem.find('.tabcontainer');
+            var containerDiv = this.$elem.children('.tabcontainer');
             var firstSlice = containerDiv.children('div:first');
 
             var allSlicedivs = containerDiv.children('div');
@@ -85,7 +86,8 @@
             });
 
 //            containerDiv.css('height',firstdivheight+'px');
-            containerDiv.css('height',this.getWindowHeight(firstSlice)+'px');
+            containerDiv.css('height','100%');
+            containerDiv.css('min-height','100px');
             
             firstchildLink.addClass('tabulous_active');
 
@@ -122,8 +124,7 @@
 
                 var thisSlice=thisform.find('div'+thislink);
 //                containerDiv.css('height',thisdivwidth+'px');
-                containerDiv.css('height',tabObj.getWindowHeight(thisSlice)+'px');
-
+                //containerDiv.css('height',tabObj.getWindowHeight(thisSlice));
             });
 
            

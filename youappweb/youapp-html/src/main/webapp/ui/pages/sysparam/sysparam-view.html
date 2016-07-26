@@ -16,7 +16,7 @@
     	<div class="box box-info">
 	        <div class="box-footer">
 	          <button type="button" class="btn btn-primary"
-	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-list.html");'
+	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -66,8 +66,7 @@
     
     <script type="text/javascript">
     
-    $(function(){
-    	
+    $_youapp.execute(function(){
     	function getId(){
         	//return "01a25c91-be3c-42a5-a27f-8415eae1b3ad";
         	return kjcs.htmlEnt.getparam("id");

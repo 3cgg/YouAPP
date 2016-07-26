@@ -56,8 +56,8 @@
 	
 	
 	function LayoutDraw(){
-		this.draw=function(layoutId,data){
-			var layout=new Layout(data);
+		this.draw=function(layoutId,$dom){
+			var layout=new Layout($dom);
 			layout.draw(layoutId);
 		}
 		/*
@@ -80,6 +80,42 @@
 			if($_youapp.$tabs[tabDomId].exists(id)){
 				$_youapp.$tabs[tabDomId].remove(id);
 			}
+		}
+		
+		this.isLayout=function($_dom){
+			var $dom=$($_dom);
+			return $dom.is('div')&&$dom.attr("data-layoutid");
+		}
+		
+		this.getClosestLayoutId=function($_dom){
+			var $dom=$($_dom);
+			var $parent=$dom;
+			var cycl=0
+			do{
+				if(this.isLayout($parent)){
+					return $parent.data('layoutid');
+				}
+				cycl++;
+			}while(cycl<1000&&($parent=$parent.parent()));
+		}
+		
+		this.replace=function(layoutId,htmlurl){
+			var $target=$(document).find('[data-layoutid="'+layoutId+'"]');
+			var $dom;
+			if($target){
+				$target.empty();
+				$target.data('htmlurl',htmlurl);
+				$dom=$target;
+			}
+			else{
+				var layoutString=this.layoutDomString(layoutId,htmlurl);
+				$dom=$(layoutString);
+			}
+			this.draw(layoutId,$dom);
+		}
+		
+		this.layoutDomString=function(layoutId,htmlurl){
+			return '<div data-layoutId="'+id+'" data-htmlUrl="'+htmlurl+'" ></div>';
 		}
 		
 	}
@@ -141,9 +177,14 @@
 	}
 	
 	function HtmlExchange(){
-		this.htmlView=function(options){
-			var ajax=new Ajax();
-			ajax.request($.extend({},options,{type:'GET'}));
+		this.htmlView=function(htmlUrl,layoutId){
+			$_youapp.$_layout.replace(layoutId,htmlUrl);
+		}
+		
+		this.linkView=function($linkDom,htmlUrl,layoutId){
+			if(!layoutId)
+				layoutId=$_youapp.$_layout.getClosestLayoutId($linkDom);
+			this.htmlView(htmlUrl,layoutId);
 		}
 		
 		this.newTab=function($aDom){
@@ -168,4 +209,34 @@
 	window.$_youapp.$_layout.draw('body',$('body'));
 	window.$_youapp.$_data=new DataExchange();
 	window.$_youapp.$_html=new HtmlExchange();
+	
+	window.$_youapp.execute=function(func){
+		new function(){
+			try{
+				func();
+			}catch (e) {
+				$_youapp.$_util.log(e);
+			}
+		}(window);
+	}
+	
+	$.fn.extend({
+		goView:function(htmlUrl,data,layoutId){
+			if(data){
+				var defData={
+						htmlRequestTime:new Date().getTime()
+				}
+				htmlUrl=htmlUrl+'?param='+$_youapp.$_util.json($.extend({},defData,data));
+			}
+			window.$_youapp.$_html.linkView($(this),htmlUrl,layoutId);
+		}
+	});
+	
+	setTimeout(function(){
+		var minHeight = $(window).outerHeight()
+		- $(".main-header").outerHeight()
+		- $(".main-footer").outerHeight();
+		$(".content-wrapper").css("min-height", minHeight + "px");
+	},1000)
+	
 })(window);

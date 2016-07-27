@@ -6876,7 +6876,7 @@
                         return me.trigger('load');
                     } else if ( xhr.status >= 500 && xhr.status < 600 ) {
                         me._response = xhr.responseText;
-                        return me.trigger( 'error', 'server' );
+                        return me.trigger( 'error', me._response );
                     }
     
     

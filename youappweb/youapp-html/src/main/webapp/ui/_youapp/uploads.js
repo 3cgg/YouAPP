@@ -7,11 +7,14 @@ $.fn.extend({
 	 *  addMoreBtnId:""
 	 *  dndAreaId:""
 	 *  server:""
+	 *  fnRemoveFile
 	 * }
 	 */
 	initUploader : function(options) {
 		var defaultOpts={
-				
+				fnRemoveFile:function(data){
+					$_youapp.$_util.log($_youapp.$_util.json(data));
+				}
 		}
 		options=$.extend({},defaultOpts,options);
 
@@ -153,6 +156,7 @@ $.fn.extend({
 
         // 实例化
         var uploader = WebUploader.create({
+        	$_options:options,
             pick: {
                 id: '#'+options.addBtnId,
                 label: '点击选择图片'
@@ -223,7 +227,7 @@ $.fn.extend({
         });
 
         // 当有文件添加进来时执行，负责view的创建
-        function addFile( file ) {
+        function addFile( file) {
         	//debugger;
             var $li = $( '<li id="' + file.id + '">' +
                     '<p class="title">' + file.name + '</p>' +
@@ -336,6 +340,17 @@ $.fn.extend({
                 switch ( index ) {
                     case 0:
                         uploader.removeFile( file );
+                        // remove file from server 
+                        var uploaderId=uploader.options.$_options.uploaderId;
+                        var key=file.name; // file.id 
+                        var map=$('#'+uploaderId).data("uploadfiles");
+                        var data;
+                        if(map){
+                        	data=map.get(key);
+                        	map.remove(key);
+                        }
+                        $('#'+uploaderId).data("uploadfiles",map);
+                        uploader.options.$_options.fnRemoveFile(data);
                         return;
 
                     case 1:
@@ -593,7 +608,17 @@ $.fn.extend({
         };
         uploader.onUploadSuccess = function( file,response  ) {
         	//debugger;
-            alert( 'Success: ' + response  );
+        	$_youapp.$_util.log( 'Success: ' + $_youapp.$_util.json(response)  );
+            
+            var uploaderId=this.options.$_options.uploaderId;
+            var data=response;
+            var key=file.name; // file.id 
+            var map=$('#'+uploaderId).data("uploadfiles");
+            if(!map){
+            	map=$_youapp.$_util.newMap();
+            }
+            map.put(key,data);
+            $('#'+uploaderId).data("uploadfiles",map);
         };
         updateTotalProgress();
 

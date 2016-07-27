@@ -3,8 +3,8 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.web.htmlclient.interceptor.DataRequestServletRequestInvocation;
-import j.jave.web.htmlclient.interceptor.DefaultDataRequestServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.DefaultFileUploaderRequestServletRequestInvocation;
+import j.jave.web.htmlclient.interceptor.FileUploaderRequestServletRequestInvocation;
 import j.jave.web.htmlclient.response.ResponseModel;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class UploaderServlet extends HttpServlet{
 			throws ServletException, IOException {
 		Object respModel=null;
 		try{
-			DataRequestServletRequestInvocation invocation=new DefaultDataRequestServletRequestInvocation(req, resp);
+			FileUploaderRequestServletRequestInvocation invocation=new DefaultFileUploaderRequestServletRequestInvocation(req, resp);
         	respModel=invocation.proceed();
         	
 		}catch(Exception e){

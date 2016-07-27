@@ -1,7 +1,5 @@
 package j.jave.web.htmlclient.servlet;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.filedistribute.eventdriven.JFileDistStoreEvent;
 import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -11,8 +9,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -107,9 +103,7 @@ public abstract class ServletUtil {
 						File file=new File(fileName);
 						JFile jFile=new JFile(file);
 						jFile.setFileContent(bytes);
-						
-						URL url=JServiceHubDelegate.get().addImmediateEvent(new JFileDistStoreEvent(request, jFile),URI.class).toURL();
-						parameters.put(fis.getFieldName(), url.toString());
+						parameters.put(fis.getFieldName(), jFile);
 					}
 				}
 				

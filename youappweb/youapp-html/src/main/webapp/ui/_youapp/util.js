@@ -4,6 +4,22 @@
 		function List() {
 			this.arrys = [];
 			this.position = -1;
+
+			function equals($_this, $_another) {
+				if ($_this.equals && $.isFunction($_this.equals)) {
+					return $_this.equals.apply($_this, [ $_another ]);
+				} else {
+					if ($.type($_this) === 'string' || $.type($_this) === 'boolean'
+							|| $.type($_this) === 'number' || $.type($_this) === 'date') {
+						return $_this == $_another;
+					} else {
+						for ( var i in $_this) {
+							equals($_this[i], [ $_another[i] ]);
+						}
+					}
+				}
+			}
+
 			this.size = function() {
 				return this.position + 1;
 			};
@@ -24,7 +40,7 @@
 				exists = false;
 				var i = 0;
 				for (; i < this.size(); i++) {
-					if (this.arrys[i] == id) {
+					if (equals(this.arrys[i], id)) {
 						exists = true;
 						break;
 					}
@@ -36,7 +52,7 @@
 				exists = false;
 				var i = 0;
 				for (; i < this.size(); i++) {
-					if (this.arrys[i] == id) {
+					if (equals(this.arrys[i], id)) {
 						exists = true;
 						break;
 					}
@@ -86,7 +102,7 @@
 				this.compress();
 			};
 
-			this.removeNull = function() {
+			this.val = function() {
 				var tempArr = [];
 				for (var i = 0; i < this.size(); i++) {
 					if (this.get(i) != null) {
@@ -95,6 +111,75 @@
 				}
 				return tempArr;
 			}
+		}
+		
+		
+		function ListMap(){
+
+			this.entries = new List();
+
+			function genEntry(key, val) {
+				return {
+					key : key,
+					value : val,
+					equals : function($obj) {
+						return this.key == $obj.key;
+					}
+				}
+			}
+
+			this.put = function(key, val) {
+				var entry = genEntry(key, val);
+				if (this.entries.exists(entry)) {
+					this.entries.remove(entry);
+				}
+				this.entries.add(entry);
+			}
+
+			this.get = function(key) {
+				var entry = genEntry(key, null);
+				var index = this.entries.indexOf(entry);
+				if (index != -1) {
+					return this.entries.get(index).value;
+				}
+			}
+
+			this.exists = function(key) {
+				var entry = genEntry(key, null);
+				return this.entries.exists(entry);
+			}
+
+			this.remove = function(key) {
+				var entry = genEntry(key, null);
+				return this.entries.remove(entry);
+			}
+
+			this.val = function() {
+				return this.entries.val();
+			}
+
+			this.size = function() {
+				return this.entries.size();
+			}
+
+			this.keys = function() {
+				var keys = [];
+				var keyVals = this.val();
+				for (var i = 0; i < keyVals.length; i++) {
+					keys[i] = keyVals[i].key;
+				}
+				return keys;
+			}
+
+			this.values = function() {
+				var values = [];
+				var keyVals = this.val();
+				for (var i = 0; i < keyVals.length; i++) {
+					values[i] = keyVals[i].value;
+				}
+				return values;
+			}
+
 		}
 		
 		/**
@@ -146,6 +231,10 @@
 			return new List();
 		}
 		
+		this.newMap=function(){
+			return new ListMap();
+		}
+		
 		this.log=function(msg){
 			if(window.console){
 				window.console.log(msg);
@@ -181,7 +270,7 @@
 				var ele=i;
 				var val=obj[ele];
 				if(val.constructor===List){
-					obj[ele]=val.removeNull();
+					obj[ele]=val.val();
 				}
 			}
 			return obj;

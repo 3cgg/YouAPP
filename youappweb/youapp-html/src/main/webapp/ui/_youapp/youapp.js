@@ -12,7 +12,7 @@
 					all.add($($foundHtmlUrl[i]));
 				}
 			}
-			return all.removeNull();
+			return all.val();
 		}
 		
 		this.requset=function(){

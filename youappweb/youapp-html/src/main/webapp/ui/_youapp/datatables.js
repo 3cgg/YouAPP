@@ -1,7 +1,7 @@
 $.fn.extend({
 	
 	getSelectedRow:function(){
-		return $(this.selector).data("datatables-checked").removeNull();
+		return $(this.selector).data("datatables-checked").val();
 	}
 	,
 	

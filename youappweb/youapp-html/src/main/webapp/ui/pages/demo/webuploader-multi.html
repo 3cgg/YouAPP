@@ -57,7 +57,7 @@
 			addBtnId:"uploader_multi_1_filePicker",
 			addMoreBtnId:"uploader_multi_1_filePicker2",
 			dndAreaId:"uploader_multi_1_dndArea",
-			server:"http://localhost:8080/webshowcase/data/uploaddata/file"
+			server:$_youapp.$_config.getFileUploaderEndpoint()
 		});
 		
 		$('#uploader_multi_2').initUploader({
@@ -65,7 +65,7 @@
 			addBtnId:"uploader_multi_2_filePicker",
 			addMoreBtnId:"uploader_multi_2_filePicker2",
 			dndAreaId:"uploader_multi_2_dndArea",
-			server:"http://localhost:8080/webshowcase/data/uploaddata/file"
+			server:$_youapp.$_config.getFileUploaderEndpoint()
 		});
 		
 	</script>

@@ -210,6 +210,60 @@
 	window.$_youapp.$_data=new DataExchange();
 	window.$_youapp.$_html=new HtmlExchange();
 	
+	window.$_youapp.$_toast=(function(){
+		
+		function def(opts){
+			var defOpts={
+				stack:10,
+				position: 'top-right'
+			}
+			return $.extend({},defOpts,opts);
+		}
+		
+		this.success=function(heading,text){
+			$.toast(def({
+			    heading: heading,
+			    text: text,
+			    showHideTransition: 'slide',
+			    icon: 'success'
+			}));
+		}
+		
+		this.warning=function(heading,text){
+			$.toast(def({
+			    heading: heading,
+			    text: text,
+			    showHideTransition: 'slide',
+			    icon: 'warning'
+			}));
+		}
+		
+		this.info=function(heading,text){
+			$.toast(def({
+			    heading: heading,
+			    text: text,
+			    showHideTransition: 'slide',
+			    icon: 'info'
+			}));
+		}
+		
+		this.error=function(heading,text){
+			$.toast(def({
+			    heading: heading,
+			    text: text,
+			    showHideTransition: 'slide',
+			    hideAfter: 10000,
+			    icon: 'error'
+			}));
+		}
+		return {
+			success:this.success,
+			info:this.info,
+			warning:this.warning,
+			error:this.error
+		}
+	})();
+	
 	window.$_youapp.execute=function(func){
 		new function(){
 			try{

@@ -21,7 +21,11 @@ public class HttpContextWithInnerProtocolDataBinder implements JDataBinder{
 		JObjectTransModel objectTransModel= httpContext.getObjectTransModel();
 		Map<String, Object> params= objectTransModel.getParams();
 		String name=methodParamObject.getMethodParamMeta().getName();
-		Object object= params.get(name);
+		int index=methodParamObject.getMethodParamMeta().getIndex();
+		Object object= params.get(index+"");
+		if(object==null){
+			object= params.get(name);
+		}
 		if(object==null){
 			methodParamObject.setObject(object);
 		}
@@ -33,7 +37,7 @@ public class HttpContextWithInnerProtocolDataBinder implements JDataBinder{
 				break;
 			case JSON:
 				methodParamObject.setObject(
-						JJSON.get().parse(JJSON.get().formatObject(object), methodParamObject.getClass())
+						JJSON.get().parse(String.valueOf(object), methodParamObject.getClass())
 						);
 				break;	
 			default:

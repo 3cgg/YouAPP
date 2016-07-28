@@ -4,7 +4,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.webcomp.access.subhub.AuthenticationHookService;
 import j.jave.platform.webcomp.core.service.SessionUser;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class AuthenticationHookServiceImpl implements AuthenticationHookService 
 	private UserTrackerService userTrackerService;
 	
 	@Override
-	public void doAfterLogin(HttpContext httpContext) {
+	public void doAfterLogin(ServletHttpContext httpContext) {
 		try{
 			UserTracker userTracker=new UserTracker();
 			SessionUser sessionUser=httpContext.getUser();
@@ -41,7 +41,7 @@ public class AuthenticationHookServiceImpl implements AuthenticationHookService 
 	}
 	
 	@Override
-	public void doAfterLoginout(HttpContext httpContext) {
+	public void doAfterLoginout(ServletHttpContext httpContext) {
 		LOGGER.info("loginout..... ----> "+httpContext.getTicket());
 	}
 }

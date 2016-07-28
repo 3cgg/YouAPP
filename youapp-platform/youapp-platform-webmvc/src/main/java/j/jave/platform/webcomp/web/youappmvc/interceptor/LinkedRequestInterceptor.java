@@ -88,9 +88,9 @@ public class LinkedRequestInterceptor implements ServletRequestInterceptor {
 				return servletRequestInvocation.proceed();
 			}
 			
-		}catch(Exception e){
+		}catch(Throwable e){
 			LOGGER.error(e.getMessage(), e);
-			return ServletExceptionUtil.exception(req, response, e);
+			return e;
 		}
 	}
 

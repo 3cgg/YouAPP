@@ -5,7 +5,7 @@ package j.jave.platform.webcomp.web.youappmvc.jspview.tag;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +53,7 @@ public class AccessTag implements Tag{
 
 		HttpServletRequest request=(HttpServletRequest) pageContext.getRequest();
 		//String userName=pageContext.get
-		HttpContext httpContext=YouAppMvcUtils.getHttpContext(request);
+		ServletHttpContext httpContext=YouAppMvcUtils.getHttpContext(request);
 		boolean authorized=loginAccessService.authorizeOnUserId(resource, httpContext.getUser().getUserId());
 		if(!authorized){
 			return SKIP_BODY;

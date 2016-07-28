@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public interface AuthenticationHandler {
 	 * @param httpContext
 	 * @throws Exception
 	 */
-	public Object handleLoginout(HttpServletRequest request, HttpServletResponse response,HttpContext httpContext) throws Exception;
+	public Object handleLoginout(HttpServletRequest request, HttpServletResponse response,ServletHttpContext httpContext) throws Exception;
 	
 	
 	/**

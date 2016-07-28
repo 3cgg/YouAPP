@@ -8,11 +8,7 @@ import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.support.JServletContext;
 import j.jave.platform.webcomp.web.youappmvc.servlet.MvcServiceServlet;
-import j.jave.platform.webcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.webcomp.web.youappmvc.support.APPFilterConfig;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -43,67 +39,18 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(ValidPathInterceptor.class);
 	
-	private ServletConfigService servletConfigService=JServiceHubDelegate.get().getService(this, ServletConfigService.class);
-	
 	private AuthenticationAccessService loginAccessService= JServiceHubDelegate.get().getService(this, AuthenticationAccessService.class);
-	
-//	private JServletDetect servletDetect=null;
-	
-//	private JServletContext servletContext=null;
-	
-	/**
-	 * "/web/service/dispatch/*" pattern configured in web.xml . 
-	 */
-//	private String serviceServletPath=null;
-	
-//	private Object sync=new Object();
 	
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
-		HttpServletRequest request= servletRequestInvocation.getHttpServletRequest();
-		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
 		
 		try{
-			/* @Deprecated
-			if(servletDetect==null){
-				synchronized (sync) {
-					if(servletDetect==null){
-						servletDetect=new JServletDetect(request);
-						servletContext=servletDetect.getServletContext();
-					}
-				}
-			}
-			
-			if(servletContext!=null){
-				String servletPath=request.getServletPath();
-				
-				if(JStringUtils.isNullOrEmpty(servletPath)||"/".equals(servletPath)){
-					//forward to login view page, if request root resource, note it's extend to browser
-					// the way is @Deprecated
-					String entranceViewPath="";
-					if(JStringUtils.isNotNullOrEmpty(serviceServletPath)){
-						entranceViewPath=serviceServletPath+servletConfigService.getToLoginPath();
-					}
-					else {
-						entranceViewPath=servletContext.getJSPServletUrlMappingResolvingStar()+servletConfigService.getToLoginPath();
-					}
-					ResponseModel responseModel=ResponseModel.newError().setData("the root url is not supported.");
-					return responseModel;
-				}
-				
-				servletPath=servletPath+"/";
-				boolean isServletPath=servletContext.containServletPath(servletPath);
-				if(!isServletPath){
-					return servletRequestInvocation.proceed();
-				}
-			}
-			*/
-			String path=servletRequestInvocation.getMappingPath();
+			String path=servletRequestInvocation.getHttpContext().getVerMappingMeta().getMappingPath();
 			if(JStringUtils.isNotNullOrEmpty(path)&&!"/".equals(path)){
 				boolean validPath=loginAccessService.isValidResource(path);
 				if(!validPath){
 					ResponseModel responseModel=ResponseModel.newInvalidPath();
-					responseModel.setData(servletConfigService.getInvalidPathInfo());
+					responseModel.setData("the url is missing, url : "+path);
 					return responseModel;
 				}
 				return servletRequestInvocation.proceed();
@@ -112,9 +59,9 @@ public class ValidPathInterceptor implements ServletRequestInterceptor  {
 				ResponseModel responseModel=ResponseModel.newError().setData("the root url is not supported.");
 				return responseModel;
 			}
-		}catch(Exception e){
+		}catch(Throwable e){
 			LOGGER.error(e.getMessage(), e); 
-			return ServletExceptionUtil.exception(request, response, e);
+			return e;
 		}
 	}
 

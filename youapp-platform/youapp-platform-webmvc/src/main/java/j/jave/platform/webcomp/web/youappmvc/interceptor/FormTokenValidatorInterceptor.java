@@ -62,9 +62,9 @@ public class FormTokenValidatorInterceptor implements ServletRequestInterceptor 
 				}
 			}
 		}
-		catch(Exception e){
+		catch(Throwable e){
 			LOGGER.error(e.getMessage(), e); 
-			return ServletExceptionUtil.exception(req, resp, e);
+			return e;
 		}
 		
 	}

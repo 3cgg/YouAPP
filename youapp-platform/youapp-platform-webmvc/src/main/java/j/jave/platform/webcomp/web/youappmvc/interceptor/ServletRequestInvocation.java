@@ -1,6 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.RequestContext;
+import j.jave.platform.webcomp.web.youappmvc.ResponseContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,22 +17,20 @@ public interface ServletRequestInvocation {
 	 * progress of executing intercepters
 	 * @return
 	 */
-	public Object proceed();
+	public Object proceed()  throws Throwable;
 	
+	@Deprecated
 	public HttpServletRequest getHttpServletRequest();
 
+	@Deprecated
 	public HttpServletResponse getHttpServletResponse();
+	
+	public RequestContext getRequestContext();
+	
+	public ResponseContext getResponseContext();
 	
 	HttpContext getHttpContext();
 	
 	void setHttpContext(HttpContext httpContext);
-	
-	public void setUnique(String unique);
-	
-	public String getUnique();
-	
-	public void setMappingPath(String mappingPath);
-	
-	public String getMappingPath();
 	
 }

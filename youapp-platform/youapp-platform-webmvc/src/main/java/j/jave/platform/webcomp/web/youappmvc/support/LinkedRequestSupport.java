@@ -8,7 +8,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.sps.support.memcached.subhub.MemcachedDelegateService;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.LinkedRequestInterceptor;
 import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
 
@@ -42,7 +42,7 @@ public class LinkedRequestSupport {
 	
 	/**
 	 * be used for linked request, the linked request parameter stores in the additional map in request scope, the additional map key is 
-	 * {@link HttpContext #ADDITIONAL_PARAM_KEY}
+	 * {@link ServletHttpContext #ADDITIONAL_PARAM_KEY}
 	 */
 	public static final String LINKED_REQUEST_PARAM_KEY="j.jave.framework.components.web.linked.param";
 	

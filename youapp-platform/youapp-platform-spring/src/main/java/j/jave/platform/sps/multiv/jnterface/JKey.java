@@ -17,7 +17,7 @@ import java.util.Properties;
  */
 public abstract class JKey {
 
-	protected int version;
+	protected String version;
 	
 	protected String component;
 	
@@ -46,14 +46,14 @@ public abstract class JKey {
 					properties);
 			component = JPropertiesUtils.getKey(
 					ComponentMetaNames.COMPONENT_NAME, properties);
-			version = Integer.parseInt(JPropertiesUtils.getKey(
-					ComponentMetaNames.COMPONENT_VERSION, properties));
+			version = JPropertiesUtils.getKey(
+					ComponentMetaNames.COMPONENT_VERSION, properties);
 		} catch (Exception e) {
 			throw new JInitializationException(e);
 		}
 	}
-
-	public int getVersion() {
+	
+	public String getVersion() {
 		return version;
 	}
 

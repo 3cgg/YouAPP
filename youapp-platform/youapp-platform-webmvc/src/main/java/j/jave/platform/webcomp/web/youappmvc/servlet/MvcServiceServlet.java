@@ -10,7 +10,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.support.JServlet;
 import j.jave.platform.webcomp.web.util.JResponseWrittenRejectWrapper;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.DefaultServletRequestInvocation;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletExceptionUtil;
@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletResponse;
  *  the servlet also test the object from ActionExecutor is File(see {@link JFile}) or not, if true the response will be for downloading file,
  *  Note that we check that according to {@link JFile} ,but not any byte array {@link byte[]}. 
  * @author J
- * @see HttpContext
- * @see ControllerExecutor#execute(HttpContext)
+ * @see ServletHttpContext
+ * @see ControllerExecutor#execute(ServletHttpContext)
  * @see JSONServletViewHandler
  */
 @SuppressWarnings("serial")
@@ -86,7 +86,7 @@ public class MvcServiceServlet  extends JServlet {
 				LOGGER.debug("the response of "+req.getRequestURL()+"[DispathType:"+req.getDispatcherType().name()+"] is OK!");
 			}
 		}
-		catch(Exception e){
+		catch(Throwable e){
 			ResponseModel responseModel=  ServletExceptionUtil.exception(req, response, e);
 			HttpServletResponseUtil.write(request, response, null, responseModel);
 		}finally{

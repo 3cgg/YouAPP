@@ -7,11 +7,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
-import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
-import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 /**
  * filter on all request , check if the request is authorized on the end-user.
  * the filter may follow from JJSPLoginFilter, but the filter also intercept those request from mobile platform such as Android, IOS
@@ -35,48 +30,36 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 	private AuthenticationAccessService loginAccessService=JServiceHubDelegate.get().getService(this,AuthenticationAccessService.class);
 	
 	@Override
-	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
-
-		HttpServletRequest req=(HttpServletRequest) servletRequestInvocation.getHttpServletRequest();
-		HttpServletResponse response=servletRequestInvocation.getHttpServletResponse();
+	public Object intercept(ServletRequestInvocation servletRequestInvocation) throws Throwable {
 		
 		try{
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String pathInfo=servletRequestInvocation.getMappingPath();
+			String pathInfo=servletRequestInvocation.getHttpContext().getVerMappingMeta().getMappingPath();
 			 
 			if(!loginAccessService.isNeedLoginRole(pathInfo)){
 				// 资源不需要登录权限
 				return servletRequestInvocation.proceed();
 			}
-			
-			String clientTicket=YouAppMvcUtils.getTicket(req);
-			
-			// IF LOGINED, need check whether has an access to the resource
-			if(JStringUtils.isNotNullOrEmpty(clientTicket)){
-				HttpContext context=HttpContextHolder.get();
-				if(context!=null){
-					boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, context.getUser().getUserId());
-					authorized=true;
-					if(!authorized){
-						ResponseModel responseModel=ResponseModel.newNoAccess();
-						responseModel.setData("have no access to the resource.");
-//						HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
-						return responseModel;
-					}
-				}
-				else{
-					ResponseModel responseModel=ResponseModel.newNoLogin();
-					responseModel.setData("login user information [ticket:"+clientTicket+"] miss, refresh your broswer to re-login");
-					
-					YouAppMvcUtils.removeTicket(req, (HttpServletResponse) response);
-//					HttpServletResponseUtil.write(req, (HttpServletResponse) response, HttpContextHolder.get(), responseModel);
+			HttpContext context=servletRequestInvocation.getHttpContext();
+			String userId=context.getServiceContext().getSessionUser().getUserId();
+			if(JStringUtils.isNotNullOrEmpty(userId)){
+				boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, userId);
+				authorized=true;
+				if(!authorized){
+					ResponseModel responseModel=ResponseModel.newNoAccess();
+					responseModel.setData("have no access to the resource.");
 					return responseModel;
 				}
+			}
+			else{
+				ResponseModel responseModel=ResponseModel.newNoLogin();
+				responseModel.setData("user information miss.");
+				return responseModel;
 			}
 			return servletRequestInvocation.proceed();
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e); 
-			return ServletExceptionUtil.exception(req, response, e);
+			throw e;
 		}
 	}
 	

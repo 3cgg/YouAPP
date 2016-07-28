@@ -13,7 +13,7 @@ import j.jave.platform.sps.core.container.SpringCompMicroContainer;
 import j.jave.platform.sps.core.container.SpringCompMicroContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerExecutor;
 
 import java.net.URI;
@@ -81,7 +81,7 @@ public class InnerHttpInvokeContainer implements JExecutor,JIdentifier,JContaine
 								+ " check if turn on multiple component version infrastructure (immutable version)."
 								+ " attempt to prefix /youappcomp/[appname]/[component]/[compversion]/...  you actual path.");
 					}
-					return ControllerExecutor.newSingleExecutor().execute((HttpContext)object,
+					return ControllerExecutor.newSingleExecutor().execute((ServletHttpContext)object,
 							mappingMeta, controllerObject);
 				}catch(Exception e){
 					LOGGER.error(e.getMessage(), e);

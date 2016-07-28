@@ -6,14 +6,12 @@ import j.jave.kernal.jave.io.JFile;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
-import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
+import j.jave.platform.webcomp.web.youappmvc.RequestContext;
+import j.jave.platform.webcomp.web.youappmvc.ResponseContext;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.JSONServletViewHandler;
 
 import java.net.URI;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 
@@ -26,24 +24,18 @@ public class ControllerInvokeInterceptor implements ServletRequestInterceptor {
 	
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
-		
-		HttpServletRequest req=servletRequestInvocation.getHttpServletRequest();
-		HttpServletResponse resp=servletRequestInvocation.getHttpServletResponse();
-
-		HttpContext httpContext=HttpContextHolder.get().initHttp(req, resp);
-		servletRequestInvocation.setHttpContext(httpContext);
+		RequestContext req=servletRequestInvocation.getRequestContext();
+		ResponseContext resp=servletRequestInvocation.getResponseContext();
+		HttpContext httpContext=servletRequestInvocation.getHttpContext();
 		try{
-			
-			String target=servletRequestInvocation.getMappingPath();
-			httpContext.setTargetPath(target);
-			httpContext.setUnique(servletRequestInvocation.getUnique());
+			String target=httpContext.getVerMappingMeta().getMappingPath();
 			Object navigate=
 					httpInvokeContainerDelegateService.execute(
-							new URI(httpInvokeContainerDelegateService.getExecuteRequestURI(httpContext.getUnique(), httpContext.getTargetPath()))
-							,httpContext,httpContext.getUnique());
+							new URI(httpInvokeContainerDelegateService.getExecuteRequestURI(httpContext.getVerMappingMeta().getUnique(), target))
+							,httpContext,httpContext.getVerMappingMeta().getUnique());
 					
 			if(LOGGER.isDebugEnabled()){
-				LOGGER.debug("the response of "+req.getRequestURL()+"[DispathType:"+req.getDispatcherType().name()+"] is OK!");
+				LOGGER.debug("the response of "+httpContext.getUrl().toString()+" is ok!");
 			}
 			// if response for download.
 			if(JFile.class.isInstance(navigate)){

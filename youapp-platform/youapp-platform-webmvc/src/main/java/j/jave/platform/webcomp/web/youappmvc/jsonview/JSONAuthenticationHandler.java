@@ -9,7 +9,7 @@ import j.jave.platform.webcomp.access.subhub.AuthenticationHookDelegateService;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.util.JCookieUtils;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.AuthenticationHandler;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletExceptionUtil;
@@ -79,11 +79,11 @@ public class JSONAuthenticationHandler implements AuthenticationHandler {
 			HttpServletResponse response) throws Exception {
 		String name=request.getParameter(loginName);
 		String password=request.getParameter(loginPassword);
-		HttpContext httpContext=null;
+		ServletHttpContext httpContext=null;
 		try{
 			SessionUserImpl sessionUserImpl=authenticationAccessService.login(name, password);
 			if(sessionUserImpl!=null){
-				httpContext=new HttpContext();
+				httpContext=new ServletHttpContext();
 				httpContext.setTicket(sessionUserImpl.getTicket());
 				httpContext.setUser(sessionUserImpl);
 				memcachedService.add(sessionUserImpl.getTicket(), expiredTime, httpContext);
@@ -110,7 +110,7 @@ public class JSONAuthenticationHandler implements AuthenticationHandler {
 	
 	@Override
 	public Object handleLoginout(HttpServletRequest request,
-			HttpServletResponse response,HttpContext httpContext) throws Exception {
+			HttpServletResponse response,ServletHttpContext httpContext) throws Exception {
 		try{
 			memcachedService.remove(httpContext.getTicket());
 			authenticationHookDelegateService.doAfterLoginout(httpContext);

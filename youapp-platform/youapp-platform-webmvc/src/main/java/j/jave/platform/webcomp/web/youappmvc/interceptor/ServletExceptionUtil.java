@@ -11,7 +11,7 @@ public class ServletExceptionUtil {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(ServletExceptionUtil.class);
 	
-	public static ResponseModel exception(ServletRequest request, ServletResponse response,Exception exception){
+	public static ResponseModel exception(ServletRequest request, ServletResponse response,Throwable exception){
 		try{
 			ResponseModel responseModel=ResponseModel.newError().setData(exception.getMessage());
 //			HttpServletResponseUtil.write((HttpServletRequest)request, (HttpServletResponse)response, HttpContextHolder.get(), responseModel);

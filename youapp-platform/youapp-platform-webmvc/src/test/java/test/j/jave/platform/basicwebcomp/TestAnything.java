@@ -5,7 +5,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.service.PageableService;
 
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class TestAnything{
 	public void testPageable(){
 		
 		PageableService pageableService= serviceHubDelegate.getService(this, PageableService.class);
-		JPageable page=pageableService.parse(new HttpContext());
+		JPageable page=pageableService.parse(new ServletHttpContext());
 		System.out.println("end : "+page);
 	}
 }

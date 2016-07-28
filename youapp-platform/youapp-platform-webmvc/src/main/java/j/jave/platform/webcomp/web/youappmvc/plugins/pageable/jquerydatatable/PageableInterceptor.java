@@ -80,7 +80,7 @@ public class PageableInterceptor implements ServletRequestInterceptor {
 	
 	
 	@Override
-	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
+	public Object intercept(ServletRequestInvocation servletRequestInvocation)  throws Throwable {
 		Object obj=servletRequestInvocation.proceed();
 //		if(obj instanceof InvokeResultVO){
 //			InvokeResultVO invokeResultVO=(InvokeResultVO) obj;

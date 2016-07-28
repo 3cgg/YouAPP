@@ -6,12 +6,10 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
+import j.jave.platform.webcomp.web.youappmvc.VerMappingMeta;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * process path with multi-version.
@@ -25,26 +23,34 @@ public class MultiVersionCheckInterceptor implements ServletRequestInterceptor {
 	
 	@Override
 	public Object intercept(ServletRequestInvocation servletRequestInvocation) {
-		HttpServletRequest req=servletRequestInvocation.getHttpServletRequest();
 		try{
-			String targetPath=YouAppMvcUtils.getPathInfo(req);
+			String targetPath=servletRequestInvocation.getHttpContext().getRequestPath();
             String unique =SpringContextSupport.PLATFORM;
             String mappingPath=null;
-            String mutiPattern="^(/youappcomp/[a-zA-Z]+/[a-zA-Z]+/[0-9]+){0,1}(/[a-zA-Z0-9._/]+)";
-            Pattern pattern=Pattern.compile(mutiPattern);
-            Matcher matcher=pattern.matcher(targetPath);
-            if(matcher.matches()){
-            	String tempUnique=getUnique(matcher.group(1));
-            	if(JStringUtils.isNotNullOrEmpty(tempUnique)){
-            		unique=tempUnique;
-            	}
-                mappingPath=matcher.group(2);
+            String mark="/youappcomp/";
+            int index=targetPath.indexOf(mark);
+            if(index!=-1){
+            	targetPath=targetPath.substring(index,targetPath.length());
+            	String mutiPattern="^(/youappcomp/[a-zA-Z-]+/[a-zA-Z-]+/[0-9.]+){0,1}(/[a-zA-Z0-9._/]+)";
+                Pattern pattern=Pattern.compile(mutiPattern);
+                Matcher matcher=pattern.matcher(targetPath);
+                if(matcher.matches()){
+                	String tempUnique=getUnique(matcher.group(1));
+                	if(JStringUtils.isNotNullOrEmpty(tempUnique)){
+                		unique=tempUnique;
+                	}
+                    mappingPath=matcher.group(2);
+                }
             }
-            servletRequestInvocation.setUnique(unique);
-            servletRequestInvocation.setMappingPath(mappingPath);
-            
+            else{
+            	mappingPath=targetPath;
+            }
+            VerMappingMeta verMappingMeta=new VerMappingMeta();
+            verMappingMeta.setUnique(unique);
+            verMappingMeta.setMappingPath(mappingPath);
+            servletRequestInvocation.getHttpContext().setVerMappingMeta(verMappingMeta);
             return servletRequestInvocation.proceed();
-		}catch(Exception e){
+		}catch(Throwable e){
 			LOGGER.error(e.getMessage(),e);
 			return ResponseModel.newError().setData(e.getMessage());
 		}
@@ -60,7 +66,7 @@ public class MultiVersionCheckInterceptor implements ServletRequestInterceptor {
 		String unique;
 		String appName = targets[1];
 		String componentName = targets[2];
-		int version = Integer.parseInt(targets[3]);
+		String version = targets[3];
 		unique = ComponentVersionSpringApplicationSupport.unique(appName,
 				componentName, version);
 		return unique;

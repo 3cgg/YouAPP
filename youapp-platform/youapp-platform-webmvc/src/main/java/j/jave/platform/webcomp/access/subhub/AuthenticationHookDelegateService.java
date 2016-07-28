@@ -2,7 +2,7 @@ package j.jave.platform.webcomp.access.subhub;
 
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +17,14 @@ implements JService,AuthenticationHookService
 	
 
 	@Override
-	public void doAfterLogin(HttpContext httpContext) {
+	public void doAfterLogin(ServletHttpContext httpContext) {
 		if(authenticationHookService!=null){
 			authenticationHookService.doAfterLogin(httpContext);
 		}
 	}
 	
 	@Override
-	public void doAfterLoginout(HttpContext httpContext) {
+	public void doAfterLoginout(ServletHttpContext httpContext) {
 		if(authenticationHookService!=null){
 			authenticationHookService.doAfterLoginout(httpContext);
 		}

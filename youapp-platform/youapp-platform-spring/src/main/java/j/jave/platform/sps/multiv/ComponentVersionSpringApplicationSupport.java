@@ -79,13 +79,6 @@ public abstract class ComponentVersionSpringApplicationSupport {
 		postService.cleanupAfterDestroy((DynamicComponentVersionApplication)old);
 	}
 	
-	
-	public static String unique(String appName,String componentName,int version){
-		JAssert.isNotEmpty(appName);
-		JAssert.isNotEmpty(componentName);
-		return appName+":"+componentName+":"+version;
-	}
-	
 	public static String unique(String appName,String componentName,String version){
 		JAssert.isNotEmpty(appName);
 		JAssert.isNotEmpty(componentName);

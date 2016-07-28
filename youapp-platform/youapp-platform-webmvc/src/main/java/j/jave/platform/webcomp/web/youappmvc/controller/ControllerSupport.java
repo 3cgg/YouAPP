@@ -6,7 +6,6 @@ import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.core.context.SpringContextSupport;
@@ -66,35 +65,13 @@ public abstract class ControllerSupport implements YouappController,Initializing
 		return HttpContextHolder.get();
 	}
 	
-	protected void setAttribute(String key,Object obj){
-		getHttpContext().setAttribute(key, obj);
-	}
-	
 	public String getParameter(String key){
 		return getHttpContext().getParameter(key);
 	}
 	
-	public void setCookie(String key,String value){
-		getHttpContext().setCookie(key, value);
-	}
-	
-	public void setCookie(String key,String value,int maxAge){
-		getHttpContext().setCookie(key, value, maxAge);
-	}
-	
-	public void deleteCookie(String key){
-		getHttpContext().deleteCookie(key);
-	}
 	
 	protected SessionUser getSessionUser(){
-		return getHttpContext().getUser();
-	}
-
-	protected void setSuccessMessage(String message){
-		if(JStringUtils.isNullOrEmpty(message)){
-			message="操作成功";
-		}
-		setAttribute("successAlertMessage", message);
+		return getHttpContext().getServiceContext().getSessionUser();
 	}
 	
 	/**

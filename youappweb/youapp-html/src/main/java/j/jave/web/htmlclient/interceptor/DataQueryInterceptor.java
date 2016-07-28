@@ -13,7 +13,7 @@ public class DataQueryInterceptor implements DataRequestServletRequestIntercepto
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(DataQueryInterceptor.class);
 	
-	private DataQueryService dataQueryService=new DefaultRemoteDataQueryService();
+	private DataQueryService dataQueryService=new WithProtocolRemoteDataQueryService();
 	
 	@Override
 	public Object intercept(DataRequestServletRequestInvocation servletRequestInvocation) {

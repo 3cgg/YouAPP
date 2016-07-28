@@ -24,7 +24,7 @@ public class HttpContextHolder implements JModel {
 	}
 	
 	public static HttpContext getMockHttpContext(){
-		HttpContext httpContext=new HttpContext();
+		ServletHttpContext httpContext=new ServletHttpContext();
 		httpContext.setUser(DefaultSessionUser.getDefaultSessionUser());
 		return httpContext;
 	}

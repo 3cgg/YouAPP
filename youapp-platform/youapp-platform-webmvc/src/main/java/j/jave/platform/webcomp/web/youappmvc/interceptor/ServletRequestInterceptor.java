@@ -8,6 +8,6 @@ package j.jave.platform.webcomp.web.youappmvc.interceptor;
  */
 public interface ServletRequestInterceptor {
 
-	public abstract Object intercept(ServletRequestInvocation servletRequestInvocation);
+	public abstract Object intercept(ServletRequestInvocation servletRequestInvocation) throws Throwable;
 	
 }

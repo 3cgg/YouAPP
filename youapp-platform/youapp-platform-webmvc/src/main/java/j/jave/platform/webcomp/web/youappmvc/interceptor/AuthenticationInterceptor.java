@@ -6,8 +6,8 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.sps.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
 import j.jave.platform.webcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
@@ -36,22 +36,22 @@ protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationInt
 			// REMOVE LOGIN INFO FROM LOCAL.
 			HttpContextHolder.remove();
 			String clientTicket=YouAppMvcUtils.getTicket(req);
-			HttpContext serverTicket=null;
+			ServletHttpContext serverTicket=null;
 			if(JStringUtils.isNotNullOrEmpty(clientTicket)){ // already login
-				serverTicket=(HttpContext) memcachedService.get(clientTicket);
+				serverTicket=(ServletHttpContext) memcachedService.get(clientTicket);
 				if(serverTicket==null){
 					return authenticationHandler.handleExpiredLogin(req, (HttpServletResponse) response);
 				}
 			}
 			// common resource , if path info is null or empty never intercepted by custom servlet.
-			String target=servletRequestInvocation.getMappingPath();
+			String target=servletRequestInvocation.getHttpContext().getVerMappingMeta().getMappingPath();
 			if(!servletConfigService.getLoginPath().equals(target)
 					&&!servletConfigService.getLoginoutPath().equals(target)
 					&&!authenticationAccessService.isNeedLoginRole(target)){
 				// 资源不需要登录权限, 仍然尝试获取登录用户信息
 				if(serverTicket==null){
 					// no login, mock a login user.
-					HttpContext httpContext=HttpContextHolder.getMockHttpContext();
+					ServletHttpContext httpContext=(ServletHttpContext) HttpContextHolder.getMockHttpContext();
 					httpContext.initHttpClient(req, (HttpServletResponse) response);
 					HttpContextHolder.set(httpContext);
 				}
@@ -94,9 +94,9 @@ protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationInt
 					return servletRequestInvocation.proceed();
 				}
 			}
-		}catch(Exception e){
+		}catch(Throwable e){
 			LOGGER.error(e.getMessage(), e); 
-			return ServletExceptionUtil.exception(req, response, e);
+			return e;
 		}
 	
 	}

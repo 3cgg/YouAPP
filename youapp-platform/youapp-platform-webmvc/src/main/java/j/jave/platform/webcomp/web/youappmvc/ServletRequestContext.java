@@ -26,6 +26,9 @@ public class ServletRequestContext implements RequestContext{
 		return request.getParameterValues(name);
 	}
 	
-	
+	@Override
+	public Object getSource() {
+		return request;
+	}
 	
 }

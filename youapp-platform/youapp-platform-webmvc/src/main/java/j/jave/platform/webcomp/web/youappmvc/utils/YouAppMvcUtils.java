@@ -11,6 +11,7 @@ import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.platform.webcomp.web.util.JCookieUtils;
 import j.jave.platform.webcomp.web.util.JWebUtils;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.ViewConstants;
 import j.jave.platform.webcomp.web.youappmvc.support.LinkedRequestSupport;
 
@@ -48,17 +49,17 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	
 	
 	/**
-	 * get {@link HttpContext} from HTTP Request Scope.
+	 * get {@link ServletHttpContext} from HTTP Request Scope.
 	 * @param request
 	 * @return
 	 */
-	public static final HttpContext getHttpContext(HttpServletRequest request){
-		return (HttpContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
+	public static final ServletHttpContext getHttpContext(HttpServletRequest request){
+		return (ServletHttpContext) request.getAttribute(YOUAPP_HTTP_CONTEXT_KEY);
 	}
 	
 	
 	/**
-	 * put the {@link HttpContext} to HTTP Request Scope.
+	 * put the {@link ServletHttpContext} to HTTP Request Scope.
 	 * @param request
 	 * @param httpContext
 	 */
@@ -108,7 +109,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 
 	/**
 	 * set the object properties with the parameter keys of request query string,  
-	 * the value of parameter is ordering by the {@link  HttpContext#getParameter(String)}
+	 * the value of parameter is ordering by the {@link  ServletHttpContext#getParameter(String)}
 	 *  , {@link HttpServletRequest#getParameter(String)} .
 	 * @param obj
 	 * @param request  if {@param httpContext}  does not contains the parameter, then get. <strong>{mandatory}</strong>
@@ -169,7 +170,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	}
 	
 	/**
-	 * set the object properties in the set of {@link HttpContext#getParameters()}. 
+	 * set the object properties in the set of {@link ServletHttpContext#getParameters()}. 
 	 * @param obj
 	 * @param httpContext  <strong>argument is mandatory</strong>
 	 * @throws Exception
@@ -267,7 +268,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	
 	/**
 	 * put additional attributes in the request scope, these attributes are only added by framework. 
-	 * all ones should be in the only one map with the constraint key {@link HttpContext#ADDITIONAL_PARAM_KEY}
+	 * all ones should be in the only one map with the constraint key {@link ServletHttpContext#ADDITIONAL_PARAM_KEY}
 	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
 	 * @param request
 	 * @param key
@@ -276,11 +277,11 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	 */
 	public static Object setAdditionalAttributesInRequestScope(HttpServletRequest request,String key,Object attributes){
 		Object previous=null;
-		Map<String, Object> object=(Map<String, Object>) request.getAttribute(HttpContext.ADDITIONAL_PARAM_KEY);
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(ServletHttpContext.ADDITIONAL_PARAM_KEY);
 		if(object==null){
 			object=new HashMap<String, Object>();
 			object.put(key, attributes);
-			request.setAttribute(HttpContext.ADDITIONAL_PARAM_KEY, object);
+			request.setAttribute(ServletHttpContext.ADDITIONAL_PARAM_KEY, object);
 			previous=attributes;
 		}
 		else{
@@ -291,7 +292,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	
 	/**
 	 * get additional attributes in the request scope.these attributes are only used by framework. 
-	 * all ones should be in the only one map with the constraint key {@link HttpContext#ADDITIONAL_PARAM_KEY}
+	 * all ones should be in the only one map with the constraint key {@link ServletHttpContext#ADDITIONAL_PARAM_KEY}
 	 * <strong>Note that the individual module should not call the method.</strong>, i.e. the method is inner only for framework.
 	 * @param request
 	 * @param key
@@ -299,7 +300,7 @@ public abstract class YouAppMvcUtils extends JWebUtils {
 	 * @return
 	 */
 	public static Object getAdditionalAttributesInRequestScope(HttpServletRequest request,String key){
-		Map<String, Object> object=(Map<String, Object>) request.getAttribute(HttpContext.ADDITIONAL_PARAM_KEY);
+		Map<String, Object> object=(Map<String, Object>) request.getAttribute(ServletHttpContext.ADDITIONAL_PARAM_KEY);
 		if(object==null){
 			return null;
 		}

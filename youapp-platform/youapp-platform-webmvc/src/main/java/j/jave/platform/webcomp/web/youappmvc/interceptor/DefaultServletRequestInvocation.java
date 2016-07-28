@@ -1,6 +1,10 @@
 package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.RequestContext;
+import j.jave.platform.webcomp.web.youappmvc.ResponseContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletRequestContext;
+import j.jave.platform.webcomp.web.youappmvc.ServletResponseContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,10 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 
 	private HttpServletResponse httpServletResponse;
 	
+	private RequestContext requestContext;
+	
+	private ResponseContext responseContext;
+	
 	private Exception exception;
 	
 	private String unique;
@@ -34,9 +42,10 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	private static List<ServletRequestInterceptor> MODEL_INTERCEPTORS=new ArrayList<ServletRequestInterceptor>(8);
 	
 	static{
-		MODEL_INTERCEPTORS.add(new FormTokenValidatorInterceptor());
+//		MODEL_INTERCEPTORS.add(new FormTokenValidatorInterceptor());
+		MODEL_INTERCEPTORS.add(new HttpContextExtracterInterceptor());
 		MODEL_INTERCEPTORS.add(new MultiVersionCheckInterceptor());
-		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
+//		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
 		MODEL_INTERCEPTORS.add(new ResourceAccessInterceptor());
 		MODEL_INTERCEPTORS.add(new ValidPathInterceptor());
 		MODEL_INTERCEPTORS.add(new MemoryHTMLInterceptor());
@@ -46,12 +55,14 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	public DefaultServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {
 		this.httpServletRequest=(HttpServletRequest) servletRequest;
 		this.httpServletResponse=(HttpServletResponse) servletResponse;
+		this.requestContext=new ServletRequestContext(httpServletRequest);
+		this.responseContext=new ServletResponseContext(httpServletResponse);
 	}
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object proceed() {
+	public Object proceed() throws Throwable{
 		
 		if (this.currentInterceptorIndex == MODEL_INTERCEPTORS.size() - 1) {
 			return new Object();
@@ -103,6 +114,14 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 	}
 	public void setMappingPath(String mappingPath) {
 		this.mappingPath = mappingPath;
+	}
+	@Override
+	public RequestContext getRequestContext() {
+		return this.requestContext;
+	}
+	@Override
+	public ResponseContext getResponseContext() {
+		return this.responseContext;
 	}
 	
 }

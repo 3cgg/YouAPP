@@ -1,16 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.jspview;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
-import j.jave.platform.webcomp.web.youappmvc.interceptor.AuthenticationHandler;
-import j.jave.platform.webcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
 import j.jave.platform.webcomp.web.youappmvc.support.APPFilterConfig;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 

@@ -1,7 +1,9 @@
 package com.youappcorp.project.usermanager.controller;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JDateUtils;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
@@ -39,14 +41,14 @@ public class UserManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getUsersByPage")
-	public ResponseModel getUsersByPage(UserSearchCriteria userSearchCriteria){
-		JPage<User> users= userService.getUsersByPage(getServiceContext(), userSearchCriteria);
+	public ResponseModel getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria,JSimplePageable simplePageable){
+		JPage<User> users= userService.getUsersByPage(serviceContext, userSearchCriteria,simplePageable);
 		return ResponseModel.newSuccess().setData(users);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getTimeline")
-	public ResponseModel getTimeline(
+	public ResponseModel getTimeline(ServiceContext serviceContext,
 			@RequestParam("userName")String userName) {
 		List<UserTracker> userTrackers= userTrackerService.getUserTrackerByName(userName);
 		List<TimeLineGroup> timeLineGroups=new ArrayList<TimeLineGroup>();
@@ -83,8 +85,8 @@ public class UserManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getUserById")
-	public ResponseModel getUserById(String id) throws Exception {
-		User user= userService.getUserById(getServiceContext(), id);
+	public ResponseModel getUserById(ServiceContext serviceContext,String id) throws Exception {
+		User user= userService.getUserById(serviceContext, id);
 		return ResponseModel.newSuccess().setData(user);
 	}
 	

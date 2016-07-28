@@ -17,7 +17,8 @@ public class JQueryDataTablePageService extends PageableServiceFactory<PageableS
 
 	@Override
 	public JPageable parse(HttpContext httpContext) {
-		return JQueryDataTablePage.parse(httpContext);
+//		return JQueryDataTablePage.parse(httpContext);
+		return null;
 	}
 	
 }

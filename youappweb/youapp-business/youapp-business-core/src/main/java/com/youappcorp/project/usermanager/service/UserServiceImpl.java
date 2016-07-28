@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.User;
+import com.youappcorp.project.usermanager.model.UserSearchCriteria;
 import com.youappcorp.project.usermanager.repo.UserRepo;
 
 /**
@@ -70,7 +71,7 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 	
 	
 	@Override
-	public JPage<User> getUsersByPage(ServiceContext context, JPageable pagination) {
+	public JPage<User> getUsersByPage(ServiceContext context, UserSearchCriteria userSearchCriteria,JPageable pagination) {
 		JPageImpl<User> page=new JPageImpl<User>();
 		List<User> users=userMapper.getUsersByPage(pagination);
 		page.setContent(users);

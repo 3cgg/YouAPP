@@ -9,7 +9,7 @@ import j.jave.kernal.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -58,7 +58,7 @@ public class TestDataExchange extends test.j.jave.platform.standalone.TestEventS
 			map.put("a", "b");
 			map.put("h", 90);
 			
-			JPageRequest pageRequest=new JPageRequest();
+			JSimplePageable pageRequest=new JSimplePageable();
 			pageRequest.setPageNumber(1111);
 			pageRequest.setPageSize(9999);
 			

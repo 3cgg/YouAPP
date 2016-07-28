@@ -5,7 +5,7 @@ package j.jave.platform.webcomp.web.youappmvc.plugins.pageable;
 
 import j.jave.kernal.jave.json.JJSONObject;
 import j.jave.kernal.jave.model.JModel;
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author J
  */
 @SuppressWarnings("serial")
-public class JQueryDataTablePage<T extends JModel> extends SimplePageCriteria implements JJSONObject<Map<String, Object>> {
+public class JQueryDataTablePage<T extends JModel> extends BaseCriteria implements JJSONObject<Map<String, Object>> {
 
 	public static final String SECHO="sEcho";
 	
@@ -121,11 +121,11 @@ public class JQueryDataTablePage<T extends JModel> extends SimplePageCriteria im
 		
 		JQueryDataTablePage<T> page=new JQueryDataTablePage<T>();
 		page.setsEcho(sEcho);
-		page.setPageSize(iDisplayLength);
+//		page.setPageSize(iDisplayLength);
 		int pageNum=iDisplayStart/iDisplayLength;
-		page.setPageNumber(pageNum+1);
-		page.setColumnDirection(httpContext.getParameter("sortColumn")+" "
-				+httpContext.getParameter("sortType"));
+//		page.setPageNumber(pageNum+1);
+//		page.setColumnDirection(httpContext.getParameter("sortColumn")+" "
+//				+httpContext.getParameter("sortType"));
 		return page;
 		
 	}

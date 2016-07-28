@@ -1,8 +1,8 @@
 package com.youappcorp.project.param.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
-public class ParamCriteria extends SimplePageCriteria {
+public class ParamCriteria extends BaseCriteria {
 	
 	/**
 	 * the id the type of funciton. 

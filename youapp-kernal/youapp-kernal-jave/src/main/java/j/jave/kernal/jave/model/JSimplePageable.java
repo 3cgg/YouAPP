@@ -1,15 +1,15 @@
 package j.jave.kernal.jave.model;
 
 @SuppressWarnings("serial")
-public class JPageRequest implements JPageable {
+public class JSimplePageable implements JPageable {
 
 	private static final int DEFAULT_SIZE_PER_PAGE = 100;
 	
-	private int pageNumber;
-	
 	private int pageSize=DEFAULT_SIZE_PER_PAGE;
 	
-	private JOrder order;
+	private int pageNumber;
+	
+	private JOrder[] orders;
 
 	public int getPageNumber() {
 		return pageNumber;
@@ -27,11 +27,21 @@ public class JPageRequest implements JPageable {
 		this.pageSize = pageSize;
 	}
 
-	public JOrder getOrder() {
-		return order;
+	public JOrder[] getOrders() {
+		return orders;
 	}
 
-	public void setOrder(JOrder order) {
-		this.order = order;
+	public void setOrders(JOrder[] orders) {
+		this.orders = orders;
 	}
+
+	@Override
+	public String getOrder() {
+		String orderby="";
+		for(JOrder order:orders){
+			orderby=orderby+","+order.getColumn()+" "+order.getType();
+		}
+		return orderby;
+	}
+	
 }

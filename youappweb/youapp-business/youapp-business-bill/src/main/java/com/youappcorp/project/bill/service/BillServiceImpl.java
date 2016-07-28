@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.bill.model.Bill;
+import com.youappcorp.project.bill.model.BillSearchCriteria;
 import com.youappcorp.project.bill.repo.BillJPARepo;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.service.UserManagerService;
@@ -67,7 +68,7 @@ public class BillServiceImpl extends ServiceSupport implements BillService{
 	}
 
 	@Override
-	public JPage<Bill> getBillsByPage(ServiceContext context, JPageable pagination) {
+	public JPage<Bill> getBillsByPage(ServiceContext context,  BillSearchCriteria billSearchCriteria, JPageable pagination) {
 		return internalBillServiceImpl.getsByPage(context,pagination);
 	}
 

@@ -3,12 +3,12 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
 /**
  * @author J
  */
-public class UserSearchCriteria extends SimplePageCriteria{
+public class UserSearchCriteria extends BaseCriteria{
 	
 	private String userName;
 	

@@ -1,10 +1,10 @@
 package com.youappcorp.project.bill.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
 import java.sql.Timestamp;
 
-public class BillSearchCriteria extends SimplePageCriteria {
+public class BillSearchCriteria extends BaseCriteria {
 
 	/**
 	 *用户CODE 

@@ -35,7 +35,7 @@ public class JPageImpl<T extends JModel> implements JPage<T> {
 	public void caculatePageNumber() {
 		setTotalPageNumber(caculateTotalPageNumber(totalRecordNumber, pageable.getPageSize()));
 		if (pageable.getPageNumber() > totalPageNumber) {
-			JPageRequest pageRequest=(JPageRequest)pageable;
+			JSimplePageable pageRequest=(JSimplePageable)pageable;
 			pageRequest.setPageNumber(totalPageNumber);
 		}
 		

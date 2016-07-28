@@ -7,7 +7,7 @@ import j.jave.kernal.dataexchange.impl.JEncoderRegisterService;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelBuilder;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.model.JSimplePageable;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class TestDataExchange extends TestEventSupport{
 		map.put("a", "b");
 		map.put("h", 90);
 		
-		JPageRequest pageRequest=new JPageRequest();
+		JSimplePageable pageRequest=new JSimplePageable();
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		
@@ -69,7 +69,7 @@ public class TestDataExchange extends TestEventSupport{
 		map.put("a", "b");
 		map.put("h", 90);
 		
-		JPageRequest pageRequest=new JPageRequest();
+		JSimplePageable pageRequest=new JSimplePageable();
 		pageRequest.setPageNumber(1111);
 		pageRequest.setPageSize(9999);
 		

@@ -38,12 +38,12 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 		
 		String paginationData=requestVO.getPaginationData();
 		
-		String userInfoData=requestVO.getServiceContext() ;
+		String serviceContext=requestVO.getServiceContext() ;
 		
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("userInfoData", userInfoData);
-		map.put("0", formData);
-		map.put("1", paginationData);
+		map.put("serviceContext", serviceContext);
+		map.put("formData", formData);
+		map.put("paginationData", paginationData);
 		JObjectTransModel model=new JObjectTransModel();
 		model.setProtocol(JObjectTransModelProtocol.JSON);
 		model.setParams(map);

@@ -1,6 +1,7 @@
 package com.youappcorp.project.containermanager.controller;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
@@ -25,52 +26,52 @@ public class ContainerManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllAppMetas")
-	public ResponseModel getAllAppMetas(){
-		List<AppMeta> appMetas= containerManagerService.getAllAppMetas(getServiceContext());
+	public ResponseModel getAllAppMetas(ServiceContext serviceContext){
+		List<AppMeta> appMetas= containerManagerService.getAllAppMetas(serviceContext);
 		return ResponseModel.newSuccess().setData(appMetas);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllURLMappingMetasByAppId")
-	public ResponseModel getAllURLMappingMetasByAppId(String appId){
-		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppId(getServiceContext(), appId);
+	public ResponseModel getAllURLMappingMetasByAppId(ServiceContext serviceContext,String appId){
+		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppId(serviceContext, appId);
 		return ResponseModel.newSuccess().setData(urlMappingMetas);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllURLMappingMetasByAppConfig")
-	public ResponseModel getAllURLMappingMetasByAppConfig(String appName,String appCompName,String appVersion){
-		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppConfig(getServiceContext(), appName, appCompName, appVersion);
+	public ResponseModel getAllURLMappingMetasByAppConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion){
+		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppConfig(serviceContext, appName, appCompName, appVersion);
 		return ResponseModel.newSuccess().setData(urlMappingMetas);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetaByAppConfig")
-	public ResponseModel getAppMetaByAppConfig(String appName,String appCompName,String appVersion){
-		AppMeta appMeta= containerManagerService.getAPPMetaByConfig(getServiceContext(), appName, appCompName, appVersion);
+	public ResponseModel getAppMetaByAppConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion){
+		AppMeta appMeta= containerManagerService.getAPPMetaByConfig(serviceContext, appName, appCompName, appVersion);
 		return ResponseModel.newSuccess().setData(appMeta);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetaByAppId")
-	public ResponseModel getAppMetaByAppId(String appId){
-		AppMeta appMeta= containerManagerService.getAPPMetaByAppId(getServiceContext(), appId);
+	public ResponseModel getAppMetaByAppId(ServiceContext serviceContext,String appId){
+		AppMeta appMeta= containerManagerService.getAPPMetaByAppId(serviceContext, appId);
 		return ResponseModel.newSuccess().setData(appMeta);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getURLMappingMetaById")
-	public ResponseModel getURLMappingMetaById(String id){
-		URLMappingMeta urlMappingMeta= containerManagerService.getURLMappingMetaById(getServiceContext(), id);
+	public ResponseModel getURLMappingMetaById(ServiceContext serviceContext,String id){
+		URLMappingMeta urlMappingMeta= containerManagerService.getURLMappingMetaById(serviceContext, id);
 		return ResponseModel.newSuccess().setData(urlMappingMeta);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllURLMappingMetasByPage")
-	public ResponseModel getAllURLMappingMetasByPage(URLMappingMetaCriteria urlMappingMetaCriteria){
-		JPage<URLMappingMeta>  urlMappingMetaPage= containerManagerService.getAllURLMappingMetasByPage(getServiceContext(), urlMappingMetaCriteria);
+	public ResponseModel getAllURLMappingMetasByPage(ServiceContext serviceContext,URLMappingMetaCriteria urlMappingMetaCriteria){
+		JPage<URLMappingMeta>  urlMappingMetaPage= containerManagerService.getAllURLMappingMetasByPage(serviceContext, urlMappingMetaCriteria);
 		return ResponseModel.newSuccess().setData(urlMappingMetaPage);
 	}
 }

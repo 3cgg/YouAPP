@@ -2,8 +2,8 @@ package test.com.youappcorp.project.param;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JAssert;
-import j.jave.platform.data.web.model.SimplePageCriteria;
 import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
@@ -107,7 +107,7 @@ public class TestJpaParam {
 			
 			
 			
-			SimplePageCriteria simplePageCriteria=new SimplePageCriteria();
+			JSimplePageable simplePageCriteria=new JSimplePageable();
 			simplePageCriteria.setPageNumber(0);
 			simplePageCriteria.setPageSize(10);
 			JPage<ParamCode> paramCodePage= internalParamCodeServiceImpl.singleEntityQuery()

@@ -1,6 +1,8 @@
 package com.youappcorp.project.param.controller;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
 
@@ -23,22 +25,22 @@ public class ParamManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamTypesByPage")
-	public ResponseModel getParamTypesByPage(ParamCriteria paramCriteria){
-		JPage<ParamType> paramTypesPage= paramService.getAllParamTypes(getServiceContext(),paramCriteria);
+	public ResponseModel getParamTypesByPage(ServiceContext serviceContext,ParamCriteria paramCriteria,JSimplePageable simplePageable){
+		JPage<ParamType> paramTypesPage= paramService.getAllParamTypes(serviceContext,paramCriteria);
 		return ResponseModel.newSuccess().setData(paramTypesPage);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamCodesByPage")
-	public ResponseModel getParamCodesByPage(ParamCriteria paramCriteria){
-		JPage<ParamCode> paramCodesPage= paramService.getAllParamCodes(getServiceContext(),paramCriteria);
+	public ResponseModel getParamCodesByPage(ServiceContext serviceContext,ParamCriteria paramCriteria,JSimplePageable simplePageable){
+		JPage<ParamCode> paramCodesPage= paramService.getAllParamCodes(serviceContext,paramCriteria);
 		return ResponseModel.newSuccess().setData(paramCodesPage);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamCodesByTypePage")
-	public ResponseModel getParamCodesByTypePage(ParamCriteria paramCriteria){
-		JPage<ParamCode> paramCodesPage= paramService.getAllParamCodesByType(getServiceContext(),paramCriteria);
+	public ResponseModel getParamCodesByTypePage(ServiceContext serviceContext,ParamCriteria paramCriteria,JSimplePageable simplePageable){
+		JPage<ParamCode> paramCodesPage= paramService.getAllParamCodesByType(serviceContext,paramCriteria);
 		return ResponseModel.newSuccess().setData(paramCodesPage);
 	}
 	

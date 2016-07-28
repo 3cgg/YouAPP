@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.bill.model.Bill;
+import com.youappcorp.project.bill.model.BillSearchCriteria;
 
 /**
  * @author J
@@ -50,7 +51,7 @@ public interface BillService {
 	 */
 	public Bill getBillById(ServiceContext context, String id);
 	
-	public JPage<Bill> getBillsByPage(ServiceContext context, JPageable pagination) ;
+	public JPage<Bill> getBillsByPage(ServiceContext context, BillSearchCriteria billSearchCriteria, JPageable pagination) ;
 	
 	public List<Bill> getBillByUserName(ServiceContext context, String userName);
 	

@@ -4,7 +4,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
@@ -262,7 +262,7 @@ abstract class JQueryExecution {
 			page.setContent(list);
 			page.setTotalRecordNumber(count);
 			page.setTotalPageNumber(tempTotalPageNumber);
-			JPageRequest pageRequest=(JPageRequest)pageable;
+			JSimplePageable pageRequest=(JSimplePageable)pageable;
 			pageRequest.setPageNumber(pageNumber);
 			page.setPageable(pageable);
 			return page;

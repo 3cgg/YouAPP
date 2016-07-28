@@ -9,8 +9,6 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.core.context.SpringContextSupport;
-import j.jave.platform.webcomp.core.service.ServiceContext;
-import j.jave.platform.webcomp.core.service.SessionUser;
 import j.jave.platform.webcomp.web.util.ClassProvidedMappingFinder;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
@@ -69,11 +67,6 @@ public abstract class ControllerSupport implements YouappController,Initializing
 		return getHttpContext().getParameter(key);
 	}
 	
-	
-	protected SessionUser getSessionUser(){
-		return getHttpContext().getServiceContext().getSessionUser();
-	}
-	
 	/**
 	 * sub-class should implements the method.
 	 * @return
@@ -81,10 +74,6 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	protected JPageable parseJPage(){
 		throw new JOperationNotSupportedException("Not supported,check if the sub-class implements the method.");
 	} 
-	
-	protected ServiceContext getServiceContext(){
-		return getHttpContext().getServiceContext();
-	}
 	
     @Override
     public final void afterPropertiesSet() throws Exception {

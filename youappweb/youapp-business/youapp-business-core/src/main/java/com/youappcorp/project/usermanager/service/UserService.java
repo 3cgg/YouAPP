@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.User;
+import com.youappcorp.project.usermanager.model.UserSearchCriteria;
 
 /**
  * @author J
@@ -58,7 +59,7 @@ public interface UserService extends InternalService<User, String> {
 	 * @param pagination
 	 * @return
 	 */
-	public JPage<User> getUsersByPage(ServiceContext context, JPageable pagination) ;
+	public JPage<User> getUsersByPage(ServiceContext context,UserSearchCriteria userSearchCriteria, JPageable pagination) ;
 	
 	/**
 	 * 

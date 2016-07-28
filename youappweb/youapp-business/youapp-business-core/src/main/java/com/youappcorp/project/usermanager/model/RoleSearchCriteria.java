@@ -3,12 +3,12 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
 /**
  * @author J
  */
-public class RoleSearchCriteria extends SimplePageCriteria{
+public class RoleSearchCriteria extends BaseCriteria{
 	
 	private String roleCode;
 	

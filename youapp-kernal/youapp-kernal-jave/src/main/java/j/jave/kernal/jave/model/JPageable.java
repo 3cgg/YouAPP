@@ -28,6 +28,9 @@ public interface JPageable extends JCriteria, Serializable{
 	 * Returns the sorting parameters.
 	 * @return 
 	 */
-	JOrder getOrder();
+	JOrder[] getOrders();
+	
+	
+	String getOrder();
 	
 }

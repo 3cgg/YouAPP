@@ -1,13 +1,13 @@
 package com.youappcorp.project.tablemanager.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
 /**
  * search criteria model for table manager.
  * @author J
  *
  */
-public class TableSearch extends SimplePageCriteria {
+public class TableSearch extends BaseCriteria {
 	
 	/**
 	 * full class name of including the package part. 

@@ -12,6 +12,8 @@ public class JObjectTransModel implements JModel{
 	
 	private Map<String, Object> params=new HashMap<String, Object>();
 
+	private String parser;
+	
 	public JObjectTransModelProtocol getProtocol() {
 		return protocol;
 	}
@@ -26,6 +28,14 @@ public class JObjectTransModel implements JModel{
 
 	public void setParams(Map<String, Object> params) {
 		this.params = params;
+	}
+
+	public String getParser() {
+		return parser;
+	}
+
+	public void setParser(String parser) {
+		this.parser = parser;
 	} 
 	
 }

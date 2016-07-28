@@ -3,7 +3,7 @@ package j.jave.platform.webcomp.core.service;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageRequest;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.data.web.model.SimplePageRequest;
 
@@ -16,7 +16,7 @@ public class ServiceSupportUtil {
 		page.setContent(returnPage.getContent());
 		page.setTotalRecordNumber(returnPage.getTotalElements());
 		page.setTotalPageNumber(returnPage.getTotalPages()-1);
-		JPageRequest pageRequest=(JPageRequest)pageable;
+		JSimplePageable pageRequest=(JSimplePageable)pageable;
 		pageRequest.setPageNumber(returnPage.getNumber());
 		page.setPageable(pageable);
 		return page;

@@ -1,8 +1,8 @@
 package com.youappcorp.project.containermanager.model;
 
-import j.jave.platform.data.web.model.SimplePageCriteria;
+import j.jave.platform.data.web.model.BaseCriteria;
 
-public class URLMappingMetaCriteria extends SimplePageCriteria {
+public class URLMappingMetaCriteria extends BaseCriteria {
 
 	private String urlDesc;
 	

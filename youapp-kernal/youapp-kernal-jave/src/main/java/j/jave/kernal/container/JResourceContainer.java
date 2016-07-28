@@ -61,21 +61,28 @@ public class JResourceContainer implements JExecutor, JContainer,JResourceURIPar
 
 	@Override
 	public Object execute(URI uri, Object object) {
+		Type type=Type.GET;
+		Object data=object;
+		if(object instanceof ExecutionContext){
+			ExecutionContext context=(ExecutionContext)object; 
+			type=context.getType();
+			data=context.data;
+		}
 		URI executableURI=uri;
 		if(!JExecutableURIUtil.isWrapped(uri)){
 			String tempURIStr=uri.toString();
 			try{
 				if(tempURIStr.startsWith(JResourceURIParserService.CLASS_PATH_PREFIX)){
-					executableURI=resourceURIParser().parse4ClassPath(tempURIStr);
+					executableURI=resourceURIParser().parse4ClassPath(tempURIStr,type);
 				}
 				else{
-					executableURI=resourceURIParser().parse(new URI(tempURIStr));
+					executableURI=resourceURIParser().parse(new URI(tempURIStr),type);
 				}
 			}catch(Exception e){
 				throw new JResourceNotSupportedException(e);
 			}
 		}
-		return resourceMicroContainer.execute(executableURI, object);
+		return resourceMicroContainer.execute(executableURI, data);
 	}
 
 	@Override
@@ -134,6 +141,40 @@ public class JResourceContainer implements JExecutor, JContainer,JResourceURIPar
 		public URI parse4RemoteHttp(String uri,Type type) throws Exception{
 			return resourceURIParserService.parse4RemoteHttp(uri, JResourceContainer.this.unique(), Type.GET);
 			
+		}
+	}
+	
+	/**
+	 * @param type
+	 * @return  as the parameter of execute method.
+	 */
+	public ExecutionContext newExecutionContext(Type type){
+		ExecutionContext context= new ExecutionContext();
+		context.setType(type);
+		return context;
+	}
+
+	public static class ExecutionContext{
+		private Type type;
+		
+		private Object data;
+
+		public Type getType() {
+			return type;
+		}
+
+		public ExecutionContext setType(Type type) {
+			this.type = type;
+			return this;
+		}
+
+		public Object getData() {
+			return data;
+		}
+
+		public ExecutionContext setData(Object data) {
+			this.data = data;
+			return this;
 		}
 	}
 	

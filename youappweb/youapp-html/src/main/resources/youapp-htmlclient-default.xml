@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration>
+
+<property>
+  <name>youapp.mvc.form.token.storage.class</name>
+  <value></value>
+  <description></description>
+</property>
+
+
+<property>
+  <name>youapp.mvc.data.query.remote.host</name>
+  <value>http://localhost:8689/apisupport/extapi/</value>
+  <description> the reomote url (host+servlet context path)</description>
+</property>
+
+</configuration>

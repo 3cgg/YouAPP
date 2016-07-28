@@ -15,6 +15,9 @@ public class JHttpURLConnectionProcessorService implements JResourceProcessorSer
 	private JHttpBase<?> HTTP_GET=JHttpFactoryProvider.getHttpFactory(JConfiguration.get())
 			.getHttpGet();
 	
+	private JHttpBase<?> HTTP_POST=JHttpFactoryProvider.getHttpFactory(JConfiguration.get())
+			.getHttpPost();
+	
 	private static final JResponseHandler<byte[]> BYTE_HANDLER= 
 			new JResponseHandler<byte[]>(){
 				@Override
@@ -30,7 +33,18 @@ public class JHttpURLConnectionProcessorService implements JResourceProcessorSer
 		String queryPath=uriInfo.getQueryPath();
 		byte[] bytes=null;
 		try{
-			bytes=(byte[]) HTTP_GET.setResponseHandler(BYTE_HANDLER).execute(queryPath);
+			byte[] requestBytes=new byte[]{};
+			if(object!=null){
+				requestBytes=(byte[])object;
+			}
+			if(JExecutableURIUtil.isPut(uriInfo)){
+				bytes=(byte[]) HTTP_POST.setEntry(requestBytes)
+						.setResponseHandler(BYTE_HANDLER).execute(queryPath);
+			}
+			else{
+				bytes=(byte[]) HTTP_GET.setEntry(requestBytes)
+						.setResponseHandler(BYTE_HANDLER).execute(queryPath);
+			}
 		}catch(Exception e){
 			throw new JResourceStreamException(queryPath,e);
 		}

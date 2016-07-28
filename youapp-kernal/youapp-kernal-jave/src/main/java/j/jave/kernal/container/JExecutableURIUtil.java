@@ -124,4 +124,48 @@ public class JExecutableURIUtil {
 				||JScheme.REMOTE_HTTP.getValue().equals(scheme);
 	}
 	
+	public static boolean isGet(URI uri){
+		JURIInfo uriInfo = JExecutableURIUtil.getURIInfo(uri);
+		return isGet(uriInfo);
+	}
+	
+	public static boolean isGet(JURIInfo uriInfo){
+		return Type.GET.getValue().equals(uriInfo.getPath());
+	}
+	
+	public static boolean isPut(URI uri){
+		JURIInfo uriInfo = JExecutableURIUtil.getURIInfo(uri);
+		return isPut(uriInfo);
+	}
+	
+	public static boolean isPut(JURIInfo uriInfo){
+		return Type.PUT.getValue().equals(uriInfo.getPath());
+	}
+	
+	public static boolean isDelete(URI uri){
+		JURIInfo uriInfo = JExecutableURIUtil.getURIInfo(uri);
+		return isDelete(uriInfo);
+	}
+	
+	public static boolean isDelete(JURIInfo uriInfo){
+		return Type.DELETE.getValue().equals(uriInfo.getPath());
+	}
+	
+	public static boolean isExist(URI uri){
+		JURIInfo uriInfo = JExecutableURIUtil.getURIInfo(uri);
+		return isExist(uriInfo);
+	}
+	
+	public static boolean isExist(JURIInfo uriInfo){
+		return Type.EXIST.getValue().equals(uriInfo.getPath());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

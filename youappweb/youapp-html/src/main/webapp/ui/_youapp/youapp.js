@@ -162,6 +162,7 @@
 		  		success:function(data){
 		  			var resp=JSON.parse(data);
 		  			if(!resp.success){
+		  				$_youapp.$_toast.error("error",resp.data);
 		  				return;
 		  			}
 		  			options.success(resp.data);

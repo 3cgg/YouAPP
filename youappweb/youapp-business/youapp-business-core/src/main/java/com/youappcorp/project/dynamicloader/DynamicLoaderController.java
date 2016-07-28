@@ -6,6 +6,7 @@ import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.container.DefaultControllerMockObjectGetter;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
@@ -32,7 +33,7 @@ public class DynamicLoaderController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/loadjar")
-	public ResponseModel loadjar(String jarName){
+	public ResponseModel loadjar(ServiceContext serviceContext, String jarName){
 		ApplicationContext applicationContext=SpringContextSupport.getApplicationContext();
 		
 		try {

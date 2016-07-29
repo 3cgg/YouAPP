@@ -1,9 +1,11 @@
 package com.youappcorp.project.containermanager.controller;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
 import java.util.List;
 
@@ -16,10 +18,11 @@ import com.youappcorp.project.containermanager.model.AppMeta;
 import com.youappcorp.project.containermanager.model.URLMappingMeta;
 import com.youappcorp.project.containermanager.model.URLMappingMetaCriteria;
 import com.youappcorp.project.containermanager.service.ContainerManagerService;
+import com.youappcorp.project.containermanager.vo.AppMetaVO;
 
 @Controller
 @RequestMapping(value="/containermanager")
-public class ContainerManagerController extends ControllerSupport {
+public class ContainerManagerController extends SimpleControllerSupport {
 
 	@Autowired
 	private ContainerManagerService containerManagerService;
@@ -41,16 +44,18 @@ public class ContainerManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllURLMappingMetasByAppConfig")
-	public ResponseModel getAllURLMappingMetasByAppConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion){
-		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppConfig(serviceContext, appName, appCompName, appVersion);
+	public ResponseModel getAllURLMappingMetasByAppConfig(ServiceContext serviceContext,AppMetaVO appMetaVO){
+		List<URLMappingMeta> urlMappingMetas= containerManagerService.getAllURLMappingMetasByAppConfig(serviceContext, 
+				appMetaVO.getAppName(), appMetaVO.getAppCompName(), appMetaVO.getAppVersion());
 		return ResponseModel.newSuccess().setData(urlMappingMetas);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetaByAppConfig")
-	public ResponseModel getAppMetaByAppConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion){
-		AppMeta appMeta= containerManagerService.getAPPMetaByConfig(serviceContext, appName, appCompName, appVersion);
+	public ResponseModel getAppMetaByAppConfig(ServiceContext serviceContext,AppMetaVO appMetaVO){
+		AppMeta appMeta= containerManagerService.getAPPMetaByConfig(serviceContext, 
+				appMetaVO.getAppName(), appMetaVO.getAppCompName(), appMetaVO.getAppVersion());
 		return ResponseModel.newSuccess().setData(appMeta);
 	}
 	
@@ -70,8 +75,13 @@ public class ContainerManagerController extends ControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAllURLMappingMetasByPage")
-	public ResponseModel getAllURLMappingMetasByPage(ServiceContext serviceContext,URLMappingMetaCriteria urlMappingMetaCriteria){
-		JPage<URLMappingMeta>  urlMappingMetaPage= containerManagerService.getAllURLMappingMetasByPage(serviceContext, urlMappingMetaCriteria);
+	public ResponseModel getAllURLMappingMetasByPage(ServiceContext serviceContext,URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable){
+		JPage<URLMappingMeta>  urlMappingMetaPage= containerManagerService.getAllURLMappingMetasByPage(serviceContext, urlMappingMetaCriteria,simplePageable);
 		return ResponseModel.newSuccess().setData(urlMappingMetaPage);
+	}
+	
+	@Override
+	protected void validate(MappingMeta mappingMeta) {
+		super.validate(mappingMeta);
 	}
 }

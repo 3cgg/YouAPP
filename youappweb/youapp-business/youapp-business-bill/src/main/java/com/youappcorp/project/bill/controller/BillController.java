@@ -5,7 +5,7 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -21,7 +21,7 @@ import com.youappcorp.project.bill.service.BillService;
 
 @Controller
 @RequestMapping(value="/bill/billcontroller")
-public class BillController extends ControllerSupport{
+public class BillController extends SimpleControllerSupport{
 	
 	@Autowired
 	private BillService billService;

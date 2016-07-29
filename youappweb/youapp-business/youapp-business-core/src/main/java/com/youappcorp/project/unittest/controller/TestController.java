@@ -1,7 +1,8 @@
 package com.youappcorp.project.unittest.controller;
 
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SkipMappingCheck;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,15 +16,17 @@ import com.youappcorp.project.usermanager.model.User;
 
 @Controller
 @RequestMapping(value="/testmanager")
-public class TestController extends ControllerSupport {
+public class TestController extends SimpleControllerSupport {
 	
 	
 	
 	@RequestMapping(value="/show")
+	@SkipMappingCheck
 	public void show(){
 		System.out.println("---------show method-----------");
 	}
 	@RequestMapping(value="/getCode")
+	@SkipMappingCheck
 	public ResponseModel getCode(@RequestParam(value="code") String code){
 		ResponseModel responseModel=ResponseModel.newSuccess();
 		TestModel testModel=new TestModel();
@@ -54,6 +57,7 @@ public class TestController extends ControllerSupport {
 	
 	
 	@RequestMapping(value="/test")
+	@SkipMappingCheck
 	public void test(User user,
 			@RequestParam(value="userd") User userd,String key,TestModel testModel,
 			String[] alist,

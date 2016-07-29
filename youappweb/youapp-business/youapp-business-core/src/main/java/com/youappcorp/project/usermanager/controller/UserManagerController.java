@@ -5,7 +5,7 @@ import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +28,7 @@ import com.youappcorp.project.usermanager.vo.TimelineView;
 
 @Controller
 @RequestMapping(value="/usermanager")
-public class UserManagerController extends ControllerSupport {
+public class UserManagerController extends SimpleControllerSupport {
 	
 	@Autowired
 	private UserService userService;

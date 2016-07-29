@@ -1,6 +1,7 @@
 package com.youappcorp.project.containermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -79,7 +80,7 @@ public interface ContainerManagerService {
 	 * @param urlMappingMetaCriteria
 	 * @return
 	 */
-	JPage<URLMappingMeta> getAllURLMappingMetasByPage(ServiceContext context,URLMappingMetaCriteria urlMappingMetaCriteria);
+	JPage<URLMappingMeta> getAllURLMappingMetasByPage(ServiceContext context,URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable);
 	
 	
 	

@@ -62,6 +62,7 @@ public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 			methodParamMetas[i]=paramMeta;
 		}
 		resourceInfo.setMethodParams(methodParamMetas);
+		resourceInfo.setAnnotations(method.getAnnotations());
 		return resourceInfo;
 	}
 

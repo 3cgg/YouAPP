@@ -1,6 +1,6 @@
 package j.jave.platform.data.web.model;
 
-public class BaseCriteria implements Criteria{
+public class BaseCriteria implements Criteria, JInputModel{
 
 	
 }

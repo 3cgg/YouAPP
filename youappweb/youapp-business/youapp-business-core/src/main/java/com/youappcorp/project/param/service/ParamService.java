@@ -5,6 +5,7 @@ package com.youappcorp.project.param.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
@@ -57,10 +58,10 @@ public interface ParamService{
 	
 	public boolean existsParamCode(ServiceContext context,String type,String code);
 	
-	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteria paramCriteria);
+	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteria paramCriteria);
+	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteria paramCriteria);
+	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
 
 }

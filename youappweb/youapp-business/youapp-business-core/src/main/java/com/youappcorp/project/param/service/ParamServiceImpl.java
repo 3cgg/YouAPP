@@ -4,6 +4,7 @@
 package com.youappcorp.project.param.service;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
@@ -205,19 +206,19 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	
 	@Override
 	public JPage<ParamType> getAllParamTypes(ServiceContext context,
-			ParamCriteria paramCriteria) {
-		return internalParamTypeServiceImpl.getsByPage(context, paramCriteria);
+			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
+		return internalParamTypeServiceImpl.getsByPage(context,simplePageable);
 	}
 	
 	@Override
 	public JPage<ParamCode> getAllParamCodes(ServiceContext context,
-			ParamCriteria paramCriteria) {
-		return internalParamCodeServiceImpl.getsByPage(context, paramCriteria);
+			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
+		return internalParamCodeServiceImpl.getsByPage(context,simplePageable);
 	}
 	
 	@Override
 	public JPage<ParamCode> getAllParamCodesByType(ServiceContext context,
-			ParamCriteria paramCriteria) {
+			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
 		String jpql="select pc from ParamCode pc , ParamType pt "
 				+ " where pc.deleted='N' and pt.deleted='N' "
 				+ "  and pc.typeId=pt.id  and pt.code =:code";
@@ -226,7 +227,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		
 		return queryBuilder()
 		.jpqlQuery().setJpql(jpql)
-		.setPageable(paramCriteria)
+		.setPageable(simplePageable)
 		.setParams(params)
 		.modelPage();
 	}

@@ -10,7 +10,7 @@ import java.util.Map;
 public class ObjectTransModelBinderFactory {
 	
 	private static Map<String, Class<? extends ObjectTransModelBinder>> binder=new HashMap<String, Class<? extends ObjectTransModelBinder>>();
-	{
+	static{
 		binder.put(SimpleObjectTransModelBinder.name, SimpleObjectTransModelBinder.class);
 		binder.put(DefaultObjectTransModelBinder.name, DefaultObjectTransModelBinder.class);
 		

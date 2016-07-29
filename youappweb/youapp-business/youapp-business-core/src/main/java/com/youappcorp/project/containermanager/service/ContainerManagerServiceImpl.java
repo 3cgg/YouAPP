@@ -1,6 +1,7 @@
 package com.youappcorp.project.containermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
@@ -103,7 +104,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	@Override
 	public JPage<URLMappingMeta> getAllURLMappingMetasByPage(
 			ServiceContext context,
-			URLMappingMetaCriteria urlMappingMetaCriteria) {
+			URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable) {
 		StringBuffer nativeSql=new StringBuffer(
 				"select a.* from UrlMappingMeta a left join AppMeta b on a.APP_ID=b.ID  "
 				+ " where 1=1 ");
@@ -120,7 +121,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		return queryBuilder()
 		.nativeQuery().setSql(nativeSql.toString())
 		.setParams(params)
-		.setPageable(urlMappingMetaCriteria)
+		.setPageable(simplePageable)
 		.modelPage();
 		
 	}

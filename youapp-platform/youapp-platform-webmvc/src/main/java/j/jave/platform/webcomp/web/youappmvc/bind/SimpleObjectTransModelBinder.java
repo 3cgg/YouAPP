@@ -3,7 +3,9 @@ package j.jave.platform.webcomp.web.youappmvc.bind;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModel;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.data.common.MethodParamObject;
+import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 
 import java.util.Map;
@@ -48,9 +50,17 @@ public class SimpleObjectTransModelBinder implements ObjectTransModelBinder {
 		}
 		case JSON:
 		{
-			
+			object="";
+			if(ServiceContext.class==paramClass){
+				object=params.get(serviceContext);
+			}
+			else if(JSimplePageable.class==paramClass){
+				object=params.get(paginationData);
+			}else{
+				object=params.get(formData);
+			}
 			methodParamObject.setObject(
-					JJSON.get().parse(String.valueOf(object), methodParamObject.getClass())
+					JJSON.get().parse(String.valueOf(object), paramClass)
 					);
 			break;
 		}

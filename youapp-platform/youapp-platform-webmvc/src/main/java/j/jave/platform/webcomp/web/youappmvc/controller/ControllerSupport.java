@@ -34,9 +34,9 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	
 	protected PageableService pageableService=JServiceHubDelegate.get().getService(this, PageableService.class);
 	
-	private ApplicationContext applicationContext;
+	protected ApplicationContext applicationContext;
 	
-	private String beanName;
+	protected String beanName;
 	
 	private HttpInvokeContainerDelegateService requestInvokeContainerDelegate=
 			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
@@ -95,6 +95,7 @@ public abstract class ControllerSupport implements YouappController,Initializing
 				throw new JInitializationException("the request mapping of controller ["+this.getClass().getName()
 						+"] must be start with "+prefix);
 			}
+			validate(meta);
 			if(isDynamicLoader){
 				SpringDynamicJARApplicationContext springDynamicJARApplicationCotext=(SpringDynamicJARApplicationContext)applicationContext;
 				springDynamicJARApplicationCotext.putMappingMeta(meta);
@@ -161,5 +162,6 @@ public abstract class ControllerSupport implements YouappController,Initializing
 	*/
     }
 
+    protected abstract void validate(MappingMeta mappingMeta);
 	
 }

@@ -13,7 +13,7 @@ import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelega
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainerConfig;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeTestContainerConfig;
-import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value="/dynamicloader")
-public class DynamicLoaderController extends ControllerSupport {
+public class DynamicLoaderController extends SimpleControllerSupport {
 	
 	private HttpInvokeContainerDelegateService requestInvokeContainerDelegateService=
 			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);

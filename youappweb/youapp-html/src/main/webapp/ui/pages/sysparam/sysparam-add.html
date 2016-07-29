@@ -107,33 +107,16 @@
 					   }
 					  },
 					  submitHandler:function(form){
-						kjcs.ajaxEnt.submitForm(addSysParamForm);
-				        } 
-					    });
+						  $_youapp.$_data.submitForm({
+							  url:'/sysparam/saveSysParam',
+							  formSelector:'#'+$(form).attr('id'),
+							  success:function(data){
+								  $_youapp.$_html.linkView($(form),"/ui/pages/sysparam/sysparam-list.html");
+							  }
+							});
+					 }
 				})
+		});
 	</script>
-
-<script type="text/javascript">
-	var addSysParamForm ={endpoint:"/sysparam/saveSysParam",
-			formObj:$("#addSysParamForm"),
-			success:function(data){
-				alert("save success : "+ data);
-				kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-list.html");
-			},
-			failure:function(data){
-				alert("save failure : "+ data);
-			}
-			};
-</script>
-
-
-
-
-
-
-
-
-
-
 
 

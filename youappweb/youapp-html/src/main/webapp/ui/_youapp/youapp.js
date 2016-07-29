@@ -146,19 +146,42 @@
 	
 	
 	function DataExchange(){
+		
+		/**
+		 * {
+		 * url:'',
+		 * formData:'',
+		 * paginationData:''
+		 * }
+		 */
 		this.ajaxGet=function(options){
+			
+			var paginationDataOpts={
+			};
+			if(options.paginationData){
+				paginationDataOpts=$.extend(paginationDataOpts,{
+					paginationData:$_youapp.$_util.json({
+						pageNumber:options.paginationData.pageNumber,
+						pageSize:options.paginationData.pageSize,
+						orders:options.paginationData.orders
+					})
+				})
+			}
+			
+			var formDataOpts={};
+			if(options.formData){
+				formDataOpts=$.extend(formDataOpts,{
+					formData:$_youapp.$_util.json(options.formData)
+				})
+			}
+			
+			
 			$_youapp.$_util.ajaxGet({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
 				data:{data:$_youapp.$_util.json($.extend({},{
-					endpoint:options.url,
-					formData:$_youapp.$_util.json(options.data),
-					paginationData:$_youapp.$_util.json({
-						page:options.data.page,
-						size:options.data.size,
-						orderColumn:'',
-						orderType:''
-					})
-			  		}))},
+					endpoint:options.url
+			  		},formDataOpts,paginationDataOpts
+			  		))},
 		  		success:function(data){
 		  			var resp=JSON.parse(data);
 		  			if(!resp.success){
@@ -172,8 +195,61 @@
 		}
 		
 		this.ajaxPost=function(options){
-			var ajax=new Ajax();
-			ajax.request($.extend({},options,{type:'POST'}));
+			var paginationDataOpts={
+			};
+			if(options.paginationData){
+				paginationDataOpts=$.extend(paginationDataOpts,{
+					paginationData:$_youapp.$_util.json({
+						pageNumber:options.paginationData.pageNumber,
+						pageSize:options.paginationData.pageSize,
+						orders:options.paginationData.orders
+					})
+				})
+			}
+			
+			var formDataOpts={};
+			if(options.formData){
+				formDataOpts=$.extend(formDataOpts,{
+					formData:$_youapp.$_util.json(options.formData)
+				})
+			}
+			
+			
+			$_youapp.$_util.ajaxPost({
+				url:$_youapp.$_config.getDataEndpoint()+options.url,
+				data:{data:$_youapp.$_util.json($.extend({},{
+					endpoint:options.url
+			  		},formDataOpts,paginationDataOpts
+			  		))},
+		  		success:function(data){
+		  			var resp=JSON.parse(data);
+		  			if(!resp.success){
+		  				$_youapp.$_toast.error("error",resp.data);
+		  				return;
+		  			}
+		  			options.success(resp.data);
+		  			}
+				
+			});
+		}
+		
+		/**
+		 * {
+		 * url:'',
+		 * formSelector:'',
+		 * success:function(){}
+		 * }
+		 */
+		this.submitForm=function(options){
+			this.ajaxPost({
+				url:options.url,
+				formData:$_youapp.$_util.serializeObj(options.formSelector),
+				success:function(data){
+					if(options.success){
+						options.success(data);
+					}
+		  			}
+			});
 		}
 	}
 	

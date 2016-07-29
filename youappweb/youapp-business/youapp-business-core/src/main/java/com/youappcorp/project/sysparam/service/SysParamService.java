@@ -1,7 +1,7 @@
 package com.youappcorp.project.sysparam.service;
 
 import j.jave.kernal.jave.model.JPage;
-import j.jave.platform.data.web.model.SimplePageRequest;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import com.youappcorp.project.sysparam.model.SysParam;
@@ -19,7 +19,7 @@ public interface SysParamService {
 	
 	SysParam getSysParamById(ServiceContext serviceContext,String id);
 	
-	JPage<SysParam> getSysParams(ServiceContext serviceContext,SysParamCriteriaInVO sysParamCriteriaInVO, SimplePageRequest simplePageRequest);
+	JPage<SysParam> getSysParams(ServiceContext serviceContext,SysParamCriteriaInVO sysParamCriteriaInVO, JSimplePageable simplePageable);
 	
 	boolean exists(ServiceContext serviceContext,String code);
 }

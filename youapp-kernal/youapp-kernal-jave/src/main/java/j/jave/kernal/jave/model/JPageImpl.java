@@ -78,8 +78,8 @@ public class JPageImpl<T extends JModel> implements JPage<T> {
 	}
 
 
-	public void setContent(List<T> content) {
-		this.content = content;
+	public void setContent(List<?> content) {
+		this.content = (List<T>) content;
 	}
 	
 }

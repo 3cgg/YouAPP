@@ -13,5 +13,6 @@ public interface JPage<T>  extends Serializable{
 	
 	long getTotalRecordNumber();
 	
+	public void setContent(List<?> content);
 	
 }

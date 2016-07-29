@@ -1,8 +1,16 @@
 package com.youappcorp.project.sysparam.controller;
 
+import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.platform.webcomp.core.service.ServiceContext;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,80 +22,70 @@ import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
 import com.youappcorp.project.sysparam.vo.SysParamDetailOutVO;
 import com.youappcorp.project.sysparam.vo.SysParamEditInVO;
 import com.youappcorp.project.sysparam.vo.SysParamRecordOutVO;
-import com.kcfy.platform.server.kernal.Copy;
-import com.kcfy.platform.server.kernal.mapping.ControllerSupport;
-import com.kcfy.platform.server.kernal.model.InvokeResult;
-import com.kcfy.platform.server.kernal.model.JPage;
-import com.kcfy.platform.server.kernal.model.JPageUtil;
-import com.kcfy.platform.server.kernal.model.SimplePageRequest;
-import com.kcfy.platform.server.kernal.model.SimplePageRequestVO;
-import com.kcfy.platform.server.kernal.parameter.annotation.ParamValidation4Controller;
-import com.kcfy.platform.server.kernal.service.JServiceLazyProxy;
-import com.kcfy.platform.server.kernal.service.ServiceContext;
 
 /**
  * @author JIAZJ
  */
 @Controller
 @RequestMapping("/sysparam")
-public class SysParamController extends ControllerSupport {
+public class SysParamController extends SimpleControllerSupport {
 
-	private SysParamService sysParamService = JServiceLazyProxy.proxy(SysParamService.class);
+	@Autowired
+	private SysParamService sysParamService;
 	
 	@ResponseBody
 	@RequestMapping("/saveSysParam")
-	public InvokeResult saveSysParam(ServiceContext serviceContext, SysParamAddInVO sysParamAddInVO) throws Exception{
+	public ResponseModel saveSysParam(ServiceContext serviceContext, SysParamAddInVO sysParamAddInVO) throws Exception{
 		// do something validation on the SysParam or nothing.
-		SysParam sysParam=Copy.simpleCopy(sysParamAddInVO, SysParam.class);
+		SysParam sysParam=JObjectUtils.simpleCopy(sysParamAddInVO, SysParam.class);
 		sysParamService.saveSysParam(serviceContext, sysParam);
-		return InvokeResult.success(sysParam.getId());
+		return ResponseModel.newSuccess(sysParam.getId());
 	}
 	
 	@ResponseBody
 	@RequestMapping("/updateSysParam")
-	public InvokeResult updateSysParam(ServiceContext serviceContext, SysParamEditInVO sysParamEditInVO) throws Exception{
+	public ResponseModel updateSysParam(ServiceContext serviceContext, SysParamEditInVO sysParamEditInVO) throws Exception{
 		// do something validation on the SysParam or nothing.
-		SysParam sysParam=Copy.simpleCopy(sysParamEditInVO, SysParam.class);
+		SysParam sysParam=JObjectUtils.simpleCopy(sysParamEditInVO, SysParam.class);
 		sysParamService.updateSysParam(serviceContext, sysParam);
-		return InvokeResult.success(sysParam.getId());
+		return ResponseModel.newSuccess(sysParam.getId());
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getSysParamById")
-	public InvokeResult getSysParamById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel getSysParamById(ServiceContext serviceContext, String id) throws Exception{
 		// do something validation on the SysParam or nothing.
 		SysParam sysParam=sysParamService.getSysParamById(serviceContext, id);
 		SysParamDetailOutVO sysParamDetailOutVO=null;
 		if(sysParam!=null){
-			sysParamDetailOutVO=Copy.simpleCopy(sysParam, SysParamDetailOutVO.class);
+			sysParamDetailOutVO=JObjectUtils.simpleCopy(sysParam, SysParamDetailOutVO.class);
 		}
-		return InvokeResult.success(sysParamDetailOutVO);
+		return ResponseModel.newSuccess(sysParamDetailOutVO);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("/deleteSysParamById")
-	public InvokeResult deleteSysParamById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel deleteSysParamById(ServiceContext serviceContext, String id) throws Exception{
 		// do something validation on the SysParam or nothing.
 		sysParamService.deleteSysParamById(serviceContext, id);
-		return InvokeResult.success(true);
+		return ResponseModel.newSuccess(true);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("/getSysParamsByPage")
-	public InvokeResult getSysParamsByPage(ServiceContext serviceContext, SysParamCriteriaInVO carCriteriaInVO,SimplePageRequestVO simplePageRequestVO ) throws Exception{
+	public ResponseModel getSysParamsByPage(ServiceContext serviceContext, SysParamCriteriaInVO carCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
 		// do something validation on the SysParam or nothing.
-		JPage<SysParam> page=sysParamService.getSysParams(serviceContext, carCriteriaInVO, 
-				new SimplePageRequest(simplePageRequestVO.getPage(), simplePageRequestVO.getSize()));
+		JPage<SysParam> page=sysParamService.getSysParams(serviceContext, carCriteriaInVO,simplePageable);
 		List<SysParam> content=page.getContent();
 		List<SysParamRecordOutVO> outContent=new ArrayList<SysParamRecordOutVO>();
 		for(SysParam sysParam:content){
-			SysParamRecordOutVO sysParamRecordOutVO= Copy.simpleCopy(sysParam, SysParamRecordOutVO.class);
+			SysParamRecordOutVO sysParamRecordOutVO= JObjectUtils.simpleCopy(sysParam, SysParamRecordOutVO.class);
 			outContent.add(sysParamRecordOutVO);
 		}
-		JPageUtil.replaceConent(page, outContent);
-		return InvokeResult.success(page);
+		page.setContent(outContent);
+		return ResponseModel.newSuccess(page);
 	}
 	
 	

@@ -4,7 +4,10 @@ import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModel;
 import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JString;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.data.common.MethodParamObject;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 
@@ -59,9 +62,11 @@ public class SimpleObjectTransModelBinder implements ObjectTransModelBinder {
 			}else{
 				object=params.get(formData);
 			}
-			methodParamObject.setObject(
-					JJSON.get().parse(String.valueOf(object), paramClass)
-					);
+			Object target=JJSON.get().parse(String.valueOf(object), paramClass);
+			if(ServiceContext.class==paramClass&&target==null){
+				target=DefaultServiceContext.getDefaultServiceContext();
+			}
+			methodParamObject.setObject(target);
 			break;
 		}
 		default:

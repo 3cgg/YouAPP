@@ -1,9 +1,15 @@
 package j.jave.kernal.jave.utils;
 
+import j.jave.kernal.jave.reflect.JClassUtils;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+
+import net.sf.cglib.beans.BeanCopier;
+
+import com.fasterxml.jackson.databind.util.BeanUtil;
 
 public class JObjectUtils {
 
@@ -895,5 +901,14 @@ public class JObjectUtils {
 		return sb.toString();
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T  simpleCopy(Object obj,Class<T> clazz){
+		BeanCopier bc = BeanCopier.create(obj.getClass(), clazz,
+                false);
+		T toObj=(T) JClassUtils.newObject(clazz);
+		bc.copy(obj, toObj, null);
+		return toObj;
+	}
 	
 }

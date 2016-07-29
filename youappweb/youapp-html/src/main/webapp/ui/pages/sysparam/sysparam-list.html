@@ -87,7 +87,7 @@
     var sysparamListObj={};
     $_youapp.execute(function() {
     	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
-			url:"/sample/datatables/getDatatables",
+			url:"/sysparam/getSysParamsByPage",
 			urlDataFn:function(){
 				return $_youapp.$_util.serializeObj("#searchSysParamForm");
 			},

@@ -216,10 +216,12 @@ $.fn.extend({
 				//debugger;
 				$_youapp.$_data.ajaxGet({
 					url:options.url,
-					data:$.extend({
-						page:data.start/data.length,
-				  		size:data.length
-				  		},options.urlDataFn.apply()),
+					formData:options.urlDataFn.apply(),
+					paginationData:$.extend({},{
+				  		pageNumber:data.start/data.length,
+						pageSize:data.length,
+						orders:[]
+				  		}),
 			  		success:function(data){
 						new DatatableAjax($wrap,options).ajaxSuccess(data,callback);
 			  			}

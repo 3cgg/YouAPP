@@ -11,6 +11,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.web.htmlclient.WebHtmlClientProperties;
 import j.jave.web.htmlclient.request.RequestVO;
+import j.jave.web.htmlclient.response.ResponseModel;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -47,10 +48,11 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 		JObjectTransModel model=new JObjectTransModel();
 		model.setProtocol(JObjectTransModelProtocol.JSON);
 		model.setParams(map);
+		model.setParser("simple");
 		String base64String=base64Service.encodeBase64String(JJSON.get().formatObject(model).getBytes("utf-8"));
 		
 		String jsonString=JDefaultMessageMetaSenderBuilder.get()
-		.setURL("http://localhost:8689/youapp/extapi/parammanager/getParamTypesByPage?code=M")
+		.setURL(url)
 		.setBase64String(base64String)
 		.setDataByteEncoder("JSON")
 		.setReceiveByteDecoder(new JByteDecoder() {
@@ -66,7 +68,7 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 			}
 		})
 		.build().send();
-		return jsonString;
+		return JJSON.get().parse(jsonString, ResponseModel.class);
 	}
 	
 }

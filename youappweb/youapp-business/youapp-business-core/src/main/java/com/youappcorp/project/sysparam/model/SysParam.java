@@ -1,6 +1,6 @@
 package com.youappcorp.project.sysparam.model;
 
-import j.jave.kernal.jave.model.JBaseModel;
+import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "t_sysparam")
-public class SysParam  extends JBaseModel{
+public class SysParam  extends JJpaBaseModel{
 
 	@Column(name = "_code")
 	private String code;
@@ -19,6 +19,7 @@ public class SysParam  extends JBaseModel{
 	@Column(name = "_desc")
 	private String desc;
 
+	@Column(name = "_code")
 	public String getCode() {
 		return code;
 	}
@@ -27,6 +28,7 @@ public class SysParam  extends JBaseModel{
 		this.code = code;
 	}
 
+	@Column(name = "_value")
 	public String getValue() {
 		return value;
 	}
@@ -35,6 +37,7 @@ public class SysParam  extends JBaseModel{
 		this.value = value;
 	}
 
+	@Column(name = "_desc")
 	public String getDesc() {
 		return desc;
 	}

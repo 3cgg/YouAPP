@@ -11,6 +11,7 @@ import j.jave.web.htmlclient.form.VoidDuplicateSubmitService;
 import j.jave.web.htmlclient.request.RequestHtml;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 
 public class SyncHtmlResponseService {
@@ -54,6 +55,13 @@ public class SyncHtmlResponseService {
 			htmlDefResponse.setType(syncHtmlModel.getHtmlDef().getType());
 			htmlDefResponse.setLayoutId(requestUrl.getLayoutId());
 			syncHtmlResponse.setHtmlDef(htmlDefResponse);
+			String uri=requestUrl.getHtmlUrl();
+			String paramMark="?param=";
+			int paramMarkIndex=-1;
+			if((paramMarkIndex=uri.indexOf(paramMark))!=-1){
+				String paramJson=uri.substring(paramMarkIndex+paramMark.length());
+				syncHtmlResponse.setHtmlParam(paramJson);
+			}
 			
 			syncHtmlResponse.setToken(JJSON.get().formatObject(voidDuplicateSubmitService.newFormIdentification()));
 			

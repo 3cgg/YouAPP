@@ -1,15 +1,3 @@
-<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
-	<section class="content-header">
-      <h1>
-       	系统参数
-        <small>编辑</small>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#">系统参数</a></li>
-        <li><a href="#">编辑</a></li>
-      </ol>
-    </section>
-    
 	 <!-- Main content -->
     <section class="content"  id="editSysParamSection"  ms-controller="sysparam_edit">
     
@@ -27,7 +15,7 @@
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
-	          <h3 class="box-title">参数信息</h3>
+	          <h3 class="box-title">参数信息修改</h3>
 	          <div class="box-tools pull-right">
 	          </div>
 	        </div>
@@ -87,12 +75,12 @@
     
     <script type="text/javascript">
     	//avalon initializing
-	    var uniqueName={};
-	    uniqueName.vm = avalon.define({
+	    var editSysParamSectionObj={};
+	    editSysParamSectionObj.vm = avalon.define({
 		        $id: "sysparam_edit",
 		        data: {}
 		    });
-	    avalon.scan($("#editSysParamSection")[0], uniqueName.vm);  // void braces
+	    avalon.scan($("#editSysParamSection")[0], editSysParamSectionObj.vm);  // void braces
     </script>
 	
 	<script type="text/javascript">
@@ -100,19 +88,16 @@
     $_youapp.execute(function(){
     	
     	function getId(){
-        	//return "01a25c91-be3c-42a5-a27f-8415eae1b3ad";
-        	return kjcs.htmlEnt.getparam("id");
+    		return $_youapp.$_layout.getParameter($('#editSysParamSection')).id;
         }
-    	
-    	var HtmlMenuOpt ={endpoint:"/sysparam/getSysParamById",
-		  		data:{"id":getId()},
-		  		success:function(data){
-		  			//alert("code: "+data.code+" , value : "+data.value+" , desc : "+data.desc );
-		  			uniqueName.vm.data=data;
-		  			avalon.scan($("#editSysParamSection")[0], uniqueName.vm);
-		  			}		
-		  		};
-    	kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
+    	$_youapp.$_data.ajaxGet({
+			  url:'/sysparam/getSysParamById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  editSysParamSectionObj.vm.data=data;
+		  		  avalon.scan($("#editSysParamSection")[0], editSysParamSectionObj.vm);
+			  }
+			});
     });
     </script>
 	
@@ -135,36 +120,16 @@
 			   }
 			  },
 			  submitHandler:function(form){
-				kjcs.ajaxEnt.submitForm(addSysParamForm);
-		        } 
+				  
+				  $_youapp.$_data.submitForm({
+					  url:'/sysparam/updateSysParam',
+					  formSelector:'#'+$(form).attr('id'),
+					  success:function(data){
+						  $(form).goView('/ui/pages/sysparam/sysparam-list.html');
+					  }
+					});
+			  
+			  } 
 			    });
 		});
 	</script>
-
-<script type="text/javascript">
-	var addSysParamForm ={endpoint:"/sysparam/updateSysParam",
-			formObj:$("#editSysParamForm"),
-			success:function(data){
-				alert("update success : "+ data);
-				kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-list.html");
-			},
-			failure:function(data){
-				alert("update failure : "+ data);
-			}
-			};
-</script>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -84,9 +84,9 @@
     
     </section>
     <script type="text/javascript">
-    var sysparamListObj={};
+    var searchSysParamSectionObj={};
     $_youapp.execute(function() {
-    	sysparamListObj.listTable=$('#sysparamListTable').initDataTable({
+    	searchSysParamSectionObj.listTable=$('#sysparamListTable').initDataTable({
 			url:"/sysparam/getSysParamsByPage",
 			urlDataFn:function(){
 				return $_youapp.$_util.serializeObj("#searchSysParamForm");
@@ -101,7 +101,13 @@
 					$('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					delSysparamById(id);
+					$_youapp.$_data.ajaxGet({
+						  url:'/sysparam/deleteSysParamById',
+						  formData:{'id':id},
+						  success:function(data){
+							  searchSysParamSectionObj.listTable.ajax.reload();
+						  }
+						});
 				}
 			},
 			columns : [ 
@@ -127,30 +133,9 @@
 		});
 		
 		$("#searchSysparamBtn").on("click",function(){
-			sysparamListObj.listTable.ajax.reload();
+			searchSysParamSectionObj.listTable.ajax.reload();
 		})
 		
 	});
-		
-	 function  delSysparamById(id){                 
-		 var HtmlMenuOpt ={endpoint:"/sysparam/deleteSysParamById",
-			  		data:{'id':id},
-			  		success:function(data){
-			  			sysparamListObj.listTable.ajax.reload();
-			  			}		
-			  		};
-		  kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
-	}
-	 
 	</script>
-
-	<script type="text/javascript">
-	
-	</script>
-
-
-
-
-
-
 

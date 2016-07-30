@@ -10,6 +10,7 @@ import j.jave.platform.data.common.MethodParamObject;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
 import java.util.Map;
 
@@ -54,17 +55,28 @@ public class SimpleObjectTransModelBinder implements ObjectTransModelBinder {
 		case JSON:
 		{
 			object="";
+			Object target=null;
 			if(ServiceContext.class==paramClass){
 				object=params.get(serviceContext);
+				target=JJSON.get().parse(String.valueOf(object), ServiceContext.class);
+				if(target==null){
+					target=DefaultServiceContext.getDefaultServiceContext();
+				}
 			}
 			else if(JSimplePageable.class==paramClass){
 				object=params.get(paginationData);
+				target=JJSON.get().parse(String.valueOf(object), JSimplePageable.class);
 			}else{
 				object=params.get(formData);
-			}
-			Object target=JJSON.get().parse(String.valueOf(object), paramClass);
-			if(ServiceContext.class==paramClass&&target==null){
-				target=DefaultServiceContext.getDefaultServiceContext();
+				if(SimpleControllerSupport.isAcceptedSimpleClass(paramClass)){
+					Map<String, Object> map=JJSON.get().parse(String.valueOf(object));
+					if(map.size()>0){
+						target=map.values().iterator().next();
+					}
+				}
+				else{
+					target=JJSON.get().parse(String.valueOf(object), paramClass);
+				}
 			}
 			methodParamObject.setObject(target);
 			break;

@@ -66,6 +66,7 @@
                 <entry key="hibernate.bytecode.use_reflection_optimizer" value="true"/>
                 <entry key="hibernate.cache.use_second_level_cache" value="false"/>
                 <entry key="hibernate.cache.use_query_cache" value="false"/>
+                <entry key="hibernate.enable_lazy_load_no_trans"  value="true" />
             </map>
         </property>
     </bean>

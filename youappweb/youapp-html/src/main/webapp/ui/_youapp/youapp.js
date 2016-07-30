@@ -30,6 +30,12 @@
 					data:{data:$_youapp.$_util.json(requsetVO)},
 					success:function(data){
 						var resp=JSON.parse(data);
+						$layoutDom=$_youapp.$_layout.getLayoutDom(resp.htmlDef.layoutId);
+						var param={};
+						if(resp.htmlParam){
+							param=JSON.parse(resp.htmlParam);
+						}
+						$layoutDom.data('param',param);
 						var layout=new Layout($(resp.html));
 						layout.draw(resp.htmlDef.layoutId);
 					},
@@ -116,6 +122,16 @@
 		
 		this.layoutDomString=function(layoutId,htmlurl){
 			return '<div data-layoutId="'+id+'" data-htmlUrl="'+htmlurl+'" ></div>';
+		}
+		
+		this.getLayoutDom=function(layoutId){
+			return $(document).find('div[data-layoutId="'+layoutId+'"]');
+		}
+		
+		this.getParameter=function($dom) {
+			var layoutId=this.getClosestLayoutId($dom);
+			var layoutDom=this.getLayoutDom(layoutId);
+			return $(layoutDom).data('param');
 		}
 		
 	}

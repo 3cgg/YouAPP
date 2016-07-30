@@ -7,6 +7,14 @@ public class SyncHtmlResponse {
 	
 	private HtmlDefResponse htmlDef;
 	
+	/**
+	 * JSON format 
+	 */
+	private String htmlParam;
+	
+	/**
+	 * JSON format 
+	 */
 	private String token;
 
 	public String getHtml() {
@@ -31,6 +39,14 @@ public class SyncHtmlResponse {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getHtmlParam() {
+		return htmlParam;
+	}
+
+	public void setHtmlParam(String htmlParam) {
+		this.htmlParam = htmlParam;
 	}
 	
 }

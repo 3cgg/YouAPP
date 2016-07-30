@@ -23,7 +23,7 @@ public class DataTempInterceptor implements DataRequestServletRequestInterceptor
 		if("/sample/datatables/getDatatables".equals(requestVO.getEndpoint())){
 			return getPageble(servletRequestInvocation);
 		}
-		return ResponseModel.newError().setData("sorry,no data found : "+requestVO.getEndpoint());
+		return servletRequestInvocation.proceed();
 	}
 	
 	/**
@@ -33,8 +33,8 @@ public class DataTempInterceptor implements DataRequestServletRequestInterceptor
 	 */
 	private Object getPageble(DataRequestServletRequestInvocation servletRequestInvocation){
 		Map<String, Object> obj= JJSON.get().parse(servletRequestInvocation.getRequestVO().getPaginationData());
-		int page=Integer.parseInt(String.valueOf(obj.get("page")));
-		int size=Integer.parseInt(String.valueOf(obj.get("size")));
+		int page=Integer.parseInt(String.valueOf(obj.get("pageNumber")));
+		int size=Integer.parseInt(String.valueOf(obj.get("pageSize")));
 		ResponseModel responseModel=ResponseModel.newSuccess();
 		
 		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();

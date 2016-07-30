@@ -36,8 +36,8 @@ public class DefaultDataRequestServletRequestInvocation implements DataRequestSe
 		MODEL_INTERCEPTORS.add(new DataExceptionFormatInterceptor());
 		MODEL_INTERCEPTORS.add(new DataExtracterInterceptor());
 		MODEL_INTERCEPTORS.add(new PageableInterceptor());
-		MODEL_INTERCEPTORS.add(new DataQueryInterceptor());
 		MODEL_INTERCEPTORS.add(new DataTempInterceptor());
+		MODEL_INTERCEPTORS.add(new DataQueryInterceptor());
 	}
 	
 	public DefaultDataRequestServletRequestInvocation(ServletRequest servletRequest,ServletResponse servletResponse) {

@@ -3,6 +3,7 @@ package j.jave.web.htmlclient.interceptor;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.web.htmlclient.request.RequestVO;
+import j.jave.web.htmlclient.response.ResponseModel;
 
 
 /**
@@ -23,7 +24,7 @@ public class DataQueryInterceptor implements DataRequestServletRequestIntercepto
 			return dataQueryService.query(requestVO);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
-			return servletRequestInvocation.proceed();
+			throw new RuntimeException(e);
 		}
 	}
 	

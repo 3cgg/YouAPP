@@ -24,7 +24,12 @@
 
     Plugin.prototype = {
     	active:function(id){
-    		this.$elem.children('ul.tabul').find('li > a#'+id).trigger('click');
+    		if(id){
+    			this.$elem.children('ul.tabul').find('li > a#'+id).trigger('click');
+    		}
+    		else{
+    			this.$elem.children('ul.tabul').find('li > a:first').trigger('click');
+    		}
     	},	
     	
     	remove:function(id){

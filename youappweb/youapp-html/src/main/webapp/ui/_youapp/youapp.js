@@ -140,7 +140,8 @@
 	function TabContent($tabDom){
 		var $htl=$tabDom;
 		this.getMenu=function(id,title){
-			return $('<li><a id="'+id+'"   href="#'+id+'" title="'+title+'">'+title+'</a></li>');
+			var $li= $('<li><a id="'+id+'"   href="#'+id+'" title="'+title+'">'+title+'</a></li>');
+			return $li;
 		}
 		
 		this.getSlice=function(id,title,htmlurl){
@@ -149,11 +150,29 @@
 					+'</div>');
 		}
 		
-		this.draw=function(id,title,htmlurl){
+		this.draw=function(id,title,htmlurl,close){
 			
 			var menu=this.getMenu(id,title);
 			var sliceView=this.getSlice(id,title,htmlurl);
 			menu.insertAfter($htl.children('ul.tabul').find('li:last'));
+			$btns = $('<div class="action-panel">' +
+	                '<span class="cancel"  data-tabid="'+$htl.attr('id')+'"  data-tabmenuid="'+id+'" >删除</span>' +
+	                '</div>').appendTo(menu);
+			menu.on( 'mouseenter', function() {
+	            $(this).children('div.action-panel').stop().animate({height: 24});
+	        });
+
+			menu.on( 'mouseleave', function() {
+				$(this).children('div.action-panel').stop().animate({height: 0});
+	        });
+			
+			$btns.on('click',function(event){
+				var menuid=$(this).children('span.cancel').data('tabmenuid');
+				var tabid=$(this).children('span.cancel').data('tabid');
+				$_youapp.$_layout.removeTab(menuid,tabid);
+				$_youapp.$tabs[tabid].active();
+			});
+			
 			sliceView.appendTo($htl.children('div.tabcontainer'));
 			$_youapp.$_layout.draw(null,sliceView);
 		}

@@ -10,3 +10,49 @@
 .body_font{
 	font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif; !important
 }
+
+
+.tabuloustab .tabul div.action-panel {
+    position: absolute;
+    height: 0;
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#80000000', endColorstr='#80000000')\0;
+    background: rgba( 0, 0, 0, 0.5 );
+    width: 24px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 300;
+}
+
+.tabuloustab .tabul div.action-panel span {
+    width: 24px;
+    height: 24px;
+    display: inline;
+    float: right;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: url(./icons.png) no-repeat;
+    margin: 2px -3px 1px;
+    cursor: pointer;
+}
+
+.tabuloustab .tabul div.action-panel span.rotateLeft {
+    background-position: 0 -24px;
+}
+.tabuloustab .tabul div.action-panel span.rotateLeft:hover {
+    background-position: 0 0;
+}
+
+.tabuloustab .tabul div.action-panel span.rotateRight {
+    background-position: -24px -24px;
+}
+.tabuloustab .tabul div.action-panel span.rotateRight:hover {
+    background-position: -24px 0;
+}
+
+.tabuloustab .tabul div.action-panel span.cancel {
+    background-position: -48px -24px;
+}
+.tabuloustab .tabul div.action-panel span.cancel:hover {
+    background-position: -48px 0;
+}

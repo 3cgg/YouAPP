@@ -26,6 +26,7 @@
 		<module>../youapp-platform</module>
 		<module>youapp-business</module>
     	<module>youapp-html</module>
+    <module>youappapi</module>
   </modules>
 
 </project>

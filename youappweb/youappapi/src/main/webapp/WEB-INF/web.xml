@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	
+	<listener>
+		<listener-class>j.jave.platform.webcomp.web.youappmvc.listener.MvcClassPathListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>j.jave.platform.webcomp.web.listener.SimpleServiceRegisterContextListener</listener-class>
+	</listener>
+	
+	<listener>
+		 <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+	</listener>
+	<context-param>  
+	  <param-name>contextConfigLocation</param-name>  
+	  <param-value>classpath:spring-context.xml</param-value>  
+	</context-param>
+	
+	<servlet>
+		<servlet-name>simpleMvcServiceServlet</servlet-name>
+		<servlet-class>j.jave.platform.webcomp.web.youappmvc.servlet.MvcServiceServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>simpleMvcServiceServlet</servlet-name>
+		<url-pattern>/extapi/*</url-pattern>
+	</servlet-mapping>  
+	
+</web-app>

@@ -12,4 +12,8 @@
 		<listener-class>j.jave.web.htmlclient.listener.ServiceLoadingListener</listener-class>
 	</listener>
 	
+	<welcome-file-list>
+		<welcome-file>/ui/pages/navigator.html</welcome-file>
+	</welcome-file-list>
+	
 </web-app>

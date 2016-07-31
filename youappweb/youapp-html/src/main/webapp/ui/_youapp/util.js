@@ -207,11 +207,15 @@
 				    async:_options.async,
 				    success: function(data){
 				    	$_youapp.$_util.log('success: '+_options.url);
-				    	_options.success(data);
+				    	if(_options.success){
+				    		_options.success(data);
+				    	}
 				    },
 				    error:function(data){
-				    	$_youapp.$_util.log('error: '+_options.url);
-				    	_options.error(data);
+				    	$_youapp.$_toast.error('error: '+_options.url);
+				    	if(_options.error){
+				    		_options.error(data);
+				    	}
 				    }
 				});
 			}

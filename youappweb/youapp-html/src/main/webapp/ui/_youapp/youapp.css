@@ -4,6 +4,29 @@
 .table.dataTable tbody tr.selected {
 	background-color: #B0BED9;
 }
+
+td.details-control {
+	background: url('../self/details_open.png') no-repeat center center;
+	cursor: pointer;
+}
+.shown{
+	
+}
+tr.shown td.details-control {
+	background: url('../self/details_close.png') no-repeat center center;
+}
+.hidden{
+	display: none;
+}
+.trodd{
+	background-color:#ecf0f5 ;
+}
+.treven{
+	
+}
+
+
+
 .label-form-control{
 	border: 0 !important;
 }

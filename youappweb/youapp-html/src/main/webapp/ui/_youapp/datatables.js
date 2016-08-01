@@ -4,12 +4,33 @@ $.fn.extend({
 		return $(this.selector).data("datatables-checked").val();
 	}
 	,
-	
+	/**
+	 * {
+				selected:true,
+				checkbox:false,
+				createdRow:function(){},
+				serverSide:true,
+				processing:true,
+				ops:{
+					view:function(id,rowData){
+					},
+					edit:function(id,rowData){
+					},
+					del:function(id,rowData){
+					}
+				},
+				callAfterDrawn:function(data,opts){
+				},
+				createdRow: function ( row, data, index ){
+				}
+		}
+	 */
 	initDataTable : function(options) {
 		
 		var defaultOpts={
 				selected:true,
-				checkbox:false
+				checkbox:false,
+				createdRow:function(){}
 		}
 		
 		options=$.extend({},defaultOpts,options);
@@ -32,7 +53,7 @@ $.fn.extend({
 			var opsGenColumns=[{
 	            "orderable":      false,
 	            "data":           null,
-	            "width":"12%",
+	            "width":"10%",
 	            "title":'操作',
 	            "render": function (data, type, row, meta) {
 	            	var _ops=options.ops;
@@ -80,12 +101,19 @@ $.fn.extend({
 				this.onSelected(data);
 				this.onChecked(data);
 				this.onOperation(data);
+				this.onCallAfterDrawn(data);
+			}
+			
+			this.onCallAfterDrawn=function(data){
+				if(this._options.callAfterDrawn){
+					this._options.callAfterDrawn(data,this._options);
+				}
 			}
 			
 			this.onSelected=function(data){
 				if(this._options.selected){
-					$wrap.find('tbody').off( 'click', 'tr');
-	  				$wrap.find('tbody').on( 'click', 'tr', {$table:$wrap}, function () {
+					$wrap.find('tbody').off( 'click', '>tr');
+	  				$wrap.find('tbody').children('tr').on( 'click', {$table:$wrap}, function () {
 	  			        $(this).toggleClass('selected');
 	  			        $subChk=$(this).find('input[type="checkbox"].minimal').filter('[name="sub"]');
 	  			        if($(this).hasClass('selected')){
@@ -242,6 +270,18 @@ $.fn.extend({
 			serverSide : options.serverSide,
 			ajax : function(data, callback, settings){
 				new DatatableAjax().ajax(data, callback, settings,options,$wrap)
+			},
+			createdRow:function( row, data, index ){
+				if(index%2==0){
+					$(row).addClass('trodd');
+				}
+				else{
+					$(row).addClass('treven');
+				}
+				if(options.createdRow){
+					options.createdRow(row, data, index);
+				}
+				
 			},
 			columns : _columns,
 			sPaginationType: "full_numbers",

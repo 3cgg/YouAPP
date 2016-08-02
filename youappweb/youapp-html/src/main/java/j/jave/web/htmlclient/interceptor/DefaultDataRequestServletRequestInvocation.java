@@ -35,6 +35,7 @@ public class DefaultDataRequestServletRequestInvocation implements DataRequestSe
 	static{
 		MODEL_INTERCEPTORS.add(new DataExceptionFormatInterceptor());
 		MODEL_INTERCEPTORS.add(new DataExtracterInterceptor());
+		MODEL_INTERCEPTORS.add(new DataFormTokenValidatorInterceptor());
 		MODEL_INTERCEPTORS.add(new PageableInterceptor());
 		MODEL_INTERCEPTORS.add(new DataTempInterceptor());
 		MODEL_INTERCEPTORS.add(new DataQueryInterceptor());

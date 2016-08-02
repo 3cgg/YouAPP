@@ -1,17 +1,14 @@
-package j.jave.web.htmlclient.response;
+package j.jave.web.htmlclient;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.web.htmlclient.HtmlDefNames;
-import j.jave.web.htmlclient.HtmlService;
-import j.jave.web.htmlclient.SyncHtmlModel;
-import j.jave.web.htmlclient.form.DefaultVoidDuplicateSubmitService;
-import j.jave.web.htmlclient.form.VoidDuplicateSubmitService;
+import j.jave.web.htmlclient.form.FormIdentification;
 import j.jave.web.htmlclient.request.RequestHtml;
+import j.jave.web.htmlclient.response.HtmlDefResponse;
+import j.jave.web.htmlclient.response.SyncHtmlResponse;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 
 public class SyncHtmlResponseService {
@@ -24,7 +21,7 @@ public class SyncHtmlResponseService {
 	
 	private static SyncHtmlResponseService INSTANCE=new SyncHtmlResponseService();
 
-	private VoidDuplicateSubmitService voidDuplicateSubmitService=new DefaultVoidDuplicateSubmitService();
+	private TokenGeneratorStrategy tokenGeneratorStrategy=new SimpleTokenGeneratorStrategy();
 	
 	public static SyncHtmlResponseService get(){
 		return INSTANCE;
@@ -62,9 +59,10 @@ public class SyncHtmlResponseService {
 				String paramJson=uri.substring(paramMarkIndex+paramMark.length());
 				syncHtmlResponse.setHtmlParam(paramJson);
 			}
-			
-			syncHtmlResponse.setToken(JJSON.get().formatObject(voidDuplicateSubmitService.newFormIdentification()));
-			
+			FormIdentification formIdentification=tokenGeneratorStrategy.newFormIdentification(requestUrl);
+			if(formIdentification!=null){
+				syncHtmlResponse.setToken(JJSON.get().formatObject(formIdentification));
+			}
 			return syncHtmlResponse;
 			
 		}catch(Exception e){
@@ -86,5 +84,14 @@ public class SyncHtmlResponseService {
 		syncHtmlResponse.setHtml("error occurs,please contact administrator. cause by "+message);
 		return syncHtmlResponse;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

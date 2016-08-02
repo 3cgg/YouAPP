@@ -35,7 +35,12 @@
 						if(resp.htmlParam){
 							param=JSON.parse(resp.htmlParam);
 						}
+						var token={};
+						if(resp.token){
+							token=JSON.parse(resp.token);
+						}
 						$layoutDom.data('param',param);
+						$layoutDom.data('token',token);
 						var layout=new Layout($(resp.html));
 						layout.draw(resp.htmlDef.layoutId);
 					},
@@ -134,6 +139,12 @@
 			return $(layoutDom).data('param');
 		}
 		
+		this.getToken=function($dom) {
+			var layoutId=this.getClosestLayoutId($dom);
+			var layoutDom=this.getLayoutDom(layoutId);
+			return $(layoutDom).data('token');
+		}
+		
 	}
 	
 	
@@ -229,6 +240,16 @@
 			});
 		}
 		
+		/**
+		 * {
+		 * url:'',
+		 * formData:'',
+		 * paginationData:'',
+		 * token:'',
+		 * success:function(){},
+		 * failure:function(resp){}
+		 * }
+		 */
 		this.ajaxPost=function(options){
 			var paginationDataOpts={
 			};
@@ -249,17 +270,27 @@
 				})
 			}
 			
+			var tokenOpts={};
+			if(options.token){
+				tokenOpts=$.extend(tokenOpts,{
+					token:$_youapp.$_util.json(options.token)
+				})
+			}
+			
 			
 			$_youapp.$_util.ajaxPost({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
 				data:{data:$_youapp.$_util.json($.extend({},{
 					endpoint:options.url
-			  		},formDataOpts,paginationDataOpts
+			  		},formDataOpts,paginationDataOpts,tokenOpts
 			  		))},
 		  		success:function(data){
 		  			var resp=JSON.parse(data);
 		  			if(!resp.success){
 		  				$_youapp.$_toast.error("error",resp.data);
+		  				if(options.failure){
+		  					options.failure(resp);
+		  				}
 		  				return;
 		  			}
 		  			options.success(resp.data);
@@ -272,18 +303,34 @@
 		 * {
 		 * url:'',
 		 * formSelector:'',
-		 * success:function(){}
+		 * success:function(){},
+		 * failure:function(resp){}
 		 * }
 		 */
 		this.submitForm=function(options){
+			var $form=$(options.formSelector);
+			var layoutId=$_youapp.$_layout.getClosestLayoutId($form);
+			var layoutDom=$_youapp.$_layout.getLayoutDom(layoutId);
+			var token=$(layoutDom).data('token');
 			this.ajaxPost({
 				url:options.url,
 				formData:$_youapp.$_util.serializeObj(options.formSelector),
+				token:token,
 				success:function(data){
 					if(options.success){
 						options.success(data);
 					}
-		  			}
+		  		},
+		  		failure:function(resp){
+		  			var $form=$(options.formSelector);
+		  			var layoutId=$_youapp.$_layout.getClosestLayoutId($form);
+					var layoutDom=$_youapp.$_layout.getLayoutDom(layoutId);
+					var token={};
+					if(resp.token){
+						token=resp.token;
+					}
+					return $(layoutDom).data('token',token);
+		  		}
 			});
 		}
 	}

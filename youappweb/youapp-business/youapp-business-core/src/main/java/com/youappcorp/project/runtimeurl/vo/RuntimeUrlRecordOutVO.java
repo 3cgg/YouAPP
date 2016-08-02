@@ -4,6 +4,8 @@ import j.jave.platform.data.web.model.JOutputModel;
 
 public class RuntimeUrlRecordOutVO implements JOutputModel {
 
+	private String containerUnique;
+	
 	private String id;
 
 	private String url;
@@ -63,6 +65,14 @@ public class RuntimeUrlRecordOutVO implements JOutputModel {
 
 	public void setMockInfo(MockInfoVO mockInfo) {
 		this.mockInfo = mockInfo;
+	}
+
+	public String getContainerUnique() {
+		return containerUnique;
+	}
+
+	public void setContainerUnique(String containerUnique) {
+		this.containerUnique = containerUnique;
 	}
 	
 }

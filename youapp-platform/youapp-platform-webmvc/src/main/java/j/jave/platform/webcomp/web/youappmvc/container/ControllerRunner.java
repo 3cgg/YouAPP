@@ -10,6 +10,7 @@ import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -99,6 +100,9 @@ class ControllerRunner implements JRunner, JExecutableURIGenerator {
 	
 	private Object get(URI uri,Object object){
 		String path = getPath(uri);
+		if(ControllerUrlNames.GET_ALL_CONTROLLERS_URL.equals(path)){
+			return Collections.unmodifiableCollection(mappingMetas.values());
+		}
 		return mappingMetas.get(path);
 	}
 

@@ -1,16 +1,19 @@
 package com.youappcorp.project.runtimeurl.impl;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 import j.jave.kernal.jave.support._package.JDefaultParamMeta;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.common.MethodParamMeta;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import j.jave.platform.webcomp.web.youappmvc.container.ContainerMappingMeta;
+import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.youappcorp.project.runtimeurl.model.MockInfo;
@@ -21,6 +24,13 @@ public class DefaultRuntimeUrlManagerService
 extends JServiceFactorySupport<RuntimeUrlManagerService>
 implements RuntimeUrlManagerService {
 
+	private HttpInvokeContainerDelegateService httpInvokeContainerDelegateService=
+			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
+	
+	@Override
+	protected RuntimeUrlManagerService doGetService() {
+		return this;
+	}
 	/**
 	 * KEY IS URL
 	 */
@@ -46,37 +56,41 @@ implements RuntimeUrlManagerService {
 			runtimeUrls.clear();
 			backUrls.clear();
 			//TODO ready to do 
-			Collection<MappingMeta> mappingMetas = new ArrayList<MappingMeta>();
-			for(MappingMeta mappingMeta:mappingMetas){
-				RuntimeUrl runtimeUrl=new RuntimeUrl();
-				runtimeUrl.setUrl(mappingMeta.getPath());
-				runtimeUrl.setName(mappingMeta.getMethodName());
-				runtimeUrl.setDesc("");
-				runtimeUrl.setId(JUniqueUtils.unique());
-				
-				JDefaultMethodMeta methodMeta=new JDefaultMethodMeta();
-				methodMeta.setMethodName(mappingMeta.getMethodName());
-				methodMeta.setAnnotations(mappingMeta.getAnnotations());
-				MethodParamMeta[] methodParamMetas= mappingMeta.getMethodParams();
-				JDefaultParamMeta[] defaultParamMetas=new JDefaultParamMeta[methodParamMetas.length];
-				int i=0;
-				for(MethodParamMeta methodParamMeta:methodParamMetas){
-					JDefaultParamMeta defaultParamMeta=new JDefaultParamMeta();
-					defaultParamMeta.setName(methodParamMeta.getName());
-					defaultParamMeta.setType(methodParamMeta.getType());
-					defaultParamMeta.setAnnotations(methodParamMeta.getAnnotations());
-					defaultParamMeta.setIndex(methodParamMeta.getIndex());
-					defaultParamMetas[i++]=defaultParamMeta;
+			List<ContainerMappingMeta> containerMappingMetas= httpInvokeContainerDelegateService.getRuntimeAllMappingMetas();
+			for(ContainerMappingMeta containerMappingMeta:containerMappingMetas){
+				Collection<MappingMeta> mappingMetas = containerMappingMeta.getMappingMetas();
+				for(MappingMeta mappingMeta:mappingMetas){
+					RuntimeUrl runtimeUrl=new RuntimeUrl();
+					runtimeUrl.setUrl(mappingMeta.getPath());
+					runtimeUrl.setName(mappingMeta.getMethodName());
+					runtimeUrl.setDesc("");
+					runtimeUrl.setId(JUniqueUtils.unique());
+					runtimeUrl.setContainerUnique(containerMappingMeta.getUnique());
+					
+					JDefaultMethodMeta methodMeta=new JDefaultMethodMeta();
+					methodMeta.setMethodName(mappingMeta.getMethodName());
+					methodMeta.setAnnotations(mappingMeta.getAnnotations());
+					MethodParamMeta[] methodParamMetas= mappingMeta.getMethodParams();
+					JDefaultParamMeta[] defaultParamMetas=new JDefaultParamMeta[methodParamMetas.length];
+					int i=0;
+					for(MethodParamMeta methodParamMeta:methodParamMetas){
+						JDefaultParamMeta defaultParamMeta=new JDefaultParamMeta();
+						defaultParamMeta.setName(methodParamMeta.getName());
+						defaultParamMeta.setType(methodParamMeta.getType());
+						defaultParamMeta.setAnnotations(methodParamMeta.getAnnotations());
+						defaultParamMeta.setIndex(methodParamMeta.getIndex());
+						defaultParamMetas[i++]=defaultParamMeta;
+					}
+					methodMeta.setParamMetas(defaultParamMetas); 
+					runtimeUrl.setMethodMeta(methodMeta);
+					
+					//mock info
+					MockInfo mockInfo=new MockInfo();
+					runtimeUrl.setMockInfo(mockInfo);
+					
+					runtimeUrls.put(runtimeUrl.getUrl(), runtimeUrl);
+					backUrls.put(runtimeUrl.getId(), runtimeUrl);
 				}
-				methodMeta.setParamMetas(defaultParamMetas); 
-				runtimeUrl.setMethodMeta(methodMeta);
-				
-				//mock info
-				MockInfo mockInfo=new MockInfo();
-				runtimeUrl.setMockInfo(mockInfo);
-				
-				runtimeUrls.put(runtimeUrl.getUrl(), runtimeUrl);
-				backUrls.put(runtimeUrl.getId(), runtimeUrl);
 			}
 			return true;
 		}

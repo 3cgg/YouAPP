@@ -5,6 +5,8 @@ import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 
 public class RuntimeUrl implements JModel {
 
+	private String containerUnique;
+	
 	private String id;
 
 	private String url;
@@ -64,5 +66,14 @@ public class RuntimeUrl implements JModel {
 	public void setMockInfo(MockInfo mockInfo) {
 		this.mockInfo = mockInfo;
 	}
+
+	public String getContainerUnique() {
+		return containerUnique;
+	}
+
+	public void setContainerUnique(String containerUnique) {
+		this.containerUnique = containerUnique;
+	}
+	
 	
 }

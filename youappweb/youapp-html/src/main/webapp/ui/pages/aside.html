@@ -26,7 +26,7 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         
-        <li class="active treeview">
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>SYS-ADMIN</span>
             <span class="pull-right-container">
@@ -34,15 +34,24 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a 
+            <li><a 
+            href="javascript:void(0)"  
+            data-url="ui/pages/runtimeurl/runtimeurl-list.html"
+            data-urldata=""
+            data-tabid="layoutTab"
+            data-tabmenuid="runtimeurlTab"
+            data-tabmenutitle="RUTIME-URL"
+            ><i class="fa fa-circle-o"></i> Runtime-URL-MANAGER</a>
+            </li>
+            <li><a 
             href="javascript:void(0)"  
             data-url="ui/pages/sysparam/sysparam-list.html"
             data-urldata=""
             data-tabid="layoutTab"
             data-tabmenuid="sysparamTab"
             data-tabmenutitle="SYS-PARAM"
-            ><i class="fa fa-circle-o"></i> SYS-PARAM</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            ><i class="fa fa-circle-o"></i> SYS-PARAM</a>
+            </li>
           </ul>
         </li>
         
@@ -55,7 +64,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a 
+            <li><a 
             href="javascript:void(0)"  
             data-url="ui/pages/demo/tabs.html"
             data-urldata=""
@@ -143,6 +152,7 @@
 	  
 	  $('#main-aside').find('a').on('click',function(event){
 		  $_youapp.$_html.newTab($(event.target));
+		  $(this).closest('li').addClass('active');
 	  })
 	  
   })

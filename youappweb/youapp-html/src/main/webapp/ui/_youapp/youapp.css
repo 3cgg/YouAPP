@@ -6,14 +6,14 @@
 }
 
 td.details-control {
-	background: url('../self/details_open.png') no-repeat center center;
+	background: url('../_youapp/details_open.png') no-repeat center center;
 	cursor: pointer;
 }
 .shown{
 	
 }
 tr.shown td.details-control {
-	background: url('../self/details_close.png') no-repeat center center;
+	background: url('../_youapp/details_close.png') no-repeat center center;
 }
 .hidden{
 	display: none;

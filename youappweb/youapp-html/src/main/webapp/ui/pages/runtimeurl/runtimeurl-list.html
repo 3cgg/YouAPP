@@ -84,7 +84,7 @@
     </section>
     <script type="text/javascript">
     var runtimeurlListObj={};
-    $(function() {
+    $_youapp.execute(function() {
     	
     	function format ( d ) {
     	    // `d` is the original data object for the row
@@ -105,7 +105,7 @@
     	runtimeurlListObj.listTable=$('#runtimeurlListTable').initDataTable({
 			url:"/runtimeurl/getRuntimeUrlsByPage",
 			urlDataFn:function(){
-				return $("#searchRuntimeUrlForm").serializeJson();
+				return $_youapp.$_util.serializeObj("#searchRuntimeUrlForm");
 			},
 			lengthChange:false,
 			checkbox:false,
@@ -138,6 +138,7 @@
 			],
 			callAfterDrawn:function(data,opts){
 				// Add event listener for opening and closing details
+				$('#runtimeurlListTable tbody').off('click','td.details-control');
 		        $('#runtimeurlListTable tbody').on('click', 'td.details-control', function (event) {
 		            var $tr = $(this).closest('tr');
 		            var row = runtimeurlListObj.listTable.row( $tr );
@@ -169,48 +170,39 @@
 	  				    });
 			  			
 	  				  $chk.on('ifChecked', {rowData:row.data()},function(event){
-	  					  var HtmlMenuOpt ={
-	  							endpoint:"/runtimeurl/updateMockState",
-	  					  		data:{
-	  					  			url:event.data.rowData.url,
-	  					  			mock:true 
-	  					  		},
-	  					  		success:function(data){
-	  					  			alert('mock-success : ' + data);
-	  					  			}		
-	  					  		};
-	  				  	kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
+	  					  
+	  					$_youapp.$_data.ajaxGet({
+	  					  url:'/runtimeurl/updateMockState',
+	  					  formData:{
+	  						  url:event.data.rowData.url,
+	  						  mock:true 
+	  					  },
+	  					  success:function(data){
+	  						  alert('mock-success : ' + data);
+	  					  }
+	  					});
 	  					  
 	  				  });
 	  				  
 	  				 $chk.on('ifUnchecked',{rowData:row.data()}, function(event){
-	  					var HtmlMenuOpt ={
-	  							endpoint:"/runtimeurl/updateMockState",
-	  					  		data:{
-	  					  			url:event.data.rowData.url,
-	  					  			mock:false 
-	  					  		},
-	  					  		success:function(data){
-	  					  			alert('unmock-success : ' + data);
-	  					  			}		
-	  					  		};
-	  				  		kjcs.ajaxEnt.getRequest(HtmlMenuOpt);
+	  					 
+	  					$_youapp.$_data.ajaxGet({
+		  					  url:'/runtimeurl/updateMockState',
+		  					  formData:{
+		  						  url:event.data.rowData.url,
+		  						  mock:false 
+		  					  },
+		  					  success:function(data){
+		  						  alert('unmock-success : ' + data);
+		  					  }
+		  					});
+	  					 
 	  				  });
-			  			
 			  			
 		            }
 		            event.stopPropagation();
 		        } );
-			},
-			createdRow: function ( row, data, index ) {
-				if(index%2==0){
-					$(row).addClass('trodd');
-				}
-				else{
-					$(row).addClass('treven');
-				}
-				
-	        }
+			}
 		});
     	
 		$("#searchRuntimeUrlBtn").on("click",function(){

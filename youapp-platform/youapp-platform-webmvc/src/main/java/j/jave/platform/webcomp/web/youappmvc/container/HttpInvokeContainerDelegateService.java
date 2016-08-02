@@ -9,13 +9,17 @@ import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class HttpInvokeContainerDelegateService
 extends JServiceFactorySupport<HttpInvokeContainerDelegateService> 
@@ -79,18 +83,52 @@ implements JService{
 		}
 	}
 	
+	public Collection<String> getAllContainerUniques(){
+		return containerDelegate.getAllContainerUniques(this);
+	}
+	
 	/**
 	 * scan all containers to check if the path is existing.
 	 * @param path
 	 * @return
 	 */
 	public boolean exist(String path){
-		Collection<String> uniques= containerDelegate.getAllContainerUniques(this);
+		Collection<String> uniques= getAllContainerUniques();
 		boolean exist=false;
 		for(String unique:uniques){
 			exist=exist||exist(path, unique);
 		}
 		return exist;
+	}
+	
+	public List<ContainerMappingMeta> getRuntimeAllMappingMetas(){
+		List<ContainerMappingMeta> containerMappingMetas=new ArrayList<ContainerMappingMeta>();
+		try{
+			Collection<String> uniques= getAllContainerUniques();
+			for(String unique:uniques){
+				String getAllUrl=getGetAllRequestURI(unique);
+				if(JStringUtils.isNullOrEmpty(getAllUrl)) continue;
+				Object object=execute(new URI(getAllUrl), null, unique);
+				if(Collection.class.isInstance(object)){
+					ContainerMappingMeta containerMappingMeta=new ContainerMappingMeta();
+					containerMappingMeta.setUnique(unique);
+					Collection<MappingMeta> mappingMetas=new ArrayList<MappingMeta>();
+					Collection<?> coll=(Collection<?>) object;
+					for(Object obj:coll){
+						if(!(obj instanceof MappingMeta)){
+							break;
+						}
+						mappingMetas.add((MappingMeta) obj);
+					}
+					containerMappingMeta.setMappingMetas(mappingMetas);
+					containerMappingMetas.add(containerMappingMeta);
+				}
+			}
+			return containerMappingMetas;
+		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
+		}
+		return Collections.EMPTY_LIST;
 	}
 	
 	/**
@@ -234,5 +272,13 @@ implements JService{
 		return new BaseHttpURLExpose(unique, path).getDeleteRequestURI();
 	}
 	
-	
+	/**
+	 * 
+	 * @param unique  the container unique
+	 * @param path the relative path of host
+	 * @return
+	 */
+	public String getGetAllRequestURI(String unique){
+		return getGetRequestURI(unique, ControllerUrlNames.GET_ALL_CONTROLLERS_URL);
+	}
 }

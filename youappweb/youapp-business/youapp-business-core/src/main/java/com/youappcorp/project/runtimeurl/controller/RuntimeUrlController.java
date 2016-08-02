@@ -46,7 +46,7 @@ public class RuntimeUrlController extends SimpleControllerSupport {
 	private RuntimeUrlRecordOutVO genRuntimeUrlRecordOutVO(RuntimeUrl runtimeUrl){
 		RuntimeUrlRecordOutVO runtimeUrlRecordOutVO=new RuntimeUrlRecordOutVO();
 		runtimeUrlRecordOutVO.setId(runtimeUrl.getId());
-		runtimeUrlRecordOutVO.setDesc(runtimeUrl.getDesc());
+		runtimeUrlRecordOutVO.setDesc(runtimeUrl.getDesc()+"- ["+runtimeUrl.getContainerUnique()+"] -");
 		runtimeUrlRecordOutVO.setName(runtimeUrl.getName());
 		runtimeUrlRecordOutVO.setUrl(runtimeUrl.getUrl());
 		

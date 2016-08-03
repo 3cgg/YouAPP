@@ -40,7 +40,7 @@ public class JEventQueueEventExecutingPipe extends JEventQueuePipe{
 		};
 	}
 	
-	void addAPPEvent(JYouAPPEvent<? > appEvent){
+	protected void addAPPEvent(JYouAPPEvent<? > appEvent){
 		JEventExecution eventInfo=new JEventExecution();
 		eventInfo.setEvent(appEvent);
 		eventInfo.addAsyncCallbacks(appEvent.getBackendAsyncCallbacks());

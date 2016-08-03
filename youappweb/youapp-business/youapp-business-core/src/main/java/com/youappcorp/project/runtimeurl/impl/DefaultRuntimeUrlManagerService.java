@@ -4,21 +4,27 @@ import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 import j.jave.kernal.jave.support._package.JDefaultParamMeta;
+import j.jave.kernal.jave.sync.JAsyncExecutor;
+import j.jave.kernal.jave.sync.JAsyncTaskExecutingService;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.common.MethodParamMeta;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.container.ContainerMappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.youappcorp.project.runtimeurl.model.MockInfo;
 import com.youappcorp.project.runtimeurl.model.RuntimeUrl;
+import com.youappcorp.project.runtimeurl.model.RuntimeUrlSerializable;
 import com.youappcorp.project.runtimeurl.service.RuntimeUrlManagerService;
+import com.youappcorp.project.runtimeurl.service.RuntimeUrlSerializeService;
 
 public class DefaultRuntimeUrlManagerService
 extends JServiceFactorySupport<RuntimeUrlManagerService>
@@ -41,6 +47,9 @@ implements RuntimeUrlManagerService {
 	 */
 	private Map<String, RuntimeUrl> backUrls=new LinkedHashMap<String, RuntimeUrl>();
 	
+	private RuntimeUrlSerializeService runtimeUrlSerializeService=new SimpleRuntimeUrlSerializeService(); 
+	
+	private JAsyncTaskExecutingService asyncTaskExecutingService=JServiceHubDelegate.get().getService(this, JAsyncTaskExecutingService.class);
 	
 	private Object sync=new Object();
 	
@@ -55,11 +64,21 @@ implements RuntimeUrlManagerService {
 			}
 			runtimeUrls.clear();
 			backUrls.clear();
+			Map<String, RuntimeUrlSerializable> seria=new HashMap<String, RuntimeUrlSerializable>();
+			try {
+				Collection<RuntimeUrlSerializable> serializeRuntimeUrls= runtimeUrlSerializeService.read();
+				for(RuntimeUrlSerializable runtimeUrl:serializeRuntimeUrls){
+					seria.put(runtimeUrl.getUrl(), runtimeUrl);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			//TODO ready to do 
 			List<ContainerMappingMeta> containerMappingMetas= httpInvokeContainerDelegateService.getRuntimeAllMappingMetas();
 			for(ContainerMappingMeta containerMappingMeta:containerMappingMetas){
 				Collection<MappingMeta> mappingMetas = containerMappingMeta.getMappingMetas();
 				for(MappingMeta mappingMeta:mappingMetas){
+					String url=mappingMeta.getPath();
 					RuntimeUrl runtimeUrl=new RuntimeUrl();
 					runtimeUrl.setUrl(mappingMeta.getPath());
 					runtimeUrl.setName(mappingMeta.getMethodName());
@@ -87,7 +106,10 @@ implements RuntimeUrlManagerService {
 					//mock info
 					MockInfo mockInfo=new MockInfo();
 					runtimeUrl.setMockInfo(mockInfo);
-					
+					RuntimeUrlSerializable runtimeUrlSerializable=null;
+					if((runtimeUrlSerializable=seria.get(url))!=null){
+						mockInfo.setMock(runtimeUrlSerializable.isMock());
+					}
 					runtimeUrls.put(runtimeUrl.getUrl(), runtimeUrl);
 					backUrls.put(runtimeUrl.getId(), runtimeUrl);
 				}
@@ -96,12 +118,37 @@ implements RuntimeUrlManagerService {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	private void serializeAsync(){
+		asyncTaskExecutingService.addAsyncTask(new JAsyncExecutor() {
+			@Override
+			public Object execute(Object data) throws Exception {
+				try {
+					List<RuntimeUrlSerializable> runtimeUrlSerializables=new ArrayList<RuntimeUrlSerializable>();
+					for(RuntimeUrl runtimeUrl:runtimeUrls.values()){
+						RuntimeUrlSerializable runtimeUrlSerializable=new RuntimeUrlSerializable();
+						runtimeUrlSerializable.setMock(runtimeUrl.getMockInfo().isMock());
+						runtimeUrlSerializable.setUrl(runtimeUrl.getUrl());
+						runtimeUrlSerializables.add(runtimeUrlSerializable);
+					}
+					runtimeUrlSerializeService.serialize(runtimeUrlSerializables);
+				} catch (Exception e) {
+					LOGGER.debug(e.getMessage(), e);
+				}
+				return true;
+			}
+			
+		});
+	}
+	
+	
 	@Override
 	public void updateMockState( String url,
 			boolean mock) {
 		ready();
 		RuntimeUrl runtimeUrl=getRuntimeUrlByUrl(url);
 		runtimeUrl.getMockInfo().setMock(mock);
+		serializeAsync();
 	}
 
 	@Override

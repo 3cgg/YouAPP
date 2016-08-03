@@ -9,9 +9,9 @@ import j.jave.kernal.eventdriven.servicehub.JYouAPPListener;
 /**
  * @author J
  */
-@JEventOnListener(name=JSyncMonitorWakeupEvent.class)
-public interface JSyncMonitorWakeupListener extends JYouAPPListener {
+@JEventOnListener(name=JAsyncTaskExecutingEvent.class)
+public interface JAsyncTaskExecutingListener extends JYouAPPListener {
 	
-	public Object trigger(JSyncMonitorWakeupEvent event) ;
+	public Object trigger(JAsyncTaskExecutingEvent event) ;
 	
 }

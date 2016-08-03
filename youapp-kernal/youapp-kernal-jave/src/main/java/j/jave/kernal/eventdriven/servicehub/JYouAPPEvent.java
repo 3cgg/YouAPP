@@ -58,7 +58,7 @@ public class JYouAPPEvent<T extends JYouAPPEvent<T>> extends JEventObject implem
 	 */
 	private boolean track;
 	
-	List<JAsyncCallback> getBackendAsyncCallbacks() {
+	protected List<JAsyncCallback> getBackendAsyncCallbacks() {
 		return asyncCallbacks;
 	}
 	

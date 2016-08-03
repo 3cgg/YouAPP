@@ -69,7 +69,7 @@ public abstract class JEventQueuePipe {
 	 * then can pass the event to processor via calling {@link #execute(JEventExecution)} 
 	 * @param eventExecution
 	 */
-	void addEventExecution(JEventExecution eventExecution){
+	protected void addEventExecution(JEventExecution eventExecution){
 		if(canProcessing(eventExecution)){
 			prepareProcessing(eventExecution);
 			execute(eventExecution);
@@ -142,7 +142,7 @@ public abstract class JEventQueuePipe {
 		this.name = name;
 	}
 
-	void addAPPEvent(JYouAPPEvent<? > appEvent){
+	protected void addAPPEvent(JYouAPPEvent<? > appEvent){
 		throw new JOperationNotSupportedException("not supported.");
 	}
 	

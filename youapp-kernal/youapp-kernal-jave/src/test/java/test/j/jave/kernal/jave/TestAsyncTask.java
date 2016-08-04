@@ -1,8 +1,8 @@
 package test.j.jave.kernal.jave;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.sync.JAsyncExecutor;
-import j.jave.kernal.jave.sync.JAsyncTaskExecutingService;
+import j.jave.kernal.jave.async.JAsyncExecutor;
+import j.jave.kernal.jave.async.JAsyncTaskExecutingService;
 
 import org.junit.Test;
 

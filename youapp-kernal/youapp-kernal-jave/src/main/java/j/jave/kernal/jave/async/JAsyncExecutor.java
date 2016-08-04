@@ -1,4 +1,4 @@
-package j.jave.kernal.jave.sync;
+package j.jave.kernal.jave.async;
 
 public interface JAsyncExecutor<T> {
 

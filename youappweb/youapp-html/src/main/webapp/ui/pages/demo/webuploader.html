@@ -26,6 +26,7 @@
     </section>
 	
 	<script type="text/javascript">
+	$_youapp.ready(function(){
 		$('#uploader').initUploader({
 			uploaderId :"uploader",
 			addBtnId:"uploader_filePicker",
@@ -33,8 +34,7 @@
 			dndAreaId:"uploader_dndArea",
 			server:$_youapp.$_config.getFileUploaderEndpoint()
 		});
-	
-	
+	});
 	</script>
 
 

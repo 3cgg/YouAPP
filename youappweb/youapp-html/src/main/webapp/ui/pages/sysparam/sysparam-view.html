@@ -43,28 +43,31 @@
       </div>
     </section>
     <script type="text/javascript">
-    	//avalon initializing
-	    var viewSysParamSectionObj={};
-	    viewSysParamSectionObj.vm = avalon.define({
-		        $id: "sysparam_view",
-		        data: {}
-		    });
-	    avalon.scan($("#viewSysParamSection")[0], viewSysParamSectionObj.vm);  // void braces
-    </script>
     
-    <script type="text/javascript">
-    
-    $_youapp.execute(function(){
+    $_youapp.ready(function(){
+    	
+    	page=$.extend({
+    		root:$("#viewSysParamSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "sysparam_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
     	function getId(){
-        	return $_youapp.$_layout.getParameter($('#viewSysParamSection')).id;
+        	return page.root.getViewParam().id;
         }
     	
-    	$_youapp.$_data.ajaxGet({
+    	page.ajaxGet({
 			  url:'/sysparam/getSysParamById',
 			  formData:{'id':getId()},
 			  success:function(data){
-				  viewSysParamSectionObj.vm.data=data;
-		  		  avalon.scan($("#viewSysParamSection")[0], viewSysParamSectionObj.vm);
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
 			  }
 			});
     });

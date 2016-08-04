@@ -1,7 +1,5 @@
     <!-- Main content -->
-    <section class="content">
-    
-    <form id="datatablesForm"></form>
+    <section class="content"  id="datatableDemoSection">
       
       <div class="box box-info">
             <div class="box-header with-border">
@@ -35,11 +33,19 @@
     <!-- /.content -->
     
 <script type="text/javascript">
-	$(function(){
-		$('#datatablesTable').initDataTable({
+	$_youapp.ready(function(){
+		
+		page=$.extend({
+    		root:$("#datatableDemoSection"),
+    		model:{
+    			
+    		}
+    	},$_youapp.pageTemplate);
+		
+		page.root.find('#datatablesTable').initDataTable({
 			url:"/sample/datatables/getDatatables",
 			urlDataFn:function(){
-				return $_youapp.$_util.serializeObj('#datatablesForm');
+				return page.root.find('#datatablesForm').serializeObj();
 			},
 			lengthChange:false,
 			checkbox:true,

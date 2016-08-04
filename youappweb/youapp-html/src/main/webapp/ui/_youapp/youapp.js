@@ -364,74 +364,88 @@
 		}
 	}
 	
-	window.$_youapp.$_layout=new LayoutDraw();
-	window.$_youapp.$_layout.draw('body',$('body'));
-	window.$_youapp.$_data=new DataExchange();
-	window.$_youapp.$_html=new HtmlExchange();
-	
-	window.$_youapp.$_toast=(function(){
+	(function(){
+		window.$_youapp.$_layout=new LayoutDraw();
+		window.$_youapp.$_layout.draw('body',$('body'));
+		window.$_youapp.$_data=new DataExchange();
+		window.$_youapp.$_html=new HtmlExchange();
+		window.$_youapp.pageTemplate={
+				ajaxGet:function(options){
+					$_youapp.$_data.ajaxGet(options);
+				},
+				submitForm:function(options){
+					$_youapp.$_data.submitForm(options);
+				},
+				ajaxPost:function(options){
+					$_youapp.$_data.ajaxPost(options);
+				}
+		}
 		
-		function def(opts){
-			var defOpts={
-				stack:10,
-				position: 'top-right'
+		
+		window.$_youapp.$_toast=(function(){
+			
+			function def(opts){
+				var defOpts={
+					stack:10,
+					position: 'top-right'
+				}
+				return $.extend({},defOpts,opts);
 			}
-			return $.extend({},defOpts,opts);
-		}
+			
+			this.success=function(heading,text){
+				$.toast(def({
+				    heading: heading,
+				    text: text,
+				    showHideTransition: 'slide',
+				    icon: 'success'
+				}));
+			}
+			
+			this.warning=function(heading,text){
+				$.toast(def({
+				    heading: heading,
+				    text: text,
+				    showHideTransition: 'slide',
+				    icon: 'warning'
+				}));
+			}
+			
+			this.info=function(heading,text){
+				$.toast(def({
+				    heading: heading,
+				    text: text,
+				    showHideTransition: 'slide',
+				    icon: 'info'
+				}));
+			}
+			
+			this.error=function(heading,text){
+				$.toast(def({
+				    heading: heading,
+				    text: text,
+				    showHideTransition: 'slide',
+				    hideAfter: 10000,
+				    icon: 'error'
+				}));
+			}
+			return {
+				success:this.success,
+				info:this.info,
+				warning:this.warning,
+				error:this.error
+			}
+		})();
 		
-		this.success=function(heading,text){
-			$.toast(def({
-			    heading: heading,
-			    text: text,
-			    showHideTransition: 'slide',
-			    icon: 'success'
-			}));
-		}
-		
-		this.warning=function(heading,text){
-			$.toast(def({
-			    heading: heading,
-			    text: text,
-			    showHideTransition: 'slide',
-			    icon: 'warning'
-			}));
-		}
-		
-		this.info=function(heading,text){
-			$.toast(def({
-			    heading: heading,
-			    text: text,
-			    showHideTransition: 'slide',
-			    icon: 'info'
-			}));
-		}
-		
-		this.error=function(heading,text){
-			$.toast(def({
-			    heading: heading,
-			    text: text,
-			    showHideTransition: 'slide',
-			    hideAfter: 10000,
-			    icon: 'error'
-			}));
-		}
-		return {
-			success:this.success,
-			info:this.info,
-			warning:this.warning,
-			error:this.error
+		window.$_youapp.ready=function(func){
+			$(function(){
+				try{
+					func();
+				}catch (e) {
+					$_youapp.$_util.log(e);
+				}
+			});
 		}
 	})();
-	
-	window.$_youapp.execute=function(func){
-		new function(){
-			try{
-				func();
-			}catch (e) {
-				$_youapp.$_util.log(e);
-			}
-		}(window);
-	}
 	
 	$.fn.extend({
 		goView:function(htmlUrl,data,layoutId){
@@ -442,6 +456,12 @@
 				htmlUrl=htmlUrl+'?param='+$_youapp.$_util.json($.extend({},defData,data));
 			}
 			window.$_youapp.$_html.linkView($(this),htmlUrl,layoutId);
+		},
+		getViewParam:function(){
+			return $_youapp.$_layout.getParameter(this);
+		},
+		serializeObj:function(){
+			return $_youapp.$_util.serializeObj(this);
 		}
 	});
 	

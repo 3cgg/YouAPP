@@ -84,28 +84,38 @@
     
     </section>
     <script type="text/javascript">
-    var searchSysParamSectionObj={};
-    $_youapp.execute(function() {
-    	searchSysParamSectionObj.listTable=$('#sysparamListTable').initDataTable({
+    $_youapp.ready(function() {
+    	
+    	page=$.extend({
+    		root:$("#searchSysParamSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "sysparam_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	page.listTable=page.root.find('#sysparamListTable').initDataTable({
 			url:"/sysparam/getSysParamsByPage",
 			urlDataFn:function(){
-				return $_youapp.$_util.serializeObj("#searchSysParamForm");
+				return page.root.find("#searchSysParamForm").serializeObj();
 			},
 			lengthChange:false,
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    $('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-view.html',{"id":id});
+                    page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					$('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
+					page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					$_youapp.$_data.ajaxGet({
+					page.ajaxGet({
 						  url:'/sysparam/deleteSysParamById',
 						  formData:{'id':id},
 						  success:function(data){
-							  searchSysParamSectionObj.listTable.ajax.reload();
+							  page.listTable.ajax.reload();
 						  }
 						});
 				}
@@ -132,8 +142,8 @@
 			]
 		});
 		
-		$("#searchSysparamBtn").on("click",function(){
-			searchSysParamSectionObj.listTable.ajax.reload();
+		page.root.find("#searchSysparamBtn").on("click",function(){
+			page.listTable.ajax.reload();
 		})
 		
 	});

@@ -51,6 +51,7 @@
     </section>
 	
 	<script type="text/javascript">
+	$_youapp.ready(function(){
 		/**/
 		$('#uploader_multi_1').initUploader({
 			uploaderId :"uploader_multi_1",
@@ -66,7 +67,7 @@
 			addMoreBtnId:"uploader_multi_2_filePicker2",
 			dndAreaId:"uploader_multi_2_dndArea",
 			server:$_youapp.$_config.getFileUploaderEndpoint()
-		});
-		
+		});		
+	})
 	</script>
 

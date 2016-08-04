@@ -1,5 +1,5 @@
 	 <!-- Main content -->
-    <section class="content"  id="addSysParamSection"  ms-controller="sysparam_edit">
+    <section class="content"  id="addSysParamSection" >
     
     	<form role="form"  id="addSysParamForm"  class="form-horizontal">
     	
@@ -74,8 +74,15 @@
 	
 	<script type="text/javascript">
 		
-		$_youapp.execute(function (){
-			 $("#addSysParamForm").validate({
+		$_youapp.ready(function (){
+			
+			page=$.extend({
+	    		root:$("#addSysParamSection"),
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			page.root.find("#addSysParamForm").validate({
 					rules: {
 						'code': {
 							   required: true,
@@ -91,11 +98,11 @@
 					   }
 					  },
 					  submitHandler:function(form){
-						  $_youapp.$_data.submitForm({
+						  page.submitForm({
 							  url:'/sysparam/saveSysParam',
-							  formSelector:'#'+$(form).attr('id'),
+							  formSelector:form,
 							  success:function(data){
-								  $(form).goView('/ui/pages/sysparam/sysparam-list.html');
+								  page.root.goView('/ui/pages/sysparam/sysparam-list.html');
 							  }
 							});
 					 }

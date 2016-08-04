@@ -72,64 +72,62 @@
     </form>
     
     </section>
-    
-    <script type="text/javascript">
-    	//avalon initializing
-	    var editSysParamSectionObj={};
-	    editSysParamSectionObj.vm = avalon.define({
-		        $id: "sysparam_edit",
-		        data: {}
-		    });
-	    avalon.scan($("#editSysParamSection")[0], editSysParamSectionObj.vm);  // void braces
-    </script>
-	
 	<script type="text/javascript">
     
-    $_youapp.execute(function(){
+    $_youapp.ready(function(){
+    	
+    	page=$.extend({
+    		root:$("#editSysParamSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "sysparam_edit",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
     	
     	function getId(){
-    		return $_youapp.$_layout.getParameter($('#editSysParamSection')).id;
+        	return page.root.getViewParam().id;
         }
-    	$_youapp.$_data.ajaxGet({
+    	
+    	page.ajaxGet({
 			  url:'/sysparam/getSysParamById',
 			  formData:{'id':getId()},
 			  success:function(data){
-				  editSysParamSectionObj.vm.data=data;
-		  		  avalon.scan($("#editSysParamSection")[0], editSysParamSectionObj.vm);
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
 			  }
-			});
+		});
+    	
+    	page.root.find("#editSysParamForm").validate({
+ 			rules: {
+ 				'code': {
+ 					   required: true,
+ 					   maxlength:64
+ 				   },
+ 			   'value': {
+ 				   required: true,
+ 				   maxlength:128
+ 			   },
+ 			   'desc': {
+ 				   required: true,
+ 				   maxlength:2000
+ 			   }
+ 			  },
+ 			  submitHandler:function(form){
+ 				  debugger;
+ 				  page.submitForm({
+ 					  url:'/sysparam/updateSysParam',
+ 					  formSelector:form,
+ 					  success:function(data){
+ 						  page.root.goView('/ui/pages/sysparam/sysparam-list.html');
+ 					  }
+ 					});
+ 			  
+ 			  } 
+ 		});
+    	
     });
     </script>
-	
-	<script type="text/javascript">
-		
-		$_youapp.execute(function (){
-			 $("#editSysParamForm").validate({
-			rules: {
-				'code': {
-					   required: true,
-					   maxlength:64
-				   },
-			   'value': {
-				   required: true,
-				   maxlength:128
-			   },
-			   'desc': {
-				   required: true,
-				   maxlength:2000
-			   }
-			  },
-			  submitHandler:function(form){
-				  
-				  $_youapp.$_data.submitForm({
-					  url:'/sysparam/updateSysParam',
-					  formSelector:'#'+$(form).attr('id'),
-					  success:function(data){
-						  $(form).goView('/ui/pages/sysparam/sysparam-list.html');
-					  }
-					});
-			  
-			  } 
-			    });
-		});
-	</script>

@@ -1,4 +1,3 @@
-<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
 	 <!-- Main content -->
     <section class="content"   id="searchDemoSection" >
       
@@ -46,13 +45,20 @@
     
     </section>
     <script type="text/javascript">
-    $_youapp.execute(function() {
+    $_youapp.ready(function() {
 		
-		$("#searchDemoBtn").on("click",function(){
+    	page=$.extend({
+    		root:$("#searchDemoSection"),
+    		model:{
+    			
+    		}
+    	},$_youapp.pageTemplate);
+    	
+		page.root.find("#searchDemoBtn").on("click",function(){
 			
 			 $_youapp.$_data.submitForm({
 				  url:'/sample/search/searchDemo',
-				  formSelector:'#searchDemoForm',
+				  formSelector:page.root.find('#searchDemoForm'),
 				  success:function(data){
 					  alert(data);
 				  }

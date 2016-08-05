@@ -92,11 +92,62 @@
 <!-- YouAPP -->
 <script src="../_youapp/_jsregister.js"></script>
 <script src="../_youapp/util.js"></script>
+<script src="../_youapp/storage.js"></script>
 <script src="../_youapp/config.js"></script>
 <script src="../_youapp/youapp.js"></script>
 <script src="../_youapp/datatables.js"></script>
 <script src="../_youapp/uploads.js"></script>
-	
+<script src="../_youapp/codetables.js"></script>	
 	
 </body>
 </html>
+<script type="text/javascript">
+$_youapp.ready(function(){
+	$_youapp.$_codeTable.codeTable({
+		getType:function(data){
+			return data.desc;
+		},
+		getCode:function(data){
+			return data.code;
+		},
+		getName:function(data){
+			return data.value;
+		},
+		getDesc:function(data){
+			return data.desc;
+		},
+		fnDatas:function(callback){
+			
+			$_youapp.$_data.ajaxGet({
+				url:'/sysparam/getSysParamsByPage',
+				formData:{},
+				paginationData:$.extend({},{
+			  		pageNumber:0,
+					pageSize:10000,
+					orders:[]
+			  		}),
+		  		success:function(data){
+		  			callback(data.data);
+		  		}
+			});
+		},
+		fnData:function(type,callback){
+			var data=[{
+				code:'F',
+				value:'女',
+				desc:type
+			},
+			{
+				code:'M',
+				value:'男',
+				desc:type
+			}
+			];
+			callback(data);
+		}
+	});
+})
+
+
+
+</script>

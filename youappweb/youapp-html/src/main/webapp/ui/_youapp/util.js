@@ -235,6 +235,10 @@
 			return new List();
 		}
 		
+		this.isList=function(obj){
+			return List==obj.constructor
+		}
+		
 		this.newMap=function(){
 			return new ListMap();
 		}

@@ -83,14 +83,19 @@
     
     </section>
     <script type="text/javascript">
-    var runtimeurlListObj={};
     $_youapp.ready(function() {
+    	
+    	var page=$.extend({
+    		root:$("#searchRuntimeUrlSection"),
+    		model:{
+    		}
+    	},$_youapp.pageTemplate);
     	
     	function format ( d ) {
     	    // `d` is the original data object for the row
     	    var runtimeurlExtTableId='runtimeurlExtTable';
     	    var runtimeUrlMockExtFormId='runtimeUrlMockExtForm';
-    	    var $extTableClone=$('#'+runtimeurlExtTableId).clone(false);
+    	    var $extTableClone=page.root.find('#'+runtimeurlExtTableId).clone(false);
     	    $extTableClone.attr('id',runtimeurlExtTableId+"_"+d.id);
     	    var $mockForm=$extTableClone.find('#'+runtimeUrlMockExtFormId);
     	    $mockForm.attr('id',runtimeUrlMockExtFormId+"_"+d.id);
@@ -102,10 +107,10 @@
     	    return $extTableClone;
     	}
     	
-    	runtimeurlListObj.listTable=$('#runtimeurlListTable').initDataTable({
+    	page.listTable=$('#runtimeurlListTable').initDataTable({
 			url:"/runtimeurl/getRuntimeUrlsByPage",
 			urlDataFn:function(){
-				return $_youapp.$_util.serializeObj("#searchRuntimeUrlForm");
+				return page.root.find("#searchRuntimeUrlForm").serializeObj();
 			},
 			lengthChange:false,
 			checkbox:false,
@@ -138,10 +143,10 @@
 			],
 			callAfterDrawn:function(data,opts){
 				// Add event listener for opening and closing details
-				$('#runtimeurlListTable tbody').off('click','td.details-control');
-		        $('#runtimeurlListTable tbody').on('click', 'td.details-control', function (event) {
+				page.root.find('#runtimeurlListTable tbody').off('click','td.details-control');
+		        page.root.find('#runtimeurlListTable tbody').on('click', 'td.details-control', function (event) {
 		            var $tr = $(this).closest('tr');
-		            var row = runtimeurlListObj.listTable.row( $tr );
+		            var row = page.listTable.row( $tr );
 		            
 		            if ( $tr.hasClass('shown') ) {
 		                // This row is already open - close it
@@ -205,21 +210,10 @@
 			}
 		});
     	
-		$("#searchRuntimeUrlBtn").on("click",function(){
-			runtimeurlListObj.listTable.ajax.reload();
+		page.root.find("#searchRuntimeUrlBtn").on("click",function(){
+			page.listTable.ajax.reload();
 		})
 		
 	});
 	 
 	</script>
-
-	<script type="text/javascript">
-	
-	</script>
-
-
-
-
-
-
-

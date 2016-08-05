@@ -170,15 +170,18 @@ public class JCondition implements JModel {
 	}
 	
 	public JCondition startLikes(String property,String value,LinkType... linkType){
-		return append(property, value+"%", Ope.LIKE,linkType);
+		String val=value==null?null:value+"%";
+		return append(property, val, Ope.LIKE,linkType);
 	}
 	
 	public JCondition endLikes(String property,String value,LinkType... linkType){
-		return append(property, "%"+value, Ope.LIKE,linkType);
+		String val=value==null?null:"%"+value;
+		return append(property, val, Ope.LIKE,linkType);
 	}
 	
 	public JCondition likes(String property,String value,LinkType... linkType){
-		return append(property, "%"+value+"%", Ope.LIKE,linkType);
+		String val=value==null?null:"%"+value+"%";
+		return append(property, val, Ope.LIKE,linkType);
 	}
 	
 	public JCondition equals(String property,Object value,LinkType... linkType){

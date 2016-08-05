@@ -75,9 +75,9 @@ public class SysParamController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/getSysParamsByPage")
-	public ResponseModel getSysParamsByPage(ServiceContext serviceContext, SysParamCriteriaInVO carCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
+	public ResponseModel getSysParamsByPage(ServiceContext serviceContext, SysParamCriteriaInVO sysParamCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
 		// do something validation on the SysParam or nothing.
-		JPage<SysParam> page=sysParamService.getSysParams(serviceContext, carCriteriaInVO,simplePageable);
+		JPage<SysParam> page=sysParamService.getSysParams(serviceContext, sysParamCriteriaInVO,simplePageable);
 		List<SysParam> content=page.getContent();
 		List<SysParamRecordOutVO> outContent=new ArrayList<SysParamRecordOutVO>();
 		for(SysParam sysParam:content){

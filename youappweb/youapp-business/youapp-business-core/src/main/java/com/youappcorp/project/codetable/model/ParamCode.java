@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.param.model;
+package com.youappcorp.project.codetable.model;
 
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
@@ -15,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
@@ -28,8 +27,10 @@ import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 					classes={@ConstructorResult(
 							targetClass=CodeTableCacheModel.class,
 							columns={
-								@ColumnResult(name="NAME",type=String.class),
-								@ColumnResult(name="CODE",type=String.class)
+								@ColumnResult(name="TYPE",type=String.class),
+								@ColumnResult(name="CODE",type=String.class),
+								@ColumnResult(name="NAME",type=String.class)
+								
 							}
 							)}
 			),
@@ -51,19 +52,25 @@ import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 public class ParamCode extends JJpaBaseModel {
 	
 	public ParamCode() {
-		// TODO Auto-generated constructor stub
 	}
 	
-	public ParamCode(String name,String code) {
-		this.name=name;
-		this.code=code;
+	public ParamCode(String type, String code, String name) {
+		super();
+		this.type = type;
+		this.code = code;
+		this.name = name;
 	}
-	
-	/**
-	 * the id the type of funciton. 
-	 */
-	@JColumn(name="TYPEID",type=JSQLType.VARCHAR,length=32)
-	private String typeId;
+
+	public ParamCode(String type, String code, String name, String description) {
+		super();
+		this.type = type;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
+
+	@JColumn(name="TYPE",type=JSQLType.VARCHAR,length=32)
+	private String type;
 	
 	/**
 	 * the code 
@@ -82,25 +89,15 @@ public class ParamCode extends JJpaBaseModel {
 	 */
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
 	private String description;
-
-	private String paramTypeCode;
 	
-	@Transient
-	public String getParamTypeCode() {
-		return paramTypeCode;
+
+	@Column(name="TYPE")
+	public String getType() {
+		return type;
 	}
 
-	public void setParamTypeCode(String paramTypeCode) {
-		this.paramTypeCode = paramTypeCode;
-	}
-
-	@Column(name="TYPEID")
-	public String getTypeId() {
-		return typeId;
-	}
-
-	public void setTypeId(String typeId) {
-		this.typeId = typeId;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Column(name="CODE")

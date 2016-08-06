@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.param.sql;
+package com.youappcorp.project.codetable.sql;
 
 import j.jave.platform.sps.core.autoloader.AbstractSQLDDLLoader;
 

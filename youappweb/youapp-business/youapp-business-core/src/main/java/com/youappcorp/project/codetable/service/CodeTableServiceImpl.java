@@ -1,27 +1,23 @@
 /**
  * 
  */
-package com.youappcorp.project.param.service;
+package com.youappcorp.project.codetable.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
-import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
-import com.youappcorp.project.param.jpa.ParamTypeJPARepo;
-import com.youappcorp.project.param.model.ParamCode;
-import com.youappcorp.project.param.model.ParamCriteria;
-import com.youappcorp.project.param.model.ParamType;
+import com.youappcorp.project.codetable.model.ParamCode;
+import com.youappcorp.project.codetable.model.ParamType;
+import com.youappcorp.project.codetable.vo.ParamCriteriaInVO;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
 /**
@@ -29,7 +25,7 @@ import com.youappcorp.project.websupport.model.CodeTableCacheModel;
  * @author J
  */
 @Service(value="paramService.transation.jpa")
-public class ParamServiceImpl extends ServiceSupport implements ParamService{
+public class CodeTableServiceImpl extends ServiceSupport implements CodeTableService{
 
 	@Autowired
 	private InternalParamTypeServiceImpl internalParamTypeServiceImpl;
@@ -37,38 +33,12 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	@Autowired
 	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;
 	
-	@Autowired
-	private ParamCodeJPARepo paramCodeRepo;
-	
-	@Autowired
-	private ParamTypeJPARepo paramTypeJPARepo;
-	
-//	@Autowired
-//	private UserService userService;
-	
 	@Override
 	public void saveParam(ServiceContext context, ParamType paramType,
 			ParamCode paramCode) throws BusinessException {
 		try{
-			
 			saveParamType(context, paramType);
-			paramCode.setTypeId(paramType.getId());
 			internalParamCodeServiceImpl.saveOnly(context, paramCode);
-			
-			
-//			User user=new User();
-//			user.setUserName("test-user-name-"+new java.util.Date().getTime());
-//			userService.saveUser(context, user);
-//			
-//
-//			if(user!=null){
-//				throw new RuntimeException("ROLL-------------");
-//			}
-			
-			
-			
-			System.out.println("OK");
-			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -92,13 +62,13 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context) {
 		String nativeSql=
 				"SELECT PT.CODE TYPE, PC.CODE,PC.NAME from PARAM_CODE PC , PARAM_TYPE PT"
-				+ " WHERE PC.TYPEID = PT.ID";
+				+ " WHERE PC.TYPE = PT.CODE AND PT.DELETED='N' AND PC.DELETED='N'";
 		List<CodeTableCacheModel> codes=queryBuilder().nativeQuery().setSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
 		.models();
 		
 		nativeSql=
-				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT";
+				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT AND PT.DELETED='N'";
 		List<CodeTableCacheModel> types=queryBuilder().nativeQuery().setSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
 		.models();
@@ -110,23 +80,10 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	public void updateParamCode(ServiceContext context, ParamCode paramCode) 
 			throws BusinessException {
 		try{
-			String jpql="select count(1)  from ParamCode pc where pc.deleted='N'"
-					+ " and pc.id<> :id and pc.code=:code and pc.typeId=:typeId";
-			Map<String , Object> params=new HashMap<String, Object>();
-			params.put("id", paramCode.getId());
-			params.put("code", paramCode.getCode());
-			params.put("typeId", paramCode.getTypeId());
-			
-			long count=queryBuilder()
-			.jpqlQuery().setJpql(jpql)
-			.setParams(params)
-			.model();
-			if(count>1){
-				throw new BusinessException("param type already exists.");
+			if(!existsParamType(context, paramCode.getType())){
+				throw new BusinessException("param type doesnot exist.");
 			}
-			
 			internalParamCodeServiceImpl.updateOnly(context, paramCode);
-			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -137,16 +94,21 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	public void updateParamType(ServiceContext context, ParamType paramType)
 			throws BusinessException{
 		try{
-			String jpql="select count(1) from ParamType p where p.deleted='N' "
-					+ " and p.id <> :id and p.code =:code";
-			Map<String , Object> params=new HashMap<String, Object>();
-			params.put("id", paramType.getId());
-			params.put("code", paramType.getCode());
 			
-			long count=queryBuilder()
-			.jpqlQuery().setJpql(jpql)
-			.setParams(params)
-			.model();
+			long count=internalParamTypeServiceImpl.singleEntityQuery()
+			.conditionDefault().notEquals("id", paramType.getId())
+			.equals("code", paramType.getCode()).ready().count();
+			
+//			String jpql="select count(1) from ParamType p where p.deleted='N' "
+//					+ " and p.id <> :id and p.code =:code";
+//			Map<String , Object> params=new HashMap<String, Object>();
+//			params.put("id", paramType.getId());
+//			params.put("code", paramType.getCode());
+//			
+//			long count=queryBuilder()
+//			.jpqlQuery().setJpql(jpql)
+//			.setParams(params)
+//			.model();
 			if(count>1){
 				throw new BusinessException("param type already exists.");
 			}
@@ -160,13 +122,16 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 
 	@Override
 	public boolean existsParamType(ServiceContext context, String code) {
-		long count=paramTypeJPARepo.getCountByCode(code);
+		long count=internalParamTypeServiceImpl.singleEntityQuery()
+				.conditionDefault().equals("code", code).ready().count();
 		return count>0;
 	}
 
 	@Override
 	public boolean existsParamCode(ServiceContext context, String type,String code) {
-		long count=paramCodeRepo.getCountByTypeAndCode(type, code);
+		long count=internalParamCodeServiceImpl.singleEntityQuery()
+				.conditionDefault().equals("code", code)
+				.equals("type", type).ready().count();
 		return count>0;
 	}
 
@@ -174,8 +139,7 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	public void saveParamCode(ServiceContext context, ParamCode paramCode) 
 			throws BusinessException{
 		try{
-
-			if(existsParamCodeByTypeIdAndCode(context, paramCode.getTypeId(), paramCode.getCode())){
+			if(existsParamCode(context, paramCode.getType(), paramCode.getCode())){
 				throw new BusinessException("param code already exists.");
 			}
 			internalParamCodeServiceImpl.saveOnly(context, paramCode);
@@ -186,10 +150,6 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 		
 	}
 
-	private boolean existsParamCodeByTypeIdAndCode(ServiceContext context, String typeId, String code){
-		return paramCodeRepo.getCountByTypeIdAndCode(typeId, code)>0;
-	}
-	
 	@Override
 	public void saveParamType(ServiceContext context, ParamType paramType) 
 			throws BusinessException {
@@ -206,30 +166,22 @@ public class ParamServiceImpl extends ServiceSupport implements ParamService{
 	
 	@Override
 	public JPage<ParamType> getAllParamTypes(ServiceContext context,
-			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
+			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
 		return internalParamTypeServiceImpl.getsByPage(context,simplePageable);
 	}
 	
 	@Override
 	public JPage<ParamCode> getAllParamCodes(ServiceContext context,
-			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
+			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
 		return internalParamCodeServiceImpl.getsByPage(context,simplePageable);
 	}
 	
 	@Override
 	public JPage<ParamCode> getAllParamCodesByType(ServiceContext context,
-			ParamCriteria paramCriteria,JSimplePageable simplePageable) {
-		String jpql="select pc from ParamCode pc , ParamType pt "
-				+ " where pc.deleted='N' and pt.deleted='N' "
-				+ "  and pc.typeId=pt.id  and pt.code =:code";
-		Map<String , Object> params=new HashMap<String, Object>();
-		params.put("code", paramCriteria.getCode());
-		
-		return queryBuilder()
-		.jpqlQuery().setJpql(jpql)
-		.setPageable(simplePageable)
-		.setParams(params)
-		.modelPage();
+			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
+		return internalParamCodeServiceImpl.singleEntityQuery()
+				.conditionDefault().equals("type", paramCriteria.getType())
+				.ready().modelPage(simplePageable);
 	}
 	
 }

@@ -9,14 +9,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.youappcorp.project.param.service.ParamService;
+import com.youappcorp.project.codetable.service.CodeTableService;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
 @Service
 public class CodeRefCacheModelServiceImpl implements CodeRefCacheModelService {
 
 	@Autowired
-	private ParamService paramService;
+	private CodeTableService paramService;
 	
 	@Override
 	public List<? extends CodeRefCacheModel> getResourceCacheModels() {

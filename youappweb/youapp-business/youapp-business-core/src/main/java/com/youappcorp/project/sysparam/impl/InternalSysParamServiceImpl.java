@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.sysparam.model.SysParam;
 import com.youappcorp.project.sysparam.repo.SysParamRepo;
 
-@Service
+@Service(value="internalSysParamServiceImpl.transation.jpa")
 public class InternalSysParamServiceImpl extends InternalServiceSupport<SysParam>{
 
 	@Autowired

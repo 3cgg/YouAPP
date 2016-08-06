@@ -45,6 +45,13 @@ public class JSingleEntityQuery {
 		.model();
 	}
 	
+	public long count(){
+		return JQueryBuilder.get(entityManager).jpqlQuery()
+				.setJpql(singleEntityQueryMeta.toCountJPQL())
+				.setParams(singleEntityQueryMeta.toParams())
+				.model();
+	}
+	
 	public <T> JPage<T> modelPage(JPageable pageable){
 		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())

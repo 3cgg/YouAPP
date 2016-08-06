@@ -3,6 +3,7 @@ package j.jave.kernal.jave.async;
 import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
 import j.jave.kernal.eventdriven.servicehub.JEventExecutionException;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
+import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
 import j.jave.kernal.jave.service.JService;
 
 public class JAsyncTaskExecutingService
@@ -31,7 +32,7 @@ implements JService,JAsyncTaskExecutingListener
 	public <T> void addAsyncTask(T data,JAsyncExecutor<T> asyncExecutor,JAsyncCallback asyncCallback){
 		JAsyncTaskExecutingEvent event =new JAsyncTaskExecutingEvent(this, data);
 		event.setExecutor(asyncExecutor);
-		event.addAsyncCallback(asyncCallback);
+		event.addAsyncCallback(asyncCallback==null?JYouAPPEvent.NOTHING:asyncCallback);
 		taskExecutingServicePipeline.addAPPEvent(event);
 	}
 	

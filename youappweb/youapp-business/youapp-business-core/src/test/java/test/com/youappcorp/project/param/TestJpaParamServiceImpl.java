@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessException;
-import com.youappcorp.project.param.model.ParamCode;
-import com.youappcorp.project.param.model.ParamType;
-import com.youappcorp.project.param.service.ParamService;
+import com.youappcorp.project.codetable.model.ParamCode;
+import com.youappcorp.project.codetable.model.ParamType;
+import com.youappcorp.project.codetable.service.CodeTableService;
 
 @Service
 public class TestJpaParamServiceImpl{
 	
 	@Autowired
-	private ParamService paramService;
+	private CodeTableService paramService;
 	
 	public TestJpaParamServiceImpl(){
 		System.out.println("TestParamServiceImpl");

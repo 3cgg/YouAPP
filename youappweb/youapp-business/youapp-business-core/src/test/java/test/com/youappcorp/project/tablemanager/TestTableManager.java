@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.codetable.model.ParamCode;
 import com.youappcorp.project.tablemanager.model.Record;
 import com.youappcorp.project.tablemanager.model.Table;
 import com.youappcorp.project.tablemanager.model.TableSearch;

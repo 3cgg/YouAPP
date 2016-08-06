@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.param.model;
+package com.youappcorp.project.codetable.model;
 
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
@@ -22,14 +22,26 @@ import javax.persistence.Table;
 public class ParamType extends JJpaBaseModel {
 	
 	public ParamType() {
-		// TODO Auto-generated constructor stub
 	}
 	
-	public ParamType(String name,String code) {
-		this.name=name;
-		this.code=code;
-	}
 	
+	public ParamType(String code, String name) {
+		super();
+		this.code = code;
+		this.name = name;
+	}
+
+
+
+	public ParamType(String code, String name, String description) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.description = description;
+	}
+
+
+
 	/**
 	 * the code 
 	 */

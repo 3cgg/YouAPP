@@ -1,4 +1,4 @@
-package com.youappcorp.project.param.service;
+package com.youappcorp.project.codetable.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;
@@ -6,10 +6,10 @@ import j.jave.platform.webcomp.core.service.InternalServiceSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
-import com.youappcorp.project.param.model.ParamCode;
+import com.youappcorp.project.codetable.jpa.ParamCodeJPARepo;
+import com.youappcorp.project.codetable.model.ParamCode;
 
-@Service(value="internalparamCodeService.transation.jpa")
+@Service(value="internalParamCodeService.transation.jpa")
 public class InternalParamCodeServiceImpl extends InternalServiceSupport<ParamCode>{
 
 	@Autowired

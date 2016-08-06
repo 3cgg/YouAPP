@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.param.service;
+package com.youappcorp.project.codetable.service;
 
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
@@ -11,15 +11,15 @@ import j.jave.platform.webcomp.core.service.ServiceContext;
 import java.util.List;
 
 import com.youappcorp.project.BusinessException;
-import com.youappcorp.project.param.model.ParamCode;
-import com.youappcorp.project.param.model.ParamCriteria;
-import com.youappcorp.project.param.model.ParamType;
+import com.youappcorp.project.codetable.model.ParamCode;
+import com.youappcorp.project.codetable.model.ParamType;
+import com.youappcorp.project.codetable.vo.ParamCriteriaInVO;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
 /**
  * @author J
  */
-public interface ParamService{
+public interface CodeTableService{
 	
 	/**
 	 * save param , including some validations. see {@link #exists(ServiceContext, ParamCode)}
@@ -58,10 +58,10 @@ public interface ParamService{
 	
 	public boolean existsParamCode(ServiceContext context,String type,String code);
 	
-	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteria paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 
 }

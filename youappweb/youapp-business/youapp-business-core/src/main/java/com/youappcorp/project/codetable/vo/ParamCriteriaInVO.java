@@ -1,13 +1,13 @@
-package com.youappcorp.project.param.model;
+package com.youappcorp.project.codetable.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import j.jave.platform.data.web.model.JInputModel;
 
-public class ParamCriteria extends BaseCriteria {
+public class ParamCriteriaInVO implements JInputModel {
 	
 	/**
-	 * the id the type of funciton. 
+	 * the type
 	 */
-	private String functionId;
+	private String type;
 	
 	/**
 	 * the code 
@@ -23,13 +23,14 @@ public class ParamCriteria extends BaseCriteria {
 	 * optional description 
 	 */
 	private String description;
+	
 
-	public String getFunctionId() {
-		return functionId;
+	public String getType() {
+		return type;
 	}
 
-	public void setFunctionId(String functionId) {
-		this.functionId = functionId;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getCode() {

@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.youappcorp.project.param.jpa.ParamCodeJPARepo;
-import com.youappcorp.project.param.model.ParamCode;
-import com.youappcorp.project.param.service.InternalParamCodeServiceImpl;
-import com.youappcorp.project.param.service.ParamService;
+import com.youappcorp.project.codetable.jpa.ParamCodeJPARepo;
+import com.youappcorp.project.codetable.model.ParamCode;
+import com.youappcorp.project.codetable.service.InternalParamCodeServiceImpl;
+import com.youappcorp.project.codetable.service.CodeTableService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +37,7 @@ public class TestJpaParam {
 	private TestJpaParamServiceImpl paramService;
 	
 	@Autowired
-	private ParamService paramS;
+	private CodeTableService paramS;
 	
 	@Autowired
 	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;

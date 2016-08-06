@@ -14,7 +14,7 @@ import com.youappcorp.project.sysparam.model.SysParam;
 import com.youappcorp.project.sysparam.service.SysParamService;
 import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
 
-@Service
+@Service(value="sysParamServiceImpl.transation.jpa")
 public class SysParamServiceImpl extends ServiceSupport implements SysParamService {
 
 	@Autowired

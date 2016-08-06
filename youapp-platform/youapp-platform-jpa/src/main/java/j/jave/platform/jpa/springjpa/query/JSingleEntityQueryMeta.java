@@ -47,6 +47,10 @@ public class JSingleEntityQueryMeta implements JModel {
 		return order;
 	}
 	
+	public String toCountJPQL(){
+		return "select count(1) "+toJPQL();
+	}
+	
 	public String toJPQL(){
 		String clause="from "+entityClass.getSimpleName()+" "+ALIAS;
 		if(condition!=null){

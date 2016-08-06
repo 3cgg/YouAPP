@@ -39,6 +39,12 @@ public interface InternalService<T extends JModel,ID extends Serializable> exten
 	 */
 	public void delete(ServiceContext context, ID id);
 	
+	/**
+	 * make the record not available
+	 * @bill context
+	 * @bill id
+	 */
+	public void delete(ServiceContext context, T id);
 	
 	/**
 	 * get one by record identification. 

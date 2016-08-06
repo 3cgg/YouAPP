@@ -58,10 +58,25 @@ public interface CodeTableService{
 	
 	public boolean existsParamCode(ServiceContext context,String type,String code);
 	
-	JPage<ParamType> getAllParamTypes(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamType> getAllParamTypesByPage(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodesByPage(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodesByType(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodesByTypeByPage(ServiceContext context,String type,JSimplePageable simplePageable);
 
+	List<ParamType> getAllParamTypes(ServiceContext context,ParamCriteriaInVO paramCriteria);
+	
+	List<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteriaInVO paramCriteria);
+	
+	List<ParamCode> getAllParamCodesByType(ServiceContext context,String type);
+	
+	ParamType getParamTypeById(ServiceContext context,String id);
+	
+	ParamCode getParamCodeById(ServiceContext context,String id);
+
+	void deleteParamTypeById(ServiceContext context,String id);
+	
+	void deleteParamCodeById(ServiceContext context,String id);
+	
+	
 }

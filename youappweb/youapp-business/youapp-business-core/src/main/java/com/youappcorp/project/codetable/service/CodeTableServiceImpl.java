@@ -68,7 +68,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 		.models();
 		
 		nativeSql=
-				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT AND PT.DELETED='N'";
+				"SELECT PT.CODE TYPE, PT.CODE , PT.NAME from PARAM_TYPE PT WHERE PT.DELETED='N'";
 		List<CodeTableCacheModel> types=queryBuilder().nativeQuery().setSql(nativeSql)
 				.setResultSetMapping("CodeTableQueryMapping")
 		.models();
@@ -80,10 +80,22 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	public void updateParamCode(ServiceContext context, ParamCode paramCode) 
 			throws BusinessException {
 		try{
-			if(!existsParamType(context, paramCode.getType())){
-				throw new BusinessException("param type doesnot exist.");
+			long count=internalParamCodeServiceImpl.singleEntityQuery()
+					.conditionDefault().notEquals("id", paramCode.getId())
+					.equals("type", paramCode.getType())
+					.equals("code", paramCode.getCode())
+					.ready().count();
+					
+			if(count>0){
+				throw new BusinessException("param code already exists.");
 			}
-			internalParamCodeServiceImpl.updateOnly(context, paramCode);
+			
+			ParamCode dbParamCode=getParamCodeById(context, paramCode.getId());
+			dbParamCode.setCode(paramCode.getCode());
+			dbParamCode.setName(paramCode.getName());
+			dbParamCode.setDescription(paramCode.getDescription());
+			
+			internalParamCodeServiceImpl.updateOnly(context, dbParamCode);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -109,10 +121,25 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 //			.jpqlQuery().setJpql(jpql)
 //			.setParams(params)
 //			.model();
-			if(count>1){
+			if(count>0){
 				throw new BusinessException("param type already exists.");
 			}
-			internalParamTypeServiceImpl.updateOnly(context, paramType);
+			ParamType dbParamType=getParamTypeById(context, paramType.getId());
+			String preCode=dbParamType.getCode();
+			String nowCode=paramType.getCode();
+			dbParamType.setCode(paramType.getCode());
+			dbParamType.setName(paramType.getName());
+			dbParamType.setDescription(paramType.getDescription());
+			internalParamTypeServiceImpl.updateOnly(context, dbParamType);
+			
+			//modify param code
+			if(!nowCode.equals(preCode)){
+				List<ParamCode> paramCodes= getAllParamCodesByType(context, preCode);
+				for(ParamCode paramCode:paramCodes){
+					paramCode.setType(nowCode);
+					internalParamCodeServiceImpl.updateOnly(context, paramCode);
+				}
+			}
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -165,23 +192,88 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public JPage<ParamType> getAllParamTypes(ServiceContext context,
+	public JPage<ParamType> getAllParamTypesByPage(ServiceContext context,
 			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
-		return internalParamTypeServiceImpl.getsByPage(context,simplePageable);
-	}
-	
-	@Override
-	public JPage<ParamCode> getAllParamCodes(ServiceContext context,
-			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
-		return internalParamCodeServiceImpl.getsByPage(context,simplePageable);
-	}
-	
-	@Override
-	public JPage<ParamCode> getAllParamCodesByType(ServiceContext context,
-			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
-		return internalParamCodeServiceImpl.singleEntityQuery()
-				.conditionDefault().equals("type", paramCriteria.getType())
+		return internalParamTypeServiceImpl.
+				singleEntityQuery().conditionDefault()
+				.likes("code", paramCriteria.getCode())
+				.likes("name", paramCriteria.getName())
+				.likes("description", paramCriteria.getDescription())
 				.ready().modelPage(simplePageable);
+	}
+	
+	@Override
+	public List<ParamType> getAllParamTypes(ServiceContext context,
+			ParamCriteriaInVO paramCriteria) {
+		return internalParamTypeServiceImpl.
+				singleEntityQuery().conditionDefault()
+				.likes("code", paramCriteria.getCode())
+				.likes("name", paramCriteria.getName())
+				.likes("description", paramCriteria.getDescription())
+				.ready().models();
+	}
+	
+	@Override
+	public JPage<ParamCode> getAllParamCodesByPage(ServiceContext context,
+			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
+		return internalParamCodeServiceImpl.
+				singleEntityQuery().conditionDefault()
+				.likes("code", paramCriteria.getCode())
+				.likes("name", paramCriteria.getName())
+				.likes("description", paramCriteria.getDescription())
+				.likes("type", paramCriteria.getType())
+				.ready().modelPage(simplePageable);
+	}
+	
+	@Override
+	public List<ParamCode> getAllParamCodes(ServiceContext context,
+			ParamCriteriaInVO paramCriteria) {
+		return internalParamCodeServiceImpl.
+				singleEntityQuery().conditionDefault()
+				.likes("code", paramCriteria.getCode())
+				.likes("name", paramCriteria.getName())
+				.likes("description", paramCriteria.getDescription())
+				.ready().models();
+	}
+	
+	@Override
+	public JPage<ParamCode> getAllParamCodesByTypeByPage(ServiceContext context,
+			String type,JSimplePageable simplePageable) {
+		return internalParamCodeServiceImpl.singleEntityQuery()
+				.conditionDefault().equals("type", type)
+				.ready().modelPage(simplePageable);
+	}
+	
+	@Override
+	public List<ParamCode> getAllParamCodesByType(ServiceContext context,String type) {
+		return internalParamCodeServiceImpl.singleEntityQuery()
+				.conditionDefault().equals("type", type)
+				.ready().models();
+	}
+
+	@Override
+	public ParamType getParamTypeById(ServiceContext context, String id) {
+		return internalParamTypeServiceImpl.getById(context, id);
+	}
+
+	@Override
+	public ParamCode getParamCodeById(ServiceContext context, String id) {
+		return internalParamCodeServiceImpl.getById(context, id);
+	}
+
+	@Override
+	public void deleteParamTypeById(ServiceContext context, String id) {
+		ParamType paramType=getParamTypeById(context, id);
+		internalParamTypeServiceImpl.delete(context, paramType);
+		List<ParamCode> paramCodes= getAllParamCodesByType(context, paramType.getCode());
+		for(ParamCode paramCode:paramCodes){
+			internalParamCodeServiceImpl.delete(context, paramCode);
+		}
+	}
+
+	@Override
+	public void deleteParamCodeById(ServiceContext context, String id) {
+		internalParamCodeServiceImpl.delete(context, id);
 	}
 	
 }

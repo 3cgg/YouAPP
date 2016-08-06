@@ -1,0 +1,147 @@
+<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
+	 <!-- Main content -->
+    <section class="content"   id="searchParamTypeSection"   ms-controller="paramtype-list">
+      
+      <div class="box box-info">
+      	<div class="box-header with-border">
+          <h3 class="box-title"></h3>
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          </div>
+        </div>
+      	<form class="form-horizontal"  id="searchParamTypeForm">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="code" class="col-sm-1 control-label">编码</label>
+
+                  <div class="col-sm-5">
+                    <input type="text"  name="code" class="form-control" id="code" placeholder="编码">
+                  </div>
+                  <label for="name" class="col-sm-1 control-label">名称</label>
+
+                  <div class="col-sm-5">
+                    <input type="text"  name="name" class="form-control" id="value" placeholder="参数值">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label">详细描述</label>
+
+                  <div class="col-sm-11">
+                    <input type="text"  name="description" class="form-control" id="description" placeholder="描述">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                	<label for="desc" class="col-sm-1 control-label"></label>
+                	<div class="col-sm-2 col-lg-1">
+	                	<input id="searchParamTypeBtn" type="button" class="form-control btn-primary"  value="查询"   >
+	                </div>
+                </div>
+                
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+      
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='$(this).goView("/ui/pages/codetable/paramtype-add.html");'
+	          >新增</button>
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body"   id="paramtypeList">
+	          <table id="paramTypeListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>主键</th>
+						<th>编码</th>
+						<th>参数值</th>
+						<th>描述</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+            </table>
+	          
+	          
+	          <!-- /.row -->
+	        </div>
+      </div>
+    
+    </section>
+    <script type="text/javascript">
+    $_youapp.ready(function() {
+    	
+    	var page=$.extend({
+    		root:$("#searchParamTypeSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "paramtype-list",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	page.listTable=page.root.find('#paramTypeListTable').initDataTable({
+			url:"/codetablemanager/getParamTypesByPage",
+			urlDataFn:function(){
+				return page.root.find("#searchParamTypeForm").serializeObj();
+			},
+			lengthChange:false,
+			checkbox:true,
+			ops:{
+				view:function(id,rowData){
+                    page.root.find('#paramTypeListTable').goView('/ui/pages/codetable/paramtype-view.html',{"id":id});
+				},
+				edit:function(id,rowData){
+					page.root.find('#paramTypeListTable').goView('/ui/pages/codetable/paramtype-edit.html',{"id":id});
+				},
+				del:function(id,rowData){
+					page.ajaxGet({
+						  url:'/codetablemanager/deleteParamTypeById',
+						  formData:{'id':id},
+						  success:function(data){
+							  page.listTable.ajax.reload();
+						  }
+						});
+				}
+			},
+			columns : [ 
+			{
+				"data" : "id",
+				"orderable" : false,
+				 "width": "10%"
+			}, 
+			{
+				"data" : "code",
+				"width": "10%"
+			},
+			{
+				"data" : "codeName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "description",
+				"width": "20%"
+			}
+			
+			]
+		});
+		
+		page.root.find("#searchParamTypeBtn").on("click",function(){
+			page.listTable.ajax.reload();
+		})
+		
+	});
+	</script>
+

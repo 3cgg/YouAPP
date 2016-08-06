@@ -1,7 +1,11 @@
 $.fn.extend({
 	
 	getSelectedRow:function(){
-		return $(this.selector).data("datatables-checked").val();
+		var list=$(this.selector).data("datatables-checked");
+		if(list){
+			return list.val();
+		}
+		return [];
 	}
 	,
 	/**

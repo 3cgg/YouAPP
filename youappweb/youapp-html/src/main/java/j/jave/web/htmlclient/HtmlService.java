@@ -3,6 +3,7 @@ package j.jave.web.htmlclient;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.web.htmlclient.request.RequestHtml;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -31,7 +32,12 @@ public class HtmlService {
 	
 	
 	public SyncHtmlModel get404Page(){
-		return null;
+		SyncHtmlModel syncHtmlModel=new SyncHtmlModel();
+		syncHtmlModel.setHtml(htmlFileService.getHtmlFile("/ui/pages/404.html", new HashMap<String, Object>()));
+		HtmlDef htmlDef=new HtmlDef();
+		htmlDef.setType(HtmlDefNames.HTML);
+		syncHtmlModel.setHtmlDef(htmlDef);
+		return syncHtmlModel;
 	}
 	
 	public SyncHtmlModel getSyncHtmlModel(RequestHtml requestHtml){

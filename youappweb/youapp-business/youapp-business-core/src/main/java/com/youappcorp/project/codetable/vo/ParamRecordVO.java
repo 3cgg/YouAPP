@@ -1,8 +1,11 @@
 package com.youappcorp.project.codetable.vo;
 
+import j.jave.platform.data.web.model.JInputModel;
 import j.jave.platform.data.web.model.JOutputModel;
 
-public class ParamRecordOutVO implements JOutputModel {
+public class ParamRecordVO implements JOutputModel , JInputModel{
+	
+	private String id;
 	
 	/**
 	 * the type
@@ -65,6 +68,14 @@ public class ParamRecordOutVO implements JOutputModel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

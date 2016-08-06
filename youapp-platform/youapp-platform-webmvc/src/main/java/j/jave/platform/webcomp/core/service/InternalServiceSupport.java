@@ -73,6 +73,11 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	public void delete(ServiceContext context, String id) {
 		getRepo().markModelDeleted(id);
 	}
+	
+	@Override
+	public void delete(ServiceContext context, T id) {
+		getRepo().markModelDeleted(id);
+	}
 
 	/**
 	 * {@inheritDoc}

@@ -105,25 +105,25 @@
 $_youapp.ready(function(){
 	$_youapp.$_codeTable.codeTable({
 		getType:function(data){
-			return data.desc;
+			return data.type;
 		},
 		getCode:function(data){
 			return data.code;
 		},
 		getName:function(data){
-			return data.value;
+			return data.codeName;
 		},
 		getDesc:function(data){
-			return data.desc;
+			return data.description;
 		},
 		fnDatas:function(callback){
 			
 			$_youapp.$_data.ajaxGet({
-				url:'/sysparam/getSysParamsByPage',
+				url:'/codetablemanager/getParamCodesByPage',
 				formData:{},
 				paginationData:$.extend({},{
 			  		pageNumber:0,
-					pageSize:10000,
+					pageSize:100000,
 					orders:[]
 			  		}),
 		  		success:function(data){
@@ -133,13 +133,13 @@ $_youapp.ready(function(){
 		},
 		fnData:function(type,callback){
 			var data=[{
-				code:'F',
-				value:'女',
+				code:'test-'+type+'-code-1',
+				codeName:'test-'+type+'-name-1',
 				desc:type
 			},
 			{
-				code:'M',
-				value:'男',
+				code:'test-'+type+'-code-2',
+				codeName:'test-'+type+'-name-2',
 				desc:type
 			}
 			];
@@ -147,8 +147,5 @@ $_youapp.ready(function(){
 		}
 	});
 })
-
-
-
 </script>
 </html>

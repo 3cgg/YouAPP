@@ -1,0 +1,76 @@
+	 <!-- Main content -->
+    <section class="content"   id="viewParamTypeSection"   ms-controller="paramtype_view">
+    
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="button" class="btn btn-primary" 
+	          onclick='$(this).goView("/ui/pages/codetable/paramtype-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">字典类型信息明细</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+	        	<form role="form"  id="viewParamTypeForm"   class="form-horizontal">
+	        	<div class="form-group">
+                  <label for="code" class="col-sm-1 control-label">编码</label>
+                  <div class="col-sm-5">
+				  <span id="code"  class="form-control label-form-control">{{data.code}}</span>
+				 </div>
+				  <label for="codeName" class="col-sm-1 control-label">名称</label>
+				  <div class="col-sm-5">
+				  	<span id="codeName"  class="form-control label-form-control" >{{data.codeName}}</span>		
+                 </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label">详情描述</label>
+                  <div class="col-sm-5">
+                  	<span id="description"  class="form-control label-form-control">{{data.description}}</span>
+                  </div>
+				  
+                </div>
+	        	</form>
+	        </div>
+      </div>
+    </section>
+    <script type="text/javascript">
+    
+    $_youapp.ready(function(){
+    	
+    	var page=$.extend({
+    		root:$("#viewParamTypeSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "paramtype_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
+    	function getId(){
+        	return page.root.getViewParam().id;
+        }
+    	
+    	page.ajaxGet({
+			  url:'/codetablemanager/getParamTypeById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
+			  }
+			});
+    });
+    </script>
+	
+

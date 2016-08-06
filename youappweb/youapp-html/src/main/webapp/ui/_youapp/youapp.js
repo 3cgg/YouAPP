@@ -3,7 +3,7 @@
 		var $htl=$dom;
 		this.dataHtmlUrls=function(){
 			var all=$_youapp.$_util.newList();
-			if($htl.attr("data-htmlurl")){
+			if($htl.attr("data-htmlurl")!=undefined){
 				all.add($htl);
 			}
 			var $foundHtmlUrl=$htl.find('[data-htmlurl]');
@@ -21,6 +21,9 @@
 				var $htmlUrl=$($allHtmlUrlls[i]);
 				var layoutId=$htmlUrl.data('layoutid');
 				var htmlUrl=$htmlUrl.data('htmlurl');
+				if(htmlUrl==''){ 
+					continue;
+				}
 				var requsetVO={
 						layoutId:layoutId,
 						htmlUrl:htmlUrl
@@ -477,6 +480,10 @@
 		- $(".main-header").outerHeight()
 		- $(".main-footer").outerHeight();
 		$(".content-wrapper").css("min-height", minHeight + "px");
-	},1000)
+	},1000);
 	
+	$.validator.addMethod("valueNotEquals", function(value, element, arg){
+		  return arg != value;
+		 }, "Value must not equal arg .");
+
 })(window);

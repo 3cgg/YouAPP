@@ -2,8 +2,6 @@ package j.jave.web.htmlclient.request;
 
 import j.jave.web.htmlclient.RequestContext;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class RequestHtml {
 	
 	/**
@@ -19,6 +17,16 @@ public class RequestHtml {
 	private String dataUrl;
 	
 	private transient RequestContext request;
+	
+	/**
+	 * JSON format of HTML parameters
+	 */
+	private transient String viewParam;
+	
+	/**
+	 * the request URL which contains HTML parameters/HTML location
+	 */
+	private transient String viewUrl;
 
 	public RequestContext getRequest() {
 		return request;
@@ -58,6 +66,22 @@ public class RequestHtml {
 	 */
 	public void setDataUrl(String dataUrl) {
 		this.dataUrl = dataUrl;
+	}
+
+	public String getViewParam() {
+		return viewParam;
+	}
+
+	public void setViewParam(String viewParam) {
+		this.viewParam = viewParam;
+	}
+
+	public String getViewUrl() {
+		return viewUrl;
+	}
+
+	public void setViewUrl(String viewUrl) {
+		this.viewUrl = viewUrl;
 	}
 	
 }

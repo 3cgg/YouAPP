@@ -147,7 +147,9 @@
 		
 		if($dom.is('select')
 				&&$dom.hasClass('codetable')){
-			selectRender($dom);
+			$dom.each(function(){
+				selectRender(this);
+			});
 		}
 		else{
 			$dom.find('.codetable').each(function(){
@@ -244,7 +246,11 @@
 			/**
 			 * 获取CODES - LIST ， 根据TYPE ， 此API 只会从本地JS缓存中拿
 			 */
-			getCodes:getCodes
+			getCodes:getCodes,
+			
+			defaultDraw:function($dom){
+				$_youapp.$_codeTable.draw($($dom).find('.codetable'));
+			}
 	}
 	
 	

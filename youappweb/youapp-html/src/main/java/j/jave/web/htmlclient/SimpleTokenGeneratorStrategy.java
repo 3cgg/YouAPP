@@ -40,7 +40,7 @@ public class SimpleTokenGeneratorStrategy implements TokenGeneratorStrategy {
 	}
 	
 	private boolean matches(RequestHtml requestHtml){
-		String html=requestHtml.getHtmlUrl();
+		String html=requestHtml.getViewUrl();
 		for(Pattern pattern:includes){
 			if(pattern.matcher(html).matches()){
 				return true;

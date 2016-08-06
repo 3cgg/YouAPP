@@ -52,13 +52,7 @@ public class SyncHtmlResponseService {
 			htmlDefResponse.setType(syncHtmlModel.getHtmlDef().getType());
 			htmlDefResponse.setLayoutId(requestUrl.getLayoutId());
 			syncHtmlResponse.setHtmlDef(htmlDefResponse);
-			String uri=requestUrl.getHtmlUrl();
-			String paramMark="?param=";
-			int paramMarkIndex=-1;
-			if((paramMarkIndex=uri.indexOf(paramMark))!=-1){
-				String paramJson=uri.substring(paramMarkIndex+paramMark.length());
-				syncHtmlResponse.setHtmlParam(paramJson);
-			}
+			syncHtmlResponse.setHtmlParam(requestUrl.getViewParam());
 			FormIdentification formIdentification=tokenGeneratorStrategy.newFormIdentification(requestUrl);
 			if(formIdentification!=null){
 				syncHtmlResponse.setToken(JJSON.get().formatObject(formIdentification));

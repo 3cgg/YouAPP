@@ -1,5 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
+import java.util.Collections;
+
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -35,6 +37,22 @@ public class HtmlExtracterInterceptor implements HtmlRequestServletRequestInterc
         			requestHtml.setHtmlUrl("/"+requestHtml.getHtmlUrl());
         		}
         	}
+        	
+        	//processing parameter
+        	String uri=requestHtml.getHtmlUrl();
+			String paramMark="?param=";
+			int paramMarkIndex=-1;
+			if((paramMarkIndex=uri.indexOf(paramMark))!=-1){
+				String viewUrl=uri.substring(0,paramMarkIndex);
+				String viewParam=uri.substring(paramMarkIndex+paramMark.length());
+				requestHtml.setViewParam(viewParam);
+				requestHtml.setViewUrl(viewUrl);
+			}
+			else{
+				requestHtml.setViewParam(JJSON.get().formatObject(Collections.EMPTY_MAP));
+				requestHtml.setViewUrl(uri);
+			}
+        	
         	requestHtml.setRequest(new ServletRequestContext(req));
         	servletRequestInvocation.setRequestHtml(requestHtml);
         }

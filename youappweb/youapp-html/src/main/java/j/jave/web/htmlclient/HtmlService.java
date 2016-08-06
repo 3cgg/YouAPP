@@ -36,7 +36,7 @@ public class HtmlService {
 	
 	public SyncHtmlModel getSyncHtmlModel(RequestHtml requestHtml){
 		try{
-			String uri=requestHtml.getHtmlUrl();
+			String uri=requestHtml.getViewUrl();
 //			File file=htmlFileService.getFile(uri);
 //			String fileName=JFileUtils.getFileNameNoExtension(file);
 			Map<String, Object> attrs=htmlViewDataResourceService.data(requestHtml);
@@ -47,13 +47,8 @@ public class HtmlService {
 			if(layoutId!=null&&!layoutId.equals("")){
 				
 			}
-			String paramMark="?param=";
-			int paramMarkIndex=-1;
-			if((paramMarkIndex=uri.indexOf(paramMark))!=-1){
-				String paramJson=uri.substring(paramMarkIndex+paramMark.length());
-				attrs.putAll(JJSON.get().parse(paramJson));
-				uri=uri.substring(0, paramMarkIndex);
-			}
+			
+			attrs.putAll(JJSON.get().parse(requestHtml.getViewParam()));
 			SyncHtmlModel syncHtmlModel=new SyncHtmlModel();
 			syncHtmlModel.setHtmlDef(htmlDef);
 			syncHtmlModel.setHtml(htmlFileService.getHtmlFile(uri,attrs));

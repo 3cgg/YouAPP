@@ -46,10 +46,10 @@ public class RuntimeUrlController extends SimpleControllerSupport {
 	private RuntimeUrlRecordOutVO genRuntimeUrlRecordOutVO(RuntimeUrl runtimeUrl){
 		RuntimeUrlRecordOutVO runtimeUrlRecordOutVO=new RuntimeUrlRecordOutVO();
 		runtimeUrlRecordOutVO.setId(runtimeUrl.getId());
-		runtimeUrlRecordOutVO.setDesc(runtimeUrl.getDesc()+"- ["+runtimeUrl.getContainerUnique()+"] -");
+		runtimeUrlRecordOutVO.setDesc(runtimeUrl.getDesc());
 		runtimeUrlRecordOutVO.setName(runtimeUrl.getName());
 		runtimeUrlRecordOutVO.setUrl(runtimeUrl.getUrl());
-		
+		runtimeUrlRecordOutVO.setContainerUnique(runtimeUrl.getContainerUnique());
 		//mock info
 		MockInfoVO mockInfoVO=new MockInfoVO();
 		mockInfoVO.setUrl(runtimeUrlRecordOutVO.getUrl());

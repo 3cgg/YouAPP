@@ -57,7 +57,14 @@
 			$htl.appendTo($target);
 		}
 		
+		this.bingSelect=function(){
+			if($_youapp.$_codeTable&&$_youapp.$_codeTable.defaultDraw){
+				$_youapp.$_codeTable.defaultDraw($htl);
+			}
+		}
+		
 		this.draw=function(layoutId){
+			this.bingSelect();
 			if(layoutId){
 				this.appendTo(layoutId);
 			}

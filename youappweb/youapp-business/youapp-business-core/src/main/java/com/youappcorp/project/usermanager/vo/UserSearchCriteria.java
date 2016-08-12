@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.usermanager.model;
+package com.youappcorp.project.usermanager.vo;
 
 import j.jave.platform.data.web.model.BaseCriteria;
 

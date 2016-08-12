@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.youappcorp.project.usermanager.model;
+package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import j.jave.platform.data.web.model.JInputModel;
 
 /**
  * @author J
  */
-public class RoleSearchCriteria extends BaseCriteria{
-	
+public class RoleCreateInVO implements JInputModel {
+
 	private String roleCode;
 	
 	private String roleName;
@@ -39,6 +39,5 @@ public class RoleSearchCriteria extends BaseCriteria{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 	
 }

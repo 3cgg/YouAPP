@@ -21,8 +21,9 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.User;
-import com.youappcorp.project.usermanager.model.UserSearchCriteria;
+import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.repo.UserRepo;
+import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
 
 /**
  * @author Administrator
@@ -33,6 +34,9 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 	
 	@Autowired
 	private UserRepo<?> userMapper;
+	
+	@Autowired
+	private UserExtendService userExtendService;
 	
 	private DESedeCipherService deSedeCipherService=
 			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
@@ -98,7 +102,7 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 
 	
 	@Override
-	public void register(ServiceContext context,User user) throws BusinessException {
+	public void register(ServiceContext context,User user,UserExtend userExtend) throws BusinessException {
 		try{
 			
 			if(JStringUtils.isNullOrEmpty(user.getUserName())){
@@ -109,10 +113,6 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 				throw new BusinessException("密码不能为空");
 			}		
 			
-			if(!user.getPassword().equals(user.getRetypePassword())){
-				throw new BusinessException("两次输入的密码不一样");
-			}
-			
 			User dbUser=getUserByName(context, user.getUserName().trim());
 			if(dbUser!=null){
 				throw new BusinessException("用户已经存在");
@@ -122,10 +122,48 @@ public class UserServiceImpl extends InternalServiceSupport<User> implements Use
 			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			user.setPassword(encriptPassword);
 			user.setUserName(user.getUserName().trim());
-			saveUser(context, user);  // with encrypted password 
+			saveUser(context, user);  // with encrypted password
+			
+			//save user extend
+			userExtend.setUserId(user.getId());
+			userExtendService.saveUserExtend(context, userExtend);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
-		
 	}
+	
+	
+	@Override
+	public void resetPassword(ServiceContext context, String userId,String password) {
+		try {
+			User dbUser=getUserById(context, userId);
+			if(dbUser==null){
+				throw new BusinessException("用户不存在");
+			}
+			
+			String passwrod=password.trim();
+			String encriptPassword=deSedeCipherService.encrypt(passwrod);
+			
+			dbUser.setPassword(encriptPassword);
+			saveOnly(context, dbUser);
+		} catch (Exception e) {
+			BusinessExceptionUtil.throwException(e);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

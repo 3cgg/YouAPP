@@ -13,7 +13,8 @@ import java.util.List;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.User;
-import com.youappcorp.project.usermanager.model.UserSearchCriteria;
+import com.youappcorp.project.usermanager.model.UserExtend;
+import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
 
 /**
  * @author J
@@ -81,6 +82,13 @@ public interface UserService extends InternalService<User, String> {
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void register(ServiceContext context,User user) throws BusinessException;
+	public void register(ServiceContext context,User user,UserExtend userExtend) throws BusinessException;
+	
+	/**
+	 * @param userId
+	 * @param context
+	 * @param password
+	 */
+	public void resetPassword(ServiceContext context,String userId,String password);
 	
 }

@@ -3,6 +3,8 @@ package com.youappcorp.project.usermanager.controller;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JDateUtils;
+import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
@@ -17,14 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.User;
-import com.youappcorp.project.usermanager.model.UserSearchCriteria;
+import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserTracker;
+import com.youappcorp.project.usermanager.service.RoleService;
 import com.youappcorp.project.usermanager.service.UserManagerService;
 import com.youappcorp.project.usermanager.service.UserService;
 import com.youappcorp.project.usermanager.service.UserTrackerService;
+import com.youappcorp.project.usermanager.vo.ResetPasswordVO;
+import com.youappcorp.project.usermanager.vo.RoleCreateInVO;
+import com.youappcorp.project.usermanager.vo.RoleEditInVO;
 import com.youappcorp.project.usermanager.vo.TimeLineGroup;
 import com.youappcorp.project.usermanager.vo.TimelineView;
+import com.youappcorp.project.usermanager.vo.UserRegisterInVO;
+import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
 
 @Controller
 @RequestMapping(value="/usermanager")
@@ -38,6 +48,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	
 	@Autowired
 	private UserManagerService userManagerService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@ResponseBody
 	@RequestMapping(value="/getUsersByPage")
@@ -90,4 +103,54 @@ public class UserManagerController extends SimpleControllerSupport {
 		return ResponseModel.newSuccess().setData(user);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/register")
+	public ResponseModel register(ServiceContext context,UserRegisterInVO userRegisterInVO){
+		
+		if(!userRegisterInVO.getPassword().equals(userRegisterInVO.getRetypePassword())){
+			throw new BusinessException("两次输入的密码不一样");
+		}
+		
+		User user=new User();
+		user.setPassword(userRegisterInVO.getPassword());
+		user.setUserName(userRegisterInVO.getUserName());
+		UserExtend userExtend=new UserExtend();
+		userExtend.setNatureName(userRegisterInVO.getNatureName());
+		userExtend.setUserName(userRegisterInVO.getUserName());
+		userService.register(context, user, userExtend);
+		return ResponseModel.newSuccess();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/resetPassword")
+	public ResponseModel resetPassword(ServiceContext context, ResetPasswordVO resetPasswordVO){
+		
+		if(JStringUtils.isNullOrEmpty(resetPasswordVO.getPassword())){
+			throw new BusinessException("密码不能为空");
+		}
+		
+		userService.resetPassword(context, resetPasswordVO.getUserId(), resetPasswordVO.getPassword());
+		return ResponseModel.newSuccess();
+	}
+	
+	@RequestMapping("/saveRole")
+	public ResponseModel saveRole(ServiceContext context,RoleCreateInVO roleCreateInVO){
+		Role role=JObjectUtils.simpleCopy(roleCreateInVO, Role.class);
+		roleService.saveRole(context, role);
+		return ResponseModel.newSuccess();
+	}
+	
+	@RequestMapping("/updateRole")
+	public ResponseModel updateRole(ServiceContext context,RoleEditInVO roleEditInVO){
+		Role role=JObjectUtils.simpleCopy(roleEditInVO, Role.class);
+		roleService.updateRole(context, role);
+		return ResponseModel.newSuccess();
+	}
+	
+	@RequestMapping("/deleteRole")
+	public ResponseModel deleteRole(ServiceContext context,String id){
+		Role role=JObjectUtils.simpleCopy(roleService.getById(context, id), Role.class);
+		roleService.deleteRole(context, role);
+		return ResponseModel.newSuccess();
+	}
 }

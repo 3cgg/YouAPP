@@ -254,8 +254,8 @@
 			var arrays= $(formSelector).serializeArray();
 			for(var i=0;i<arrays.length;i++){
 				var ele=arrays[i];
-				var eleName=ele.name;
-				var eleValue=ele.value;
+				var eleName=$.trim(ele.name);
+				var eleValue=$.trim(ele.value);
 				if(obj[eleName]){
 					var val=obj[eleName];
 					if(val.constructor===List){

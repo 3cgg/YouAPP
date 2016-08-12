@@ -2,6 +2,7 @@ package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
+import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.repo.RoleRepo;
+import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
 
 @Service(value="roleServiceImpl.transation.jpa")
 public class RoleServiceImpl extends InternalServiceSupport<Role> implements RoleService {
@@ -27,6 +30,8 @@ public class RoleServiceImpl extends InternalServiceSupport<Role> implements Rol
 	@Autowired
 	private RoleGroupService roleGroupService;
 	
+	@Autowired
+	private InternalRoleServiceImpl internalRoleServiceImpl;
 	
 	@Override
 	public JIPersist<?, Role, String> getRepo() {
@@ -58,6 +63,14 @@ public class RoleServiceImpl extends InternalServiceSupport<Role> implements Rol
 				toPageRequest(pagination),pagination);
 		return toJPage(returnPage, pagination);
 	}
+	
+	@Override
+	public JPage<ParamType> getAllRolesByPage(ServiceContext context,
+			RoleSearchCriteria roleSearchCriteria,
+			JSimplePageable simplePageable) {
+		return null;
+	}
+	
 	
 	@Override
 	public List<Role> getAllRoles(ServiceContext serviceContext) {

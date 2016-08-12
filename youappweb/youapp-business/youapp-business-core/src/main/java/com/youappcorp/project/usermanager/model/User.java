@@ -28,8 +28,6 @@ public class User extends JJpaBaseModel{
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
 	
-	private String retypePassword;
-	
 	private UserExtend userExtend;
 
 	@Transient
@@ -39,15 +37,6 @@ public class User extends JJpaBaseModel{
 
 	public void setUserExtend(UserExtend userExtend) {
 		this.userExtend = userExtend;
-	}
-
-	@Transient
-	public String getRetypePassword() {
-		return retypePassword;
-	}
-
-	public void setRetypePassword(String retypePassword) {
-		this.retypePassword = retypePassword;
 	}
 
 	@Column(name="USERNAME")

@@ -3,13 +3,16 @@ package com.youappcorp.project.usermanager.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
+import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.InternalService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 
 import com.youappcorp.project.BusinessException;
+import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.usermanager.model.Role;
+import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
 
 public interface RoleService extends InternalService<Role, String> {
 
@@ -47,6 +50,8 @@ public interface RoleService extends InternalService<Role, String> {
 	 * @return
 	 */
 	JPage<Role> getRoleByRoleNameByPage(ServiceContext serviceContext,JPageable pagination);
+	
+	JPage<ParamType> getAllRolesByPage(ServiceContext context,RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable);
 	
 	/**
 	 * GET ALL ROLES.

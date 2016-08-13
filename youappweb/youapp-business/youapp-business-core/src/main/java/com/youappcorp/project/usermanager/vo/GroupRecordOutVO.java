@@ -3,53 +3,13 @@
  */
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.JInputModel;
+import j.jave.platform.data.web.model.JOutputModel;
+
+import com.youappcorp.project.usermanager.model.GroupRecord;
 
 /**
  * @author J
  */
-public class GroupRecordOutVO implements JInputModel {
-	
-	private String id;
-	
-	private String groupCode;
-	
-	private String groupName;
-	
-	private String description;
-
-	public String getGroupCode() {
-		return groupCode;
-	}
-
-	public void setGroupCode(String groupCode) {
-		this.groupCode = groupCode;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	
+public class GroupRecordOutVO extends GroupRecord implements JOutputModel {
 	
 }

@@ -12,14 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessException;
-import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.usermanager.model.Group;
+import com.youappcorp.project.usermanager.model.GroupRecord;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
+import com.youappcorp.project.usermanager.model.RoleRecord;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
+import com.youappcorp.project.usermanager.model.UserRecord;
 import com.youappcorp.project.usermanager.model.UserRole;
 import com.youappcorp.project.usermanager.vo.GroupSearchCriteria;
 import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
@@ -335,6 +337,70 @@ implements UserManagerService {
 	@Override
 	public Group getGroupById(ServiceContext serviceContext, String id) {
 		return defaultUserManagerServiceImpl.getGroupById(serviceContext, id);
+	}
+
+	@Override
+	public JPage<UserRecord> getUsersByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getUsersByRoleIdByPage(serviceContext, roleId, simplePageable);
+	}
+
+	@Override
+	public List<UserRecord> getUsersByRoleId(
+			ServiceContext serviceContext, String roleId) {
+		return defaultUserManagerServiceImpl.getUsersByRoleId(serviceContext, roleId);
+	}
+
+	@Override
+	public JPage<UserRecord> getUsersByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getUsersByGroupIdByPage(serviceContext, groupId, simplePageable);
+	}
+
+	@Override
+	public List<UserRecord> getUsersByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		return defaultUserManagerServiceImpl.getUsersByGroupId(serviceContext, groupId);
+	}
+
+	@Override
+	public List<RoleRecord> getRolesByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		return defaultUserManagerServiceImpl.getRolesByGroupId(serviceContext, groupId);
+	}
+
+	@Override
+	public JPage<RoleRecord> getRolesByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getRolesByGroupIdByPage(serviceContext, groupId, simplePageable);
+	}
+
+	@Override
+	public List<GroupRecord> getGroupsByRoleId(ServiceContext serviceContext,
+			String roleId) {
+		return defaultUserManagerServiceImpl.getGroupsByRoleId(serviceContext, roleId);
+	}
+
+	@Override
+	public JPage<GroupRecord> getGroupsByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getGroupsByRoleIdByPage(serviceContext, roleId, simplePageable);
+	}
+
+	@Override
+	public List<Role> getRolesByUserId(ServiceContext serviceContext,
+			String userId) {
+		return defaultUserManagerServiceImpl.getRolesByUserId(serviceContext, userId);
+	}
+
+	@Override
+	public List<Group> getGroupsByUserId(ServiceContext serviceContext,
+			String userId) {
+		return defaultUserManagerServiceImpl.getGroupsByUserId(serviceContext, userId);
 	}
 	
 }

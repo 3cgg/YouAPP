@@ -9,14 +9,16 @@ import j.jave.platform.webcomp.core.service.ServiceContext;
 import java.util.List;
 
 import com.youappcorp.project.BusinessException;
-import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.usermanager.model.Group;
+import com.youappcorp.project.usermanager.model.GroupRecord;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
+import com.youappcorp.project.usermanager.model.RoleRecord;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
+import com.youappcorp.project.usermanager.model.UserRecord;
 import com.youappcorp.project.usermanager.model.UserRole;
 import com.youappcorp.project.usermanager.vo.GroupSearchCriteria;
 import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
@@ -93,6 +95,15 @@ public interface UserManagerService extends JService{
 	 */
 	JPage<Group> getGroupsByPage(ServiceContext serviceContext,
 			GroupSearchCriteria groupSearchCriteria, JSimplePageable simplePageable);
+	
+	List<GroupRecord> getGroupsByRoleId(ServiceContext serviceContext,String roleId);
+	
+	JPage<GroupRecord> getGroupsByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable);
+	
+	List<GroupRecord> getUnbingGroupsByRoleId(ServiceContext serviceContext,String roleId);
+	
+	JPage<GroupRecord> getUnbingGroupsByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable);
+	
 	
 	/**
 	 * GET ALL GROUPS.
@@ -287,6 +298,10 @@ public interface UserManagerService extends JService{
 	
 	List<RoleGroup> getRoleGroupsByGroupId(ServiceContext serviceContext,String groupId);
 	
+	List<RoleRecord> getRolesByGroupId(ServiceContext serviceContext,String groupId);
+	
+	JPage<RoleRecord> getRolesByGroupIdByPage(ServiceContext serviceContext,String groupId,JSimplePageable simplePageable);
+	
 	/**
 	 * tie the role to a group . 
 	 * @param serviceContext
@@ -333,6 +348,14 @@ public interface UserManagerService extends JService{
 	
 	
 	List<UserRole> getUserRolesByUserId(ServiceContext serviceContext,String userId);
+	
+	JPage<UserRecord> getUsersByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable);
+	
+	List<UserRecord> getUsersByRoleId(ServiceContext serviceContext,String roleId);
+	
+	JPage<UserRecord> getUsersByGroupIdByPage(ServiceContext serviceContext,String groupId,JSimplePageable simplePageable);
+	
+	List<UserRecord> getUsersByGroupId(ServiceContext serviceContext,String groupId);
 	
 	/**
 	 * grant the role to a user. 
@@ -412,6 +435,12 @@ public interface UserManagerService extends JService{
 	
 	
 	List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,String userId);
+	
+	List<Role> getRolesByUserId(ServiceContext serviceContext,String userId);
+	
+	List<Group> getGroupsByUserId(ServiceContext serviceContext,String userId);
+	
+	List<GroupRecord> getUnbingGroupsByUserId(ServiceContext serviceContext,String userId);
 	
 	/**
 	 * grant the group to a user. 

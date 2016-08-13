@@ -1,10 +1,10 @@
 	 <!-- Main content -->
-    <section class="content"   id="viewRoleSection"   ms-controller="role_view">
+    <section class="content"   id="viewGroupSection"   ms-controller="group_view">
     
     	<div class="box box-info">
 	        <div class="box-footer">
 	          <button type="button" class="btn btn-primary" 
-	          onclick='$(this).goView("/ui/pages/usermanager/role-list.html");'
+	          onclick='$(this).goView("/ui/pages/usermanager/group-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -12,7 +12,7 @@
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
-	          <h3 class="box-title">角色信息明细</h3>
+	          <h3 class="box-title">组信息明细</h3>
 	          <div class="box-tools pull-right">
 	          </div>
 	        </div>
@@ -21,13 +21,13 @@
 	        <div class="box-body">
 	        	<form role="form"  id="viewParamCodeForm"   class="form-horizontal">
 	        	<div class="form-group">
-                  <label for="roleCode" class="col-sm-1 control-label">编码</label>
+                  <label for="groupCode" class="col-sm-1 control-label">编码</label>
                   <div class="col-sm-5">
-				  <span id="roleCode"  class="form-control label-form-control">{{data.roleCode}}</span>
+				  <span id="groupCode"  class="form-control label-form-control">{{data.groupCode}}</span>
 				 </div>
-				  <label for="roleName" class="col-sm-1 control-label">名称</label>
+				  <label for="groupName" class="col-sm-1 control-label">名称</label>
 				  <div class="col-sm-5">
-				  	<span id="roleName"  class="form-control label-form-control" >{{data.roleName}}</span>		
+				  	<span id="groupName"  class="form-control label-form-control" >{{data.groupName}}</span>		
                  </div>
                 </div>
                 
@@ -46,20 +46,19 @@
       <div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
-			  <h3 class="box-title">角色所属组</h3>	          
+			  <h3 class="box-title">角色</h3>	          
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
 	          
 	        </div>
 	        <!-- /.box-header -->
-	        <div class="box-body"   id="groupOnRoleList">
-	          <table id="groupOnRoleListTable" 
+	        <div class="box-body"   id="roleOnGroupList">
+	          <table id="roleOnGroupListTable" 
 	          		class="table dataTable table-striped row-border cell-border " 
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
-						<th>主键</th>
 						<th>编码</th>
 						<th>名称</th>
 						<th>描述</th>
@@ -80,8 +79,8 @@
 	          
 	        </div>
 	        <!-- /.box-header -->
-	        <div class="box-body"   id="userOnRoleList">
-	          <table id="userOnRoleListTable" 
+	        <div class="box-body"   id="userOnGroupList">
+	          <table id="userOnGroupListTable" 
 	          		class="table dataTable table-striped row-border cell-border " 
 	          			cellspacing="0" width="100%">
 	            <thead>
@@ -102,10 +101,10 @@
     $_youapp.ready(function(){
     	
     	var page=$.extend({
-    		root:$("#viewRoleSection"),
+    		root:$("#viewGroupSection"),
     		model:{
     			vm:avalon.define({
-    		        $id: "role_view",
+    		        $id: "group_view",
     		        data: {}
     		    })
     		}
@@ -118,7 +117,7 @@
         }
     	
     	page.ajaxGet({
-			  url:'/usermanager/getRoleById',
+			  url:'/usermanager/getGroupById',
 			  formData:{'id':getId()},
 			  success:function(data){
 				  page.model.vm.data=data;
@@ -126,26 +125,22 @@
 			  }
 			});
     	
-    	page.listTable=page.root.find('#groupOnRoleListTable').initDataTable({
-			url:"/usermanager/getGroupsByRoleIdByPage",
+    	page.listTable=page.root.find('#roleOnGroupListTable').initDataTable({
+			url:"/usermanager/getRolesByGroupIdByPage",
 			urlDataFn:function(){
 				return {'id':getId()};
 			},
 			paging:false,
 			columns : [ 
 			{
-				"data" : "id",
+				"data" : "roleCode",
 				"orderable" : false,
 				 "width": "10%"
 			}, 
 			{
-				"data" : "groupCode",
+				"data" : "roleName",
 				"width": "10%"
 			},
-			{
-				"data" : "groupName",
-				"width": "10%"
-			}, 
 			{
 				"data" : "description",
 				"width": "20%"
@@ -156,8 +151,8 @@
     	
     	
     	
-    	page.userlistTable=page.root.find('#userOnRoleListTable').initDataTable({
-			url:"/usermanager/getUsersByRoleIdByPage",
+    	page.userlistTable=page.root.find('#userOnGroupListTable').initDataTable({
+			url:"/usermanager/getUsersByGroupIdByPage",
 			urlDataFn:function(){
 				return {'id':getId()};
 			},

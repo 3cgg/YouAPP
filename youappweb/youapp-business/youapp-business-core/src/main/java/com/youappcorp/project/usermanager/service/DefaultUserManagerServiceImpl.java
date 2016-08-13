@@ -7,12 +7,14 @@ import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,15 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.usermanager.model.Group;
+import com.youappcorp.project.usermanager.model.GroupRecord;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
+import com.youappcorp.project.usermanager.model.RoleRecord;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
+import com.youappcorp.project.usermanager.model.UserRecord;
 import com.youappcorp.project.usermanager.model.UserRole;
 import com.youappcorp.project.usermanager.vo.GroupSearchCriteria;
 import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
@@ -152,7 +157,21 @@ implements UserManagerService {
 			if(exists(serviceContext, group)){
 				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
-			internalGroupServiceImpl.updateOnly(serviceContext, group);
+			
+			Group dbGroup=getGroupById(serviceContext, group.getId());
+			
+			if(ADMIN_CODE.equalsIgnoreCase(dbGroup.getGroupCode())){
+				throw new BusinessException("group code ["+ADMIN_CODE+"] is initialized by system.please change...");
+			}
+			
+			if(DEFAULT_CODE.equalsIgnoreCase(dbGroup.getGroupCode())){
+				throw new BusinessException("group code ["+DEFAULT_CODE+"] is initialized by system.please change...");
+			}
+			
+			dbGroup.setGroupCode(group.getGroupCode());
+			dbGroup.setGroupName(group.getGroupName());
+			dbGroup.setDescription(group.getDescription());
+			internalGroupServiceImpl.updateOnly(serviceContext, dbGroup);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -293,6 +312,15 @@ implements UserManagerService {
 			}
 			
 			Role dbRole=getRoleById(serviceContext, role.getId());
+			
+			if(ADMIN_CODE.equalsIgnoreCase(dbRole.getRoleCode())){
+				throw new BusinessException("group code ["+ADMIN_CODE+"] is initialized by system.please change...");
+			}
+			
+			if(DEFAULT_CODE.equalsIgnoreCase(dbRole.getRoleCode())){
+				throw new BusinessException("group code ["+DEFAULT_CODE+"] is initialized by system.please change...");
+			}
+			
 			dbRole.setRoleCode(role.getRoleCode());
 			dbRole.setRoleName(role.getRoleName());
 			dbRole.setDescription(role.getDescription());
@@ -772,29 +800,12 @@ implements UserManagerService {
 			userDetail.setNatureName(userExtend.getNatureName());
 			userDetail.setUserImage(userExtend.getUserImage());
 		}
-		List<UserRole> userRoles= getUserRolesByUserId(serviceContext, user.getId());
-		if(JCollectionUtils.hasInCollect(userRoles)){
-			List<Role> roles=new ArrayList<Role>();
-			for(UserRole userRole:userRoles){
-				Role role=getRoleById(serviceContext, userRole.getRoleId());
-				if(role!=null){
-					roles.add(role);
-				}
-			}
-			userDetail.setRoles(roles);
-		}
 		
-		List<UserGroup> userGroups= getUserGroupsByUserId(serviceContext, user.getId());
-		if(JCollectionUtils.hasInCollect(userGroups)){
-			List<Group> groups=new ArrayList<Group>();
-			for(UserGroup userGroup:userGroups){
-				Group group=getGroupById(serviceContext, userGroup.getGroupId());
-				if(group!=null){
-					groups.add(group);
-				}
-			}
-			userDetail.setGroups(groups);
-		}
+		List<Role> roles=getRolesByUserId(serviceContext, user.getId());
+		userDetail.setRoles(roles);
+		
+		List<Group> groups=getGroupsByUserId(serviceContext, user.getId());
+		userDetail.setGroups(groups);
 		
 		return userDetail;
 	}
@@ -810,7 +821,264 @@ implements UserManagerService {
 	}
 	
 	
+	private JQuery<?> buildUserOnRoleQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ ",  a.userName as userName"
+				+ " , a.status as status"
+				+ " , a.registerTime as registerTime"
+				+ ", d.natureName as natureName "
+				+ " from User a "
+				+ " left join UserRole b on a.id=b.userId "
+				+ " left join Role c on b.roleId=c.id "
+				+ " left join UserExtend d on a.id=d.userId"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("roleId")){
+			jpql=jpql+ " and c.id= :roleId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
 	
 	
 	
+	@Override
+	public List<UserRecord> getUsersByRoleId(
+			ServiceContext serviceContext, String roleId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildUserOnRoleQuery(serviceContext, params)
+				.models(UserRecord.class);
+	}
+	
+	@Override
+	public JPage<UserRecord> getUsersByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildUserOnRoleQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(UserRecord.class);
+	}
+	
+	
+	private JQuery<?> buildUserOnGroupQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ ",  a.userName as userName"
+				+ " , a.status as status"
+				+ " , a.registerTime as registerTime"
+				+ ", d.natureName as natureName "
+				+ " from User a "
+				+ " left join UserGroup b on a.id=b.userId "
+				+ " left join Group c on b.groupId=c.id "
+				+ " left join UserExtend d on a.id=d.userId"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("groupId")){
+			jpql=jpql+ " and c.id= :groupId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<UserRecord> getUsersByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildUserOnGroupQuery(serviceContext, params)
+				.models(UserRecord.class);
+	}
+	
+	@Override
+	public JPage<UserRecord> getUsersByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildUserOnGroupQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(UserRecord.class);
+	}
+	
+	private JQuery<?> buildRoleOnGroupQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ ", a.roleCode as roleCode"
+				+ ", a.roleName as roleName "
+				+ ", a.description as description "
+				+ " from Role a"
+				+ " left join RoleGroup b on b.roleId=a.id"
+				+ " left join Group c on b.groupId=c.id"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("groupId")){
+			jpql=jpql+ " and c.id= :groupId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<RoleRecord> getRolesByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildRoleOnGroupQuery(serviceContext, params)
+				.models(RoleRecord.class);
+	}
+	
+	
+	@Override
+	public JPage<RoleRecord> getRolesByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildRoleOnGroupQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(RoleRecord.class);
+	}
+	
+	private JQuery<?> buildGroupOnRoleQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id "
+				+ ", a.groupCode as groupCode"
+				+ ", a.groupName as groupName "
+				+ ", a.description as description "
+				+ " from Group a"
+				+ " left join RoleGroup b on b.groupId=a.id"
+				+ " left join Role c on b.roleId=c.id"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("roleId")){
+			jpql=jpql+ " and c.id= :roleId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<GroupRecord> getGroupsByRoleId(
+			ServiceContext serviceContext, String roleId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildGroupOnRoleQuery(serviceContext, params)
+				.models(GroupRecord.class);
+	}
+	
+	@Override
+	public JPage<GroupRecord> getGroupsByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildGroupOnRoleQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(GroupRecord.class);
+	}
+	
+	private JQuery<?> buildRoleOnUserQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select c.id as id"
+				+ " from User a "
+				+ " left join UserRole b on a.id=b.userId "
+				+ " left join Role c on b.roleId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("userId")){
+			jpql=jpql+ " and a.id= :userId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<Role> getRolesByUserId(ServiceContext serviceContext,
+			String userId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		List<Role> roles= buildRoleOnUserQuery(serviceContext, params)
+				.models(Role.class);
+		if(JCollectionUtils.hasInCollect(roles)){
+			for(int i=0;i<roles.size();i++){
+				Role role=internalRoleServiceImpl.getById(serviceContext, roles.get(i).getId());
+				roles.set(i, role);
+			}
+		}
+		return roles;
+	}
+	
+	
+	private JQuery<?> buildGroupOnUserQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select c.id as id"
+				+ " from User a "
+				+ " left join UserGroup b on a.id=b.userId "
+				+ " left join Group c on b.groupId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("userId")){
+			jpql=jpql+ " and a.id= :userId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	
+	@Override
+	public List<Group> getGroupsByUserId(ServiceContext serviceContext,
+			String userId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		List<Group> groups= buildGroupOnUserQuery(serviceContext, params)
+				.models(Group.class);
+		if(JCollectionUtils.hasInCollect(groups)){
+			for(int i=0;i<groups.size();i++){
+				Group group=internalGroupServiceImpl.getById(serviceContext, groups.get(i).getId());
+				groups.set(i, group);
+			}
+		}
+		return groups;
+	}
+	
+	private JQuery<?> buildUnbingGroupOnRoleQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id"
+				+ " from Group a"
+				+ " left join RoleGroup b on b.groupId=a.id"
+				+ " left join Role c on b.roleId=c.id"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("roleId")){
+			jpql=jpql+ " and c.id= :roleId";
+		}
+		
+		jpql="select o.id as id"
+				+ ", o.groupCode as groupCode"
+				+ ", o.groupName as groupName"
+				+ " from Group o"
+				+ " where o.id not in ("
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	
+	@Override
+	public List<GroupRecord> getUnbingGroupsByRoleId(
+			ServiceContext serviceContext, String roleId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildUnbingGroupOnRoleQuery(serviceContext, params)
+				.models(GroupRecord.class);
+	}
+	
+	@Override
+	public JPage<GroupRecord> getUnbingGroupsByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildUnbingGroupOnRoleQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(GroupRecord.class);
+	}
 }

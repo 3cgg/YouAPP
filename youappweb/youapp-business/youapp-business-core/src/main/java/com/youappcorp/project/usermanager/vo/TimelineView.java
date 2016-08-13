@@ -1,8 +1,8 @@
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.kernal.jave.model.JModel;
+import j.jave.platform.data.web.model.JOutputModel;
 
-public class TimelineView implements JModel{
+public class TimelineView implements JOutputModel{
 	
 	/**
 	 * type to decide which icon to choose 

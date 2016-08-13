@@ -17,6 +17,7 @@ import com.youappcorp.project.usermanager.model.Group;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
 import com.youappcorp.project.usermanager.model.User;
+import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
 import com.youappcorp.project.usermanager.model.UserRole;
@@ -35,8 +36,8 @@ implements UserManagerService {
 	
 	
 	@Override
-	public User getUserByName(ServiceContext context, String userName) {
-		return defaultUserManagerServiceImpl.getUserByName(context, userName);
+	public User getUserByName(ServiceContext serviceContext, String userName) {
+		return defaultUserManagerServiceImpl.getUserByName(serviceContext, userName);
 	}
 
 	@Override
@@ -68,27 +69,27 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void saveGroup(ServiceContext context, Group group)
+	public void saveGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.saveGroup(context, group);
+		defaultUserManagerServiceImpl.saveGroup(serviceContext, group);
 	}
 
 	@Override
-	public boolean exists(ServiceContext context, Group group)
+	public boolean exists(ServiceContext serviceContext, Group group)
 			throws BusinessException {
-		return defaultUserManagerServiceImpl.exists(context, group);
+		return defaultUserManagerServiceImpl.exists(serviceContext, group);
 	}
 
 	@Override
-	public void updateGroup(ServiceContext context, Group group)
+	public void updateGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.updateGroup(context, group);
+		defaultUserManagerServiceImpl.updateGroup(serviceContext, group);
 	}
 
 	@Override
-	public void deleteGroup(ServiceContext context, Group group)
+	public void deleteGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.deleteGroup(context, group);
+		defaultUserManagerServiceImpl.deleteGroup(serviceContext, group);
 	}
 
 	@Override
@@ -112,10 +113,10 @@ implements UserManagerService {
 	}
 
 	@Override
-	public JPage<ParamType> getAllRolesByPage(ServiceContext context,
+	public JPage<Role> getAllRolesByPage(ServiceContext serviceContext,
 			RoleSearchCriteria roleSearchCriteria,
 			JSimplePageable simplePageable) {
-		return defaultUserManagerServiceImpl.getAllRolesByPage(context, roleSearchCriteria, simplePageable);
+		return defaultUserManagerServiceImpl.getAllRolesByPage(serviceContext, roleSearchCriteria, simplePageable);
 	}
 
 	@Override
@@ -124,27 +125,27 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void saveRole(ServiceContext context, Role role)
+	public void saveRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.saveRole(context, role);
+		defaultUserManagerServiceImpl.saveRole(serviceContext, role);
 	}
 
 	@Override
-	public boolean exists(ServiceContext context, Role role)
+	public boolean exists(ServiceContext serviceContext, Role role)
 			throws BusinessException {
-		return defaultUserManagerServiceImpl.exists(context, role);
+		return defaultUserManagerServiceImpl.exists(serviceContext, role);
 	}
 
 	@Override
-	public void updateRole(ServiceContext context, Role role)
+	public void updateRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.updateRole(context, role);
+		defaultUserManagerServiceImpl.updateRole(serviceContext, role);
 	}
 
 	@Override
-	public void deleteRole(ServiceContext context, Role role)
+	public void deleteRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.deleteRole(context, role);
+		defaultUserManagerServiceImpl.deleteRole(serviceContext, role);
 	}
 
 	@Override
@@ -153,44 +154,44 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void saveUser(ServiceContext context, User user)
+	public void saveUser(ServiceContext serviceContext, User user)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.saveUser(context, user);
+		defaultUserManagerServiceImpl.saveUser(serviceContext, user);
 	}
 
 	@Override
-	public void updateUser(ServiceContext context, User user)
+	public void updateUser(ServiceContext serviceContext, User user)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.updateUser(context, user);
+		defaultUserManagerServiceImpl.updateUser(serviceContext, user);
 	}
 
 	@Override
-	public JPage<User> getUsersByPage(ServiceContext context,
+	public JPage<User> getUsersByPage(ServiceContext serviceContext,
 			UserSearchCriteria userSearchCriteria,
 			JSimplePageable simplePageable) {
-		return defaultUserManagerServiceImpl.getUsersByPage(context, userSearchCriteria, simplePageable);
+		return defaultUserManagerServiceImpl.getUsersByPage(serviceContext, userSearchCriteria, simplePageable);
 	}
 
 	@Override
-	public User getUserById(ServiceContext context, String id) {
-		return defaultUserManagerServiceImpl.getUserById(context, id);
+	public User getUserById(ServiceContext serviceContext, String id) {
+		return defaultUserManagerServiceImpl.getUserById(serviceContext, id);
 	}
 
 	@Override
-	public List<User> getUsers(ServiceContext context) {
-		return defaultUserManagerServiceImpl.getUsers(context);
+	public List<User> getUsers(ServiceContext serviceContext) {
+		return defaultUserManagerServiceImpl.getUsers(serviceContext);
 	}
 
 	@Override
-	public void register(ServiceContext context, User user,
+	public void register(ServiceContext serviceContext, User user,
 			UserExtend userExtend) throws BusinessException {
-		defaultUserManagerServiceImpl.register(context, user, userExtend);
+		defaultUserManagerServiceImpl.register(serviceContext, user, userExtend);
 	}
 
 	@Override
-	public void resetPassword(ServiceContext context, String userId,
+	public void resetPassword(ServiceContext serviceContext, String userId,
 			String password) {
-		defaultUserManagerServiceImpl.resetPassword(context, userId, password);
+		defaultUserManagerServiceImpl.resetPassword(serviceContext, userId, password);
 	}
 
 	@Override
@@ -266,27 +267,27 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void saveUserExtend(ServiceContext context, UserExtend userExtend)
+	public void saveUserExtend(ServiceContext serviceContext, UserExtend userExtend)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.saveUserExtend(context, userExtend);
+		defaultUserManagerServiceImpl.saveUserExtend(serviceContext, userExtend);
 	}
 
 	@Override
-	public void updateUserExtend(ServiceContext context, UserExtend userExtend)
+	public void updateUserExtend(ServiceContext serviceContext, UserExtend userExtend)
 			throws BusinessException {
-		defaultUserManagerServiceImpl.updateUserExtend(context, userExtend);
+		defaultUserManagerServiceImpl.updateUserExtend(serviceContext, userExtend);
 	}
 
 	@Override
-	public UserExtend getUserExtendByUserId(ServiceContext context,
+	public UserExtend getUserExtendByUserId(ServiceContext serviceContext,
 			String userId) {
-		return defaultUserManagerServiceImpl.getUserExtendByUserId(context, userId);
+		return defaultUserManagerServiceImpl.getUserExtendByUserId(serviceContext, userId);
 	}
 
 	@Override
-	public UserExtend getUserExtendByNatureName(ServiceContext context,
+	public UserExtend getUserExtendByNatureName(ServiceContext serviceContext,
 			String natureName) {
-		return defaultUserManagerServiceImpl.getUserExtendByNatureName(context, natureName);
+		return defaultUserManagerServiceImpl.getUserExtendByNatureName(serviceContext, natureName);
 	}
 
 	@Override
@@ -318,6 +319,22 @@ implements UserManagerService {
 			ServiceContext serviceContext, String userId, String groupId)
 			throws BusinessException {
 		return defaultUserManagerServiceImpl.getUserGroupOnUserIdAndGroupId(serviceContext, userId, groupId);
+	}
+
+	@Override
+	public UserDetail getUserDetailByName(ServiceContext serviceContext,
+			String userName) {
+		return defaultUserManagerServiceImpl.getUserDetailByName(serviceContext, userName);
+	}
+
+	@Override
+	public UserDetail getUserDetailById(ServiceContext serviceContext, String id) {
+		return defaultUserManagerServiceImpl.getUserDetailById(serviceContext, id);
+	}
+
+	@Override
+	public Group getGroupById(ServiceContext serviceContext, String id) {
+		return defaultUserManagerServiceImpl.getGroupById(serviceContext, id);
 	}
 	
 }

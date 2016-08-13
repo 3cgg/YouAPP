@@ -82,4 +82,16 @@ public class JPageImpl<T extends JModel> implements JPage<T> {
 		this.content = (List<T>) content;
 	}
 	
+	
+	public static JPageImpl<?> wrap(List<?> content){
+		JPageImpl<?> impl=new JPageImpl<JModel>();
+		impl.setContent(content);
+		impl.setTotalPageNumber(0);
+		impl.setTotalRecordNumber(content.size());
+//		JSimplePageable pageable=new JSimplePageable();
+//		pageable.setOrders(new JOrder[0]);
+		impl.setPageable(new JSimplePageable());
+		return impl;
+	}
+	
 }

@@ -38,8 +38,10 @@ public class JSimplePageable implements JPageable {
 	@Override
 	public String getOrder() {
 		String orderby="";
-		for(JOrder order:orders){
-			orderby=orderby+","+order.getColumn()+" "+order.getType();
+		if(orders!=null){
+			for(JOrder order:orders){
+				orderby=orderby+","+order.getColumn()+" "+order.getType();
+			}
 		}
 		return orderby;
 	}

@@ -15,6 +15,7 @@ $.fn.extend({
 				createdRow:function(){},
 				serverSide:true,
 				processing:true,
+				paging: false,
 				ops:{
 					view:function(id,rowData){
 					},
@@ -34,7 +35,8 @@ $.fn.extend({
 		var defaultOpts={
 				selected:true,
 				checkbox:false,
-				createdRow:function(){}
+				createdRow:function(){},
+				paging: true
 		}
 		
 		options=$.extend({},defaultOpts,options);
@@ -133,9 +135,9 @@ $.fn.extend({
 			this.onChecked=function(data){
 				if(this._options.checkbox){
 		  			
-		  			$chk=$wrap.find('input[type="checkbox"].minimal');
-		  			$allChk=$chk.filter('[name="all"]');
-		  			$subChks=$chk.filter('[name="sub"]');
+		  			var $chk=$wrap.find('input[type="checkbox"].minimal');
+		  			var $allChk=$chk.filter('[name="all"]');
+		  			var $subChks=$chk.filter('[name="sub"]');
 		  		//check-box
   				  	//iCheck for checkbox and radio inputs
   				    $chk.iCheck({
@@ -251,7 +253,7 @@ $.fn.extend({
 					formData:options.urlDataFn.apply(),
 					paginationData:$.extend({},{
 				  		pageNumber:data.start/data.length,
-						pageSize:data.length,
+						pageSize:(data.length==-1?10000:data.length),
 						orders:[]
 				  		}),
 			  		success:function(data){
@@ -270,6 +272,7 @@ $.fn.extend({
 //		$wrap=$('#editable');
 		var $wrap=$(this.selector);
 		var dataTableObj= $(this.selector).DataTable({
+			paging:options.paging,
 			processing : options.processing,
 			serverSide : options.serverSide,
 			ajax : function(data, callback, settings){

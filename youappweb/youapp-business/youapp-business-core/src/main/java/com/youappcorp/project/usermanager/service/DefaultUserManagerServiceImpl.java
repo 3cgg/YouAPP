@@ -4,12 +4,14 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,11 @@ import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
-import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.usermanager.model.Group;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
 import com.youappcorp.project.usermanager.model.User;
+import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
 import com.youappcorp.project.usermanager.model.UserRole;
@@ -60,8 +62,8 @@ implements UserManagerService {
 	public JPage<Group> getGroupsByPage(ServiceContext serviceContext,
 			GroupSearchCriteria groupSearchCriteria, JSimplePageable simplePageable){
 		return internalGroupServiceImpl.singleEntityQuery().conditionDefault()
-				.likes("roleCode", groupSearchCriteria.getRoleCode())
-				.likes("roleName", groupSearchCriteria.getRoleName())
+				.likes("groupCode", groupSearchCriteria.getGroupCode())
+				.likes("groupName", groupSearchCriteria.getGroupName())
 				.likes("description", groupSearchCriteria.getDescription())
 				.ready().modelPage(simplePageable);
 	}
@@ -74,15 +76,15 @@ implements UserManagerService {
 	
 	
 	@Override
-	public void saveGroup(ServiceContext context, Group group)
+	public void saveGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
 		try{
 			validateGroupCode(group);
 			
-			if(exists(context, group)){
+			if(exists(serviceContext, group)){
 				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
-			internalGroupServiceImpl.saveOnly(context, group);
+			internalGroupServiceImpl.saveOnly(serviceContext, group);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -90,7 +92,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean exists(ServiceContext context, Group group)
+	public boolean exists(ServiceContext serviceContext, Group group)
 			throws BusinessException {
 		boolean exists=false;
 		try{
@@ -98,7 +100,7 @@ implements UserManagerService {
 				throw new IllegalArgumentException("role argument is null");
 			}
 			
-			Group dbGroup=getGroupByGroupCode(context, group.getGroupCode());
+			Group dbGroup=getGroupByGroupCode(serviceContext, group.getGroupCode());
 			// new created.
 			if(JStringUtils.isNullOrEmpty(group.getId())){
 				exists= dbGroup!=null;
@@ -138,7 +140,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateGroup(ServiceContext context, Group group)
+	public void updateGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
 		try{
 			validateGroupCode(group);
@@ -147,17 +149,17 @@ implements UserManagerService {
 				throw new IllegalArgumentException("the primary property id of group is null.");
 			}
 			
-			if(exists(context, group)){
+			if(exists(serviceContext, group)){
 				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
-			internalGroupServiceImpl.updateOnly(context, group);
+			internalGroupServiceImpl.updateOnly(serviceContext, group);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void deleteGroup(ServiceContext context, Group group)
+	public void deleteGroup(ServiceContext serviceContext, Group group)
 			throws BusinessException {
 		try{
 			if(JStringUtils.isNullOrEmpty(group.getId())){
@@ -165,11 +167,11 @@ implements UserManagerService {
 			}
 			
 			if(JStringUtils.isNullOrEmpty(group.getGroupCode())){
-				group.setGroupCode(internalGroupServiceImpl.getById(context, group.getId()).getGroupCode());
+				group.setGroupCode(internalGroupServiceImpl.getById(serviceContext, group.getId()).getGroupCode());
 			}
 			
 			validateGroupCode(group);
-			internalGroupServiceImpl.delete(context, group.getId());
+			internalGroupServiceImpl.delete(serviceContext, group.getId());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -198,10 +200,14 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public JPage<ParamType> getAllRolesByPage(ServiceContext context,
+	public JPage<Role> getAllRolesByPage(ServiceContext serviceContext,
 			RoleSearchCriteria roleSearchCriteria,
 			JSimplePageable simplePageable) {
-		return null;
+		return internalRoleServiceImpl.singleEntityQuery().conditionDefault()
+				.likes("roleCode", roleSearchCriteria.getRoleCode())
+				.likes("roleName", roleSearchCriteria.getRoleName())
+				.likes("description", roleSearchCriteria.getDescription())
+				.ready().modelPage(simplePageable);
 	}
 	
 	@Override
@@ -230,16 +236,16 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void saveRole(ServiceContext context, Role role)
+	public void saveRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
 		
 		try{
 
 			validateRoleCode(role);
-			if(exists(context, role)){
+			if(exists(serviceContext, role)){
 				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
 			}
-			internalRoleServiceImpl.saveOnly(context, role);
+			internalRoleServiceImpl.saveOnly(serviceContext, role);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -248,13 +254,13 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean exists(ServiceContext context, Role role)
+	public boolean exists(ServiceContext serviceContext, Role role)
 			throws BusinessException {
 		if(role==null){
 			throw new IllegalArgumentException("role argument is null");
 		}
 		boolean exists=false;
-		Role dbRole=getRoleByRoleCode(context, role.getRoleCode());
+		Role dbRole=getRoleByRoleCode(serviceContext, role.getRoleCode());
 		// new created.
 		if(JStringUtils.isNullOrEmpty(role.getId())){
 			exists= dbRole!=null;
@@ -273,7 +279,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateRole(ServiceContext context, Role role)
+	public void updateRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
 		try{
 			validateRoleCode(role);
@@ -282,10 +288,16 @@ implements UserManagerService {
 				throw new IllegalArgumentException("the primary property id of role is null.");
 			}
 			
-			if(exists(context, role)){
+			if(exists(serviceContext, role)){
 				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
 			}
-			internalRoleServiceImpl.updateOnly(context, role);
+			
+			Role dbRole=getRoleById(serviceContext, role.getId());
+			dbRole.setRoleCode(role.getRoleCode());
+			dbRole.setRoleName(role.getRoleName());
+			dbRole.setDescription(role.getDescription());
+			
+			internalRoleServiceImpl.updateOnly(serviceContext, dbRole);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -294,7 +306,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void deleteRole(ServiceContext context, Role role)
+	public void deleteRole(ServiceContext serviceContext, Role role)
 			throws BusinessException {
 		try{
 			if(JStringUtils.isNullOrEmpty(role.getId())){
@@ -302,10 +314,10 @@ implements UserManagerService {
 			}
 			
 			if(JStringUtils.isNullOrEmpty(role.getRoleCode())){
-				role.setRoleCode(internalRoleServiceImpl.getById(context, role.getId()).getRoleCode());
+				role.setRoleCode(internalRoleServiceImpl.getById(serviceContext, role.getId()).getRoleCode());
 			}
 			validateRoleCode(role);
-			internalRoleServiceImpl.delete(context, role.getId());
+			internalRoleServiceImpl.delete(serviceContext, role.getId());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -333,9 +345,9 @@ implements UserManagerService {
 	
 		
 	@Override
-	public void saveUser(ServiceContext context, User user) throws BusinessException {
+	public void saveUser(ServiceContext serviceContext, User user) throws BusinessException {
 		try{
-			internalUserServiceImpl.saveOnly(context, user);
+			internalUserServiceImpl.saveOnly(serviceContext, user);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -343,10 +355,10 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateUser(ServiceContext context, User user)
+	public void updateUser(ServiceContext serviceContext, User user)
 			throws BusinessException {
 		try{
-			internalUserServiceImpl.updateOnly(context, user);
+			internalUserServiceImpl.updateOnly(serviceContext, user);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -354,35 +366,35 @@ implements UserManagerService {
 		
 	
 	@Override
-	public User getUserByName(ServiceContext context, String userName) {
+	public User getUserByName(ServiceContext serviceContext, String userName) {
 		return internalUserServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userName", userName).ready().model();
 	}
 	
 	
 	@Override
-	public JPage<User> getUsersByPage(ServiceContext context, UserSearchCriteria userSearchCriteria,
+	public JPage<User> getUsersByPage(ServiceContext serviceContext, UserSearchCriteria userSearchCriteria,
 			JSimplePageable simplePageable) {
 		return internalUserServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userName", userSearchCriteria.getUserName()	).ready().modelPage(simplePageable);
 	}
 	
 	@Override
-	public User getUserById(ServiceContext context, String id) {
-		return internalUserServiceImpl.getById(context, id);
+	public User getUserById(ServiceContext serviceContext, String id) {
+		return internalUserServiceImpl.getById(serviceContext, id);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<User> getUsers(ServiceContext context) {
+	public List<User> getUsers(ServiceContext serviceContext) {
 		return internalUserServiceImpl.singleEntityQuery().conditionDefault().ready().models();
 	}
 
 	
 	@Override
-	public void register(ServiceContext context,User user,UserExtend userExtend) throws BusinessException {
+	public void register(ServiceContext serviceContext,User user,UserExtend userExtend) throws BusinessException {
 		try{
 			
 			if(JStringUtils.isNullOrEmpty(user.getUserName())){
@@ -393,7 +405,7 @@ implements UserManagerService {
 				throw new BusinessException("密码不能为空");
 			}		
 			
-			User dbUser=getUserByName(context, user.getUserName().trim());
+			User dbUser=getUserByName(serviceContext, user.getUserName().trim());
 			if(dbUser!=null){
 				throw new BusinessException("用户已经存在");
 			}
@@ -402,11 +414,11 @@ implements UserManagerService {
 			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			user.setPassword(encriptPassword);
 			user.setUserName(user.getUserName().trim());
-			saveUser(context, user);  // with encrypted password
+			saveUser(serviceContext, user);  // with encrypted password
 			
 			//save user extend
 			userExtend.setUserId(user.getId());
-			saveUserExtend(context, userExtend);
+			saveUserExtend(serviceContext, userExtend);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -414,9 +426,9 @@ implements UserManagerService {
 	
 	
 	@Override
-	public void resetPassword(ServiceContext context, String userId,String password) {
+	public void resetPassword(ServiceContext serviceContext, String userId,String password) {
 		try {
-			User dbUser=getUserById(context, userId);
+			User dbUser=getUserById(serviceContext, userId);
 			if(dbUser==null){
 				throw new BusinessException("用户不存在");
 			}
@@ -425,7 +437,7 @@ implements UserManagerService {
 			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			
 			dbUser.setPassword(encriptPassword);
-			internalUserServiceImpl.saveOnly(context, dbUser);
+			internalUserServiceImpl.saveOnly(serviceContext, dbUser);
 		} catch (Exception e) {
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -592,7 +604,7 @@ implements UserManagerService {
 	
 	
 	@Override
-	public void saveUserExtend(ServiceContext context, UserExtend userExtend)
+	public void saveUserExtend(ServiceContext serviceContext, UserExtend userExtend)
 			throws BusinessException {
 		
 		try{
@@ -608,13 +620,13 @@ implements UserManagerService {
 			
 			String natureName=userExtend.getNatureName();
 			if(JStringUtils.isNotNullOrEmpty(natureName)){
-				UserExtend dbUserExtend=getUserExtendByNatureName(context, userExtend.getNatureName());
+				UserExtend dbUserExtend=getUserExtendByNatureName(serviceContext, userExtend.getNatureName());
 				if(dbUserExtend!=null){
 					throw new BusinessException("nature name already exists, please change others.");
 				}
 			}
 			
-			internalUserExtendServiceImpl.saveOnly(context, userExtend);
+			internalUserExtendServiceImpl.saveOnly(serviceContext, userExtend);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -622,7 +634,7 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void updateUserExtend(ServiceContext context, UserExtend userExtend)
+	public void updateUserExtend(ServiceContext serviceContext, UserExtend userExtend)
 			throws BusinessException {
 		
 		try{
@@ -636,13 +648,13 @@ implements UserManagerService {
 			
 			String natureName=userExtend.getNatureName();
 			if(JStringUtils.isNotNullOrEmpty(natureName)){
-				UserExtend dbUserExtend=getUserExtendByNatureName(context, userExtend.getNatureName());
+				UserExtend dbUserExtend=getUserExtendByNatureName(serviceContext, userExtend.getNatureName());
 				if(dbUserExtend!=null&&!userExtend.getId().equals(dbUserExtend.getId())){
 					throw new BusinessException("nature name already exists, please change others.");
 				}
 			}
 			
-			internalUserExtendServiceImpl.updateOnly(context, userExtend);
+			internalUserExtendServiceImpl.updateOnly(serviceContext, userExtend);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -652,14 +664,14 @@ implements UserManagerService {
 	}
 
 	@Override
-	public UserExtend getUserExtendByUserId(ServiceContext context,
+	public UserExtend getUserExtendByUserId(ServiceContext serviceContext,
 			String userId) {
 		return internalUserExtendServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId).ready().model();
 	}
 
 	@Override
-	public UserExtend getUserExtendByNatureName(ServiceContext context,
+	public UserExtend getUserExtendByNatureName(ServiceContext serviceContext,
 			String natureName) {
 		return internalUserExtendServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("natureName", natureName).ready().model();
@@ -732,8 +744,70 @@ implements UserManagerService {
 		return count>0;
 	}
 	
+	@Override
+	public Group getGroupById(ServiceContext serviceContext, String id) {
+		return internalGroupServiceImpl.getById(serviceContext, id);
+	}
 	
+	@Override
+	public UserDetail getUserDetailByName(ServiceContext serviceContext,
+			String userName) {
+		User user=getUserByName(serviceContext, userName);
+		if(user==null){
+			return null;
+		}
+		UserDetail userDetail=wrapUserDetail(serviceContext, user);
+		return userDetail;
+	}
 	
+	private UserDetail wrapUserDetail(ServiceContext serviceContext,User user){
+		UserDetail userDetail=new UserDetail();
+		userDetail.setUserId(user.getId());
+		userDetail.setUserName(user.getUserName());
+		userDetail.setStatus(user.getStatus());
+		userDetail.setRegisterTime(user.getRegisterTime());
+
+		UserExtend userExtend=getUserExtendByUserId(serviceContext, user.getId());
+		if(userExtend!=null){
+			userDetail.setNatureName(userExtend.getNatureName());
+			userDetail.setUserImage(userExtend.getUserImage());
+		}
+		List<UserRole> userRoles= getUserRolesByUserId(serviceContext, user.getId());
+		if(JCollectionUtils.hasInCollect(userRoles)){
+			List<Role> roles=new ArrayList<Role>();
+			for(UserRole userRole:userRoles){
+				Role role=getRoleById(serviceContext, userRole.getRoleId());
+				if(role!=null){
+					roles.add(role);
+				}
+			}
+			userDetail.setRoles(roles);
+		}
+		
+		List<UserGroup> userGroups= getUserGroupsByUserId(serviceContext, user.getId());
+		if(JCollectionUtils.hasInCollect(userGroups)){
+			List<Group> groups=new ArrayList<Group>();
+			for(UserGroup userGroup:userGroups){
+				Group group=getGroupById(serviceContext, userGroup.getGroupId());
+				if(group!=null){
+					groups.add(group);
+				}
+			}
+			userDetail.setGroups(groups);
+		}
+		
+		return userDetail;
+	}
+	
+	@Override
+	public UserDetail getUserDetailById(ServiceContext serviceContext, String id) {
+		User user=getUserById(serviceContext, id);
+		if(user==null){
+			return null;
+		}
+		UserDetail userDetail=wrapUserDetail(serviceContext, user);
+		return userDetail;
+	}
 	
 	
 	

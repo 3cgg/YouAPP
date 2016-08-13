@@ -5,18 +5,18 @@ package com.youappcorp.project.usermanager.model;
 
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author Administrator
+ * @author J
  *
  */
-@JTable(name="USERS")
 @Table(name="USERS")
 @Entity
 public class User extends JJpaBaseModel{
@@ -26,6 +26,29 @@ public class User extends JJpaBaseModel{
 	
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
+	
+	private String status;
+	
+	private Timestamp registerTime;
+	
+	
+	@Column(name="REGISTER_TIME")
+	public Timestamp getRegisterTime() {
+		return registerTime;
+	}
+
+	public void setRegisterTime(Timestamp registerTime) {
+		this.registerTime = registerTime;
+	}
+
+	@Column(name="STATUS")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	@Column(name="USERNAME")
 	public String getUserName() {

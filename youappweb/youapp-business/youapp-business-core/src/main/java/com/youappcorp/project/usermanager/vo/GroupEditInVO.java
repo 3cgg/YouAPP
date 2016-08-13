@@ -3,12 +3,14 @@
  */
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import j.jave.platform.data.web.model.JInputModel;
 
 /**
  * @author J
  */
-public class GroupSearchCriteria extends BaseCriteria{
+public class GroupEditInVO implements JInputModel {
+	
+	private String id;
 	
 	private String groupCode;
 	
@@ -38,6 +40,14 @@ public class GroupSearchCriteria extends BaseCriteria{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

@@ -14,6 +14,7 @@ import com.youappcorp.project.usermanager.model.Group;
 import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.RoleGroup;
 import com.youappcorp.project.usermanager.model.User;
+import com.youappcorp.project.usermanager.model.UserDetail;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserGroup;
 import com.youappcorp.project.usermanager.model.UserRole;
@@ -26,13 +27,29 @@ public interface UserManagerService extends JService{
 
 	/**
 	 * get user by name 
-	 * @param context
+	 * @param serviceContext
 	 * @param userName
 	 * @return
 	 */
-	public User getUserByName(ServiceContext context, String userName);
+	public User getUserByName(ServiceContext serviceContext, String userName);
+	
+	/**
+	 * get more detail information as possible
+	 * @param serviceContext
+	 * @param userName
+	 * @return
+	 */
+	public UserDetail getUserDetailByName(ServiceContext serviceContext, String userName);
 
-String ADMIN_CODE="ADMIN";
+	/**
+	 * get more detail information as possible
+	 * @param serviceContext
+	 * @param id
+	 * @return
+	 */
+	public UserDetail getUserDetailById(ServiceContext serviceContext, String id);
+	
+	String ADMIN_CODE="ADMIN";
 	
 	String DEFAULT_CODE="DEFAULT";
 	
@@ -43,6 +60,15 @@ String ADMIN_CODE="ADMIN";
 	 * @return
 	 */
 	Group getGroupByGroupCode(ServiceContext serviceContext, String groupCode);
+	
+	/**
+	 * get group by primary id.
+	 * @param serviceContext
+	 * @param id
+	 * @return
+	 */
+	Group getGroupById(ServiceContext serviceContext, String id);
+	
 	
 	/**
 	 * get default ADMIN group. 
@@ -79,41 +105,41 @@ String ADMIN_CODE="ADMIN";
 	/**
 	 * add new group, together with validation , including but not restrict 
 	 * <p>1. group code must be unique.
-	 * @param context 
+	 * @param serviceContext 
 	 * @param group
 	 * @throws JServiceException
 	 */
-	public void saveGroup(ServiceContext context, Group group) throws BusinessException;
+	public void saveGroup(ServiceContext serviceContext, Group group) throws BusinessException;
 	
 	/**
 	 *  check if the group is existing, including but not restrict 
 	 * <p> 1. group code must be unique.
 	 * <p>the method consider the role is updated (primary id is not null )or new created (id is null),
 	 * <strong>Note that the primary id( id property ) is the indicator.</strong> 
-	 * @param context
+	 * @param serviceContext
 	 * @param group
 	 * @return
 	 * @throws JServiceException
 	 */
-	boolean exists(ServiceContext context, Group group) throws BusinessException;
+	boolean exists(ServiceContext serviceContext, Group group) throws BusinessException;
 	
 	
 	/**
 	 * update the group , together with validation, including not restrict:
 	 * <p>1. group code must be unique.
-	 * @param context
+	 * @param serviceContext
 	 * @param group
 	 * @throws JServiceException
 	 */
-	void updateGroup(ServiceContext context, Group group)throws BusinessException;
+	void updateGroup(ServiceContext serviceContext, Group group)throws BusinessException;
 	
 	/**
 	 * delete the group, together with potential validations. 
-	 * @param context
+	 * @param serviceContext
 	 * @param group
 	 * @throws JServiceException
 	 */
-	void deleteGroup(ServiceContext context, Group group)throws BusinessException;
+	void deleteGroup(ServiceContext serviceContext, Group group)throws BusinessException;
 	
 	/**
 	 * get role by role code. 
@@ -146,7 +172,7 @@ String ADMIN_CODE="ADMIN";
 	Role getDefaultRole(ServiceContext serviceContext);
 	
 	
-	JPage<ParamType> getAllRolesByPage(ServiceContext context,RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable);
+	JPage<Role> getAllRolesByPage(ServiceContext serviceContext,RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable);
 	
 	/**
 	 * GET ALL ROLES.
@@ -159,40 +185,40 @@ String ADMIN_CODE="ADMIN";
 	/**
 	 * add new role, together with validation , including but not restrict 
 	 * <p>1. role code must be unique.
-	 * @param context 
+	 * @param serviceContext 
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void saveRole(ServiceContext context, Role role) throws BusinessException;
+	void saveRole(ServiceContext serviceContext, Role role) throws BusinessException;
 	
 	/**
 	 * check if the role is existing, including but not restrict 
 	 * <p> 1. role code must be unique.
 	 * <p>the method consider the role is updated (primary id is not null )or new created (id is null),
 	 * <strong>Note that the primary id( id property ) is the indicator.</strong> 
-	 * @param context
+	 * @param serviceContext
 	 * @param role
 	 * @return
 	 * @throws JServiceException
 	 */
-	boolean exists(ServiceContext context, Role role) throws BusinessException;
+	boolean exists(ServiceContext serviceContext, Role role) throws BusinessException;
 	
 	/**
 	 * update the role , together with validation, including not restrict:
 	 * <p>1. role code must be unique.
-	 * @param context
+	 * @param serviceContext
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void updateRole(ServiceContext context, Role role)throws BusinessException;
+	void updateRole(ServiceContext serviceContext, Role role)throws BusinessException;
 	
 	/**
 	 * delete the role, together with potential validations. 
-	 * @param context
+	 * @param serviceContext
 	 * @param role
 	 * @throws JServiceException
 	 */
-	void deleteRole(ServiceContext context, Role role)throws BusinessException;
+	void deleteRole(ServiceContext serviceContext, Role role)throws BusinessException;
 	
 	/**
 	 * get user by name & password 
@@ -204,58 +230,58 @@ String ADMIN_CODE="ADMIN";
 	
 	/**
 	 * 
-	 * @param context 
+	 * @param serviceContext 
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void saveUser(ServiceContext context, User user) throws BusinessException;
+	public void saveUser(ServiceContext serviceContext, User user) throws BusinessException;
 	
 	
 	/**
 	 * 
-	 * @param context
+	 * @param serviceContext
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void updateUser(ServiceContext context, User user) throws BusinessException;
+	public void updateUser(ServiceContext serviceContext, User user) throws BusinessException;
 
 	/**
 	 * search user 
-	 * @param context
+	 * @param serviceContext
 	 * @param simplePageable
 	 * @return
 	 */
-	public JPage<User> getUsersByPage(ServiceContext context,UserSearchCriteria userSearchCriteria, 
+	public JPage<User> getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria, 
 			JSimplePageable simplePageable) ;
 	
 	/**
 	 * 
-	 * @param context
+	 * @param serviceContext
 	 * @param id
 	 * @return
 	 */
-	public User getUserById(ServiceContext context, String id);
+	public User getUserById(ServiceContext serviceContext, String id);
 	
 	/**
 	 * all users (not deleted) .
 	 * @return
 	 */
-	public List<User> getUsers(ServiceContext context);
+	public List<User> getUsers(ServiceContext serviceContext);
 	
 	/**
 	 * register a user from views. its a component that wraps the logic related. 
-	 * @param context
+	 * @param serviceContext
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void register(ServiceContext context,User user,UserExtend userExtend) throws BusinessException;
+	public void register(ServiceContext serviceContext,User user,UserExtend userExtend) throws BusinessException;
 	
 	/**
 	 * @param userId
-	 * @param context
+	 * @param serviceContext
 	 * @param password
 	 */
-	public void resetPassword(ServiceContext context,String userId,String password);
+	public void resetPassword(ServiceContext serviceContext,String userId,String password);
 	
 	List<RoleGroup> getRoleGroupsByRoleId(ServiceContext serviceContext,String roleId);
 	
@@ -349,11 +375,11 @@ String ADMIN_CODE="ADMIN";
 	 * <p>1. user id is not null
 	 * <p>2. user name is not null
 	 * <p>3. user nature name is unique in the system
-	 * @param context 
+	 * @param serviceContext 
 	 * @param userExtend
 	 * @throws JServiceException
 	 */
-	public void saveUserExtend(ServiceContext context, UserExtend userExtend) throws BusinessException;
+	public void saveUserExtend(ServiceContext serviceContext, UserExtend userExtend) throws BusinessException;
 	
 	
 	/**
@@ -361,28 +387,28 @@ String ADMIN_CODE="ADMIN";
 	 * <p>1. user id is not null
 	 * <p>2. user name is not null
 	 * <p>3. user nature name is unique in the system
-	 * @param context
+	 * @param serviceContext
 	 * @param userExtend
 	 * @throws JServiceException
 	 */
-	public void updateUserExtend(ServiceContext context, UserExtend userExtend) throws BusinessException;
+	public void updateUserExtend(ServiceContext serviceContext, UserExtend userExtend) throws BusinessException;
 	
 	/**
 	 * get user extension by user id that is the primary key in the user model.
-	 * @param context
+	 * @param serviceContext
 	 * @param userId
 	 * @return
 	 * @see User
 	 */
-	public UserExtend getUserExtendByUserId(ServiceContext context, String userId);
+	public UserExtend getUserExtendByUserId(ServiceContext serviceContext, String userId);
 	
 	/**
 	 * get user extension by nature name . the nature name is also unique in the system.
-	 * @param context
+	 * @param serviceContext
 	 * @param natureName  unique 
 	 * @return
 	 */
-	public UserExtend getUserExtendByNatureName(ServiceContext context, String natureName);
+	public UserExtend getUserExtendByNatureName(ServiceContext serviceContext, String natureName);
 	
 	
 	List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,String userId);

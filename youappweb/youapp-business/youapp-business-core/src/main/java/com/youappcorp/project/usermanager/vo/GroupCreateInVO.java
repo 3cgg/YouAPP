@@ -3,12 +3,12 @@
  */
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import j.jave.platform.data.web.model.JInputModel;
 
 /**
  * @author J
  */
-public class GroupSearchCriteria extends BaseCriteria{
+public class GroupCreateInVO implements JInputModel {
 	
 	private String groupCode;
 	

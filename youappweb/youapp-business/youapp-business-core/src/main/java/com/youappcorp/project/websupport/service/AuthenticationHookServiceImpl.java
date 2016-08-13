@@ -10,16 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.usermanager.model.UserTracker;
-import com.youappcorp.project.usermanager.service.UserService;
 import com.youappcorp.project.usermanager.service.UserTrackerService;
 
 @Service(value="com.youappcorp.project.websupport.service.AuthenticationHookServiceImpl")
 public class AuthenticationHookServiceImpl implements AuthenticationHookService {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationHookServiceImpl.class);
-	
-	@Autowired
-	private UserService userService;
 	
 	@Autowired
 	private UserTrackerService userTrackerService;

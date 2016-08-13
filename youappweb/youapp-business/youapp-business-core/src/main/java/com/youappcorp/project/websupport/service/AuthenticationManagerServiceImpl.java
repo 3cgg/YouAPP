@@ -13,18 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.usermanager.model.User;
-import com.youappcorp.project.usermanager.service.UserService;
+import com.youappcorp.project.usermanager.service.DefaultUserManagerServiceImpl;
 
 @Service(value="AuthenticationManagerServiceImpl")
 public class AuthenticationManagerServiceImpl extends SpringServiceFactorySupport<AuthenticationManagerService> implements
 		AuthenticationManagerService {
 
 	@Autowired
-	private UserService userService;
+	private DefaultUserManagerServiceImpl userManagerService;
 	
 	@Override
 	public SessionUserImpl getUserByNameAndPassword(String name, String password) {
-		User user=userService.getUserByNameAndPassword(name,password);
+		User user=userManagerService.getUserByNameAndPassword(name,password);
 		SessionUserImpl sessionUserImpl=null;
 		if(user!=null){
 			sessionUserImpl =new SessionUserImpl();
@@ -36,7 +36,7 @@ public class AuthenticationManagerServiceImpl extends SpringServiceFactorySuppor
 
 	@Override
 	public SessionUserImpl getUserByName(String name) {
-		User user=userService.getUserByName(DefaultServiceContext.getDefaultServiceContext(), name);
+		User user=userManagerService.getUserByName(DefaultServiceContext.getDefaultServiceContext(), name);
 		SessionUserImpl sessionUserImpl=null;
 		if(user!=null){
 			sessionUserImpl =new SessionUserImpl();

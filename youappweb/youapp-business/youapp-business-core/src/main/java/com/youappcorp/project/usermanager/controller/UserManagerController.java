@@ -24,9 +24,7 @@ import com.youappcorp.project.usermanager.model.Role;
 import com.youappcorp.project.usermanager.model.User;
 import com.youappcorp.project.usermanager.model.UserExtend;
 import com.youappcorp.project.usermanager.model.UserTracker;
-import com.youappcorp.project.usermanager.service.RoleService;
-import com.youappcorp.project.usermanager.service.UserManagerService;
-import com.youappcorp.project.usermanager.service.UserService;
+import com.youappcorp.project.usermanager.service.DefaultUserManagerServiceImpl;
 import com.youappcorp.project.usermanager.service.UserTrackerService;
 import com.youappcorp.project.usermanager.vo.ResetPasswordVO;
 import com.youappcorp.project.usermanager.vo.RoleCreateInVO;
@@ -41,21 +39,15 @@ import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
 public class UserManagerController extends SimpleControllerSupport {
 	
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
 	private UserTrackerService userTrackerService;
 	
 	@Autowired
-	private UserManagerService userManagerService;
-	
-	@Autowired
-	private RoleService roleService;
+	private DefaultUserManagerServiceImpl userManagerService;
 	
 	@ResponseBody
 	@RequestMapping(value="/getUsersByPage")
 	public ResponseModel getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria,JSimplePageable simplePageable){
-		JPage<User> users= userService.getUsersByPage(serviceContext, userSearchCriteria,simplePageable);
+		JPage<User> users= userManagerService.getUsersByPage(serviceContext, userSearchCriteria,simplePageable);
 		return ResponseModel.newSuccess().setData(users);
 	}
 	
@@ -99,7 +91,7 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping(value="/getUserById")
 	public ResponseModel getUserById(ServiceContext serviceContext,String id) throws Exception {
-		User user= userService.getUserById(serviceContext, id);
+		User user= userManagerService.getUserById(serviceContext, id);
 		return ResponseModel.newSuccess().setData(user);
 	}
 	
@@ -117,7 +109,7 @@ public class UserManagerController extends SimpleControllerSupport {
 		UserExtend userExtend=new UserExtend();
 		userExtend.setNatureName(userRegisterInVO.getNatureName());
 		userExtend.setUserName(userRegisterInVO.getUserName());
-		userService.register(context, user, userExtend);
+		userManagerService.register(context, user, userExtend);
 		return ResponseModel.newSuccess();
 	}
 	
@@ -129,28 +121,28 @@ public class UserManagerController extends SimpleControllerSupport {
 			throw new BusinessException("密码不能为空");
 		}
 		
-		userService.resetPassword(context, resetPasswordVO.getUserId(), resetPasswordVO.getPassword());
+		userManagerService.resetPassword(context, resetPasswordVO.getUserId(), resetPasswordVO.getPassword());
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/saveRole")
 	public ResponseModel saveRole(ServiceContext context,RoleCreateInVO roleCreateInVO){
 		Role role=JObjectUtils.simpleCopy(roleCreateInVO, Role.class);
-		roleService.saveRole(context, role);
+		userManagerService.saveRole(context, role);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/updateRole")
 	public ResponseModel updateRole(ServiceContext context,RoleEditInVO roleEditInVO){
 		Role role=JObjectUtils.simpleCopy(roleEditInVO, Role.class);
-		roleService.updateRole(context, role);
+		userManagerService.updateRole(context, role);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/deleteRole")
 	public ResponseModel deleteRole(ServiceContext context,String id){
-		Role role=JObjectUtils.simpleCopy(roleService.getById(context, id), Role.class);
-		roleService.deleteRole(context, role);
+		Role role=JObjectUtils.simpleCopy(userManagerService.getRoleById(context, id), Role.class);
+		userManagerService.deleteRole(context, role);
 		return ResponseModel.newSuccess();
 	}
 }

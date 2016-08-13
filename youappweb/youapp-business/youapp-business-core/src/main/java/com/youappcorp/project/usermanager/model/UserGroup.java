@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author J
@@ -29,10 +28,6 @@ public class UserGroup extends JJpaBaseModel {
 	
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
-	
-	private User user=new User();
-	
-	private Group group=new Group();
 	
 	@Column(name="GROUPID")
 	public String getGroupId() {
@@ -61,22 +56,4 @@ public class UserGroup extends JJpaBaseModel {
 		this.description = description;
 	}
 
-	@Transient
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@Transient
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
-	}
-	
 }

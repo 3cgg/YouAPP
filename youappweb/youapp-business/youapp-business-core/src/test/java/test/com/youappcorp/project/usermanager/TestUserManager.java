@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.youappcorp.project.usermanager.model.User;
-import com.youappcorp.project.usermanager.service.UserService;
+import com.youappcorp.project.usermanager.service.DefaultUserManagerServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,7 +22,7 @@ import com.youappcorp.project.usermanager.service.UserService;
 public class TestUserManager {
 	
 	@Autowired
-	private UserService userService;
+	private DefaultUserManagerServiceImpl userManagerService;
 	
 	private DESedeCipherService deSedeCipherService=
 			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
@@ -37,7 +37,7 @@ public class TestUserManager {
 			user.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			user.setUserName("N");
 			user.setPassword(deSedeCipherService.encrypt("P"));
-			userService.saveUser(context, user);
+			userManagerService.saveUser(context, user);
 			System.out.println("end");
 		} catch (Exception e) {
 			throw new RuntimeException(e);

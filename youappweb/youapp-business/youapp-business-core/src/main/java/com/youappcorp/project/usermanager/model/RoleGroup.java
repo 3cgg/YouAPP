@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author J
@@ -29,28 +28,6 @@ public class RoleGroup extends JJpaBaseModel {
 	
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
-	
-	private Role role;
-	
-	private Group group;
-
-	@Transient
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	@Transient
-	public Group getGroup() {
-		return group;
-	}
-
-	public void setGroup(Group group) {
-		this.group = group;
-	}
 
 	@Column(name="ROLEID")
 	public String getRoleId() {
@@ -78,5 +55,6 @@ public class RoleGroup extends JJpaBaseModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	
 }

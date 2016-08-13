@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author J
@@ -30,29 +29,6 @@ public class UserRole extends JJpaBaseModel {
 	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 	
-	
-	private User user;
-	
-	private Role role;
-	
-	@Transient
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	@Transient
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
 	@Column(name="ROLEID")
 	public String getRoleId() {
 		return roleId;

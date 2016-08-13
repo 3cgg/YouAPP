@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author Administrator
@@ -27,17 +26,6 @@ public class User extends JJpaBaseModel{
 	
 	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
-	
-	private UserExtend userExtend;
-
-	@Transient
-	public UserExtend getUserExtend() {
-		return userExtend;
-	}
-
-	public void setUserExtend(UserExtend userExtend) {
-		this.userExtend = userExtend;
-	}
 
 	@Column(name="USERNAME")
 	public String getUserName() {

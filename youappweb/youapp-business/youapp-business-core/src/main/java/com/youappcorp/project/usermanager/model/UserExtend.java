@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * @author J
@@ -33,17 +32,6 @@ public class UserExtend extends JJpaBaseModel{
 	@JColumn(name="NATURENAME",type=JSQLType.VARCHAR,length=64)
 	private String natureName;
 	
-	private User user;
-
-	@Transient
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	@Column(name="USERID")
 	public String getUserId() {
 		return userId;

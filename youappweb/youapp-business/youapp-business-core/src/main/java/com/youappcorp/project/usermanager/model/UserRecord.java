@@ -12,6 +12,8 @@ public class UserRecord {
 	
 	private String id;
 	
+	private String extendId;
+	
 	private String userName;
 	
 	private String status;
@@ -69,5 +71,12 @@ public class UserRecord {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
+	public String getExtendId() {
+		return extendId;
+	}
+
+	public void setExtendId(String extendId) {
+		this.extendId = extendId;
+	}
 }

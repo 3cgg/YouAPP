@@ -104,6 +104,10 @@ public interface UserManagerService extends JService{
 	
 	JPage<GroupRecord> getUnbingGroupsByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable);
 	
+	JPage<UserRecord> getUnbingUsersByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable);
+	
+	JPage<UserRecord> getUnbingUsersByGroupIdByPage(ServiceContext serviceContext,String groupId,JSimplePageable simplePageable);
+	
 	
 	/**
 	 * GET ALL GROUPS.
@@ -256,13 +260,17 @@ public interface UserManagerService extends JService{
 	 */
 	public void updateUser(ServiceContext serviceContext, User user) throws BusinessException;
 
+	public void updateUser(ServiceContext serviceContext, User user,UserExtend userExtend) throws BusinessException;
+	
+	public void deleteUser(ServiceContext serviceContext, String userId);
+	
 	/**
 	 * search user 
 	 * @param serviceContext
 	 * @param simplePageable
 	 * @return
 	 */
-	public JPage<User> getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria, 
+	public JPage<UserRecord> getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria, 
 			JSimplePageable simplePageable) ;
 	
 	/**
@@ -271,7 +279,7 @@ public interface UserManagerService extends JService{
 	 * @param id
 	 * @return
 	 */
-	public User getUserById(ServiceContext serviceContext, String id);
+	public UserRecord getUserById(ServiceContext serviceContext, String id);
 	
 	/**
 	 * all users (not deleted) .
@@ -436,11 +444,15 @@ public interface UserManagerService extends JService{
 	
 	List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,String userId);
 	
-	List<Role> getRolesByUserId(ServiceContext serviceContext,String userId);
+	List<RoleRecord> getRolesByUserId(ServiceContext serviceContext,String userId);
 	
-	List<Group> getGroupsByUserId(ServiceContext serviceContext,String userId);
+	List<GroupRecord> getGroupsByUserId(ServiceContext serviceContext,String userId);
 	
 	List<GroupRecord> getUnbingGroupsByUserId(ServiceContext serviceContext,String userId);
+	
+	List<RoleRecord> getUnbingRolesByUserId(ServiceContext serviceContext,String userId);
+	
+	List<RoleRecord> getUnbingRolesByGroupId(ServiceContext serviceContext,String groupId);
 	
 	/**
 	 * grant the group to a user. 

@@ -25,9 +25,9 @@ public class UserDetail implements JModel{
 	
 	private String natureName;
 	
-	private List<Role> roles;
+	private List<RoleRecord> roles;
 	
-	private List<Group> groups;
+	private List<GroupRecord> groups;
 
 	public String getUserId() {
 		return userId;
@@ -77,21 +77,19 @@ public class UserDetail implements JModel{
 		this.natureName = natureName;
 	}
 
-	public List<Role> getRoles() {
+	public List<RoleRecord> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(List<RoleRecord> roles) {
 		this.roles = roles;
 	}
 
-	public List<Group> getGroups() {
+	public List<GroupRecord> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<Group> groups) {
+	public void setGroups(List<GroupRecord> groups) {
 		this.groups = groups;
 	}
-	
-	
 }

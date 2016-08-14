@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JAssert;
-import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.query.JQuery;
@@ -391,7 +390,18 @@ implements UserManagerService {
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
-		
+	
+	@Override
+	public void updateUser(ServiceContext serviceContext, User user,
+			UserExtend userExtend) throws BusinessException {
+		updateUser(serviceContext, user);
+		updateUserExtend(serviceContext, userExtend);
+	}
+	
+	@Override
+	public void deleteUser(ServiceContext serviceContext, String userId) {
+		internalUserServiceImpl.delete(serviceContext, userId);
+	}
 	
 	@Override
 	public User getUserByName(ServiceContext serviceContext, String userName) {
@@ -401,15 +411,68 @@ implements UserManagerService {
 	
 	
 	@Override
-	public JPage<User> getUsersByPage(ServiceContext serviceContext, UserSearchCriteria userSearchCriteria,
+	public JPage<UserRecord> getUsersByPage(ServiceContext serviceContext, UserSearchCriteria userSearchCriteria,
 			JSimplePageable simplePageable) {
-		return internalUserServiceImpl.singleEntityQuery().conditionDefault()
-				.equals("userName", userSearchCriteria.getUserName()	).ready().modelPage(simplePageable);
+		
+		String jpql="select a.id as id"
+				+ ",  a.userName as userName"
+				+ " , a.status as status"
+				+ " , a.registerTime as registerTime"
+				+ ", d.natureName as natureName "
+				+ " from User a "
+				+ " left join UserExtend d on a.id=d.userId"
+				+ " where a.deleted='N' ";
+		Map<String, Object> params=new HashMap<String, Object>();
+		String status=userSearchCriteria.getStatus();
+		if(JStringUtils.isNotNullOrEmpty(status)){
+			jpql=jpql+" and a.status= :status";
+			params.put("status", status);
+		}
+		
+		String userName=userSearchCriteria.getUserName();
+		if(JStringUtils.isNotNullOrEmpty(userName)){
+			jpql=jpql+" and a.userName like :userName";
+			params.put("userName", "%"+userName+"%");
+		}
+		
+		String natureName=userSearchCriteria.getNatureName();
+		if(JStringUtils.isNotNullOrEmpty(natureName)){
+			jpql=jpql+" and d.natureName like :natureName";
+			params.put("natureName", "%"+natureName+"%");
+		}
+		
+		String registerTimeStart=userSearchCriteria.getRegisterTimeStart();
+		if(JStringUtils.isNotNullOrEmpty(registerTimeStart)){
+			jpql=jpql+" and a.registerTime > :registerTimeStart";
+			params.put("registerTimeStart", registerTimeStart);
+		}
+		
+		String registerTimeEnd=userSearchCriteria.getRegisterTimeEnd();
+		if(JStringUtils.isNotNullOrEmpty(registerTimeStart)){
+			jpql=jpql+" and a.registerTime < :registerTimeEnd";
+			params.put("registerTimeEnd", registerTimeEnd);
+		}
+		
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params)
+				.modelPage(simplePageable,UserRecord.class);
 	}
 	
 	@Override
-	public User getUserById(ServiceContext serviceContext, String id) {
-		return internalUserServiceImpl.getById(serviceContext, id);
+	public UserRecord getUserById(ServiceContext serviceContext, String id) {
+		String jpql="select a.id as id"
+				+ ",  a.userName as userName"
+				+ " , a.status as status"
+				+ " , a.registerTime as registerTime"
+				+ ", d.natureName as natureName "
+				+ " from User a "
+				+ " left join UserExtend d on a.id=d.userId"
+				+ " where a.deleted='N' and a.id= :userId";
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", id);
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params)
+				.model(UserRecord.class);
 	}
 	
 	/**
@@ -456,7 +519,7 @@ implements UserManagerService {
 	@Override
 	public void resetPassword(ServiceContext serviceContext, String userId,String password) {
 		try {
-			User dbUser=getUserById(serviceContext, userId);
+			User dbUser=internalUserServiceImpl.getById(serviceContext, userId);
 			if(dbUser==null){
 				throw new BusinessException("用户不存在");
 			}
@@ -801,10 +864,10 @@ implements UserManagerService {
 			userDetail.setUserImage(userExtend.getUserImage());
 		}
 		
-		List<Role> roles=getRolesByUserId(serviceContext, user.getId());
+		List<RoleRecord> roles=getRolesByUserId(serviceContext, user.getId());
 		userDetail.setRoles(roles);
 		
-		List<Group> groups=getGroupsByUserId(serviceContext, user.getId());
+		List<GroupRecord> groups=getGroupsByUserId(serviceContext, user.getId());
 		userDetail.setGroups(groups);
 		
 		return userDetail;
@@ -812,7 +875,7 @@ implements UserManagerService {
 	
 	@Override
 	public UserDetail getUserDetailById(ServiceContext serviceContext, String id) {
-		User user=getUserById(serviceContext, id);
+		User user=internalUserServiceImpl.getById(serviceContext, id);
 		if(user==null){
 			return null;
 		}
@@ -980,6 +1043,8 @@ implements UserManagerService {
 	private JQuery<?> buildRoleOnUserQuery(
 			ServiceContext serviceContext, Map<String, Object> params){
 		String jpql="select c.id as id"
+				+ ", c.roleCode as roleCode"
+				+ ", c.roleName as roleName"
 				+ " from User a "
 				+ " left join UserRole b on a.id=b.userId "
 				+ " left join Role c on b.roleId=c.id "
@@ -992,18 +1057,12 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public List<Role> getRolesByUserId(ServiceContext serviceContext,
+	public List<RoleRecord> getRolesByUserId(ServiceContext serviceContext,
 			String userId) {
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("userId", userId);
-		List<Role> roles= buildRoleOnUserQuery(serviceContext, params)
-				.models(Role.class);
-		if(JCollectionUtils.hasInCollect(roles)){
-			for(int i=0;i<roles.size();i++){
-				Role role=internalRoleServiceImpl.getById(serviceContext, roles.get(i).getId());
-				roles.set(i, role);
-			}
-		}
+		List<RoleRecord> roles= buildRoleOnUserQuery(serviceContext, params)
+				.models(RoleRecord.class);
 		return roles;
 	}
 	
@@ -1011,6 +1070,8 @@ implements UserManagerService {
 	private JQuery<?> buildGroupOnUserQuery(
 			ServiceContext serviceContext, Map<String, Object> params){
 		String jpql="select c.id as id"
+				+ ", c.groupCode as groupCode"
+				+ ", c.groupName as groupName"
 				+ " from User a "
 				+ " left join UserGroup b on a.id=b.userId "
 				+ " left join Group c on b.groupId=c.id "
@@ -1024,19 +1085,13 @@ implements UserManagerService {
 	
 	
 	@Override
-	public List<Group> getGroupsByUserId(ServiceContext serviceContext,
+	public List<GroupRecord> getGroupsByUserId(ServiceContext serviceContext,
 			String userId) {
 		Map<String, Object> params=new HashMap<String, Object>();
 		params.put("userId", userId);
-		List<Group> groups= buildGroupOnUserQuery(serviceContext, params)
-				.models(Group.class);
-		if(JCollectionUtils.hasInCollect(groups)){
-			for(int i=0;i<groups.size();i++){
-				Group group=internalGroupServiceImpl.getById(serviceContext, groups.get(i).getId());
-				groups.set(i, group);
-			}
-		}
-		return groups;
+		List<GroupRecord> groupRecords= buildGroupOnUserQuery(serviceContext, params)
+				.models(GroupRecord.class);
+		return groupRecords;
 	}
 	
 	private JQuery<?> buildUnbingGroupOnRoleQuery(
@@ -1054,7 +1109,7 @@ implements UserManagerService {
 				+ ", o.groupCode as groupCode"
 				+ ", o.groupName as groupName"
 				+ " from Group o"
-				+ " where o.id not in ("
+				+ " where o.deleted='N' and o.id not in ("
 				+jpql
 				+")";
 		return queryBuilder().jpqlQuery().setJpql(jpql)
@@ -1081,4 +1136,179 @@ implements UserManagerService {
 				.setPageable(simplePageable)
 				.modelPage(GroupRecord.class);
 	}
+	
+	
+	private JQuery<?> buildUnbingGroupOnUserQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select c.id as id"
+				+ " from User a "
+				+ " left join UserGroup b on a.id=b.userId "
+				+ " left join Group c on b.groupId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("userId")){
+			jpql=jpql+ " and a.id= :userId";
+		}
+		jpql="select o.id as id"
+				+ ", o.groupCode as groupCode"
+				+ ", o.groupName as groupName"
+				+ " from Group o"
+				+ " where o.deleted='N' and o.id not in ("
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<GroupRecord> getUnbingGroupsByUserId(
+			ServiceContext serviceContext, String userId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		return buildUnbingGroupOnUserQuery(serviceContext, params)
+				.models(GroupRecord.class);
+	}
+	
+	
+	private JQuery<?> buildUnbingRoleOnGroupQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ " from Role a"
+				+ " left join RoleGroup b on b.roleId=a.id"
+				+ " left join Group c on b.groupId=c.id"
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("groupId")){
+			jpql=jpql+ " and c.id= :groupId";
+		}
+		
+		jpql="select o.id as id"
+				+ ", o.roleCode as roleCode"
+				+ ", o.roleName as roleName"
+				+ " from Role o"
+				+ " where o.deleted='N' and o.id not in ("
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<RoleRecord> getUnbingRolesByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildUnbingRoleOnGroupQuery(serviceContext, params)
+				.models(RoleRecord.class);
+	}
+	
+	
+	private JQuery<?> buildUnbingUserOnGroupQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ " from User a "
+				+ " left join UserGroup b on a.id=b.userId "
+				+ " left join Group c on b.groupId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("groupId")){
+			jpql=jpql+ " and c.id= :groupId";
+		}
+		
+		jpql="select oa.id as id"
+				+ ",  oa.userName as userName"
+				+ " , oa.status as status"
+				+ " , oa.registerTime as registerTime"
+				+ ", od.natureName as natureName "
+				+ " from User oa "
+				+ " left join UserExtend od on ou.id=od.userId"
+				+ " where oa.deleted='N' and oa.id not in ( "
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public JPage<UserRecord> getUnbingUsersByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("groupId", groupId);
+		return buildUnbingUserOnGroupQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(UserRecord.class);
+	}
+	
+	private JQuery<?> buildUnbingUserOnRoleQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select a.id as id"
+				+ " from User a "
+				+ " left join UserRole b on a.id=b.userId "
+				+ " left join Role c on b.roleId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("roleId")){
+			jpql=jpql+ " and c.id= :roleId";
+		}
+		
+		jpql="select oa.id as id"
+				+ ",  oa.userName as userName"
+				+ " , oa.status as status"
+				+ " , oa.registerTime as registerTime"
+				+ ", od.natureName as natureName "
+				+ " from User oa "
+				+ " left join UserExtend od on ou.id=od.userId"
+				+ " where oa.deleted='N' and oa.id not in ( "
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public JPage<UserRecord> getUnbingUsersByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		return buildUnbingUserOnRoleQuery(serviceContext, params)
+				.setPageable(simplePageable)
+				.modelPage(UserRecord.class);
+	}
+	
+	
+	private JQuery<?> buildUnbingRoleOnUserQuery(
+			ServiceContext serviceContext, Map<String, Object> params){
+		String jpql="select c.id as id"
+				+ " from User a "
+				+ " left join UserRole b on a.id=b.userId "
+				+ " left join Role c on b.roleId=c.id "
+				+ " where a.deleted='N' and c.deleted='N' and b.deleted='N' ";
+		if(params.containsKey("userId")){
+			jpql=jpql+ " and a.id= :userId";
+		}
+		
+		jpql="select o.id as id"
+				+ ", o.roleCode as roleCode"
+				+ ", o.roleName as roleName"
+				+ " from Role o"
+				+ " where o.deleted='N' and o.id not in ("
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+				.setParams(params);
+	}
+	
+	@Override
+	public List<RoleRecord> getUnbingRolesByUserId(
+			ServiceContext serviceContext, String userId) {
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userId", userId);
+		return buildUnbingRoleOnUserQuery(serviceContext, params)
+				.models(RoleRecord.class);
+	}
+	
+	
+	
+	
+	
+	
+	
 }

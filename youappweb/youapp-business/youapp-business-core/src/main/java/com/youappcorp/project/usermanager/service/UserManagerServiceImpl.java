@@ -166,16 +166,22 @@ implements UserManagerService {
 			throws BusinessException {
 		defaultUserManagerServiceImpl.updateUser(serviceContext, user);
 	}
+	
+	@Override
+	public void updateUser(ServiceContext serviceContext, User user,
+			UserExtend userExtend) throws BusinessException {
+		defaultUserManagerServiceImpl.updateUser(serviceContext, user, userExtend);
+	}
 
 	@Override
-	public JPage<User> getUsersByPage(ServiceContext serviceContext,
+	public JPage<UserRecord> getUsersByPage(ServiceContext serviceContext,
 			UserSearchCriteria userSearchCriteria,
 			JSimplePageable simplePageable) {
 		return defaultUserManagerServiceImpl.getUsersByPage(serviceContext, userSearchCriteria, simplePageable);
 	}
 
 	@Override
-	public User getUserById(ServiceContext serviceContext, String id) {
+	public UserRecord getUserById(ServiceContext serviceContext, String id) {
 		return defaultUserManagerServiceImpl.getUserById(serviceContext, id);
 	}
 
@@ -392,15 +398,65 @@ implements UserManagerService {
 	}
 
 	@Override
-	public List<Role> getRolesByUserId(ServiceContext serviceContext,
+	public List<RoleRecord> getRolesByUserId(ServiceContext serviceContext,
 			String userId) {
 		return defaultUserManagerServiceImpl.getRolesByUserId(serviceContext, userId);
 	}
 
 	@Override
-	public List<Group> getGroupsByUserId(ServiceContext serviceContext,
+	public List<GroupRecord> getGroupsByUserId(ServiceContext serviceContext,
 			String userId) {
 		return defaultUserManagerServiceImpl.getGroupsByUserId(serviceContext, userId);
+	}
+
+	@Override
+	public List<GroupRecord> getUnbingGroupsByRoleId(
+			ServiceContext serviceContext, String roleId) {
+		return defaultUserManagerServiceImpl.getUnbingGroupsByRoleId(serviceContext, roleId);
+	}
+
+	@Override
+	public JPage<GroupRecord> getUnbingGroupsByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getUnbingGroupsByRoleIdByPage(serviceContext, roleId, simplePageable);
+	}
+
+	@Override
+	public List<GroupRecord> getUnbingGroupsByUserId(
+			ServiceContext serviceContext, String userId) {
+		return defaultUserManagerServiceImpl.getUnbingGroupsByUserId(serviceContext, userId);
+	}
+
+	@Override
+	public JPage<UserRecord> getUnbingUsersByRoleIdByPage(
+			ServiceContext serviceContext, String roleId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getUnbingUsersByRoleIdByPage(serviceContext, roleId, simplePageable);
+	}
+
+	@Override
+	public JPage<UserRecord> getUnbingUsersByGroupIdByPage(
+			ServiceContext serviceContext, String groupId,
+			JSimplePageable simplePageable) {
+		return defaultUserManagerServiceImpl.getUnbingUsersByGroupIdByPage(serviceContext, groupId, simplePageable);
+	}
+
+	@Override
+	public List<RoleRecord> getUnbingRolesByUserId(
+			ServiceContext serviceContext, String userId) {
+		return defaultUserManagerServiceImpl.getUnbingRolesByUserId(serviceContext, userId);
+	}
+
+	@Override
+	public List<RoleRecord> getUnbingRolesByGroupId(
+			ServiceContext serviceContext, String groupId) {
+		return defaultUserManagerServiceImpl.getUnbingRolesByGroupId(serviceContext, groupId);
+	}
+
+	@Override
+	public void deleteUser(ServiceContext serviceContext, String userId) {
+		defaultUserManagerServiceImpl.deleteUser(serviceContext, userId);
 	}
 	
 }

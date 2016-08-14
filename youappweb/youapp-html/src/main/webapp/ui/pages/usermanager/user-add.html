@@ -1,0 +1,96 @@
+	 <!-- Main content -->
+    <section class="content"  id="addUserSection" >
+    	
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="submit" class="btn btn-primary">提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/usermanager/user-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">用户新增</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body">
+	        	<form role="form"  id="addUserForm"  class="form-horizontal">
+             		<div class="form-group">
+	                  <label for="userName" class="col-sm-1 control-label">用户名</label>
+	                  <div class="col-sm-5">
+	                    <input type="text"  name="userName" class="form-control" id="userName" placeholder="用户名">
+	                  </div>
+	                </div>
+	                <div class="form-group">  
+	                  <label for="natureName" class="col-sm-1 control-label">昵称</label>
+	                  <div class="col-sm-5">
+	                    <input type="text"  name="natureName" class="form-control" id="natureName" placeholder="昵称">
+	                  </div>
+	                </div>
+                	<div class="form-group">  
+	                  <label for="password" class="col-sm-1 control-label">密码</label>
+	                  <div class="col-sm-5">
+	                    <input type="text"  name="password" class="form-control" id="password" placeholder="密码">
+	                  </div>
+	                </div>
+                	<div class="form-group">  
+	                  <label for="_password" class="col-sm-1 control-label">密码确认</label>
+	                  <div class="col-sm-5">
+	                    <input type="text"  name="_password" class="form-control" id="_password" placeholder="密码">
+	                  </div>
+	                </div>
+                </form>
+	        </div>
+      </div>
+    
+    </section>
+	
+	
+	<script type="text/javascript">
+		
+		$_youapp.ready(function (){
+			
+			var page=$.extend({
+	    		root:$("#addUserSection"),
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			page.root.find("#addUserForm").validate({
+					rules: {
+						'userName': {
+							   required: true,
+							   maxlength:32
+						   },
+					   'natureName': {
+						   required: false,
+						   maxlength:128
+					   },
+					   'password': {
+						   required: true,
+						   maxlength:16
+					   },
+					   '_password': {
+						   required: true,
+						   maxlength:16
+					   }
+					  },
+					  submitHandler:function(form){
+						  page.submitForm({
+							  url:'/usermanager/register',
+							  formSelector:form,
+							  success:function(data){
+								  page.root.goView('/ui/pages/usermanager/user-list.html');
+							  }
+							});
+					 }
+				})
+		});
+	</script>
+
+

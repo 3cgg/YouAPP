@@ -12,9 +12,14 @@ public class UserSearchCriteria extends BaseCriteria{
 	
 	private String userName;
 	
-	private String password;
+	private String status;
 	
-	private String retypePassword;
+	private String registerTimeStart;
+	
+	private String registerTimeEnd;
+	
+	private String natureName;
+	
 
 	public String getUserName() {
 		return userName;
@@ -24,20 +29,36 @@ public class UserSearchCriteria extends BaseCriteria{
 		this.userName = userName;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
-	public String getRetypePassword() {
-		return retypePassword;
+	public String getRegisterTimeStart() {
+		return registerTimeStart;
 	}
 
-	public void setRetypePassword(String retypePassword) {
-		this.retypePassword = retypePassword;
+	public void setRegisterTimeStart(String registerTimeStart) {
+		this.registerTimeStart = registerTimeStart;
+	}
+
+	public String getRegisterTimeEnd() {
+		return registerTimeEnd;
+	}
+
+	public void setRegisterTimeEnd(String registerTimeEnd) {
+		this.registerTimeEnd = registerTimeEnd;
+	}
+
+	public String getNatureName() {
+		return natureName;
+	}
+
+	public void setNatureName(String natureName) {
+		this.natureName = natureName;
 	}
 
 }

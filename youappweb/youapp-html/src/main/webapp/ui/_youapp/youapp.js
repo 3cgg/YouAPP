@@ -388,6 +388,9 @@
 				},
 				ajaxPost:function(options){
 					$_youapp.$_data.ajaxPost(options);
+				},
+				codeTable:function($dom){
+					$_youapp.$_codeTable.draw($($dom));
 				}
 		}
 		

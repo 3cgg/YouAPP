@@ -135,6 +135,7 @@ $_youapp.ready(function(){
 			  		}),
 		  		success:function(data){
 		  			callback(data.data);
+		  			$_youapp.$_codeTable.draw($('.codetable'));
 		  		}
 			});
 		},

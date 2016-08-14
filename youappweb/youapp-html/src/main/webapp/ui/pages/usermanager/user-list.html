@@ -1,6 +1,5 @@
-<!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
 	 <!-- Main content -->
-    <section class="content"   id="searchSysParamSection"   ms-controller="sysparam_view">
+    <section class="content"   id="searchUserSection"   ms-controller="user_view">
       
       <div class="box box-info">
       	<div class="box-header with-border">
@@ -9,33 +8,43 @@
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
         </div>
-      	<form class="form-horizontal"  id="searchSysParamForm">
+      	<form class="form-horizontal"  id="searchUserForm">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="code" class="col-sm-1 control-label">编码</label>
-
+                  <label for="userName" class="col-sm-1 control-label">用户名</label>
                   <div class="col-sm-5">
-                    <input type="text"  name="code" class="form-control" id="code" placeholder="编码">
+                    <input type="text"  name="userName" class="form-control" id="userName" placeholder="用户名">
                   </div>
-                  <label for="value" class="col-sm-1 control-label">参数值</label>
-
+                  
+                  <label for="natureName" class="col-sm-1 control-label">昵称</label>
                   <div class="col-sm-5">
-                    <input type="text"  name="value" class="form-control" id="value" placeholder="参数值">
+                    <input type="text"  name="natureName" class="form-control" id="natureName" placeholder="昵称">
                   </div>
                 </div>
                 
                 <div class="form-group">
-                  <label for="desc" class="col-sm-1 control-label">详细描述</label>
-
-                  <div class="col-sm-11">
-                    <input type="text"  name="desc" class="form-control" id="desc" placeholder="描述">
+                  <label for="status" class="col-sm-1 control-label">状态</label>
+                  <div class="col-sm-5">
+                  	<select  id="status"  name="status" class="form-control select2 codetable"   data-codeType="USER_STATUS"  data-codeAlter >
+	                </select>
                   </div>
                 </div>
                 
+                <div class="form-group">
+                  <label for="registerTimeStart" class="col-sm-1 control-label">注册时间（起）</label>
+                  <div class="col-sm-5">
+                    <input type="text"  name="registerTimeStart" class="form-control" id="registerTimeStart" placeholder="">
+                  </div>
+                  
+                  <label for="registerTimeEnd" class="col-sm-1 control-label">注册时间（止）</label>
+                  <div class="col-sm-5">
+                    <input type="text"  name="registerTimeEnd" class="form-control" id="registerTimeEnd" placeholder="">
+                  </div>
+                </div>
                 <div class="form-group">
                 	<label for="desc" class="col-sm-1 control-label"></label>
                 	<div class="col-sm-2 col-lg-1">
-	                	<input id="searchSysparamBtn" type="button" class="form-control btn-primary"  value="查询"   >
+	                	<input id="searchUserBtn" type="button" class="form-control btn-primary"  value="查询"   >
 	                </div>
                 </div>
                 
@@ -49,7 +58,7 @@
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-add.html");'
+	          onclick='$(this).goView("/ui/pages/usermanager/user-add.html");'
 	          >新增</button>
 	          <button type="submit" class="btn btn-primary btn-sm"
 	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
@@ -62,16 +71,17 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="sysparamListTable" 
+	          <table id="userListTable" 
 	          		class="table dataTable table-striped row-border cell-border " 
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
 						<th></th>
 						<th>主键</th>
-						<th>编码</th>
-						<th>参数值</th>
-						<th>描述</th>
+						<th>用户名</th>
+						<th>昵称</th>
+						<th>状态</th>
+						<th>注册时间</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -87,32 +97,31 @@
     $_youapp.ready(function() {
     	
     	var page=$.extend({
-    		root:$("#searchSysParamSection"),
+    		root:$("#searchUserSection"),
     		model:{
     			vm:avalon.define({
-    		        $id: "sysparam_view",
+    		        $id: "user_view",
     		        data: {}
     		    })
     		}
     	},$_youapp.pageTemplate);
     	
-    	page.listTable=page.root.find('#sysparamListTable').initDataTable({
-			url:"/sysparam/getSysParamsByPage",
+    	page.listTable=page.root.find('#userListTable').initDataTable({
+			url:"/usermanager/getUsersByPage",
 			urlDataFn:function(){
-				return page.root.find("#searchSysParamForm").serializeObj();
+				return page.root.find("#searchUserForm").serializeObj();
 			},
-			lengthChange:false,
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-view.html',{"id":id});
+                    page.root.find('#userListTable').goView('/ui/pages/usermanager/role-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
+					page.root.find('#userListTable').goView('/ui/pages/usermanager/role-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
-						  url:'/sysparam/deleteSysParamById',
+						  url:'/usermanager/deleteUser',
 						  formData:{'id':id},
 						  success:function(data){
 							  page.listTable.ajax.reload();
@@ -127,24 +136,29 @@
 				 "width": "10%"
 			}, 
 			{
-				"data" : "code",
+				"data" : "userName",
 				"width": "10%"
 			},
 			{
-				"data" : "value",
+				"data" : "natureName",
 				"width": "10%"
 			}, 
 			{
-				"data" : "desc",
-				"width": "20%"
+				"data" : "status",
+				"width": "10%"
+			},
+			{
+				"data" : "registerTime",
+				"width": "10%"
 			}
-			
 			]
 		});
 		
-		page.root.find("#searchSysparamBtn").on("click",function(){
+		page.root.find("#searchUserBtn").on("click",function(){
 			page.listTable.ajax.reload();
-		})
+		});
+		
+		page.codeTable($('.codetable'));
 		
 	});
 	</script>

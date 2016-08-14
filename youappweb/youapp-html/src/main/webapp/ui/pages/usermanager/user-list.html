@@ -114,10 +114,10 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#userListTable').goView('/ui/pages/usermanager/role-view.html',{"id":id});
+                    page.root.find('#userListTable').goView('/ui/pages/usermanager/user-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#userListTable').goView('/ui/pages/usermanager/role-edit.html',{"id":id});
+					page.root.find('#userListTable').goView('/ui/pages/usermanager/user-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({

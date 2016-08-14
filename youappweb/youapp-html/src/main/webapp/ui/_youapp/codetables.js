@@ -125,7 +125,7 @@
 				}
 				var optionEles='';
 				if(codealter||codealter==''){
-					optionEles=optionEles+'<option value="~" >'+(codealter==''?'请选择':codealter)+'</option>'
+					optionEles=optionEles+'<option value="" >'+(codealter==''?'请选择':codealter)+'</option>'
 				}
 				for(var i=0;i<_codeList.size();i++){
 					var _code=_codeList.get(i);

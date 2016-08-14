@@ -70,7 +70,7 @@
 							   maxlength:32
 						   },
 					   'type': {
-						   valueNotEquals: '~'
+						   required: true
 					   },   
 					   'codeName': {
 						   required: true,
@@ -100,7 +100,7 @@
 				  formData:{},
 				  success:function(data){
 					  var optionEles='';
-						optionEles=optionEles+'<option value="~" >请选择</option>'
+						optionEles=optionEles+'<option value="" >请选择</option>'
 						for(var i=0;i<data.length;i++){
 							var paramtype=data[i];
 							optionEles=optionEles+'<option value="'+paramtype.code+'" >'+paramtype.codeName+'</option>'

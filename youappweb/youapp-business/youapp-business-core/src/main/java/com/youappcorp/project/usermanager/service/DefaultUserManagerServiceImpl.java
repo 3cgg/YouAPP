@@ -11,6 +11,8 @@ import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -394,8 +396,10 @@ implements UserManagerService {
 	@Override
 	public void updateUser(ServiceContext serviceContext, User user,
 			UserExtend userExtend) throws BusinessException {
-		updateUser(serviceContext, user);
-		updateUserExtend(serviceContext, userExtend);
+//		updateUser(serviceContext, user);
+		UserExtend dbUserExtend=getUserExtendByUserId(serviceContext, user.getId());
+		dbUserExtend.setNatureName(userExtend.getNatureName());
+		updateUserExtend(serviceContext, dbUserExtend);
 	}
 	
 	@Override
@@ -505,6 +509,8 @@ implements UserManagerService {
 			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			user.setPassword(encriptPassword);
 			user.setUserName(user.getUserName().trim());
+			user.setStatus("ACTIVE");
+			user.setRegisterTime(new Timestamp(new Date().getTime()));
 			saveUser(serviceContext, user);  // with encrypted password
 			
 			//save user extend

@@ -1,6 +1,6 @@
 	 <!-- Main content -->
     <section class="content"  id="addUserSection" >
-    	
+    	<form role="form"  id="addUserForm"  class="form-horizontal">
     	<div class="box box-info">
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
@@ -19,7 +19,7 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body">
-	        	<form role="form"  id="addUserForm"  class="form-horizontal">
+	        	
              		<div class="form-group">
 	                  <label for="userName" class="col-sm-1 control-label">用户名</label>
 	                  <div class="col-sm-5">
@@ -35,19 +35,19 @@
                 	<div class="form-group">  
 	                  <label for="password" class="col-sm-1 control-label">密码</label>
 	                  <div class="col-sm-5">
-	                    <input type="text"  name="password" class="form-control" id="password" placeholder="密码">
+	                    <input type="password"  name="password" class="form-control" id="password" placeholder="密码">
 	                  </div>
 	                </div>
                 	<div class="form-group">  
-	                  <label for="_password" class="col-sm-1 control-label">密码确认</label>
+	                  <label for="retypePassword" class="col-sm-1 control-label">密码确认</label>
 	                  <div class="col-sm-5">
-	                    <input type="text"  name="_password" class="form-control" id="_password" placeholder="密码">
+	                    <input type="password"  name="retypePassword" class="form-control" id="retypePassword" placeholder="密码">
 	                  </div>
 	                </div>
-                </form>
+                
 	        </div>
       </div>
-    
+    </form>
     </section>
 	
 	
@@ -75,9 +75,10 @@
 						   required: true,
 						   maxlength:16
 					   },
-					   '_password': {
+					   'retypePassword': {
 						   required: true,
-						   maxlength:16
+						   maxlength:16,
+						   equalTo:page.root.find('#password')
 					   }
 					  },
 					  submitHandler:function(form){

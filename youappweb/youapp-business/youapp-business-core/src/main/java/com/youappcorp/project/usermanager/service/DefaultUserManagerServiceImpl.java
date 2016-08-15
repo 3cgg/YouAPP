@@ -4,18 +4,23 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.platform.jpa.springjpa.query.JJpaDateParam;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +67,27 @@ implements UserManagerService {
 	@Override
 	public Group getDefaultGroup(ServiceContext serviceContext) {
 		return getGroupByGroupCode(serviceContext, DEFAULT_CODE);
+	}
+	
+	@Override
+	public boolean isDefaultGroup(ServiceContext serviceContext, String groupId) {
+		Group role=internalGroupServiceImpl.getById(serviceContext, groupId);
+		return DEFAULT_CODE.equalsIgnoreCase(role.getGroupCode());
+	}
+	
+	@Override
+	public boolean isDefaultGroupCode(ServiceContext serviceContext, String code) {
+		return DEFAULT_CODE.equalsIgnoreCase(code);
+	}
+	
+	public boolean isAdminGroup(ServiceContext serviceContext, String groupId) {
+		Group role=internalGroupServiceImpl.getById(serviceContext, groupId);
+		return ADMIN_CODE.equalsIgnoreCase(role.getGroupCode());
+	}
+	
+	@Override
+	public boolean isAdminGroupCode(ServiceContext serviceContext, String code) {
+		return ADMIN_CODE.equalsIgnoreCase(code);
 	}
 	
 	@Override
@@ -217,6 +243,28 @@ implements UserManagerService {
 	@Override
 	public Role getDefaultRole(ServiceContext serviceContext) {
 		return getRoleByRoleCode(serviceContext, DEFAULT_CODE);
+	}
+	
+	@Override
+	public boolean isDefaultRole(ServiceContext serviceContext, String roleId) {
+		Role role=internalRoleServiceImpl.getById(serviceContext, roleId);
+		return DEFAULT_CODE.equalsIgnoreCase(role.getRoleCode());
+	}
+	
+	@Override
+	public boolean isDefaultRoleCode(ServiceContext serviceContext, String code) {
+		return DEFAULT_CODE.equalsIgnoreCase(code);
+	}
+	
+	@Override
+	public boolean isAdminRole(ServiceContext serviceContext, String roleId) {
+		Role role=internalRoleServiceImpl.getById(serviceContext, roleId);
+		return ADMIN_CODE.equalsIgnoreCase(role.getRoleCode());
+	}
+	
+	@Override
+	public boolean isAdminRoleCode(ServiceContext serviceContext, String code) {
+		return ADMIN_CODE.equalsIgnoreCase(code);
 	}
 	
 	@Override
@@ -448,13 +496,23 @@ implements UserManagerService {
 		String registerTimeStart=userSearchCriteria.getRegisterTimeStart();
 		if(JStringUtils.isNotNullOrEmpty(registerTimeStart)){
 			jpql=jpql+" and a.registerTime > :registerTimeStart";
-			params.put("registerTimeStart", registerTimeStart);
+			JJpaDateParam dateParam=new JJpaDateParam();
+			dateParam.setDate(JDateUtils.parseDate(registerTimeStart));
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("registerTimeStart", dateParam);
 		}
 		
 		String registerTimeEnd=userSearchCriteria.getRegisterTimeEnd();
-		if(JStringUtils.isNotNullOrEmpty(registerTimeStart)){
+		if(JStringUtils.isNotNullOrEmpty(registerTimeEnd)){
 			jpql=jpql+" and a.registerTime < :registerTimeEnd";
-			params.put("registerTimeEnd", registerTimeEnd);
+			JJpaDateParam dateParam=new JJpaDateParam();
+			Date date=JDateUtils.parseDate(registerTimeEnd);
+			Calendar calendar=Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			dateParam.setDate(calendar.getTime());
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("registerTimeEnd", dateParam);
 		}
 		
 		return queryBuilder().jpqlQuery().setJpql(jpql)
@@ -516,6 +574,20 @@ implements UserManagerService {
 			//save user extend
 			userExtend.setUserId(user.getId());
 			saveUserExtend(serviceContext, userExtend);
+			
+			//save role
+			UserRole userRole=new UserRole();
+			userRole.setRoleId(getDefaultRole(serviceContext).getId());
+			userRole.setUserId(user.getId());
+			internalUserRoleServiceImpl.saveOnly(serviceContext, userRole);
+			
+			//save group
+			UserGroup userGroup=new UserGroup();
+			userGroup.setGroupId(getDefaultGroup(serviceContext).getId());
+			userGroup.setUserId(user.getId());
+			internalUserGroupServiceImpl.saveOnly(serviceContext, userGroup);
+			
+			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -1051,6 +1123,7 @@ implements UserManagerService {
 		String jpql="select c.id as id"
 				+ ", c.roleCode as roleCode"
 				+ ", c.roleName as roleName"
+				+ ", c.description as description"
 				+ " from User a "
 				+ " left join UserRole b on a.id=b.userId "
 				+ " left join Role c on b.roleId=c.id "
@@ -1078,6 +1151,7 @@ implements UserManagerService {
 		String jpql="select c.id as id"
 				+ ", c.groupCode as groupCode"
 				+ ", c.groupName as groupName"
+				+ ", c.description as description"
 				+ " from User a "
 				+ " left join UserGroup b on a.id=b.userId "
 				+ " left join Group c on b.groupId=c.id "

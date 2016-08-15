@@ -86,6 +86,14 @@ public interface UserManagerService extends JService{
 	 */
 	Group getDefaultGroup(ServiceContext serviceContext);
 	
+	boolean isDefaultGroup(ServiceContext serviceContext,String groupId);
+	
+	boolean isDefaultGroupCode(ServiceContext serviceContext,String code);
+	
+	boolean isAdminGroup(ServiceContext serviceContext,String groupId);
+	
+	boolean isAdminGroupCode(ServiceContext serviceContext,String code);
+	
 	
 	/**
 	 * GET ALL GROUPS ACCORDING TO 'GROUP NAME'
@@ -179,6 +187,10 @@ public interface UserManagerService extends JService{
 	 */
 	Role getAdminRole(ServiceContext serviceContext);
 	
+	boolean isAdminRole(ServiceContext serviceContext,String roleId);
+	
+	boolean isAdminRoleCode(ServiceContext serviceContext,String code);
+	
 	/**
 	 * get default DEFAULT role. 
 	 * @param serviceContext
@@ -186,6 +198,9 @@ public interface UserManagerService extends JService{
 	 */
 	Role getDefaultRole(ServiceContext serviceContext);
 	
+	boolean isDefaultRole(ServiceContext serviceContext,String roleId);
+	
+	boolean isDefaultRoleCode(ServiceContext serviceContext,String code);
 	
 	JPage<Role> getAllRolesByPage(ServiceContext serviceContext,RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable);
 	

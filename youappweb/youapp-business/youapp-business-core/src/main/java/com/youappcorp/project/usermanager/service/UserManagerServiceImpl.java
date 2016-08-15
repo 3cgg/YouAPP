@@ -458,5 +458,45 @@ implements UserManagerService {
 	public void deleteUser(ServiceContext serviceContext, String userId) {
 		defaultUserManagerServiceImpl.deleteUser(serviceContext, userId);
 	}
+
+	@Override
+	public boolean isAdminRole(ServiceContext serviceContext, String roleId) {
+		return defaultUserManagerServiceImpl.isAdminRole(serviceContext, roleId);
+	}
+
+	@Override
+	public boolean isDefaultRole(ServiceContext serviceContext, String roleId) {
+		return defaultUserManagerServiceImpl.isDefaultRole(serviceContext, roleId);
+	}
+	
+	@Override
+	public boolean isAdminRoleCode(ServiceContext serviceContext, String code) {
+		return defaultUserManagerServiceImpl.isAdminRoleCode(serviceContext, code);
+	}
+	
+	@Override
+	public boolean isDefaultRoleCode(ServiceContext serviceContext, String code) {
+		return defaultUserManagerServiceImpl.isDefaultRoleCode(serviceContext, code);
+	}
+
+	@Override
+	public boolean isDefaultGroup(ServiceContext serviceContext, String groupId) {
+		return defaultUserManagerServiceImpl.isDefaultGroup(serviceContext, groupId);
+	}
+
+	@Override
+	public boolean isDefaultGroupCode(ServiceContext serviceContext, String code) {
+		return defaultUserManagerServiceImpl.isDefaultGroupCode(serviceContext, code);
+	}
+
+	@Override
+	public boolean isAdminGroup(ServiceContext serviceContext, String groupId) {
+		return defaultUserManagerServiceImpl.isAdminGroup(serviceContext, groupId);
+	}
+
+	@Override
+	public boolean isAdminGroupCode(ServiceContext serviceContext, String code) {
+		return defaultUserManagerServiceImpl.isAdminGroupCode(serviceContext, code);
+	}
 	
 }

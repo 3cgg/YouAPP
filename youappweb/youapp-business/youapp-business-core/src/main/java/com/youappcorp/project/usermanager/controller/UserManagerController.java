@@ -397,6 +397,10 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/unbingUserRole")
 	public ResponseModel unbingUserRole(ServiceContext serviceContext,UserRoleInVO userRoleInVO){
+		
+		if(userManagerService.isDefaultRole(serviceContext, userRoleInVO.getRoleId())){
+			throw new BusinessException("Default role cannot be removed.");
+		}
 		userManagerService.
 				unbingUserRole(serviceContext, userRoleInVO.getUserId(), userRoleInVO.getRoleId());
 		return ResponseModel.newSuccess();
@@ -413,6 +417,11 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/unbingUserGroup")
 	public ResponseModel unbingUserGroup(ServiceContext serviceContext,UserGroupInVO userGroupInVO){
+		
+		if(userManagerService.isDefaultGroup(serviceContext, userGroupInVO.getGroupId())){
+			throw new BusinessException("Default group cannot be removed.");
+		}
+		
 		userManagerService.
 		unbingUserGroup(serviceContext, userGroupInVO.getUserId(), userGroupInVO.getGroupId());
 		return ResponseModel.newSuccess();

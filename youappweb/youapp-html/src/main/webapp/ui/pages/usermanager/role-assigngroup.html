@@ -1,0 +1,240 @@
+	 <!-- Main content -->
+    <section class="content"   id="assignGroupOnRoleSection"   ms-controller="row_view">
+    
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="button" class="btn btn-primary" 
+	          onclick='$(this).goView("/ui/pages/usermanager/role-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">角色信息明细</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+	        	<div class="form-group">
+                  <label for="roleCode" class="col-sm-1 control-label">编码</label>
+                  <div class="col-sm-5">
+				  <span id="roleCode"  class="form-control label-form-control">{{data.roleCode}}</span>
+				 </div>
+				  <label for="roleName" class="col-sm-1 control-label">名称</label>
+				  <div class="col-sm-5">
+				  	<span id="roleName"  class="form-control label-form-control" >{{data.roleName}}</span>		
+                 </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label">详情描述</label>
+                  <div class="col-sm-5">
+                  	<span id="description"  class="form-control label-form-control">{{data.description}}</span>
+                  </div>
+				  
+                </div>
+	        </div>
+      </div>
+      
+      <div class="col-md-6"  style="padding-left: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">已绑定组</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="groupOnRoleListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+      
+      <div class="col-md-6"  style="padding-left: 0px; padding-right: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">未绑定组</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="groupNotOnRoleListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+      
+    </section>
+    <script type="text/javascript">
+    
+    $_youapp.ready(function(){
+    	
+    	var page=$.extend({
+    		root:$("#assignGroupOnRoleSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "row_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
+    	function getId(){
+        	return page.root.getViewParam().id;
+        }
+    	
+    	page.ajaxGet({
+			  url:'/usermanager/getRoleById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
+			  }
+			});
+    	
+    	page.groupOnRoleListTable=page.root.find('#groupOnRoleListTable').initDataTable({
+			url:"/usermanager/getGroupsByRoleIdByPage",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [
+			{
+			    "className":      'recordRemove',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%"
+			},
+			{
+				"data" : "groupCode",
+				"width": "10%"
+			},
+			{
+				"data" : "groupName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "description",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('td.recordRemove').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.groupOnRoleListTable.row( $tr );
+		            var data=row.data();
+		            var groupId=data.id;
+		            var roleId=getId();
+		            page.ajaxPost({
+	  					  url:'/usermanager/unbingRoleGroup',
+	  					  formData:{
+	  						  roleId:roleId,
+	  						  groupId:groupId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('unbing-success : ' + data);
+	  						  page.groupOnRoleListTable.ajax.reload();
+	  						  page.groupNotOnRoleListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    	page.groupNotOnRoleListTable=page.root.find('#groupNotOnRoleListTable').initDataTable({
+			url:"/usermanager/getUnbingGroupsByRoleIdByPage",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [ 
+			{
+			    "className":      'recordAdd',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%"
+			},
+			{
+				"data" : "groupCode",
+				"width": "10%"
+			},
+			{
+				"data" : "groupName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "description",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('td.recordAdd').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.groupNotOnRoleListTable.row( $tr );
+		            var data=row.data();
+		            var groupId=data.id;
+		            var roleId=getId();
+		            page.ajaxPost({
+	  					  url:'/usermanager/bingRoleGroup',
+	  					  formData:{
+	  						  roleId:roleId,
+	  						  groupId:groupId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('bing-success : ' + data);
+	  						  page.groupOnRoleListTable.ajax.reload();
+	  						  page.groupNotOnRoleListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    });
+    </script>
+	
+

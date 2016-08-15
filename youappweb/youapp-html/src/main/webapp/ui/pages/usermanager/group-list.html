@@ -50,9 +50,8 @@
 	          <button type="submit" class="btn btn-primary btn-sm"
 	          onclick='$(this).goView("/ui/pages/usermanager/group-add.html");'
 	          >新增</button>
-	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='kjcs.htmlEnt.skiphtml("/ui/sysparam/sysparam-add.html");'
-	          >删除（批量）</button>
+	          <button type="button" class="btn btn-primary btn-sm"  id="toAssignRoleBtn"
+	          >分配角色</button>
 	          
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -61,7 +60,7 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="roleListTable" 
+	          <table id="groupListTable" 
 	          		class="table dataTable table-striped row-border cell-border " 
 	          			cellspacing="0" width="100%">
 	            <thead>
@@ -95,7 +94,7 @@
     		}
     	},$_youapp.pageTemplate);
     	
-    	page.listTable=page.root.find('#roleListTable').initDataTable({
+    	page.listTable=page.root.find('#groupListTable').initDataTable({
 			url:"/usermanager/getGroupsByPage",
 			urlDataFn:function(){
 				return page.root.find("#searchGroupForm").serializeObj();
@@ -103,10 +102,10 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#roleListTable').goView('/ui/pages/usermanager/group-view.html',{"id":id});
+                    page.root.find('#groupListTable').goView('/ui/pages/usermanager/group-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#roleListTable').goView('/ui/pages/usermanager/group-edit.html',{"id":id});
+					page.root.find('#groupListTable').goView('/ui/pages/usermanager/group-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
@@ -142,7 +141,32 @@
 		
 		page.root.find("#searchGroupBtn").on("click",function(){
 			page.listTable.ajax.reload();
-		})
+		});
+		
+		function valid(ids){
+			if(ids&&ids.length==0){
+				page.warning('请选择一条记录');
+				return false;
+			}
+			if(ids&&ids.length>1){
+				page.warning('只能选择一条记录');
+				return false;
+			}
+			return true;
+		}
+		page.root.find('#toAssignRoleBtn').on('click',function(){
+			var ids=page.root.find('#groupListTable').getSelectedRow();
+			if(valid(ids)){
+				$(this).goView('/ui/pages/usermanager/group-assignrole.html',{"id":ids[0]});
+			}
+		});
+		
+		page.root.find('#toAssignGroupBtn').on('click',function(){
+			var ids=page.root.find('#groupListTable').getSelectedRow();
+			if(valid(ids)){
+				$(this).goView('/ui/pages/usermanager/group-assigngroup.html',{"id":ids[0]});
+			}
+		});
 		
 	});
 	</script>

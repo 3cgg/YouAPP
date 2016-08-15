@@ -79,3 +79,15 @@ tr.shown td.details-control {
 .tabuloustab .tabul div.action-panel span.cancel:hover {
     background-position: -48px 0;
 }
+
+
+/***############### **/
+td.recordAdd {
+	background: url('../_youapp/details_open.png') no-repeat center center;
+	cursor: pointer;
+}
+td.recordRemove {
+	background: url('../_youapp/details_close.png') no-repeat center center;
+	cursor: pointer;
+}
+

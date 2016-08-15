@@ -379,22 +379,6 @@
 		window.$_youapp.$_layout.draw('body',$('body'));
 		window.$_youapp.$_data=new DataExchange();
 		window.$_youapp.$_html=new HtmlExchange();
-		window.$_youapp.pageTemplate={
-				ajaxGet:function(options){
-					$_youapp.$_data.ajaxGet(options);
-				},
-				submitForm:function(options){
-					$_youapp.$_data.submitForm(options);
-				},
-				ajaxPost:function(options){
-					$_youapp.$_data.ajaxPost(options);
-				},
-				codeTable:function($dom){
-					$_youapp.$_codeTable.draw($($dom));
-				}
-		}
-		
-		
 		window.$_youapp.$_toast=(function(){
 			
 			function def(opts){
@@ -457,6 +441,25 @@
 					$_youapp.$_util.log(e);
 				}
 			});
+		}
+		
+		window.$_youapp.pageTemplate={
+				ajaxGet:function(options){
+					$_youapp.$_data.ajaxGet(options);
+				},
+				submitForm:function(options){
+					$_youapp.$_data.submitForm(options);
+				},
+				ajaxPost:function(options){
+					$_youapp.$_data.ajaxPost(options);
+				},
+				codeTable:function($dom){
+					$_youapp.$_codeTable.draw($($dom));
+				},
+				warning:$_youapp.$_toast.warning,
+				success:$_youapp.$_toast.success,
+				info:$_youapp.$_toast.info,
+				error:$_youapp.$_toast.error
 		}
 	})();
 	

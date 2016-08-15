@@ -43,9 +43,7 @@ public class ResponseModel implements JModel{
 	}
 	
 	public static ResponseModel newSuccess(){
-		ResponseModel mobileResult=new ResponseModel();
-		mobileResult.status=ResponseStatus.SUCCESS;
-		return mobileResult;
+		return newSuccess(true);
 	}
 	
 	public static ResponseModel newSuccess(Object data){

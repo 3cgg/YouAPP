@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.youappcorp.project.resource.sql;
+package com.youappcorp.project.resourcemanager.sql;
 
 import j.jave.platform.sps.core.autoloader.AbstractSQLDDLLoader;
 

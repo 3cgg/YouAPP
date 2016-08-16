@@ -12,8 +12,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.youappcorp.project.resource.model.ResourceExtend;
-import com.youappcorp.project.resource.service.ResourceExtendService;
+import com.youappcorp.project.resourcemanager.model.ResourceRecord;
+import com.youappcorp.project.resourcemanager.service.ResourceManagerService;
 import com.youappcorp.project.websupport.model.WebRequestURLCacheModelImpl;
 
 @Service
@@ -21,18 +21,18 @@ public class WebRequestURLCacheModelServiceImpl implements
 		WebRequestURLCacheModelService {
 
 	@Autowired
-	private ResourceExtendService resourceExtendService;
+	private ResourceManagerService resourceManagerService;
 	
 	@Override
 	public List<? extends WebRequestURLCacheModel> getResourceCacheModels() {
 		List<WebRequestURLCacheModel> cacheModels=new ArrayList<WebRequestURLCacheModel>();
 		ServiceContext serviceContext=DefaultServiceContext.getDefaultServiceContext();
-		List<ResourceExtend> resourceExtends= resourceExtendService.getAllResourceExtends(serviceContext);
-		if(JCollectionUtils.hasInCollect(resourceExtends)){
-			for(ResourceExtend resourceExtend:resourceExtends){
+		List<ResourceRecord> resourceRecords= resourceManagerService.getResources(serviceContext);
+		if(JCollectionUtils.hasInCollect(resourceRecords)){
+			for(ResourceRecord resourceRecord:resourceRecords){
 				WebRequestURLCacheModelImpl cacheModel=new WebRequestURLCacheModelImpl();
-				cacheModel.setUrl(resourceExtend.getUrl());
-				cacheModel.setCached("Y".equals(resourceExtend.getCached()));
+				cacheModel.setUrl(resourceRecord.getUrl());
+				cacheModel.setCached("Y".equals(resourceRecord.getCached()));
 				cacheModels.add(cacheModel);
 			}
 		}

@@ -1,5 +1,9 @@
 package j.jave.platform.webcomp.core.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JModel;
@@ -8,6 +12,7 @@ import j.jave.kernal.jave.model.JPageable;
 import j.jave.kernal.jave.service.JService;
 import j.jave.platform.data.web.model.SimplePageRequest;
 import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
+import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,4 +48,11 @@ public abstract class ServiceSupport implements JService{
 		return JQueryBuilder.get(em);
 	}
 	
+	protected Map<String, Object> params(Map<String, Condition> params){
+		Map<String, Object> realParams=new HashMap<String, Object>();
+		for(Entry<String, Condition> entry:params.entrySet() ){
+			realParams.put(entry.getKey(), entry.getValue().getValue());
+		}
+		return realParams;
+	}
 }

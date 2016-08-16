@@ -1,4 +1,4 @@
-package com.youappcorp.project.resource.model;
+package com.youappcorp.project.resourcemanager.model;
 
 import j.jave.kernal.jave.model.support.JColumn;
 import j.jave.kernal.jave.model.support.JSQLType;

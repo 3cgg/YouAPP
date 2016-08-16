@@ -140,6 +140,114 @@ public class JCondition implements JModel {
 		String LIKE=" like ";
 	}
 	
+	public static class Condition{
+		
+		private String column="";
+		
+		private String ope;
+		
+		private Object value;
+
+		public String getColumn() {
+			return column;
+		}
+
+		public void setColumn(String column) {
+			this.column = column;
+		}
+
+		public String getOpe() {
+			return ope;
+		}
+
+		public void setOpe(String ope) {
+			this.ope = ope;
+		}
+		
+		public Object getValue() {
+			return value;
+		}
+
+		public void setValue(Object value) {
+			this.value = value;
+		}
+
+		public static Condition likes(String column,Object value){
+			Condition condition=new Condition();
+			condition.column=column;
+			condition.ope=Ope.LIKE;
+			condition.value="%"+value+"%";
+			return condition;
+		}
+		
+		public static Condition startLikes(String column,Object value){
+			Condition condition=new Condition();
+			condition.column=column;
+			condition.ope=Ope.LIKE;
+			condition.value=value+"%";
+			return condition;
+		}
+		
+		public static Condition endLikes(String column,Object value){
+			Condition condition=new Condition();
+			condition.column=column;
+			condition.ope=Ope.LIKE;
+			condition.value="%"+value;
+			return condition;
+		}
+		
+		public static Condition equals(String column,Object value){
+			Condition condition=new Condition();
+			condition.column=column;
+			condition.ope=Ope.EQUAL;
+			condition.value=value;
+			return condition;
+		}
+		
+		public static Condition notEquals(String column,Object value){
+			Condition condition=new Condition();
+			condition.column=column;
+			condition.ope=Ope.NOT_EQUAL;
+			condition.value=value;
+			return condition;
+		}
+		
+		public static Condition likes(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.LIKE;
+			condition.value="%"+value+"%";
+			return condition;
+		}
+		
+		public static Condition startLikes(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.LIKE;
+			condition.value=value+"%";
+			return condition;
+		}
+		
+		public static Condition endLikes(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.LIKE;
+			condition.value="%"+value;
+			return condition;
+		}
+		
+		public static Condition equal(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.EQUAL;
+			condition.value=value;
+			return condition;
+		}
+		
+		public static Condition notEquals(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.NOT_EQUAL;
+			condition.value=value;
+			return condition;
+		}
+	}
+	
 	private JCondition append(String property,Object value,String opeType,LinkType... linkType){
 		if(value==null) return this;
 		validate(property);

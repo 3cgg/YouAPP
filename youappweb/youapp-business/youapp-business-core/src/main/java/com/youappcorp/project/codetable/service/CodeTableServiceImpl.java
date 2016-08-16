@@ -199,6 +199,8 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 				.likes("code", paramCriteria.getCode())
 				.likes("name", paramCriteria.getName())
 				.likes("description", paramCriteria.getDescription())
+				.ready()
+				.order().asc("code").desc("updateTime")
 				.ready().modelPage(simplePageable);
 	}
 	
@@ -222,6 +224,8 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 				.likes("name", paramCriteria.getName())
 				.likes("description", paramCriteria.getDescription())
 				.likes("type", paramCriteria.getType())
+				.ready()
+				.order().asc("type").asc("code").desc("updateTime")
 				.ready().modelPage(simplePageable);
 	}
 	

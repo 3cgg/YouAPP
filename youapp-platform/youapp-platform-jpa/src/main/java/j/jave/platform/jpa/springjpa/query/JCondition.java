@@ -246,6 +246,23 @@ public class JCondition implements JModel {
 			condition.value=value;
 			return condition;
 		}
+		
+		
+		public static Condition smaller(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.SMALLER;
+			condition.value=value;
+			return condition;
+		}
+		
+		public static Condition larger(Object value){
+			Condition condition=new Condition();
+			condition.ope=Ope.LARGER;
+			condition.value=value;
+			return condition;
+		}
+		
+		
 	}
 	
 	private JCondition append(String property,Object value,String opeType,LinkType... linkType){

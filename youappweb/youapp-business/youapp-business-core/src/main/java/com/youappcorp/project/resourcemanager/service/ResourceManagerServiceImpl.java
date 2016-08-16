@@ -2,6 +2,7 @@ package com.youappcorp.project.resourcemanager.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JQuery;
@@ -77,10 +78,18 @@ implements ResourceManagerService {
 	public List<ResourceRecord> getResources(ServiceContext serviceContext,
 			ResourceSearchCriteria resourceSearchCriteria) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
-		params.put("url", Condition.likes(resourceSearchCriteria.getUrl()));
-		params.put("friendlyUrl", Condition.likes(resourceSearchCriteria.getUrl()));
-		params.put("cached", Condition.equal(resourceSearchCriteria.getCached()));
-		params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getUrl())){
+			params.put("url", Condition.likes(resourceSearchCriteria.getUrl()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getFriendlyUrl())){
+			params.put("friendlyUrl", Condition.likes(resourceSearchCriteria.getFriendlyUrl()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getCached())){
+			params.put("cached", Condition.equal(resourceSearchCriteria.getCached()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getDescription())){
+			params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
+		}
 		return buildResourceQuery(serviceContext, params)
 				.models(ResourceRecord.class);
 	}
@@ -91,6 +100,12 @@ implements ResourceManagerService {
 		params.put("url", Condition.equal(url));
 		return buildResourceQuery(serviceContext, params)
 				.model(ResourceRecord.class);
+	}
+	
+	@Override
+	public boolean existsResourceByUrl(ServiceContext serviceContext, String url) {
+		return internalResourceServiceImpl.singleEntityQuery().conditionDefault()
+				.equals("url",url).ready().count()>0;
 	}
 	
 	@Override
@@ -312,10 +327,18 @@ implements ResourceManagerService {
 			ResourceSearchCriteria resourceSearchCriteria,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
-		params.put("url", Condition.likes(resourceSearchCriteria.getUrl()));
-		params.put("friendlyUrl", Condition.likes(resourceSearchCriteria.getUrl()));
-		params.put("cached", Condition.equal(resourceSearchCriteria.getCached()));
-		params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getUrl())){
+			params.put("url", Condition.likes(resourceSearchCriteria.getUrl()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getFriendlyUrl())){
+			params.put("friendlyUrl", Condition.likes(resourceSearchCriteria.getFriendlyUrl()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getCached())){
+			params.put("cached", Condition.equal(resourceSearchCriteria.getCached()));
+		}
+		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getDescription())){
+			params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
+		}
 		return buildResourceQuery(serviceContext, params)
 				.setPageable(simplePageable)
 				.modelPage(ResourceRecord.class);

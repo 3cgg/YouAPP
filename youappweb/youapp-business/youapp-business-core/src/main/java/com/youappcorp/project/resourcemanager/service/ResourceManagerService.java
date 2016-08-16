@@ -193,6 +193,6 @@ public interface ResourceManagerService{
 	 */
 	boolean isBingResourceGroup(ServiceContext serviceContext,String resourceId,String groupId);
 	
-	
+	boolean existsResourceByUrl(ServiceContext serviceContext,String url);
 	
 }

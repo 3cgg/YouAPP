@@ -83,7 +83,10 @@ public class SysParamServiceImpl extends ServiceSupport implements SysParamServi
 		.conditionDefault().likes("code", sysParamCriteriaInVO.getCode())
 		.likes("value", sysParamCriteriaInVO.getValue())
 		.likes("desc", sysParamCriteriaInVO.getDesc())
-		.ready().modelPage(simplePageable);
+		.ready()
+		.order().asc("code").desc("updateTime")
+		.ready()
+		.modelPage(simplePageable);
 	}
 
 }

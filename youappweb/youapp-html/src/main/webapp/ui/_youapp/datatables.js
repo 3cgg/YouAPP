@@ -104,10 +104,15 @@ $.fn.extend({
 			
 			this.ajaxSuccess=function(data,callback){
 				callback(data);
+				this.clearStatus(data);
 				this.onSelected(data);
 				this.onChecked(data);
 				this.onOperation(data);
 				this.onCallAfterDrawn(data);
+			}
+			
+			this.clearStatus=function(data){
+				$wrap.removeData("datatables-checked");
 			}
 			
 			this.onCallAfterDrawn=function(data){

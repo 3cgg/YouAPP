@@ -24,4 +24,5 @@ public interface RuntimeUrlManagerService extends JService {
 	 */
 	Collection<RuntimeUrl> getAllRuntimeUrls();
 	
+	public void cleanup();
 }

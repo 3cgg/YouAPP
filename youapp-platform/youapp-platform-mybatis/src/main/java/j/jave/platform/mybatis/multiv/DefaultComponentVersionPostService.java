@@ -5,7 +5,9 @@ import j.jave.platform.sps.multiv.ComponentVersionPostService;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 
 import org.apache.ibatis.io.Resources;
+import org.springframework.stereotype.Service;
 
+@Service
 public class DefaultComponentVersionPostService 
 extends SpringServiceFactorySupport<ComponentVersionPostService> 
 implements ComponentVersionPostService {

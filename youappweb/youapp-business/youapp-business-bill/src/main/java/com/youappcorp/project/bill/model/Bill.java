@@ -3,6 +3,8 @@
  */
 package com.youappcorp.project.bill.model;
 
+import j.jave.platform.data.web.model.JInputModel;
+import j.jave.platform.data.web.model.JOutputModel;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import j.jave.platform.webcomp.web.proext.annotation.CodeExtend;
 
@@ -21,7 +23,7 @@ import com.youappcorp.project.bill.BillCodes.MallCode;
  */
 @Entity
 @Table(name="BILL")
-public class Bill extends JJpaBaseModel {
+public class Bill extends JJpaBaseModel implements JInputModel , JOutputModel {
 	
 	/**
 	 *用户ID

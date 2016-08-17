@@ -15,28 +15,32 @@ import java.util.Properties;
  * @author J
  *
  */
-public abstract class JKey {
+public class JKey {
 
-	protected String version;
+	private String version;
 	
-	protected String component;
+	private String component;
 	
-	protected String app;
+	private String app;
 	
-	protected final String unique(){
+	public final String unique(){
 		return ComponentVersionSpringApplicationSupport.unique(app, component, version);
 	}
 	
-	/**
-	 * generally, call {@link #unique()} directly.
-	 * @return
-	 */
-	public abstract String getKey();
+	public static JKey parse(String unique){
+		JKey key=new JKey();
+		String[] parts=unique.split(":");
+		key.app=parts[0];
+		key.component=parts[1];
+		key.version=parts[2];
+		return key;
+	}
 	
 	public JKey(){
-		findComponentInfo();
 	}
 	// get all info from component-version.properties.
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void findComponentInfo() {
 		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(ComponentProperties.PROPERTY_LOCATION);
 		try {

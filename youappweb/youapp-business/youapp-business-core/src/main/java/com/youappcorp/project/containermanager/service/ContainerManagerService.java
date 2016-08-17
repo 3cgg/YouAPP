@@ -6,82 +6,108 @@ import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 
-import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.containermanager.model.AppMeta;
+import com.youappcorp.project.containermanager.model.AppMetaRecord;
 import com.youappcorp.project.containermanager.model.URLMappingMeta;
-import com.youappcorp.project.containermanager.model.URLMappingMetaCriteria;
+import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
+import com.youappcorp.project.containermanager.vo.AppMetaCriteria;
+import com.youappcorp.project.containermanager.vo.URLMappingMetaCriteria;
 
 public interface ContainerManagerService {
 
 	/**
 	 * save a new APP.
-	 * @param context
+	 * @param serviceContext
 	 * @param appMeta
 	 */
-	void saveAppMeta(ServiceContext context,AppMeta appMeta) throws BusinessException;
+	void saveAppMeta(ServiceContext serviceContext,AppMeta appMeta);
 	
+	void saveAppMeta(ServiceContext serviceContext,AppMeta appMeta,List<URLMappingMeta> urlMappingMetas);
+	
+	void saveURLMappingMetas(ServiceContext serviceContext,List<URLMappingMeta> urlMappingMetas);
+	
+	void saveURLMappingMeta(ServiceContext serviceContext,URLMappingMeta urlMappingMeta);
 	
 	/**
 	 * 
 	 * query APP
-	 * @param context
+	 * @param serviceContext
 	 * @param appName
 	 * @param appCompName
 	 * @param appVersion
 	 * @return
 	 */
-	AppMeta getAPPMetaByConfig(ServiceContext context,String appName,String appCompName,String appVersion);
+	AppMetaRecord getAPPMetaByConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion);
 
+	AppMetaRecord getAppMetaByUnique(ServiceContext serviceContext,String unique);
+	
 	/**
 	 * 
-	 * @param context
+	 * @param serviceContext
 	 * @param appId
 	 * @return
 	 */
-	AppMeta getAPPMetaByAppId(ServiceContext context,String appId);
+	AppMetaRecord getAPPMetaByAppId(ServiceContext serviceContext,String appId);
 	
 	/**
 	 * check if the app already exists.
-	 * @param context
+	 * @param serviceContext
 	 * @param appName
 	 * @param appCompName
 	 * @param appVersion
 	 * @return
 	 */
-	boolean existsAppMeta(ServiceContext context,String appName,String appCompName,String appVersion);
+	boolean existsAppMeta(ServiceContext serviceContext,String appName,String appCompName,String appVersion);
+	
+	boolean existsAppMeta(ServiceContext serviceContext,String unique);
 	
 	/**
 	 * query all app-metas.
-	 * @param context
+	 * @param serviceContext
 	 * @return
 	 */
-	List<AppMeta> getAllAppMetas(ServiceContext context);
+	List<AppMetaRecord> getAppMetas(ServiceContext serviceContext);
+	
+	/**
+	 * query all app-metas.
+	 * @param serviceContext
+	 * @return
+	 */
+	List<AppMetaRecord> getAppMetas(ServiceContext serviceContext,AppMetaCriteria appMetaCriteria);
+	
+	
+	/**
+	 * query all app-metas.
+	 * @param serviceContext
+	 * @return
+	 */
+	JPage<AppMetaRecord> getAppMetasByPage(ServiceContext serviceContext,AppMetaCriteria appMetaCriteria,JSimplePageable simplePageable);
+	
 	
 	/**
 	 * QUERUY ALL URL MAPPINGS of a certain APP.
-	 * @param context
+	 * @param serviceContext
 	 * @return
 	 */
-	List<URLMappingMeta> getAllURLMappingMetasByAppId(ServiceContext context,String appId);
+	List<URLMappingMetaRecord> getURLMappingMetasByAppId(ServiceContext serviceContext,String appId);
 	
 	/**
 	 * QUERUY ALL URL MAPPINGS of a certain APP.
-	 * @param context
+	 * @param serviceContext
 	 * @return
 	 */
-	List<URLMappingMeta> getAllURLMappingMetasByAppConfig(ServiceContext context,String appName,String appCompName,String appVersion);
+	List<URLMappingMetaRecord> getURLMappingMetasByAppConfig(ServiceContext serviceContext,String appName,String appCompName,String appVersion);
 	
 	
-	URLMappingMeta getURLMappingMetaById(ServiceContext context,String id);
+	URLMappingMetaRecord getURLMappingMetaById(ServiceContext serviceContext,String id);
 	
 	/**
 	 * 
-	 * @param context
+	 * @param serviceContext
 	 * @param urlMappingMetaCriteria
 	 * @return
 	 */
-	JPage<URLMappingMeta> getAllURLMappingMetasByPage(ServiceContext context,URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable);
-	
-	
+	JPage<URLMappingMetaRecord> getURLMappingMetasByPage(ServiceContext serviceContext,URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable);
+
 	
 }

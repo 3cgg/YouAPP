@@ -1,5 +1,6 @@
 package j.jave.platform.webcomp.rhttp;
 
+import j.jave.kernal.container.JContainerDelegate;
 import j.jave.kernal.container.rhttp.JRemoteHttpContainerConfig;
 import j.jave.kernal.container.rhttp.JRemoteURIInfo;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
@@ -10,14 +11,26 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
+import j.jave.platform.sps.core.context.SpringContextSupport;
+import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
+import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 import j.jave.platform.sps.multiv.RemoteHttpComponentVersionApplication;
 import j.jave.platform.webcomp.rhttp.model.AppDeploy;
 import j.jave.platform.webcomp.rhttp.model.AppDeployMeta;
 import j.jave.platform.webcomp.rhttp.model.URLMappingDeployMeta;
+import j.jave.platform.webcomp.web.youappmvc.container.DefaultControllerMockObjectGetter;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainerConfig;
+import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeTestContainerConfig;
 
+import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
+
+import org.springframework.context.ApplicationContext;
 
 
 /**
@@ -82,6 +95,52 @@ implements JService {
 	 */
 	public String deploy(String appJson) throws Exception{
 		return deploy(JJSON.get().parse(appJson, AppDeploy.class));
+	}
+	
+	public String deployJar(String jarUrl) throws Exception{
+
+		ApplicationContext applicationContext=SpringContextSupport.getApplicationContext();
+
+		URL[] jarUrls=new URL[]{new URI(jarUrl).toURL()};
+		
+		DynamicSpringContainerConfig dynamicSpringContainerConfig=new DynamicSpringContainerConfig();
+		dynamicSpringContainerConfig.setJarUrls(jarUrls);
+		dynamicSpringContainerConfig.setApplicationContext(applicationContext);
+		
+		InnerHttpInvokeContainerConfig containerConfig=new InnerHttpInvokeContainerConfig();
+		containerConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
+		
+		DynamicComponentVersionApplication dynamicComponentVersionApplication
+			=new DynamicComponentVersionApplication(applicationContext, jarUrls);
+		String unique=requestInvokeContainerDelegateService.newInstance(containerConfig, dynamicComponentVersionApplication);
+		
+		//startup test container.
+		
+		ComponentVersionTestApplication componentVersionTestApplication
+		=new ComponentVersionTestApplication(dynamicComponentVersionApplication.getApp(),
+				dynamicComponentVersionApplication.getComponent()+"-TEST", 
+				dynamicComponentVersionApplication.getVersion(), 
+				dynamicComponentVersionApplication.getUrlPrefix());
+		
+		InnerHttpInvokeTestContainerConfig testConfig=new InnerHttpInvokeTestContainerConfig();
+		testConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
+		requestInvokeContainerDelegateService.newInstance(testConfig, componentVersionTestApplication,
+				(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
+		
+		//startup mock container.
+		ComponentVersionTestApplication mockApplication
+		=new ComponentVersionTestApplication(dynamicComponentVersionApplication.getApp(),
+				dynamicComponentVersionApplication.getComponent()+"-MOCK", 
+				dynamicComponentVersionApplication.getVersion(), 
+				dynamicComponentVersionApplication.getUrlPrefix());
+		
+		InnerHttpInvokeTestContainerConfig mockConfig=new InnerHttpInvokeTestContainerConfig();
+		mockConfig.setSpringContainerConfig(dynamicSpringContainerConfig);
+		mockConfig.setControllerObjectGetter(new DefaultControllerMockObjectGetter());
+		requestInvokeContainerDelegateService.newInstance(mockConfig, mockApplication,
+				(InnerHttpInvokeContainer) JContainerDelegate.get().getContainer(unique));
+		
+		return unique;
 	}
 	
 	@Override

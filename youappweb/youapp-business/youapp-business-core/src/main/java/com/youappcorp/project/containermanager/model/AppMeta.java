@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.youappcorp.project.containermanager.ContainerNames.DeployType;
+
 /**
  * @author J
  */
@@ -31,6 +33,18 @@ public class AppMeta extends JJpaBaseModel  {
 	 * the friendly url that is the same functionality as {@link #unique()}
 	 */
 	private String friendlyUrl;
+	
+	/**
+	 * JAR File Location
+	 */
+	private String appJarUrl;
+	
+	/**
+	 * {@link DeployType}
+	 */
+	private String deployType;
+	
+	
 
 	@Column(name="APP_NAME")
 	public String getAppName() {
@@ -103,6 +117,22 @@ public class AppMeta extends JJpaBaseModel  {
 	public void setAppHost(String appHost) {
 		this.appHost = appHost;
 	}
+	@Column(name="APP_JARURL")
+	public String getAppJarUrl() {
+		return appJarUrl;
+	}
 
+	public void setAppJarUrl(String appJarUrl) {
+		this.appJarUrl = appJarUrl;
+	}
+
+	@Column(name="DEPLOY_TYPE")
+	public String getDeployType() {
+		return deployType;
+	}
+
+	public void setDeployType(String deployType) {
+		this.deployType = deployType;
+	}
 	
 }

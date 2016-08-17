@@ -623,5 +623,12 @@ $.fn.extend({
         updateTotalProgress();
 
         return uploader;
+	},
+	uploadfiles:function(){
+		var files=$(this).data("uploadfiles");
+		if(files){
+			return files;
+		}
+		return $_youapp.$_util.newMap();
 	}
 });

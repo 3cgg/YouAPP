@@ -31,6 +31,9 @@ public class FileExtracterInterceptor implements FileUploaderRequestServletReque
 			if(val!=null&&JFile.class.isInstance(val)){
 				fileUploaderVO.setFile((JFile) val);
 			}
+			else{
+				fileUploaderVO.getFileAttachedParamVO().put(entry.getKey(), entry.getValue());
+			}
 		}
 		servletRequestInvocation.setFileUploaderVO(fileUploaderVO);
         return servletRequestInvocation.proceed();

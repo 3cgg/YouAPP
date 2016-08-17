@@ -20,7 +20,7 @@ import com.youappcorp.project.bill.model.BillSearchCriteria;
 import com.youappcorp.project.bill.service.BillService;
 
 @Controller
-@RequestMapping(value="/bill/billcontroller")
+@RequestMapping(value="/bill/billmanager")
 public class BillController extends SimpleControllerSupport{
 	
 	@Autowired

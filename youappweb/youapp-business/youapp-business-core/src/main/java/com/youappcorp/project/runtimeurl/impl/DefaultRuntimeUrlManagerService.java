@@ -53,6 +53,13 @@ implements RuntimeUrlManagerService {
 	
 	private Object sync=new Object();
 	
+	public void cleanup(){
+		synchronized (sync) {
+			runtimeUrls.clear();
+			backUrls.clear();
+		}
+	}
+	
 	private boolean ready(){
 		if(runtimeUrls.size()>0){
 			return true;

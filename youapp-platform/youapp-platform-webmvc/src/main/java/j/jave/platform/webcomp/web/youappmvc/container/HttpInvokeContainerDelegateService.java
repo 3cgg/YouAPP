@@ -106,21 +106,8 @@ implements JService{
 		try{
 			Collection<String> uniques= getAllContainerUniques();
 			for(String unique:uniques){
-				String getAllUrl=getGetAllRequestURI(unique);
-				if(JStringUtils.isNullOrEmpty(getAllUrl)) continue;
-				Object object=execute(new URI(getAllUrl), null, unique);
-				if(Collection.class.isInstance(object)){
-					ContainerMappingMeta containerMappingMeta=new ContainerMappingMeta();
-					containerMappingMeta.setUnique(unique);
-					Collection<MappingMeta> mappingMetas=new ArrayList<MappingMeta>();
-					Collection<?> coll=(Collection<?>) object;
-					for(Object obj:coll){
-						if(!(obj instanceof MappingMeta)){
-							break;
-						}
-						mappingMetas.add((MappingMeta) obj);
-					}
-					containerMappingMeta.setMappingMetas(mappingMetas);
+				ContainerMappingMeta containerMappingMeta= getRuntimeMappingMeta(unique);
+				if(containerMappingMeta!=null){
 					containerMappingMetas.add(containerMappingMeta);
 				}
 			}
@@ -129,6 +116,31 @@ implements JService{
 			LOGGER.error(e.getMessage(), e);
 		}
 		return Collections.EMPTY_LIST;
+	}
+	
+	public ContainerMappingMeta getRuntimeMappingMeta(String unique){
+		ContainerMappingMeta containerMappingMeta=null;
+		try{
+			String getAllUrl=getGetAllRequestURI(unique);
+			if(JStringUtils.isNullOrEmpty(getAllUrl)) return null;
+			Object object=execute(new URI(getAllUrl), null, unique);
+			if(Collection.class.isInstance(object)){
+				containerMappingMeta=new ContainerMappingMeta();
+				containerMappingMeta.setUnique(unique);
+				Collection<MappingMeta> mappingMetas=new ArrayList<MappingMeta>();
+				Collection<?> coll=(Collection<?>) object;
+				for(Object obj:coll){
+					if(!(obj instanceof MappingMeta)){
+						break;
+					}
+					mappingMetas.add((MappingMeta) obj);
+				}
+				containerMappingMeta.setMappingMetas(mappingMetas);
+			}
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+		return containerMappingMeta;
 	}
 	
 	/**

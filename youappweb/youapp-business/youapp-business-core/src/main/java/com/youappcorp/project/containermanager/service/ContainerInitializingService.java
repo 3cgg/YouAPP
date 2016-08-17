@@ -21,8 +21,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.youappcorp.project.containermanager.ContainerNames.DeployType;
 import com.youappcorp.project.containermanager.model.AppMeta;
+import com.youappcorp.project.containermanager.model.AppMetaRecord;
 import com.youappcorp.project.containermanager.model.URLMappingMeta;
+import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
 
 @Service
 public class ContainerInitializingService
@@ -41,9 +44,13 @@ implements SpringApplicationContextInitializedListener ,JService {
 	@Override
 	public Object trigger(SpringApplicationContextInitializedEvent event) {
 		try{
-			List<AppMeta> appMetas= containerManagerService.getAllAppMetas(DefaultServiceContext.getDefaultServiceContext());
+			List<AppMetaRecord> appMetas= containerManagerService.getAppMetas(DefaultServiceContext.getDefaultServiceContext());
 			if(JCollectionUtils.hasInCollect(appMetas)){
 				for(AppMeta appMeta:appMetas){
+					if(DeployType.JAR.equals(appMeta.getDeployType())){
+						defaultRemoteHttpDeployService.deployJar(appMeta.getAppJarUrl());
+						continue;
+					}
 					AppDeploy appDeploy=new AppDeploy();
 					
 					//initialize app meta
@@ -60,7 +67,7 @@ implements SpringApplicationContextInitializedListener ,JService {
 					
 					//initialize URL mapping
 					List<URLMappingDeployMeta> urlMappingDeployMetas=new ArrayList<URLMappingDeployMeta>();
-					List<URLMappingMeta> urlMappingMetas=containerManagerService.getAllURLMappingMetasByAppId(DefaultServiceContext.getDefaultServiceContext(), appMeta.getId());
+					List<URLMappingMetaRecord> urlMappingMetas=containerManagerService.getURLMappingMetasByAppId(DefaultServiceContext.getDefaultServiceContext(), appMeta.getId());
 					if(JCollectionUtils.hasInCollect(urlMappingMetas)){
 						for(URLMappingMeta urlMappingMeta:urlMappingMetas){
 							URLMappingDeployMeta urlMappingDeployMeta=new URLMappingDeployMeta();

@@ -25,6 +25,7 @@
 		<module>youapp-kernal-sqlautoloader</module>
 		<module>youapp-kernal-taskdriven</module>
 		<module>youapp-kernal-mail</module>
+		<module>youapp-kernal-zookeeper</module>
   </modules>
 	
 </project>

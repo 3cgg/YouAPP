@@ -7,9 +7,16 @@ import java.util.Map;
 
 public class DefaultHtmlFileService implements HtmlFileService {
 
-	private String webappPath=
-			j.jave.web.htmlclient.servlet.HtmlServlet.class.
-			getClassLoader().getResource("../../").getPath();
+	private String webappPath=null;
+	{
+		try{
+			webappPath=j.jave.web.htmlclient.servlet.HtmlServlet.class.
+					getClassLoader().getResource("../../").getPath();
+		}catch(Exception e){
+			webappPath="D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-html\\src\\main\\webapp\\";
+		}
+	}
+			
 	
 	@Override
 	public byte[] getHtmlFile(String uri,Map<String, Object> attrs) {

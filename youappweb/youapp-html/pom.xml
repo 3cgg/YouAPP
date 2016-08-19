@@ -22,7 +22,7 @@
 
 		<dependency>
 			<groupId>youapp.kernal</groupId>
-			<artifactId>youapp-kernal-jave</artifactId>
+			<artifactId>youapp-kernal-zookeeper</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
 

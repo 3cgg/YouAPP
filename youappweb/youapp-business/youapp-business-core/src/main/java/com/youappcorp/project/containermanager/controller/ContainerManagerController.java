@@ -1,12 +1,16 @@
 package com.youappcorp.project.containermanager.controller;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.http.JHttpType;
 import j.jave.kernal.jave.async.JAsyncExecutor;
 import j.jave.kernal.jave.async.JAsyncTaskExecutingService;
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.kernal.zookeeper.JZooKeeperNode;
+import j.jave.kernal.zookeeper.JZooKeeperService;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.multiv.jnterface.JKey;
 import j.jave.platform.webcomp.core.service.ServiceContext;
@@ -25,9 +29,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.youappcorp.project.containermanager.ContainerNames;
 import com.youappcorp.project.containermanager.ContainerNames.DeployType;
 import com.youappcorp.project.containermanager.model.AppMeta;
 import com.youappcorp.project.containermanager.model.AppMetaRecord;
+import com.youappcorp.project.containermanager.model.ModuleState;
 import com.youappcorp.project.containermanager.model.URLMappingMeta;
 import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
 import com.youappcorp.project.containermanager.service.ContainerManagerService;
@@ -55,6 +61,9 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	
 	private RuntimeUrlManagerService runtimeUrlManagerService=
 			JServiceHubDelegate.get().getService(this,RuntimeUrlManagerService.class);
+	
+	private JZooKeeperService zooKeeperService=
+			JServiceHubDelegate.get().getService(this, JZooKeeperService.class);
 	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -94,6 +103,29 @@ public class ContainerManagerController extends SimpleControllerSupport {
 			urlMappingMetas.add(urlMappingMeta);
 		}
 		containerManagerService.saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+		
+		//SYNC ZOOKEEPER
+		JConfiguration configuration=JConfiguration.get();
+		String root=configuration.getString(ContainerNames.YOUAPPMVC_HTML_ROOT_IN_ZOOKEEPER,
+				"/youapp/view");
+		JZooKeeperNode zooKeeperNode=new JZooKeeperNode();
+		zooKeeperNode.setPath(root);
+		zooKeeperNode.setValue("it's root for html scanning.");
+		zooKeeperService.createDir(zooKeeperNode, true);
+		
+		zooKeeperNode=new JZooKeeperNode();
+		zooKeeperNode.setPath(root+"/"+unique);
+		ModuleState moduleState=new ModuleState();
+		moduleState.setJarUrl(jarUri);
+		moduleState.setActive(true);
+		String val=JJSON.get().formatObject(moduleState);
+		if(!zooKeeperService.exist(zooKeeperNode)){
+			zooKeeperNode.setValue(val);
+			zooKeeperService.createNode(zooKeeperNode);
+		}else{
+			zooKeeperService.setNode(zooKeeperNode, val.getBytes("utf-8"));
+		}
+		
 		return ResponseModel.newSuccess().setData(true);
 	}
 	

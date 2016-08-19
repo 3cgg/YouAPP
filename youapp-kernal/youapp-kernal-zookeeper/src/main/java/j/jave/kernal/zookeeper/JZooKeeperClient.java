@@ -26,16 +26,16 @@ public class JZooKeeperClient {
 	
 	private ZooKeeper zooKeeper;
 	
-	private final JWatch watch;
+	private final JWatcher watch;
 	
-	public JZooKeeperClient(String hostPort,JWatch watch){
+	public JZooKeeperClient(String hostPort,JWatcher watch){
 		this.hostPort=hostPort;
 		this.watch=watch;
 		init();
 	}
 	public JZooKeeperClient(final String hostPort){
 		this.hostPort=hostPort;
-		this.watch=new JWatch() {
+		this.watch=new JWatcher() {
 			@Override
 			public void doProcess(WatchedEvent event) {
 				LOGGER.info("["+hostPort+"]type->"+event.getType()+";status->"+event.getState());
@@ -138,7 +138,7 @@ public class JZooKeeperClient {
 		}
 	}
 	
-	public byte[] getValue(JZooKeeperNode zooKeeperNode,JWatch watch){
+	public byte[] getValue(JZooKeeperNode zooKeeperNode,JWatcher watch){
 		Stat stat = new Stat();
 		JZooKeeperNodePath zooNodePath=  zooKeeperNode.getZooNodePath();
 		try {
@@ -173,7 +173,7 @@ public class JZooKeeperClient {
 		}
 	}
 	
-	public JValue getNodeStat(JZooKeeperNode zooKeeperNode,JWatch watch){
+	public JValue getNodeStat(JZooKeeperNode zooKeeperNode,JWatcher watch){
 		
 		JZooKeeperNodePath zooNodePath=  zooKeeperNode.getZooNodePath();
 		try {
@@ -232,7 +232,7 @@ public class JZooKeeperClient {
 		return exist(zooKeeperNode, null);
 	}
 	
-	public boolean exist(JZooKeeperNode zooKeeperNode,JWatch watch){
+	public boolean exist(JZooKeeperNode zooKeeperNode,JWatcher watch){
 		JZooKeeperNodePath zooNodePath=  zooKeeperNode.getZooNodePath();
 		try {
 			addAuth(zooKeeperNode);
@@ -265,5 +265,27 @@ public class JZooKeeperClient {
 		}
 	}
 	
+	
+	public void getChildren(JZooKeeperNode zooKeeperNode, JWatcher watcher,
+			JChildren2Callback cb, Object ctx){
+		addAuth(zooKeeperNode);
+		zooKeeper.getChildren(zooKeeperNode.getZooNodePath().getPath(), watcher, cb, ctx);
+	}
+	
+	public List<String> getChildren(JZooKeeperNode zooKeeperNode, JWatcher watcher){
+		try {
+			addAuth(zooKeeperNode);
+			return zooKeeper.getChildren(zooKeeperNode.getZooNodePath().getPath(), watcher);
+		} catch (KeeperException e) {
+			throw new RuntimeException(e);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public List<String> getChildren(JZooKeeperNode zooKeeperNode){
+		return getChildren(zooKeeperNode, null);
+	}
+
 	
 }

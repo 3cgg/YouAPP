@@ -7,4 +7,8 @@ public class ContainerNames {
 		public static final String AUTO="AUTO";
 		public static final String MANULLY="MANULLY";
 	}
+	
+	
+	public static final String YOUAPPMVC_HTML_ROOT_IN_ZOOKEEPER="youapp.mvc.html.root.in.zookeeper";
+	
 }

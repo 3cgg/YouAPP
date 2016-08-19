@@ -1,5 +1,6 @@
 package j.jave.web.htmlclient;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -15,7 +16,7 @@ public class SyncHtmlResponseService {
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(SyncHtmlResponseService.class);
 	
-	private HtmlService htmlService=HtmlService.get();
+	private HtmlService htmlService=JServiceHubDelegate.get().getService(this, HtmlService.class);
 	
 	private SyncHtmlResponseService(){}
 	

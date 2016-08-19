@@ -16,6 +16,12 @@
 	<name>youapp-business-core</name>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-zookeeper</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>youapp.platform</groupId>

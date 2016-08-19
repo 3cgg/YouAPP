@@ -4,7 +4,7 @@ import j.jave.kernal.zookeeper.JACL;
 import j.jave.kernal.zookeeper.JDigestAuth;
 import j.jave.kernal.zookeeper.JSimpleZooKeeperNodePath;
 import j.jave.kernal.zookeeper.JValue;
-import j.jave.kernal.zookeeper.JWatch;
+import j.jave.kernal.zookeeper.JWatcher;
 import j.jave.kernal.zookeeper.JZooKeeperClient;
 import j.jave.kernal.zookeeper.JZooKeeperNode;
 import j.jave.kernal.zookeeper.JZooKeeperNodeValue;
@@ -46,7 +46,7 @@ public class TestZooKeeperClient {
 		
 		JValue value= zooKeeperClient.getNodeStat(zooKeeperNode, null);
 		System.out.println(new String(value.getBytes()));
-		JWatch watch=new JWatch() {
+		JWatcher watch=new JWatcher() {
 			@Override
 			public void doProcess(WatchedEvent event) {
 				System.out.println("eeeeeeeeee-->"+event.getType()+"  state:"+event.getState());
@@ -54,7 +54,7 @@ public class TestZooKeeperClient {
 		};
 		zooKeeperClient.getValue(zooKeeperNode, watch);
 		
-		zooKeeperClient.exist(zooKeeperNode, new JWatch() {
+		zooKeeperClient.exist(zooKeeperNode, new JWatcher() {
 			
 			@Override
 			public void doProcess(WatchedEvent event) {

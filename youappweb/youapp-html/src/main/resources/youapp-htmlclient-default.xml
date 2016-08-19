@@ -14,4 +14,11 @@
   <description> the reomote url (host+servlet context path)</description>
 </property>
 
+<property>
+  <name>youapp.mvc.html.root.in.zookeeper</name>
+  <value>/youapp/view</value>
+  <description>all moduls page may regster in the path in the zookeeper.</description>
+</property>
+
+
 </configuration>

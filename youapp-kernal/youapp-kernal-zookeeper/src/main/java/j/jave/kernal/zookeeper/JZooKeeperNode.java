@@ -3,6 +3,7 @@ package j.jave.kernal.zookeeper;
 
 import j.jave.kernal.jave.utils.JUniqueUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,5 +65,30 @@ public class JZooKeeperNode {
 	public void setAcls(List<JACL> acls) {
 		this.acls = acls;
 	}
+	
+	public void setPath(String path){
+		this.zooNodePath=new JSimpleZooKeeperNodePath(path);
+	}
+	
+	public void setValue(final String value){
+		this.instance=new JZooKeeperNodeValue() {
+			@Override
+			public byte[] getValue() {
+				try {
+					return value.getBytes("utf-8");
+				} catch (UnsupportedEncodingException e) {
+				}
+				return null;
+			}
+		};
+	}
 
+	public void setValue(final byte[] bytes){
+		this.instance=new JZooKeeperNodeValue() {
+			@Override
+			public byte[] getValue() {
+				return bytes;
+			}
+		};
+	}
 }

@@ -1,5 +1,6 @@
 package j.jave.web.htmlclient.interceptor;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.web.htmlclient.HtmlService;
@@ -17,7 +18,7 @@ public class HtmlViewGetterInterceptor implements HtmlRequestServletRequestInter
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(HtmlViewGetterInterceptor.class);
 	
-	private HtmlService htmlService=HtmlService.get();
+	private HtmlService htmlService=JServiceHubDelegate.get().getService(this, HtmlService.class);
 	
 	private SyncHtmlResponseService syncHtmlResponseService=SyncHtmlResponseService.get();
 	

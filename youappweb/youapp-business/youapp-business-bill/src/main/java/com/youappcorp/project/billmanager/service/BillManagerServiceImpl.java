@@ -6,8 +6,10 @@ package com.youappcorp.project.billmanager.service;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
+import j.jave.platform.jpa.springjpa.query.JJpaDateParam;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
@@ -15,6 +17,8 @@ import j.jave.platform.webcomp.core.service.ServiceSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -147,25 +151,31 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		String moneyStart=billSearchCriteria.getMoneyStart();
 		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
-			params.put("moneyStart", Condition.larger(moneyStart));
+			params.put("moneyStart", Condition.larger(Double.parseDouble(moneyStart)));
 		}
 		String moneyEnd=billSearchCriteria.getMoneyEnd();
-		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
-			params.put("moneyEnd", Condition.smaller(moneyEnd));
+		if(JStringUtils.isNotNullOrEmpty(moneyEnd)){
+			params.put("moneyEnd", Condition.smaller(Double.parseDouble(moneyEnd)));
 		}
 		String billTimeStart=billSearchCriteria.getBillTimeStart();
 		if(JStringUtils.isNotNullOrEmpty(billTimeStart)){
-			params.put("billTimeStart", Condition.larger(billTimeStart));
+			JJpaDateParam dateParam=new JJpaDateParam();
+			dateParam.setDate(JDateUtils.parseDate(billTimeStart));
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("billTimeStart", Condition.larger(dateParam));
 		}
 		String billTimeEnd=billSearchCriteria.getBillTimeEnd();
 		if(JStringUtils.isNotNullOrEmpty(billTimeEnd)){
-			params.put("billTimeEnd", Condition.larger(billTimeEnd));
+			JJpaDateParam dateParam=new JJpaDateParam();
+			dateParam.setDate(JDateUtils.parseDate(billTimeEnd));
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("billTimeEnd", Condition.larger(dateParam));
 		}
 		String billName=billSearchCriteria.getBillName();
 		if(JStringUtils.isNotNullOrEmpty(billName)){
 			params.put("billName", Condition.likes(billName));
 		}
-		String billType=billSearchCriteria.getBillName();
+		String billType=billSearchCriteria.getBillType();
 		if(JStringUtils.isNotNullOrEmpty(billType)){
 			params.put("billType", Condition.likes(billType));
 		}
@@ -178,6 +188,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 			params.put("description", Condition.likes(description));
 		}
 		JPage<BillRecord> page= buildBillsQuery(serviceContext, params)
+				.setPageable(pagination)
 				.modelPage(BillRecord.class);
 		appendBillInfo(serviceContext, page.getContent());
 		return page;
@@ -297,19 +308,25 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		String moneyStart=goodSearchCriteria.getMoneyStart();
 		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
-			params.put("moneyStart", Condition.larger(moneyStart));
+			params.put("moneyStart", Condition.larger(Double.parseDouble(moneyStart)));
 		}
 		String moneyEnd=goodSearchCriteria.getMoneyEnd();
-		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
-			params.put("moneyEnd", Condition.smaller(moneyEnd));
+		if(JStringUtils.isNotNullOrEmpty(moneyEnd)){
+			params.put("moneyEnd", Condition.smaller(Double.parseDouble(moneyEnd)));
 		}
 		String billTimeStart=goodSearchCriteria.getBillTimeStart();
 		if(JStringUtils.isNotNullOrEmpty(billTimeStart)){
-			params.put("billTimeStart", Condition.larger(billTimeStart));
+			JJpaDateParam dateParam=new JJpaDateParam();
+			dateParam.setDate(JDateUtils.parseDate(billTimeStart));
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("billTimeStart", Condition.larger(dateParam));
 		}
 		String billTimeEnd=goodSearchCriteria.getBillTimeEnd();
 		if(JStringUtils.isNotNullOrEmpty(billTimeEnd)){
-			params.put("billTimeEnd", Condition.larger(billTimeEnd));
+			JJpaDateParam dateParam=new JJpaDateParam();
+			dateParam.setDate(JDateUtils.parseDate(billTimeEnd));
+			dateParam.setTemporalType(TemporalType.TIMESTAMP);
+			params.put("billTimeEnd", Condition.larger(dateParam));
 		}
 		String goodName=goodSearchCriteria.getGoodName();
 		if(JStringUtils.isNotNullOrEmpty(goodName)){
@@ -336,6 +353,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 			params.put("billType", Condition.likes(billType));
 		}
 		JPage<GoodRecord> page= buildBillsQuery(serviceContext, params)
+				.setPageable(pagination)
 				.modelPage(GoodRecord.class);
 		appendGoodInfo(serviceContext, page.getContent());
 		return page;

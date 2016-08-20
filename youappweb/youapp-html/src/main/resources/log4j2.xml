@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" strict="true"   name="youapp-log4j2"
+               packages="j.jave.kernal.jave">
+  
+  <Appenders>
+    <Appender type="Console" name="appConsole">
+      <Layout type="PatternLayout" pattern="%d %p  %c [%t] %m %n"/>
+    </Appender>
+  </Appenders>
+ 
+  <Loggers>
+    
+    <Logger name="j.jave" level="DEBUG" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    
+    <Logger name="org" level="INFO" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    <Logger name="com" level="INFO" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    
+    <Logger name="org.apache.zookeeper" level="INFO" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    
+    <Logger name="test.j.jave" level="DEBUG" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+ 
+ 
+  </Loggers>
+ 
+</Configuration>

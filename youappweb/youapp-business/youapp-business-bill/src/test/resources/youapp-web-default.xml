@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.mvc.pageable.service.factory</name>
+  <value>j.jave.platform.webcomp.web.youappmvc.plugins.pageable.JQueryDataTablePageService</value>
+  <description>youappmvc pageable service factory provided by jquery data table</description>
+</property>
+
+<property>
+  <name>databind.property.ext.handler.classes</name>
+  <value>j.jave.platform.webcomp.web.proext.CodeExtendHandler,
+  j.jave.platform.webcomp.web.proext.ObjectExtendHandler
+  </value>
+  <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.JPropertyExtendHandler} split by comma</description>
+</property>
+
+</configuration>

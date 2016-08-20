@@ -4,10 +4,14 @@ import j.jave.kernal.JConfiguration;
 import j.jave.kernal.JProperties;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JCollectionUtils;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -44,7 +48,24 @@ public class JJSON {
 				if(json==null){
 					json=new JJSON();
 					String dateFormat=JConfiguration.get().getString(JProperties.JSON_DEFAULT_DATE_FORMAT, "yyyy-MM-dd HH:mm:ss");
-					json.mapper.setDateFormat(new SimpleDateFormat(dateFormat));
+					DateFormat df= new SimpleDateFormat(dateFormat){
+						@Override
+						public Date parse(String source) throws ParseException {
+							Date date=null;
+							try{
+								date=super.parse(source);
+							}catch(Exception e){
+								try{
+									date=JDateUtils.parseTimestamp(source);
+								}catch(Exception e1){
+									date=JDateUtils.parseTimestampWithSeconds(source);
+									throw new RuntimeException(e1);
+								}
+							}
+							return date;
+						}
+					};
+					json.mapper.setDateFormat(df);
 				}
 			}
 		}

@@ -38,11 +38,25 @@ public class JSingleEntityQuery {
 		.models();
 	}
 	
+	public <T> List<T> models(Class<T> clazz){
+		return JQueryBuilder.get(entityManager).jpqlQuery()
+		.setJpql(singleEntityQueryMeta.toAliasJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.models(clazz);
+	}
+	
 	public <T> T model(){
 		return JQueryBuilder.get(entityManager).jpqlQuery()
 		.setJpql(singleEntityQueryMeta.toJPQL())
 		.setParams(singleEntityQueryMeta.toParams())
 		.model();
+	}
+	
+	public <T> T model(Class<T> clazz){
+		return JQueryBuilder.get(entityManager).jpqlQuery()
+		.setJpql(singleEntityQueryMeta.toAliasJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.model(clazz);
 	}
 	
 	public long count(){
@@ -58,6 +72,14 @@ public class JSingleEntityQuery {
 		.setParams(singleEntityQueryMeta.toParams())
 		.setPageable(pageable)
 		.modelPage();
+	}
+	
+	public <T> JPage<T> modelPage(JPageable pageable,Class<T> clazz){
+		return JQueryBuilder.get(entityManager).jpqlQuery()
+		.setJpql(singleEntityQueryMeta.toAliasJPQL())
+		.setParams(singleEntityQueryMeta.toParams())
+		.setPageable(pageable)
+		.modelPage(clazz);
 	}
 	
 }

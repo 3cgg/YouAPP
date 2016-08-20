@@ -1,11 +1,16 @@
 package j.jave.platform.jpa.springjpa.query;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JModel;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class JSingleEntityQueryMeta implements JModel {
 
+	private JEntityUtilService entityUtilService
+	=JServiceHubDelegate.get().getService(this, JEntityUtilService.class);
+	
 	public static final String ALIAS="als";
 	
 	private Class<?> entityClass;
@@ -52,7 +57,7 @@ public class JSingleEntityQueryMeta implements JModel {
 	}
 	
 	public String toJPQL(){
-		String clause="from "+entityClass.getSimpleName()+" "+ALIAS;
+		String clause=" from "+entityClass.getSimpleName()+" "+ALIAS;
 		if(condition!=null){
 			clause=clause+" "+condition.toWhereClause();
 		}
@@ -60,6 +65,19 @@ public class JSingleEntityQueryMeta implements JModel {
 			clause=clause+" "+order.toOrderClause();
 		}
 		return clause;
+	}
+	
+	public String toAliasJPQL(){
+		String jpql=toJPQL();
+		JEntityModelMeta entityModelMeta=entityUtilService.getEntityModelMeta(entityClass);
+		Collection<JEntityColumnMeta> entityColumnMetas=entityModelMeta.columnMetas();
+		String selectCause="select ";
+		for(JEntityColumnMeta columnMeta:entityColumnMetas){
+			selectCause=selectCause+ALIAS+"."+columnMeta.getProperty()
+					+" as "+columnMeta.getProperty()+" ,";
+		}
+		selectCause=selectCause.substring(0, selectCause.lastIndexOf(","));
+		return selectCause+jpql;
 	}
 	
 	public Map<String, Object> toParams(){

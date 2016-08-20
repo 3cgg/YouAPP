@@ -3,7 +3,13 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <dependent-module archiveName="youapp-business-core-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-business-core/youapp-business-core">
+        <dependent-module archiveName="youapp-webcenter-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-webcenter/youapp-webcenter">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="youapp-kernal-zookeeper-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-zookeeper/youapp-kernal-zookeeper">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-platform-webmvc-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-webmvc/youapp-platform-webmvc">
@@ -25,9 +31,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-platform-mybatis-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-mybatis/youapp-platform-mybatis">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="youapp-platform-jpa-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-jpa/youapp-platform-jpa">

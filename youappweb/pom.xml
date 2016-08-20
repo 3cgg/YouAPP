@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>youapp</groupId>
 		<artifactId>pom-conf</artifactId>
-		<version>${youapp.version}</version>
+		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -18,15 +18,16 @@
 	<url>http://maven.apache.org</url>
 	
 	<properties>
-		<youapp.bussiness.version>1.0.0</youapp.bussiness.version>
+		<bussiness.version>1.0.0</bussiness.version>
 		<youapp.webwar.version>1.0.0</youapp.webwar.version>
 	</properties>
 
 	<modules>
+		<module>../../YouAPP</module>
 		<module>../youapp-platform</module>
-		<module>youapp-business</module>
+		<module>youapp-webcenter</module>
     	<module>youapp-html</module>
-    <module>youappapi</module>
+    	<module>youappapi</module>
   </modules>
 
 </project>

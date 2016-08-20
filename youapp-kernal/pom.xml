@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>youapp</groupId>
 		<artifactId>pom-conf</artifactId>
-		<version>${youapp.version}</version>
+		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -16,6 +16,7 @@
 	<name>youapp.kernal-pom-conf</name>
 
 	<properties>
+		<youapp.kernal.version>0.0.0</youapp.kernal.version> 
 	</properties>
 
 	<modules>

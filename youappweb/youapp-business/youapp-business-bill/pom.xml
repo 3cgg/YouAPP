@@ -3,14 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp.youappweb.business</groupId>
+		<groupId>youapp.business</groupId>
 		  <artifactId>pom-conf</artifactId>
-		  <version>${youapp.version}</version>
+		  <version>${bussiness.version}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>youapp-business-bill</artifactId>
-	<version>${youapp.bussiness.version}</version>
 	<packaging>jar</packaging>
 
 	<name>youapp-business-bill</name>
@@ -18,12 +17,11 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>youapp.youappweb.business</groupId>
-			<artifactId>youapp-business-core</artifactId>
-			<version>${youapp.bussiness.version}</version>
+			<groupId>youapp.webcenter</groupId>
+			<artifactId>youapp-webcenter</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		
 	</dependencies>
-
 
 </project>

@@ -5,8 +5,10 @@
   <parent>
     <groupId>youapp.youappweb</groupId>
     <artifactId>pom-conf</artifactId>
-    <version>${youapp.version}</version>
+    <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
+  
   <artifactId>youappapi</artifactId>
   <packaging>war</packaging>
   <name>youappapi</name>
@@ -16,9 +18,9 @@
   </properties>
   <dependencies>
   		<dependency>
-			<groupId>youapp.youappweb.business</groupId>
-			<artifactId>youapp-business-core</artifactId>
-			<version>${youapp.bussiness.version}</version>
+			<groupId>youapp.webcenter</groupId>
+			<artifactId>youapp-webcenter</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 		
 		<dependency>

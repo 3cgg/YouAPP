@@ -32,7 +32,7 @@
 
 	<groupId>youapp</groupId>
 	<artifactId>pom-conf</artifactId>
-	<version>${youapp.version}</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>youapp-global-pom</name>

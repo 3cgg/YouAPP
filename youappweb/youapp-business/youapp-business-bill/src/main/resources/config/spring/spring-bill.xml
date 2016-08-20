@@ -21,10 +21,10 @@
 
 	<aop:aspectj-autoproxy expose-proxy="true"  proxy-target-class="true" />
 	<context:annotation-config />
-	<context:component-scan base-package="com.youappcorp.project.bill" ></context:component-scan>
+	<context:component-scan base-package="com.youappcorp.project.billmanager" ></context:component-scan>
 	
 	<jpa:repositories
-            base-package="com.youappcorp.project.bill"
+            base-package="com.youappcorp.project.billmanager"
             repository-impl-postfix="Impl"
             factory-class="j.jave.platform.jpa.springjpa.JSpringJpaRepositoryFactoryBean" 
             entity-manager-factory-ref="entityManagerFactory"
@@ -35,7 +35,7 @@
 	<bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="com.youappcorp.project.bill"/>
+        <property name="packagesToScan" value="com.youappcorp.project.billmanager"/>
         <property name="persistenceProvider">
             <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>
         </property>

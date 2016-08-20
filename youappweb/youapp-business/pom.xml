@@ -3,21 +3,29 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>youapp.youappweb</groupId>
+		<groupId>youapp</groupId>
 		<artifactId>pom-conf</artifactId>
-		<version>${youapp.version}</version>
-		<relativePath>../pom.xml</relativePath>
+		<version>1.0.0</version>
+		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<groupId>youapp.youappweb.business</groupId>
+	<groupId>youapp.business</groupId>
 	<artifactId>pom-conf</artifactId>
+	<version>${bussiness.version}</version>
 	<packaging>pom</packaging>
 
 	<name>youapp-business</name>
 	<url>http://maven.apache.org</url>
+	
+	<properties>
+		<webcenter.version>1.0.0</webcenter.version>
+		<kernal.version>3.0.0</kernal.version>
+		<bussiness.version>1.0.0</bussiness.version>
+		<youapp.version>0.0.0</youapp.version>
+	</properties>
 
 	<modules>
 		<module>youapp-business-bill</module>
-		<module>youapp-business-core</module>
 	</modules>
+	
 </project>

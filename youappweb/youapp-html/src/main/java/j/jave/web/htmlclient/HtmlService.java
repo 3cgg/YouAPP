@@ -100,7 +100,7 @@ implements JService , ModuleInstallListener{
 			String uri=requestHtml.getViewUrl();
 			TempHtmlDef tempHtmlDef=null;
 			if((tempHtmlDef=htmls.get(uri))!=null&&!tempHtmlDef.inner){
-				return tempHtmlDef.syncHtmlModel;
+				//return tempHtmlDef.syncHtmlModel;
 			}
 //			File file=htmlFileService.getFile(uri);
 //			String fileName=JFileUtils.getFileNameNoExtension(file);

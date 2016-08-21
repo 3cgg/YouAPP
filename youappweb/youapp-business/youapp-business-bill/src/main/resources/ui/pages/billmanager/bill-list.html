@@ -109,6 +109,7 @@
     	
     	var page=$.extend({
     		root:$("#searchBillSection"),
+    		comp:"/youappcomp/YouAPP/BILL/0",
     		model:{
     			vm:avalon.define({
     		        $id: "bill_view",
@@ -118,7 +119,7 @@
     	},$_youapp.pageTemplate);
     	
     	page.listTable=page.root.find('#billListTable').initDataTable({
-			url:"/bill/billmanager/getBillsByPage",
+			url:page.comp+"/bill/billmanager/getBillsByPage",
 			urlDataFn:function(){
 				return page.root.find("#searchBillForm").serializeObj();
 			},
@@ -133,7 +134,7 @@
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
-						  url:'/bill/billmanager/deleteBillById',
+						  url:page.comp+'/bill/billmanager/deleteBillById',
 						  formData:{'id':id},
 						  success:function(data){
 							  page.listTable.ajax.reload();

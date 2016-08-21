@@ -262,7 +262,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 				+ " , b.mallName as mallName"
 				+ " , b.billTime as billTime"
 				+ " from Good a "
-				+ " lef join bill b on a.billId=b.id "
+				+ " left join Bill b on a.billId=b.id "
 				+ " where a.deleted='N' and b.deleted='N' ";
 		Condition condition=null;
 		if((condition=params.get("moneyStart"))!=null){
@@ -352,7 +352,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 		if(JStringUtils.isNotNullOrEmpty(billType)){
 			params.put("billType", Condition.likes(billType));
 		}
-		JPage<GoodRecord> page= buildBillsQuery(serviceContext, params)
+		JPage<GoodRecord> page= buildGoodsQuery(serviceContext, params)
 				.setPageable(pagination)
 				.modelPage(GoodRecord.class);
 		appendGoodInfo(serviceContext, page.getContent());

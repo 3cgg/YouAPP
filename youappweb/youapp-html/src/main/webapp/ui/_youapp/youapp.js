@@ -120,7 +120,7 @@
 			}while(cycl<1000&&($parent=$parent.parent()));
 		}
 		
-		this.replace=function(layoutId,htmlurl){
+		this.replace=function(layoutId,htmlurl,isDraw){
 			var $target=$(document).find('[data-layoutid="'+layoutId+'"]');
 			var $dom;
 			if($target){
@@ -132,7 +132,9 @@
 				var layoutString=this.layoutDomString(layoutId,htmlurl);
 				$dom=$(layoutString);
 			}
-			this.draw(layoutId,$dom);
+			if(isDraw){
+				this.draw(layoutId,$dom);
+			}
 		}
 		
 		this.layoutDomString=function(layoutId,htmlurl){
@@ -346,14 +348,20 @@
 	}
 	
 	function HtmlExchange(){
-		this.htmlView=function(htmlUrl,layoutId){
-			$_youapp.$_layout.replace(layoutId,htmlUrl);
+		this.htmlView=function(htmlUrl,layoutId,isDraw){
+			$_youapp.$_layout.replace(layoutId,htmlUrl,isDraw);
 		}
 		
 		this.linkView=function($linkDom,htmlUrl,layoutId){
 			if(!layoutId)
 				layoutId=$_youapp.$_layout.getClosestLayoutId($linkDom);
-			this.htmlView(htmlUrl,layoutId);
+			this.htmlView(htmlUrl,layoutId,true);
+		}
+		
+		this.setView=function($linkDom,htmlUrl,layoutId){
+			if(!layoutId)
+				layoutId=$_youapp.$_layout.getClosestLayoutId($linkDom);
+			this.htmlView(htmlUrl,layoutId,false);
 		}
 		
 		this.newTab=function($aDom){
@@ -472,6 +480,15 @@
 				htmlUrl=htmlUrl+'?param='+$_youapp.$_util.json($.extend({},defData,data));
 			}
 			window.$_youapp.$_html.linkView($(this),htmlUrl,layoutId);
+		},
+		setView:function(htmlUrl,data,layoutId){
+			if(data){
+				var defData={
+						htmlRequestTime:new Date().getTime()
+				}
+				htmlUrl=htmlUrl+'?param='+$_youapp.$_util.json($.extend({},defData,data));
+			}
+			window.$_youapp.$_html.setView($(this),htmlUrl,layoutId);
 		},
 		getViewParam:function(){
 			return $_youapp.$_layout.getParameter(this);

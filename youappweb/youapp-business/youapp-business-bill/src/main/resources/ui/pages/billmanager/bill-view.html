@@ -88,8 +88,8 @@
     	avalon.scan(page.root[0], page.model.vm);  // void braces
     	
     	function getId(){
-        	//return page.root.getViewParam().id;
-        	return "71fbb5bd5de84f01bcc22b6e8a3e4ead";
+        	return page.root.getViewParam().id;
+        	//return "71fbb5bd5de84f01bcc22b6e8a3e4ead";
         }
     	
     	page.ajaxGet({
@@ -101,7 +101,6 @@
 			  }
 			});
 	
-    	debugger;
     	page.root.find('#billGoodContentLayoutDiv').setView('/ui/pages/billmanager/good-part-list.html',{"id":getId()});
 		
     

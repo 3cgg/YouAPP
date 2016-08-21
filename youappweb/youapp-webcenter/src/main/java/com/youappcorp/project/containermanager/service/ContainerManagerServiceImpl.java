@@ -71,6 +71,26 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		}
 	}
 	
+	@Override
+	public void updateAppMeta(ServiceContext serviceContext, AppMeta appMeta,
+			List<URLMappingMeta> urlMappingMetas) {
+		AppMeta dbAppMeta=internalAppMetaServiceImpl.singleEntityQuery().conditionDefault()
+				.equals("appName", appMeta.getAppName())
+				.equals("appCompName", appMeta.getAppCompName())
+				.equals("appVersion", appMeta.getAppVersion()).ready().model();
+		
+		List<URLMappingMeta> dbUrlMappingMetas= internalURLMappingMetaServiceImpl.singleEntityQuery()
+		.conditionDefault().equals("appId", dbAppMeta.getId())
+		.ready().models();
+		
+		for(URLMappingMeta urlMappingMeta:dbUrlMappingMetas){
+			internalURLMappingMetaServiceImpl.delete(serviceContext, urlMappingMeta);
+		}
+		internalAppMetaServiceImpl.delete(serviceContext, dbAppMeta);
+		
+		saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+	}
+	
 	private URLMappingMeta getURLMappingMetaByUrl(ServiceContext serviceContext,String url){
 		return internalURLMappingMetaServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("url", url)

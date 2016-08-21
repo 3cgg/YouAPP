@@ -27,6 +27,10 @@ public class JKey {
 		return ComponentVersionSpringApplicationSupport.unique(app, component, version);
 	}
 	
+	public static final String unique(String app,String component,String version){
+		return ComponentVersionSpringApplicationSupport.unique(app, component, version);
+	}
+	
 	public static JKey parse(String unique){
 		JKey key=new JKey();
 		String[] parts=unique.split(":");

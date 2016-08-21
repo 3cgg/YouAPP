@@ -37,7 +37,9 @@ public abstract class ComponentVersionSpringApplicationSupport {
 	 */
 	public static interface ComponentProperties{
 		
-		public static final String PROPERTY_LOCATION=Component.CONFIG_LOCATION+"component-version.properties";
+		public static final String PROPERTY_FILE="component-version.properties";
+		
+		public static final String PROPERTY_LOCATION=Component.CONFIG_LOCATION+PROPERTY_FILE;
 		
 	}
 	

@@ -265,6 +265,9 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 				+ " left join Bill b on a.billId=b.id "
 				+ " where a.deleted='N' and b.deleted='N' ";
 		Condition condition=null;
+		if((condition=params.get("billId"))!=null){
+			jpql=jpql+" and a.billId "+condition.getOpe()+" :billId";
+		}
 		if((condition=params.get("moneyStart"))!=null){
 			jpql=jpql+" and a.money > :moneyStart";
 		}
@@ -306,6 +309,11 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 	public JPage<GoodRecord> getGoodsByPage(ServiceContext serviceContext,
 			GoodSearchCriteria goodSearchCriteria, JPageable pagination) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
+		String billId=goodSearchCriteria.getBillId();
+		if(JStringUtils.isNotNullOrEmpty(billId)){
+			params.put("billId", Condition.equal(billId));
+		}
+		
 		String moneyStart=goodSearchCriteria.getMoneyStart();
 		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
 			params.put("moneyStart", Condition.larger(Double.parseDouble(moneyStart)));

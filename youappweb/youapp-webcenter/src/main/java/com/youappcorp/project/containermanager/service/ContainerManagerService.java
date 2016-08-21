@@ -28,6 +28,9 @@ public interface ContainerManagerService {
 	
 	void saveURLMappingMeta(ServiceContext serviceContext,URLMappingMeta urlMappingMeta);
 	
+	void updateAppMeta(ServiceContext serviceContext,AppMeta appMeta,List<URLMappingMeta> urlMappingMetas);
+	
+	
 	/**
 	 * 
 	 * query APP

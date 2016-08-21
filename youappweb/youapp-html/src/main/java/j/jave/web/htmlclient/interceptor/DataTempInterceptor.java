@@ -1,7 +1,9 @@
 package j.jave.web.htmlclient.interceptor;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.web.htmlclient.DefaultHtmlFileService;
 import j.jave.web.htmlclient.request.RequestVO;
 import j.jave.web.htmlclient.response.ResponseModel;
 
@@ -23,9 +25,34 @@ public class DataTempInterceptor implements DataRequestServletRequestInterceptor
 		if("/sample/datatables/getDatatables".equals(requestVO.getEndpoint())){
 			return getPageble(servletRequestInvocation);
 		}
+		if("/develop/html/setHtmlPath".equals(requestVO.getEndpoint())){
+			return setHtmlPath(servletRequestInvocation);
+		}
+		if("/develop/html/getHtmlPath".equals(requestVO.getEndpoint())){
+			return getHtmlPath(servletRequestInvocation);
+		}
 		return servletRequestInvocation.proceed();
 	}
 	
+	private Object getHtmlPath(DataRequestServletRequestInvocation servletRequestInvocation){
+		ResponseModel responseModel=ResponseModel.newSuccess();
+		Map<String, Object> data=new HashMap<String, Object>();
+		data.put("htmlPath", DefaultHtmlFileService.getHtmlPath());
+		responseModel.setData(data);
+		return responseModel;
+	}
+		
+	private Object setHtmlPath(DataRequestServletRequestInvocation servletRequestInvocation){
+		Map<String, Object> obj= JJSON.get().parse(servletRequestInvocation.getRequestVO().getFormData());
+		String htmlPath=String.valueOf(obj.get("htmlPath"));
+		DefaultHtmlFileService.clearHtmlPath();
+		for(String path:htmlPath.split(";")){
+			if(JStringUtils.isNotNullOrEmpty(path)){
+				DefaultHtmlFileService.addHtmlPath(path.trim());
+			}
+		}
+		return getHtmlPath(servletRequestInvocation);
+	}
 	/**
 	 * /sample/datatables/getDatatables
 	 * @param servletRequestInvocation

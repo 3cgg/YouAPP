@@ -5,13 +5,21 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.http.JHttpType;
 import j.jave.kernal.jave.async.JAsyncExecutor;
 import j.jave.kernal.jave.async.JAsyncTaskExecutingService;
+import j.jave.kernal.jave.io.JInputStreamWrapperSource;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
+import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.kernal.jave.utils.JPropertiesUtils;
+import j.jave.kernal.zookeeper.JCreateMode;
 import j.jave.kernal.zookeeper.JZooKeeperNode;
 import j.jave.kernal.zookeeper.JZooKeeperService;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import j.jave.platform.sps.multiv.ComponentMetaNames;
+import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.Component;
+import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.ComponentProperties;
 import j.jave.platform.sps.multiv.jnterface.JKey;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.rhttp.DefaultRemoteHttpDeployService;
@@ -20,9 +28,12 @@ import j.jave.platform.webcomp.web.youappmvc.container.ContainerMappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +50,7 @@ import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
 import com.youappcorp.project.containermanager.service.ContainerManagerService;
 import com.youappcorp.project.containermanager.vo.AppMetaCriteria;
 import com.youappcorp.project.containermanager.vo.AppMetaRecordVO;
+import com.youappcorp.project.containermanager.vo.DeployModule;
 import com.youappcorp.project.containermanager.vo.URLMappingMetaCriteria;
 import com.youappcorp.project.containermanager.vo.URLMappingMetaRecordVO;
 import com.youappcorp.project.runtimeurl.service.RuntimeUrlManagerService;
@@ -69,7 +81,31 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ResponseBody
 	@RequestMapping(value="/deployJar")
-	public ResponseModel deployJar(ServiceContext serviceContext, String jarUri) throws Exception{
+	public ResponseModel deployJar(ServiceContext serviceContext, DeployModule deployModule) throws Exception{
+		String jarUri=deployModule.getJarUri();
+		if(!deployModule.isOverride()){
+			JJARResourceURIScanner resourceURIScanner=new JJARResourceURIScanner(new URL(jarUri).toURI());
+			resourceURIScanner.setRelativePath(Component.CONFIG_LOCATION);
+			resourceURIScanner.setRecurse(true);
+			resourceURIScanner.setIncludeFileName(ComponentProperties.PROPERTY_FILE);
+			List<URI> uris=resourceURIScanner.scan();
+			if(JCollectionUtils.hasInCollect(uris)){
+				for(URI uri:uris){
+					JInputStreamWrapperSource inputStreamWrapperSource=new JInputStreamWrapperSource(uri.toURL().openStream());
+					Properties properties= JPropertiesUtils.loadProperties(inputStreamWrapperSource);
+					String app=JPropertiesUtils.getKey(ComponentMetaNames.APP_NAME, properties);
+					String component=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_NAME, properties);
+					String version=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_VERSION, properties);
+					boolean exists=containerManagerService.existsAppMeta(serviceContext, app, component, version);
+					if(exists){
+						return ResponseModel.newError().setData( "["+JKey.unique(app, component, version) +"] already exists.");
+					}
+				}
+			}
+		}
+		
+		
+		
 		String unique=defaultRemoteHttpDeployService.deployJar(jarUri);
 		asyncTaskExecutingService.addAsyncTask(new JAsyncExecutor() {
 			@Override
@@ -102,7 +138,13 @@ public class ContainerManagerController extends SimpleControllerSupport {
 			urlMappingMeta.setUrlType(JHttpType.GET.getValue());
 			urlMappingMetas.add(urlMappingMeta);
 		}
-		containerManagerService.saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+		
+		boolean exists=containerManagerService.existsAppMeta(serviceContext, unique);
+		if(exists){
+			containerManagerService.updateAppMeta(serviceContext, appMeta, urlMappingMetas);
+		}else{
+			containerManagerService.saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+		}
 		
 		//SYNC ZOOKEEPER
 		JConfiguration configuration=JConfiguration.get();
@@ -111,6 +153,7 @@ public class ContainerManagerController extends SimpleControllerSupport {
 		JZooKeeperNode zooKeeperNode=new JZooKeeperNode();
 		zooKeeperNode.setPath(root);
 		zooKeeperNode.setValue("it's root for html scanning.");
+		zooKeeperNode.setCreateMode(JCreateMode.PERSISTENT);
 		zooKeeperService.createDir(zooKeeperNode, true);
 		
 		zooKeeperNode=new JZooKeeperNode();

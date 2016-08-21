@@ -4,6 +4,8 @@ import j.jave.platform.data.web.model.BaseCriteria;
 
 public class GoodSearchCriteria extends BaseCriteria {
 	
+	private String billId;
+	
 	private String moneyStart;
 	
 	private String moneyEnd;
@@ -41,6 +43,16 @@ public class GoodSearchCriteria extends BaseCriteria {
 	 * optional description 
 	 */
 	private String description;
+
+	
+	
+	public String getBillId() {
+		return billId;
+	}
+
+	public void setBillId(String billId) {
+		this.billId = billId;
+	}
 
 	public String getMoneyStart() {
 		return moneyStart;

@@ -47,7 +47,7 @@ public class JContainerService
 			lock.lockInterruptibly();
 			JContainer container=event.getContainer();
 			if(containers.keySet().contains(container.unique())){
-				throw new JInitializationException("container["+container.unique()+"] already exists.");
+				LOGGER.info("container["+container.unique()+"] already exists, be replace");
 			}
 			containers.put(container.unique(), container);
 			return true;

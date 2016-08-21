@@ -1,6 +1,7 @@
 package j.jave.web.htmlclient;
 
 import j.jave.kernal.jave.utils.JFileUtils;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,20 +10,37 @@ import java.util.Map;
 
 public class DefaultHtmlFileService implements HtmlFileService {
 
-	private List<String> webappPaths=new ArrayList<String>();
-	{
+	private static List<String> webappPaths=new ArrayList<String>();
+	static {
 		String webappPath=null;
 		try{
 			webappPath=j.jave.web.htmlclient.servlet.HtmlServlet.class.
 					getClassLoader().getResource("../../").getPath();
 		}catch(Exception e){
-			webappPath="D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-html\\src\\main\\webapp\\";
 		}
 		webappPaths.add(webappPath);
-		
-		webappPaths.add("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-business\\youapp-business-bill\\src\\main\\resources");
+		//webappPaths.add("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-business\\youapp-business-bill\\src\\main\\resources");
 	}
-			
+	
+	public static void addHtmlPath(String webappPath){
+		if(JStringUtils.isNotNullOrEmpty(webappPath)&&
+				!webappPaths.contains(webappPath)){
+			webappPaths.add(webappPath);
+		}
+	}
+	public static void clearHtmlPath(){
+		String one=webappPaths.get(0);
+		webappPaths.clear();
+		webappPaths.add(one);
+	}
+	
+	public static String getHtmlPath(){
+		String webappPath="";
+		for(int i=1;i<webappPaths.size();i++){
+			webappPath=webappPath+webappPaths.get(i)+";\r\n\r\n";
+		}
+		return webappPath;
+	}
 	
 	@Override
 	public byte[] getHtmlFile(String uri,Map<String, Object> attrs) {

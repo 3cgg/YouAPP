@@ -44,10 +44,10 @@
 			lengthChange:false,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#goodOnBillListTable').goView('/ui/pages/billmanager/good-view.html',{"id":id});
+                    page.root.find('#goodOnBillListTable').goView('/ui/pages/billmanager/good-part-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#goodOnBillListTable').goView('/ui/pages/billmanager/good-edit.html',{"id":id});
+					page.root.find('#goodOnBillListTable').goView('/ui/pages/billmanager/good-part-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({

@@ -67,6 +67,7 @@
 			
 			var page=$.extend({
 	    		root:$("#addBillSection"),
+	    		comp:"/youappcomp/YouAPP/BILL/0",
 	    		model:{
 	    		},
 	    		comp:"/youappcomp/YouAPP/BILL/0/"
@@ -101,7 +102,7 @@
 					  },
 					  submitHandler:function(form){
 						  page.submitForm({
-							  url:'/bill/billmanager/saveBill',
+							  url:page.comp+'/bill/billmanager/saveBill',
 							  formSelector:form,
 							  success:function(data){
 								  page.root.goView('/ui/pages/billmanager/bill-list.html');

@@ -22,6 +22,16 @@ public class JQueryBuilder {
 				}
 			}
 		}
+		else{
+			if(INSTANCE.em.getEntityManagerFactory()==em.getEntityManagerFactory()){
+				return INSTANCE;
+			}
+			else{
+				synchronized (sync) {
+					return new JQueryBuilder(em);
+				}
+			}
+		}
 		return INSTANCE;
 	}
 	

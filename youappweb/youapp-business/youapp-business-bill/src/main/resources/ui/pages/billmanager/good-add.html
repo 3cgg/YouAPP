@@ -106,6 +106,7 @@
     	
     	var page=$.extend({
     		root:$("#viewBillSection"),
+    		comp:"/youappcomp/YouAPP/BILL/0",
     		model:{
     			vm:avalon.define({
     		        $id: "bill_view",
@@ -121,7 +122,7 @@
         }
     	
     	page.ajaxGet({
-			  url:'/bill/billmanager/getBillById',
+			  url:page.comp+'/bill/billmanager/getBillById',
 			  formData:{'id':getId()},
 			  success:function(data){
 				  page.model.vm.data=data;
@@ -150,7 +151,7 @@
 			  },
 			  submitHandler:function(form){
 				  page.submitForm({
-					  url:'/bill/billmanager/saveGood',
+					  url:page.comp+'/bill/billmanager/saveGood',
 					  formSelector:form,
 					  success:function(data){
 						  page.root.goView('/ui/pages/billmanager/bill-view.html');

@@ -3,13 +3,12 @@ package j.jave.kernal.jave.utils;
 import j.jave.kernal.jave.reflect.JClassUtils;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sf.cglib.beans.BeanCopier;
-
-import com.fasterxml.jackson.databind.util.BeanUtil;
+import org.apache.commons.beanutils.BeanUtils;
 
 public class JObjectUtils {
 
@@ -92,11 +91,6 @@ public class JObjectUtils {
 	 * @param obj the object to check
 	 * @return {@code true} if the object is {@code null} or <em>empty</em>
 	 * @since 4.2
-	 * @see ObjectUtils#isEmpty(Object[])
-	 * @see StringUtils#hasLength(CharSequence)
-	 * @see StringUtils#isEmpty(Object)
-	 * @see CollectionUtils#isEmpty(java.util.Collection)
-	 * @see CollectionUtils#isEmpty(java.util.Map)
 	 */
 	@SuppressWarnings("rawtypes")
 	public static boolean isEmpty(Object obj) {
@@ -904,10 +898,16 @@ public class JObjectUtils {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T  simpleCopy(Object obj,Class<T> clazz){
-		BeanCopier bc = BeanCopier.create(obj.getClass(), clazz,
-                false);
 		T toObj=(T) JClassUtils.newObject(clazz);
-		bc.copy(obj, toObj, null);
+		try {
+			BeanUtils.copyProperties(toObj, obj);
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+//		BeanCopier bc = BeanCopier.create(obj.getClass(), clazz,
+//                false);
+//		T toObj=(T) JClassUtils.newObject(clazz);
+//		bc.copy(obj, toObj, null);
 		return toObj;
 	}
 	

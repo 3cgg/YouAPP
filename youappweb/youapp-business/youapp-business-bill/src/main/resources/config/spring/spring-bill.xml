@@ -27,8 +27,7 @@
             base-package="com.youappcorp.project.billmanager"
             repository-impl-postfix="Impl"
             factory-class="j.jave.platform.jpa.springjpa.JSpringJpaRepositoryFactoryBean" 
-            entity-manager-factory-ref="entityManagerFactory"
-            transaction-manager-ref="transactionManager">
+            entity-manager-factory-ref="entityManagerFactory" >
             
     </jpa:repositories>
 	
@@ -58,7 +57,32 @@
         </property>
     </bean>
 	
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
+	<bean id="billJpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+      
+	<aop:config>    
+        <aop:advisor id="billJpaManagerTx" advice-ref="billJpaTxAdvice" pointcut="execution(* com.youappcorp.project.billmanager.**.service.*.*(..) )"  />
+    </aop:config>
+
+    <tx:advice id="billJpaTxAdvice"  transaction-manager="billJpaTransactionManager"  >
+        <tx:attributes>
+            <tx:method name="*"  propagation="REQUIRED" read-only="false"  rollback-for="java.lang.Exception"   />
+            
+            <tx:method name="*ByPage"  propagation="SUPPORTS"  read-only="true"  rollback-for="java.lang.Exception"  />
+            <tx:method name="get*"  propagation="SUPPORTS"  read-only="true"  rollback-for="java.lang.Exception"  />
+            
+            <!-- 
+            <tx:method name="create*" propagation="REQUIRED" read-only="false"  rollback-for="java.lang.Exception"  />
+            <tx:method name="save*"    propagation="REQUIRED"  rollback-for="java.lang.Exception" />
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"  rollback-for="java.lang.Exception"  />
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"   rollback-for="java.lang.Exception"  />
+             -->
+        </tx:attributes>
+    </tx:advice>
+  
+	
+	 <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">  
         <property name="beanNames">  
             <list>  
                 <value>*.transation.jpa</value>
@@ -66,8 +90,8 @@
         </property>  
         <property name="interceptorNames">  
             <list>  
-                <value>jpaTxAdvice</value>
-                <value>txAdvice</value>  
+                <value>billJpaTxAdvice</value>
+                <value>txAdvice</value>
             </list>  
         </property>
         <property name="proxyTargetClass" value="true" />

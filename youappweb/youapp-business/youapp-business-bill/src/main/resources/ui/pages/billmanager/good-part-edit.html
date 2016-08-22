@@ -52,6 +52,7 @@
     	
     	var page=$.extend({
     		root:$("#editGoodSection"),
+    		comp:"/youappcomp/YouAPP/BILL/0",
     		model:{
     			vm:avalon.define({
     		        $id: "good_view",
@@ -73,7 +74,7 @@
     	});
     	
     	page.ajaxGet({
-			  url:'/bill/billmanager/getGoodById',
+			  url:page.comp+'/bill/billmanager/getGoodById',
 			  formData:{'id':getId()},
 			  success:function(data){
 				  page.model.vm.data=data;
@@ -102,7 +103,7 @@
 			  },
 			  submitHandler:function(form){
 				  page.submitForm({
-					  url:'/bill/billmanager/updateGood',
+					  url:page.comp+'/bill/billmanager/updateGood',
 					  formSelector:form,
 					  success:function(data){
 						  page.root.goView('/ui/pages/billmanager/good-part-list.html');

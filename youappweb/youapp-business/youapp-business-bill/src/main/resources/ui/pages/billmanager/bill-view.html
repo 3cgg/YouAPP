@@ -77,6 +77,7 @@
     	
     	var page=$.extend({
     		root:$("#viewBillSection"),
+    		comp:"/youappcomp/YouAPP/BILL/0",
     		model:{
     			vm:avalon.define({
     		        $id: "bill_view",
@@ -93,7 +94,7 @@
         }
     	
     	page.ajaxGet({
-			  url:'/bill/billmanager/getBillById',
+			  url:page.comp+'/bill/billmanager/getBillById',
 			  formData:{'id':getId()},
 			  success:function(data){
 				  page.model.vm.data=data;

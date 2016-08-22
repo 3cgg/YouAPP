@@ -21,6 +21,7 @@
     	
     	var page=$.extend({
     		root:$("#viewGoodOnBillSection"),
+    		comp:"/youappcomp/YouAPP/BILL/0",
     		model:{
     			vm:avalon.define({
     		        $id: "good_on_bill_view",
@@ -37,7 +38,7 @@
         }
     	
     	page.listTable=page.root.find('#goodOnBillListTable').initDataTable({
-			url:"/bill/billmanager/getGoodsByPage",
+			url:page.comp+"/bill/billmanager/getGoodsByPage",
 			urlDataFn:function(){
 				return {billId:getId()}
 			},
@@ -51,7 +52,7 @@
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
-						  url:'/bill/billmanager/deleteGoodById',
+						  url:page.comp+'/bill/billmanager/deleteGoodById',
 						  formData:{'id':id},
 						  success:function(data){
 							  page.listTable.ajax.reload();

@@ -1,9 +1,11 @@
 package j.jave.web.htmlclient.interceptor;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.web.htmlclient.DefaultHtmlFileService;
+import j.jave.web.htmlclient.HtmlService;
 import j.jave.web.htmlclient.request.RequestVO;
 import j.jave.web.htmlclient.response.ResponseModel;
 
@@ -31,7 +33,35 @@ public class DataTempInterceptor implements DataRequestServletRequestInterceptor
 		if("/develop/html/getHtmlPath".equals(requestVO.getEndpoint())){
 			return getHtmlPath(servletRequestInvocation);
 		}
+		if("/develop/html/getUseCache".equals(requestVO.getEndpoint())){
+			return getUseCache(servletRequestInvocation);
+		}
+		if("/develop/html/setUseCache".equals(requestVO.getEndpoint())){
+			return setUseCache(servletRequestInvocation);
+		}
 		return servletRequestInvocation.proceed();
+	}
+	
+	private HtmlService htmlService=JServiceHubDelegate.get().getService(this, HtmlService.class);
+	
+	private Object getUseCache(DataRequestServletRequestInvocation servletRequestInvocation){
+		ResponseModel responseModel=ResponseModel.newSuccess();
+		Map<String, Object> data=new HashMap<String, Object>();
+		data.put("useCache", String.valueOf(htmlService.isUseCache()));
+		responseModel.setData(data);
+		return responseModel;
+	}
+	
+	private Object setUseCache(DataRequestServletRequestInvocation servletRequestInvocation){
+		Map<String, Object> obj= JJSON.get().parse(servletRequestInvocation.getRequestVO().getFormData());
+		String useCache=String.valueOf(obj.get("useCache"));
+		if(JStringUtils.isNullOrEmpty(useCache)){
+			useCache="";
+		}
+		htmlService.setUseCache("true".equalsIgnoreCase(useCache)
+				||"on".equalsIgnoreCase(useCache));
+		ResponseModel responseModel=ResponseModel.newSuccess();
+		return responseModel;
 	}
 	
 	private Object getHtmlPath(DataRequestServletRequestInvocation servletRequestInvocation){

@@ -19,7 +19,6 @@ public class DefaultHtmlFileService implements HtmlFileService {
 		}catch(Exception e){
 		}
 		webappPaths.add(webappPath);
-		//webappPaths.add("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-business\\youapp-business-bill\\src\\main\\resources");
 	}
 	
 	public static void addHtmlPath(String webappPath){

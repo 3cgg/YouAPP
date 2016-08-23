@@ -29,6 +29,18 @@ implements JService , ModuleInstallListener{
 	
 	private HtmlViewDataResourceService htmlViewDataResourceService=new HtmlViewDataResourceService();
 	
+	
+	private boolean useCache;
+
+	public void setUseCache(boolean useCache) {
+		this.useCache = useCache;
+	}
+	
+	public boolean isUseCache() {
+		return useCache;
+	}
+	
+	
 	@Override
 	protected HtmlService doGetService() {
 		return this;
@@ -81,6 +93,7 @@ implements JService , ModuleInstallListener{
 				htmls.put(uri.toString().substring(uri.toString().indexOf(".jar!")+5), tempHtmlDef);
 			}
 		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
 			throw new RuntimeException(e);
 		}
 		return true; 
@@ -99,9 +112,13 @@ implements JService , ModuleInstallListener{
 		try{
 			String uri=requestHtml.getViewUrl();
 			TempHtmlDef tempHtmlDef=null;
-			if((tempHtmlDef=htmls.get(uri))!=null&&!tempHtmlDef.inner){
-				return tempHtmlDef.syncHtmlModel;
+			
+			if(useCache){
+				if((tempHtmlDef=htmls.get(uri))!=null&&!tempHtmlDef.inner){
+					return tempHtmlDef.syncHtmlModel;
+				}
 			}
+			
 //			File file=htmlFileService.getFile(uri);
 //			String fileName=JFileUtils.getFileNameNoExtension(file);
 			Map<String, Object> attrs=htmlViewDataResourceService.data(requestHtml);
@@ -123,6 +140,7 @@ implements JService , ModuleInstallListener{
 			htmls.put(uri, tempHtmlDef);
 			return syncHtmlModel;
 		}catch(Exception e){
+			LOGGER.error(e.getMessage(), e);
 			return get404Page();
 		}
 		

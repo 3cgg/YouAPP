@@ -59,7 +59,7 @@ public class DataFormTokenValidatorInterceptor implements  DataRequestServletReq
 			}
 		}catch(Throwable e){
 			LOGGER.error(e.getMessage(), e); 
-			return e;
+			throw e;
 		}
 		
 	}

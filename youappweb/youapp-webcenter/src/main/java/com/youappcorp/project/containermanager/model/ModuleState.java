@@ -7,7 +7,9 @@ public class ModuleState implements JModel {
 	private String jarUrl;
 	
 	private boolean active;
-
+	
+	private long time;
+	
 	public String getJarUrl() {
 		return jarUrl;
 	}
@@ -23,4 +25,13 @@ public class ModuleState implements JModel {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public long getTime() {
+		return time;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
+	}
+	
 }

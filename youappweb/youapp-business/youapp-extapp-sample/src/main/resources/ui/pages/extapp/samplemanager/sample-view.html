@@ -1,0 +1,71 @@
+	 <!-- Main content -->
+    <section class="content"   id="viewExtAppSampleSection"   ms-controller="extapp_sample_view">
+    
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/extapp/samplemanager/sample-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">EXTAPP SAMPLE VIEW</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+	        	<div class="form-group">
+                  <label for="name" class="col-sm-1 control-label">名称</label>
+                  <div class="col-sm-5">
+				  <span id="name"  class="form-control label-form-control">{{data.name}}</span>
+				 </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label">描述</label>
+                  <div class="col-sm-5">
+                  	<span id="description"  class="form-control label-form-control">{{data.description}}</span>
+                  </div>
+				  
+                </div>
+	        </div>
+      </div>
+    </section>
+    <script type="text/javascript">
+    
+    $_youapp.ready(function(){
+    	
+    	var page=$.extend({
+    		root:$("#viewExtAppSampleSection"),
+    		comp:"/youappcomp/EXTAPP/SAMPLE/0",
+    		model:{
+    			vm:avalon.define({
+    		        $id: "extapp_sample_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
+    	function getId(){
+        	return page.root.getViewParam().id;
+        }
+    	
+    	page.ajaxGet({
+    		url:page.comp+'/extapp/samplemanager/getSampleRecordById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
+			  }
+			});
+    });
+    </script>
+	
+

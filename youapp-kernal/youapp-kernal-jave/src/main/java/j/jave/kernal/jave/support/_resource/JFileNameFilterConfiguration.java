@@ -98,21 +98,26 @@ public class JFileNameFilterConfiguration implements JFileNameFilterConfig , JVa
 				}
 			}
 		}
-		
-		if(includePatterns!=null){
-			for (int i = 0; i < includePatterns.size(); i++) {
-				Pattern pattern=includePatterns.get(i);
-				if(pattern.matcher(fileName).matches()){
+
+		if(includeFileNames!=null){
+			matches=false;
+			for (int i = 0; i < includeFileNames.size(); i++) {
+				String includeFileName=includeFileNames.get(i);
+				if(includeFileName.equals(fileName)){
 					matches=true;
 					return matches;
 				}
 			}
+			if(includeFileNames.size()>0){
+				return matches;
+			}
 		}
 		
-		if(includeFileNames!=null){
-			for (int i = 0; i < includeFileNames.size(); i++) {
-				String includeFileName=includeFileNames.get(i);
-				if(includeFileName.equals(fileName)){
+		if(includePatterns!=null){
+			matches=false;
+			for (int i = 0; i < includePatterns.size(); i++) {
+				Pattern pattern=includePatterns.get(i);
+				if(pattern.matcher(fileName).matches()){
 					matches=true;
 					return matches;
 				}

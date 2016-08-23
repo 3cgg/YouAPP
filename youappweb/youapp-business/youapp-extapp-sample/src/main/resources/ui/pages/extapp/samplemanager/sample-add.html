@@ -1,0 +1,80 @@
+	 <!-- Main content -->
+    <section class="content"  id="addExtAppSampleSection" >
+    
+    	<form role="form"  id="addExtAppSampleForm"  class="form-horizontal">
+    	
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="submit" class="btn btn-primary">提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/extapp/samplemanager/sample-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">EXTAPP SAMPLE ADD</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+             <div class="form-group">
+                  <label for="name" class="col-sm-1 control-label requiredMask">名称</label>
+                  <div class="col-sm-5">
+				  <input name="name" type="text" class="form-control" placeholder=""  >
+				 </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label requiredMask">描述</label>
+                  <div class="col-sm-5">
+                  	<textarea name="description" class="form-control" rows="3" placeholder=" ..."  ></textarea>
+			      </div>
+                </div>
+	        </div>
+      </div>
+    </form>
+    
+    </section>
+	
+	
+	<script type="text/javascript">
+		
+		$_youapp.ready(function (){
+			
+			var page=$.extend({
+	    		root:$("#addExtAppSampleSection"),
+	    		comp:"/youappcomp/EXTAPP/SAMPLE/0",
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			page.root.find("#addExtAppSampleForm").validate({
+					rules: {
+						'name': {
+							   required: true,
+							   maxlength:64
+						   },
+					   'description': {
+						   required: true,
+						   maxlength:2000
+					   }
+					  },
+					  submitHandler:function(form){
+						  page.submitForm({
+							  url:page.comp+'/extapp/samplemanager/saveSampleRecord',
+							  formSelector:form,
+							  success:function(data){
+								  page.root.goView('/ui/pages/extapp/samplemanager/sample-list.html');
+							  }
+							});
+					 }
+				})
+		});
+	</script>
+
+

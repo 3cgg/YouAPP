@@ -1,5 +1,5 @@
 	 <!-- Main content -->
-    <section class="content"   id="searchGoodSection"   ms-controller="good_view">
+    <section class="content"   id="searchBillSection"   ms-controller="bill_view">
       
       <div class="box box-info">
       	<div class="box-header with-border">
@@ -8,16 +8,16 @@
             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
           </div>
         </div>
-      	<form class="form-horizontal"  id="searchGoodForm">
+      	<form class="form-horizontal"  id="searchBillForm">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="goodName" class="col-sm-1 control-label">商品名称</label>
+                  <label for="billName" class="col-sm-1 control-label">账单名称</label>
                   <div class="col-sm-5">
-                    <input type="text"   name="goodName" id="goodName"  class="form-control" >
+                    <input type="text"   name="billName" id="billName"  class="form-control" >
                   </div>
-                  <label for="goodType" class="col-sm-1 control-label">商品类型</label>
+                  <label for="billType" class="col-sm-1 control-label">账单类型</label>
                   <div class="col-sm-5">
-                    <input type="text"  name="goodType"  id="goodType"  class="form-control" >
+                    <input type="text"  name="billType"  id="billType"  class="form-control" >
                   </div>
                 </div>
                 
@@ -44,7 +44,7 @@
                 </div>
                 
                 <div class="form-group">
-                  <label for="mallName" class="col-sm-1 control-label">地址</label>
+                  <label for="mallName" class="col-sm-1 control-label">购物地址</label>
                   <div class="col-sm-5">
                     <input type="text"  name="mallName"  id="mallName"  class="form-control" >
                   </div>
@@ -55,12 +55,9 @@
                 </div>
                 
                 <div class="form-group">
-                	<label for="billName" class="col-sm-1 control-label">账单名称</label>
-                  <div class="col-sm-5">
-                    <input type="text"   name="billName" id="billName"  class="form-control" >
-                  </div>
+                	<label for="desc" class="col-sm-1 control-label"></label>
                 	<div class="col-sm-2 col-lg-1">
-	                	<input id="searchGoodBtn" type="button" class="form-control btn-primary"  value="查询"   >
+	                	<input id="searchBillBtn" type="button" class="form-control btn-primary"  value="查询"   >
 	                </div>
                 </div>
                 
@@ -73,6 +70,11 @@
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='$(this).goView("/ui/pages/billmanager/bill-add.html");'
+	          >新增</button>
+	          <button type="button" class="btn btn-primary btn-sm"  id="toAddGoodBtn"
+	          >增加商品</button>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
@@ -80,15 +82,15 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="goodListTable" 
+	          <table id="billListTable" 
 	          		class="table dataTable table-striped row-border cell-border " 
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
 						<th></th>
-						<th>商品名称</th>
+						<th>账单名称</th>
 						<th>价格</th>
-						<th>时间</th>
+						<th>账单时间</th>
 						<th>购买地址</th>
 						<th>描述</th>
 						<th>操作</th>
@@ -106,33 +108,33 @@
     $_youapp.ready(function() {
     	
     	var page=$.extend({
-    		root:$("#searchGoodSection"),
-    		comp:"/youappcomp/YouAPP/BILL/0",
+    		root:$("#searchBillSection"),
+    		comp:"",
     		model:{
     			vm:avalon.define({
-    		        $id: "good_view",
+    		        $id: "bill_view",
     		        data: {}
     		    })
     		}
     	},$_youapp.pageTemplate);
     	
-    	page.listTable=page.root.find('#goodListTable').initDataTable({
-			url:page.comp+"/bill/billmanager/getGoodsByPage",
+    	page.listTable=page.root.find('#billListTable').initDataTable({
+			url:page.comp+"/bill/billmanager/getBillsByPage",
 			urlDataFn:function(){
-				return page.root.find("#searchGoodForm").serializeObj();
+				return page.root.find("#searchBillForm").serializeObj();
 			},
 			lengthChange:false,
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#goodListTable').goView('/ui/pages/billmanager/good-view.html',{"id":id});
+                    page.root.find('#billListTable').goView('/ui/pages/billmanager/bill-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#goodListTable').goView('/ui/pages/billmanager/good-edit.html',{"id":id});
+					page.root.find('#billListTable').goView('/ui/pages/billmanager/bill-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
-						  url:page.comp+'/bill/billmanager/deleteGoodById',
+						  url:page.comp+'/bill/billmanager/deleteBillById',
 						  formData:{'id':id},
 						  success:function(data){
 							  page.listTable.ajax.reload();
@@ -142,7 +144,7 @@
 			},
 			columns : [ 
 			{
-				"data" : "goodName",
+				"data" : "billName",
 				"width": "10%"
 			},
 			{
@@ -165,9 +167,28 @@
 			]
 		});
 		
-		page.root.find("#searchGoodBtn").on("click",function(){
+		page.root.find("#searchBillBtn").on("click",function(){
 			page.listTable.ajax.reload();
-		})
+		});
+		
+		
+		function valid(ids){
+			if(ids&&ids.length==0){
+				page.warning('请选择一条记录');
+				return false;
+			}
+			if(ids&&ids.length>1){
+				page.warning('只能选择一条记录');
+				return false;
+			}
+			return true;
+		}
+		page.root.find('#toAddGoodBtn').on('click',function(){
+			var ids=page.root.find('#billListTable').getSelectedRow();
+			if(valid(ids)){
+				$(this).goView('/ui/pages/billmanager/good-add.html',{"id":ids[0]});
+			}
+		});
 		
 	});
 	</script>

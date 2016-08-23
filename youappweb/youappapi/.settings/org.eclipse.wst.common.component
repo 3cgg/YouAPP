@@ -36,6 +36,9 @@
         <dependent-module archiveName="youapp-platform-jpa-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-jpa/youapp-platform-jpa">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="youapp-business-bill-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-business-bill/youapp-business-bill">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="youappapi"/>
         <property name="java-output-path" value="/youappapi/target/classes"/>
     </wb-module>

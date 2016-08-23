@@ -1,0 +1,96 @@
+	 <!-- Main content -->
+    <section class="content"   id="searchExtAppSampleSection"   ms-controller="extapp_sample_view">
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <button type="submit" class="btn btn-primary btn-sm"
+	          onclick='$(this).goView("/ui/pages/extapp/samplemanager/sample-add.html");'
+	          >新增</button>
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="extAppSampleListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>主键</th>
+						<th>名称</th>
+						<th>描述</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+            </table>
+	          
+	          
+	          <!-- /.row -->
+	        </div>
+      </div>
+    
+    </section>
+    <script type="text/javascript">
+    $_youapp.ready(function() {
+    	
+    	var page=$.extend({
+    		root:$("#searchExtAppSampleSection"),
+    		comp:"/youappcomp/EXTAPP/SAMPLE/0",
+    		model:{
+    			vm:avalon.define({
+    		        $id: "extapp_sample_view",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	page.listTable=page.root.find('#extAppSampleListTable').initDataTable({
+			url:page.comp+"/extapp/samplemanager/getSampleRecordsByPage",
+			urlDataFn:function(){
+				return {};
+			},
+			lengthChange:false,
+			checkbox:true,
+			ops:{
+				view:function(id,rowData){
+                    page.root.find('#extAppSampleListTable').goView('/ui/pages/extapp/samplemanager/sample-view.html',{"id":id});
+				},
+				edit:function(id,rowData){
+					page.root.find('#extAppSampleListTable').goView('/ui/pages/extapp/samplemanager/sample-edit.html',{"id":id});
+				},
+				del:function(id,rowData){
+					page.ajaxGet({
+						  url:page.comp+'/extapp/samplemanager/deleteSampleRecordById',
+						  formData:{'id':id},
+						  success:function(data){
+							  page.listTable.ajax.reload();
+						  }
+						});
+				}
+			},
+			columns : [ 
+			{
+				"data" : "id",
+				"orderable" : false,
+				 "width": "10%"
+			}, 
+			{
+				"data" : "name",
+				"width": "10%"
+			},
+			{
+				"data" : "description",
+				"width": "20%"
+			}
+			
+			]
+		});
+		
+		
+	});
+	</script>
+

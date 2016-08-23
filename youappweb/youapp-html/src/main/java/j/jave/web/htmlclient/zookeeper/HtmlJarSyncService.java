@@ -47,6 +47,18 @@ implements JService , JServiceHubInitializedListener {
 		return true;
 	}
 	
+	
+	private void trigger(byte[] bytes){
+		try{
+			ModuleState moduleState= JJSON.get().parse(new String(bytes,"utf-8"), ModuleState.class);
+			ModuleMeta moduleMeta=new ModuleMeta();
+			moduleMeta.setJarUrl(moduleState.getJarUrl());
+			JServiceHubDelegate.get().addDelayEvent(new ModuleInstallEvent(this, JJSON.get().formatObject(moduleMeta)));
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private void sync(){
 		JConfiguration configuration=JConfiguration.get();
 		String root=configuration.getString(WebHtmlClientProperties.YOUAPPMVC_HTML_ROOT_IN_ZOOKEEPER,
@@ -67,12 +79,14 @@ implements JService , JServiceHubInitializedListener {
 							try{
 								JZooKeeperNode zooKeeperNode=new JZooKeeperNode();
 								zooKeeperNode.setPath(path+"/"+module);
-								byte[] bytes=zooKeeperService.getValue(zooKeeperNode);
-								ModuleState moduleState= JJSON.get().parse(new String(bytes,"utf-8"), ModuleState.class);
-								
-								ModuleMeta moduleMeta=new ModuleMeta();
-								moduleMeta.setJarUrl(moduleState.getJarUrl());
-								JServiceHubDelegate.get().addDelayEvent(new ModuleInstallEvent(this, JJSON.get().formatObject(moduleMeta)));
+								byte[] bytes=zooKeeperService.getValue(zooKeeperNode,new JWatcher() {
+									@Override
+									protected void doProcess(WatchedEvent event) {
+										byte[] bytes=zooKeeperService.getValue(zooKeeperNode,this);
+										trigger(bytes);
+									}
+								});
+								trigger(bytes);
 							}catch(Exception e){
 								LOGGER.error(e.getMessage(), e);
 							}

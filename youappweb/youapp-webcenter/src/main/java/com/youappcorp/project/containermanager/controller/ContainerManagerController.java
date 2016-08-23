@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -161,6 +162,7 @@ public class ContainerManagerController extends SimpleControllerSupport {
 		ModuleState moduleState=new ModuleState();
 		moduleState.setJarUrl(jarUri);
 		moduleState.setActive(true);
+		moduleState.setTime(new Date().getTime());
 		String val=JJSON.get().formatObject(moduleState);
 		if(!zooKeeperService.exist(zooKeeperNode)){
 			zooKeeperNode.setValue(val);

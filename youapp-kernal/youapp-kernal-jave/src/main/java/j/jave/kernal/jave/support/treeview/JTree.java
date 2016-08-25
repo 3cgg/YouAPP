@@ -3,6 +3,7 @@ package j.jave.kernal.jave.support.treeview;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public class JTree{
 		if(treeNodes!=null) return this;
 		treeNodes=new ArrayList<JTreeNode>();
 		Map<String, JSimpleTreeStrcture> models=new HashMap<String, JSimpleTreeStrcture>();
-		LinkedBlockingQueue<String> itemIndexQueue=new LinkedBlockingQueue<String>(treeStrctures.size());
+		LinkedBlockingQueue<String> itemIndexQueue=new LinkedBlockingQueue<String>();
 		Set<String> parentNodes=new HashSet<String>();
 		
 		for (Iterator<? extends JSimpleTreeStrcture> iterator = treeStrctures.iterator(); iterator.hasNext();) {
@@ -98,7 +99,7 @@ public class JTree{
 				
 				treeNodeMap.put(item.getId(), treeNode);
 				
-				if(item.getParentId()==null){
+				if(JStringUtils.isNullOrEmpty(item.getParentId())){
 					//top level as without parent id , processed , removed
 					treeNodeConfig.setLevel(1);
 					treeNodeConfig.addPathPart(item.getId()); 
@@ -170,6 +171,13 @@ public class JTree{
 						continue;
 					}
 				}
+				
+				if(JStringUtils.isNullOrEmpty(parentTreeNode.getNodeMeta().getAbsolutePath())){
+					// put another chance to process this as with parent id
+					itemIndexQueue.add(item.getId()) ;
+					continue;
+				}
+				
 				thisTreeNode.getNodeMeta().setLevel(parentTreeElement.getNodeMeta().getLevel()+1);
 				thisTreeNode.getNodeMeta().addPathParts(parentTreeElement.getNodeMeta().getPath());
 				thisTreeNode.getNodeMeta().addPathPart(item.getId());

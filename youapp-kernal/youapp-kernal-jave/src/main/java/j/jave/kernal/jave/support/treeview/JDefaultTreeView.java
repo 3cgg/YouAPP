@@ -184,8 +184,7 @@ public class JDefaultTreeView implements
 		this.tree=tree;
 	}
 	
-	@Override
-	public String view() {
+	public List<JNodeTreeView> models(){
 		List<JNodeTreeView> nodeTreeViews=new ArrayList<JNodeTreeView>();
 		for (Iterator<JTreeNode> iterator = tree.getTreeNodes().iterator(); iterator.hasNext();) {
 			JTreeNode treeNode =  iterator.next();
@@ -197,9 +196,16 @@ public class JDefaultTreeView implements
 				nodeTreeView.setId(treeStrcture.getId());
 				nodeTreeView.setName(treeStrcture.getName());
 				nodeTreeView.setMeta(walkerTreeNode.getNodeMeta());
+				nodeTreeView.setData(treeStrcture.toMap());
 				nodeTreeViews.add(nodeTreeView);
 			}
 		}
+		return nodeTreeViews;
+	}
+	
+	@Override
+	public String view() {
+		List<JNodeTreeView> nodeTreeViews=models();
 		return JJSON.get().formatObject(nodeTreeViews);
 	}
 

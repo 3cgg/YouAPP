@@ -5,10 +5,12 @@ import j.jave.kernal.jave.support.treeview.JDefaultTreeView;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JSimpleTreeStrcture;
 import j.jave.kernal.jave.support.treeview.JTree;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class TestSimpleTreeModel implements JSimpleTreeStrcture {
 
@@ -35,6 +37,11 @@ public class TestSimpleTreeModel implements JSimpleTreeStrcture {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	@Override
+	public Map<String, Object> toMap() {
+		return JCollectionUtils.toMap(this);
 	}
 
 	

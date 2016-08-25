@@ -467,7 +467,10 @@
 				warning:$_youapp.$_toast.warning,
 				success:$_youapp.$_toast.success,
 				info:$_youapp.$_toast.info,
-				error:$_youapp.$_toast.error
+				error:$_youapp.$_toast.error,
+				formatJstree:function(data,opts){
+					return $_youapp.$_jstree.format(data,opts);
+				}
 		}
 	})();
 	

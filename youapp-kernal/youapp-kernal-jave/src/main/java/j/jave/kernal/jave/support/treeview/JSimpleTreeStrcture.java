@@ -1,5 +1,7 @@
 package j.jave.kernal.jave.support.treeview;
 
+import java.util.Map;
+
 /**
  * any model that need represent tree view should implement the interface to
  * enable the function.
@@ -25,5 +27,11 @@ public interface JSimpleTreeStrcture {
 	 * @return
 	 */
 	public String getParentId();
+	
+	/**
+	 * wrap this object to simple map, avoid reference to itself
+	 * @return
+	 */
+	public Map<String, Object> toMap();
 	
 }

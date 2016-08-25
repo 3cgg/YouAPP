@@ -1,4 +1,4 @@
-package com.youappcorp.project.sysparam.impl;
+package com.youappcorp.project.sysparam.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.sysparam.model.SysParam;
-import com.youappcorp.project.sysparam.service.SysParamService;
 import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
 
 @Service(value="sysParamServiceImpl.transation.jpa")

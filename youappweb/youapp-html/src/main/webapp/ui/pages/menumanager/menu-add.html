@@ -1,0 +1,113 @@
+	 <!-- Main content -->
+    <section class="content"  id="addMenuSection" >
+    
+    	<form role="form"  id="addMenuForm"  class="form-horizontal">
+    	
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="submit" class="btn btn-primary">提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/menumanager/menu-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">Menu Add</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+             <div class="form-group">
+                  <label for="code" class="col-sm-1 control-label requiredMask">编码</label>
+                  <div class="col-sm-5">
+				  <input name="code" type="text" class="form-control" placeholder=""  >
+				 </div>
+				 <label for="name" class="col-sm-1 control-label requiredMask">名称</label>
+				 <div class="col-sm-5">
+				  	<input name="name" type="text" class="form-control" placeholder=""  >
+	             </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="sequence" class="col-sm-1 control-label requiredMask">顺序</label>
+                  <div class="col-sm-5">
+				  <input name="sequence" type="text" class="form-control"  value="0" placeholder=""  >
+				 </div>
+                </div>
+                
+                <div class="form-group">
+                <label for="url" class="col-sm-1 control-label requiredMask">地址</label>
+				 <div class="col-sm-5">
+				  	<input name="url" type="text" class="form-control" placeholder=""  >
+	             </div>
+                  <label for="description" class="col-sm-1 control-label requiredMask">描述</label>
+                  <div class="col-sm-5">
+                  	<textarea name="description" class="form-control" rows="3" placeholder=" ..."  ></textarea>
+			      </div>
+                </div>
+                <input  id="pid" type="hidden"  name="pid"  />
+	        </div>
+      </div>
+    </form>
+    
+    </section>
+	
+	
+	<script type="text/javascript">
+		
+		$_youapp.ready(function (){
+			
+			var page=$.extend({
+	    		root:$("#addMenuSection"),
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			function getId(){
+	        	return page.root.getViewParam().id;
+	        }
+			
+			page.root.find('#pid').val(getId());
+			
+			page.root.find("#addMenuForm").validate({
+					rules: {
+						'code': {
+							   required: true,
+							   maxlength:16
+						   },
+					   'name': {
+						   required: true,
+						   maxlength:32
+					   },
+					   'sequence': {
+						   required: true,
+						   digits: true
+					   },
+					   'url': {
+						   required: true,
+						   maxlength:128
+					   },
+					   'description': {
+						   required: true,
+						   maxlength:2000
+					   }
+					  },
+					  submitHandler:function(form){
+						  page.submitForm({
+							  url:'/menumanager/saveMenu',
+							  formSelector:form,
+							  success:function(data){
+								  page.root.goView('/ui/pages/menumanager/menu-list.html');
+							  }
+							});
+					 }
+				})
+		});
+	</script>
+
+

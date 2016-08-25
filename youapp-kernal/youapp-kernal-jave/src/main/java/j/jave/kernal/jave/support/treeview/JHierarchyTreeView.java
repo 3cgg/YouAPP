@@ -202,10 +202,10 @@ public class JHierarchyTreeView implements
 		parent.setId(treeStrcture.getId());
 		parent.setName(treeStrcture.getName());
 		parent.setMeta(treeNode.getNodeMeta());
+		parent.setData(treeStrcture.toMap());
 	}
 	
-	@Override
-	public String view() {
+	public List<JNodeTreeView> models(){
 		List<JNodeTreeView> nodeTreeViews=new ArrayList<JNodeTreeView>();
 		for (Iterator<JTreeNode> iterator = tree.getTreeNodes().iterator(); iterator.hasNext();) {
 			JTreeNode treeNode =  iterator.next();
@@ -213,6 +213,12 @@ public class JHierarchyTreeView implements
 			processTreeNode(treeNode, nodeTreeView);
 			nodeTreeViews.add(nodeTreeView);
 		}
+		return nodeTreeViews;
+	}
+	
+	@Override
+	public String view() {
+		List<JNodeTreeView> nodeTreeViews=models();
 		return JJSON.get().formatObject(nodeTreeViews);
 	}
 

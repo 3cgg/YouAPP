@@ -5,10 +5,12 @@ import j.jave.kernal.jave.support.treeview.JAdvancedTreeStrcture;
 import j.jave.kernal.jave.support.treeview.JDefaultTreeView;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JTree;
+import j.jave.kernal.jave.utils.JCollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class TestAdvancedTreeModel implements JAdvancedTreeStrcture {
 
@@ -43,6 +45,12 @@ public class TestAdvancedTreeModel implements JAdvancedTreeStrcture {
 		this.id = id;
 	}
 
+	
+	
+	@Override
+	public Map<String, Object> toMap() {
+		return JCollectionUtils.toMap(this);
+	}
 	
 	
 public static void main(String[] args) throws Exception {

@@ -1,4 +1,4 @@
-package com.youappcorp.project.sysparam.impl;
+package com.youappcorp.project.sysparam.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;

@@ -3,10 +3,14 @@
  */
 package j.jave.kernal.jave.utils;
 
+import j.jave.kernal.jave.reflect.JClassUtils;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -450,6 +454,21 @@ public abstract class JCollectionUtils {
 		public void remove() throws UnsupportedOperationException {
 			throw new UnsupportedOperationException("Not supported");
 		}
+	}
+	
+	/**
+	 * simply copy object (bean) properties to map structure.
+	 * @param obj
+	 * @return
+	 */
+	public static Map<String, Object> toMap(Object obj){
+		Map<String, Object> map=new HashMap<String, Object>();
+		List<Field> fields= JClassUtils.getFields(obj.getClass(), true);
+		for(Field field:fields){
+			Object val=JClassUtils.get(field.getName(), obj);
+			map.put(field.getName(), val);
+		}
+		return map;
 	}
 
 }

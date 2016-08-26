@@ -470,7 +470,8 @@
 				error:$_youapp.$_toast.error,
 				formatJstree:function(data,opts){
 					return $_youapp.$_jstree.format(data,opts);
-				}
+				},
+				log:$_youapp.$_util.log
 		}
 	})();
 	

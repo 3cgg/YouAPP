@@ -17,7 +17,11 @@ import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.BusinessExceptionUtil;
 import com.youappcorp.project.menumanager.model.Menu;
+import com.youappcorp.project.menumanager.model.MenuGroup;
+import com.youappcorp.project.menumanager.model.MenuGroupRecord;
 import com.youappcorp.project.menumanager.model.MenuRecord;
+import com.youappcorp.project.menumanager.model.MenuRole;
+import com.youappcorp.project.menumanager.model.MenuRoleRecord;
 import com.youappcorp.project.menumanager.vo.MenuCriteriaInVO;
 
 @Service(value="menuServiceImpl.transation.jpa")
@@ -26,6 +30,11 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	@Autowired
 	private InternalMenuServiceImpl internalMenuServiceImpl;
 	
+	@Autowired
+	private InternalMenuRoleServiceImpl internalMenuRoleServiceImpl;
+	
+	@Autowired
+	private InternalMenuGroupServiceImpl internalMenuGroupServiceImpl;
 	
 	@Override
 	public void saveMenu(ServiceContext serviceContext, MenuRecord menuRecord) {
@@ -146,4 +155,238 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 				.models(MenuRecord.class);
 	}
 
+	private MenuRole getMenuRole(ServiceContext serviceContext, String menuId,
+			String roleId){
+		return internalMenuRoleServiceImpl.singleEntityQuery()
+				.conditionDefault()
+				.equals("menuId", menuId)
+				.equals("roleId", roleId)
+				.ready().model();
+	}
+	
+	
+	private MenuGroup getMenuGroup(ServiceContext serviceContext, String menuId,
+			String groupId){
+		return internalMenuGroupServiceImpl.singleEntityQuery()
+				.conditionDefault()
+				.equals("menuId", menuId)
+				.equals("groupId", groupId)
+				.ready().model();
+	}
+	
+	
+	@Override
+	public void bindMenuRole(ServiceContext serviceContext, String menuId,
+			String roleId) {
+		try{
+			MenuRole dbMenuRole=getMenuRole(serviceContext, menuId, roleId);
+			if(dbMenuRole!=null){
+				internalMenuRoleServiceImpl.delete(serviceContext, dbMenuRole);
+			}
+			MenuRole menuRole=new MenuRole();
+			menuRole.setMenuId(menuId);
+			menuRole.setRoleId(roleId);
+			internalMenuRoleServiceImpl.saveOnly(serviceContext, menuRole);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+	}
+
+	@Override
+	public void bindMenuGroup(ServiceContext serviceContext, String menuId,
+			String groupId) {
+		try{
+			MenuGroup dbMenuGroup=getMenuGroup(serviceContext, menuId, groupId);
+			if(dbMenuGroup!=null){
+				internalMenuGroupServiceImpl.delete(serviceContext, dbMenuGroup);
+			}
+			MenuGroup menuGroup=new MenuGroup();
+			menuGroup.setMenuId(menuId);
+			menuGroup.setGroupId(groupId);
+			internalMenuGroupServiceImpl.saveOnly(serviceContext, menuGroup);
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+	}
+
+	@Override
+	public void unbindMenuRole(ServiceContext serviceContext, String menuId,
+			String roleId) {
+		try{
+			MenuRole dbMenuRole=getMenuRole(serviceContext, menuId, roleId);
+			if(dbMenuRole!=null){
+				internalMenuRoleServiceImpl.delete(serviceContext, dbMenuRole);
+			}
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+	}
+
+	@Override
+	public void unbindMenuGroup(ServiceContext serviceContext, String menuId,
+			String groupId) {
+		try{
+			MenuGroup dbMenuGroup=getMenuGroup(serviceContext, menuId, groupId);
+			if(dbMenuGroup!=null){
+				internalMenuGroupServiceImpl.delete(serviceContext, dbMenuGroup);
+			}
+		}catch(Exception e){
+			BusinessExceptionUtil.throwException(e);
+		}
+	}
+	
+	private JQuery<?> buildBindMenuRoleQuery(
+			ServiceContext serviceContext, Map<String, Condition> params){
+		String jpql="select a.id as roleId"
+				+ ",  a.roleName as roleName "
+				+ ",  a.roleCode as roleCode"
+				+ ",  a.description as roleDesc"
+				+ ",  c.id as menuId "
+				+ ",  c.name as menuName"
+				+ "  from Role a "
+				+ " , MenuRole b"
+				+ " , Menu  c"
+				+ " where a.deleted='N' and b.deleted='N' and c.deleted='N'  "
+				+ " and a.id=b.roleId and b.menuId=c.id ";
+		Condition condition=null;
+		if((condition=params.get("menuId"))!=null){
+			jpql=jpql+" and c.id =  :menuId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+		.setParams(params(params));
+	}
+	
+	
+	private JQuery<?> buildUnbindMenuRoleQuery(
+			ServiceContext serviceContext, Map<String, Condition> params){
+		String jpql="select a.id as roleId"
+				+ "  from Role a "
+				+ " , MenuRole b"
+				+ " , Menu  c"
+				+ " where a.deleted='N' and b.deleted='N' and c.deleted='N'  "
+				+ " and a.id=b.roleId and b.menuId=c.id ";
+		Condition condition=null;
+		if((condition=params.get("menuId"))!=null){
+			jpql=jpql+" and c.id =  :menuId";
+		}
+		
+		jpql="select o.id as roleId"
+				+ ",  o.roleName as roleName "
+				+ ",  o.roleCode as roleCode"
+				+ ",  o.description as roleDesc"
+				+ " from Role o"
+				+ " where o.deleted='N' and o.id not in ("
+				+jpql
+				+")";
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+		.setParams(params(params));
+	}
+	
+	private JQuery<?> buildBindMenuGroupQuery(
+			ServiceContext serviceContext, Map<String, Condition> params){
+		String jpql="select a.id as groupId"
+				+ ",  a.groupName as groupName "
+				+ ",  a.groupCode as groupCode"
+				+ ",  a.description as groupDesc"
+				+ ",  c.id as menuId "
+				+ ",  c.name as menuName"
+				+ "  from Group a "
+				+ " , MenuGroup b"
+				+ " , Menu  c"
+				+ " where a.deleted='N' and b.deleted='N' and c.deleted='N'  "
+				+ " and a.id=b.groupId and b.menuId=c.id ";
+		Condition condition=null;
+		if((condition=params.get("menuId"))!=null){
+			jpql=jpql+" and c.id =  :menuId";
+		}
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+		.setParams(params(params));
+	}
+	
+	
+	private JQuery<?> buildUnbindMenuGroupQuery(
+			ServiceContext serviceContext, Map<String, Condition> params){
+		String jpql="select a.id as groupId"
+				+ "  from Group a "
+				+ " , MenuGroup b"
+				+ " , Menu  c"
+				+ " where a.deleted='N' and b.deleted='N' and c.deleted='N'  "
+				+ " and a.id=b.groupId and b.menuId=c.id ";
+		Condition condition=null;
+		if((condition=params.get("menuId"))!=null){
+			jpql=jpql+" and c.id =  :menuId";
+		}
+		
+		jpql="select o.id as groupId"
+				+ ",  o.groupName as groupName "
+				+ ",  o.groupCode as groupCode"
+				+ ",  o.description as groupDesc"
+				+ " from Group o"
+				+ " where o.deleted='N' and o.id not in ("
+				+jpql
+				+")";
+		
+		return queryBuilder().jpqlQuery().setJpql(jpql)
+		.setParams(params(params));
+	}
+
+	@Override
+	public List<MenuRoleRecord> getBindMenuRoles(ServiceContext serviceContext,
+			String menuId) {
+		Map<String, Condition> params=new HashMap<String, Condition>();
+		params.put("menuId", Condition.equal(menuId));
+		return buildBindMenuRoleQuery(serviceContext, params)
+				.models(MenuRoleRecord.class);
+	}
+
+	@Override
+	public List<MenuGroupRecord> getBindMenuGroups(
+			ServiceContext serviceContext, String menuId) {
+		Map<String, Condition> params=new HashMap<String, Condition>();
+		params.put("menuId", Condition.equal(menuId));
+		return buildBindMenuGroupQuery(serviceContext, params)
+				.models(MenuGroupRecord.class);
+	}
+
+	@Override
+	public List<MenuRoleRecord> getUnbindMenuRoles(
+			ServiceContext serviceContext, String menuId) {
+		
+		Map<String, Condition> params=new HashMap<String, Condition>();
+		params.put("menuId", Condition.equal(menuId));
+		return buildUnbindMenuRoleQuery(serviceContext, params)
+				.models(MenuRoleRecord.class);
+	}
+
+	@Override
+	public List<MenuGroupRecord> getUnbindMenuGroups(
+			ServiceContext serviceContext, String menuId) {
+		Map<String, Condition> params=new HashMap<String, Condition>();
+		params.put("menuId", Condition.equal(menuId));
+		return buildUnbindMenuGroupQuery(serviceContext, params)
+				.models(MenuGroupRecord.class);
+	}
+
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

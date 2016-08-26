@@ -5,6 +5,7 @@
 				<button id="btnAdd" class="btn btn-success btn-sm labelAdd" type="button"><i class="fa fa-plus"></i>&nbsp;新增节点</button>
 				<button id="btnEdit" class="btn btn-warning btn-sm labelEdit" type="button"><i class="fa fa-edit"></i>&nbsp;编辑</button>
 				<button id="btnDel" class="btn btn-danger btn-sm labelDelete" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
+				<button id="btnAssign" class="btn btn-warning btn-sm labelEdit"  type="button"><i class="fa fa-edit"></i>&nbsp;Assign</button>
 			</div>
 		</div>
 		<div class="box box-info">
@@ -107,6 +108,19 @@
 				  }
 			});
 			
+		});
+		
+		
+		page.root.find('#btnAssign').on('click', function() {
+			var $jstree = page.root.find('#menuTree').jstree(true);
+			var selected = $jstree.get_selected(true);
+			
+			if(selected.length == 0) {
+				page.warning("请选择节点进行Assign");
+				return;
+			}
+			
+			page.root.goView('/ui/pages/menumanager/menu-assign.html', {"id" : selected[0].id});
 		});
 	});
 </script>

@@ -1,6 +1,7 @@
 package com.youappcorp.project.menumanager.controller;
 
 import j.jave.kernal.jave.model.JPage;
+import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JTree;
@@ -18,10 +19,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.youappcorp.project.menumanager.model.MenuGroupRecord;
 import com.youappcorp.project.menumanager.model.MenuRecord;
+import com.youappcorp.project.menumanager.model.MenuRoleRecord;
 import com.youappcorp.project.menumanager.service.MenuManagerService;
 import com.youappcorp.project.menumanager.vo.MenuCriteriaInVO;
+import com.youappcorp.project.menumanager.vo.MenuGroupRecordVO;
 import com.youappcorp.project.menumanager.vo.MenuRecordVO;
+import com.youappcorp.project.menumanager.vo.MenuRoleRecordVO;
 
 /**
  * @author JIAZJ
@@ -111,5 +116,70 @@ public class MenuManagerController extends SimpleControllerSupport {
 		JTree tree=new JTree(toMenuRecordVOs(menuRecords),Action.DROP).get();
 		JHierarchyTreeView hierarchyTreeView=new JHierarchyTreeView(tree);
 		return ResponseModel.newSuccess(hierarchyTreeView.models());
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getBindMenuRoles")
+	public ResponseModel  getBindMenuRoles(ServiceContext serviceContext,String menuId){
+		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getBindMenuRoles(serviceContext, menuId);
+		JPage<?> page=JPageImpl.wrap(menuRoleRecrods);
+		return ResponseModel.newSuccess(page);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getUnbindMenuRoles")
+	public ResponseModel  getUnbindMenuRoles(ServiceContext serviceContext,String menuId){
+		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getUnbindMenuRoles(serviceContext, menuId);
+		JPage<?> page=JPageImpl.wrap(menuRoleRecrods);
+		return ResponseModel.newSuccess(page);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/getBindMenuGroups")
+	public ResponseModel  getBindMenuGroups(ServiceContext serviceContext,String menuId){
+		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getBindMenuGroups(serviceContext, menuId);
+		JPage<?> page=JPageImpl.wrap(menuGroupRecords);
+		return ResponseModel.newSuccess(page);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/getUnbindMenuGroups")
+	public ResponseModel  getUnbindMenuGroups(ServiceContext serviceContext,String menuId){
+		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getUnbindMenuGroups(serviceContext, menuId);
+		JPage<?> page=JPageImpl.wrap(menuGroupRecords);
+		return ResponseModel.newSuccess(page);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/bindMenuGroup")
+	public ResponseModel  bindMenuGroup(ServiceContext serviceContext,MenuGroupRecordVO menuGroupRecord){
+		menuManagerService.bindMenuGroup(serviceContext, menuGroupRecord.getMenuId(),
+				menuGroupRecord.getGroupId());
+		return ResponseModel.newSuccess();
+	}
+	
+	@ResponseBody
+	@RequestMapping("/bindMenuRole")
+	public ResponseModel  bindMenuRole(ServiceContext serviceContext,MenuRoleRecordVO menuRoleRecord){
+		menuManagerService.bindMenuRole(serviceContext, menuRoleRecord.getMenuId(),
+				menuRoleRecord.getRoleId());
+		return ResponseModel.newSuccess();
+	}
+	
+	@ResponseBody
+	@RequestMapping("/unbindMenuGroup")
+	public ResponseModel  unbindMenuGroup(ServiceContext serviceContext,MenuGroupRecordVO menuGroupRecord){
+		menuManagerService.unbindMenuGroup(serviceContext, menuGroupRecord.getMenuId(),
+				menuGroupRecord.getGroupId());
+		return ResponseModel.newSuccess();
+	}
+	
+	@ResponseBody
+	@RequestMapping("/unbindMenuRole")
+	public ResponseModel  unbindMenuRole(ServiceContext serviceContext,MenuRoleRecordVO menuRoleRecord){
+		menuManagerService.unbindMenuRole(serviceContext, menuRoleRecord.getMenuId(),
+				menuRoleRecord.getRoleId());
+		return ResponseModel.newSuccess();
 	}
 }

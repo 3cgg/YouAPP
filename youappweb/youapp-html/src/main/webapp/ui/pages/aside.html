@@ -23,9 +23,7 @@
       </form>
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-        
+      <ul class="sidebar-menu"   id="sidebar_menu_id" >
         <li class="treeview">
           <a href="#">
             <i class="fa fa-circle-o text-red"></i> <span>EXTAPP-DYNAMIC-M</span>
@@ -326,23 +324,145 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
           </ul>
         </li>
+        <li class="header"  id="_document_start">LABELS</li>
         <li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
       </ul>
+      
+      
+      
+      <!--   template for menu   -->
+      
+      <div  id="_template_treeview" style="display: none;">
+      			<!--  item  -->
+      			<li  ><a href="#"><i class="fa fa-circle-o"></i> </a></li>
+      			<!--  node  -->
+                <li  class="treeview">
+                  <a  href="#"><i class="fa fa-circle-o"></i> 
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu"  >
+                    
+                  </ul>
+                </li>
+      </div>    
+              
+      <!--  template for menu end -->        
     </section>
     <!-- /.sidebar -->
   </aside>
   <script type="text/javascript">
   
-  $(function(){
+  $_youapp.ready(function() {
+  	
+  	var page=$.extend({
+  		root:$("#main-aside"),
+  		model:{
+  		}
+  	},$_youapp.pageTemplate);
+  	
+	  function getMenuNode(_name){
+		  var $menuNode=page.root.find('#_template_treeview > li:odd ').clone(false);
+		  var $menuNodeLink=$menuNode.find('a');
+		  $menuNodeLink.find('i:first').after(_name);
+		  return $menuNode;
+	  }
 	  
-	  $('#main-aside').find('a').on('click',function(event){
-		  $_youapp.$_html.newTab($(event.target));
-		  $(this).closest('li').addClass('active');
-	  })
+	  function appendMenu(parent,child){
+		  $(parent).children('.treeview-menu').append($(child));
+	  }
+	  
+	  function getMenuItem(data){
+		  var $menuItem=page.root.find('#_template_treeview > li:even ').clone(false);
+		  var $menuItemLink=$menuItem.find('a');
+		  $menuItemLink.val('href','javascript:void(0)');
+		  $menuItemLink.attr('data-url',data.url);
+		  $menuItemLink.attr('data-urldata','');
+		  $menuItemLink.attr('data-tabid','layoutTab');
+		  $menuItemLink.attr('data-tabmenuid',data.code+'_'+data.id);
+		  $menuItemLink.attr('data-tabmenutitle',data.name);
+		  $menuItemLink.find('i').after(data.name);
+		  return $menuItem;
+	  }
+	  
+	  var $sideBar=page.root.find('.sidebar-menu');
+	  
+	  function cycle(eles,opts,menus,parent){
+			for(var i=0;i<eles.length;i++){
+				var _data=eles[i];
+				var child;
+				if(_data.children.length>0){  // menu node
+					child=getMenuNode(_data.data.name);
+				}
+				else{
+					child=getMenuItem(_data.data);
+				}
+				if(parent){
+					appendMenu(parent, child);
+				}
+				
+				if(_data.meta.level==1){
+					menus.push(child);
+				}
+				if(_data.children.length>0){  // menu node
+					cycle(_data.children,opts,menus,child);
+				}
+			}
+		}
+	  
+	  page.ajaxGet({
+			  url:'/menumanager/getMenusTree',
+			  formData:{
+			  },
+			  success:function(data){
+				  var menus=[];
+				  cycle(data, {},menus);
+				  for(var i=0;i<menus.length;i++){
+					  var menu=menus[i];
+					  $sideBar.find('#_document_start').before(menu);
+				  }
+				  $sideBar.find('a[data-url]').on('click',function(event){
+					  $_youapp.$_html.newTab($(event.target));
+					  $(this).closest('li').addClass('active');
+				  });
+			  }
+		});
+	  
+	  var $menu=page.root.find('#sidebar_menu_id');
+	  $menu.css({
+		  'overflow-y':'auto'
+	  });
+	  $menu.hover(function(){
+		  $menu.css({
+			  'overflow-y':'auto'
+		  });
+	  },function(){
+		  $menu.css({
+			  'overflow-y':'hidden'
+		  });
+		  $menu.find('.treeview').width($menu.innerWidth());
+	  });
+	  
+	  function setHeight(){
+		  var windowHeight=$(window).height();
+		  var menuHeight=$menu.position().top;
+		  page.log('window-height: '+windowHeight);
+		  page.log('menu-height: '+menuHeight);
+		  var height=windowHeight-menuHeight;
+		  $menu.css({
+			  'height':height+'px'
+		  });
+		  page.log(height)
+	  }
+	  setHeight();
+	  
+	  $(window).resize(function(){
+		  setTimeout(setHeight(),2000);
+	  });
 	  
   })
   

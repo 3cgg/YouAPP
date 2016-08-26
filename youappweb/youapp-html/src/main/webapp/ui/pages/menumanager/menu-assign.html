@@ -56,7 +56,18 @@
       <input type="hidden"  name="id"  ms-attr-value="data.id"  />
     </form>
     
-    <div class="col-md-6"  style="padding-left: 0px;">
+    <div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">角色</h3>
+	          <div class="box-tools pull-right">
+	          		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+		   		<div class="col-md-6"  style="padding-left: 0px;">
       
       <div class="box box-info" >
 	    	<!--   .box-header   -->
@@ -115,9 +126,23 @@
 	        </div>
       </div>
       </div>
-      
-      
-      <div class="col-md-6"  style="padding-left: 0px;">
+		   
+		   </div>
+		  </div>
+    
+    
+    <div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">组</h3>
+	          <div class="box-tools pull-right">
+	          	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+				<div class="col-md-6"  style="padding-left: 0px;">
       
       <div class="box box-info" >
 	    	<!--   .box-header   -->
@@ -176,6 +201,9 @@
 	        </div>
       </div>
       </div>
+
+		   </div>
+		  </div>
     
     </section>
 	<script type="text/javascript">
@@ -236,7 +264,7 @@
 			}
 			],
 			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordRemove').on('click',function(event){
+				page.root.find('#roleOnMenuListTable td.recordRemove').on('click',function(event){
 					var $tr = $(this).closest('tr');
 		            var row = page.roleOnMenuListTable.row( $tr );
 		            var data=row.data();
@@ -293,7 +321,7 @@
 			}
 			],
 			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordAdd').on('click',function(event){
+				page.root.find('#roleNotOnMenuListTable td.recordAdd').on('click',function(event){
 					var $tr = $(this).closest('tr');
 		            var row = page.roleNotOnMenuListTable.row( $tr );
 		            var data=row.data();
@@ -345,7 +373,7 @@
 			}
 			],
 			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordRemove').on('click',function(event){
+				page.root.find('#groupOnMenuListTable td.recordRemove').on('click',function(event){
 					var $tr = $(this).closest('tr');
 		            var row = page.groupOnMenuListTable.row( $tr );
 		            var data=row.data();
@@ -397,7 +425,7 @@
 			}
 			],
 			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordAdd').on('click',function(event){
+				page.root.find('#groupNotOnMenuListTable td.recordAdd').on('click',function(event){
 					var $tr = $(this).closest('tr');
 		            var row = page.groupNotOnMenuListTable.row( $tr );
 		            var data=row.data();

@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>youapp.kernal</groupId>
-		<artifactId>pom-conf</artifactId>
+		<artifactId>youapp-kernals</artifactId>
 		<version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>

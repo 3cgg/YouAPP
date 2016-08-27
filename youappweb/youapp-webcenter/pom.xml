@@ -10,7 +10,6 @@
 	</parent>
 	<groupId>youapp.webcenter</groupId>
 	<artifactId>youapp-webcenter</artifactId>
-	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>youapp-webcenter</name>

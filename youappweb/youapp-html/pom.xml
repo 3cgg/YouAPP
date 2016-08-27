@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>youapp.youappweb</groupId>
-		  <artifactId>pom-conf</artifactId>
+		  <artifactId>youapp-youappwebs</artifactId>
 		  <version>1.0.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -36,6 +36,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		
 		<dependency>

@@ -14,7 +14,7 @@ import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextDataBinder;
-import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinder;
+import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinderAdapter;
 
 import org.apache.commons.lang3.time.StopWatch;
 
@@ -74,7 +74,7 @@ public class ControllerExecutor implements JService {
 			MethodParamObject methodParamObject=new MethodParamObject();
 			methodParamObject.setMethodParamMeta(methodParamMetas[i]);
 			if(bindWithInnerProtocol){
-				new HttpContextWithInnerProtocolDataBinder(httpContext).bind(methodParamObject);
+				new HttpContextWithInnerProtocolDataBinderAdapter(httpContext).bind(methodParamObject);
 			}
 			else{
 				new HttpContextDataBinder(httpContext).bind(methodParamObject);

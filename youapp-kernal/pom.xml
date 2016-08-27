@@ -10,7 +10,7 @@
 	</parent>
 	
 	<groupId>youapp.kernal</groupId>
-	<artifactId>pom-conf</artifactId>
+	<artifactId>youapp-kernals</artifactId>
 	<packaging>pom</packaging>
 	
 	<name>youapp.kernal-pom-conf</name>

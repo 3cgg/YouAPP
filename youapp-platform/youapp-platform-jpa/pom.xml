@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>youapp.platform</groupId>
-    <artifactId>pom-conf</artifactId>
+    <artifactId>youapp-platforms</artifactId>
     <version>1.0.0</version>
   </parent>
   <artifactId>youapp-platform-jpa</artifactId>

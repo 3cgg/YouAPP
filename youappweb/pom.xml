@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>youapp.youappweb</groupId>
-	<artifactId>pom-conf</artifactId>
+	<artifactId>youapp-youappwebs</artifactId>
 	<packaging>pom</packaging>
 
 	<name>youappweb</name>

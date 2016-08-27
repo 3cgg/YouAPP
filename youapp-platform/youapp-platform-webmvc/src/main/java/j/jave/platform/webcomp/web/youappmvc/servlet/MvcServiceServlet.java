@@ -45,7 +45,7 @@ public class MvcServiceServlet  extends JServlet {
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(MvcServiceServlet.class);
 	
 	public MvcServiceServlet() {
-		LOGGER.info("Constructing JServiceServlet... ");
+		LOGGER.info("setup servlet :  "+MvcServiceServlet.class.getName()+"... ");
 	}
 	
 	@Override

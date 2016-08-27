@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>youapp.platform</groupId>
-	<artifactId>pom-conf</artifactId>
+	<artifactId>youapp-platforms</artifactId>
 	<packaging>pom</packaging>
 
 	<name>youapp-platform</name>

@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>youapp.business</groupId>
-	<artifactId>pom-conf</artifactId>
+	<artifactId>youapp-businesses</artifactId>
 	<version>${bussiness.version}</version>
 	<packaging>pom</packaging>
 

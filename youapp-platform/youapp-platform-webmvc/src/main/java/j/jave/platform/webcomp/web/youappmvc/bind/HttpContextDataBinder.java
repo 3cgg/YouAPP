@@ -2,7 +2,6 @@ package j.jave.platform.webcomp.web.youappmvc.bind;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support.JDataBinder;
 import j.jave.kernal.jave.support.databind.JDataBindingException;
 import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.platform.data.common.MethodParamMeta;
@@ -14,7 +13,7 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-public class HttpContextDataBinder implements JDataBinder{
+public class HttpContextDataBinder implements MethodParamObjectBinder{
 
 	private HttpContext httpContext;
 	
@@ -22,15 +21,14 @@ public class HttpContextDataBinder implements JDataBinder{
 		this.httpContext=httpContext;
 	}
 	
-	public void bind(MethodParamObject methodParamObject){
+	public void bind(MethodParamObject methodParamObject) throws JDataBindingException{
 		
 		Annotation[] annotations=methodParamObject.getMethodParamMeta().getAnnotations();
-		int count=0;
 		String prefix=null;
 		for(Annotation annotation:annotations){
 			if(RequestParam.class.isInstance(annotation)){
 				prefix=((RequestParam)annotation).value();
-				count++;
+				break;
 			}
 		}
 		MethodParamMeta methodParamMeta= methodParamObject.getMethodParamMeta();
@@ -48,9 +46,9 @@ public class HttpContextDataBinder implements JDataBinder{
 				methodParamObject.setObject(dataParser.parse(clazz, httpContext.getParameterValue(paramName)));
 			}
 			else{
-				RequestParamPopulate requestParamPopulate=new RequestParamPopulate(prefix, httpContext);
+				SimpleRequestParamBinder requestParamPopulate=new SimpleRequestParamBinder(prefix, httpContext);
 				newObject(methodParamObject);
-				requestParamPopulate.bind(methodParamObject.getObject());
+				requestParamPopulate.bind(methodParamObject);
 			}
 		}catch(Exception e){
 			throw new JDataBindingException(e);
@@ -67,6 +65,11 @@ public class HttpContextDataBinder implements JDataBinder{
 	
 	private boolean isSimpleType(Class<?> clazz){
 		return JClassUtils.isSimpleType(clazz);
+	}
+
+	@Override
+	public void setHttpContext(HttpContext httpContext) {
+		this.httpContext=httpContext;
 	}
 	
 	

@@ -9,7 +9,10 @@ public class DefaultServiceContext implements ServiceContextSupport ,Initializin
 	private static ServiceContext getDefault(){
 		if(instance==null){
 			ServiceContext serviceContext=new ServiceContext();
-			serviceContext.setSessionUser((SessionUserImpl) DefaultSessionUser.getDefaultSessionUser());
+			SessionUserImpl sessionUserImpl=(SessionUserImpl) DefaultSessionUser.getDefaultSessionUser();
+			serviceContext.setTicket(sessionUserImpl.getTicket());
+			serviceContext.setUserId(sessionUserImpl.getUserId());
+			serviceContext.setUserName(sessionUserImpl.getUserName());
 			instance=serviceContext;
 		}
 		return instance;

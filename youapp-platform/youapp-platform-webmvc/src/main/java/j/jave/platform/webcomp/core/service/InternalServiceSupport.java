@@ -54,7 +54,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	@Override
 	public void saveOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnSave(getRepo(), context.getSessionUser(), object);
+		proxyOnSave(getRepo(), context, object);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	@Override
 	public void updateOnly(ServiceContext context, T object)
 			throws JServiceException {
-		proxyOnUpdate(getRepo(), context.getSessionUser(), object);
+		proxyOnUpdate(getRepo(), context, object);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnSave(JIPersist<?, T,String> repo, SessionUserImpl authorizer, JBaseModel baseModel){
+	private T proxyOnSave(JIPersist<?, T,String> repo, ServiceContext authorizer, JBaseModel baseModel){
 		baseModel.setCreateId(authorizer.getUserId());
 		baseModel.setCreateTime(new Timestamp(new Date().getTime()));
 		baseModel.setUpdateId(authorizer.getUserId());
@@ -139,7 +139,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	 * @param jBaseModel
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private T proxyOnUpdate(JIPersist<?, T,String> repo, SessionUserImpl authorizer, JBaseModel baseModel){
+	private T proxyOnUpdate(JIPersist<?, T,String> repo, ServiceContext authorizer, JBaseModel baseModel){
 		baseModel.setUpdateId(authorizer.getUserId());
 		baseModel.setUpdateTime(new Timestamp(new Date().getTime()));
 		

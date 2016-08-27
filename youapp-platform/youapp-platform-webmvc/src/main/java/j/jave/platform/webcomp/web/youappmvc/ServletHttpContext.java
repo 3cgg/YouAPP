@@ -22,6 +22,8 @@ import j.jave.platform.webcomp.web.youappmvc.utils.YouAppMvcUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -302,6 +304,11 @@ public class ServletHttpContext implements JModel, HttpContext {
 		return parameters;
 	}
 	
+	@Override
+	public Collection<String> getKeys() {
+		return Collections.unmodifiableCollection(parameters.keySet());
+	}
+	
 	/**
 	 * the method is only used to initialize parameters for testing without HTTP context.
 	 * @param parameters
@@ -385,7 +392,9 @@ public class ServletHttpContext implements JModel, HttpContext {
 	@Override
 	public ServiceContext getServiceContext(){
 		ServiceContext serviceContext=new ServiceContext();
-		serviceContext.setSessionUser((SessionUserImpl) user);
+		serviceContext.setTicket(ticket);
+		serviceContext.setUserId(user.getUserId());
+		serviceContext.setUserName(user.getUserName());
 		return serviceContext;
 	}
 

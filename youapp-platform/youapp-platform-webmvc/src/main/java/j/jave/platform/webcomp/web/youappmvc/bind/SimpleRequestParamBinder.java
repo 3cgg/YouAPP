@@ -26,10 +26,8 @@ public class SimpleRequestParamBinder implements MethodParamObjectBinder {
 		this.httpContext=httpContext;
 	}
 	
-	public void bind(MethodParamObject methodParamObject) throws JDataBindingException {
-		
+	public void bindObject(final Object object) throws JDataBindingException{
 		try{
-			final Object object=methodParamObject.getObject();
 			final JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.build(JConfiguration.get());
 			JFieldOnSingleClassFinder<JDefaultFieldMeta> fieldOnSingleClassFinder
 			=new JFieldOnSingleClassFinder<JDefaultFieldMeta>(object.getClass());
@@ -60,15 +58,12 @@ public class SimpleRequestParamBinder implements MethodParamObjectBinder {
 					else if(JClassUtils.isAssignable(Map.class, type)){
 //						JClassUtils.set(field.getName(), httpContext.getParameters(), object);
 					}
-					else{
-						// ignore ...  may encounter cycle error
-//						Object obj=JClassUtils.newObject(type);
+					else{ // is bean 
+						// bean must initialize itself,
 //						String innerPrefix=JStringUtils.isNotNullOrEmpty(prefix)?getKey(field.getName()):field.getName();
-//						RequestParamPopulate requestParamPopulate=new RequestParamPopulate(innerPrefix, httpContext);
-//						requestParamPopulate.populate(obj);
-//						field.set(object, obj);
+//						SimpleRequestParamBinder requestParamBinder=new SimpleRequestParamBinder(innerPrefix, httpContext);
+//						requestParamBinder.bindObject(JClassUtils.get(field.getName(), object));
 					}
-					
 				}
 			});
 		}catch(Exception e){
@@ -76,11 +71,15 @@ public class SimpleRequestParamBinder implements MethodParamObjectBinder {
 		}
 	}
 	
+	public void bind(MethodParamObject methodParamObject) throws JDataBindingException {
+		bindObject(methodParamObject.getObject());
+	}
+	
 	private String getKey(String fieldName){
-		if(JStringUtils.isNotNullOrEmpty(prefix)){
-			return prefix+"."+fieldName;
+		if(JStringUtils.isNullOrEmpty(prefix)){
+			return fieldName;
 		}
-		return fieldName;
+		return prefix+"."+fieldName;
 	}
 
 	@Override

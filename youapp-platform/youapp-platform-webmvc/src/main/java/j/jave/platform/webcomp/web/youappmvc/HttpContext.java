@@ -5,7 +5,9 @@ import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 public interface HttpContext {
 	
@@ -29,6 +31,8 @@ public interface HttpContext {
 	 * @return the parameters
 	 */
 	public abstract Map<String, Object> getParameters();
+	
+	Collection<String> getKeys();
 
 	public abstract HttpClientInfo getClientInfo();
 

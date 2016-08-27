@@ -41,7 +41,7 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 				return servletRequestInvocation.proceed();
 			}
 			HttpContext context=servletRequestInvocation.getHttpContext();
-			String userId=context.getServiceContext().getSessionUser().getUserId();
+			String userId=context.getServiceContext().getUserId();
 			if(JStringUtils.isNotNullOrEmpty(userId)){
 				boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, userId);
 				authorized=true;

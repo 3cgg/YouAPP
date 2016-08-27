@@ -1,19 +1,23 @@
 (function(){
 	function _Config(){
+		function getWebPath(){
+			return window.location.protocol+"//"+window.location.host+"/"+window.location.pathname.split('/')[1];
+		}
+		
 		this.getEndpoint=function(){
-			return "http://localhost:8585/youapp-html";
+			return getWebPath();
 		}
 		
 		this.getHtmlEndpoint=function(){
-			return "http://localhost:8585/youapp-html/get/gethtml/";
+			return getWebPath()+ "/get/gethtml/";
 		}
 		
 		this.getDataEndpoint=function(){
-			return "http://localhost:8585/youapp-html/get/getdata/";
+			return getWebPath()+"/get/getdata/";
 		}
 		
 		this.getFileUploaderEndpoint=function(){
-			return "http://localhost:8585/youapp-html/get/fileupload/";
+			return getWebPath()+"/get/fileupload/";
 		}
 	}
 	

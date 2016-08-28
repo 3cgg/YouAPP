@@ -237,7 +237,8 @@
 			$_youapp.$_util.ajaxGet({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
 				data:{data:$_youapp.$_util.json($.extend({},{
-					endpoint:options.url
+					endpoint:options.url,
+					ticket:$_youapp.$_ticket.getTicket()
 			  		},formDataOpts,paginationDataOpts
 			  		))},
 		  		success:function(data){
@@ -293,7 +294,8 @@
 			$_youapp.$_util.ajaxPost({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
 				data:{data:$_youapp.$_util.json($.extend({},{
-					endpoint:options.url
+					endpoint:options.url,
+					ticket:$_youapp.$_ticket.getTicket()
 			  		},formDataOpts,paginationDataOpts,tokenOpts
 			  		))},
 		  		success:function(data){
@@ -387,6 +389,21 @@
 		window.$_youapp.$_layout.draw('body',$('body'));
 		window.$_youapp.$_data=new DataExchange();
 		window.$_youapp.$_html=new HtmlExchange();
+		window.$_youapp.$_ticket=(function(){
+			function getKey(){
+				return '_youapp_ticket';
+			}
+			this.getTicket=function(){
+				return Cookies.get(getKey());
+			}
+			this.setTicket=function(ticket){
+				Cookies.set(getKey(),ticket);
+			}
+			return {
+				getTicket:this.getTicket,
+				setTicket:this.setTicket
+			}
+		})();
 		window.$_youapp.$_toast=(function(){
 			
 			function def(opts){

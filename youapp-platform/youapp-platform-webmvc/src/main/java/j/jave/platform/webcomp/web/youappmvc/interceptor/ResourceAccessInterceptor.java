@@ -41,8 +41,8 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 				return servletRequestInvocation.proceed();
 			}
 			HttpContext context=servletRequestInvocation.getHttpContext();
-			String userId=context.getServiceContext().getUserId();
-			if(JStringUtils.isNotNullOrEmpty(userId)){
+			if(JStringUtils.isNotNullOrEmpty(context.getServiceContext().getTicket())){
+				String userId=context.getServiceContext().getUserId();
 				boolean authorized=loginAccessService.authorizeOnUserId(pathInfo, userId);
 				authorized=true;
 				if(!authorized){
@@ -53,7 +53,7 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 			}
 			else{
 				ResponseModel responseModel=ResponseModel.newNoLogin();
-				responseModel.setData("user information miss.");
+				responseModel.setData("have no access to the resource.");
 				return responseModel;
 			}
 			return servletRequestInvocation.proceed();

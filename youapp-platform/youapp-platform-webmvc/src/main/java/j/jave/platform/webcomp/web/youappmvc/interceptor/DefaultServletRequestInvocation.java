@@ -45,7 +45,8 @@ public class DefaultServletRequestInvocation implements ServletRequestInvocation
 //		MODEL_INTERCEPTORS.add(new FormTokenValidatorInterceptor());
 		MODEL_INTERCEPTORS.add(new HttpContextExtracterInterceptor());
 		MODEL_INTERCEPTORS.add(new MultiVersionCheckInterceptor());
-//		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
+		MODEL_INTERCEPTORS.add(new TicketValidationInterceptor());
+		MODEL_INTERCEPTORS.add(new AuthenticationInterceptor());
 		MODEL_INTERCEPTORS.add(new ResourceAccessInterceptor());
 		MODEL_INTERCEPTORS.add(new ValidPathInterceptor());
 		MODEL_INTERCEPTORS.add(new MemoryHTMLInterceptor());

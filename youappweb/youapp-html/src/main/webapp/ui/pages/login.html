@@ -65,9 +65,43 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition skin-blue-light  sidebar-mini  body_font  fixed" 
- data-layoutId="body"
- data-htmlUrl="ui/pages/layout/layout-boot.html"  >
+<body class="hold-transition login-page">
+
+<div class="login-box"   id="loginSection">
+  <div class="login-logo">
+    <a href="#"><b>You</b>APP</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+
+    <form  id="loginForm">
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" placeholder="Email"  name="_name">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Password"  name="_password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox"  class="minimal"> Remember Me
+            </label>
+          </div>
+        </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+  </div>
+  <!-- /.login-box-body -->
+</div>
 
 
 <!-- iCheck -->
@@ -111,49 +145,40 @@
 
 <script type="text/javascript">
 $_youapp.ready(function(){
-	$_youapp.$_codeTable.codeTable({
-		getType:function(data){
-			return data.type;
-		},
-		getCode:function(data){
-			return data.code;
-		},
-		getName:function(data){
-			return data.codeName;
-		},
-		getDesc:function(data){
-			return data.description;
-		},
-		fnDatas:function(callback){
-			
-			$_youapp.$_data.ajaxGet({
-				url:'/codetablemanager/getParamCodesByPage',
-				formData:{},
-				paginationData:$.extend({},{
-			  		pageNumber:0,
-					pageSize:100000,
-					orders:[]
-			  		}),
-		  		success:function(data){
-		  			callback(data.data);
-		  		}
-			});
-		},
-		fnData:function(type,callback){
-			var data=[{
-				code:'test-'+type+'-code-1',
-				codeName:'test-'+type+'-name-1',
-				desc:type
-			},
-			{
-				code:'test-'+type+'-code-2',
-				codeName:'test-'+type+'-name-2',
-				desc:type
-			}
-			];
-			callback(data);
+	
+	var page=$.extend({
+		root:$("#loginSection"),
+		model:{
 		}
-	});
-})
+	},$_youapp.pageTemplate);
+	var $chk=page.root.find('input[type="checkbox"].minimal');
+	$chk.iCheck({
+			checkboxClass : 'icheckbox_minimal-blue',
+			radioClass : 'iradio_minimal-blue'
+		});
+	
+	page.root.find("#loginForm").validate({
+		rules: {
+			'_name': {
+				   required: true,
+				   maxlength:64
+			   },
+		   '_password': {
+			   required: true,
+			   maxlength:32
+		   }
+		  },
+		  submitHandler:function(form){
+			  page.submitForm({
+				  url:'/_youapp/authenticate/login',
+				  formSelector:form,
+				  success:function(data){
+					  $_youapp.$_ticket.setTicket(data.ticket);
+					  window.location.href=$_youapp.$_config.getEndpoint()+'/ui/pages/index.html';
+				  }
+				});
+		 }
+	})
+});
 </script>
 </html>

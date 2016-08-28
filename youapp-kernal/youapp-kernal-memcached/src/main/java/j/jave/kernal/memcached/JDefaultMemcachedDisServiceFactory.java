@@ -16,6 +16,10 @@ public class JDefaultMemcachedDisServiceFactory extends
 	
 	private Object sync=new Object();
 	
+	@Override
+	public Class<?> getServiceImplClass() {
+		return JDefaultMemcachedDisServiceImpl.class;
+	}
 	
 	@Override
 	public JDefaultMemcachedDisServiceImpl doGetService() {

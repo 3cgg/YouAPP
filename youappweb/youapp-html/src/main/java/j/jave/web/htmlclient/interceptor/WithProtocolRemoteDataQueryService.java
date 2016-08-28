@@ -9,7 +9,6 @@ import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JAssert;
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.web.htmlclient.WebHtmlClientProperties;
 import j.jave.web.htmlclient.request.RequestVO;
 import j.jave.web.htmlclient.response.ResponseModel;
@@ -17,6 +16,7 @@ import j.jave.web.htmlclient.response.ResponseModel;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class WithProtocolRemoteDataQueryService implements DataQueryService {
 
@@ -43,10 +43,17 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 		String serviceContext=requestVO.getServiceContext() ;
 		
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("serviceContext", serviceContext);
-		map.put("formData", formData);
-		map.put("paginationData", paginationData);
-		map.put("_youapp_ticket", JUniqueUtils.unique());
+		map.put("_youapp_serviceContext", serviceContext);
+		map.put("_youapp_formData", formData);
+		map.put("_youapp_paginationData", paginationData);
+		
+		Map<String, Object> formDatas= JJSON.get().parse(formData);
+		for(Entry<String, Object> entry:formDatas.entrySet()){
+			map.put(entry.getKey(), entry.getValue());
+		}
+		
+		map.put("_youapp_ticket", requestVO.getTicket());
+		
 		JObjectTransModel model=new JObjectTransModel();
 		model.setProtocol(JObjectTransModelProtocol.JSON);
 		model.setParams(map);

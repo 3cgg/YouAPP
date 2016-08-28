@@ -26,16 +26,17 @@ public class MemcachedDelegateServiceFactory extends SpringServiceFactorySupport
 	
 	@Override
 	public MemcachedDelegateService getService() {
-		
-		if(instance==null){
+		if(instance==null){ 
 			synchronized (sync) {
 				if(instance==null){
 					try{
 						//TEST IF THE CACHE IS ACTIVE.
 						defaultService.contains("test");
+						instance=defaultService;
+						LOGGER.info("-----------memcache is active ------ ");
 					}catch(Exception e){
 						LOGGER.error(e.getMessage(), e);
-						defaultService=inMemoryService;
+						instance=inMemoryService;
 						LOGGER.info("[Memcache] use in memory instead of .");
 					}
 				}

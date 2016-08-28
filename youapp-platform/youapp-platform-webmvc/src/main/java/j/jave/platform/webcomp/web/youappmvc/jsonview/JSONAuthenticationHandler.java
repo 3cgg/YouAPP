@@ -8,16 +8,10 @@ import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationHookDelegateService;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
 import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.util.JCookieUtils;
-import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
-import j.jave.platform.webcomp.web.youappmvc.ViewConstants;
+import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.AuthenticationHandler;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletExceptionUtil;
 import j.jave.platform.webcomp.web.youappmvc.support.APPFilterConfig;
-
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 
@@ -48,46 +42,34 @@ public class JSONAuthenticationHandler implements AuthenticationHandler {
 			JServiceHubDelegate.get().getService(this, AuthenticationHookDelegateService.class);
 	
 	@Override
-	public Object handleNoLogin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public Object handleNoLogin(HttpContext httpContext) throws Exception {
 		ResponseModel responseModel= ResponseModel.newNoLogin();
 		return responseModel;
 	}
 	
 	@Override
-	public Object handleDuplicateLogin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public Object handleDuplicateLogin(HttpContext httpContext) throws Exception {
 		ResponseModel responseModel= ResponseModel.newDuplicateLogin();
+		responseModel.setData("already login.");
 		return responseModel;
-	}
-
-	@Override
-	public void handleToLogin(HttpServletRequest request,
-			HttpServletResponse response, FilterChain chain) throws Exception {
 	}
 	
 	private MemcachedDelegateService memcachedService= JServiceHubDelegate.get().getService(this,MemcachedDelegateService.class);;
 	
-	private static final String loginName=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_NAME, "_name");
+	public static final String loginName=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_NAME, "_name");
 	
-	private static final String loginPassword=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_PASSWORD, "_password");
+	public static final String loginPassword=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_LOGIN_PASSWORD, "_password");
 	
 	private final int expiredTime=JConfiguration.get().getInt(WebCompProperties.YOUAPPMVC_TICKET_SESSION_EXPIRED_TIME, 1800);
 	
 	@Override
-	public Object handleLogin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String name=request.getParameter(loginName);
-		String password=request.getParameter(loginPassword);
-		ServletHttpContext httpContext=null;
+	public Object handleLogin(HttpContext httpContext) throws Exception {
+		String name=httpContext.getParameter(loginName);
+		String password=httpContext.getParameter(loginPassword);
 		try{
 			SessionUserImpl sessionUserImpl=authenticationAccessService.login(name, password);
 			if(sessionUserImpl!=null){
-				httpContext=new ServletHttpContext();
-				httpContext.setTicket(sessionUserImpl.getTicket());
-				httpContext.setUser(sessionUserImpl);
-				memcachedService.add(sessionUserImpl.getTicket(), expiredTime, httpContext);
-				httpContext.initHttpClient(request, response);
+				memcachedService.add(sessionUserImpl.getTicket(), expiredTime, sessionUserImpl);
 				authenticationHookDelegateService.doAfterLogin(httpContext);
 				ResponseModel responseModel= ResponseModel.newSuccessLogin();
 				SessionUserImpl resSessionUserImpl=new SessionUserImpl();
@@ -103,31 +85,29 @@ public class JSONAuthenticationHandler implements AuthenticationHandler {
 				return responseModel;
 			}
 		}catch(Exception e){
-			return ServletExceptionUtil.exception(request, response, e);
+			return ServletExceptionUtil.exception(httpContext, e);
 		}
 		
 	}
 	
 	@Override
-	public Object handleLoginout(HttpServletRequest request,
-			HttpServletResponse response,ServletHttpContext httpContext) throws Exception {
+	public Object handleLoginout(HttpContext httpContext) throws Exception {
 		try{
-			memcachedService.remove(httpContext.getTicket());
+			memcachedService.remove(httpContext.getServiceContext().getTicket());
 			authenticationHookDelegateService.doAfterLoginout(httpContext);
 			ResponseModel responseModel= ResponseModel.newSuccess();
 			responseModel.setData(true);
 			return responseModel;
 		}catch(Exception e){
-			return ServletExceptionUtil.exception(request, response, e);
+			return ServletExceptionUtil.exception(httpContext, e);
 		}
 	}
 	
 	
 	@Override
-	public Object handleExpiredLogin(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		JCookieUtils.deleteCookie(request, response, JCookieUtils.getCookie(request, ViewConstants.TICKET));
+	public Object handleExpiredLogin(HttpContext httpContext) throws Exception {
 		ResponseModel responseModel= ResponseModel.newExpiredLogin();
+		responseModel.setData("ticket is expired.");
 		return responseModel;
 	}
 

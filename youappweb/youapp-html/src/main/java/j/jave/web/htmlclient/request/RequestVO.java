@@ -34,6 +34,12 @@ public class RequestVO implements JModel {
 	 */
 	private String token;
 	
+	
+	/**
+	 * TICKET INFO.
+	 */
+	private String ticket;
+	
 	public RequestVO(){
 		
 	}
@@ -106,8 +112,13 @@ public class RequestVO implements JModel {
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-	
-	
-	
+
+	public String getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
+	}
 
 }

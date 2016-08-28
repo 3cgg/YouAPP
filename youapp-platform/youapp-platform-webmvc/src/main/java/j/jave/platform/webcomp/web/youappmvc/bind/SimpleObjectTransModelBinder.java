@@ -21,11 +21,11 @@ public class SimpleObjectTransModelBinder implements ObjectTransModelBinder {
 	
 	private HttpContext httpContext;
 
-	public static final String serviceContext="serviceContext";
+	public static final String serviceContext="_youapp_serviceContext";
 	
-	public static final String formData="formData";
+	public static final String formData="_youapp_formData";
 	
-	public static final String paginationData="paginationData";
+	public static final String paginationData="_youapp_paginationData";
 	
 	@Override
 	public void bind(MethodParamObject methodParamObject) {

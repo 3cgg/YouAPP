@@ -1,25 +1,20 @@
 package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.platform.webcomp.web.model.ResponseModel;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import j.jave.platform.webcomp.web.model.ResponseModel;
+import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 
 public class ServletExceptionUtil {
-
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(ServletExceptionUtil.class);
 	
-	public static ResponseModel exception(ServletRequest request, ServletResponse response,Throwable exception){
-		try{
-			ResponseModel responseModel=ResponseModel.newError().setData(exception.getMessage());
-//			HttpServletResponseUtil.write((HttpServletRequest)request, (HttpServletResponse)response, HttpContextHolder.get(), responseModel);
-			return responseModel;
-		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
-			return exception(request, response, e);
-		}
+	public static ResponseModel exception(HttpContext httpContext,Throwable exception){
+		ResponseModel responseModel=ResponseModel.newError().setData(exception.getMessage());
+		return responseModel;
 	}
 	
+	public static ResponseModel exception(HttpServletRequest req, HttpServletResponse resp,Throwable exception){
+		ResponseModel responseModel=ResponseModel.newError().setData(exception.getMessage());
+		return responseModel;
+	}
 }

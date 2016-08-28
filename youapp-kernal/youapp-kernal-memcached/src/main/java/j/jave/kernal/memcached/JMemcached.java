@@ -57,10 +57,9 @@ public class JMemcached {
 	
 	public Object get(String key){
 		try{
-			
 			return memcachedClient.get(key);
 		}catch(OperationTimeoutException e){
-			return null;
+			throw e;
 		}
 	}
 

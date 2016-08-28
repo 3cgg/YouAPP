@@ -1,5 +1,6 @@
 package j.jave.platform.sps.support.memcached.subhub;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.cache.JInMemorySerializableCacheService;
 import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
@@ -8,12 +9,19 @@ import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
 
 public class MemoryInsteadOfMemcachedDelegateService
+extends JServiceFactorySupport<MemoryInsteadOfMemcachedDelegateService>
 	implements MemcachedDelegateService{
-	
 	
 	private JInMemorySerializableCacheService inMemorySerializableService=
 			JServiceHubDelegate.get().getService(this, JInMemorySerializableCacheService.class);
 
+	
+	@Override
+	protected MemoryInsteadOfMemcachedDelegateService doGetService() {
+		return this;
+	}
+	
+	
 	@Override
 	public Object set(String key, int expiry, Object value) {
 		return inMemorySerializableService.put(key, expiry, value);

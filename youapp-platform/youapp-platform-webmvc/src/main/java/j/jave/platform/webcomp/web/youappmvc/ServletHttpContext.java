@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author J
  * @see ControllerExecutor
  */
+@SuppressWarnings("serial")
 public class ServletHttpContext implements JModel, HttpContext {
 	
 	/**
@@ -159,6 +160,12 @@ public class ServletHttpContext implements JModel, HttpContext {
 					if(_ticket!=null&&JStringUtils.isNotNullOrEmpty(_ticketStr=String.valueOf(_ticket))){
 						ticket=_ticketStr;
 					}
+					
+					Map<String, Object> params= objectTransModel.getParams();
+					for(Entry<String, Object> entry:params.entrySet()){
+						parameters.put(entry.getKey(), entry.getValue());
+					}
+					
 				}catch(Exception e){
 					throw new JDataBindingException(e);
 				}
@@ -363,11 +370,21 @@ public class ServletHttpContext implements JModel, HttpContext {
 		if(serviceContext==null){
 			ServiceContext serviceContext=new ServiceContext();
 			serviceContext.setTicket(ticket);
-			serviceContext.setUserId(user.getUserId());
-			serviceContext.setUserName(user.getUserName());
+			if(user!=null){
+				serviceContext.setUserId(user.getUserId());
+				serviceContext.setUserName(user.getUserName());
+			}
 			this.serviceContext=serviceContext;
 		}
 		return serviceContext;
+	}
+	
+	@Override
+	public ServiceContext getServiceContext(boolean refresh) {
+		if(refresh){
+			serviceContext=null;
+		}
+		return getServiceContext();
 	}
 	
 	@Override

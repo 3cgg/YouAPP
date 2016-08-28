@@ -69,7 +69,7 @@ public class ResponseModel implements JModel{
 	}
 
 	public boolean isSuccess(){
-		return "1".equals(status)||"SUCCESS".equals(status);
+		return "1".equals(status)||"SUCCESS".equals(status)||"SUCCESS_LOGIN".equals(status);
 	}
 	
 }

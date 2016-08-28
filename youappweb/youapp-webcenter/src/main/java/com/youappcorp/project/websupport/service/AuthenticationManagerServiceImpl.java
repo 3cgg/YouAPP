@@ -1,6 +1,8 @@
 package com.youappcorp.project.websupport.service;
 
+import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationManagerService;
 import j.jave.platform.webcomp.access.subhub.AuthorizedResource;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
@@ -22,9 +24,18 @@ public class AuthenticationManagerServiceImpl extends SpringServiceFactorySuppor
 	@Autowired
 	private DefaultUserManagerServiceImpl userManagerService;
 	
+	private DESedeCipherService deSedeCipherService=
+			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
+	
 	@Override
 	public SessionUserImpl getUserByNameAndPassword(String name, String password) {
-		User user=userManagerService.getUserByNameAndPassword(name,password);
+		String encryptPassword=null;
+		try {
+			encryptPassword =deSedeCipherService.encrypt(password.trim());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		User user=userManagerService.getUserByNameAndPassword(name,encryptPassword);
 		SessionUserImpl sessionUserImpl=null;
 		if(user!=null){
 			sessionUserImpl =new SessionUserImpl();

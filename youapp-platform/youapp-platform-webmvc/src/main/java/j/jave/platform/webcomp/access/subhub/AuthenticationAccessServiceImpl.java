@@ -8,14 +8,15 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheService;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
@@ -34,12 +35,24 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	private WebRequestURLCacheService webRequestURLCacheService=
 			JServiceHubDelegate.get().getService(this, WebRequestURLCacheService.class);
 	
-	private DESedeCipherService deSedeCipherService=
-			JServiceHubDelegate.get().getService(this, DESedeCipherService.class);
-	
 	private HttpInvokeContainerDelegateService httpInvokeContainerDelegateService=
 			JServiceHubDelegate.get().getService(this,HttpInvokeContainerDelegateService.class);
 	
+	private boolean authorizeOpen;
+	
+	private List<Pattern> excludes=new ArrayList<Pattern>();
+	{
+		authorizeOpen=JConfiguration.get().getBoolean(WebCompProperties.YOUAPPMVC_RESOURCE_AUTHORIZATION_ONOFF, true);
+		String patterns=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_RESOURCE_AUTHORIZATION_EXCLUDE_PATTERN, "");
+		for(String string:patterns.split(",")){
+			if(JStringUtils.isNotNullOrEmpty(string)){
+				excludes.add(Pattern.compile(string));
+			}
+		}
+		if(excludes.isEmpty()){
+			excludes.add(Pattern.compile(".+"));
+		}
+	}
 	
 	@Override
 	public SessionUserImpl validate(String name, String password)
@@ -51,14 +64,7 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 		if(JStringUtils.isNullOrEmpty(password)){
 			throw new JServiceException("密码不能为空");
 		}
-		String encryptPassword=null;
-		try {
-			encryptPassword =deSedeCipherService.encrypt(password.trim());
-//					JRSSecurityHelper.encryptOnDESede(password.trim());
-		} catch (Exception e) {
-			throw new JServiceException(e);
-		}
-		SessionUserImpl user= authenticationManagerService.getUserByNameAndPassword(name.trim(), encryptPassword);
+		SessionUserImpl user= authenticationManagerService.getUserByNameAndPassword(name.trim(), password);
 		if(user!=null){
 			user.setTicket(JUniqueUtils.unique());
 			return user;
@@ -68,29 +74,19 @@ public class AuthenticationAccessServiceImpl implements AuthenticationAccessServ
 	
 	
 	@Override
-	public boolean isNeedLoginRole(String url) throws JServiceException {
-		
-		boolean on=JConfiguration.get().getBoolean(WebCompProperties.YOUAPPMVC_RESOURCE_AUTHORIZATION_ONOFF, true);
-		if(on){
+	public boolean isNeedAuthorize(String url) throws JServiceException {
+		if(authorizeOpen){
 			if(JStringUtils.isNullOrEmpty(url)){
 				return false;
 			}
-			if("/login.loginaction/toRegister".equals(url)){
-				return false;
+			boolean need=true;
+			for(Pattern pattern:excludes){
+				if(pattern.matcher(url).matches()){
+					need=false;
+					break;
+				}
 			}
-			else if("/login.loginaction/register".equals(url)){
-				return false;
-			}
-			else if("/login.loginaction/login".equals(url)){
-				return false;
-			}
-			else if("/mobile.login.loginaction/login".equals(url)){
-				return false;
-			}
-//			else if("/login.loginaction/toLogin".equals(url)){
-//				return false;
-//			}
-			return true;
+			return need;
 		}
 		return false;
 	}

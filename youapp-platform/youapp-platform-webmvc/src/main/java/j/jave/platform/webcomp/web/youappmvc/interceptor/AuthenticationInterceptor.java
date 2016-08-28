@@ -47,7 +47,7 @@ protected static final JLogger LOGGER=JLoggerFactory.getLogger(AuthenticationInt
 			String target=servletRequestInvocation.getHttpContext().getVerMappingMeta().getMappingPath();
 			if(!servletConfigService.getLoginPath().equals(target)
 					&&!servletConfigService.getLoginoutPath().equals(target)
-					&&!authenticationAccessService.isNeedLoginRole(target)){
+					&&!authenticationAccessService.isNeedAuthorize(target)){
 				// 资源不需要登录权限, 仍然尝试获取登录用户信息
 				if(serverTicket==null){
 					// no login, mock a login user.

@@ -11,10 +11,8 @@ import j.jave.kernal.jave.support.databind.JDataBindingException;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUser;
-import j.jave.platform.webcomp.core.service.SessionUserImpl;
 import j.jave.platform.webcomp.web.util.JCookieUtils;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerExecutor;
 import j.jave.platform.webcomp.web.youappmvc.support.LinkedRequestSupport;
@@ -86,20 +84,6 @@ public class ServletHttpContext implements JModel, HttpContext {
 	 */
 	private transient Map<String, String> heads = new HashMap<String, String>();
 	
-	
-	/**
-	 * can resolve the path to an object in which inner method is . 
-	 * like "/login.loginaction/toLogin" , the pattern like "/bean-name/method(with no any arguments)"
-	 * <strong>mandatory</strong>
-	 */
-	private transient String targetPath;
-	
-	/**
-	 * the unique for multi-component 
-	 * @see ComponentVersionSpringApplicationSupport
-	 */
-	private transient String unique;
-	
 	/**
 	 * the key is used to for whose parameters that are added in request scope by framework later.
 	 * {@link HttpServletRequest#setAttribute(String, Object)}
@@ -117,7 +101,9 @@ public class ServletHttpContext implements JModel, HttpContext {
 	
 	private transient JObjectTransModel objectTransModel;
 	
-	private VerMappingMeta verMappingMeta;
+	private transient VerMappingMeta verMappingMeta;
+	
+	private transient ServiceContext serviceContext;
 	
 	public ServletHttpContext(HttpServletRequest request,HttpServletResponse response){
 		initHttp(request,response);
@@ -168,27 +154,18 @@ public class ServletHttpContext implements JModel, HttpContext {
 							.build().receive();
 					objectTransModel=OBJECT_TRANS_MODEL_DECODER.encode(messageMeta);
 					protocol=objectTransModel.getProtocol();
+					Object _ticket=objectTransModel.getParams().get(ViewConstants.TICKET_QUERY_PARAMETER);
+					String _ticketStr=null;
+					if(_ticket!=null&&JStringUtils.isNotNullOrEmpty(_ticketStr=String.valueOf(_ticket))){
+						ticket=_ticketStr;
+					}
 				}catch(Exception e){
 					throw new JDataBindingException(e);
 				}
-//				protocol=JProtocol.valueOf(protocolHead);
-//				if(JProtocol.BROWSER!=protocol){
-//					isParseProtocol=true;
-//					try {
-//						objectTransModel=JProtocolReceiverBuilder.get(protocol)
-//						.setData(JIOUtils.getBytes(request.getInputStream()))
-//						.build().receive();
-//					} catch (IllegalStateException e) {
-//						throw e;
-//					}
-//					catch (IOException e) {
-//						throw new IllegalStateException(e);
-//					}
-//				}
 			}
+			if(isParseProtocol) return ;
 		}
 		
-		if(isParseProtocol) return ;
 		
 		boolean parse=false;
 		// process request with context type : multipart/form-data
@@ -355,14 +332,6 @@ public class ServletHttpContext implements JModel, HttpContext {
 	public String getClient(){
 		return httpClientInfo.getClient();
 	}
-
-	public String getTargetPath() {
-		return targetPath;
-	}
-
-	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
-	}
 	
 	/**
 	 * see {@link #linked}
@@ -391,19 +360,14 @@ public class ServletHttpContext implements JModel, HttpContext {
 	 */
 	@Override
 	public ServiceContext getServiceContext(){
-		ServiceContext serviceContext=new ServiceContext();
-		serviceContext.setTicket(ticket);
-		serviceContext.setUserId(user.getUserId());
-		serviceContext.setUserName(user.getUserName());
+		if(serviceContext==null){
+			ServiceContext serviceContext=new ServiceContext();
+			serviceContext.setTicket(ticket);
+			serviceContext.setUserId(user.getUserId());
+			serviceContext.setUserName(user.getUserName());
+			this.serviceContext=serviceContext;
+		}
 		return serviceContext;
-	}
-
-	public String getUnique() {
-		return unique;
-	}
-
-	public void setUnique(String unique) {
-		this.unique = unique;
 	}
 	
 	@Override

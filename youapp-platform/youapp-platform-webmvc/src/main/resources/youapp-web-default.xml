@@ -31,10 +31,18 @@
 
 <property>
   <name>youapp.mvc.resource.authorization.onoff</name>
-  <value>off</value>
+  <value>on</value>
   <description>set whether to turn on/off the authentication on resources.
   on/true : indicates system need check if the resources are accessible, 
   false/off : the otherwise. 
+  </description>
+</property>
+
+<property>
+  <name>youapp.mvc.resource.authorization.exclude.pattern</name>
+  <value>.+</value>
+  <description>which resources need not authorize , some regular patterns split by comma
+  (.+,/usermanager/getUser)
   </description>
 </property>
 

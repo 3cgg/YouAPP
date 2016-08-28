@@ -10,46 +10,15 @@ import j.jave.kernal.jave.model.JModel;
  *
  */
 public class ServiceContextVO implements JModel {
+	
+	private String ticket;
 
-	private SessionUserVO user;
-
-	public SessionUserVO getUser() {
-		return user;
+	public String getTicket() {
+		return ticket;
 	}
 
-	public void setUser(SessionUserVO user) {
-		this.user = user;
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
 	}
-	
-	public static ServiceContextVO getSys(){
-		ServiceContextVO serviceContext = new ServiceContextVO();
-		SessionUserVO sessionUser = new SessionUserVO();
-		sessionUser.setId("SYS");
-		sessionUser.setNatureName("SYS");
-		sessionUser.setUserName("SYS");
-		serviceContext.setUser(sessionUser);
-		return serviceContext;
-	}
-	public static ServiceContextVO getSys(String allName){
-		ServiceContextVO serviceContext = new ServiceContextVO();
-		SessionUserVO sessionUser = new SessionUserVO();
-		sessionUser.setId(allName);
-		sessionUser.setNatureName(allName);
-		sessionUser.setUserName(allName);
-		serviceContext.setUser(sessionUser);
-		return serviceContext;
-	}
-	public static ServiceContextVO getSys(String id,String natureName,String userName){
-		ServiceContextVO serviceContext = new ServiceContextVO();
-		SessionUserVO sessionUser = new SessionUserVO();
-		sessionUser.setId(id);
-		sessionUser.setNatureName(natureName);
-		sessionUser.setUserName(userName);
-		serviceContext.setUser(sessionUser);
-		return serviceContext;
-	}
-	
-	
-	
 	
 }

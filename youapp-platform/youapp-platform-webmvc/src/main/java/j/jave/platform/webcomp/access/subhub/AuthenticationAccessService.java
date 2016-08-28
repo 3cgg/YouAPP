@@ -25,13 +25,13 @@ public interface AuthenticationAccessService  extends JService {
 	public SessionUserImpl validate(String name,String password) throws JServiceException;
 	
 	/**
-	 * return true if need login , else return false,
+	 * return true if need authorize , else return false,
 	 * always true if the argument is null or empty .
 	 * @param url
 	 * @return
 	 * @throws JServiceException
 	 */
-	public boolean  isNeedLoginRole(String url) throws JServiceException;
+	public boolean  isNeedAuthorize(String url) throws JServiceException;
 	
 	/**
 	 * if the user is valid, return session user with an unique string,

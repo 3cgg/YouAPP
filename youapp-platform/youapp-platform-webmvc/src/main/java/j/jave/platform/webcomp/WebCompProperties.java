@@ -15,6 +15,8 @@ public abstract class WebCompProperties {
 	public static final String YOUAPPMVC_LOGIN_PASSWORD="youapp.mvc.login.password";
 
 	public static final String YOUAPPMVC_RESOURCE_AUTHORIZATION_ONOFF="youapp.mvc.resource.authorization.onoff";
+
+	public static final String YOUAPPMVC_RESOURCE_AUTHORIZATION_EXCLUDE_PATTERN="youapp.mvc.resource.authorization.exclude.pattern";
 	
 	public static final String YOUAPPMVC_JSONP_ONOFF="youapp.mvc.request.jsonp.onoff";
 	

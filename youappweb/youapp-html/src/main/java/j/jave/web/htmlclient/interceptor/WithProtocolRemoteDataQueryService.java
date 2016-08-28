@@ -9,6 +9,7 @@ import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.web.htmlclient.WebHtmlClientProperties;
 import j.jave.web.htmlclient.request.RequestVO;
 import j.jave.web.htmlclient.response.ResponseModel;
@@ -45,6 +46,7 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 		map.put("serviceContext", serviceContext);
 		map.put("formData", formData);
 		map.put("paginationData", paginationData);
+		map.put("_youapp_ticket", JUniqueUtils.unique());
 		JObjectTransModel model=new JObjectTransModel();
 		model.setProtocol(JObjectTransModelProtocol.JSON);
 		model.setParams(map);

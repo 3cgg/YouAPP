@@ -36,8 +36,8 @@ public class ResourceAccessInterceptor implements ServletRequestInterceptor{
 			// common resource , if path info is null or empty never intercepted by custom servlet.
 			String pathInfo=servletRequestInvocation.getHttpContext().getVerMappingMeta().getMappingPath();
 			 
-			if(!loginAccessService.isNeedLoginRole(pathInfo)){
-				// 资源不需要登录权限
+			if(!loginAccessService.isNeedAuthorize(pathInfo)){
+				// 资源不需要授权
 				return servletRequestInvocation.proceed();
 			}
 			HttpContext context=servletRequestInvocation.getHttpContext();

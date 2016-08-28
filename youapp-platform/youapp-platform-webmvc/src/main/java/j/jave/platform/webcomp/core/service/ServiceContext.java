@@ -3,13 +3,15 @@
  */
 package j.jave.platform.webcomp.core.service;
 
+import j.jave.kernal.jave.model.JModel;
+
 
 
 /**
  * @author J
  *
  */
-public class ServiceContext {
+public class ServiceContext implements JModel {
 	
 	private String ticket;
 	

@@ -2,33 +2,46 @@
 <Configuration status="INFO" strict="true"   name="youapp-log4j2"
                packages="j.jave.kernal.jave">
   
+  <properties>
+    <property name="logPath">d:/youapp-log</property>
+    <property name="logFileName">youap-html</property>
+  </properties>
+  
   <Appenders>
     <Appender type="Console" name="appConsole">
       <Layout type="PatternLayout" pattern="%d %p  %c [%t] %m %n"/>
     </Appender>
+    <RollingFile name="RollingFile" filename="${logPath}/${logFileName}.log"
+      filepattern="${logPath}/%d{YYYYMMddHHmmss}-${logFileName}.log">
+  		<PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+      <Policies>
+        <SizeBasedTriggeringPolicy size="20 MB"/>
+      </Policies>	
+       <DefaultRolloverStrategy max="50"/>
+    </RollingFile>
   </Appenders>
  
   <Loggers>
     
     <Logger name="j.jave" level="DEBUG" additivity="false">
       <AppenderRef ref="appConsole"/>
+      <AppenderRef ref="RollingFile"/>
     </Logger>
     
     <Logger name="org" level="INFO" additivity="false">
       <AppenderRef ref="appConsole"/>
+      <AppenderRef ref="RollingFile"/>
     </Logger>
     <Logger name="com" level="INFO" additivity="false">
       <AppenderRef ref="appConsole"/>
     </Logger>
-    
-    <Logger name="org.apache.zookeeper" level="INFO" additivity="false">
-      <AppenderRef ref="appConsole"/>
-    </Logger>
-    
     <Logger name="test.j.jave" level="DEBUG" additivity="false">
       <AppenderRef ref="appConsole"/>
     </Logger>
- 
+ 	<Logger name="org.apache.zookeeper" level="ERROR" additivity="false">
+      <AppenderRef ref="appConsole"/>
+      <AppenderRef ref="RollingFile"/>
+    </Logger>
  
   </Loggers>
  

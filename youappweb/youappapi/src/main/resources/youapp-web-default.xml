@@ -17,11 +17,4 @@
   <description>any handler must implements {j.jave.kernal.jave.support.databind.proext.JPropertyExtendHandler} split by comma</description>
 </property>
 
-
-<property>
-  <name>youapp.mvc.html.root.in.zookeeper</name>
-  <value>/youapp/view</value>
-  <description>all moduls page may regster in the path in the zookeeper.</description>
-</property>
-
 </configuration>

@@ -28,6 +28,7 @@
 		<module>youapp-webcenter</module>
     	<module>youapp-html</module>
     	<module>youappapi</module>
-  </modules>
+    	<module>youapp-business</module>
+	</modules>
 
 </project>

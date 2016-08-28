@@ -5,8 +5,6 @@ import j.jave.kernal.JProperties;
 import j.jave.kernal.eventdriven.context.JEventDrivenContext;
 import j.jave.kernal.eventdriven.servicehub.listener.JServiceHubInitializedEvent;
 import j.jave.kernal.eventdriven.servicehub.monitor.JDefaultServiceMonitor;
-import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterEndNotifyEvent;
-import j.jave.kernal.eventdriven.servicehub.notify.JServicesRegisterStartNotifyEvent;
 import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
@@ -119,6 +117,7 @@ public final class JServiceFactoryManager{
 	 * </pre>
 	 */
 	public synchronized void registerAllServices(){
+		LOGGER.info("registering  service hub .");
 		if(!isScanRegistered){
 			isScanRegistered=true;
 			try{
@@ -128,10 +127,13 @@ public final class JServiceFactoryManager{
 				serviceMonitor.postRegister();
 				registers.add(JDefaultServiceMonitor.class);
 				
+				LOGGER.info("registering basic monitor service completely.");
+				
 				//log services register starting time.
 //				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterStartNotifyEvent(this));
 				
 				//register services from static resource.
+				LOGGER.info("register services from static resource.");
 				for(int i=0;i<staticDefinedServiceFactories.size();i++){
 					Class<? extends JServiceFactorySupport<? extends JService>> clazz=staticDefinedServiceFactories.get(i);
 					if(!registers.contains(clazz)){
@@ -140,8 +142,9 @@ public final class JServiceFactoryManager{
 						registers.add(clazz);
 					}
 				}
-				
+				LOGGER.info("register services from static resource completely.");
 				// default scan all package if any possible.
+				LOGGER.info("default scan all package if any possible.");
 				JDefaultClassesScanner packageScan=new JDefaultClassesScanner(JServiceFactorySupport.class);
 				packageScan.setExpression(new String[]{"^j[/]jave[/][./_a-zA-Z0-9]+","^com[/]youappcorp[/]project[/][/._a-zA-Z0-9]+"});
 				Set<Class<?>> classes=  packageScan.scan();
@@ -157,7 +160,7 @@ public final class JServiceFactoryManager{
 						}
 					}
 				}
-				
+				LOGGER.info("scan context of JContext#getServiceMetas()");
 				//scan context of JContext#getServiceMetas()
 				List<ServiceMeta> serviceMetas= JEventDrivenContext.get().getServiceMetaProvider().getServiceMetas();
 				if(JCollectionUtils.hasInCollect(serviceMetas)){
@@ -171,18 +174,20 @@ public final class JServiceFactoryManager{
 						}
 					}
 				}
-				
+				LOGGER.info("all facotories is ready.");
 				JServiceHubDelegate.get().setFactoryInstallCompleted(true);
 				
 				//log services register end time.
 //				JServiceHubDelegate.get().addImmediateEvent(new JServicesRegisterEndNotifyEvent(this));
 				
+				LOGGER.info("post process after service hub startup.");
 				// post process after service hub startup.
 				JServiceHubDelegate.get().addImmediateEvent(new JServiceHubInitializedEvent(this, JConfiguration.get()));
 				
-				
+				LOGGER.info("service hub is initialized completely & successfully.");
 			
 			}catch(Exception e){
+				LOGGER.error(e.getMessage(), e);
 				throw new JInitializationException(e);
 			}
 		}

@@ -23,7 +23,9 @@
     <Logger name="test.j.jave" level="DEBUG" additivity="false">
       <AppenderRef ref="appConsole"/>
     </Logger>
- 
+ 	<Logger name="org.apache.zookeeper" level="ERROR" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
  
   </Loggers>
  

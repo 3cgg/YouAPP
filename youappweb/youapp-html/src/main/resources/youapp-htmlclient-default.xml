@@ -10,7 +10,7 @@
 
 <property>
   <name>youapp.mvc.data.query.remote.host</name>
-  <value>http://localhost:8689/youapp/extapi/</value>
+  <value>http://localhost:8686/youappapi/extapi/</value>
   <description> the reomote url (host+servlet context path)</description>
 </property>
 

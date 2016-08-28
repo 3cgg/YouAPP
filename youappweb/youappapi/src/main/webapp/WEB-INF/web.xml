@@ -5,10 +5,6 @@
 	version="3.0">
 	
 	<listener>
-		<listener-class>j.jave.platform.webcomp.web.youappmvc.listener.MvcClassPathListener</listener-class>
-	</listener>
-	
-	<listener>
 		<listener-class>j.jave.platform.webcomp.web.listener.SimpleServiceRegisterContextListener</listener-class>
 	</listener>
 	

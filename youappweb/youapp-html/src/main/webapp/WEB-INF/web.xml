@@ -5,10 +5,6 @@
 	version="3.0">
 	
 	<listener>
-		<listener-class>j.jave.web.htmlclient.listener.MvcClassPathListener</listener-class>
-	</listener>
-	
-	<listener>
 		<listener-class>j.jave.web.htmlclient.listener.ServiceLoadingListener</listener-class>
 	</listener>
 	

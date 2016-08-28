@@ -48,7 +48,7 @@ public class Application extends SpringBootServletInitializer implements Embedde
 
     @Override
     public void customize(ConfigurableEmbeddedServletContainer container) {
-    	container.setContextPath("/youapp");
+    	container.setContextPath("/youappapi");
         container.setPort(8689);
     }
     

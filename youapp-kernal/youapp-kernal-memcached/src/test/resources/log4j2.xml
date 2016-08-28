@@ -1,40 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="debug" strict="true"   name="youAppLog4j2"
-               packages="j.jave.framework.log4j2">
-  <Properties>
-    <Property name="jrameworkFile">D:/java_/server-directory/logs/youapp-jframework.log</Property>
-    <Property name="extentionFile">D:/java_/server-directory/logs/youapp-extention.log</Property>
-    
-  </Properties>
+<Configuration status="debug" strict="true"   name="youapp-log4j2"
+               packages="j.jave.kernal.jave">
   
   <Appenders>
     <Appender type="Console" name="appConsole">
-      <Layout type="PatternLayout" pattern="%d %p %C [%t] %m%n"/>
+      <Layout type="PatternLayout" pattern="%d %p  %c [%t] %m %n"/>
     </Appender>
-    
-    <Appender type="File" name="jframeworkAppender" fileName="${jrameworkFile}">
-      <Layout type="PatternLayout">
-        <Pattern>%d %p %C [%t] %m%n</Pattern>
-      </Layout>
-    </Appender>
-    
-    <Appender type="File" name="extensionAppender" fileName="${extentionFile}">
-      <Layout type="PatternLayout">
-        <Pattern>%d %p %C [%t] %m%n</Pattern>
-      </Layout>
-    </Appender>
-    
   </Appenders>
  
   <Loggers>
     
-    <Logger name="j.jave.framework" level="DEBUG" additivity="false">
-      <AppenderRef ref="jframeworkAppender"/>
+    <Logger name="j.jave" level="DEBUG" additivity="false">
       <AppenderRef ref="appConsole"/>
     </Logger>
     
-    <Logger name="org,com" level="DEBUG" additivity="false">
-      <AppenderRef ref="extensionAppender"/>
+    <Logger name="org" level="DEBUG" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    <Logger name="com" level="DEBUG" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+    <Logger name="test.j.jave" level="DEBUG" additivity="false">
+      <AppenderRef ref="appConsole"/>
+    </Logger>
+ 	<Logger name="*" level="DEBUG" additivity="false">
       <AppenderRef ref="appConsole"/>
     </Logger>
  

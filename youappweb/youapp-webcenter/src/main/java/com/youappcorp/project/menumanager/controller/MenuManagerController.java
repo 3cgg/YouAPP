@@ -7,7 +7,6 @@ import j.jave.kernal.jave.support.treeview.JHierarchyTreeView;
 import j.jave.kernal.jave.support.treeview.JTree;
 import j.jave.kernal.jave.support.treeview.JTree.Action;
 import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -40,25 +39,25 @@ public class MenuManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/saveMenu")
-	public ResponseModel saveMenu(ServiceContext serviceContext, MenuRecordVO menuRecordVO) throws Exception{
+	public ResponseModel saveMenu( MenuRecordVO menuRecordVO) throws Exception{
 		// do something validation on the Menu or nothing.
-		menuManagerService.saveMenu(serviceContext, menuRecordVO);
+		menuManagerService.saveMenu( menuRecordVO);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/updateMenu")
-	public ResponseModel updateMenu(ServiceContext serviceContext, MenuRecordVO menuRecordVO) throws Exception{
+	public ResponseModel updateMenu( MenuRecordVO menuRecordVO) throws Exception{
 		// do something validation on the Menu or nothing.
-		menuManagerService.updateMenu(serviceContext, menuRecordVO);
+		menuManagerService.updateMenu( menuRecordVO);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getMenuById")
-	public ResponseModel getMenuById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel getMenuById( String id) throws Exception{
 		// do something validation on the Menu or nothing.
-		MenuRecord menuRecord=menuManagerService.getMenuById(serviceContext, id);
+		MenuRecord menuRecord=menuManagerService.getMenuById( id);
 		return ResponseModel.newSuccess(toMenuRecordVO(menuRecord));
 	}
 	
@@ -76,43 +75,43 @@ public class MenuManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/deleteMenuById")
-	public ResponseModel deleteMenuById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel deleteMenuById( String id) throws Exception{
 		// do something validation on the Menu or nothing.
-		menuManagerService.deleteMenuById(serviceContext, id);
+		menuManagerService.deleteMenuById( id);
 		return ResponseModel.newSuccess(true);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("/getMenusByPage")
-	public ResponseModel getMenusByPage(ServiceContext serviceContext, MenuCriteriaInVO menuCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
+	public ResponseModel getMenusByPage( MenuCriteriaInVO menuCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
 		// do something validation on the Menu or nothing.
-		JPage<MenuRecord> page=menuManagerService.getMenus(serviceContext, menuCriteriaInVO,simplePageable);
+		JPage<MenuRecord> page=menuManagerService.getMenus( menuCriteriaInVO,simplePageable);
 		page.setContent(toMenuRecordVOs(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getMenusByUserId")
-	public ResponseModel getMenusByUserId(ServiceContext serviceContext, String userId ) throws Exception{
+	public ResponseModel getMenusByUserId( String userId ) throws Exception{
 		// do something validation on the Menu or nothing.
-		List<MenuRecord> menuRecords=menuManagerService.getMenusByUserId(serviceContext, userId);
+		List<MenuRecord> menuRecords=menuManagerService.getMenusByUserId( userId);
 		return ResponseModel.newSuccess(toMenuRecordVOs(menuRecords));
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getMenus")
-	public ResponseModel getMenus(ServiceContext serviceContext, MenuCriteriaInVO menuCriteriaInVO) throws Exception{
+	public ResponseModel getMenus( MenuCriteriaInVO menuCriteriaInVO) throws Exception{
 		// do something validation on the Menu or nothing.
-		List<MenuRecord> menuRecords=menuManagerService.getMenus(serviceContext, menuCriteriaInVO);
+		List<MenuRecord> menuRecords=menuManagerService.getMenus( menuCriteriaInVO);
 		return ResponseModel.newSuccess(toMenuRecordVOs(menuRecords));
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getMenusTree")
-	public ResponseModel getMenusTree(ServiceContext serviceContext, MenuCriteriaInVO menuCriteriaInVO) throws Exception{
+	public ResponseModel getMenusTree( MenuCriteriaInVO menuCriteriaInVO) throws Exception{
 		// do something validation on the Menu or nothing.
-		List<MenuRecord> menuRecords=menuManagerService.getMenus(serviceContext, menuCriteriaInVO);
+		List<MenuRecord> menuRecords=menuManagerService.getMenus( menuCriteriaInVO);
 		JTree tree=new JTree(toMenuRecordVOs(menuRecords),Action.DROP).get();
 		JHierarchyTreeView hierarchyTreeView=new JHierarchyTreeView(tree);
 		return ResponseModel.newSuccess(hierarchyTreeView.models());
@@ -120,16 +119,16 @@ public class MenuManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/getBindMenuRoles")
-	public ResponseModel  getBindMenuRoles(ServiceContext serviceContext,String menuId){
-		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getBindMenuRoles(serviceContext, menuId);
+	public ResponseModel  getBindMenuRoles(String menuId){
+		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getBindMenuRoles( menuId);
 		JPage<?> page=JPageImpl.wrap(menuRoleRecrods);
 		return ResponseModel.newSuccess(page);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getUnbindMenuRoles")
-	public ResponseModel  getUnbindMenuRoles(ServiceContext serviceContext,String menuId){
-		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getUnbindMenuRoles(serviceContext, menuId);
+	public ResponseModel  getUnbindMenuRoles(String menuId){
+		List<MenuRoleRecord> menuRoleRecrods=menuManagerService.getUnbindMenuRoles( menuId);
 		JPage<?> page=JPageImpl.wrap(menuRoleRecrods);
 		return ResponseModel.newSuccess(page);
 	}
@@ -137,48 +136,48 @@ public class MenuManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/getBindMenuGroups")
-	public ResponseModel  getBindMenuGroups(ServiceContext serviceContext,String menuId){
-		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getBindMenuGroups(serviceContext, menuId);
+	public ResponseModel  getBindMenuGroups(String menuId){
+		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getBindMenuGroups( menuId);
 		JPage<?> page=JPageImpl.wrap(menuGroupRecords);
 		return ResponseModel.newSuccess(page);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getUnbindMenuGroups")
-	public ResponseModel  getUnbindMenuGroups(ServiceContext serviceContext,String menuId){
-		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getUnbindMenuGroups(serviceContext, menuId);
+	public ResponseModel  getUnbindMenuGroups(String menuId){
+		List<MenuGroupRecord> menuGroupRecords=menuManagerService.getUnbindMenuGroups( menuId);
 		JPage<?> page=JPageImpl.wrap(menuGroupRecords);
 		return ResponseModel.newSuccess(page);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/bindMenuGroup")
-	public ResponseModel  bindMenuGroup(ServiceContext serviceContext,MenuGroupRecordVO menuGroupRecord){
-		menuManagerService.bindMenuGroup(serviceContext, menuGroupRecord.getMenuId(),
+	public ResponseModel  bindMenuGroup(MenuGroupRecordVO menuGroupRecord){
+		menuManagerService.bindMenuGroup( menuGroupRecord.getMenuId(),
 				menuGroupRecord.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/bindMenuRole")
-	public ResponseModel  bindMenuRole(ServiceContext serviceContext,MenuRoleRecordVO menuRoleRecord){
-		menuManagerService.bindMenuRole(serviceContext, menuRoleRecord.getMenuId(),
+	public ResponseModel  bindMenuRole(MenuRoleRecordVO menuRoleRecord){
+		menuManagerService.bindMenuRole( menuRoleRecord.getMenuId(),
 				menuRoleRecord.getRoleId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/unbindMenuGroup")
-	public ResponseModel  unbindMenuGroup(ServiceContext serviceContext,MenuGroupRecordVO menuGroupRecord){
-		menuManagerService.unbindMenuGroup(serviceContext, menuGroupRecord.getMenuId(),
+	public ResponseModel  unbindMenuGroup(MenuGroupRecordVO menuGroupRecord){
+		menuManagerService.unbindMenuGroup( menuGroupRecord.getMenuId(),
 				menuGroupRecord.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/unbindMenuRole")
-	public ResponseModel  unbindMenuRole(ServiceContext serviceContext,MenuRoleRecordVO menuRoleRecord){
-		menuManagerService.unbindMenuRole(serviceContext, menuRoleRecord.getMenuId(),
+	public ResponseModel  unbindMenuRole(MenuRoleRecordVO menuRoleRecord){
+		menuManagerService.unbindMenuRole( menuRoleRecord.getMenuId(),
 				menuRoleRecord.getRoleId());
 		return ResponseModel.newSuccess();
 	}

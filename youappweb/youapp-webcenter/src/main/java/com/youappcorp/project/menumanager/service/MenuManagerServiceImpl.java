@@ -5,7 +5,6 @@ import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JQuery;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.HashMap;
@@ -37,43 +36,43 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	private InternalMenuGroupServiceImpl internalMenuGroupServiceImpl;
 	
 	@Override
-	public void saveMenu(ServiceContext serviceContext, MenuRecord menuRecord) {
+	public void saveMenu( MenuRecord menuRecord) {
 		try{
 			Menu menu=menuRecord.toMenu();
-			internalMenuServiceImpl.saveOnly(serviceContext, menu);
+			internalMenuServiceImpl.saveOnly( menu);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void updateMenu(ServiceContext serviceContext, MenuRecord menuRecord) {
+	public void updateMenu( MenuRecord menuRecord) {
 		try{
 			Menu menu=menuRecord.toMenu();
-			Menu dbMenu=internalMenuServiceImpl.getById(serviceContext, menu.getId());
+			Menu dbMenu=internalMenuServiceImpl.getById( menu.getId());
 			dbMenu.setName(menu.getName());
 			dbMenu.setUrl(menu.getUrl());
 			dbMenu.setDescription(menu.getDescription());
 			dbMenu.setSequence(menu.getSequence());
-			internalMenuServiceImpl.updateOnly(serviceContext, dbMenu);
+			internalMenuServiceImpl.updateOnly( dbMenu);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void deleteMenu(ServiceContext serviceContext, MenuRecord menuRecord) {
-		internalMenuServiceImpl.delete(serviceContext, menuRecord.toMenu().getId());
+	public void deleteMenu( MenuRecord menuRecord) {
+		internalMenuServiceImpl.delete( menuRecord.toMenu().getId());
 	}
 
 	@Override
-	public void deleteMenuById(ServiceContext serviceContext, String id) {
-		internalMenuServiceImpl.delete(serviceContext, id);
+	public void deleteMenuById( String id) {
+		internalMenuServiceImpl.delete( id);
 	}
 	
 	
 	private JQuery<?> buildMenuQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a. id as id"
 				+ ", a.pid as pid "
 				+ ", a.url as url"
@@ -105,27 +104,27 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 
 	@Override
-	public MenuRecord getMenuById(ServiceContext serviceContext, String id) {
+	public MenuRecord getMenuById( String id) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("id", Condition.equal(id));
-		return buildMenuQuery(serviceContext, params)
+		return buildMenuQuery( params)
 				.model(MenuRecord.class);
 	}
 
 	@Override
-	public List<MenuRecord> getMenusByUserId(ServiceContext serviceContext,
+	public List<MenuRecord> getMenusByUserId(
 			String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		return buildMenuQuery(serviceContext, params)
+		return buildMenuQuery( params)
 				.models(MenuRecord.class);
 	}
 
 	@Override
-	public JPage<MenuRecord> getMenus(ServiceContext serviceContext,
+	public JPage<MenuRecord> getMenus(
 			MenuCriteriaInVO menuCriteriaInVO, JSimplePageable simplePageable) {
 		Map<String, Condition> params = getParams(menuCriteriaInVO);
-		return buildMenuQuery(serviceContext, params)
+		return buildMenuQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(MenuRecord.class);
 	}
@@ -148,14 +147,14 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 	
 	@Override
-	public List<MenuRecord> getMenus(ServiceContext serviceContext,
+	public List<MenuRecord> getMenus(
 			MenuCriteriaInVO menuCriteriaInVO) {
 		Map<String, Condition> params = getParams(menuCriteriaInVO);
-		return buildMenuQuery(serviceContext, params)
+		return buildMenuQuery( params)
 				.models(MenuRecord.class);
 	}
 
-	private MenuRole getMenuRole(ServiceContext serviceContext, String menuId,
+	private MenuRole getMenuRole( String menuId,
 			String roleId){
 		return internalMenuRoleServiceImpl.singleEntityQuery()
 				.conditionDefault()
@@ -165,7 +164,7 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 	
 	
-	private MenuGroup getMenuGroup(ServiceContext serviceContext, String menuId,
+	private MenuGroup getMenuGroup( String menuId,
 			String groupId){
 		return internalMenuGroupServiceImpl.singleEntityQuery()
 				.conditionDefault()
@@ -176,46 +175,46 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	
 	
 	@Override
-	public void bindMenuRole(ServiceContext serviceContext, String menuId,
+	public void bindMenuRole( String menuId,
 			String roleId) {
 		try{
-			MenuRole dbMenuRole=getMenuRole(serviceContext, menuId, roleId);
+			MenuRole dbMenuRole=getMenuRole( menuId, roleId);
 			if(dbMenuRole!=null){
-				internalMenuRoleServiceImpl.delete(serviceContext, dbMenuRole);
+				internalMenuRoleServiceImpl.delete( dbMenuRole);
 			}
 			MenuRole menuRole=new MenuRole();
 			menuRole.setMenuId(menuId);
 			menuRole.setRoleId(roleId);
-			internalMenuRoleServiceImpl.saveOnly(serviceContext, menuRole);
+			internalMenuRoleServiceImpl.saveOnly( menuRole);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void bindMenuGroup(ServiceContext serviceContext, String menuId,
+	public void bindMenuGroup( String menuId,
 			String groupId) {
 		try{
-			MenuGroup dbMenuGroup=getMenuGroup(serviceContext, menuId, groupId);
+			MenuGroup dbMenuGroup=getMenuGroup( menuId, groupId);
 			if(dbMenuGroup!=null){
-				internalMenuGroupServiceImpl.delete(serviceContext, dbMenuGroup);
+				internalMenuGroupServiceImpl.delete( dbMenuGroup);
 			}
 			MenuGroup menuGroup=new MenuGroup();
 			menuGroup.setMenuId(menuId);
 			menuGroup.setGroupId(groupId);
-			internalMenuGroupServiceImpl.saveOnly(serviceContext, menuGroup);
+			internalMenuGroupServiceImpl.saveOnly( menuGroup);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void unbindMenuRole(ServiceContext serviceContext, String menuId,
+	public void unbindMenuRole( String menuId,
 			String roleId) {
 		try{
-			MenuRole dbMenuRole=getMenuRole(serviceContext, menuId, roleId);
+			MenuRole dbMenuRole=getMenuRole( menuId, roleId);
 			if(dbMenuRole!=null){
-				internalMenuRoleServiceImpl.delete(serviceContext, dbMenuRole);
+				internalMenuRoleServiceImpl.delete( dbMenuRole);
 			}
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -223,12 +222,12 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 
 	@Override
-	public void unbindMenuGroup(ServiceContext serviceContext, String menuId,
+	public void unbindMenuGroup( String menuId,
 			String groupId) {
 		try{
-			MenuGroup dbMenuGroup=getMenuGroup(serviceContext, menuId, groupId);
+			MenuGroup dbMenuGroup=getMenuGroup( menuId, groupId);
 			if(dbMenuGroup!=null){
-				internalMenuGroupServiceImpl.delete(serviceContext, dbMenuGroup);
+				internalMenuGroupServiceImpl.delete( dbMenuGroup);
 			}
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -236,7 +235,7 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 	
 	private JQuery<?> buildBindMenuRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as roleId"
 				+ ",  a.roleName as roleName "
 				+ ",  a.roleCode as roleCode"
@@ -258,7 +257,7 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	
 	
 	private JQuery<?> buildUnbindMenuRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as roleId"
 				+ "  from Role a "
 				+ " , MenuRole b"
@@ -283,7 +282,7 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 	
 	private JQuery<?> buildBindMenuGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as groupId"
 				+ ",  a.groupName as groupName "
 				+ ",  a.groupCode as groupCode"
@@ -305,7 +304,7 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	
 	
 	private JQuery<?> buildUnbindMenuGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as groupId"
 				+ "  from Group a "
 				+ " , MenuGroup b"
@@ -331,39 +330,39 @@ public class MenuManagerServiceImpl extends ServiceSupport implements MenuManage
 	}
 
 	@Override
-	public List<MenuRoleRecord> getBindMenuRoles(ServiceContext serviceContext,
+	public List<MenuRoleRecord> getBindMenuRoles(
 			String menuId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("menuId", Condition.equal(menuId));
-		return buildBindMenuRoleQuery(serviceContext, params)
+		return buildBindMenuRoleQuery( params)
 				.models(MenuRoleRecord.class);
 	}
 
 	@Override
 	public List<MenuGroupRecord> getBindMenuGroups(
-			ServiceContext serviceContext, String menuId) {
+			 String menuId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("menuId", Condition.equal(menuId));
-		return buildBindMenuGroupQuery(serviceContext, params)
+		return buildBindMenuGroupQuery( params)
 				.models(MenuGroupRecord.class);
 	}
 
 	@Override
 	public List<MenuRoleRecord> getUnbindMenuRoles(
-			ServiceContext serviceContext, String menuId) {
+			 String menuId) {
 		
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("menuId", Condition.equal(menuId));
-		return buildUnbindMenuRoleQuery(serviceContext, params)
+		return buildUnbindMenuRoleQuery( params)
 				.models(MenuRoleRecord.class);
 	}
 
 	@Override
 	public List<MenuGroupRecord> getUnbindMenuGroups(
-			ServiceContext serviceContext, String menuId) {
+			 String menuId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("menuId", Condition.equal(menuId));
-		return buildUnbindMenuGroupQuery(serviceContext, params)
+		return buildUnbindMenuGroupQuery( params)
 				.models(MenuGroupRecord.class);
 	}
 

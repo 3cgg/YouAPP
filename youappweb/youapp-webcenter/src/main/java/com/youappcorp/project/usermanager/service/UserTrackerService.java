@@ -4,7 +4,6 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.platform.webcomp.core.service.InternalService;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 
@@ -25,20 +24,20 @@ public interface UserTrackerService extends InternalService<UserTracker, String>
 	
 	/**
 	 * 
-	 * @param context 
+	 *  
 	 * @param userTracker
 	 * @throws BusinessException
 	 */
-	public void saveUserTracker(ServiceContext context, UserTracker userTracker) throws BusinessException;
+	public void saveUserTracker( UserTracker userTracker) throws BusinessException;
 	
 	
 	/**
 	 * 
-	 * @param context
+	 * 
 	 * @param userTracker
 	 * @throws BusinessException
 	 */
-	public void updateUserTracker(ServiceContext context, UserTracker userTracker) throws BusinessException;
+	public void updateUserTracker( UserTracker userTracker) throws BusinessException;
 	
 
 	

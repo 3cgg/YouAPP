@@ -6,7 +6,6 @@ package com.youappcorp.project.codetable.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 
@@ -22,61 +21,61 @@ import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 public interface CodeTableService{
 	
 	/**
-	 * save param , including some validations. see {@link #exists(ServiceContext, ParamCode)}
-	 * @param context 
+	 * save param , including some validations. see {@link #exists()}
+	 *  
 	 * @param paramType
 	 * @param paramCode
 	 * @throws JServiceException
 	 */
-	public void saveParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws BusinessException;
+	public void saveParam( ParamType paramType, ParamCode paramCode) throws BusinessException;
 	
 	
 	/**
-	 * update param including some validations.  see {@link #exists(ServiceContext, ParamCode)}
-	 * @param context
+	 * update param including some validations.  see {@link #exists(ParamCode)}
+	 * 
 	 * @param user
 	 * @throws JServiceException
 	 */
-	public void updateParam(ServiceContext context, ParamType paramType, ParamCode paramCode) throws BusinessException;
+	public void updateParam( ParamType paramType, ParamCode paramCode) throws BusinessException;
 
 	/**
 	 * 
-	 * @param context
+	 * 
 	 * @return
 	 */
-	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context); 
+	public List<CodeTableCacheModel> getCodeTableCacheModels(); 
 	
-	public void updateParamCode(ServiceContext context,ParamCode paramCode) throws BusinessException;
+	public void updateParamCode(ParamCode paramCode) throws BusinessException;
 	
-	public void updateParamType(ServiceContext context,ParamType paramType) throws BusinessException;
+	public void updateParamType(ParamType paramType) throws BusinessException;
 	
-	public void saveParamCode(ServiceContext context,ParamCode paramCode) throws BusinessException;
+	public void saveParamCode(ParamCode paramCode) throws BusinessException;
 	
-	public void saveParamType(ServiceContext context,ParamType paramType) throws BusinessException;
+	public void saveParamType(ParamType paramType) throws BusinessException;
 	
-	public boolean existsParamType(ServiceContext context,String code);
+	public boolean existsParamType(String code);
 	
-	public boolean existsParamCode(ServiceContext context,String type,String code);
+	public boolean existsParamCode(String type,String code);
 	
-	JPage<ParamType> getAllParamTypesByPage(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamType> getAllParamTypesByPage(ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodesByPage(ServiceContext context,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodesByPage(ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable);
 	
-	JPage<ParamCode> getAllParamCodesByTypeByPage(ServiceContext context,String type,JSimplePageable simplePageable);
+	JPage<ParamCode> getAllParamCodesByTypeByPage(String type,JSimplePageable simplePageable);
 
-	List<ParamType> getAllParamTypes(ServiceContext context,ParamCriteriaInVO paramCriteria);
+	List<ParamType> getAllParamTypes(ParamCriteriaInVO paramCriteria);
 	
-	List<ParamCode> getAllParamCodes(ServiceContext context,ParamCriteriaInVO paramCriteria);
+	List<ParamCode> getAllParamCodes(ParamCriteriaInVO paramCriteria);
 	
-	List<ParamCode> getAllParamCodesByType(ServiceContext context,String type);
+	List<ParamCode> getAllParamCodesByType(String type);
 	
-	ParamType getParamTypeById(ServiceContext context,String id);
+	ParamType getParamTypeById(String id);
 	
-	ParamCode getParamCodeById(ServiceContext context,String id);
+	ParamCode getParamCodeById(String id);
 
-	void deleteParamTypeById(ServiceContext context,String id);
+	void deleteParamTypeById(String id);
 	
-	void deleteParamCodeById(ServiceContext context,String id);
+	void deleteParamCodeById(String id);
 	
 	
 }

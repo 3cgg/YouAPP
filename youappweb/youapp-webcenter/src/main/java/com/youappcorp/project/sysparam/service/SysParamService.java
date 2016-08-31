@@ -2,24 +2,23 @@ package com.youappcorp.project.sysparam.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import com.youappcorp.project.sysparam.model.SysParam;
 import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
 
 public interface SysParamService {
 
-	void saveSysParam(ServiceContext serviceContext,SysParam sysParam);
+	void saveSysParam(SysParam sysParam);
 	
-	void updateSysParam(ServiceContext serviceContext,SysParam sysParam);
+	void updateSysParam(SysParam sysParam);
 	
-	void deleteSysParam(ServiceContext serviceContext,SysParam sysParam);
+	void deleteSysParam(SysParam sysParam);
 	
-	void deleteSysParamById(ServiceContext serviceContext,String id);
+	void deleteSysParamById(String id);
 	
-	SysParam getSysParamById(ServiceContext serviceContext,String id);
+	SysParam getSysParamById(String id);
 	
-	JPage<SysParam> getSysParams(ServiceContext serviceContext,SysParamCriteriaInVO sysParamCriteriaInVO, JSimplePageable simplePageable);
+	JPage<SysParam> getSysParams(SysParamCriteriaInVO sysParamCriteriaInVO, JSimplePageable simplePageable);
 	
-	boolean exists(ServiceContext serviceContext,String code);
+	boolean exists(String code);
 }

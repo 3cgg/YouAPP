@@ -5,7 +5,6 @@ package com.youappcorp.project.codetable.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.List;
@@ -34,11 +33,11 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	private InternalParamCodeServiceImpl internalParamCodeServiceImpl;
 	
 	@Override
-	public void saveParam(ServiceContext context, ParamType paramType,
+	public void saveParam( ParamType paramType,
 			ParamCode paramCode) throws BusinessException {
 		try{
-			saveParamType(context, paramType);
-			internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			saveParamType( paramType);
+			internalParamCodeServiceImpl.saveOnly( paramCode);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -46,11 +45,11 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public void updateParam(ServiceContext context, ParamType paramType,
+	public void updateParam( ParamType paramType,
 			ParamCode paramCode) throws BusinessException {
 		try{
-			internalParamTypeServiceImpl.updateOnly(context, paramType);
-			internalParamCodeServiceImpl.updateOnly(context, paramCode);
+			internalParamTypeServiceImpl.updateOnly( paramType);
+			internalParamCodeServiceImpl.updateOnly( paramCode);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -59,7 +58,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public List<CodeTableCacheModel> getCodeTableCacheModels(ServiceContext context) {
+	public List<CodeTableCacheModel> getCodeTableCacheModels() {
 		String nativeSql=
 				"SELECT PT.CODE TYPE, PC.CODE,PC.NAME from PARAM_CODE PC , PARAM_TYPE PT"
 				+ " WHERE PC.TYPE = PT.CODE AND PT.DELETED='N' AND PC.DELETED='N'";
@@ -77,7 +76,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public void updateParamCode(ServiceContext context, ParamCode paramCode) 
+	public void updateParamCode( ParamCode paramCode) 
 			throws BusinessException {
 		try{
 			long count=internalParamCodeServiceImpl.singleEntityQuery()
@@ -90,12 +89,12 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 				throw new BusinessException("param code already exists.");
 			}
 			
-			ParamCode dbParamCode=getParamCodeById(context, paramCode.getId());
+			ParamCode dbParamCode=getParamCodeById( paramCode.getId());
 			dbParamCode.setCode(paramCode.getCode());
 			dbParamCode.setName(paramCode.getName());
 			dbParamCode.setDescription(paramCode.getDescription());
 			
-			internalParamCodeServiceImpl.updateOnly(context, dbParamCode);
+			internalParamCodeServiceImpl.updateOnly( dbParamCode);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -103,7 +102,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public void updateParamType(ServiceContext context, ParamType paramType)
+	public void updateParamType( ParamType paramType)
 			throws BusinessException{
 		try{
 			
@@ -124,20 +123,20 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 			if(count>0){
 				throw new BusinessException("param type already exists.");
 			}
-			ParamType dbParamType=getParamTypeById(context, paramType.getId());
+			ParamType dbParamType=getParamTypeById( paramType.getId());
 			String preCode=dbParamType.getCode();
 			String nowCode=paramType.getCode();
 			dbParamType.setCode(paramType.getCode());
 			dbParamType.setName(paramType.getName());
 			dbParamType.setDescription(paramType.getDescription());
-			internalParamTypeServiceImpl.updateOnly(context, dbParamType);
+			internalParamTypeServiceImpl.updateOnly( dbParamType);
 			
 			//modify param code
 			if(!nowCode.equals(preCode)){
-				List<ParamCode> paramCodes= getAllParamCodesByType(context, preCode);
+				List<ParamCode> paramCodes= getAllParamCodesByType( preCode);
 				for(ParamCode paramCode:paramCodes){
 					paramCode.setType(nowCode);
-					internalParamCodeServiceImpl.updateOnly(context, paramCode);
+					internalParamCodeServiceImpl.updateOnly( paramCode);
 				}
 			}
 			
@@ -148,14 +147,14 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public boolean existsParamType(ServiceContext context, String code) {
+	public boolean existsParamType( String code) {
 		long count=internalParamTypeServiceImpl.singleEntityQuery()
 				.conditionDefault().equals("code", code).ready().count();
 		return count>0;
 	}
 
 	@Override
-	public boolean existsParamCode(ServiceContext context, String type,String code) {
+	public boolean existsParamCode( String type,String code) {
 		long count=internalParamCodeServiceImpl.singleEntityQuery()
 				.conditionDefault().equals("code", code)
 				.equals("type", type).ready().count();
@@ -163,13 +162,13 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public void saveParamCode(ServiceContext context, ParamCode paramCode) 
+	public void saveParamCode( ParamCode paramCode) 
 			throws BusinessException{
 		try{
-			if(existsParamCode(context, paramCode.getType(), paramCode.getCode())){
+			if(existsParamCode( paramCode.getType(), paramCode.getCode())){
 				throw new BusinessException("param code already exists.");
 			}
-			internalParamCodeServiceImpl.saveOnly(context, paramCode);
+			internalParamCodeServiceImpl.saveOnly( paramCode);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -178,13 +177,13 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 
 	@Override
-	public void saveParamType(ServiceContext context, ParamType paramType) 
+	public void saveParamType( ParamType paramType) 
 			throws BusinessException {
 		try{
-			if(existsParamType(context, paramType.getCode())){
+			if(existsParamType( paramType.getCode())){
 				throw new BusinessException("param type already exists.");
 			}
-			internalParamTypeServiceImpl.saveOnly(context, paramType);
+			internalParamTypeServiceImpl.saveOnly( paramType);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -192,7 +191,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public JPage<ParamType> getAllParamTypesByPage(ServiceContext context,
+	public JPage<ParamType> getAllParamTypesByPage(
 			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
 		return internalParamTypeServiceImpl.
 				singleEntityQuery().conditionDefault()
@@ -205,7 +204,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public List<ParamType> getAllParamTypes(ServiceContext context,
+	public List<ParamType> getAllParamTypes(
 			ParamCriteriaInVO paramCriteria) {
 		return internalParamTypeServiceImpl.
 				singleEntityQuery().conditionDefault()
@@ -216,7 +215,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public JPage<ParamCode> getAllParamCodesByPage(ServiceContext context,
+	public JPage<ParamCode> getAllParamCodesByPage(
 			ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable) {
 		return internalParamCodeServiceImpl.
 				singleEntityQuery().conditionDefault()
@@ -230,7 +229,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public List<ParamCode> getAllParamCodes(ServiceContext context,
+	public List<ParamCode> getAllParamCodes(
 			ParamCriteriaInVO paramCriteria) {
 		return internalParamCodeServiceImpl.
 				singleEntityQuery().conditionDefault()
@@ -241,7 +240,7 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public JPage<ParamCode> getAllParamCodesByTypeByPage(ServiceContext context,
+	public JPage<ParamCode> getAllParamCodesByTypeByPage(
 			String type,JSimplePageable simplePageable) {
 		return internalParamCodeServiceImpl.singleEntityQuery()
 				.conditionDefault().equals("type", type)
@@ -249,35 +248,35 @@ public class CodeTableServiceImpl extends ServiceSupport implements CodeTableSer
 	}
 	
 	@Override
-	public List<ParamCode> getAllParamCodesByType(ServiceContext context,String type) {
+	public List<ParamCode> getAllParamCodesByType(String type) {
 		return internalParamCodeServiceImpl.singleEntityQuery()
 				.conditionDefault().equals("type", type)
 				.ready().models();
 	}
 
 	@Override
-	public ParamType getParamTypeById(ServiceContext context, String id) {
-		return internalParamTypeServiceImpl.getById(context, id);
+	public ParamType getParamTypeById( String id) {
+		return internalParamTypeServiceImpl.getById( id);
 	}
 
 	@Override
-	public ParamCode getParamCodeById(ServiceContext context, String id) {
-		return internalParamCodeServiceImpl.getById(context, id);
+	public ParamCode getParamCodeById( String id) {
+		return internalParamCodeServiceImpl.getById( id);
 	}
 
 	@Override
-	public void deleteParamTypeById(ServiceContext context, String id) {
-		ParamType paramType=getParamTypeById(context, id);
-		internalParamTypeServiceImpl.delete(context, paramType);
-		List<ParamCode> paramCodes= getAllParamCodesByType(context, paramType.getCode());
+	public void deleteParamTypeById( String id) {
+		ParamType paramType=getParamTypeById( id);
+		internalParamTypeServiceImpl.delete( paramType);
+		List<ParamCode> paramCodes= getAllParamCodesByType( paramType.getCode());
 		for(ParamCode paramCode:paramCodes){
-			internalParamCodeServiceImpl.delete(context, paramCode);
+			internalParamCodeServiceImpl.delete( paramCode);
 		}
 	}
 
 	@Override
-	public void deleteParamCodeById(ServiceContext context, String id) {
-		internalParamCodeServiceImpl.delete(context, id);
+	public void deleteParamCodeById( String id) {
+		internalParamCodeServiceImpl.delete( id);
 	}
 	
 }

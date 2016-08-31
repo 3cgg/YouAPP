@@ -12,7 +12,6 @@ import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JDefaultClassesScanner;
 import j.jave.platform.data.web.model.Criteria;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -190,7 +189,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 
 	@Override
-	public List<Column> getColumnsByTable(ServiceContext serviceContext,
+	public List<Column> getColumnsByTable(
 			String tableName) {
 		init();
 		
@@ -198,7 +197,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 	
 	@Override
-	public List<Column> getColumnsByModelName(ServiceContext serviceContext,
+	public List<Column> getColumnsByModelName(
 			String modelName) {
 		init();
 		
@@ -210,16 +209,16 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 	
 	@Override
-	public Record getRecord(ServiceContext serviceContext, JBaseModel model) {
+	public Record getRecord( JBaseModel model) {
 		init();
 		
 		JIPersist<?,JBaseModel, String> mapper=mappersWithModelName.get(getModelName(model));
 		JBaseModel baseModel=mapper.getModel(model.getId());
-		return getRecord(baseModel);
+		return internalGetRecord(baseModel);
 	}
 	
 	
-	private Record getRecord(JBaseModel baseModel){
+	private Record internalGetRecord(JBaseModel baseModel){
 		Record record=new Record();
 		List<Cell> cells=new ArrayList<Cell>();
 		record.setCells(cells);
@@ -260,7 +259,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	
 	
 	@Override
-	public List<Record> getRecords(ServiceContext serviceContext, Criteria model) {
+	public List<Record> getRecords( Criteria model) {
 		
 		if(!JPageable.class.isInstance(model)){
 			throw new RuntimeException(model.getClass().getName()+" not supported, as not the sub-clss of "+JPageable.class.getName());
@@ -289,7 +288,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 
 	@Override
-	public Record getRecord(ServiceContext serviceContext, String modelName,
+	public Record getRecord( String modelName,
 			String id) {
 		init();
 		
@@ -305,7 +304,7 @@ public class TableManagerServiceImpl implements TableManagerService ,Application
 	}
 	
 	@Override
-	public void updateRecord(ServiceContext serviceContext, Record record) throws JServiceException {
+	public void updateRecord( Record record) throws JServiceException {
 		init();
 		
 		try {

@@ -11,7 +11,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JJpaDateParam;
 import j.jave.platform.jpa.springjpa.query.JQuery;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.HashMap;
@@ -52,10 +51,10 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 			JServiceHubDelegate.get().getService(this, UserManagerService.class);
 	
 	@Override
-	public void saveBill(ServiceContext serviceContext, BillRecord billRecord)
+	public void saveBill( BillRecord billRecord)
 			throws BusinessException {
 		try{
-			internalBillServiceImpl.saveOnly(serviceContext, billRecord.toBill());
+			internalBillServiceImpl.saveOnly( billRecord.toBill());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -63,10 +62,10 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 	}
 
 	@Override
-	public void updateBill(ServiceContext serviceContext, BillRecord billRecord)
+	public void updateBill( BillRecord billRecord)
 			throws BusinessException {
 		try{
-			Bill dbBill=internalBillServiceImpl.getById(serviceContext, billRecord.getId());
+			Bill dbBill=internalBillServiceImpl.getById( billRecord.getId());
 			Bill bill=billRecord.toBill();
 			dbBill.setBillTime(bill.getBillTime());
 			dbBill.setBillName(bill.getBillName());
@@ -74,7 +73,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 			dbBill.setDescription(bill.getDescription());
 			dbBill.setMoney(bill.getMoney());
 			dbBill.setMallName(bill.getMallName());
-			internalBillServiceImpl.updateOnly(serviceContext, dbBill);
+			internalBillServiceImpl.updateOnly( dbBill);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -82,30 +81,30 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 	}
 
 	@Override
-	public BillRecord getBillById(ServiceContext serviceContext, String id) {
-		BillRecord billRecord= getBillRecordById(serviceContext, id);
-		appendBillInfo(serviceContext, billRecord);
+	public BillRecord getBillById( String id) {
+		BillRecord billRecord= getBillRecordById( id);
+		appendBillInfo( billRecord);
 		return billRecord;
 	}
 
-	private BillRecord getBillRecordById(ServiceContext serviceContext, String id) {
+	private BillRecord getBillRecordById( String id) {
 		return internalBillServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("id", id).ready().model(BillRecord.class);
 	}
 	
-	private BillRecord appendBillInfo(ServiceContext serviceContext, BillRecord billRecord){
-		UserRecord userRecord=userManagerService.getUserById(serviceContext, billRecord.getUserId());
+	private BillRecord appendBillInfo( BillRecord billRecord){
+		UserRecord userRecord=userManagerService.getUserById( billRecord.getUserId());
 		billRecord.setUserName(userRecord.getUserName());
 		return billRecord;
 	}
 	
-	private void appendBillInfo(ServiceContext serviceContext, List<BillRecord> billRecords){
+	private void appendBillInfo( List<BillRecord> billRecords){
 		for(BillRecord billRecord:billRecords){
-			appendBillInfo(serviceContext, billRecord);
+			appendBillInfo( billRecord);
 		}
 	}
 
-	private JQuery<?> buildBillsQuery(ServiceContext serviceContext, Map<String, Condition> params){
+	private JQuery<?> buildBillsQuery( Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ " , a.userId as userId"
 				+ " , a.billName as billName"
@@ -147,7 +146,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 	
 	
 	@Override
-	public JPage<BillRecord> getBillsByPage(ServiceContext serviceContext,  BillSearchCriteria billSearchCriteria, JPageable pagination) {
+	public JPage<BillRecord> getBillsByPage(  BillSearchCriteria billSearchCriteria, JPageable pagination) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		String moneyStart=billSearchCriteria.getMoneyStart();
 		if(JStringUtils.isNotNullOrEmpty(moneyStart)){
@@ -187,71 +186,71 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 		if(JStringUtils.isNotNullOrEmpty(description)){
 			params.put("description", Condition.likes(description));
 		}
-		JPage<BillRecord> page= buildBillsQuery(serviceContext, params)
+		JPage<BillRecord> page= buildBillsQuery( params)
 				.setPageable(pagination)
 				.modelPage(BillRecord.class);
-		appendBillInfo(serviceContext, page.getContent());
+		appendBillInfo( page.getContent());
 		return page;
 	}
 
 	@Override
-	public List<BillRecord> getBillsByUserName(ServiceContext serviceContext, String userName) {
-		User user=  userManagerService.getUserByName(serviceContext, userName);
+	public List<BillRecord> getBillsByUserName( String userName) {
+		User user=  userManagerService.getUserByName( userName);
 		if(user==null) return null;
-		return getBillsByUserId(serviceContext,user.getId());
+		return getBillsByUserId(user.getId());
 	}
 
 	@Override
-	public List<BillRecord> getBillsByUserId(ServiceContext serviceContext, String userId) {
+	public List<BillRecord> getBillsByUserId( String userId) {
 		List<BillRecord> billRecords= internalBillServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId).ready().models(BillRecord.class);
-		appendBillInfo(serviceContext, billRecords);
+		appendBillInfo( billRecords);
 		return billRecords;
 	}
 	
 	@Override
-	public void deleteBillById(ServiceContext serviceContext, String id) {
-		internalBillServiceImpl.delete(serviceContext, id);
+	public void deleteBillById( String id) {
+		internalBillServiceImpl.delete( id);
 	}
 
 	@Override
-	public void saveGood(ServiceContext serviceContext, GoodRecord goodRecord) {
+	public void saveGood( GoodRecord goodRecord) {
 		try{
 			Good good=goodRecord.toGood();
-			internalGoodServiceImpl.saveOnly(serviceContext,good );
+			internalGoodServiceImpl.saveOnly(good );
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void updateGood(ServiceContext serviceContext, GoodRecord goodRecord) {
+	public void updateGood( GoodRecord goodRecord) {
 		try{
-			Good dbGood=internalGoodServiceImpl.getById(serviceContext, goodRecord.getId());
+			Good dbGood=internalGoodServiceImpl.getById( goodRecord.getId());
 			Good good=goodRecord.toGood();
 			dbGood.setDescription(good.getDescription());
 			dbGood.setMoney(good.getMoney());
 			dbGood.setGoodName(good.getGoodName());
 			dbGood.setGoodType(good.getGoodType());
-			internalGoodServiceImpl.updateOnly(serviceContext, dbGood);
+			internalGoodServiceImpl.updateOnly( dbGood);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void deleteGoodById(ServiceContext serviceContext, String id) {
-		internalGoodServiceImpl.delete(serviceContext, id);
+	public void deleteGoodById( String id) {
+		internalGoodServiceImpl.delete( id);
 	}
 
 	@Override
-	public GoodRecord getGoodById(ServiceContext serviceContext, String id) {
+	public GoodRecord getGoodById( String id) {
 		return internalGoodServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("id", id).ready().model(GoodRecord.class);
 	}
 
 	
-	private JQuery<?> buildGoodsQuery(ServiceContext serviceContext, Map<String, Condition> params){
+	private JQuery<?> buildGoodsQuery( Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ " , a.billId as billId "
 				+ " , a.goodName as goodName"
@@ -306,7 +305,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 	
 	
 	@Override
-	public JPage<GoodRecord> getGoodsByPage(ServiceContext serviceContext,
+	public JPage<GoodRecord> getGoodsByPage(
 			GoodSearchCriteria goodSearchCriteria, JPageable pagination) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		String billId=goodSearchCriteria.getBillId();
@@ -360,42 +359,42 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 		if(JStringUtils.isNotNullOrEmpty(billType)){
 			params.put("billType", Condition.likes(billType));
 		}
-		JPage<GoodRecord> page= buildGoodsQuery(serviceContext, params)
+		JPage<GoodRecord> page= buildGoodsQuery( params)
 				.setPageable(pagination)
 				.modelPage(GoodRecord.class);
-		appendGoodInfo(serviceContext, page.getContent());
+		appendGoodInfo( page.getContent());
 		return page;
 	}
 
-	private GoodRecord appendGoodInfo(ServiceContext serviceContext, GoodRecord goodRecord){
-		UserRecord userRecord=userManagerService.getUserById(serviceContext, goodRecord.getUserId());
+	private GoodRecord appendGoodInfo( GoodRecord goodRecord){
+		UserRecord userRecord=userManagerService.getUserById( goodRecord.getUserId());
 		goodRecord.setUserName(userRecord.getUserName());
 		return goodRecord;
 	}
 	
-	private void appendGoodInfo(ServiceContext serviceContext, List<GoodRecord> goodRecords){
+	private void appendGoodInfo( List<GoodRecord> goodRecords){
 		for(GoodRecord goodRecord:goodRecords){
-			appendGoodInfo(serviceContext, goodRecord);
+			appendGoodInfo( goodRecord);
 		}
 	}
 
 	
 	@Override
-	public List<GoodRecord> getGoodsByUserName(ServiceContext serviceContext,
+	public List<GoodRecord> getGoodsByUserName(
 			String userName) {
-		User user=  userManagerService.getUserByName(serviceContext, userName);
+		User user=  userManagerService.getUserByName( userName);
 		if(user==null) return null;
-		return getGoodsByUserId(serviceContext,user.getId());
+		return getGoodsByUserId(user.getId());
 	}
 
 	@Override
-	public List<GoodRecord> getGoodsByUserId(ServiceContext serviceContext,
+	public List<GoodRecord> getGoodsByUserId(
 			String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		List<GoodRecord> goodRecords=buildGoodsQuery(serviceContext, params)
+		List<GoodRecord> goodRecords=buildGoodsQuery( params)
 				.models(GoodRecord.class);
-		appendGoodInfo(serviceContext, goodRecords);
+		appendGoodInfo( goodRecords);
 		return goodRecords;
 	}
 	

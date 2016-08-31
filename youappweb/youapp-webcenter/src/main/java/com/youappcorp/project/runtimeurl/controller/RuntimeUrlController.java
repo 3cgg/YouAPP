@@ -4,7 +4,6 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 import j.jave.kernal.jave.support._package.JDefaultParamMeta;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -37,9 +36,9 @@ public class RuntimeUrlController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/updateMockState")
-	public ResponseModel updateMockState(ServiceContext serviceContext, MockEditVO mockEditVO ) throws Exception{
+	public ResponseModel updateMockState( MockEditVO mockEditVO ) throws Exception{
 		// do something validation on the SysParam or nothing.
-		runtimeUrlService.updateMockState(serviceContext, mockEditVO.getUrl(), mockEditVO.isMock());
+		runtimeUrlService.updateMockState( mockEditVO.getUrl(), mockEditVO.isMock());
 		return ResponseModel.newSuccess(true);
 	}
 	
@@ -81,27 +80,27 @@ public class RuntimeUrlController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/getRuntimeUrlById")
-	public ResponseModel getRuntimeUrlById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel getRuntimeUrlById( String id) throws Exception{
 		// do something validation on the SysParam or nothing.
-		RuntimeUrl runtimeUrl= runtimeUrlService.getRuntimeUrlById(serviceContext, id);
+		RuntimeUrl runtimeUrl= runtimeUrlService.getRuntimeUrlById( id);
 		RuntimeUrlRecordOutVO runtimeUrlRecordOutVO=genRuntimeUrlRecordOutVO(runtimeUrl);
 		return ResponseModel.newSuccess(runtimeUrlRecordOutVO);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getRuntimeUrlByUrl")
-	public ResponseModel getRuntimeUrlByUrl(ServiceContext serviceContext, String url) throws Exception{
+	public ResponseModel getRuntimeUrlByUrl( String url) throws Exception{
 		// do something validation on the SysParam or nothing.
-		RuntimeUrl runtimeUrl= runtimeUrlService.getRuntimeUrlById(serviceContext, url);
+		RuntimeUrl runtimeUrl= runtimeUrlService.getRuntimeUrlById( url);
 		RuntimeUrlRecordOutVO runtimeUrlRecordOutVO=genRuntimeUrlRecordOutVO(runtimeUrl);
 		return ResponseModel.newSuccess(runtimeUrlRecordOutVO);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getRuntimeUrlsByPage")
-	public ResponseModel getRuntimeUrlsByPage(ServiceContext serviceContext, RuntimeUrlCriteriaInVO runtimeUrlCriteriaInVO ,JSimplePageable simplePageable ) throws Exception{
+	public ResponseModel getRuntimeUrlsByPage( RuntimeUrlCriteriaInVO runtimeUrlCriteriaInVO ,JSimplePageable simplePageable ) throws Exception{
 		// do something validation on the SysParam or nothing.
-		JPage<RuntimeUrl> page=runtimeUrlService.getRuntimeUrlsByPage(serviceContext, runtimeUrlCriteriaInVO, simplePageable);
+		JPage<RuntimeUrl> page=runtimeUrlService.getRuntimeUrlsByPage( runtimeUrlCriteriaInVO, simplePageable);
 		
 		List<RuntimeUrl> content=page.getContent();
 		List<RuntimeUrlRecordOutVO> outContent=new ArrayList<RuntimeUrlRecordOutVO>();

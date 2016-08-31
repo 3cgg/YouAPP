@@ -6,7 +6,6 @@ import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JObjectUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -62,7 +61,7 @@ public class UserManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getTimeline")
-	public ResponseModel getTimeline(ServiceContext serviceContext,
+	public ResponseModel getTimeline(
 			@RequestParam("userName")String userName) {
 		List<UserTracker> userTrackers= userTrackerService.getUserTrackerByName(userName);
 		List<TimeLineGroup> timeLineGroups=new ArrayList<TimeLineGroup>();
@@ -98,7 +97,7 @@ public class UserManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/register")
-	public ResponseModel register(ServiceContext serviceContext,UserRegisterInVO userRegisterInVO){
+	public ResponseModel register(UserRegisterInVO userRegisterInVO){
 		
 		if(!userRegisterInVO.getPassword().equals(userRegisterInVO.getRetypePassword())){
 			throw new BusinessException("两次输入的密码不一样");
@@ -110,107 +109,107 @@ public class UserManagerController extends SimpleControllerSupport {
 		UserExtend userExtend=new UserExtend();
 		userExtend.setNatureName(userRegisterInVO.getNatureName());
 		userExtend.setUserName(userRegisterInVO.getUserName());
-		userManagerService.register(serviceContext, user, userExtend);
+		userManagerService.register( user, userExtend);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/resetPassword")
-	public ResponseModel resetPassword(ServiceContext serviceContext, ResetPasswordVO resetPasswordVO){
+	public ResponseModel resetPassword( ResetPasswordVO resetPasswordVO){
 		
 		if(JStringUtils.isNullOrEmpty(resetPasswordVO.getPassword())){
 			throw new BusinessException("密码不能为空");
 		}
 		
-		userManagerService.resetPassword(serviceContext, resetPasswordVO.getUserId(), resetPasswordVO.getPassword());
+		userManagerService.resetPassword( resetPasswordVO.getUserId(), resetPasswordVO.getPassword());
 		return ResponseModel.newSuccess();
 	}
 	
 	
 	@RequestMapping("/updateUser")
-	public ResponseModel updateUser(ServiceContext serviceContext,UserEditInVO userEditInVO ){
+	public ResponseModel updateUser(UserEditInVO userEditInVO ){
 		User user= new User();
 		user.setId(userEditInVO.getId());
 		
 		UserExtend userExtend=new UserExtend();
 		userExtend.setNatureName(userEditInVO.getNatureName());
 		userExtend.setUserImage(userEditInVO.getUserImage());
-		userManagerService.updateUser(serviceContext, user,userExtend);
+		userManagerService.updateUser( user,userExtend);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/deleteUser")
-	public ResponseModel deleteUser(ServiceContext serviceContext,String id){
-		userManagerService.deleteUser(serviceContext, id);
+	public ResponseModel deleteUser(String id){
+		userManagerService.deleteUser( id);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getUsersByPage")
-	public ResponseModel getUsersByPage(ServiceContext serviceContext,UserSearchCriteria userSearchCriteria,JSimplePageable simplePageable){
-		JPage<UserRecord> page= userManagerService.getUsersByPage(serviceContext, userSearchCriteria, simplePageable);
+	public ResponseModel getUsersByPage(UserSearchCriteria userSearchCriteria,JSimplePageable simplePageable){
+		JPage<UserRecord> page= userManagerService.getUsersByPage( userSearchCriteria, simplePageable);
 		page.setContent(toUserRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess().setData(page);
 	}
 	
 	@RequestMapping("/getUserById")
-	public ResponseModel getUserById(ServiceContext serviceContext,String id){
-		UserRecord userRecord=userManagerService.getUserById(serviceContext, id);
+	public ResponseModel getUserById(String id){
+		UserRecord userRecord=userManagerService.getUserById( id);
 		return ResponseModel.newSuccess(toUserRecordOutVO(userRecord));
 	}
 	
 	@RequestMapping("/saveRole")
-	public ResponseModel saveRole(ServiceContext serviceContext,RoleCreateInVO roleCreateInVO){
+	public ResponseModel saveRole(RoleCreateInVO roleCreateInVO){
 		Role role=JObjectUtils.simpleCopy(roleCreateInVO, Role.class);
-		userManagerService.saveRole(serviceContext, role);
+		userManagerService.saveRole( role);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/updateRole")
-	public ResponseModel updateRole(ServiceContext serviceContext,RoleEditInVO roleEditInVO){
+	public ResponseModel updateRole(RoleEditInVO roleEditInVO){
 		Role role=JObjectUtils.simpleCopy(roleEditInVO, Role.class);
-		userManagerService.updateRole(serviceContext, role);
+		userManagerService.updateRole( role);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/deleteRole")
-	public ResponseModel deleteRole(ServiceContext serviceContext,String id){
-		userManagerService.deleteRole(serviceContext, userManagerService.getRoleById(serviceContext, id));
+	public ResponseModel deleteRole(String id){
+		userManagerService.deleteRole( userManagerService.getRoleById( id));
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getRolesByPage")
-	public ResponseModel getRolesByPage(ServiceContext serviceContext,RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable){
-		JPage<Role> rolesPage= userManagerService.getAllRolesByPage(serviceContext, roleSearchCriteria, simplePageable);
+	public ResponseModel getRolesByPage(RoleSearchCriteria roleSearchCriteria,JSimplePageable simplePageable){
+		JPage<Role> rolesPage= userManagerService.getAllRolesByPage( roleSearchCriteria, simplePageable);
 		toRoleViewPage(rolesPage);
 		return ResponseModel.newSuccess().setData(rolesPage);
 	}
 	
 	@RequestMapping("/getRoleById")
-	public ResponseModel getRoleById(ServiceContext serviceContext,String id){
-		Role role=userManagerService.getRoleById(serviceContext, id);
+	public ResponseModel getRoleById(String id){
+		Role role=userManagerService.getRoleById( id);
 		RoleRecord roleRecord= genRoleRecordOutVO(role);
 		return ResponseModel.newSuccess(toRoleRecordOutVO(roleRecord));
 	}
 	
 	@RequestMapping("/getGroupsByRoleId")
-	public ResponseModel getGroupsByRoleId(ServiceContext serviceContext,String roleId){
-		List<GroupRecord> groupRecords = userManagerService.getGroupsByRoleId(serviceContext, roleId);
+	public ResponseModel getGroupsByRoleId(String roleId){
+		List<GroupRecord> groupRecords = userManagerService.getGroupsByRoleId( roleId);
 		List<GroupRecordOutVO> groupRecordOutVOs = toGroupRecordOutVO(groupRecords);
 		return ResponseModel.newSuccess(groupRecordOutVOs);
 	}
 
 	@RequestMapping("/getGroupsByRoleIdByPage")
-	public ResponseModel getGroupsByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable){
-		JPage<GroupRecord> page = userManagerService.getGroupsByRoleIdByPage(serviceContext, roleId, simplePageable);
+	public ResponseModel getGroupsByRoleIdByPage(String roleId,JSimplePageable simplePageable){
+		JPage<GroupRecord> page = userManagerService.getGroupsByRoleIdByPage( roleId, simplePageable);
 		page.setContent(toGroupRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
 	
 	@RequestMapping("/getUnbingGroupsByRoleIdByPage")
-	public ResponseModel getUnbingGroupsByRoleIdByPage(ServiceContext serviceContext,String roleId,JSimplePageable simplePageable){
-		JPage<GroupRecord> page = userManagerService.getUnbingGroupsByRoleIdByPage(serviceContext, roleId, simplePageable);
+	public ResponseModel getUnbingGroupsByRoleIdByPage(String roleId,JSimplePageable simplePageable){
+		JPage<GroupRecord> page = userManagerService.getUnbingGroupsByRoleIdByPage( roleId, simplePageable);
 		page.setContent(toGroupRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
@@ -255,47 +254,47 @@ public class UserManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getGroupsByPage")
-	public ResponseModel getRolesByPage(ServiceContext serviceContext,GroupSearchCriteria groupSearchCriteria,JSimplePageable simplePageable){
-		JPage<Group> groupsPage= userManagerService.getGroupsByPage(serviceContext, groupSearchCriteria, simplePageable);
+	public ResponseModel getRolesByPage(GroupSearchCriteria groupSearchCriteria,JSimplePageable simplePageable){
+		JPage<Group> groupsPage= userManagerService.getGroupsByPage( groupSearchCriteria, simplePageable);
 		toGroupViewPage(groupsPage);
 		return ResponseModel.newSuccess().setData(groupsPage);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/saveGroup")
-	public ResponseModel saveGroup(ServiceContext serviceContext,GroupCreateInVO groupCreateInVO){
+	public ResponseModel saveGroup(GroupCreateInVO groupCreateInVO){
 		Group group=JObjectUtils.simpleCopy(groupCreateInVO, Group.class);
-		userManagerService.saveGroup(serviceContext, group);
+		userManagerService.saveGroup( group);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/updateGroup")
-	public ResponseModel updateGroup(ServiceContext serviceContext,GroupEditInVO groupEditInVO){
+	public ResponseModel updateGroup(GroupEditInVO groupEditInVO){
 		Group group=JObjectUtils.simpleCopy(groupEditInVO, Group.class);
-		userManagerService.updateGroup(serviceContext, group);
+		userManagerService.updateGroup( group);
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/deleteGroup")
-	public ResponseModel deleteGroup(ServiceContext serviceContext,String id){
-		userManagerService.deleteGroup(serviceContext, userManagerService.getGroupById(serviceContext, id));
+	public ResponseModel deleteGroup(String id){
+		userManagerService.deleteGroup( userManagerService.getGroupById( id));
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getGroupById")
-	public ResponseModel getGroupById(ServiceContext serviceContext,String id){
-		Group group=userManagerService.getGroupById(serviceContext, id);
+	public ResponseModel getGroupById(String id){
+		Group group=userManagerService.getGroupById( id);
 		GroupRecord groupRecordOutVO= genGroupRecordOutVO(group);
 		return ResponseModel.newSuccess(groupRecordOutVO);
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getRolesByGroupId")
-	public ResponseModel getRolesByGroupId(ServiceContext serviceContext,String groupId){
-		List<RoleRecord> roleRecords = userManagerService.getRolesByGroupId(serviceContext, groupId);
+	public ResponseModel getRolesByGroupId(String groupId){
+		List<RoleRecord> roleRecords = userManagerService.getRolesByGroupId( groupId);
 		List<RoleRecordOutVO> roleRecordOutVOs = toRoleRecordOutVO(roleRecords);
 		return ResponseModel.newSuccess(roleRecordOutVOs);
 	}
@@ -303,9 +302,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getRolesByGroupIdByPage")
 	public ResponseModel getRolesByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable){
-		JPage<RoleRecord> page=userManagerService.getRolesByGroupIdByPage(serviceContext, groupId, simplePageable);
+		JPage<RoleRecord> page=userManagerService.getRolesByGroupIdByPage( groupId, simplePageable);
 		page.setContent(toRoleRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
@@ -313,9 +312,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUnbingRolesByGroupIdByPage")
 	public ResponseModel getUnbingRolesByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable){
-		List<RoleRecord> roleRecords=userManagerService.getUnbingRolesByGroupId(serviceContext, groupId);
+		List<RoleRecord> roleRecords=userManagerService.getUnbingRolesByGroupId( groupId);
 		JPage<?> page=JPageImpl.wrap(toRoleRecordOutVO(roleRecords));
 		return ResponseModel.newSuccess(page);
 	}
@@ -334,11 +333,11 @@ public class UserManagerController extends SimpleControllerSupport {
 	}
 
 //	private List<RoleRecordOutVO> rolesByGroupIdByPage(
-//			ServiceContext serviceContext, String groupId) {
-//		List<RoleGroup> roleGroups=userManagerService.getRoleGroupsByGroupId(serviceContext, groupId);
+//			 String groupId) {
+//		List<RoleGroup> roleGroups=userManagerService.getRoleGroupsByGroupId( groupId);
 //		List<RoleRecordOutVO> roleRecordOutVOs=new ArrayList<RoleRecordOutVO>();
 //		for(RoleGroup roleGroup:roleGroups){
-//			Role role=userManagerService.getRoleById(serviceContext, roleGroup.getRoleId());
+//			Role role=userManagerService.getRoleById( roleGroup.getRoleId());
 //			if(role!=null){
 //				roleRecordOutVOs.add(genRoleRecordOutVO(role));
 //			}
@@ -372,67 +371,67 @@ public class UserManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/bingRoleGroup")
-	public ResponseModel bingRoleGroup(ServiceContext serviceContext,RoleGroupInVO roleGroupInVO){
+	public ResponseModel bingRoleGroup(RoleGroupInVO roleGroupInVO){
 		userManagerService.
-				bingRoleGroup(serviceContext, roleGroupInVO.getRoleId(), roleGroupInVO.getGroupId());
+				bingRoleGroup( roleGroupInVO.getRoleId(), roleGroupInVO.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/unbingRoleGroup")
-	public ResponseModel unbingRoleGroup(ServiceContext serviceContext,RoleGroupInVO roleGroupInVO){
+	public ResponseModel unbingRoleGroup(RoleGroupInVO roleGroupInVO){
 		userManagerService.
-				unbingRoleGroup(serviceContext, roleGroupInVO.getRoleId(), roleGroupInVO.getGroupId());
+				unbingRoleGroup( roleGroupInVO.getRoleId(), roleGroupInVO.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/bingUserRole")
-	public ResponseModel bingUserRole(ServiceContext serviceContext,UserRoleInVO userRoleInVO){
+	public ResponseModel bingUserRole(UserRoleInVO userRoleInVO){
 		userManagerService.
-				bingUserRole(serviceContext, userRoleInVO.getUserId(), userRoleInVO.getRoleId());
+				bingUserRole( userRoleInVO.getUserId(), userRoleInVO.getRoleId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/unbingUserRole")
-	public ResponseModel unbingUserRole(ServiceContext serviceContext,UserRoleInVO userRoleInVO){
+	public ResponseModel unbingUserRole(UserRoleInVO userRoleInVO){
 		
-		if(userManagerService.isDefaultRole(serviceContext, userRoleInVO.getRoleId())){
+		if(userManagerService.isDefaultRole( userRoleInVO.getRoleId())){
 			throw new BusinessException("Default role cannot be removed.");
 		}
 		userManagerService.
-				unbingUserRole(serviceContext, userRoleInVO.getUserId(), userRoleInVO.getRoleId());
+				unbingUserRole( userRoleInVO.getUserId(), userRoleInVO.getRoleId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/bingUserGroup")
-	public ResponseModel bingUserGroup(ServiceContext serviceContext,UserGroupInVO userGroupInVO){
+	public ResponseModel bingUserGroup(UserGroupInVO userGroupInVO){
 		userManagerService.
-		bingUserGroup(serviceContext, userGroupInVO.getUserId(), userGroupInVO.getGroupId());
+		bingUserGroup( userGroupInVO.getUserId(), userGroupInVO.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/unbingUserGroup")
-	public ResponseModel unbingUserGroup(ServiceContext serviceContext,UserGroupInVO userGroupInVO){
+	public ResponseModel unbingUserGroup(UserGroupInVO userGroupInVO){
 		
-		if(userManagerService.isDefaultGroup(serviceContext, userGroupInVO.getGroupId())){
+		if(userManagerService.isDefaultGroup( userGroupInVO.getGroupId())){
 			throw new BusinessException("Default group cannot be removed.");
 		}
 		
 		userManagerService.
-		unbingUserGroup(serviceContext, userGroupInVO.getUserId(), userGroupInVO.getGroupId());
+		unbingUserGroup( userGroupInVO.getUserId(), userGroupInVO.getGroupId());
 		return ResponseModel.newSuccess();
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getUsersByGroupIdByPage")
 	public ResponseModel getUsersByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable) {
-		JPage<UserRecord> page=userManagerService.getUsersByGroupIdByPage(serviceContext, groupId, simplePageable);
+		JPage<UserRecord> page=userManagerService.getUsersByGroupIdByPage( groupId, simplePageable);
 		page.setContent(toUserRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
@@ -440,9 +439,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUnbingUsersByGroupIdByPage")
 	public ResponseModel getUnbingUsersByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable) {
-		JPage<UserRecord> page=userManagerService.getUnbingUsersByGroupIdByPage(serviceContext, groupId, simplePageable);
+		JPage<UserRecord> page=userManagerService.getUnbingUsersByGroupIdByPage( groupId, simplePageable);
 		page.setContent(toUserRecordOutVO(page.getContent()));
 		return ResponseModel.newSuccess(page);
 	}
@@ -450,8 +449,8 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUsersByGroupId")
 	public ResponseModel getUsersByGroupId(
-			ServiceContext serviceContext, String groupId) {
-		List<UserRecord> userRecords=userManagerService.getUsersByGroupId(serviceContext, groupId);
+			 String groupId) {
+		List<UserRecord> userRecords=userManagerService.getUsersByGroupId( groupId);
 		return ResponseModel.newSuccess(toUserRecordOutVO(userRecords));
 	}
 	
@@ -459,9 +458,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUsersByRoleIdByPage")
 	public ResponseModel getUsersByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
-		JPage<UserRecord> page=userManagerService.getUsersByRoleIdByPage(serviceContext, roleId, simplePageable);
+		JPage<UserRecord> page=userManagerService.getUsersByRoleIdByPage( roleId, simplePageable);
 		List<UserRecord> userRecords=page.getContent();
 		page.setContent(toUserRecordOutVO(userRecords));
 		return ResponseModel.newSuccess(page);
@@ -470,9 +469,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUnbingUsersByRoleIdByPage")
 	public ResponseModel getUnbingUsersByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
-		JPage<UserRecord> page=userManagerService.getUnbingUsersByRoleIdByPage(serviceContext, roleId, simplePageable);
+		JPage<UserRecord> page=userManagerService.getUnbingUsersByRoleIdByPage( roleId, simplePageable);
 		List<UserRecord> userRecords=page.getContent();
 		page.setContent(toUserRecordOutVO(userRecords));
 		return ResponseModel.newSuccess(page);
@@ -481,8 +480,8 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUsersByRoleId")
 	public ResponseModel getUsersByRoleId(
-			ServiceContext serviceContext, String roleId) {
-		List<UserRecord> userRecords=userManagerService.getUsersByRoleId(serviceContext, roleId);
+			 String roleId) {
+		List<UserRecord> userRecords=userManagerService.getUsersByRoleId( roleId);
 		return ResponseModel.newSuccess(toUserRecordOutVO(userRecords));
 	}
 
@@ -503,9 +502,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getRolesByUserIdByPage")
 	public ResponseModel getRolesByUserIdByPage(
-			ServiceContext serviceContext, String userId,
+			 String userId,
 			JSimplePageable simplePageable){
-		List<RoleRecord> roleRecords=userManagerService.getRolesByUserId(serviceContext, userId);
+		List<RoleRecord> roleRecords=userManagerService.getRolesByUserId( userId);
 		JPage<?> page=JPageImpl.wrap(toRoleRecordOutVO(roleRecords));
 		return ResponseModel.newSuccess(page);
 	}
@@ -513,9 +512,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUnbingRolesByUserIdByPage")
 	public ResponseModel getUnbingRolesByUserIdByPage(
-			ServiceContext serviceContext, String userId,
+			 String userId,
 			JSimplePageable simplePageable){
-		List<RoleRecord> roleRecords=userManagerService.getUnbingRolesByUserId(serviceContext, userId);
+		List<RoleRecord> roleRecords=userManagerService.getUnbingRolesByUserId( userId);
 		JPage<?> page=JPageImpl.wrap(toRoleRecordOutVO(roleRecords));
 		return ResponseModel.newSuccess(page);
 	}
@@ -523,9 +522,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getGroupsByUserIdByPage")
 	public ResponseModel getGroupsByUserIdByPage(
-			ServiceContext serviceContext, String userId,
+			 String userId,
 			JSimplePageable simplePageable){
-		List<GroupRecord> groupRecords=userManagerService.getGroupsByUserId(serviceContext, userId);
+		List<GroupRecord> groupRecords=userManagerService.getGroupsByUserId( userId);
 		JPage<?> page=JPageImpl.wrap(toGroupRecordOutVO(groupRecords));
 		return ResponseModel.newSuccess(page);
 	}
@@ -533,9 +532,9 @@ public class UserManagerController extends SimpleControllerSupport {
 	@ResponseBody
 	@RequestMapping("/getUnbingGroupsByUserIdByPage")
 	public ResponseModel getUnbingGroupsByUserIdByPage(
-			ServiceContext serviceContext, String userId,
+			 String userId,
 			JSimplePageable simplePageable){
-		List<GroupRecord> groupRecords=userManagerService.getUnbingGroupsByUserId(serviceContext, userId);
+		List<GroupRecord> groupRecords=userManagerService.getUnbingGroupsByUserId( userId);
 		JPage<?> page=JPageImpl.wrap(toGroupRecordOutVO(groupRecords));
 		return ResponseModel.newSuccess(page);
 	}

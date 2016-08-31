@@ -2,7 +2,6 @@ package com.youappcorp.project.usermanager.service;
 
 import j.jave.kernal.jave.persist.JIPersist;
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -28,11 +27,11 @@ public class UserTrackerServiceImpl extends InternalServiceSupport<UserTracker> 
 	}
 
 	@Override
-	public void saveUserTracker(ServiceContext context, UserTracker userTracker)
+	public void saveUserTracker( UserTracker userTracker)
 			throws BusinessException {
 		try{
 			userTracker.setLoginTime(new Timestamp(new Date().getTime()));
-			saveOnly(context, userTracker);
+			saveOnly( userTracker);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -42,10 +41,10 @@ public class UserTrackerServiceImpl extends InternalServiceSupport<UserTracker> 
 	}
 
 	@Override
-	public void updateUserTracker(ServiceContext context,
+	public void updateUserTracker(
 			UserTracker userTracker) throws BusinessException {
 		try{
-			updateOnly(context, userTracker);
+			updateOnly( userTracker);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}

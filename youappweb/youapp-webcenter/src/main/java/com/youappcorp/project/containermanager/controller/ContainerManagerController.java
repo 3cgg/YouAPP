@@ -21,7 +21,6 @@ import j.jave.platform.sps.multiv.ComponentMetaNames;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.Component;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.ComponentProperties;
 import j.jave.platform.sps.multiv.jnterface.JKey;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.rhttp.DefaultRemoteHttpDeployService;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.container.ContainerMappingMeta;
@@ -82,7 +81,7 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ResponseBody
 	@RequestMapping(value="/deployJar")
-	public ResponseModel deployJar(ServiceContext serviceContext, DeployModule deployModule) throws Exception{
+	public ResponseModel deployJar( DeployModule deployModule) throws Exception{
 		String jarUri=deployModule.getJarUri();
 		if(!deployModule.isOverride()){
 			JJARResourceURIScanner resourceURIScanner=new JJARResourceURIScanner(new URL(jarUri).toURI());
@@ -97,7 +96,7 @@ public class ContainerManagerController extends SimpleControllerSupport {
 					String app=JPropertiesUtils.getKey(ComponentMetaNames.APP_NAME, properties);
 					String component=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_NAME, properties);
 					String version=JPropertiesUtils.getKey(ComponentMetaNames.COMPONENT_VERSION, properties);
-					boolean exists=containerManagerService.existsAppMeta(serviceContext, app, component, version);
+					boolean exists=containerManagerService.existsAppMeta( app, component, version);
 					if(exists){
 						return ResponseModel.newError().setData( "["+JKey.unique(app, component, version) +"] already exists.");
 					}
@@ -140,11 +139,11 @@ public class ContainerManagerController extends SimpleControllerSupport {
 			urlMappingMetas.add(urlMappingMeta);
 		}
 		
-		boolean exists=containerManagerService.existsAppMeta(serviceContext, unique);
+		boolean exists=containerManagerService.existsAppMeta( unique);
 		if(exists){
-			containerManagerService.updateAppMeta(serviceContext, appMeta, urlMappingMetas);
+			containerManagerService.updateAppMeta( appMeta, urlMappingMetas);
 		}else{
-			containerManagerService.saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+			containerManagerService.saveAppMeta( appMeta, urlMappingMetas);
 		}
 		
 		//SYNC ZOOKEEPER
@@ -176,8 +175,8 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetas")
-	public ResponseModel getAppMetas(ServiceContext serviceContext){
-		List<AppMetaRecord> appMetas= containerManagerService.getAppMetas(serviceContext);
+	public ResponseModel getAppMetas(){
+		List<AppMetaRecord> appMetas= containerManagerService.getAppMetas();
 		return ResponseModel.newSuccess().setData(toAppMetaRecordVOs(appMetas));
 	}
 	
@@ -218,16 +217,16 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getURLMappingMetasByAppId")
-	public ResponseModel getURLMappingMetasByAppId(ServiceContext serviceContext,String appId){
-		List<URLMappingMetaRecord> urlMappingMetas= containerManagerService.getURLMappingMetasByAppId(serviceContext, appId);
+	public ResponseModel getURLMappingMetasByAppId(String appId){
+		List<URLMappingMetaRecord> urlMappingMetas= containerManagerService.getURLMappingMetasByAppId( appId);
 		return ResponseModel.newSuccess().setData(toURLMappingMetaRecordVOs(urlMappingMetas));
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping(value="/getURLMappingMetasByAppConfig")
-	public ResponseModel getURLMappingMetasByAppConfig(ServiceContext serviceContext,AppMetaRecordVO appMetaVO){
-		List<URLMappingMetaRecord> urlMappingMetas= containerManagerService.getURLMappingMetasByAppConfig(serviceContext, 
+	public ResponseModel getURLMappingMetasByAppConfig(AppMetaRecordVO appMetaVO){
+		List<URLMappingMetaRecord> urlMappingMetas= containerManagerService.getURLMappingMetasByAppConfig( 
 				appMetaVO.getAppName(), appMetaVO.getAppCompName(), appMetaVO.getAppVersion());
 		return ResponseModel.newSuccess().setData(toURLMappingMetaRecordVOs(urlMappingMetas));
 	}
@@ -235,38 +234,38 @@ public class ContainerManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetaByAppConfig")
-	public ResponseModel getAppMetaByAppConfig(ServiceContext serviceContext,AppMetaRecordVO appMetaVO){
-		AppMetaRecord appMeta= containerManagerService.getAPPMetaByConfig(serviceContext, 
+	public ResponseModel getAppMetaByAppConfig(AppMetaRecordVO appMetaVO){
+		AppMetaRecord appMeta= containerManagerService.getAPPMetaByConfig( 
 				appMetaVO.getAppName(), appMetaVO.getAppCompName(), appMetaVO.getAppVersion());
 		return ResponseModel.newSuccess().setData(toAppMetaRecordVO(appMeta));
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getAppMetaByAppId")
-	public ResponseModel getAppMetaByAppId(ServiceContext serviceContext,String appId){
-		AppMetaRecord appMeta= containerManagerService.getAPPMetaByAppId(serviceContext, appId);
+	public ResponseModel getAppMetaByAppId(String appId){
+		AppMetaRecord appMeta= containerManagerService.getAPPMetaByAppId( appId);
 		return ResponseModel.newSuccess().setData(toAppMetaRecordVO(appMeta));
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getURLMappingMetaById")
-	public ResponseModel getURLMappingMetaById(ServiceContext serviceContext,String id){
-		URLMappingMetaRecord urlMappingMeta= containerManagerService.getURLMappingMetaById(serviceContext, id);
+	public ResponseModel getURLMappingMetaById(String id){
+		URLMappingMetaRecord urlMappingMeta= containerManagerService.getURLMappingMetaById( id);
 		return ResponseModel.newSuccess().setData(toURLMappingMetaRecordVO(urlMappingMeta));
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getURLMappingMetasByPage")
-	public ResponseModel getURLMappingMetasByPage(ServiceContext serviceContext,URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable){
-		JPage<URLMappingMetaRecord>  urlMappingMetaPage= containerManagerService.getURLMappingMetasByPage(serviceContext, urlMappingMetaCriteria,simplePageable);
+	public ResponseModel getURLMappingMetasByPage(URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable){
+		JPage<URLMappingMetaRecord>  urlMappingMetaPage= containerManagerService.getURLMappingMetasByPage( urlMappingMetaCriteria,simplePageable);
 		toURLMappingMetaRecordVOPage(urlMappingMetaPage);
 		return ResponseModel.newSuccess().setData(urlMappingMetaPage);
 	}
 
 	@ResponseBody
 	@RequestMapping(value="/getAppMetasByPage")
-	public ResponseModel getAppMetasByPage(ServiceContext serviceContext,AppMetaCriteria appMetaCriteria,JSimplePageable simplePageable){
-		JPage<AppMetaRecord>  appMetaPage= containerManagerService.getAppMetasByPage(serviceContext, appMetaCriteria,simplePageable);
+	public ResponseModel getAppMetasByPage(AppMetaCriteria appMetaCriteria,JSimplePageable simplePageable){
+		JPage<AppMetaRecord>  appMetaPage= containerManagerService.getAppMetasByPage( appMetaCriteria,simplePageable);
 		toAppMetaRecordVOPage(appMetaPage);
 		return ResponseModel.newSuccess().setData(appMetaPage);
 	}

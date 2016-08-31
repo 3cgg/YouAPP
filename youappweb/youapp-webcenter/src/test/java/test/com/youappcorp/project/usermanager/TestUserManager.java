@@ -37,7 +37,7 @@ public class TestUserManager {
 			user.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			user.setUserName("N");
 			user.setPassword(deSedeCipherService.encrypt("P"));
-			userManagerService.saveUser(context, user);
+			userManagerService.saveUser( user);
 			System.out.println("end");
 		} catch (Exception e) {
 			throw new RuntimeException(e);

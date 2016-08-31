@@ -5,7 +5,6 @@ import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -21,8 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.youappcorp.project.codetable.jpa.ParamCodeJPARepo;
 import com.youappcorp.project.codetable.model.ParamCode;
-import com.youappcorp.project.codetable.service.InternalParamCodeServiceImpl;
 import com.youappcorp.project.codetable.service.CodeTableService;
+import com.youappcorp.project.codetable.service.InternalParamCodeServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -146,7 +145,7 @@ public class TestJpaParam {
 	
 	@Test
 	public void testG(){
-		paramS.getCodeTableCacheModels(DefaultServiceContext.getDefaultServiceContext());
+		paramS.getCodeTableCacheModels();
 	}
 	
 	@Test

@@ -6,7 +6,6 @@ package com.youappcorp.project.billmanager.service;
 import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 
 import java.util.List;
 
@@ -24,54 +23,54 @@ public interface BillManagerService {
 	
 	/**
 	 * 
-	 * @billRecord serviceContext 
+	 *  
 	 * @billRecord user
 	 * @throws JServiceException
 	 */
-	public void saveBill(ServiceContext serviceContext, BillRecord billRecord) throws BusinessException;
+	public void saveBill( BillRecord billRecord) throws BusinessException;
 	
 	/**
 	 * 
-	 * @billRecord serviceContext
+	 * 
 	 * @billRecord user
 	 * @throws JServiceException
 	 */
-	public void updateBill(ServiceContext serviceContext, BillRecord billRecord) throws BusinessException;
+	public void updateBill( BillRecord billRecord) throws BusinessException;
 	
 	/**
 	 * make the record not available
-	 * @billRecord serviceContext
+	 * 
 	 * @billRecord id
 	 */
-	public void deleteBillById(ServiceContext serviceContext, String id);
+	public void deleteBillById( String id);
 	
 	/**
 	 * get one .
 	 * @billRecord id
 	 * @return
 	 */
-	public BillRecord getBillById(ServiceContext serviceContext, String id);
+	public BillRecord getBillById( String id);
 	
-	public JPage<BillRecord> getBillsByPage(ServiceContext serviceContext, BillSearchCriteria billSearchCriteria, JPageable pagination) ;
+	public JPage<BillRecord> getBillsByPage( BillSearchCriteria billSearchCriteria, JPageable pagination) ;
 	
-	public List<BillRecord> getBillsByUserName(ServiceContext serviceContext, String userName);
+	public List<BillRecord> getBillsByUserName( String userName);
 	
-	public List<BillRecord> getBillsByUserId(ServiceContext serviceContext, String userId);
+	public List<BillRecord> getBillsByUserId( String userId);
 	
 	
-	public void saveGood(ServiceContext serviceContext, GoodRecord goodRecord);
+	public void saveGood( GoodRecord goodRecord);
 	
-	public void updateGood(ServiceContext serviceContext, GoodRecord goodRecord);
+	public void updateGood( GoodRecord goodRecord);
 	
-	public void deleteGoodById(ServiceContext serviceContext, String id);
+	public void deleteGoodById( String id);
 	
-	public GoodRecord getGoodById(ServiceContext serviceContext, String id);
+	public GoodRecord getGoodById( String id);
 	
-	public JPage<GoodRecord> getGoodsByPage(ServiceContext serviceContext, GoodSearchCriteria goodSearchCriteria , JPageable pagination) ;
+	public JPage<GoodRecord> getGoodsByPage( GoodSearchCriteria goodSearchCriteria , JPageable pagination) ;
 	
-	public List<GoodRecord> getGoodsByUserName(ServiceContext serviceContext, String userName);
+	public List<GoodRecord> getGoodsByUserName( String userName);
 	
-	public List<GoodRecord> getGoodsByUserId(ServiceContext serviceContext, String userId);
+	public List<GoodRecord> getGoodsByUserId( String userId);
 	
 	
 }

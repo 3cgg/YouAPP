@@ -37,16 +37,16 @@ public class SimpleControllerSupport extends ControllerSupport{
          if(validate){
          	String errorMessage="the method argument is invlaid :"+mappingMeta.getPath();
              if(methodParamClasses.length==0){
-             	throw new RuntimeException(errorMessage);
+             	//throw new RuntimeException(errorMessage);
              }
              if(methodParamClasses.length>0){
              	if(ServiceContext.class!=methodParamClasses[0]){
-             		throw new RuntimeException(errorMessage);
+             		//throw new RuntimeException(errorMessage);
              	}
              	
-             	if(parameters.length==2){
+             	if(parameters.length==1){
              		//do validation.
-             		Class<?> clazz=methodParamClasses[1];
+             		Class<?> clazz=methodParamClasses[0];
              		if(!(JSimplePageable.class==clazz
              				||isAcceptedSimpleClass(clazz)
              				||isCompositeClass(clazz)
@@ -55,16 +55,16 @@ public class SimpleControllerSupport extends ControllerSupport{
              		}
              	}
              	
-             	if(parameters.length==3){
+             	if(parameters.length==2){
              		//do validation.
-             		Class<?> clazz=methodParamClasses[1];
+             		Class<?> clazz=methodParamClasses[0];
              		if(!(JInputModel.class.isAssignableFrom(clazz)
              				||isCompositeClass(clazz)
              				||isAcceptedSimpleClass(clazz))){
              			throw new RuntimeException(errorMessage);
              		}
              		
-             		clazz=methodParamClasses[2];
+             		clazz=methodParamClasses[1];
              		if(JSimplePageable.class!=clazz){
              			throw new RuntimeException(errorMessage);
              		}

@@ -18,49 +18,43 @@ public interface InternalService<T extends JModel,ID extends Serializable> exten
 
 	/**
 	 * insert record . not include other business. 
-	 * @param context
 	 * @param object
 	 * @throws JServiceException
 	 */
-	public void saveOnly(ServiceContext context, T object) throws JServiceException;
+	public void saveOnly( T object) throws JServiceException;
 	
 	/**
 	 * update record . not include other business. 
-	 * @param context
 	 * @param object
 	 * @throws JServiceException
 	 */
-	public void updateOnly(ServiceContext context, T object) throws JServiceException;
+	public void updateOnly( T object) throws JServiceException;
 
 	/**
 	 * make the record not available
-	 * @bill context
 	 * @bill id
 	 */
-	public void delete(ServiceContext context, ID id);
+	public void delete( ID id);
 	
 	/**
 	 * make the record not available
-	 * @bill context
 	 * @bill id
 	 */
-	public void delete(ServiceContext context, T id);
+	public void delete( T id);
 	
 	/**
 	 * get one by record identification. 
-	 * @param context
 	 * @param id
 	 * @return
 	 */
-	public T getById(ServiceContext context, ID id);
+	public T getById( ID id);
 	
 	/**
 	 * get records for pagination.
-	 * @param context
 	 * @param object class implements {@link JPageable}
 	 * @return
 	 */
-	public JPage<T> getsByPage(ServiceContext context, JPageable pagination) ;
+	public JPage<T> getsByPage( JPageable pagination) ;
 	
 	
 }

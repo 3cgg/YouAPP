@@ -2,7 +2,6 @@ package com.youappcorp.project.sysparam.service;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +19,20 @@ public class SysParamServiceImpl extends ServiceSupport implements SysParamServi
 	private InternalSysParamServiceImpl internalSysParamServiceImpl;
 	
 	@Override
-	public void saveSysParam(ServiceContext serviceContext, SysParam sysParam) {
+	public void saveSysParam( SysParam sysParam) {
 		try{
 			String code=sysParam.getCode();
-			if(exists(serviceContext, code)){
+			if(exists( code)){
 				throw new BusinessException("the system code ["+code+"] already exists .");
 			}
-			internalSysParamServiceImpl.saveOnly(serviceContext, sysParam);
+			internalSysParamServiceImpl.saveOnly( sysParam);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public boolean exists(ServiceContext serviceContext, String code) {
+	public boolean exists( String code) {
 		try{
 			SysParam param= internalSysParamServiceImpl.singleEntityQuery()
 			.conditionDefault().equals("code", code).ready().model();
@@ -45,37 +44,37 @@ public class SysParamServiceImpl extends ServiceSupport implements SysParamServi
 	}
 	
 	@Override
-	public void updateSysParam(ServiceContext serviceContext, SysParam sysParam) {
+	public void updateSysParam( SysParam sysParam) {
 		try{
 			
-			SysParam dbSysParam=getSysParamById(serviceContext, sysParam.getId());
+			SysParam dbSysParam=getSysParamById( sysParam.getId());
 //			dbSysParam.setCode(sysParam.getCode());
 			dbSysParam.setValue(sysParam.getValue());
 			dbSysParam.setDesc(sysParam.getDesc());
 			
-			internalSysParamServiceImpl.updateOnly(serviceContext, dbSysParam);
+			internalSysParamServiceImpl.updateOnly( dbSysParam);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 
 	@Override
-	public void deleteSysParam(ServiceContext serviceContext, SysParam sysParam) {
-		internalSysParamServiceImpl.delete(serviceContext, sysParam.getId());
+	public void deleteSysParam( SysParam sysParam) {
+		internalSysParamServiceImpl.delete( sysParam.getId());
 	}
 
 	@Override
-	public void deleteSysParamById(ServiceContext serviceContext, String id) {
-		internalSysParamServiceImpl.delete(serviceContext, id);
+	public void deleteSysParamById( String id) {
+		internalSysParamServiceImpl.delete( id);
 	}
 	
 	@Override
-	public SysParam getSysParamById(ServiceContext serviceContext, String id) {
-		return internalSysParamServiceImpl.getById(serviceContext, id);
+	public SysParam getSysParamById( String id) {
+		return internalSysParamServiceImpl.getById( id);
 	}
 
 	@Override
-	public JPage<SysParam> getSysParams(ServiceContext serviceContext,
+	public JPage<SysParam> getSysParams(
 			SysParamCriteriaInVO sysParamCriteriaInVO,
 			JSimplePageable simplePageable) {
 		return internalSysParamServiceImpl.singleEntityQuery()

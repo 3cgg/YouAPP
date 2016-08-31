@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -54,15 +53,15 @@ public class ResourceManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/refreshResource")
-	public ResponseModel refreshResource(ServiceContext serviceContext){
+	public ResponseModel refreshResource(){
 		for(RuntimeUrl runtimeUrl:defaultRuntimeUrlService.getAllRuntimeUrls()){
 			Resource resource=new Resource();
 			resource.setUrl(runtimeUrl.getUrl());
 			resource.setDescription(runtimeUrl.getDesc());
-			if(resourceManagerService.existsResourceByUrl(serviceContext, resource.getUrl())){
+			if(resourceManagerService.existsResourceByUrl( resource.getUrl())){
 				continue;
 			}
-			resourceManagerService.saveResource(serviceContext, resource);
+			resourceManagerService.saveResource( resource);
 		}
 		return ResponseModel.newSuccess();
 	}
@@ -70,28 +69,28 @@ public class ResourceManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getResourcesByPage")
-	public ResponseModel getResourcesByPage(ServiceContext serviceContext,ResourceSearchCriteria resourceSearchCriteria,JSimplePageable simplePageable){
-		JPage<ResourceRecord> resourceRecordPage= resourceManagerService.getResourcesByPage(serviceContext, resourceSearchCriteria, simplePageable);
+	public ResponseModel getResourcesByPage(ResourceSearchCriteria resourceSearchCriteria,JSimplePageable simplePageable){
+		JPage<ResourceRecord> resourceRecordPage= resourceManagerService.getResourcesByPage( resourceSearchCriteria, simplePageable);
 		toResourceViewPage(resourceRecordPage);
 		return ResponseModel.newSuccess().setData(resourceRecordPage);
 	}
 	
 	
 	@RequestMapping("/getResourceById")
-	public ResponseModel getResourceById(ServiceContext serviceContext,String id){
-		ResourceRecord resourceRecord=resourceManagerService.getResourceById(serviceContext, id);
+	public ResponseModel getResourceById(String id){
+		ResourceRecord resourceRecord=resourceManagerService.getResourceById( id);
 		return ResponseModel.newSuccess(toResourceViewPage(resourceRecord));
 	}
 	
 	@RequestMapping("/enableCache")
-	public ResponseModel enableCache(ServiceContext serviceContext,String id){
-		resourceManagerService.enableCache(serviceContext, id);
+	public ResponseModel enableCache(String id){
+		resourceManagerService.enableCache( id);
 		return ResponseModel.newSuccess();
 	}
 	
 	@RequestMapping("/disableCache")
-	public ResponseModel disableCache(ServiceContext serviceContext,String id){
-		resourceManagerService.disableCache(serviceContext, id);
+	public ResponseModel disableCache(String id){
+		resourceManagerService.disableCache( id);
 		return ResponseModel.newSuccess();
 	}
 	

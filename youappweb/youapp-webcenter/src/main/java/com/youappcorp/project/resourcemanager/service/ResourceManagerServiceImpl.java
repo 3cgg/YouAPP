@@ -6,7 +6,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JQuery;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.Collections;
@@ -39,7 +38,7 @@ implements ResourceManagerService {
 	private InternalResourceGroupServiceImpl internalResourceGroupServiceImpl;
 	
 	private JQuery<?> buildResourceQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a. id as id"
 				+ ", a.url as url"
 				+ ", a.friendlyUrl as friendlyUrl"
@@ -69,13 +68,13 @@ implements ResourceManagerService {
 	
 	
 	@Override
-	public List<ResourceRecord> getResources(ServiceContext serviceContext) {
-		return buildResourceQuery(serviceContext, Collections.EMPTY_MAP)
+	public List<ResourceRecord> getResources() {
+		return buildResourceQuery( Collections.EMPTY_MAP)
 				.models(ResourceRecord.class);
 	}
 	
 	@Override
-	public List<ResourceRecord> getResources(ServiceContext serviceContext,
+	public List<ResourceRecord> getResources(
 			ResourceSearchCriteria resourceSearchCriteria) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getUrl())){
@@ -90,33 +89,33 @@ implements ResourceManagerService {
 		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getDescription())){
 			params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
 		}
-		return buildResourceQuery(serviceContext, params)
+		return buildResourceQuery( params)
 				.models(ResourceRecord.class);
 	}
 	
 	@Override
-	public ResourceRecord getResourceByURL(ServiceContext serviceContext, String url) {
+	public ResourceRecord getResourceByURL( String url) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("url", Condition.equal(url));
-		return buildResourceQuery(serviceContext, params)
+		return buildResourceQuery( params)
 				.model(ResourceRecord.class);
 	}
 	
 	@Override
-	public boolean existsResourceByUrl(ServiceContext serviceContext, String url) {
+	public boolean existsResourceByUrl( String url) {
 		return internalResourceServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("url",url).ready().count()>0;
 	}
 	
 	@Override
-	public void saveResource(ServiceContext serviceContext, Resource resource) throws BusinessException{
+	public void saveResource( Resource resource) throws BusinessException{
 		try{
 			Resource dbResource=internalResourceServiceImpl.singleEntityQuery().conditionDefault()
 					.equals("url",resource.getUrl()).ready().model();
 			if(dbResource!=null){
 				throw new BusinessException("duplicate url : "+resource.getUrl());
 			}
-			internalResourceServiceImpl.saveOnly(serviceContext, resource);
+			internalResourceServiceImpl.saveOnly( resource);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -124,24 +123,24 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public void enableCache(ServiceContext serviceContext, String resourceId)
+	public void enableCache( String resourceId)
 			throws BusinessException {
 		try{
-			Resource dbResource=internalResourceServiceImpl.getById(serviceContext, resourceId);
+			Resource dbResource=internalResourceServiceImpl.getById( resourceId);
 			dbResource.setCached("Y");
-			internalResourceServiceImpl.updateOnly(serviceContext, dbResource);
+			internalResourceServiceImpl.updateOnly( dbResource);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void disableCache(ServiceContext serviceContext, String resourceId)
+	public void disableCache( String resourceId)
 			throws BusinessException {
 		try{
-			Resource dbResource=internalResourceServiceImpl.getById(serviceContext, resourceId);
+			Resource dbResource=internalResourceServiceImpl.getById( resourceId);
 			dbResource.setCached("N");
-			internalResourceServiceImpl.updateOnly(serviceContext, dbResource);
+			internalResourceServiceImpl.updateOnly( dbResource);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -149,14 +148,14 @@ implements ResourceManagerService {
 	
 	@Override
 	public List<ResourceRole> getResourceRolesByResourceId(
-			ServiceContext serviceContext, String resourceId) {
+			 String resourceId) {
 		return internalResourceRoleServiceImpl.singleEntityQuery()
 				.conditionDefault().equals("resourceId", resourceId)
 				.ready().models();
 	}
 
 	@Override
-	public long countOnResourceIdAndRoleId(ServiceContext serviceContext,
+	public long countOnResourceIdAndRoleId(
 			String resourceId, String roleId) {
 		return internalResourceRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("resourceId", resourceId)
@@ -166,7 +165,7 @@ implements ResourceManagerService {
 
 	@Override
 	public ResourceRole getResourceRoleOnResourceIdAndRoleId(
-			ServiceContext serviceContext, String resourceId, String roleId) {
+			 String resourceId, String roleId) {
 		return internalResourceRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("resourceId", resourceId)
 				.equals("roleId", roleId)
@@ -175,12 +174,12 @@ implements ResourceManagerService {
 	
 	
 	@Override
-	public ResourceRole bingResourceRole(ServiceContext serviceContext, String resourceId,
+	public ResourceRole bingResourceRole( String resourceId,
 			String roleId) throws BusinessException {
 		ResourceRole resourceRole=null;
 		try{
 
-			if(isBingResourceRole(serviceContext, resourceId, roleId)){
+			if(isBingResourceRole( resourceId, roleId)){
 				throw new BusinessException("the resource had already belong to the role.");
 			}
 			
@@ -188,7 +187,7 @@ implements ResourceManagerService {
 			resourceRole.setResourceId(resourceId);
 			resourceRole.setRoleId(roleId);
 			resourceRole.setId(JUniqueUtils.unique());
-			internalResourceRoleServiceImpl.saveOnly(serviceContext, resourceRole);
+			internalResourceRoleServiceImpl.saveOnly( resourceRole);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -196,15 +195,15 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public ResourceRole bingResourceRoleByUrl(ServiceContext serviceContext,
+	public ResourceRole bingResourceRoleByUrl(
 			String url, String roleId) throws BusinessException {
 		ResourceRole resourceRole=null;
 		try{
-			Resource resource= getResourceByURL(serviceContext, url);
+			Resource resource= getResourceByURL( url);
 			if(resource==null){
 				throw new BusinessException("the url is missing.");
 			}
-			resourceRole= bingResourceRole(serviceContext, resource.getId(), roleId);
+			resourceRole= bingResourceRole( resource.getId(), roleId);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -212,14 +211,14 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public void unbingResourceRole(ServiceContext serviceContext, String resourceId,
+	public void unbingResourceRole( String resourceId,
 			String roleId) throws BusinessException {
 		try{
-			ResourceRole resourceRole=getResourceRoleOnResourceIdAndRoleId(serviceContext, resourceId, roleId);
+			ResourceRole resourceRole=getResourceRoleOnResourceIdAndRoleId( resourceId, roleId);
 			if(resourceRole==null){
 				throw new BusinessException("the resource had not already belong to the role.");
 			}
-			internalResourceRoleServiceImpl.delete(serviceContext, resourceRole);
+			internalResourceRoleServiceImpl.delete( resourceRole);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -227,9 +226,9 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public boolean isBingResourceRole(ServiceContext serviceContext, String resourceId,
+	public boolean isBingResourceRole( String resourceId,
 			String roleId) {
-		long count=countOnResourceIdAndRoleId(serviceContext,resourceId, roleId);
+		long count=countOnResourceIdAndRoleId(resourceId, roleId);
 		return count>0;
 	}
 	
@@ -237,14 +236,14 @@ implements ResourceManagerService {
 	
 	@Override
 	public List<ResourceGroup> getResourceGroupsByResourceId(
-			ServiceContext serviceContext, String resourceId) {
+			 String resourceId) {
 		return internalResourceGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("resourceId", resourceId)
 				.ready().models();
 	}
 
 	@Override
-	public long countOnResourceIdAndGroupId(ServiceContext serviceContext,
+	public long countOnResourceIdAndGroupId(
 			String resourceId, String groupId) {
 		return internalResourceGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("resourceId", resourceId)
@@ -254,7 +253,7 @@ implements ResourceManagerService {
 
 	@Override
 	public ResourceGroup getResourceGroupOnResourceIdAndGroupId(
-			ServiceContext serviceContext, String resourceId, String groupId) {
+			 String resourceId, String groupId) {
 		return internalResourceGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("resourceId", resourceId)
 				.equals("groupId", groupId)
@@ -263,18 +262,18 @@ implements ResourceManagerService {
 	
 	
 	@Override
-	public ResourceGroup bingResourceGroup(ServiceContext serviceContext, String resourceId,
+	public ResourceGroup bingResourceGroup( String resourceId,
 			String groupId) throws BusinessException {
 		ResourceGroup resourceGroup=null;
 		try{
-			if(isBingResourceGroup(serviceContext, resourceId, groupId)){
+			if(isBingResourceGroup( resourceId, groupId)){
 				throw new BusinessException("the resource had already belong to the group.");
 			}
 			resourceGroup=new ResourceGroup();
 			resourceGroup.setResourceId(resourceId);
 			resourceGroup.setGroupId(groupId);
 			resourceGroup.setId(JUniqueUtils.unique());
-			internalResourceGroupServiceImpl.saveOnly(serviceContext, resourceGroup);
+			internalResourceGroupServiceImpl.saveOnly( resourceGroup);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -282,15 +281,15 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public ResourceGroup bingResourceGroupByUrl(ServiceContext serviceContext,
+	public ResourceGroup bingResourceGroupByUrl(
 			String url, String groupId) throws BusinessException {
 		ResourceGroup resourceGroup=null;
 		try{
-			Resource resource= getResourceByURL(serviceContext, url);
+			Resource resource= getResourceByURL( url);
 			if(resource==null){
 				throw new BusinessException("the url is missing.");
 			}
-			resourceGroup=bingResourceGroup(serviceContext, resource.getId(), groupId);
+			resourceGroup=bingResourceGroup( resource.getId(), groupId);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -299,14 +298,14 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public void unbingResourceGroup(ServiceContext serviceContext, String resourceId,
+	public void unbingResourceGroup( String resourceId,
 			String groupId) throws BusinessException {
 		try{
-			ResourceGroup resourceGroup=getResourceGroupOnResourceIdAndGroupId(serviceContext, resourceId, groupId);
+			ResourceGroup resourceGroup=getResourceGroupOnResourceIdAndGroupId( resourceId, groupId);
 			if(resourceGroup==null){
 				throw new BusinessException("the resource had not already belong to the group.");
 			}
-			internalResourceGroupServiceImpl.delete(serviceContext, resourceGroup);
+			internalResourceGroupServiceImpl.delete( resourceGroup);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -314,16 +313,16 @@ implements ResourceManagerService {
 	}
 	
 	@Override
-	public boolean isBingResourceGroup(ServiceContext serviceContext, String resourceId,
+	public boolean isBingResourceGroup( String resourceId,
 			String groupId) {
-		long count=countOnResourceIdAndGroupId(serviceContext,resourceId, groupId);
+		long count=countOnResourceIdAndGroupId(resourceId, groupId);
 		return count>0;
 	}
 
 
 	@Override
 	public JPage<ResourceRecord> getResourcesByPage(
-			ServiceContext serviceContext,
+			
 			ResourceSearchCriteria resourceSearchCriteria,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
@@ -339,18 +338,18 @@ implements ResourceManagerService {
 		if(JStringUtils.isNotNullOrEmpty(resourceSearchCriteria.getDescription())){
 			params.put("description", Condition.likes(resourceSearchCriteria.getDescription()));
 		}
-		return buildResourceQuery(serviceContext, params)
+		return buildResourceQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(ResourceRecord.class);
 	}
 
 
 	@Override
-	public ResourceRecord getResourceById(ServiceContext serviceContext,
+	public ResourceRecord getResourceById(
 			String id) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("id", Condition.equal(id));
-		return buildResourceQuery(serviceContext, params)
+		return buildResourceQuery( params)
 				.model(ResourceRecord.class);
 	}
 	

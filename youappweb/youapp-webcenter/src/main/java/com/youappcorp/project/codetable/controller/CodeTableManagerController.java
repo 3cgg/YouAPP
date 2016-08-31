@@ -2,7 +2,6 @@ package com.youappcorp.project.codetable.controller;
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -48,16 +47,16 @@ public class CodeTableManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamTypesByPage")
-	public ResponseModel getParamTypesByPage(ServiceContext serviceContext,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable){
-		JPage<ParamType> paramTypesPage= codeTableService.getAllParamTypesByPage(serviceContext,paramCriteria,simplePageable);
+	public ResponseModel getParamTypesByPage(ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable){
+		JPage<ParamType> paramTypesPage= codeTableService.getAllParamTypesByPage(paramCriteria,simplePageable);
 		toTypeViewPage(paramTypesPage);
 		return ResponseModel.newSuccess().setData(paramTypesPage);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamTypes")
-	public ResponseModel getParamTypes(ServiceContext serviceContext,ParamCriteriaInVO paramCriteria){
-		List<ParamType> paramTypes= codeTableService.getAllParamTypes(serviceContext,paramCriteria);
+	public ResponseModel getParamTypes(ParamCriteriaInVO paramCriteria){
+		List<ParamType> paramTypes= codeTableService.getAllParamTypes(paramCriteria);
 		return ResponseModel.newSuccess().setData(toTypeViewPage(paramTypes));
 	}
 
@@ -77,8 +76,8 @@ public class CodeTableManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamCodesByPage")
-	public ResponseModel getParamCodesByPage(ServiceContext serviceContext,ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable){
-		JPage<ParamCode> paramCodesPage= codeTableService.getAllParamCodesByPage(serviceContext,paramCriteria,simplePageable);
+	public ResponseModel getParamCodesByPage(ParamCriteriaInVO paramCriteria,JSimplePageable simplePageable){
+		JPage<ParamCode> paramCodesPage= codeTableService.getAllParamCodesByPage(paramCriteria,simplePageable);
 		toCodeViewPage(paramCodesPage);
 		return ResponseModel.newSuccess().setData(paramCodesPage);
 	}
@@ -93,40 +92,40 @@ public class CodeTableManagerController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping(value="/getParamCodesByTypePage")
-	public ResponseModel getParamCodesByTypePage(ServiceContext serviceContext,String type,JSimplePageable simplePageable){
-		JPage<ParamCode> paramCodesPage= codeTableService.getAllParamCodesByTypeByPage(serviceContext,type,simplePageable);
+	public ResponseModel getParamCodesByTypePage(String type,JSimplePageable simplePageable){
+		JPage<ParamCode> paramCodesPage= codeTableService.getAllParamCodesByTypeByPage(type,simplePageable);
 		toCodeViewPage(paramCodesPage);
 		return ResponseModel.newSuccess().setData(paramCodesPage);
 	}
 	
 	@RequestMapping("/getParamTypeById")
-	public ResponseModel getParamTypeById(ServiceContext context,String id){
-		ParamType paramType=codeTableService.getParamTypeById(context, id);
+	public ResponseModel getParamTypeById( String id){
+		ParamType paramType=codeTableService.getParamTypeById( id);
 		return ResponseModel.newSuccess(genParamRecordOutVO(paramType));
 	}
 	
 	@RequestMapping("/getParamCodeById")
-	public ResponseModel getParamCodeById(ServiceContext context,String id){
-		ParamCode paramCode=codeTableService.getParamCodeById(context, id);
+	public ResponseModel getParamCodeById( String id){
+		ParamCode paramCode=codeTableService.getParamCodeById( id);
 		return ResponseModel.newSuccess(genParamRecordOutVO(paramCode));
 	}
 
 	@RequestMapping("/deleteParamTypeById")
-	public ResponseModel deleteParamTypeById(ServiceContext context,String id){
-		codeTableService.deleteParamTypeById(context, id);
+	public ResponseModel deleteParamTypeById( String id){
+		codeTableService.deleteParamTypeById( id);
 		return ResponseModel.newSuccess(true);
 	}
 	
 	@RequestMapping("/deleteParamCodeById")
-	public ResponseModel deleteParamCodeById(ServiceContext context,String id){
-		codeTableService.deleteParamCodeById(context, id);
+	public ResponseModel deleteParamCodeById( String id){
+		codeTableService.deleteParamCodeById( id);
 		return ResponseModel.newSuccess(true);
 	}
 	
 	@RequestMapping("/updateParamCode")
-	public ResponseModel updateParamCode(ServiceContext context,ParamRecordVO paramCodeRecord){
+	public ResponseModel updateParamCode( ParamRecordVO paramCodeRecord){
 		ParamCode paramCode = toParamCode(paramCodeRecord);
-		codeTableService.updateParamCode(context, paramCode);
+		codeTableService.updateParamCode( paramCode);
 		return ResponseModel.newSuccess(true);
 	}
 
@@ -141,9 +140,9 @@ public class CodeTableManagerController extends SimpleControllerSupport {
 	}
 	
 	@RequestMapping("/updateParamType")
-	public ResponseModel updateParamType(ServiceContext context,ParamRecordVO paramCodeRecord) {
+	public ResponseModel updateParamType( ParamRecordVO paramCodeRecord) {
 		ParamType paramType = toParamType(paramCodeRecord);
-		codeTableService.updateParamType(context, paramType);
+		codeTableService.updateParamType( paramType);
 		return ResponseModel.newSuccess(true);
 	}
 
@@ -157,16 +156,16 @@ public class CodeTableManagerController extends SimpleControllerSupport {
 	}
 	
 	@RequestMapping("/saveParamCode")
-	public ResponseModel saveParamCode(ServiceContext context,ParamRecordVO paramRecordVO){
+	public ResponseModel saveParamCode( ParamRecordVO paramRecordVO){
 		ParamCode paramCode=toParamCode(paramRecordVO);
-		codeTableService.saveParamCode(context, paramCode);
+		codeTableService.saveParamCode( paramCode);
 		return ResponseModel.newSuccess(paramCode.getId());
 	}
 	
 	@RequestMapping("/saveParamType")
-	public ResponseModel saveParamType(ServiceContext context,ParamRecordVO paramRecordVO){
+	public ResponseModel saveParamType( ParamRecordVO paramRecordVO){
 		ParamType paramType=toParamType(paramRecordVO);
-		codeTableService.saveParamType(context, paramType);
+		codeTableService.saveParamType( paramType);
 		return ResponseModel.newSuccess(paramType.getId());
 	}
 	

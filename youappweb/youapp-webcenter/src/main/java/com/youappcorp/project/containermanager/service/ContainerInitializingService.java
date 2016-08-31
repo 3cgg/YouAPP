@@ -9,7 +9,6 @@ import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.platform.sps.core.servicehub.SpringApplicationContextInitializedEvent;
 import j.jave.platform.sps.core.servicehub.SpringApplicationContextInitializedListener;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.rhttp.DefaultRemoteHttpDeployService;
 import j.jave.platform.webcomp.rhttp.model.AppDeploy;
 import j.jave.platform.webcomp.rhttp.model.AppDeployMeta;
@@ -44,7 +43,7 @@ implements SpringApplicationContextInitializedListener ,JService {
 	@Override
 	public Object trigger(SpringApplicationContextInitializedEvent event) {
 		try{
-			List<AppMetaRecord> appMetas= containerManagerService.getAppMetas(DefaultServiceContext.getDefaultServiceContext());
+			List<AppMetaRecord> appMetas= containerManagerService.getAppMetas();
 			if(JCollectionUtils.hasInCollect(appMetas)){
 				for(AppMeta appMeta:appMetas){
 					if(DeployType.JAR.equals(appMeta.getDeployType())){
@@ -67,7 +66,7 @@ implements SpringApplicationContextInitializedListener ,JService {
 					
 					//initialize URL mapping
 					List<URLMappingDeployMeta> urlMappingDeployMetas=new ArrayList<URLMappingDeployMeta>();
-					List<URLMappingMetaRecord> urlMappingMetas=containerManagerService.getURLMappingMetasByAppId(DefaultServiceContext.getDefaultServiceContext(), appMeta.getId());
+					List<URLMappingMetaRecord> urlMappingMetas=containerManagerService.getURLMappingMetasByAppId(appMeta.getId());
 					if(JCollectionUtils.hasInCollect(urlMappingMetas)){
 						for(URLMappingMeta urlMappingMeta:urlMappingMetas){
 							URLMappingDeployMeta urlMappingDeployMeta=new URLMappingDeployMeta();

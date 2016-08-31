@@ -11,7 +11,6 @@ import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JJpaDateParam;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.sql.Timestamp;
@@ -51,48 +50,48 @@ implements UserManagerService {
 	private InternalGroupServiceImpl internalGroupServiceImpl;
 	
 	@Override
-	public Group getGroupByGroupCode(ServiceContext serviceContext, String groupCode) {
+	public Group getGroupByGroupCode( String groupCode) {
 		JAssert.isNotEmpty(groupCode);
 		return internalGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("groupCode", groupCode).ready().model();
 	}
 	
 	@Override
-	public Group getAdminGroup(ServiceContext serviceContext) {
-		return getGroupByGroupCode(serviceContext, ADMIN_CODE);
+	public Group getAdminGroup() {
+		return getGroupByGroupCode( ADMIN_CODE);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Group getDefaultGroup(ServiceContext serviceContext) {
-		return getGroupByGroupCode(serviceContext, DEFAULT_CODE);
+	public Group getDefaultGroup() {
+		return getGroupByGroupCode( DEFAULT_CODE);
 	}
 	
 	@Override
-	public boolean isDefaultGroup(ServiceContext serviceContext, String groupId) {
-		Group role=internalGroupServiceImpl.getById(serviceContext, groupId);
+	public boolean isDefaultGroup( String groupId) {
+		Group role=internalGroupServiceImpl.getById( groupId);
 		return DEFAULT_CODE.equalsIgnoreCase(role.getGroupCode());
 	}
 	
 	@Override
-	public boolean isDefaultGroupCode(ServiceContext serviceContext, String code) {
+	public boolean isDefaultGroupCode( String code) {
 		return DEFAULT_CODE.equalsIgnoreCase(code);
 	}
 	
-	public boolean isAdminGroup(ServiceContext serviceContext, String groupId) {
-		Group role=internalGroupServiceImpl.getById(serviceContext, groupId);
+	public boolean isAdminGroup( String groupId) {
+		Group role=internalGroupServiceImpl.getById( groupId);
 		return ADMIN_CODE.equalsIgnoreCase(role.getGroupCode());
 	}
 	
 	@Override
-	public boolean isAdminGroupCode(ServiceContext serviceContext, String code) {
+	public boolean isAdminGroupCode( String code) {
 		return ADMIN_CODE.equalsIgnoreCase(code);
 	}
 	
 	@Override
-	public JPage<Group> getGroupsByPage(ServiceContext serviceContext,
+	public JPage<Group> getGroupsByPage(
 			GroupSearchCriteria groupSearchCriteria, JSimplePageable simplePageable){
 		return internalGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.likes("groupCode", groupSearchCriteria.getGroupCode())
@@ -102,22 +101,22 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public List<Group> getAllGroups(ServiceContext serviceContext) {
+	public List<Group> getAllGroups() {
 		return internalGroupServiceImpl.singleEntityQuery()
 				.conditionDefault().ready().models();
 	}
 	
 	
 	@Override
-	public void saveGroup(ServiceContext serviceContext, Group group)
+	public void saveGroup( Group group)
 			throws BusinessException {
 		try{
 			validateGroupCode(group);
 			
-			if(exists(serviceContext, group)){
+			if(exists( group)){
 				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
-			internalGroupServiceImpl.saveOnly(serviceContext, group);
+			internalGroupServiceImpl.saveOnly( group);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -125,7 +124,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean exists(ServiceContext serviceContext, Group group)
+	public boolean exists( Group group)
 			throws BusinessException {
 		boolean exists=false;
 		try{
@@ -133,7 +132,7 @@ implements UserManagerService {
 				throw new IllegalArgumentException("role argument is null");
 			}
 			
-			Group dbGroup=getGroupByGroupCode(serviceContext, group.getGroupCode());
+			Group dbGroup=getGroupByGroupCode( group.getGroupCode());
 			// new created.
 			if(JStringUtils.isNullOrEmpty(group.getId())){
 				exists= dbGroup!=null;
@@ -173,7 +172,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateGroup(ServiceContext serviceContext, Group group)
+	public void updateGroup( Group group)
 			throws BusinessException {
 		try{
 			validateGroupCode(group);
@@ -182,11 +181,11 @@ implements UserManagerService {
 				throw new IllegalArgumentException("the primary property id of group is null.");
 			}
 			
-			if(exists(serviceContext, group)){
+			if(exists( group)){
 				throw new BusinessException("group code ["+group.getGroupCode()+"] already has exist.");
 			}
 			
-			Group dbGroup=getGroupById(serviceContext, group.getId());
+			Group dbGroup=getGroupById( group.getId());
 			
 			if(ADMIN_CODE.equalsIgnoreCase(dbGroup.getGroupCode())){
 				throw new BusinessException("group code ["+ADMIN_CODE+"] is initialized by system.please change...");
@@ -199,14 +198,14 @@ implements UserManagerService {
 			dbGroup.setGroupCode(group.getGroupCode());
 			dbGroup.setGroupName(group.getGroupName());
 			dbGroup.setDescription(group.getDescription());
-			internalGroupServiceImpl.updateOnly(serviceContext, dbGroup);
+			internalGroupServiceImpl.updateOnly( dbGroup);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void deleteGroup(ServiceContext serviceContext, Group group)
+	public void deleteGroup( Group group)
 			throws BusinessException {
 		try{
 			if(JStringUtils.isNullOrEmpty(group.getId())){
@@ -214,11 +213,11 @@ implements UserManagerService {
 			}
 			
 			if(JStringUtils.isNullOrEmpty(group.getGroupCode())){
-				group.setGroupCode(internalGroupServiceImpl.getById(serviceContext, group.getId()).getGroupCode());
+				group.setGroupCode(internalGroupServiceImpl.getById( group.getId()).getGroupCode());
 			}
 			
 			validateGroupCode(group);
-			internalGroupServiceImpl.delete(serviceContext, group.getId());
+			internalGroupServiceImpl.delete( group.getId());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -228,48 +227,48 @@ implements UserManagerService {
 	private InternalRoleServiceImpl internalRoleServiceImpl;
 	
 	@Override
-	public Role getRoleByRoleCode(ServiceContext serviceContext, String roleCode) {
+	public Role getRoleByRoleCode( String roleCode) {
 		return internalRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("roleCode", roleCode).ready().model();
 	}
 	
 	@Override
-	public Role getAdminRole(ServiceContext serviceContext) {
-		return getRoleByRoleCode(serviceContext, ADMIN_CODE);
+	public Role getAdminRole() {
+		return getRoleByRoleCode( ADMIN_CODE);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Role getDefaultRole(ServiceContext serviceContext) {
-		return getRoleByRoleCode(serviceContext, DEFAULT_CODE);
+	public Role getDefaultRole() {
+		return getRoleByRoleCode( DEFAULT_CODE);
 	}
 	
 	@Override
-	public boolean isDefaultRole(ServiceContext serviceContext, String roleId) {
-		Role role=internalRoleServiceImpl.getById(serviceContext, roleId);
+	public boolean isDefaultRole( String roleId) {
+		Role role=internalRoleServiceImpl.getById( roleId);
 		return DEFAULT_CODE.equalsIgnoreCase(role.getRoleCode());
 	}
 	
 	@Override
-	public boolean isDefaultRoleCode(ServiceContext serviceContext, String code) {
+	public boolean isDefaultRoleCode( String code) {
 		return DEFAULT_CODE.equalsIgnoreCase(code);
 	}
 	
 	@Override
-	public boolean isAdminRole(ServiceContext serviceContext, String roleId) {
-		Role role=internalRoleServiceImpl.getById(serviceContext, roleId);
+	public boolean isAdminRole( String roleId) {
+		Role role=internalRoleServiceImpl.getById( roleId);
 		return ADMIN_CODE.equalsIgnoreCase(role.getRoleCode());
 	}
 	
 	@Override
-	public boolean isAdminRoleCode(ServiceContext serviceContext, String code) {
+	public boolean isAdminRoleCode( String code) {
 		return ADMIN_CODE.equalsIgnoreCase(code);
 	}
 	
 	@Override
-	public JPage<Role> getAllRolesByPage(ServiceContext serviceContext,
+	public JPage<Role> getAllRolesByPage(
 			RoleSearchCriteria roleSearchCriteria,
 			JSimplePageable simplePageable) {
 		return internalRoleServiceImpl.singleEntityQuery().conditionDefault()
@@ -280,7 +279,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public List<Role> getAllRoles(ServiceContext serviceContext) {
+	public List<Role> getAllRoles() {
 		return internalRoleServiceImpl.singleEntityQuery().conditionDefault().ready().models();
 	}
 	
@@ -305,16 +304,16 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void saveRole(ServiceContext serviceContext, Role role)
+	public void saveRole( Role role)
 			throws BusinessException {
 		
 		try{
 
 			validateRoleCode(role);
-			if(exists(serviceContext, role)){
+			if(exists( role)){
 				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
 			}
-			internalRoleServiceImpl.saveOnly(serviceContext, role);
+			internalRoleServiceImpl.saveOnly( role);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -323,13 +322,13 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean exists(ServiceContext serviceContext, Role role)
+	public boolean exists( Role role)
 			throws BusinessException {
 		if(role==null){
 			throw new IllegalArgumentException("role argument is null");
 		}
 		boolean exists=false;
-		Role dbRole=getRoleByRoleCode(serviceContext, role.getRoleCode());
+		Role dbRole=getRoleByRoleCode( role.getRoleCode());
 		// new created.
 		if(JStringUtils.isNullOrEmpty(role.getId())){
 			exists= dbRole!=null;
@@ -348,7 +347,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateRole(ServiceContext serviceContext, Role role)
+	public void updateRole( Role role)
 			throws BusinessException {
 		try{
 			validateRoleCode(role);
@@ -357,11 +356,11 @@ implements UserManagerService {
 				throw new IllegalArgumentException("the primary property id of role is null.");
 			}
 			
-			if(exists(serviceContext, role)){
+			if(exists( role)){
 				throw new BusinessException("role code ["+role.getRoleCode()+"] already has exist.");
 			}
 			
-			Role dbRole=getRoleById(serviceContext, role.getId());
+			Role dbRole=getRoleById( role.getId());
 			
 			if(ADMIN_CODE.equalsIgnoreCase(dbRole.getRoleCode())){
 				throw new BusinessException("group code ["+ADMIN_CODE+"] is initialized by system.please change...");
@@ -375,7 +374,7 @@ implements UserManagerService {
 			dbRole.setRoleName(role.getRoleName());
 			dbRole.setDescription(role.getDescription());
 			
-			internalRoleServiceImpl.updateOnly(serviceContext, dbRole);
+			internalRoleServiceImpl.updateOnly( dbRole);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -384,7 +383,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void deleteRole(ServiceContext serviceContext, Role role)
+	public void deleteRole( Role role)
 			throws BusinessException {
 		try{
 			if(JStringUtils.isNullOrEmpty(role.getId())){
@@ -392,10 +391,10 @@ implements UserManagerService {
 			}
 			
 			if(JStringUtils.isNullOrEmpty(role.getRoleCode())){
-				role.setRoleCode(internalRoleServiceImpl.getById(serviceContext, role.getId()).getRoleCode());
+				role.setRoleCode(internalRoleServiceImpl.getById( role.getId()).getRoleCode());
 			}
 			validateRoleCode(role);
-			internalRoleServiceImpl.delete(serviceContext, role.getId());
+			internalRoleServiceImpl.delete( role.getId());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -403,8 +402,8 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public Role getRoleById(ServiceContext serviceContext, String id) {
-		return internalRoleServiceImpl.getById(serviceContext, id);
+	public Role getRoleById( String id) {
+		return internalRoleServiceImpl.getById( id);
 	}
 	
 	
@@ -423,9 +422,9 @@ implements UserManagerService {
 	
 		
 	@Override
-	public void saveUser(ServiceContext serviceContext, User user) throws BusinessException {
+	public void saveUser( User user) throws BusinessException {
 		try{
-			internalUserServiceImpl.saveOnly(serviceContext, user);
+			internalUserServiceImpl.saveOnly( user);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -433,38 +432,38 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void updateUser(ServiceContext serviceContext, User user)
+	public void updateUser( User user)
 			throws BusinessException {
 		try{
-			internalUserServiceImpl.updateOnly(serviceContext, user);
+			internalUserServiceImpl.updateOnly( user);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void updateUser(ServiceContext serviceContext, User user,
+	public void updateUser( User user,
 			UserExtend userExtend) throws BusinessException {
-//		updateUser(serviceContext, user);
-		UserExtend dbUserExtend=getUserExtendByUserId(serviceContext, user.getId());
+//		updateUser( user);
+		UserExtend dbUserExtend=getUserExtendByUserId( user.getId());
 		dbUserExtend.setNatureName(userExtend.getNatureName());
-		updateUserExtend(serviceContext, dbUserExtend);
+		updateUserExtend( dbUserExtend);
 	}
 	
 	@Override
-	public void deleteUser(ServiceContext serviceContext, String userId) {
-		internalUserServiceImpl.delete(serviceContext, userId);
+	public void deleteUser( String userId) {
+		internalUserServiceImpl.delete( userId);
 	}
 	
 	@Override
-	public User getUserByName(ServiceContext serviceContext, String userName) {
+	public User getUserByName( String userName) {
 		return internalUserServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userName", userName).ready().model();
 	}
 	
 	
 	private JQuery<?> buildUserQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ ",  a.userName as userName"
 				+ " , a.status as status"
@@ -497,7 +496,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public JPage<UserRecord> getUsersByPage(ServiceContext serviceContext, UserSearchCriteria userSearchCriteria,
+	public JPage<UserRecord> getUsersByPage( UserSearchCriteria userSearchCriteria,
 			JSimplePageable simplePageable) {
 		
 		Map<String, Condition> params=new HashMap<String, Condition>();
@@ -536,15 +535,15 @@ implements UserManagerService {
 			params.put("registerTimeEnd", Condition.smaller(dateParam));
 		}
 		
-		return buildUserQuery(serviceContext, params)
+		return buildUserQuery( params)
 				.modelPage(simplePageable,UserRecord.class);
 	}
 	
 	@Override
-	public UserRecord getUserById(ServiceContext serviceContext, String id) {
+	public UserRecord getUserById( String id) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(id));
-		return buildUserQuery(serviceContext, params)
+		return buildUserQuery( params)
 				.model(UserRecord.class);
 	}
 	
@@ -552,13 +551,13 @@ implements UserManagerService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<User> getUsers(ServiceContext serviceContext) {
+	public List<User> getUsers() {
 		return internalUserServiceImpl.singleEntityQuery().conditionDefault().ready().models();
 	}
 
 	
 	@Override
-	public void register(ServiceContext serviceContext,User user,UserExtend userExtend) throws BusinessException {
+	public void register(User user,UserExtend userExtend) throws BusinessException {
 		try{
 			
 			if(JStringUtils.isNullOrEmpty(user.getUserName())){
@@ -569,7 +568,7 @@ implements UserManagerService {
 				throw new BusinessException("密码不能为空");
 			}		
 			
-			User dbUser=getUserByName(serviceContext, user.getUserName().trim());
+			User dbUser=getUserByName( user.getUserName().trim());
 			if(dbUser!=null){
 				throw new BusinessException("用户已经存在");
 			}
@@ -580,23 +579,23 @@ implements UserManagerService {
 			user.setUserName(user.getUserName().trim());
 			user.setStatus("ACTIVE");
 			user.setRegisterTime(new Timestamp(new Date().getTime()));
-			saveUser(serviceContext, user);  // with encrypted password
+			saveUser( user);  // with encrypted password
 			
 			//save user extend
 			userExtend.setUserId(user.getId());
-			saveUserExtend(serviceContext, userExtend);
+			saveUserExtend( userExtend);
 			
 			//save role
 			UserRole userRole=new UserRole();
-			userRole.setRoleId(getDefaultRole(serviceContext).getId());
+			userRole.setRoleId(getDefaultRole().getId());
 			userRole.setUserId(user.getId());
-			internalUserRoleServiceImpl.saveOnly(serviceContext, userRole);
+			internalUserRoleServiceImpl.saveOnly( userRole);
 			
 			//save group
 			UserGroup userGroup=new UserGroup();
-			userGroup.setGroupId(getDefaultGroup(serviceContext).getId());
+			userGroup.setGroupId(getDefaultGroup().getId());
 			userGroup.setUserId(user.getId());
-			internalUserGroupServiceImpl.saveOnly(serviceContext, userGroup);
+			internalUserGroupServiceImpl.saveOnly( userGroup);
 			
 			
 		}catch(Exception e){
@@ -606,9 +605,9 @@ implements UserManagerService {
 	
 	
 	@Override
-	public void resetPassword(ServiceContext serviceContext, String userId,String password) {
+	public void resetPassword( String userId,String password) {
 		try {
-			User dbUser=internalUserServiceImpl.getById(serviceContext, userId);
+			User dbUser=internalUserServiceImpl.getById( userId);
 			if(dbUser==null){
 				throw new BusinessException("用户不存在");
 			}
@@ -617,7 +616,7 @@ implements UserManagerService {
 			String encriptPassword=deSedeCipherService.encrypt(passwrod);
 			
 			dbUser.setPassword(encriptPassword);
-			internalUserServiceImpl.saveOnly(serviceContext, dbUser);
+			internalUserServiceImpl.saveOnly( dbUser);
 		} catch (Exception e) {
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -632,10 +631,10 @@ implements UserManagerService {
 	private InternalRoleGroupServiceImpl internalRoleGroupServiceImpl;
 	
 	@Override
-	public void bingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) throws BusinessException {
+	public void bingRoleGroup(String roleId,String groupId) throws BusinessException {
 		
 		try{
-			if(isBingRoleAndGroup(serviceContext, roleId, groupId)){
+			if(isBingRoleAndGroup( roleId, groupId)){
 				throw new BusinessException("the role had already belong to the group.");
 			}
 			
@@ -643,7 +642,7 @@ implements UserManagerService {
 			roleGroup.setRoleId(roleId);
 			roleGroup.setGroupId(groupId);
 			roleGroup.setId(JUniqueUtils.unique());
-			internalRoleGroupServiceImpl.saveOnly(serviceContext, roleGroup);
+			internalRoleGroupServiceImpl.saveOnly( roleGroup);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -651,16 +650,16 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void unbingRoleGroup(ServiceContext serviceContext,String roleId,String groupId) 
+	public void unbingRoleGroup(String roleId,String groupId) 
 			throws BusinessException {
 		
 		try{
 
-			RoleGroup userGroup=getRoleGroupOnRoleIdAndGroupId(serviceContext, roleId, groupId);
+			RoleGroup userGroup=getRoleGroupOnRoleIdAndGroupId( roleId, groupId);
 			if(userGroup==null){
 				throw new BusinessException("the user doesnot belong to the group.");
 			}
-			internalRoleGroupServiceImpl.delete(serviceContext, userGroup.getId());
+			internalRoleGroupServiceImpl.delete( userGroup.getId());
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -670,7 +669,7 @@ implements UserManagerService {
 
 	@Override
 	public RoleGroup getRoleGroupOnRoleIdAndGroupId(
-			ServiceContext serviceContext, String roleId, String groupId) {
+			 String roleId, String groupId) {
 		return internalRoleGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("roleId", roleId)
 				.equals("groupId", groupId)
@@ -678,7 +677,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public long countOnRoleIdAndGroupId(ServiceContext serviceContext,
+	public long countOnRoleIdAndGroupId(
 			String roleId, String groupId) {
 		return internalRoleGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("roleId", roleId)
@@ -687,13 +686,13 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean isBingRoleAndGroup(ServiceContext serviceContext,String roleId,String groupId) {
-		long count=countOnRoleIdAndGroupId(serviceContext, roleId, groupId);
+	public boolean isBingRoleAndGroup(String roleId,String groupId) {
+		long count=countOnRoleIdAndGroupId( roleId, groupId);
 		return count>0;
 	}
 
 	@Override
-	public List<RoleGroup> getRoleGroupsByRoleId(ServiceContext serviceContext,
+	public List<RoleGroup> getRoleGroupsByRoleId(
 			String roleId) {
 		return internalRoleGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("roleId", roleId)
@@ -702,7 +701,7 @@ implements UserManagerService {
 
 	@Override
 	public List<RoleGroup> getRoleGroupsByGroupId(
-			ServiceContext serviceContext, String groupId) {
+			 String groupId) {
 		return internalRoleGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("groupId", groupId)
 				.ready().models();
@@ -713,18 +712,18 @@ implements UserManagerService {
 	private InternalUserRoleServiceImpl internalUserRoleServiceImpl;
 	
 	@Override
-	public List<UserRole> getUserRolesByUserId(ServiceContext serviceContext,
+	public List<UserRole> getUserRolesByUserId(
 			String userId) {
 		return internalUserRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId).ready().models();
 	}
 	
 	@Override
-	public void bingUserRole(ServiceContext serviceContext, String userId,
+	public void bingUserRole( String userId,
 			String roleId) throws BusinessException {
 		
 		try{
-			if(isBingUserAndRole(serviceContext, userId, roleId)){
+			if(isBingUserAndRole( userId, roleId)){
 				throw new BusinessException("the user had already the role.");
 			}
 			
@@ -732,7 +731,7 @@ implements UserManagerService {
 			userRole.setUserId(userId);
 			userRole.setRoleId(roleId);
 			userRole.setId(JUniqueUtils.unique());
-			internalUserRoleServiceImpl.saveOnly(serviceContext, userRole);
+			internalUserRoleServiceImpl.saveOnly( userRole);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -742,14 +741,14 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void unbingUserRole(ServiceContext serviceContext, String userId,
+	public void unbingUserRole( String userId,
 			String roleId) throws BusinessException {
 		try{
-			UserRole userRole=getUserRoleOnUserIdAndRoleId(serviceContext, userId, roleId);
+			UserRole userRole=getUserRoleOnUserIdAndRoleId( userId, roleId);
 			if(userRole==null){
 				throw new BusinessException("the user doesnot have the role.");
 			}
-			internalUserRoleServiceImpl.delete(serviceContext, userRole.getId());
+			internalUserRoleServiceImpl.delete( userRole.getId());
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -758,7 +757,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public UserRole getUserRoleOnUserIdAndRoleId(ServiceContext serviceContext,
+	public UserRole getUserRoleOnUserIdAndRoleId(
 			String userId, String roleId) {
 		return internalUserRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId)
@@ -767,7 +766,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean isBingUserAndRole(ServiceContext serviceContext, String userId,
+	public boolean isBingUserAndRole( String userId,
 			String roleId) {
 		long count=internalUserRoleServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId)
@@ -784,7 +783,7 @@ implements UserManagerService {
 	
 	
 	@Override
-	public void saveUserExtend(ServiceContext serviceContext, UserExtend userExtend)
+	public void saveUserExtend( UserExtend userExtend)
 			throws BusinessException {
 		
 		try{
@@ -800,13 +799,13 @@ implements UserManagerService {
 			
 			String natureName=userExtend.getNatureName();
 			if(JStringUtils.isNotNullOrEmpty(natureName)){
-				UserExtend dbUserExtend=getUserExtendByNatureName(serviceContext, userExtend.getNatureName());
+				UserExtend dbUserExtend=getUserExtendByNatureName( userExtend.getNatureName());
 				if(dbUserExtend!=null){
 					throw new BusinessException("nature name already exists, please change others.");
 				}
 			}
 			
-			internalUserExtendServiceImpl.saveOnly(serviceContext, userExtend);
+			internalUserExtendServiceImpl.saveOnly( userExtend);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -814,7 +813,7 @@ implements UserManagerService {
 	}
 
 	@Override
-	public void updateUserExtend(ServiceContext serviceContext, UserExtend userExtend)
+	public void updateUserExtend( UserExtend userExtend)
 			throws BusinessException {
 		
 		try{
@@ -828,13 +827,13 @@ implements UserManagerService {
 			
 			String natureName=userExtend.getNatureName();
 			if(JStringUtils.isNotNullOrEmpty(natureName)){
-				UserExtend dbUserExtend=getUserExtendByNatureName(serviceContext, userExtend.getNatureName());
+				UserExtend dbUserExtend=getUserExtendByNatureName( userExtend.getNatureName());
 				if(dbUserExtend!=null&&!userExtend.getId().equals(dbUserExtend.getId())){
 					throw new BusinessException("nature name already exists, please change others.");
 				}
 			}
 			
-			internalUserExtendServiceImpl.updateOnly(serviceContext, userExtend);
+			internalUserExtendServiceImpl.updateOnly( userExtend);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -844,14 +843,14 @@ implements UserManagerService {
 	}
 
 	@Override
-	public UserExtend getUserExtendByUserId(ServiceContext serviceContext,
+	public UserExtend getUserExtendByUserId(
 			String userId) {
 		return internalUserExtendServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId).ready().model();
 	}
 
 	@Override
-	public UserExtend getUserExtendByNatureName(ServiceContext serviceContext,
+	public UserExtend getUserExtendByNatureName(
 			String natureName) {
 		return internalUserExtendServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("natureName", natureName).ready().model();
@@ -862,19 +861,19 @@ implements UserManagerService {
 	private InternalUserGroupServiceImpl internalUserGroupServiceImpl;
 
 	@Override
-	public List<UserGroup> getUserGroupsByUserId(ServiceContext serviceContext,
+	public List<UserGroup> getUserGroupsByUserId(
 			String userId) {
 		return internalUserGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId).ready().models();
 	}
 	
 	@Override
-	public void bingUserGroup(ServiceContext serviceContext, String userId,
+	public void bingUserGroup( String userId,
 			String groupId) throws BusinessException {
 		
 		try{
 
-			if(isBingUserAndGroup(serviceContext, userId, groupId)){
+			if(isBingUserAndGroup( userId, groupId)){
 				throw new BusinessException("the user had already belong to the group.");
 			}
 			
@@ -882,7 +881,7 @@ implements UserManagerService {
 			userGroup.setUserId(userId);
 			userGroup.setGroupId(groupId);
 			userGroup.setId(JUniqueUtils.unique());
-			internalUserGroupServiceImpl.saveOnly(serviceContext, userGroup);
+			internalUserGroupServiceImpl.saveOnly( userGroup);
 			
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
@@ -891,14 +890,14 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public void unbingUserGroup(ServiceContext serviceContext, String userId,
+	public void unbingUserGroup( String userId,
 			String groupId) throws BusinessException {
 		try{
-			UserGroup userGroup=getUserGroupOnUserIdAndGroupId(serviceContext, userId, groupId);
+			UserGroup userGroup=getUserGroupOnUserIdAndGroupId( userId, groupId);
 			if(userGroup==null){
 				throw new BusinessException("the user doesnot belong to the group.");
 			}
-			internalUserGroupServiceImpl.delete(serviceContext, userGroup.getId());
+			internalUserGroupServiceImpl.delete( userGroup.getId());
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
@@ -906,7 +905,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public UserGroup getUserGroupOnUserIdAndGroupId(ServiceContext serviceContext,
+	public UserGroup getUserGroupOnUserIdAndGroupId(
 			String userId, String groupId) {
 		return internalUserGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId)
@@ -915,7 +914,7 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public boolean isBingUserAndGroup(ServiceContext serviceContext, String userId,
+	public boolean isBingUserAndGroup( String userId,
 			String groupId) {
 		long count=internalUserGroupServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("userId", userId)
@@ -925,56 +924,56 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public Group getGroupById(ServiceContext serviceContext, String id) {
-		return internalGroupServiceImpl.getById(serviceContext, id);
+	public Group getGroupById( String id) {
+		return internalGroupServiceImpl.getById( id);
 	}
 	
 	@Override
-	public UserDetail getUserDetailByName(ServiceContext serviceContext,
+	public UserDetail getUserDetailByName(
 			String userName) {
-		User user=getUserByName(serviceContext, userName);
+		User user=getUserByName( userName);
 		if(user==null){
 			return null;
 		}
-		UserDetail userDetail=wrapUserDetail(serviceContext, user);
+		UserDetail userDetail=wrapUserDetail( user);
 		return userDetail;
 	}
 	
-	private UserDetail wrapUserDetail(ServiceContext serviceContext,User user){
+	private UserDetail wrapUserDetail(User user){
 		UserDetail userDetail=new UserDetail();
 		userDetail.setUserId(user.getId());
 		userDetail.setUserName(user.getUserName());
 		userDetail.setStatus(user.getStatus());
 		userDetail.setRegisterTime(user.getRegisterTime());
 
-		UserExtend userExtend=getUserExtendByUserId(serviceContext, user.getId());
+		UserExtend userExtend=getUserExtendByUserId( user.getId());
 		if(userExtend!=null){
 			userDetail.setNatureName(userExtend.getNatureName());
 			userDetail.setUserImage(userExtend.getUserImage());
 		}
 		
-		List<RoleRecord> roles=getRolesByUserId(serviceContext, user.getId());
+		List<RoleRecord> roles=getRolesByUserId( user.getId());
 		userDetail.setRoles(roles);
 		
-		List<GroupRecord> groups=getGroupsByUserId(serviceContext, user.getId());
+		List<GroupRecord> groups=getGroupsByUserId( user.getId());
 		userDetail.setGroups(groups);
 		
 		return userDetail;
 	}
 	
 	@Override
-	public UserDetail getUserDetailById(ServiceContext serviceContext, String id) {
-		User user=internalUserServiceImpl.getById(serviceContext, id);
+	public UserDetail getUserDetailById( String id) {
+		User user=internalUserServiceImpl.getById( id);
 		if(user==null){
 			return null;
 		}
-		UserDetail userDetail=wrapUserDetail(serviceContext, user);
+		UserDetail userDetail=wrapUserDetail( user);
 		return userDetail;
 	}
 	
 	
 	private JQuery<?> buildUserOnRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ ",  a.userName as userName"
 				+ " , a.status as status"
@@ -997,27 +996,27 @@ implements UserManagerService {
 	
 	@Override
 	public List<UserRecord> getUsersByRoleId(
-			ServiceContext serviceContext, String roleId) {
+			 String roleId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildUserOnRoleQuery(serviceContext, params)
+		return buildUserOnRoleQuery( params)
 				.models(UserRecord.class);
 	}
 	
 	@Override
 	public JPage<UserRecord> getUsersByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildUserOnRoleQuery(serviceContext, params)
+		return buildUserOnRoleQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(UserRecord.class);
 	}
 	
 	
 	private JQuery<?> buildUserOnGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ ",  a.userName as userName"
 				+ " , a.status as status"
@@ -1038,26 +1037,26 @@ implements UserManagerService {
 	
 	@Override
 	public List<UserRecord> getUsersByGroupId(
-			ServiceContext serviceContext, String groupId) {
+			 String groupId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildUserOnGroupQuery(serviceContext, params)
+		return buildUserOnGroupQuery( params)
 				.models(UserRecord.class);
 	}
 	
 	@Override
 	public JPage<UserRecord> getUsersByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildUserOnGroupQuery(serviceContext, params)
+		return buildUserOnGroupQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(UserRecord.class);
 	}
 	
 	private JQuery<?> buildRoleOnGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ ", a.roleCode as roleCode"
 				+ ", a.roleName as roleName "
@@ -1076,27 +1075,27 @@ implements UserManagerService {
 	
 	@Override
 	public List<RoleRecord> getRolesByGroupId(
-			ServiceContext serviceContext, String groupId) {
+			 String groupId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildRoleOnGroupQuery(serviceContext, params)
+		return buildRoleOnGroupQuery( params)
 				.models(RoleRecord.class);
 	}
 	
 	
 	@Override
 	public JPage<RoleRecord> getRolesByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildRoleOnGroupQuery(serviceContext, params)
+		return buildRoleOnGroupQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(RoleRecord.class);
 	}
 	
 	private JQuery<?> buildGroupOnRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id "
 				+ ", a.groupCode as groupCode"
 				+ ", a.groupName as groupName "
@@ -1115,26 +1114,26 @@ implements UserManagerService {
 	
 	@Override
 	public List<GroupRecord> getGroupsByRoleId(
-			ServiceContext serviceContext, String roleId) {
+			 String roleId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildGroupOnRoleQuery(serviceContext, params)
+		return buildGroupOnRoleQuery( params)
 				.models(GroupRecord.class);
 	}
 	
 	@Override
 	public JPage<GroupRecord> getGroupsByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildGroupOnRoleQuery(serviceContext, params)
+		return buildGroupOnRoleQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(GroupRecord.class);
 	}
 	
 	private JQuery<?> buildRoleOnUserQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select c.id as id"
 				+ ", c.roleCode as roleCode"
 				+ ", c.roleName as roleName"
@@ -1152,18 +1151,18 @@ implements UserManagerService {
 	}
 	
 	@Override
-	public List<RoleRecord> getRolesByUserId(ServiceContext serviceContext,
+	public List<RoleRecord> getRolesByUserId(
 			String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		List<RoleRecord> roles= buildRoleOnUserQuery(serviceContext, params)
+		List<RoleRecord> roles= buildRoleOnUserQuery( params)
 				.models(RoleRecord.class);
 		return roles;
 	}
 	
 	
 	private JQuery<?> buildGroupOnUserQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select c.id as id"
 				+ ", c.groupCode as groupCode"
 				+ ", c.groupName as groupName"
@@ -1182,17 +1181,17 @@ implements UserManagerService {
 	
 	
 	@Override
-	public List<GroupRecord> getGroupsByUserId(ServiceContext serviceContext,
+	public List<GroupRecord> getGroupsByUserId(
 			String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		List<GroupRecord> groupRecords= buildGroupOnUserQuery(serviceContext, params)
+		List<GroupRecord> groupRecords= buildGroupOnUserQuery( params)
 				.models(GroupRecord.class);
 		return groupRecords;
 	}
 	
 	private JQuery<?> buildUnbingGroupOnRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id"
 				+ " from Group a"
 				+ " left join RoleGroup b on b.groupId=a.id"
@@ -1217,27 +1216,27 @@ implements UserManagerService {
 	
 	@Override
 	public List<GroupRecord> getUnbingGroupsByRoleId(
-			ServiceContext serviceContext, String roleId) {
+			 String roleId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildUnbingGroupOnRoleQuery(serviceContext, params)
+		return buildUnbingGroupOnRoleQuery( params)
 				.models(GroupRecord.class);
 	}
 	
 	@Override
 	public JPage<GroupRecord> getUnbingGroupsByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildUnbingGroupOnRoleQuery(serviceContext, params)
+		return buildUnbingGroupOnRoleQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(GroupRecord.class);
 	}
 	
 	
 	private JQuery<?> buildUnbingGroupOnUserQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select c.id as id"
 				+ " from User a "
 				+ " left join UserGroup b on a.id=b.userId "
@@ -1260,16 +1259,16 @@ implements UserManagerService {
 	
 	@Override
 	public List<GroupRecord> getUnbingGroupsByUserId(
-			ServiceContext serviceContext, String userId) {
+			 String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		return buildUnbingGroupOnUserQuery(serviceContext, params)
+		return buildUnbingGroupOnUserQuery( params)
 				.models(GroupRecord.class);
 	}
 	
 	
 	private JQuery<?> buildUnbingRoleOnGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ " from Role a"
 				+ " left join RoleGroup b on b.roleId=a.id"
@@ -1293,16 +1292,16 @@ implements UserManagerService {
 	
 	@Override
 	public List<RoleRecord> getUnbingRolesByGroupId(
-			ServiceContext serviceContext, String groupId) {
+			 String groupId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildUnbingRoleOnGroupQuery(serviceContext, params)
+		return buildUnbingRoleOnGroupQuery( params)
 				.models(RoleRecord.class);
 	}
 	
 	
 	private JQuery<?> buildUnbingUserOnGroupQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ " from User a "
 				+ " left join UserGroup b on a.id=b.userId "
@@ -1329,17 +1328,17 @@ implements UserManagerService {
 	
 	@Override
 	public JPage<UserRecord> getUnbingUsersByGroupIdByPage(
-			ServiceContext serviceContext, String groupId,
+			 String groupId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("groupId", Condition.equal(groupId));
-		return buildUnbingUserOnGroupQuery(serviceContext, params)
+		return buildUnbingUserOnGroupQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(UserRecord.class);
 	}
 	
 	private JQuery<?> buildUnbingUserOnRoleQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select a.id as id"
 				+ " from User a "
 				+ " left join UserRole b on a.id=b.userId "
@@ -1366,18 +1365,18 @@ implements UserManagerService {
 	
 	@Override
 	public JPage<UserRecord> getUnbingUsersByRoleIdByPage(
-			ServiceContext serviceContext, String roleId,
+			 String roleId,
 			JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("roleId", Condition.equal(roleId));
-		return buildUnbingUserOnRoleQuery(serviceContext, params)
+		return buildUnbingUserOnRoleQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(UserRecord.class);
 	}
 	
 	
 	private JQuery<?> buildUnbingRoleOnUserQuery(
-			ServiceContext serviceContext, Map<String, Condition> params){
+			 Map<String, Condition> params){
 		String jpql="select c.id as id"
 				+ " from User a "
 				+ " left join UserRole b on a.id=b.userId "
@@ -1401,10 +1400,10 @@ implements UserManagerService {
 	
 	@Override
 	public List<RoleRecord> getUnbingRolesByUserId(
-			ServiceContext serviceContext, String userId) {
+			 String userId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("userId", Condition.equal(userId));
-		return buildUnbingRoleOnUserQuery(serviceContext, params)
+		return buildUnbingRoleOnUserQuery( params)
 				.models(RoleRecord.class);
 	}
 	

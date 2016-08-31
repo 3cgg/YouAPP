@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -26,19 +25,19 @@ public class ExtAppSampleController extends SimpleControllerSupport{
 
 	
 	@RequestMapping(value="/saveSampleRecord")
-	public ResponseModel saveSampleRecord(ServiceContext serviceContext,SampleRecordVO sampleRecordVO) throws Exception {
+	public ResponseModel saveSampleRecord(SampleRecordVO sampleRecordVO) throws Exception {
 		sampleRecordVO.setId(JUniqueUtils.unique());
 		sampleRecords.put(sampleRecordVO.getId(), sampleRecordVO);
 		return ResponseModel.newSuccess(sampleRecordVO.getId());
 	}
 	
 	@RequestMapping(value="/getSampleRecordById")
-	public ResponseModel getSampleRecordById(ServiceContext serviceContext,String id) throws Exception {
+	public ResponseModel getSampleRecordById(String id) throws Exception {
 		return ResponseModel.newSuccess().setData(sampleRecords.get(id));
 	}
 
 	@RequestMapping(value="/getSampleRecordsByPage")
-	public ResponseModel getSampleRecordsByPage(ServiceContext serviceContext,JSimplePageable simplePageable){
+	public ResponseModel getSampleRecordsByPage(JSimplePageable simplePageable){
 		List<SampleRecordVO> sampleRecordVOs=new ArrayList<SampleRecordVO>();
 		for(SampleRecordVO sampleRecordVO:sampleRecords.values()){
 			sampleRecordVOs.add(sampleRecordVO);
@@ -52,13 +51,13 @@ public class ExtAppSampleController extends SimpleControllerSupport{
 	}
 	
 	@RequestMapping(value="/deleteSampleRecordById")
-	public ResponseModel deleteSampleRecordById(ServiceContext serviceContext,String id){
+	public ResponseModel deleteSampleRecordById(String id){
 		sampleRecords.remove(id);
 		return ResponseModel.newSuccess();
 	}
 
 	@RequestMapping(value="/updateSampleRecord")
-	public ResponseModel updateSampleRecord(ServiceContext serviceContext,SampleRecordVO sampleRecordVO) throws JServiceException{
+	public ResponseModel updateSampleRecord(SampleRecordVO sampleRecordVO) throws JServiceException{
 		sampleRecords.put(sampleRecordVO.getId(), sampleRecordVO);
 		return ResponseModel.newSuccess();
 	}

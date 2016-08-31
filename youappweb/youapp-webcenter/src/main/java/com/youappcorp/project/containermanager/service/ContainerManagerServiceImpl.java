@@ -6,7 +6,6 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.sps.multiv.jnterface.JKey;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.Collections;
@@ -40,39 +39,39 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	private AppMetaJPARepo appMetaRepo;
 	
 	@Override
-	public void saveAppMeta(ServiceContext serviceContext, AppMeta appMeta) throws BusinessException {
+	public void saveAppMeta( AppMeta appMeta) throws BusinessException {
 		try{
-			if(existsAppMeta(serviceContext, appMeta.getAppName(), appMeta.getAppCompName(), appMeta.getAppVersion())){
+			if(existsAppMeta( appMeta.getAppName(), appMeta.getAppCompName(), appMeta.getAppVersion())){
 				throw new BusinessException("the app already exists.");
 			}
-			internalAppMetaServiceImpl.saveOnly(serviceContext, appMeta);
+			internalAppMetaServiceImpl.saveOnly( appMeta);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void saveURLMappingMetas(ServiceContext serviceContext,List<URLMappingMeta> urlMappingMetas) {
+	public void saveURLMappingMetas(List<URLMappingMeta> urlMappingMetas) {
 		for(URLMappingMeta urlMappingMeta:urlMappingMetas){
-			saveURLMappingMeta(serviceContext,urlMappingMeta);
+			saveURLMappingMeta(urlMappingMeta);
 		}
 	}
 	
 	@Override
-	public void saveURLMappingMeta(ServiceContext serviceContext,URLMappingMeta urlMappingMeta) {
+	public void saveURLMappingMeta(URLMappingMeta urlMappingMeta) {
 		try{
-			URLMappingMeta mappingMeta=getURLMappingMetaByUrl(serviceContext, urlMappingMeta.getUrl());
+			URLMappingMeta mappingMeta=getURLMappingMetaByUrl( urlMappingMeta.getUrl());
 			if(mappingMeta!=null){
 				throw new BusinessException("the url already exists.");
 			}
-			internalURLMappingMetaServiceImpl.saveOnly(serviceContext, urlMappingMeta);
+			internalURLMappingMetaServiceImpl.saveOnly( urlMappingMeta);
 		}catch(Exception e){
 			BusinessExceptionUtil.throwException(e);
 		}
 	}
 	
 	@Override
-	public void updateAppMeta(ServiceContext serviceContext, AppMeta appMeta,
+	public void updateAppMeta( AppMeta appMeta,
 			List<URLMappingMeta> urlMappingMetas) {
 		AppMeta dbAppMeta=internalAppMetaServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("appName", appMeta.getAppName())
@@ -84,14 +83,14 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		.ready().models();
 		
 		for(URLMappingMeta urlMappingMeta:dbUrlMappingMetas){
-			internalURLMappingMetaServiceImpl.delete(serviceContext, urlMappingMeta);
+			internalURLMappingMetaServiceImpl.delete( urlMappingMeta);
 		}
-		internalAppMetaServiceImpl.delete(serviceContext, dbAppMeta);
+		internalAppMetaServiceImpl.delete( dbAppMeta);
 		
-		saveAppMeta(serviceContext, appMeta, urlMappingMetas);
+		saveAppMeta( appMeta, urlMappingMetas);
 	}
 	
-	private URLMappingMeta getURLMappingMetaByUrl(ServiceContext serviceContext,String url){
+	private URLMappingMeta getURLMappingMetaByUrl(String url){
 		return internalURLMappingMetaServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("url", url)
 				.ready().model();
@@ -99,16 +98,16 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	
 	
 	@Override
-	public void saveAppMeta(ServiceContext serviceContext, AppMeta appMeta,
+	public void saveAppMeta( AppMeta appMeta,
 			List<URLMappingMeta> urlMappingMetas) {
-		saveAppMeta(serviceContext, appMeta);
+		saveAppMeta( appMeta);
 		for(URLMappingMeta urlMappingMeta:urlMappingMetas){
 			urlMappingMeta.setAppId(appMeta.getId());
-			saveURLMappingMeta(serviceContext,urlMappingMeta);
+			saveURLMappingMeta(urlMappingMeta);
 		}
 	}
 	
-	private JQuery<?> buildAPPMetaQuery(ServiceContext serviceContext,Map<String, Condition> params){
+	private JQuery<?> buildAPPMetaQuery(Map<String, Condition> params){
 		
 		String jpql="select a.id as id "
 				+ ", a.appName as appName"
@@ -148,18 +147,18 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	}
 	
 	@Override
-	public AppMetaRecord getAPPMetaByConfig(ServiceContext serviceContext, String appName,
+	public AppMetaRecord getAPPMetaByConfig( String appName,
 			String appCompName, String appVersion) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("appName", Condition.equal(appName));
 		params.put("appCompName", Condition.equal(appCompName));
 		params.put("appVersion", Condition.equal(appVersion));		
-		return buildAPPMetaQuery(serviceContext, params)
+		return buildAPPMetaQuery( params)
 				.model(AppMetaRecord.class);
 	}
 	
 	@Override
-	public AppMetaRecord getAppMetaByUnique(ServiceContext serviceContext,
+	public AppMetaRecord getAppMetaByUnique(
 			String unique) {
 		JKey key=JKey.parse(unique);
 		String appName=key.getApp();
@@ -169,18 +168,18 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		params.put("appName", Condition.equal(appName));
 		params.put("appCompName", Condition.equal(appCompName));
 		params.put("appVersion", Condition.equal(appVersion));		
-		return buildAPPMetaQuery(serviceContext, params)
+		return buildAPPMetaQuery( params)
 				.model(AppMetaRecord.class);
 	}
 	
 
 	@Override
-	public List<AppMetaRecord> getAppMetas(ServiceContext serviceContext) {
-		return buildAPPMetaQuery(serviceContext, Collections.EMPTY_MAP).models(AppMetaRecord.class);
+	public List<AppMetaRecord> getAppMetas() {
+		return buildAPPMetaQuery( Collections.EMPTY_MAP).models(AppMetaRecord.class);
 	}
 	
 	@Override
-	public List<AppMetaRecord> getAppMetas(ServiceContext serviceContext,
+	public List<AppMetaRecord> getAppMetas(
 			AppMetaCriteria appMetaCriteria) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		if(JStringUtils.isNotNullOrEmpty(appMetaCriteria.getAppName())){
@@ -198,12 +197,12 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		if(JStringUtils.isNotNullOrEmpty(appMetaCriteria.getAppHost())){
 			params.put("appHost", Condition.equal(appMetaCriteria.getAppHost()));
 		}
-		return buildAPPMetaQuery(serviceContext, params)
+		return buildAPPMetaQuery( params)
 				.models(AppMetaRecord.class);
 	}
 
 	@Override
-	public JPage<AppMetaRecord> getAppMetasByPage(ServiceContext serviceContext,
+	public JPage<AppMetaRecord> getAppMetasByPage(
 			AppMetaCriteria appMetaCriteria, JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		if(JStringUtils.isNotNullOrEmpty(appMetaCriteria.getAppName())){
@@ -221,13 +220,13 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		if(JStringUtils.isNotNullOrEmpty(appMetaCriteria.getAppHost())){
 			params.put("appHost", Condition.likes(appMetaCriteria.getAppHost()));
 		}
-		return buildAPPMetaQuery(serviceContext, params)
+		return buildAPPMetaQuery( params)
 				.setPageable(simplePageable)
 				.modelPage(AppMetaRecord.class);
 	}
 	
 	
-	private JQuery<?> buildURLMappingMetaQuery(ServiceContext serviceContext,Map<String, Condition> params){
+	private JQuery<?> buildURLMappingMetaQuery(Map<String, Condition> params){
 		
 		String jpql="select a.id as id "
 				+ ", a.appId as appId"
@@ -267,36 +266,36 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	}
 
 	@Override
-	public List<URLMappingMetaRecord> getURLMappingMetasByAppId(ServiceContext serviceContext,String appId) {
+	public List<URLMappingMetaRecord> getURLMappingMetasByAppId(String appId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("appId", Condition.equal(appId));
-		return buildURLMappingMetaQuery(serviceContext, params)
+		return buildURLMappingMetaQuery( params)
 				.models(URLMappingMetaRecord.class);
 	}
 	
 	@Override
 	public List<URLMappingMetaRecord> getURLMappingMetasByAppConfig(
-			ServiceContext serviceContext, String appName, String appCompName,
+			 String appName, String appCompName,
 			String appVersion) {
-		AppMeta appMeta=getAPPMetaByConfig(serviceContext, appName, appCompName, appVersion);
+		AppMeta appMeta=getAPPMetaByConfig( appName, appCompName, appVersion);
 		if(appMeta==null) return Collections.EMPTY_LIST;
-		return getURLMappingMetasByAppId(serviceContext, appMeta.getId());
+		return getURLMappingMetasByAppId( appMeta.getId());
 	}
 	
 	@Override
-	public AppMetaRecord getAPPMetaByAppId(ServiceContext serviceContext, String appId) {
+	public AppMetaRecord getAPPMetaByAppId( String appId) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("id", Condition.equal(appId));
-		return buildAPPMetaQuery(serviceContext, params)
+		return buildAPPMetaQuery( params)
 				.model(AppMetaRecord.class);
 	}
 	
 	@Override
-	public URLMappingMetaRecord getURLMappingMetaById(ServiceContext serviceContext,
+	public URLMappingMetaRecord getURLMappingMetaById(
 			String id) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		params.put("id", Condition.equal(id));
-		return buildURLMappingMetaQuery(serviceContext, params)
+		return buildURLMappingMetaQuery( params)
 				.model(URLMappingMetaRecord.class);
 	}
 	
@@ -304,7 +303,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	
 	@Override
 	public JPage<URLMappingMetaRecord> getURLMappingMetasByPage(
-			ServiceContext serviceContext,
+			
 			URLMappingMetaCriteria urlMappingMetaCriteria,JSimplePageable simplePageable) {
 		Map<String, Condition> params=new HashMap<String, Condition>();
 		if(JStringUtils.isNotNullOrEmpty(urlMappingMetaCriteria.getAppId())){
@@ -316,13 +315,13 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 		if(JStringUtils.isNotNullOrEmpty(urlMappingMetaCriteria.getUrlDesc())){
 			params.put("urlDesc", Condition.likes(urlMappingMetaCriteria.getUrlDesc()));
 		}
-		return buildURLMappingMetaQuery(serviceContext, params)
+		return buildURLMappingMetaQuery( params)
 		.setPageable(simplePageable)
 		.modelPage(URLMappingMetaRecord.class);
 	}
 	
 	@Override
-	public boolean existsAppMeta(ServiceContext serviceContext,
+	public boolean existsAppMeta(
 			String appName, String appCompName, String appVersion) {
 		long count=internalAppMetaServiceImpl.singleEntityQuery().conditionDefault()
 				.equals("appName", appName)
@@ -333,7 +332,7 @@ public class ContainerManagerServiceImpl extends ServiceSupport  implements Cont
 	}
 	
 	@Override
-	public boolean existsAppMeta(ServiceContext serviceContext, String unique) {
+	public boolean existsAppMeta( String unique) {
 		JKey key=JKey.parse(unique);
 		String appName=key.getApp();
 		String appCompName=key.getComponent();

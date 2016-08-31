@@ -3,7 +3,6 @@ package com.youappcorp.project.sysparam.controller;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -35,27 +34,27 @@ public class SysParamController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/saveSysParam")
-	public ResponseModel saveSysParam(ServiceContext serviceContext, SysParamAddInVO sysParamAddInVO) throws Exception{
+	public ResponseModel saveSysParam( SysParamAddInVO sysParamAddInVO) throws Exception{
 		// do something validation on the SysParam or nothing.
 		SysParam sysParam=JObjectUtils.simpleCopy(sysParamAddInVO, SysParam.class);
-		sysParamService.saveSysParam(serviceContext, sysParam);
+		sysParamService.saveSysParam( sysParam);
 		return ResponseModel.newSuccess(sysParam.getId());
 	}
 	
 	@ResponseBody
 	@RequestMapping("/updateSysParam")
-	public ResponseModel updateSysParam(ServiceContext serviceContext, SysParamEditInVO sysParamEditInVO) throws Exception{
+	public ResponseModel updateSysParam( SysParamEditInVO sysParamEditInVO) throws Exception{
 		// do something validation on the SysParam or nothing.
 		SysParam sysParam=JObjectUtils.simpleCopy(sysParamEditInVO, SysParam.class);
-		sysParamService.updateSysParam(serviceContext, sysParam);
+		sysParamService.updateSysParam( sysParam);
 		return ResponseModel.newSuccess(sysParam.getId());
 	}
 	
 	@ResponseBody
 	@RequestMapping("/getSysParamById")
-	public ResponseModel getSysParamById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel getSysParamById( String id) throws Exception{
 		// do something validation on the SysParam or nothing.
-		SysParam sysParam=sysParamService.getSysParamById(serviceContext, id);
+		SysParam sysParam=sysParamService.getSysParamById( id);
 		SysParamDetailOutVO sysParamDetailOutVO=null;
 		if(sysParam!=null){
 			sysParamDetailOutVO=JObjectUtils.simpleCopy(sysParam, SysParamDetailOutVO.class);
@@ -66,18 +65,18 @@ public class SysParamController extends SimpleControllerSupport {
 	
 	@ResponseBody
 	@RequestMapping("/deleteSysParamById")
-	public ResponseModel deleteSysParamById(ServiceContext serviceContext, String id) throws Exception{
+	public ResponseModel deleteSysParamById( String id) throws Exception{
 		// do something validation on the SysParam or nothing.
-		sysParamService.deleteSysParamById(serviceContext, id);
+		sysParamService.deleteSysParamById( id);
 		return ResponseModel.newSuccess(true);
 	}
 	
 	
 	@ResponseBody
 	@RequestMapping("/getSysParamsByPage")
-	public ResponseModel getSysParamsByPage(ServiceContext serviceContext, SysParamCriteriaInVO sysParamCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
+	public ResponseModel getSysParamsByPage( SysParamCriteriaInVO sysParamCriteriaInVO,JSimplePageable simplePageable ) throws Exception{
 		// do something validation on the SysParam or nothing.
-		JPage<SysParam> page=sysParamService.getSysParams(serviceContext, sysParamCriteriaInVO,simplePageable);
+		JPage<SysParam> page=sysParamService.getSysParams( sysParamCriteriaInVO,simplePageable);
 		List<SysParam> content=page.getContent();
 		List<SysParamRecordOutVO> outContent=new ArrayList<SysParamRecordOutVO>();
 		for(SysParam sysParam:content){

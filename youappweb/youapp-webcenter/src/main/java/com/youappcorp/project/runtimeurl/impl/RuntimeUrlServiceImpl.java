@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
 
 import java.util.ArrayList;
@@ -23,25 +22,25 @@ public class RuntimeUrlServiceImpl  extends ServiceSupport  implements RuntimeUr
 	private RuntimeUrlManagerService defaultRuntimeUrlService=JServiceHubDelegate.get().getService(this, RuntimeUrlManagerService.class);
 			
 	@Override
-	public void updateMockState(ServiceContext serviceContext, String url,
+	public void updateMockState( String url,
 			boolean mock) {
 		defaultRuntimeUrlService.updateMockState(url, mock);
 	}
 
 	@Override
-	public RuntimeUrl getRuntimeUrlById(ServiceContext serviceContext,
+	public RuntimeUrl getRuntimeUrlById(
 			String id) {
 		return defaultRuntimeUrlService.getRuntimeUrlById(id);
 	}
 	
 	@Override
-	public RuntimeUrl getRuntimeUrlByUrl(ServiceContext serviceContext,
+	public RuntimeUrl getRuntimeUrlByUrl(
 			String url) {
 		return defaultRuntimeUrlService.getRuntimeUrlByUrl(url);
 	}
 
 	@Override
-	public JPage<RuntimeUrl> getRuntimeUrlsByPage(ServiceContext serviceContext,
+	public JPage<RuntimeUrl> getRuntimeUrlsByPage(
 			RuntimeUrlCriteriaInVO runtimeUrlCriteriaInVO,
 			JSimplePageable simplePageable) {
 		List<RuntimeUrl> urls=new ArrayList<RuntimeUrl>(32); 
@@ -67,12 +66,12 @@ public class RuntimeUrlServiceImpl  extends ServiceSupport  implements RuntimeUr
 	}
 
 	@Override
-	public boolean exists(ServiceContext serviceContext, String url) {
+	public boolean exists( String url) {
 		return defaultRuntimeUrlService.exists(url);
 	}
 
 	@Override
-	public boolean isMock(ServiceContext serviceContext, String url) {
+	public boolean isMock( String url) {
 		return defaultRuntimeUrlService.isMock(url);
 	}
 

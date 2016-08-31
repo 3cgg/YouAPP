@@ -5,7 +5,6 @@ import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationManagerService;
 import j.jave.platform.webcomp.access.subhub.AuthorizedResource;
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
 
 import java.util.Collections;
@@ -47,7 +46,7 @@ public class AuthenticationManagerServiceImpl extends SpringServiceFactorySuppor
 
 	@Override
 	public SessionUserImpl getUserByName(String name) {
-		User user=userManagerService.getUserByName(DefaultServiceContext.getDefaultServiceContext(), name);
+		User user=userManagerService.getUserByName( name);
 		SessionUserImpl sessionUserImpl=null;
 		if(user!=null){
 			sessionUserImpl =new SessionUserImpl();

@@ -1,8 +1,6 @@
 package com.youappcorp.project.websupport.service;
 
 import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModelService;
 
@@ -26,8 +24,7 @@ public class WebRequestURLCacheModelServiceImpl implements
 	@Override
 	public List<? extends WebRequestURLCacheModel> getResourceCacheModels() {
 		List<WebRequestURLCacheModel> cacheModels=new ArrayList<WebRequestURLCacheModel>();
-		ServiceContext serviceContext=DefaultServiceContext.getDefaultServiceContext();
-		List<ResourceRecord> resourceRecords= resourceManagerService.getResources(serviceContext);
+		List<ResourceRecord> resourceRecords= resourceManagerService.getResources();
 		if(JCollectionUtils.hasInCollect(resourceRecords)){
 			for(ResourceRecord resourceRecord:resourceRecords){
 				WebRequestURLCacheModelImpl cacheModel=new WebRequestURLCacheModelImpl();

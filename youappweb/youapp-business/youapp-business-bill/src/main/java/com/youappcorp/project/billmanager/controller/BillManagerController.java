@@ -4,7 +4,6 @@ import j.jave.kernal.eventdriven.exception.JServiceException;
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
 
@@ -31,15 +30,15 @@ public class BillManagerController extends SimpleControllerSupport{
 	private BillManagerService billManagerService;
 	
 	@RequestMapping(value="/saveBill")
-	public ResponseModel saveBill(ServiceContext serviceContext,BillRecordVO billRecordVO) throws Exception {
+	public ResponseModel saveBill(BillRecordVO billRecordVO) throws Exception {
 		BillRecord billRecord=billRecordVO.toBillRecord();
-		billManagerService.saveBill(serviceContext, billRecord);
+		billManagerService.saveBill( billRecord);
 		return ResponseModel.newSuccess(billRecord.getId());
 	}
 	
 	@RequestMapping(value="/getBillById")
-	public ResponseModel getBillById(ServiceContext serviceContext,String id) throws Exception {
-		BillRecord billRecord= billManagerService.getBillById(serviceContext,id);
+	public ResponseModel getBillById(String id) throws Exception {
+		BillRecord billRecord= billManagerService.getBillById(id);
 		return ResponseModel.newSuccess().setData(toBillRecordVO(billRecord));
 	}
 
@@ -64,13 +63,13 @@ public class BillManagerController extends SimpleControllerSupport{
 	}
 	
 	@RequestMapping(value="/getBillsByUserName")
-	public ResponseModel getBillsByUserName(ServiceContext serviceContext,String userName){
-		List<BillRecord> billRecords=billManagerService.getBillsByUserName(serviceContext, userName);
+	public ResponseModel getBillsByUserName(String userName){
+		List<BillRecord> billRecords=billManagerService.getBillsByUserName( userName);
 		return ResponseModel.newSuccess().setData(toBillRecordVOs(billRecords));
 	}
 	
 	@RequestMapping(value="/getBillsByPage")
-	public ResponseModel getBillsByPage(ServiceContext serviceContext,BillSearchCriteria billSearchCriteria,JSimplePageable simplePageable){
+	public ResponseModel getBillsByPage(BillSearchCriteria billSearchCriteria,JSimplePageable simplePageable){
 //		int latestMonth=36;
 //		if(billSearchCriteria!=null){
 //			latestMonth=billSearchCriteria.getLatestMonth();
@@ -82,21 +81,21 @@ public class BillManagerController extends SimpleControllerSupport{
 //			billSearchCriteria=new BillSearchCriteria();
 //		}
 //		billSearchCriteria.setBillTime(new Timestamp(calendar.getTime().getTime()));
-		JPage<BillRecord> billRecordsPage=billManagerService.getBillsByPage(serviceContext, billSearchCriteria,simplePageable);
+		JPage<BillRecord> billRecordsPage=billManagerService.getBillsByPage( billSearchCriteria,simplePageable);
 		toBillRecordVOPage(billRecordsPage);
 		return ResponseModel.newSuccess().setData(billRecordsPage);
 	}
 	
 	@RequestMapping(value="/deleteBillById")
-	public ResponseModel deleteBillById(ServiceContext serviceContext,String id){
-		billManagerService.deleteBillById(serviceContext, id); 
+	public ResponseModel deleteBillById(String id){
+		billManagerService.deleteBillById( id); 
 		return ResponseModel.newSuccess();
 	}
 
 	@RequestMapping(value="/updateBill")
-	public ResponseModel updateBill(ServiceContext serviceContext,BillRecordVO billRecordVO) throws JServiceException{
+	public ResponseModel updateBill(BillRecordVO billRecordVO) throws JServiceException{
 		billRecordVO.toBillRecord();
-		billManagerService.updateBill(serviceContext, billRecordVO);
+		billManagerService.updateBill( billRecordVO);
 		return ResponseModel.newSuccess();
 	}
 	
@@ -106,15 +105,15 @@ public class BillManagerController extends SimpleControllerSupport{
 	
 	
 	@RequestMapping(value="/saveGood")
-	public ResponseModel saveGood(ServiceContext serviceContext,GoodRecordVO goodRecordVO) throws Exception {
+	public ResponseModel saveGood(GoodRecordVO goodRecordVO) throws Exception {
 		GoodRecord goodRecord=goodRecordVO.toGoodRecord();
-		billManagerService.saveGood(serviceContext, goodRecord);
+		billManagerService.saveGood( goodRecord);
 		return ResponseModel.newSuccess(goodRecord.getId());
 	}
 	
 	@RequestMapping(value="/getGoodById")
-	public ResponseModel getGoodById(ServiceContext serviceContext,String id) throws Exception {
-		GoodRecord goodRecord= billManagerService.getGoodById(serviceContext,id);
+	public ResponseModel getGoodById(String id) throws Exception {
+		GoodRecord goodRecord= billManagerService.getGoodById(id);
 		return ResponseModel.newSuccess().setData(toGoodRecordVO(goodRecord));
 	}
 
@@ -139,13 +138,13 @@ public class BillManagerController extends SimpleControllerSupport{
 	}
 	
 	@RequestMapping(value="/getGoodsByUserName")
-	public ResponseModel getGoodsByUserName(ServiceContext serviceContext,String userName){
-		List<GoodRecord> billRecords=billManagerService.getGoodsByUserName(serviceContext, userName);
+	public ResponseModel getGoodsByUserName(String userName){
+		List<GoodRecord> billRecords=billManagerService.getGoodsByUserName( userName);
 		return ResponseModel.newSuccess().setData(toGoodRecordVOs(billRecords));
 	}
 	
 	@RequestMapping(value="/getGoodsByPage")
-	public ResponseModel getGoodsByPage(ServiceContext serviceContext,GoodSearchCriteria goodSearchCriteria,JSimplePageable simplePageable){
+	public ResponseModel getGoodsByPage(GoodSearchCriteria goodSearchCriteria,JSimplePageable simplePageable){
 //		int latestMonth=36;
 //		if(goodSearchCriteria!=null){
 //			latestMonth=goodSearchCriteria.getLatestMonth();
@@ -157,21 +156,21 @@ public class BillManagerController extends SimpleControllerSupport{
 //			goodSearchCriteria=new GoodSearchCriteria();
 //		}
 //		goodSearchCriteria.setGoodTime(new Timestamp(calendar.getTime().getTime()));
-		JPage<GoodRecord> billRecordsPage=billManagerService.getGoodsByPage(serviceContext, goodSearchCriteria,simplePageable);
+		JPage<GoodRecord> billRecordsPage=billManagerService.getGoodsByPage( goodSearchCriteria,simplePageable);
 		toGoodRecordVOPage(billRecordsPage);
 		return ResponseModel.newSuccess().setData(billRecordsPage);
 	}
 	
 	@RequestMapping(value="/deleteGoodById")
-	public ResponseModel deleteGoodById(ServiceContext serviceContext,String id){
-		billManagerService.deleteGoodById(serviceContext, id); 
+	public ResponseModel deleteGoodById(String id){
+		billManagerService.deleteGoodById( id); 
 		return ResponseModel.newSuccess();
 	}
 
 	@RequestMapping(value="/updateGood")
-	public ResponseModel updateGood(ServiceContext serviceContext,GoodRecordVO goodRecordVO) throws JServiceException{
+	public ResponseModel updateGood(GoodRecordVO goodRecordVO) throws JServiceException{
 		goodRecordVO.toGoodRecord();
-		billManagerService.updateGood(serviceContext, goodRecordVO);
+		billManagerService.updateGood( goodRecordVO);
 		return ResponseModel.newSuccess();
 	}
 	

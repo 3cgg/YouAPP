@@ -38,7 +38,7 @@ public class TestJpaParamServiceImpl{
 			paramCode.setId(JUniqueUtils.unique().replaceAll("-", ""));
 			paramCode.setCode("F-TEST-2");
 			paramCode.setName("女");
-			paramService.saveParam(context, paramType,paramCode);
+			paramService.saveParam( paramType,paramCode);
 			
 //			paramCode.setDescription("JIA.ZHONG.JIN");
 //			paramService.updateParam(context, paramType,paramCode);

@@ -52,30 +52,30 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void saveOnly(ServiceContext context, T object)
+	public void saveOnly( T object)
 			throws JServiceException {
-		proxyOnSave(getRepo(), context, object);
+		proxyOnSave(getRepo(), ServiceContextHolder.get(), object);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void updateOnly(ServiceContext context, T object)
+	public void updateOnly( T object)
 			throws JServiceException {
-		proxyOnUpdate(getRepo(), context, object);
+		proxyOnUpdate(getRepo(), ServiceContextHolder.get(), object);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void delete(ServiceContext context, String id) {
+	public void delete( String id) {
 		getRepo().markModelDeleted(id);
 	}
 	
 	@Override
-	public void delete(ServiceContext context, T id) {
+	public void delete( T id) {
 		getRepo().markModelDeleted(id);
 	}
 
@@ -83,7 +83,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	 * {@inheritDoc}
 	 */
 	@Override
-	public T getById(ServiceContext context, String id) {
+	public T getById( String id) {
 		return getRepo().getModel(id);
 	}
 
@@ -91,7 +91,7 @@ public abstract class InternalServiceSupport<T extends JBaseModel> implements In
 	 * {@inheritDoc}
 	 */
 	@Override
-	public JPage<T> getsByPage(ServiceContext context, JPageable pagination) {
+	public JPage<T> getsByPage( JPageable pagination) {
 		JPageImpl<T> page=new JPageImpl<T>();
 		List<T> records=getRepo().getModelsByPage(pagination);
 		page.setPageable(pagination);

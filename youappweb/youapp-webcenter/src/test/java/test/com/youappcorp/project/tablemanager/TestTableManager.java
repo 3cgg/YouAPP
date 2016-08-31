@@ -42,7 +42,7 @@ public class TestTableManager implements ApplicationContextAware {
 		ServiceContext context=DefaultServiceContext.getDefaultServiceContext();
 		TableSearch tableSearch=new TableSearch();
 		tableSearch.setModelName(ParamCode.class.getName());
-		List<Record> records=tableManagerService.getRecords(context, tableSearch);
+		List<Record> records=tableManagerService.getRecords( tableSearch);
 		System.out.println(records.size());
 		
 	}

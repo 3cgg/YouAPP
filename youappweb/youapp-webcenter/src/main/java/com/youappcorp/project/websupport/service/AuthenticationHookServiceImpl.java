@@ -29,7 +29,7 @@ public class AuthenticationHookServiceImpl implements AuthenticationHookService 
 			userTracker.setUserName(sessionUser.getUserName());
 			userTracker.setIp(httpContext.getClientInfo().getIp());
 			userTracker.setLoginClient(httpContext.getClientInfo().getClient());
-			userTrackerService.saveUserTracker(httpContext.getServiceContext(), userTracker);
+			userTrackerService.saveUserTracker(userTracker);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage(), e);
 		}

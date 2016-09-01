@@ -9,18 +9,18 @@ import j.jave.platform.webcomp.core.service.DefaultSessionUser;
  */
 public class HttpContextHolder implements JModel {
 
-	public static ThreadLocal<HttpContext> threadLocal=new ThreadLocal<HttpContext>();
+	public static final ThreadLocal<HttpContext> THREAD_LOCAL=new ThreadLocal<HttpContext>();
 	
 	public static void set(HttpContext httpContext){
-		threadLocal.set(httpContext);
+		THREAD_LOCAL.set(httpContext);
 	}
 	
 	public static HttpContext get(){
-		return threadLocal.get();
+		return THREAD_LOCAL.get();
 	}
 	
 	public static void remove(){
-		threadLocal.remove();
+		THREAD_LOCAL.remove();
 	}
 	
 	public static HttpContext getMockHttpContext(){

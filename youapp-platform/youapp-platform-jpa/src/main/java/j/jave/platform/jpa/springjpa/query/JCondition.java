@@ -1,6 +1,7 @@
 package j.jave.platform.jpa.springjpa.query;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.utils.JAssert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -310,6 +311,7 @@ public class JCondition implements JModel {
 	}
 	
 	public JCondition equals(String property,Object value,LinkType... linkType){
+		JAssert.isNotNull(value, "the parameter["+property+"] is null.");
 		append(property, value, Ope.EQUAL,linkType);
 		return this;
 	}

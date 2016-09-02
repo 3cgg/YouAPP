@@ -16,14 +16,12 @@
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../plugins/iCheck/all.css">
   
-  <!--   
+  <!--   -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.css">
-  -->
-  <link rel="stylesheet" href="../dist/css/admin-all-demo.css">
   
   <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. 
-  <link rel="stylesheet" href="../dist/css/skins/_all-skins.css">-->
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.css">
 	
 	<!--  jquery confirm -->	
   <link rel="stylesheet" href="../plugins/jquery-confirm/jquery-confirm.css">
@@ -49,7 +47,7 @@
 	<!-- jQuery 2.2.3 -->
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
-	<script src="../bootstrap/js/bootstrap.js"></script>
+	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	
 	<!-- JS Tree -->
 	<script src="../plugins/jstree/jstree.js"></script>
@@ -69,7 +67,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="" 
+<body class="hold-transition skin-blue-light  sidebar-mini  body_font  fixed" 
  data-layoutId="body"
  data-htmlUrl="ui/pages/layout/layout-boot.html"  >
 
@@ -85,8 +83,8 @@
 <script src="../plugins/datatables/jquery.dataTables.js"></script>
 <script src="../plugins/datatables/dataTables.bootstrap.js"></script>
 
-<!-- AdminLTE App
-<script src="../dist/js/app.js"></script>  -->
+<!-- AdminLTE App -->
+<script src="../dist/js/app.js"></script> 
 
 <!-- tabs -->
 <script src="../plugins/tabs/tabulous.js"></script>
@@ -157,11 +155,6 @@ $_youapp.ready(function(){
 			];
 			callback(data);
 		}
-	});
-	
-	
-	$(document).on('click','.box > .box-header > .box-tools > [data-widget="collapse"]',function(event){
-		$(this).closest('.box-header').next('.box-body').toggle('slow');
 	});
 })
 </script>

@@ -154,7 +154,7 @@
 					  url:page.comp+'/bill/billmanager/saveGood',
 					  formSelector:form,
 					  success:function(data){
-						  page.root.goView('/ui/pages/billmanager/bill-view.html');
+						  page.root.goView('/ui/pages/billmanager/bill-view.html',{"id":getId()});
 					  }
 					});
 			 }

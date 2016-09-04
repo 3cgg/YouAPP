@@ -488,7 +488,8 @@
 				formatJstree:function(data,opts){
 					return $_youapp.$_jstree.format(data,opts);
 				},
-				log:$_youapp.$_util.log
+				log:$_youapp.$_util.log,
+				storage:$_youapp.$_storage
 		}
 	})();
 	

@@ -162,6 +162,15 @@ $_youapp.ready(function(){
 	
 	$(document).on('click','.box > .box-header > .box-tools > [data-widget="collapse"]',function(event){
 		$(this).closest('.box-header').next('.box-body').toggle('slow');
+		var tag=$(this).find('i');
+		if(tag.hasClass('fa-minus')){
+			tag.removeClass('fa-minus');
+			tag.addClass('fa-plus');
+		}
+		else if(tag.hasClass('fa-plus')){
+			tag.removeClass('fa-plus');
+			tag.addClass('fa-minus');
+		}
 	});
 })
 </script>

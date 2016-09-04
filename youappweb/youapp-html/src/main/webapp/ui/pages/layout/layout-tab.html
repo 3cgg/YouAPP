@@ -19,12 +19,20 @@ data-slicetop="5"
 	<!--End tabs container-->
 </div>
 <script type="text/javascript">
-	$(function(){
+ $_youapp.ready(function() {
+  	
+	  	var page=$.extend({
+	  		root:$("#layoutTab"),
+	  		model:{
+	  		}
+	  	},$_youapp.pageTemplate);
+	  	
 		$_youapp.$tabs={};
 		$_youapp.$tabs.layoutTab=$('#layoutTab').tabulous({
 			effect: 'scaleUp'
 		});
-	})
+		
+	});
 </script>
 
 

@@ -17103,7 +17103,7 @@ a.list-group-item.active,a.list-group-item.active:focus,a.list-group-item.active
     padding: 5px
 }
 
-.table-striped tr:nth-child(even)>td {
+.table-striped tr:nth-child(even) {
     background: #fefeff
 }
 

@@ -108,6 +108,7 @@ data-layoutId="body"
 <script src="/youapp-html/ui/_youapp/datatables.js"></script>
 <script src="/youapp-html/ui/_youapp/uploads.js"></script>
 <script src="/youapp-html/ui/_youapp/codetables.js"></script>
+<script src="/youapp-html/ui/_youapp/boot.js"></script>
 
 	<div class="wrapper">
 		<div class="content-wrapper"  
@@ -116,54 +117,5 @@ data-layoutId="body"
 				<div th:utext="${ac_html}">nothing</div>
 		</div>
 	</div>	
-		
 </body>
-<script type="text/javascript">
-$_youapp.ready(function(){
-	$_youapp.$_codeTable.codeTable({
-		getType:function(data){
-			return data.type;
-		},
-		getCode:function(data){
-			return data.code;
-		},
-		getName:function(data){
-			return data.codeName;
-		},
-		getDesc:function(data){
-			return data.description;
-		},
-		fnDatas:function(callback){
-			
-			$_youapp.$_data.ajaxGet({
-				url:'/codetablemanager/getParamCodesByPage',
-				formData:{},
-				paginationData:$.extend({},{
-			  		pageNumber:0,
-					pageSize:100000,
-					orders:[]
-			  		}),
-		  		success:function(data){
-		  			callback(data.data);
-		  			$_youapp.$_codeTable.draw($('.codetable'));
-		  		}
-			});
-		},
-		fnData:function(type,callback){
-			var data=[{
-				code:'test-'+type+'-code-1',
-				codeName:'test-'+type+'-name-1',
-				desc:type
-			},
-			{
-				code:'test-'+type+'-code-2',
-				codeName:'test-'+type+'-name-2',
-				desc:type
-			}
-			];
-			callback(data);
-		}
-	});
-})
-</script>
 </html>

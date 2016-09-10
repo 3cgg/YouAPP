@@ -4,7 +4,7 @@
 						data-target="#page-sidebar">
 						<span></span>
 					</button>
-					<a href="index.html" class="logo-content-small" title="YouAPP">sss</a>
+					<a href="index.html" class="logo-content-small" title="YouAPP"></a>
 				</div>
 				<div id="header-logo" class="logo-bg">
 					<a href="index.html" class="logo-content-big" title="YouAPP">
@@ -95,18 +95,18 @@
   		model:{
   		}
   	},$_youapp.pageTemplate);
-  	/*
+  	
   	page.root.find('#close-sidebar').on('click',function(){
   		$('#page-sidebar').toggle('slow',function(){
   			if($(this).is(':hidden')){
-  				$('#page-content').css('margin-left','0px');
+  				$('#page-content').addClass('move-to-left');
   			}
   			else{
-  				$('#page-content').css('margin-left',$(this).outerWidth()+'px');
+  				$('#page-content').removeClass('move-to-left');
   			}
   		});
   	});
-  	*/
+  	
   	page.root.find('#search-btn.popover-button').popover({
   			html:true,
   			animation:true,

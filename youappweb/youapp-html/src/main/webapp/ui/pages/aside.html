@@ -422,13 +422,21 @@
 	  setHeight();
 	  
 	  $(window).resize(function(){
-		  setTimeout(setHeight(),2000);
+		  setTimeout(setHeight,150);
 	  });
 	  
 	  $(window).scroll(function(){
 		  //setTimeout(setHeight(),2000);
 	  });
 	  
+	  
+	  //
+	  page.root.on('show.bs.collapse',function(){
+  		page.info('aside show...');
+	  });
+	  page.root.on('hide.bs.collapse',function(){
+	  		page.info('aside hide...');
+	  		})
   })
   </script>
   

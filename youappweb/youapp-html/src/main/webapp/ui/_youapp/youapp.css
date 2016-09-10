@@ -428,3 +428,12 @@ td.recordRemove {
   font-weight: 400;
   font-size: 12px;
 }
+
+/*
+
+*/
+.move-to-left{
+	margin-left: 0px !important;
+}
+
+

@@ -85,13 +85,14 @@
             	slicetop=10;
             }
             allSlicedivs.css({
-            	'position': 'relative',
-            	'top':slicetop+'px',
-            	'width': '100%','height': '100%'	
+            	'position': 'relative'
+            	,'top':slicetop+'px'
+            	,'width': '100%'
+            	,'height': '100%'	
             });
 
 //            containerDiv.css('height',firstdivheight+'px');
-            containerDiv.css('height','100%');
+            //containerDiv.css('height','100%');
             containerDiv.css('min-height','100px');
             
             firstchildLink.addClass('tabulous_active');

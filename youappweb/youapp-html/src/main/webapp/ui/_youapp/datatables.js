@@ -66,18 +66,21 @@ $.fn.extend({
 	            	var viewHtml='';
 	            	var rowId=row.id;
 	            	if(_ops.view){
-	            		viewHtml='<button  data-rowId="'+rowId+'"  id="row_view_btn_'+rowId+'" name="row_view_btn" type="button" class="btn btn-primary btn-sm table_btn">详情</button>';
+	            		viewHtml='<button  data-rowId="'+rowId+'"  id="row_view_btn_'+rowId+'" name="row_view_btn" type="button" '
+	            		+ ' style="margin-left:1px;margin-right:1px;" class="btn btn-success"  title="查看"><i class="glyph-icon icon-eye"></i></button>';
 	            	}
 	            	var editHtml='';
 	            	if(_ops.edit){
-	            		editHtml='<button data-rowId="'+rowId+'"  id="row_edit_btn_'+rowId+'" name="row_edit_btn"  type="button" class="btn btn-primary btn-sm table_btn">修改</button>';
+	            		editHtml='<button data-rowId="'+rowId+'"  id="row_edit_btn_'+rowId+'" name="row_edit_btn"  type="button" '
+	            		+ '  style="margin-left:1px;margin-right:1px;" class="btn btn-success" title="编辑" ><i class="glyph-icon icon-pencil"></i></button>';
 	            	}
 	            	var delHtml='';
 	            	if(_ops.del){
-	            		delHtml='<button data-rowId="'+rowId+'"  id="row_del_btn_'+rowId+'" name="row_del_btn"  type="button" class="btn btn-sm table_btn btn-danger">删除</button>';
+	            		delHtml='<button data-rowId="'+rowId+'"  id="row_del_btn_'+rowId+'" name="row_del_btn"  type="button" '
+	            		+ ' style="margin-left:1px;margin-right:1px;" class="btn  btn-danger" title="删除" ><i class="glyph-icon icon-trash"></i></button>';
 	            	}
 	            	
-	            	return viewHtml+editHtml+delHtml;
+	            	return '<div style="padding:1px">'+viewHtml+editHtml+delHtml+'<div>';
 	            }
 	        }];
 			opsColumns=opsColumns.concat(opsGenColumns);

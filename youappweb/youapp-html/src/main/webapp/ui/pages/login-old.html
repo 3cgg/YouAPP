@@ -16,9 +16,24 @@
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../plugins/iCheck/all.css">
   
-  <link rel="stylesheet" href="../dist/css/admin-all-demo.css">
+  <link rel="stylesheet" href="../dist/css/AdminLTE.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.css">
+	
 	<!--  jquery confirm -->	
   <link rel="stylesheet" href="../plugins/jquery-confirm/jquery-confirm.css">
+	
+	<!--  datatables -->
+	<link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
+	<!--  tabs -->
+	<link rel="stylesheet" href="../plugins/tabs/tabulous.css">
+	
+	
+	<link rel="stylesheet"
+	href="../plugins/webuploader/webuploader.css">
+	<link rel="stylesheet"
+	href="../plugins/webuploader/image-upload/style.css">
 	
 	<!--  youapp -->
 	<link rel="stylesheet" href="../_youapp/youapp.css">
@@ -32,7 +47,16 @@
 	<!-- Bootstrap 3.3.6 -->
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
 	
+	<!-- JS Tree -->
+	<script src="../plugins/jstree/jstree.js"></script>
+	
+	<!--  webuploader -->
+	<script src="../plugins/webuploader/webuploader.js"></script>
+	
 	<link rel="stylesheet"  href="../plugins/toast/jquery.toast.css">
+	
+	<link rel="stylesheet"  href="../plugins/jstree/themes/default/style.min.css">
+					
 	
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -41,67 +65,44 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
+<body class="hold-transition login-page">
 
-<style type="text/css">
+<div class="login-box"   id="loginSection">
+  <div class="login-logo">
+    <a href="#"><b>You</b>APP</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
 
-    html,body {
-        height: 100%;
-        background: #fff;
-        overflow: hidden;
-    }
-
-</style>
-
-<body>
-  
-<img src="../_youapp/blurred-bg-3.jpg" class="login-img wow fadeIn" alt="">
-<div class="center-vertical"  id="loginSection">
-    <div class="center-content row">
-
-        <div class="col-md-3 center-margin">
-
-            <form method="post" action=""   id="loginForm">
-                <div class="content-box wow bounceInDown modal-content">
-                    <h3 class="content-box-header content-box-header-alt bg-default">
-                        <span class="icon-separator">
-                            <i class="glyph-icon icon-cog"></i>
-                        </span>
-                        <span class="header-wrapper">
-                            Members area
-                            <small>Login to your account.</small>
-                        </span>
-                        <span class="header-buttons">
-                            <a href="#" class="btn btn-sm btn-primary" title="">Sign Up</a>
-                        </span>
-                    </h3>
-                    <div class="content-box-wrapper">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="email"    name="_name" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                <span class="input-group-addon bg-blue">
-                                    <i class="glyph-icon icon-envelope-o"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="password"  name="_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                <span class="input-group-addon bg-blue">
-                                    <i class="glyph-icon icon-unlock-alt"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <a href="" title="Recover password">Forgot Your Password?</a>
-                        </div>
-                        <button class="btn btn-success btn-block">Sign In</button>
-                    </div>
-                </div>
-            </form>
+    <form  id="loginForm">
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control" placeholder="Email"  name="_name">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Password"  name="_password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox"  class="minimal"> Remember Me
+            </label>
+          </div>
         </div>
-
-    </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+  </div>
+  <!-- /.login-box-body -->
 </div>
+
 
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.js"></script>
@@ -110,8 +111,21 @@
 <!-- jquery confirm -->
 <script src="../plugins/jquery-confirm/jquery-confirm.js"></script>
 
+<!-- datatables -->
+<script src="../plugins/datatables/jquery.dataTables.js"></script>
+<script src="../plugins/datatables/dataTables.bootstrap.js"></script>
+
+<!-- AdminLTE App -->
+<script src="../dist/js/app.js"></script>
+
+<!-- tabs -->
+<script src="../plugins/tabs/tabulous.js"></script>
+
+
 <!-- jquery-validation -->
 <script src="../plugins/jquery-validation/jquery.validate.js"></script>
+<!-- avalon -->
+<script src="../plugins/avalon/avalon.js"></script>
 
 <!--  webuploader -->
 <script src="../plugins/toast/jquery.toast.js"></script>

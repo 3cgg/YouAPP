@@ -46,7 +46,8 @@ data-slicetop="5"
 			  });
 			  page.log(height)
 		  }
-		  setHeight();
+		
+		setTimeout(setHeight,150);
 		  
 		  $(window).resize(function(){
 			  setTimeout(setHeight,150);

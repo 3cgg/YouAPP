@@ -27,16 +27,20 @@ $.fn.extend({
 				callAfterDrawn:function(data,opts){
 				},
 				createdRow: function ( row, data, index ){
-				}
+				},
+				removeColumns:true
 		}
 	 */
 	initDataTable : function(options) {
+		$(this).css("width", "100%");
+		$(this).addClass("table table-striped table-bordered table-condensed table-hover");
 		
 		var defaultOpts={
 				selected:true,
 				checkbox:false,
 				createdRow:function(){},
-				paging: true
+				paging: true,
+				removeColumns:true
 		}
 		
 		options=$.extend({},defaultOpts,options);
@@ -48,9 +52,9 @@ $.fn.extend({
             "orderable":      false,
             "data":           null,
             "width":"1%",
-            "title":'<input class="minimal" name="all" value="0" type="checkbox" />',
+            "title": '<div style="text-align:center;">'+ '<input class="minimal" name="all" value="0" type="checkbox" />' +'</div>',
             "render": function (data, type, row, meta) {
-                return '<input class="minimal" name="sub" value="' + row.id + '" type="checkbox" />';
+                return '<div style="text-align:center;">'+  '<input class="minimal" name="sub" value="' + row.id + '" type="checkbox" />'  +'</div>';
             }
         }];
 		var opsColumns=[];
@@ -66,21 +70,21 @@ $.fn.extend({
 	            	var viewHtml='';
 	            	var rowId=row.id;
 	            	if(_ops.view){
-	            		viewHtml='<button  data-rowId="'+rowId+'"  id="row_view_btn_'+rowId+'" name="row_view_btn" type="button" '
-	            		+ ' style="margin-left:1px;margin-right:1px;" class="btn btn-success"  title="查看"><i class="glyph-icon icon-eye"></i></button>';
+	            		viewHtml='<a  data-rowId="'+rowId+'"  id="row_view_btn_'+rowId+'" name="row_view_btn"  '
+	            		+ ' style="" class="btn btn-link font-blue"  title="查看"><i class="glyph-icon icon-eye"></i></a>';
 	            	}
 	            	var editHtml='';
 	            	if(_ops.edit){
-	            		editHtml='<button data-rowId="'+rowId+'"  id="row_edit_btn_'+rowId+'" name="row_edit_btn"  type="button" '
-	            		+ '  style="margin-left:1px;margin-right:1px;" class="btn btn-success" title="编辑" ><i class="glyph-icon icon-pencil"></i></button>';
+	            		editHtml='<a data-rowId="'+rowId+'"  id="row_edit_btn_'+rowId+'" name="row_edit_btn"  '
+	            		+ '  style="" class="btn btn-link font-green" title="编辑" ><i class="glyph-icon icon-pencil"></i></a>';
 	            	}
 	            	var delHtml='';
 	            	if(_ops.del){
-	            		delHtml='<button data-rowId="'+rowId+'"  id="row_del_btn_'+rowId+'" name="row_del_btn"  type="button" '
-	            		+ ' style="margin-left:1px;margin-right:1px;" class="btn  btn-danger" title="删除" ><i class="glyph-icon icon-trash"></i></button>';
+	            		delHtml='<a data-rowId="'+rowId+'"  id="row_del_btn_'+rowId+'" name="row_del_btn"   '
+	            		+ ' style="" class="btn btn-link font-red" title="删除" ><i class="glyph-icon icon-trash"></i></a>';
 	            	}
 	            	
-	            	return '<div style="padding:1px">'+viewHtml+editHtml+delHtml+'<div>';
+	            	return '<div style="">'+viewHtml+editHtml+delHtml+'<div>';
 	            }
 	        }];
 			opsColumns=opsColumns.concat(opsGenColumns);
@@ -99,6 +103,7 @@ $.fn.extend({
 		if(options.ops){
 			_columns=_columns.concat(opsColumns);
 		}
+		options.columns=_columns;
 		
 		function DatatableAjax($datatableDom,options){
 			this. _options=options;
@@ -213,7 +218,7 @@ $.fn.extend({
 				if(this._options.ops){
 	  				var _ops=this._options.ops;
 	  				if(_ops.view){
-	  					$wrap.find('button[name=row_view_btn]')
+	  					$wrap.find('a[name=row_view_btn]')
 	  						.on("click",function(event){
 		            		_ops.view($(this).data("rowid"),{});
 		            		event.stopPropagation();
@@ -221,7 +226,7 @@ $.fn.extend({
 	            	}
 	  				
 	            	if(_ops.edit){
-	  					$wrap.find('button[name=row_edit_btn]')
+	  					$wrap.find('a[name=row_edit_btn]')
 	  						.on("click",function(event){
 		            		_ops.edit($(this).data("rowid"),{});
 		            		event.stopPropagation();
@@ -229,7 +234,7 @@ $.fn.extend({
 	            	}
 	            	
 	            	if(_ops.del){
-	            		$wrap.find('button[name=row_del_btn]')
+	            		$wrap.find('a[name=row_del_btn]')
 	            		.on("click",function(event){
 	            			
 	            			var jc=$.confirm({
@@ -276,6 +281,11 @@ $.fn.extend({
 		}
 		
 		
+		if(options.removeColumns){
+			$(this).wrap(function(){
+				return '<div class="remove-columns"></div>';
+			});
+		}
 		
 //		$wrap=$('#editable');
 		var $wrap=$(this.selector);
@@ -287,11 +297,25 @@ $.fn.extend({
 				new DatatableAjax().ajax(data, callback, settings,options,$wrap)
 			},
 			createdRow:function( row, data, index ){
+				
+				function addTitle(ele,i){
+					var title=options.columns[i].title;
+					if(!title){
+						title=options.columns[i].data;
+					}
+					if($(title).is('input')||$(title).find('input[type="checkbox"]').length>0){
+						title='ischeck';
+					}
+					$(ele).attr('data-title',title);
+				}
+				$(row).find('td').each(function(i){
+					addTitle(this,i);
+				});
 				if(index%2==0){
-					$(row).addClass('trodd');
+					//$(row).addClass('trodd');
 				}
 				else{
-					$(row).addClass('treven');
+					//$(row).addClass('treven');
 				}
 				if(options.createdRow){
 					options.createdRow(row, data, index);

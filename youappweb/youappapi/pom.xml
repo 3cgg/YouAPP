@@ -81,18 +81,52 @@
   </dependencies>
   
   
-  <build>
+  <profiles>
+		<profile>
+			<id>prd</id>
+			<properties>
+				<releasePkg>prd</releasePkg>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+	
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
+					<!-- the default value is the filter list under build -->
+			          <!-- specifying a filter will override the filter list under build -->
+			          <filters>
+			            <!-- <filter>properties/config.prop</filter> -->
+			          </filters>
+	                 <webResources>
+			            <resource>
+			              <!-- this is relative to the pom.xml directory -->
+			              <directory>src/main/webapp</directory>
+			              <!-- the default value is ** -->
+			              <includes>
+			                <include>**</include>
+			              </includes>
+			              <!-- there's no default value for this -->
+			              <excludes>
+			                <!-- <exclude></exclude> -->
+			              </excludes>
+			            </resource>
+			            <resource>
+			            	<directory>src/main/profile/${releasePkg}</directory>
+			            	<filtering>true</filtering>
+			            	<targetPath>WEB-INF/classes</targetPath>
+			            </resource>
+			          </webResources>  
 					<warName>youappapi</warName>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	
-	
 </project>

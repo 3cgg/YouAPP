@@ -3,8 +3,8 @@
                packages="j.jave.kernal.jave">
   
   <properties>
-    <property name="logPath">d:/youapp-log</property>
-    <property name="logFileName">youappapi</property>
+    <property name="logPath">d:/youapp-log-prd</property>
+    <property name="logFileName">youap-html</property>
   </properties>
   
   <Appenders>

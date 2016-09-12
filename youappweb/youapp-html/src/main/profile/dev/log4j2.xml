@@ -3,7 +3,7 @@
                packages="j.jave.kernal.jave">
   
   <properties>
-    <property name="logPath">d:/youapp-log</property>
+    <property name="logPath">d:/youapp-log-dev</property>
     <property name="logFileName">youap-html</property>
   </properties>
   

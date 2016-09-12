@@ -327,6 +327,8 @@ public class JQueueElementDistributer<T extends JQueueElement> {
 						}
 					} catch (InterruptedException e) {
 						LOGGER.error(e.getMessage(), e);
+					}catch (Exception e) {
+						LOGGER.error(e.getMessage(), e);
 					}
 		            finally {
 		                lock.unlock();

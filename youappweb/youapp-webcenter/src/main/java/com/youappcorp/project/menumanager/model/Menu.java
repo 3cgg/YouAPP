@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "menu")
+@Table(name = "MENU")
 public class Menu extends JJpaBaseModel {
 	
 	private String pid;
@@ -25,7 +25,7 @@ public class Menu extends JJpaBaseModel {
 
 	private String description;
 	
-	@Column(name = "pid")
+	@Column(name = "PID")
 	public String getPid() {
 		return pid;
 	}
@@ -34,7 +34,7 @@ public class Menu extends JJpaBaseModel {
 		this.pid = pid;
 	}
 	
-	@Column(name = "code")
+	@Column(name = "CODE")
 	public String getCode() {
 		return code;
 	}
@@ -43,7 +43,7 @@ public class Menu extends JJpaBaseModel {
 		this.code = code;
 	}
 
-	@Column(name = "name")
+	@Column(name = "NAME")
 	public String getName() {
 		return name;
 	}
@@ -52,7 +52,7 @@ public class Menu extends JJpaBaseModel {
 		this.name = name;
 	}
 
-	@Column(name = "url")
+	@Column(name = "URL")
 	public String getUrl() {
 		return url;
 	}
@@ -61,7 +61,7 @@ public class Menu extends JJpaBaseModel {
 		this.url = url;
 	}
 
-	@Column(name = "sequence")
+	@Column(name = "SEQUENCE")
 	public int getSequence() {
 		return sequence;
 	}
@@ -69,7 +69,7 @@ public class Menu extends JJpaBaseModel {
 	public void setSequence(int sequence) {
 		this.sequence = sequence;
 	}
-	@Column(name = "description")
+	@Column(name = "DESCRIPTION")
 	public String getDescription() {
 		return description;
 	}

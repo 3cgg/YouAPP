@@ -38,7 +38,7 @@
     </jpa:repositories>
     
     <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="generateDdl" value="true"/>
+                <property name="generateDdl" value="${youapp.hibernate.database.generateDdl}"/>
                 <property name="database" value="${youapp.database.dialect}"/>
                 <property name="databasePlatform" value="${youapp.hibernate.database.platform}"/>
                 <property name="showSql" value="${youapp.database.sql.show}"/>

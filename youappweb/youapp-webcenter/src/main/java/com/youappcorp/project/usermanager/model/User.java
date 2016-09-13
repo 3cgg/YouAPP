@@ -3,8 +3,6 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import java.sql.Timestamp;
@@ -21,10 +19,8 @@ import javax.persistence.Table;
 @Entity
 public class User extends JJpaBaseModel{
 	
-	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
-	@JColumn(name="PASSWORD",type=JSQLType.VARCHAR,length=64)
 	private String password;
 	
 	private String status;

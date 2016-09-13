@@ -17,19 +17,19 @@ public abstract class JBaseModel implements JModel {
 	/**
 	 * the primary key , uuid 
 	 */
-	@JColumn(name="ID",type=JSQLType.VARCHAR,length=32)
+	@JColumn(name="ID",type=JSQLType.VARCHAR,length=36)
 	private String id;
 	
 	/**
 	 * create user id
 	 */
-	@JColumn(name="CREATEID",type=JSQLType.VARCHAR,length=32)
+	@JColumn(name="CREATEID",type=JSQLType.VARCHAR,length=36)
 	private String createId;
 	
 	/**
 	 * update user id 
 	 */
-	@JColumn(name="UPDATEID",type=JSQLType.VARCHAR,length=32)
+	@JColumn(name="UPDATEID",type=JSQLType.VARCHAR,length=36)
 	private String updateId;
 	
 	/**

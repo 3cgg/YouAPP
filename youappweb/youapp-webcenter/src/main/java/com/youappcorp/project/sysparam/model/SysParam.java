@@ -7,19 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "t_sysparam")
+@Table(name = "SYS_PARAM")
 public class SysParam  extends JJpaBaseModel{
 
-	@Column(name = "_code")
 	private String code;
 	
-	@Column(name = "_value")
 	private String value;
 	
-	@Column(name = "_desc")
 	private String desc;
 
-	@Column(name = "_code")
+	@Column(name = "_CODE")
 	public String getCode() {
 		return code;
 	}
@@ -28,7 +25,7 @@ public class SysParam  extends JJpaBaseModel{
 		this.code = code;
 	}
 
-	@Column(name = "_value")
+	@Column(name = "_VALUE")
 	public String getValue() {
 		return value;
 	}
@@ -37,7 +34,7 @@ public class SysParam  extends JJpaBaseModel{
 		this.value = value;
 	}
 
-	@Column(name = "_desc")
+	@Column(name = "DESCRIPTION")
 	public String getDesc() {
 		return desc;
 	}

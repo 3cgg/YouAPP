@@ -3,9 +3,6 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
@@ -15,21 +12,17 @@ import javax.persistence.Table;
 /**
  * @author J
  */
-@JTable(name="USERS_GROUPS")
 @Entity
 @Table(name="USERS_GROUPS")
 public class UserGroup extends JJpaBaseModel {
 
-	@JColumn(name="GROUPID",type=JSQLType.VARCHAR,length=32)
 	private String groupId;
 	
-	@JColumn(name="USERID",type=JSQLType.VARCHAR,length=32)
 	private String userId;
 	
-	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 	
-	@Column(name="GROUPID")
+	@Column(name="GROUP_ID")
 	public String getGroupId() {
 		return groupId;
 	}
@@ -38,7 +31,7 @@ public class UserGroup extends JJpaBaseModel {
 		this.groupId = groupId;
 	}
 
-	@Column(name="USERID")
+	@Column(name="USER_ID")
 	public String getUserId() {
 		return userId;
 	}

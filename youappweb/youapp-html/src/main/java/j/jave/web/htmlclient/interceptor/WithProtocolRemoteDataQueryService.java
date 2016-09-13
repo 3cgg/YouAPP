@@ -8,6 +8,8 @@ import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.kernal.jave.base64.JBase64;
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.web.htmlclient.WebHtmlClientProperties;
 import j.jave.web.htmlclient.request.RequestVO;
@@ -21,7 +23,9 @@ import java.util.Map.Entry;
 public class WithProtocolRemoteDataQueryService implements DataQueryService {
 
 	protected JBase64 base64Service=JBase64FactoryProvider.getBase64Factory().getBase64();
-		
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(WithProtocolRemoteDataQueryService.class);
+	
 	private String host=null;
 	{
 		host=JConfiguration.get().getString(WebHtmlClientProperties.YOUAPPMVC_DATA_QUERY_REMOTE_HOST);
@@ -71,7 +75,7 @@ public class WithProtocolRemoteDataQueryService implements DataQueryService {
 				try {
 					object=new String(bytes,"utf-8");
 				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+					LOGGER.error(e.getMessage(), e);
 				}
 				return object;
 			}

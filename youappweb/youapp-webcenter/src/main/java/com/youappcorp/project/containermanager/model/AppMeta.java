@@ -12,7 +12,7 @@ import com.youappcorp.project.containermanager.ContainerNames.DeployType;
  * @author J
  */
 @Entity
-@Table(name="AppMeta")
+@Table(name="APP_META")
 public class AppMeta extends JJpaBaseModel  {
 	
 	private String appName;

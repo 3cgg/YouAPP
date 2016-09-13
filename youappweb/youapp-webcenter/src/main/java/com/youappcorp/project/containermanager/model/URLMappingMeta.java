@@ -10,7 +10,7 @@ import javax.persistence.Table;
  * @author J
  */
 @Entity
-@Table(name="UrlMappingMeta")
+@Table(name="URL_MAPPING_META")
 public class URLMappingMeta extends JJpaBaseModel  {
 	
 	private String appId;

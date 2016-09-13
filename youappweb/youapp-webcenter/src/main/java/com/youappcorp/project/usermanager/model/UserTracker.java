@@ -1,8 +1,5 @@
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import java.sql.Timestamp;
@@ -16,7 +13,6 @@ import javax.persistence.Table;
  * @author J
  *
  */
-@JTable(name="USER_TRACKER")
 @Table(name="USER_TRACKER")
 @Entity
 public class UserTracker extends JJpaBaseModel {
@@ -24,31 +20,26 @@ public class UserTracker extends JJpaBaseModel {
 	/**
 	 * User ID
 	 */
-	@JColumn(name="USERID",type=JSQLType.VARCHAR,length=32)
 	private String userId;
 	
 	/**
 	 * ip from the client 
 	 */
-	@JColumn(name="IP",type=JSQLType.VARCHAR,length=32)
 	private String ip;
 	
 	/**
 	 * user name 
 	 */
-	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
 	/**
 	 * login on the time . 
 	 */
-	@JColumn(name="LOGIN_TIME",type=JSQLType.TIMESTAMP)
 	private Timestamp loginTime;
 	
 	/**
 	 * the client that login from
 	 */
-	@JColumn(name="LOGIN_CLIENT",type=JSQLType.VARCHAR,length=256)
 	private String loginClient;
 
 	@Column(name="USERID")

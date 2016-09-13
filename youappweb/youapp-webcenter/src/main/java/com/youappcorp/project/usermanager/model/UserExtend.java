@@ -3,9 +3,6 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
@@ -15,24 +12,19 @@ import javax.persistence.Table;
 /**
  * @author J
  */
-@JTable(name="USERS_EXTEND")	
 @Table(name="USERS_EXTEND")
 @Entity
 public class UserExtend extends JJpaBaseModel{
 	
-	@JColumn(name="USERID",type=JSQLType.VARCHAR,length=32)
 	private String userId;
 	
-	@JColumn(name="USERNAME",type=JSQLType.VARCHAR,length=32)
 	private String userName;
 	
-	@JColumn(name="USERIMAGE",type=JSQLType.VARCHAR,length=256)
 	private String userImage;
 	
-	@JColumn(name="NATURENAME",type=JSQLType.VARCHAR,length=64)
 	private String natureName;
 	
-	@Column(name="USERID")
+	@Column(name="USER_ID")
 	public String getUserId() {
 		return userId;
 	}
@@ -41,7 +33,7 @@ public class UserExtend extends JJpaBaseModel{
 		this.userId = userId;
 	}
 	
-	@Column(name="USERNAME")
+	@Column(name="USER_NAME")
 	public String getUserName() {
 		return userName;
 	}
@@ -50,7 +42,7 @@ public class UserExtend extends JJpaBaseModel{
 		this.userName = userName;
 	}
 
-	@Column(name="USERIMAGE")
+	@Column(name="USER_IMAGE")
 	public String getUserImage() {
 		return userImage;
 	}
@@ -59,7 +51,7 @@ public class UserExtend extends JJpaBaseModel{
 		this.userImage = userImage;
 	}
 
-	@Column(name="NATURENAME")
+	@Column(name="NATURE_NAME")
 	public String getNatureName() {
 		return natureName;
 	}

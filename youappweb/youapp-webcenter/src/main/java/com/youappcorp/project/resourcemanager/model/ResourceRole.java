@@ -1,8 +1,5 @@
 package com.youappcorp.project.resourcemanager.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
@@ -12,7 +9,6 @@ import javax.persistence.Transient;
 
 import com.youappcorp.project.usermanager.model.Role;
 
-@JTable(name="RESOURCES_ROLES")
 @Table(name="RESOURCES_ROLES")
 @Entity
 public class ResourceRole extends JJpaBaseModel {
@@ -20,25 +16,21 @@ public class ResourceRole extends JJpaBaseModel {
 	/**
 	 * ID reference to RESOURCE table. 
 	 */
-	@JColumn(name="RESOURCEID",type=JSQLType.VARCHAR,length=32)
 	private String resourceId;
 
 	/**
 	 * ROLE ID 
 	 */
-	@JColumn(name="ROLEID",type=JSQLType.VARCHAR,length=32)
 	private String roleId;
 	
 	/**
 	 * Y OR N
 	 */
-	@JColumn(name="ENABLE",type=JSQLType.VARCHAR,length=1)
 	private String enable;
 	
 	/**
 	 * description. 
 	 */
-	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=256)
 	private String description;
 	
 	private Role role;
@@ -63,7 +55,7 @@ public class ResourceRole extends JJpaBaseModel {
 		this.resource = resource;
 	}
 
-	@Column(name="RESOURCEID")
+	@Column(name="RESOURCE_ID")
 	public String getResourceId() {
 		return resourceId;
 	}
@@ -72,7 +64,7 @@ public class ResourceRole extends JJpaBaseModel {
 		this.resourceId = resourceId;
 	}
 
-	@Column(name="ROLEID")
+	@Column(name="ROLE_ID")
 	public String getRoleId() {
 		return roleId;
 	}

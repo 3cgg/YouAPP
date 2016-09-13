@@ -11,6 +11,7 @@ import j.jave.kernal.jave.support.databind.JDataBindingException;
 import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.kernal.jave.utils.JIOUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUser;
 import j.jave.platform.webcomp.web.util.JCookieUtils;
@@ -370,7 +371,12 @@ public class ServletHttpContext implements JModel, HttpContext {
 		if(serviceContext==null){
 			ServiceContext serviceContext=new ServiceContext();
 			serviceContext.setTicket(ticket);
-			if(user!=null){
+			if(user==null){
+				ServiceContext defaultServiceContext=DefaultServiceContext.getDefaultServiceContext();
+				serviceContext.setUserId(defaultServiceContext.getUserId());
+				serviceContext.setUserName(defaultServiceContext.getUserName());
+			}
+			else{
 				serviceContext.setUserId(user.getUserId());
 				serviceContext.setUserName(user.getUserName());
 			}

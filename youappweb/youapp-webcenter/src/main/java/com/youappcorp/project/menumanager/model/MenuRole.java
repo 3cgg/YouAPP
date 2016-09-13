@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "menu_role")
+@Table(name = "MENU_ROLE")
 public class MenuRole extends JJpaBaseModel {
 	
 	private String menuId;

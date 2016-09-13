@@ -46,7 +46,6 @@ import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 			)
 		}
 		)
-@JTable(name="PARAM_CODE")
 @Entity
 @Table(name="PARAM_CODE")
 public class ParamCode extends JJpaBaseModel {
@@ -69,25 +68,21 @@ public class ParamCode extends JJpaBaseModel {
 		this.description = description;
 	}
 
-	@JColumn(name="TYPE",type=JSQLType.VARCHAR,length=32)
 	private String type;
 	
 	/**
 	 * the code 
 	 */
-	@JColumn(name="CODE",type=JSQLType.VARCHAR,length=32)
 	private String code;
 	
 	/**
 	 * the nature name 
 	 */
-	@JColumn(name="NAME",type=JSQLType.VARCHAR,length=128)
 	private String name;
 	
 	/**
 	 * optional description 
 	 */
-	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
 	private String description;
 	
 

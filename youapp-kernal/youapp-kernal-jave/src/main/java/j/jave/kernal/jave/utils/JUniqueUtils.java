@@ -16,7 +16,7 @@ public abstract class JUniqueUtils {
 	public final static String SEQUECE = "yyyyMMddHHmmssSSS";
 	
 	public static String unique() {
-		return UUID.randomUUID().toString().replace("-", "");
+		return UUID.randomUUID().toString();
 	}
 	
 	/**

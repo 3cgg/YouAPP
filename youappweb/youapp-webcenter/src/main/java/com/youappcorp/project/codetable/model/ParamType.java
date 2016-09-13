@@ -3,9 +3,6 @@
  */
 package com.youappcorp.project.codetable.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
@@ -16,7 +13,6 @@ import javax.persistence.Table;
  * @author J
  *
  */
-@JTable(name="PARAM_TYPE")
 @Entity
 @Table(name="PARAM_TYPE")
 public class ParamType extends JJpaBaseModel {
@@ -45,19 +41,16 @@ public class ParamType extends JJpaBaseModel {
 	/**
 	 * the code 
 	 */
-	@JColumn(name="CODE",type=JSQLType.VARCHAR,length=32)
 	private String code;
 	
 	/**
 	 * the nature name 
 	 */
-	@JColumn(name="NAME",type=JSQLType.VARCHAR,length=128)
 	private String name;
 	
 	/**
 	 * optional description 
 	 */
-	@JColumn(name="DESCRIPTION",type=JSQLType.VARCHAR,length=512)
 	private String description;
 
 	@Column(name="CODE")

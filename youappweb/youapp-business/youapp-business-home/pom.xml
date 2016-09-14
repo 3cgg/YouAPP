@@ -9,10 +9,10 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>youapp-business-bill</artifactId>
+	<artifactId>youapp-business-home</artifactId>
 	<packaging>jar</packaging>
 
-	<name>youapp-business-bill</name>
+	<name>youapp-business-home</name>
 
 	<dependencies>
 

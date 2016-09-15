@@ -25,6 +25,7 @@ public abstract class JBaseTask implements JTask ,JTaskExecutePostProcessor{
 	}
 	
 	public JBaseTask() {
+		this(new JTaskContext());
 	}
 	
 	@Override
@@ -49,8 +50,8 @@ public abstract class JBaseTask implements JTask ,JTaskExecutePostProcessor{
 	/**
 	 * default implementation , if no more interceptors need.
 	 */
-	public <T extends JTask> JTaskInvocation<T> getTaskInvocation(){
-		return new JDefaultTaskInvocation<T>((T)this, taskContext);
+	public final JTaskInvocation getTaskInvocation(){
+		return new JDefaultTaskInvocation(this, taskContext);
 	}
 	
 	

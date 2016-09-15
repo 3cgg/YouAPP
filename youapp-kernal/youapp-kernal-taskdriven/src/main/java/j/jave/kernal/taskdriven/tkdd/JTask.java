@@ -49,11 +49,13 @@ public interface JTask extends JNotifyStart {
 	 * get the related invocation.
 	 * @return
 	 */
-	<T extends JTask> JTaskInvocation<T> getTaskInvocation();
+	JTaskInvocation getTaskInvocation();
 	
 	/**
 	 * indicate the current scope, i.e. the task is in the initialization , executing or others.
 	 * @return
 	 */
 	JTaskScope getScope();
+	
+	JTaskContext getTaskContext(); 
 }

@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JTaskMetadataOnTask {
 
-	Class<? extends JTaskMetadata> value() ;
+	Class<? extends JTaskMetadata> value() default JMockGlobalMetadata.class ;
 	
 }

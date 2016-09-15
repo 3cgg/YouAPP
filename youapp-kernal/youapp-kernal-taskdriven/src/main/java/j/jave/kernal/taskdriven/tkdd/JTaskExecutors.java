@@ -15,9 +15,8 @@ public class JTaskExecutors {
 		static JTaskExecutor taskExecutor=new JTaskExecutor();
 		
 		public Object execute(JTask task){
-			JTaskInvocation<JTask> taskInvocation= task.getTaskInvocation();
-			taskInvocation.proceed();
-			return task.run();
+			JTaskInvocation taskInvocation= task.getTaskInvocation();
+			return taskInvocation.proceed();
 		}
 		
 	}

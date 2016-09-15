@@ -1,11 +1,13 @@
 package j.jave.kernal.taskdriven.tkdd;
 
-public interface JTaskInvocation<T extends JTask> {
+public interface JTaskInvocation {
 
 	/**
 	 * progress of executing intercepters
 	 * @return
 	 */
-	public T  proceed();
+	public Object  proceed();
 	
+
+	public JTask getTask();
 }

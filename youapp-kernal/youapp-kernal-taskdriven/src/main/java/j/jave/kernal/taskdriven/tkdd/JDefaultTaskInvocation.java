@@ -2,6 +2,7 @@ package j.jave.kernal.taskdriven.tkdd;
 
 import j.jave.kernal.taskdriven.tkdd.interceptor.JTaskAuthorizeInterceptor;
 import j.jave.kernal.taskdriven.tkdd.interceptor.JTaskContextProcessorInterceptor;
+import j.jave.kernal.taskdriven.tkdd.interceptor.JTaskExecutingInterceptor;
 import j.jave.kernal.taskdriven.tkdd.interceptor.JTaskStatusInterceptor;
 
 import java.util.ArrayList;
@@ -10,49 +11,55 @@ import java.util.List;
 /**
  * 
  * @author J
- *
- * @param <T>
  */
-public class JDefaultTaskInvocation<T extends JTask> implements JTaskInvocation<T>{
+public class JDefaultTaskInvocation implements JTaskInvocation{
 
-	private List<JTaskInterceptor<T>> taskInterceptors=new ArrayList<JTaskInterceptor<T>>(8);
+	private List<JTaskInterceptor<JTask>> taskInterceptors=new ArrayList<JTaskInterceptor<JTask>>(8);
 	
 	/**
 	 * the entity that maps to a concrete one. 
-	 * {@link JTable} 
 	 */
-	private final T object;
+	private final JTask task;
 	
-	private JTaskContext context;
+	private JTaskContext taskContext;
 	
-	public  JDefaultTaskInvocation(T object,JTaskContext context) {
-		this.object=object;
-		this.context=context;
+	public  JDefaultTaskInvocation(JTask task,JTaskContext taskContext) {
+		this.task=task;
+		this.taskContext=taskContext;
 		init();
 	}
 	
 	private void init(){
-		taskInterceptors.add(new JTaskContextProcessorInterceptor<T>(object,context));
-		taskInterceptors.add(new JTaskStatusInterceptor<T>(object,context));
-		taskInterceptors.add(new JTaskAuthorizeInterceptor<T>(object,context));
+		taskInterceptors.add(new JTaskContextProcessorInterceptor());
+		taskInterceptors.add(new JTaskStatusInterceptor());
+		taskInterceptors.add(new JTaskAuthorizeInterceptor());
+		taskInterceptors.add(new JTaskExecutingInterceptor());
 	}
 	
-	public void addTaskInterceptor(JTaskInterceptor<T> taskInterceptor){
+	public void addTaskInterceptor(JTaskInterceptor<JTask> taskInterceptor){
 		taskInterceptors.add(taskInterceptor);
 	}
 	
 	private int currentInterceptorIndex = -1;
 	
 	@Override
-	public T proceed() {
+	public Object proceed() {
 		
 		if (this.currentInterceptorIndex == this.taskInterceptors.size() - 1) {
-			return object;
+			return task;
 		}
-		JTaskInterceptor<T> interceptor =
+		JTaskInterceptor<JTask> interceptor =
 				this.taskInterceptors.get(++this.currentInterceptorIndex);
 		return interceptor.interceptor(this);
 	}
 	
+	
+	public JTaskContext getTaskContext() {
+		return taskContext;
+	}
+	
+	public JTask getTask(){
+		return task;
+	}
 }
 

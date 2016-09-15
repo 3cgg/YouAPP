@@ -21,6 +21,12 @@
 			<artifactId>youapp-kernal-zookeeper</artifactId>
 			<version>${kernal.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>youapp.kernal</groupId>
+			<artifactId>youapp-kernal-taskdriven</artifactId>
+			<version>${kernal.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>youapp.platform</groupId>
@@ -55,7 +61,13 @@
 			    <groupId>org.apache.tomcat</groupId>
 			    <artifactId>tomcat-jdbc</artifactId>
 		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+		<dependency>
+		    <groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		</dependency>
+				
 
 	</dependencies>
 

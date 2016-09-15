@@ -1,7 +1,5 @@
 package j.jave.kernal.taskdriven.tkdd;
 
-import j.jave.kernal.taskdriven.tkdd.role.JOwner;
-
 import java.io.Serializable;
 
 import javax.security.auth.Subject;

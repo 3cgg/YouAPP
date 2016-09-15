@@ -1,6 +1,5 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.taskdriven.tkdd.JTaskContext;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
@@ -16,27 +15,26 @@ import freemarker.template.Template;
 public class RepoTask extends TemplateTask{
 
 	@Override
-	public Object run() {
-		try{
-			RepoModel repoModel=new RepoModel();
-			repoModel.setModelSimpleClassName("AAA");
-			repoModel.setRepoPackage("BBB.BBB.FFF.FFF");
-			repoModel.setModelFullClassName("CCC.HHH.AAA");
-			
-			/* Create a data-model */
-	        Map<String,Object> root = new HashMap<String, Object>();
-	        root.put("repoModel", repoModel);
-	        		
-			/* Get the template (uses cache internally) */
-	        Template temp = FtlConfig.get().getCfg().getTemplate("repo.ftl");
-	        /* Merge data-model with template */
-	        Writer out = new OutputStreamWriter(System.out);
-	        temp.process(root, out);
+	public Object doRun() throws Exception {
 
-		}catch(Exception e){
-			throw new RuntimeException(e);
-		}
-		return null;
+		RepoModel repoModel=new RepoModel();
+		repoModel.setModelSimpleClassName("AAA");
+		repoModel.setRepoPackage("BBB.BBB.FFF.FFF");
+		repoModel.setModelFullClassName("CCC.HHH.AAA");
+		
+		/* Create a data-model */
+        Map<String,Object> root = new HashMap<String, Object>();
+        root.put("repoModel", repoModel);
+        		
+		/* Get the template (uses cache internally) */
+        Template temp = FtlConfig.get().getCfg().getTemplate("repo.ftl");
+        /* Merge data-model with template */
+        Writer out = new OutputStreamWriter(System.out);
+        temp.process(root, out);
+
+	
+        return null;
+        
 	}
 
 }

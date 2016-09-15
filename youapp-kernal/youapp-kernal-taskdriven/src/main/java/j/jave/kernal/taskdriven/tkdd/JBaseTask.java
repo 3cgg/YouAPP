@@ -128,6 +128,10 @@ public abstract class JBaseTask implements JTask ,JTaskExecutePostProcessor{
 		return taskContext;
 	}
 	
+	public final JFlowContext getFlowContext(){
+		return getTaskContext().getFlowContext();
+	}
+	
 	
 	/**
 	 * one use to override the method to provide the real functionality.

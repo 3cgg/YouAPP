@@ -1,5 +1,7 @@
 package j.jave.kernal.taskdriven.tkdd;
 
+import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
+
 /**
  * @author J
  */
@@ -58,4 +60,6 @@ public interface JTask extends JNotifyStart {
 	JTaskScope getScope();
 	
 	JTaskContext getTaskContext(); 
+	
+	JFlowContext getFlowContext();
 }

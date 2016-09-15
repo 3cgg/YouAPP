@@ -2,14 +2,26 @@ package com.youappcorp.template.ftl;
 
 public class Config {
 
-	private String modelPackage;
+	private String modelPath;
+	
+	private Class<? extends InternalConfigStrategy> internalConfigStrategyClass
+	=DefaultInternalConfigStrategy.class;
 
-	public String getModelPackage() {
-		return modelPackage;
+	public String getModelPath() {
+		return modelPath;
 	}
 
-	public void setModelPackage(String modelPackage) {
-		this.modelPackage = modelPackage;
+	public void setModelPath(String modelPath) {
+		this.modelPath = modelPath;
+	}
+
+	public Class<? extends InternalConfigStrategy> getInternalConfigStrategyClass() {
+		return internalConfigStrategyClass;
+	}
+
+	public void setInternalConfigStrategyClass(
+			Class<? extends InternalConfigStrategy> internalConfigStrategyClass) {
+		this.internalConfigStrategyClass = internalConfigStrategyClass;
 	}
 	
 }

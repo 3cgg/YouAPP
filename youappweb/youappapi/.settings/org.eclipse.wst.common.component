@@ -13,6 +13,9 @@
         <dependent-module archiveName="youapp-kernal-jave-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-jave/youapp-kernal-jave">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="youapp-kernal-taskdriven-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-kernal-taskdriven/youapp-kernal-taskdriven">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="youapp-platform-webmvc-3.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/youapp-platform-webmvc/youapp-platform-webmvc">
             <dependency-type>uses</dependency-type>
         </dependent-module>

@@ -1,14 +1,6 @@
 package com.youappcorp.template.ftl;
 
-public class ServiceModel {
-
-	private String servicePackage;
-	
-	private String serviceClassName;
-	
-	private String serviceSimpleClassName;
-	
-	private String variableName;
+public class ServiceModel extends BaseTemplateModel {
 	
 	private String pageMethodName;
 	
@@ -22,29 +14,6 @@ public class ServiceModel {
 	
 	private String getMethodName;
 
-	public String getServicePackage() {
-		return servicePackage;
-	}
-
-	public void setServicePackage(String servicePackage) {
-		this.servicePackage = servicePackage;
-	}
-
-	public String getServiceClassName() {
-		return serviceClassName;
-	}
-
-	public void setServiceClassName(String serviceClassName) {
-		this.serviceClassName = serviceClassName;
-	}
-
-	public String getServiceSimpleClassName() {
-		return serviceSimpleClassName;
-	}
-
-	public void setServiceSimpleClassName(String serviceSimpleClassName) {
-		this.serviceSimpleClassName = serviceSimpleClassName;
-	}
 
 	public String getPageMethodName() {
 		return pageMethodName;
@@ -93,14 +62,5 @@ public class ServiceModel {
 	public void setDeleteByIdMethodName(String deleteByIdMethodName) {
 		this.deleteByIdMethodName = deleteByIdMethodName;
 	}
-
-	public String getVariableName() {
-		return variableName;
-	}
-
-	public void setVariableName(String variableName) {
-		this.variableName = variableName;
-	}
-	
 	
 }

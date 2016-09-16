@@ -16,9 +16,10 @@ public class ModelTask extends TemplateTask{
 		
 		ModelModel modelModel=new ModelModel();
 	
-		modelModel.setModelSimpleClassName(modelConfig.modelName());
-		modelModel.setModelPackage(modelConfig.internalConfig().modelPackage());
-		modelModel.setModelClassName(modelModel.getModelPackage()+"."+modelModel.getModelSimpleClassName());
+		modelModel.setSimpleClassName(modelConfig.modelName());
+		modelModel.setClassPackage(modelConfig.internalConfig().modelPackage());
+		modelModel.setClassName(modelModel.getClassPackage()+"."
+		+modelModel.getSimpleClassName());
 		modelConfig.setModelModel(modelModel);
 		
         return true;

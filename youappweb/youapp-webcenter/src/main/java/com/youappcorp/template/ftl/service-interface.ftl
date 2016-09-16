@@ -1,41 +1,49 @@
-package ${serviceModel.servicePackage};
+package ${classPackage};
 
 import j.jave.kernal.jave.model.JPage;
 import j.jave.kernal.jave.model.JSimplePageable;
 
-import com.youappcorp.project.sysparam.model.SysParam;
-import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
+<#list models as model>
+import ${model.modelModel.className};
+import ${model.modelRecordModel.className};
+import ${model.criteriaModel.className};
+</#list>
 
-public interface ${serviceModel.serviceSimpleClassName} {
 
+
+public interface ${simpleClassName} {
+
+<#list models as model>
 	/**
 	 * save
 	 */
-	void ${serviceModel.saveMethodName} (${modelModel.modelSimpleClassName} ${modelModel.variableName});
+	void ${model.serviceModel.saveMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
 	
 	/**
 	 * update
 	 */
-	void ${serviceModel.updateMethodName} (${modelModel.modelSimpleClassName} ${modelModel.variableName});
+	void ${model.serviceModel.updateMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
 	
 	/**
 	 * delete
 	 */
-	void ${serviceModel.deleteMethodName} (${modelModel.modelSimpleClassName} ${modelModel.variableName});
+	void ${model.serviceModel.deleteMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
 	
 	/**
 	 * delete
 	 */
-	void ${serviceModel.deleteByIdMethodName} (String id);
+	void ${model.serviceModel.deleteByIdMethodName} (String id);
 	
 	/**
 	 * get
 	 */
-	SysParam ${serviceModel.getMethodName} (String id);
+	${model.modelRecordModel.simpleClassName} ${model.serviceModel.getMethodName} (String id);
 	
 	/**
 	 * page...
 	 */
-	JPage<SysParam> ${serviceModel.pageMethodName}(${criteriaModel.criteriaSimpleClassName} ${criteriaModel.variableName}, JSimplePageable simplePageable);
+	JPage<${model.modelRecordModel.simpleClassName}> ${model.serviceModel.pageMethodName}(${model.criteriaModel.simpleClassName} ${model.criteriaModel.variableName}, JSimplePageable simplePageable);
+
+</#list>
 	
 }

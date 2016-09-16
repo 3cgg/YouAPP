@@ -34,5 +34,10 @@ public class TemplateUtil {
 		flowContext.put(KeyNames.TEMPLATE_MODEL_CONFIG_KEY, modelConfig);
 	}
 	
+	public static String variableName(String className){
+		return
+				className.substring(0, 1).toLowerCase()
+		+className.substring(1);
+	}
 	
 }

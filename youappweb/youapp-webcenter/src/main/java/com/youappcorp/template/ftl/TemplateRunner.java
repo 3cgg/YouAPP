@@ -14,6 +14,9 @@ public class TemplateRunner {
 		SingleModelExecutingTask singleModelExecutingTask=new SingleModelExecutingTask();
 		simpleLinkedFlowImpl.put(singleModelExecutingTask);
 		
+		ServiceTask serviceTask=new ServiceTask();
+		simpleLinkedFlowImpl.put(serviceTask);
+		
 		FileWriterTask fileWriterTask=new FileWriterTask();
 		simpleLinkedFlowImpl.put(fileWriterTask);
 		

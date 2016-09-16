@@ -65,11 +65,13 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		
 		void setCriteriaModel(CriteriaModel criteriaModel);
 		
+		ModelRecordModel modelRecordModel();
 		
+		void setModelRecordModel(ModelRecordModel modelRecordModel);
 		
+		ServiceModel serviceModel();
 		
-		
-		
+		void setServiceModel(ServiceModel serviceModel);
 		
 		
 	}

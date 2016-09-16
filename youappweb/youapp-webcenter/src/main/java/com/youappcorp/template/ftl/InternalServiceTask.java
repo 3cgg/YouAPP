@@ -26,9 +26,10 @@ public class InternalServiceTask extends TemplateTask{
 		ModelModel modelModel=modelConfig.modelModel();
 		
 		InternalServiceModel internalServiceModel=new InternalServiceModel();
-		internalServiceModel.setServicePackage(modelConfig.internalConfig().servicePackage());
-		internalServiceModel.setServiceSimpleClassName("Internal"+modelModel.getModelSimpleClassName()+"ServiceImpl");
-		internalServiceModel.setServiceClassName(internalServiceModel.getServicePackage()+"."+internalServiceModel.getServiceSimpleClassName());
+		internalServiceModel.setClassPackage(modelConfig.internalConfig().servicePackage());
+		internalServiceModel.setSimpleClassName("Internal"+modelModel.getSimpleClassName()+"ServiceImpl");
+		internalServiceModel.setClassName(internalServiceModel.getClassPackage()+"."
+		+internalServiceModel.getSimpleClassName());
 		modelConfig.setInternalServiceModel(internalServiceModel);
 		
 		/* Create a data-model */
@@ -44,7 +45,7 @@ public class InternalServiceTask extends TemplateTask{
         Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
         String javaFileName=getInternalConfig().javaRelativePath()+"/"
-        +internalServiceModel.getServiceClassName().replace('.', '/')+".java";
+        +internalServiceModel.getClassName().replace('.', '/')+".java";
         FileWrapper fileWrapper=new FileWrapper();
         fileWrapper.setFile(new File(javaFileName));
         fileWrapper.setData(byteArrayOutputStream.toByteArray());

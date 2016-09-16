@@ -16,7 +16,7 @@ import freemarker.template.Template;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
-public class CriteriaTask extends TemplateTask{
+public class ModelRecordTask extends TemplateTask{
 
 	@Override
 	public Object doRun() throws Exception {
@@ -25,26 +25,26 @@ public class CriteriaTask extends TemplateTask{
 		
 		ModelModel modelModel=modelConfig.modelModel();
 		
-		CriteriaModel criteriaModel=new CriteriaModel();
-		criteriaModel.setClassPackage(modelConfig.internalConfig().voPackage());
-		criteriaModel.setSimpleClassName(modelModel.getSimpleClassName()+"Criteria");
-		criteriaModel.setClassName(criteriaModel.getClassPackage()+"."
-		+criteriaModel.getSimpleClassName());
-		modelConfig.setCriteriaModel(criteriaModel);
+		ModelRecordModel modelRecordModel=new ModelRecordModel();
+		modelRecordModel.setClassPackage(modelConfig.internalConfig().modelPackage());
+		modelRecordModel.setSimpleClassName(modelModel.getSimpleClassName()+"Record");
+		modelRecordModel.setClassName(modelRecordModel.getClassPackage()+"."
+		+modelRecordModel.getSimpleClassName());
+		modelConfig.setModelRecordModel(modelRecordModel);
 		
 		/* Create a data-model */
         Map<String,Object> root = new HashMap<String, Object>();
         root.put("modelModel", modelModel);
-        root.put("criteriaModel", criteriaModel);
+        root.put("modelRecordModel", modelRecordModel);
         
         /* Get the template (uses cache internally) */
-        Template temp = FtlConfig.get().getCfg().getTemplate("criteria.ftl");
+        Template temp = FtlConfig.get().getCfg().getTemplate("model-record.ftl");
         /* Merge data-model with template */
         ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
         Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
         String javaFileName=getInternalConfig().javaRelativePath()+"/"
-        +criteriaModel.getClassName().replace('.', '/')+".java";
+        +modelRecordModel.getClassName().replace('.', '/')+".java";
         FileWrapper fileWrapper=new FileWrapper();
         fileWrapper.setFile(new File(javaFileName));
         fileWrapper.setData(byteArrayOutputStream.toByteArray());

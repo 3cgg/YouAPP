@@ -13,7 +13,7 @@ public class TestRepo extends TestEventSupport {
 		try{
 			Config config=new Config();
 			config.setModelPath("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-webcenter\\src\\test\\java\\test\\com\\youappcorp\\template\\ftl\\testmanager\\model");
-			
+			config.setModuleName("TestManager");
 			TemplateRunner.start(config);
 			
 		}catch(Exception e){

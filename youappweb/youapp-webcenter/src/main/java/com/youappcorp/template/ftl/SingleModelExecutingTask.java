@@ -26,6 +26,9 @@ public class SingleModelExecutingTask extends TemplateTask{
 			InternalServiceTask internalServiceTask=new InternalServiceTask();
 			simpleLinkedFlowImpl.put(internalServiceTask);
 			
+			ModelRecordTask modelRecordTask=new ModelRecordTask();
+			simpleLinkedFlowImpl.put(modelRecordTask);
+			
 			CriteriaTask criteriaTask=new CriteriaTask();
 			simpleLinkedFlowImpl.put(criteriaTask);
 			

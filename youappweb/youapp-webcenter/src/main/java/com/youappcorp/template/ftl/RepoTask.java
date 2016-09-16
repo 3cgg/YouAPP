@@ -26,9 +26,10 @@ public class RepoTask extends TemplateTask{
 		ModelModel modelModel=modelConfig.modelModel();
 		
 		RepoModel repoModel=new RepoModel();
-		repoModel.setRepoPackage(modelConfig.internalConfig().repoPackage());
-		repoModel.setRepoSimpleClassName(modelModel.getModelSimpleClassName()+"JPARepo");
-		repoModel.setRepoClassName(repoModel.getRepoPackage()+"."+repoModel.getRepoSimpleClassName());
+		repoModel.setClassPackage(modelConfig.internalConfig().repoPackage());
+		repoModel.setSimpleClassName(modelModel.getSimpleClassName()+"JPARepo");
+		repoModel.setClassName(repoModel.getClassPackage()+"."
+		+repoModel.getSimpleClassName());
 		modelConfig.setRepoModel(repoModel);
 		
 		/* Create a data-model */
@@ -43,7 +44,7 @@ public class RepoTask extends TemplateTask{
         Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
         String javaFileName=getInternalConfig().javaRelativePath()+"/"
-        +repoModel.getRepoClassName().replace('.', '/')+".java";
+        +repoModel.getClassName().replace('.', '/')+".java";
         FileWrapper fileWrapper=new FileWrapper();
         fileWrapper.setFile(new File(javaFileName));
         fileWrapper.setData(byteArrayOutputStream.toByteArray());

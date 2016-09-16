@@ -85,6 +85,10 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private CriteriaModel criteriaModel;
 		
+		private ModelRecordModel modelRecordModel;
+		
+		private ServiceModel serviceModel;
+		
 		public DefaultModelConfig(InternalConfig internalConfig,String modelName) {
 			this.internalConfig=internalConfig;
 			this.modelName=modelName;
@@ -170,6 +174,26 @@ public class DefaultInternalConfig implements InternalConfig{
 		@Override
 		public void setCriteriaModel(CriteriaModel criteriaModel) {
 			this.criteriaModel=criteriaModel;
+		}
+
+		@Override
+		public ModelRecordModel modelRecordModel() {
+			return modelRecordModel;
+		}
+
+		@Override
+		public void setModelRecordModel(ModelRecordModel modelRecordModel) {
+			this.modelRecordModel=modelRecordModel;
+		}
+
+		@Override
+		public ServiceModel serviceModel() {
+			return serviceModel;
+		}
+
+		@Override
+		public void setServiceModel(ServiceModel serviceModel) {
+			this.serviceModel=serviceModel;
 		}
 		
 		

@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 
+	String javaRelativePath();
 
 	String basePackage();
 	
@@ -25,6 +26,10 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 	List<String> modelNames();
 	
 	String controllerBaseMapping();
+	
+	List<FileWrapper> files();
+	
+	void addFile(FileWrapper fileWrapper);
 	
 	interface ModelConfig{
 		

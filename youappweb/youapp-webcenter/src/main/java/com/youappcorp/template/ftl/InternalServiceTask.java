@@ -3,6 +3,8 @@ package com.youappcorp.template.ftl;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -38,11 +40,17 @@ public class InternalServiceTask extends TemplateTask{
         /* Get the template (uses cache internally) */
         Template temp = FtlConfig.get().getCfg().getTemplate("internal-service.ftl");
         /* Merge data-model with template */
-        Writer out = new OutputStreamWriter(System.out);
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
-
+        String javaFileName=getInternalConfig().javaRelativePath()+"/"
+        +internalServiceModel.getServiceClassName().replace('.', '/')+".java";
+        FileWrapper fileWrapper=new FileWrapper();
+        fileWrapper.setFile(new File(javaFileName));
+        fileWrapper.setData(byteArrayOutputStream.toByteArray());
+        getInternalConfig().addFile(fileWrapper);
 	
-        return null;
+        return true;
         
 	}
 

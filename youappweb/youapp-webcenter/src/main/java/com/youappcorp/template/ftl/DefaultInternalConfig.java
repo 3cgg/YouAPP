@@ -1,6 +1,7 @@
 package com.youappcorp.template.ftl;
 
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -17,6 +18,12 @@ public class DefaultInternalConfig implements InternalConfig{
 	public DefaultInternalConfig(String modelPath) {
 		init(modelPath);
 	}
+	
+	@Override
+	public String javaRelativePath() {
+		return innerCfg.javaRelativePath;
+	}
+	
 	
 	@Override
 	public String basePackage() {
@@ -168,13 +175,20 @@ public class DefaultInternalConfig implements InternalConfig{
 	
 	private void init(String modelPath){
 		JAssert.isNotNull(modelPath,"please set at latest one model package.");
-		this.modelPath=modelPath;
+		this.modelPath=modelPath.replace("\\", "/");
 		InnerCfg innerCfg=new InnerCfg();
 		setModelPackage(innerCfg);
+		setJavaRelativePath(innerCfg);
 		setModelNames(innerCfg);
 		setControllerBaseMapping(innerCfg);
 		setModelConfigs(innerCfg);
 		this.innerCfg=innerCfg;
+	}
+	
+	private void setJavaRelativePath(InnerCfg innerCfg){
+		String modelPackage=innerCfg.modelPackage;
+		String javaRelativePath=modelPath.substring(0, modelPath.indexOf(modelPackage.replace(".", "/")));
+		innerCfg.javaRelativePath=javaRelativePath;
 	}
 	
 	private void setModelConfigs(InnerCfg innerCfg){
@@ -189,7 +203,19 @@ public class DefaultInternalConfig implements InternalConfig{
 	
 	private void setModelPackage(InnerCfg innerCfg){
 		String split="/src/main/java/";
-		innerCfg.modelPackage=modelPath.split(split)[1].replace('/', '.');
+		if(!modelPath.contains(split)){
+			split="/src/test/java/";
+		}
+		if(!modelPath.contains(split)){
+			split="";
+		}
+		if(JStringUtils.isNotNullOrEmpty(split)){
+			innerCfg.modelPackage=modelPath.split(split)[1].replace('/', '.');
+		}
+		else{
+			split="/com/youappcorp/project";
+			innerCfg.modelPackage=modelPath.substring(modelPath.indexOf(split)).replace('/', '.');
+		}
 	}
 	
 	private void setModelNames(InnerCfg innerCfg){
@@ -204,18 +230,20 @@ public class DefaultInternalConfig implements InternalConfig{
 			});
 			
 			for(File fileItem:files){
-				names.add(fileItem.getName().split(".")[0]);
+				names.add(fileItem.getName().split("[.]")[0]);
 			}
 		}
 		innerCfg.modelNames=names;
 	}
 	
 	private void setControllerBaseMapping(InnerCfg innerCfg){
-		String[] pkgs=innerCfg.modelPackage.split(".");
+		String[] pkgs=innerCfg.modelPackage.split("[.]");
 		innerCfg.controllerBaseMapping="/"+pkgs[pkgs.length-2];
 	}
 	
 	private class InnerCfg{
+		
+		private String javaRelativePath;
 		
 		private String modelPackage;
 		
@@ -225,6 +253,18 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private List<ModelConfig> modelConfigs;
 		
+		private List<FileWrapper> files=new ArrayList<FileWrapper>();
+		
+	}
+
+	@Override
+	public void addFile(FileWrapper fileWrapper) {
+		innerCfg.files.add(fileWrapper);
+	}
+
+	@Override
+	public List<FileWrapper> files() {
+		return innerCfg.files;
 	}
 
 	

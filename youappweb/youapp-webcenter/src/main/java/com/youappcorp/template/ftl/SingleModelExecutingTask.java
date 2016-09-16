@@ -17,6 +17,9 @@ public class SingleModelExecutingTask extends TemplateTask{
 		for(ModelConfig modelConfig:getInternalConfig()){
 			JSimpleLinkedFlowImpl simpleLinkedFlowImpl=new JSimpleLinkedFlowImpl();
 			
+			ModelTask modelTask=new ModelTask();
+			simpleLinkedFlowImpl.put(modelTask);
+			
 			RepoTask repoTask= new RepoTask();
 			simpleLinkedFlowImpl.put(repoTask);
 			

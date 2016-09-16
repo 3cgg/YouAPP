@@ -3,6 +3,8 @@ package com.youappcorp.template.ftl;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -37,12 +39,17 @@ public class RepoTask extends TemplateTask{
         /* Get the template (uses cache internally) */
         Template temp = FtlConfig.get().getCfg().getTemplate("repo.ftl");
         /* Merge data-model with template */
-        Writer out = new OutputStreamWriter(System.out);
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
-
-	
-        return null;
+        String javaFileName=getInternalConfig().javaRelativePath()+"/"
+        +repoModel.getRepoClassName().replace('.', '/')+".java";
+        FileWrapper fileWrapper=new FileWrapper();
+        fileWrapper.setFile(new File(javaFileName));
+        fileWrapper.setData(byteArrayOutputStream.toByteArray());
+        getInternalConfig().addFile(fileWrapper);
         
+        return true;
 	}
 
 }

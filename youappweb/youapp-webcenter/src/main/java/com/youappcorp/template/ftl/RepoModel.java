@@ -4,9 +4,9 @@ public class RepoModel {
 
 	private String repoPackage;
 	
-	private String modelFullClassName;
+	private String repoClassName;
 	
-	private String modelSimpleClassName;
+	private String repoSimpleClassName;
 
 	public String getRepoPackage() {
 		return repoPackage;
@@ -16,19 +16,20 @@ public class RepoModel {
 		this.repoPackage = repoPackage;
 	}
 
-	public String getModelFullClassName() {
-		return modelFullClassName;
+	public String getRepoSimpleClassName() {
+		return repoSimpleClassName;
 	}
 
-	public void setModelFullClassName(String modelFullClassName) {
-		this.modelFullClassName = modelFullClassName;
+	public void setRepoSimpleClassName(String repoSimpleClassName) {
+		this.repoSimpleClassName = repoSimpleClassName;
 	}
 
-	public String getModelSimpleClassName() {
-		return modelSimpleClassName;
+	public String getRepoClassName() {
+		return repoClassName;
 	}
 
-	public void setModelSimpleClassName(String modelSimpleClassName) {
-		this.modelSimpleClassName = modelSimpleClassName;
+	public void setRepoClassName(String repoClassName) {
+		this.repoClassName = repoClassName;
 	}
+	
 }

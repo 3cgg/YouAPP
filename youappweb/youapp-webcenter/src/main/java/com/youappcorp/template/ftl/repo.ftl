@@ -4,9 +4,9 @@ import j.jave.platform.jpa.springjpa.JSpringJpaRepository;
 
 import org.springframework.stereotype.Repository;
 
-import ${repoModel.modelFullClassName};
+import ${modelModel.modelClassName};
 
-@Repository(value="jpa${repoModel.modelSimpleClassName}JPARepo")
-public interface ${repoModel.modelSimpleClassName}JPARepo extends JSpringJpaRepository<${repoModel.modelSimpleClassName},String>{
+@Repository(value="${repoModel.repoSimpleClassName}")
+public interface ${repoModel.repoSimpleClassName} extends JSpringJpaRepository<${modelModel.modelSimpleClassName},String>{
 	
 }

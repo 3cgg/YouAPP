@@ -3,11 +3,17 @@ package com.youappcorp.template.ftl;
 import j.jave.kernal.taskdriven.tkdd.JBaseTask;
 import j.jave.kernal.taskdriven.tkdd.JTaskExecutionException;
 
+import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
 public abstract class TemplateTask extends JBaseTask {
 
 	
 	protected InternalConfig getInternalConfig(){
 		return TemplateUtil.getInternalConfig(getTaskContext().getFlowContext());
+	}
+	
+	protected ModelConfig getModelConfig() {
+		return TemplateUtil.getModelConfig(getTaskContext().getFlowContext());
 	}
 	
 	protected void setInternalConfig(InternalConfig internalConfig){
@@ -17,6 +23,7 @@ public abstract class TemplateTask extends JBaseTask {
 	protected Config getConfig(){
 		return TemplateUtil.getConfig(getTaskContext().getFlowContext());
 	}
+
 	
 	@Override
 	public final Object run() throws JTaskExecutionException {

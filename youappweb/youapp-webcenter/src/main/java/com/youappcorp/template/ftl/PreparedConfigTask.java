@@ -1,6 +1,11 @@
 
 package com.youappcorp.template.ftl;
 
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
+
+@JTaskMetadataHierarchy
+@JTaskMetadataOnTask
 public class PreparedConfigTask extends TemplateTask {
 
 	@Override

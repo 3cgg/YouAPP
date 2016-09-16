@@ -14,7 +14,7 @@ import freemarker.template.Template;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
-public class RepoTask extends TemplateTask{
+public class InternalServiceTask extends TemplateTask{
 
 	@Override
 	public Object doRun() throws Exception {
@@ -23,19 +23,20 @@ public class RepoTask extends TemplateTask{
 		
 		ModelModel modelModel=modelConfig.modelModel();
 		
-		RepoModel repoModel=new RepoModel();
-		repoModel.setRepoPackage(modelConfig.internalConfig().repoPackage());
-		repoModel.setRepoSimpleClassName(modelModel.getModelSimpleClassName()+"JPARepo");
-		repoModel.setRepoClassName(repoModel.getRepoPackage()+"."+repoModel.getRepoSimpleClassName());
-		modelConfig.setRepoModel(repoModel);
+		InternalServiceModel internalServiceModel=new InternalServiceModel();
+		internalServiceModel.setServicePackage(modelConfig.internalConfig().servicePackage());
+		internalServiceModel.setServiceSimpleClassName("Internal"+modelModel.getModelSimpleClassName()+"ServiceImpl");
+		internalServiceModel.setServiceClassName(internalServiceModel.getServicePackage()+"."+internalServiceModel.getServiceSimpleClassName());
+		modelConfig.setInternalServiceModel(internalServiceModel);
 		
 		/* Create a data-model */
         Map<String,Object> root = new HashMap<String, Object>();
-        root.put("repoModel", repoModel);
+        root.put("repoModel", modelConfig.repoModel());
         root.put("modelModel", modelModel);
+        root.put("internalServiceModel", internalServiceModel);
         
         /* Get the template (uses cache internally) */
-        Template temp = FtlConfig.get().getCfg().getTemplate("repo.ftl");
+        Template temp = FtlConfig.get().getCfg().getTemplate("internal-service.ftl");
         /* Merge data-model with template */
         Writer out = new OutputStreamWriter(System.out);
         temp.process(root, out);

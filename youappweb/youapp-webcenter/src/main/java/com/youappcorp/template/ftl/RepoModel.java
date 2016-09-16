@@ -7,6 +7,8 @@ public class RepoModel {
 	private String repoClassName;
 	
 	private String repoSimpleClassName;
+	
+	private String variableName;
 
 	public String getRepoPackage() {
 		return repoPackage;
@@ -31,5 +33,15 @@ public class RepoModel {
 	public void setRepoClassName(String repoClassName) {
 		this.repoClassName = repoClassName;
 	}
+
+	public String getVariableName() {
+		return variableName;
+	}
+
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
+	}
+	
+	
 	
 }

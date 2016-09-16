@@ -37,15 +37,17 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		
 		String modelName();
 		
-		String pageMapping();
+		String pageMethodName();
 		
-		String saveMapping();
+		String saveMethodName();
 		
-		String updateMapping();
+		String updateMethodName();
 		
-		String deleteMapping();
+		String deleteMethodName();
 		
-		String getMapping();
+		String deleteByIdMethodName();
+		
+		String getMethodName();
 		
 		ModelModel modelModel();
 		
@@ -58,6 +60,18 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		InternalServiceModel internalServiceModel();
 		
 		void setInternalServiceModel(InternalServiceModel internalServiceModel);
+		
+		CriteriaModel criteriaModel();
+		
+		void setCriteriaModel(CriteriaModel criteriaModel);
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 }

@@ -7,6 +7,8 @@ public class InternalServiceModel {
 	private String serviceClassName;
 	
 	private String serviceSimpleClassName;
+	
+	private String variableName;
 
 	public String getServicePackage() {
 		return servicePackage;
@@ -31,5 +33,14 @@ public class InternalServiceModel {
 	public void setServiceSimpleClassName(String serviceSimpleClassName) {
 		this.serviceSimpleClassName = serviceSimpleClassName;
 	}
+
+	public String getVariableName() {
+		return variableName;
+	}
+
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
+	}
+	
 	
 }

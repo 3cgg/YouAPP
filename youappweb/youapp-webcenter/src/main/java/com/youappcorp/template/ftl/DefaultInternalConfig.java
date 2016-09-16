@@ -83,6 +83,8 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private InternalServiceModel internalServiceModel;
 		
+		private CriteriaModel criteriaModel;
+		
 		public DefaultModelConfig(InternalConfig internalConfig,String modelName) {
 			this.internalConfig=internalConfig;
 			this.modelName=modelName;
@@ -99,28 +101,34 @@ public class DefaultInternalConfig implements InternalConfig{
 		}
 
 		@Override
-		public String pageMapping() {
-			return "/get"+modelName()+"sByPage";
+		public String pageMethodName() {
+			return "get"+modelName()+"sByPage";
 		}
 
 		@Override
-		public String saveMapping() {
-			return "/save"+modelName();
+		public String saveMethodName() {
+			return "save"+modelName();
 		}
 
 		@Override
-		public String updateMapping() {
-			return "/update"+modelName();
+		public String updateMethodName() {
+			return "update"+modelName();
 		}
 
 		@Override
-		public String deleteMapping() {
-			return "/delete"+modelName()+"ById";
+		public String deleteMethodName() {
+			return "delete"+modelName();
+		}
+		
+		
+		@Override
+		public String deleteByIdMethodName() {
+			return "delete"+modelName()+"ById";
 		}
 
 		@Override
-		public String getMapping() {
-			return "/get"+modelName()+"ById";
+		public String getMethodName() {
+			return "get"+modelName()+"ById";
 		}
 
 		@Override
@@ -153,6 +161,17 @@ public class DefaultInternalConfig implements InternalConfig{
 				InternalServiceModel internalServiceModel) {
 			this.internalServiceModel=internalServiceModel;
 		}
+		
+		@Override
+		public CriteriaModel criteriaModel() {
+			return criteriaModel;
+		}
+		
+		@Override
+		public void setCriteriaModel(CriteriaModel criteriaModel) {
+			this.criteriaModel=criteriaModel;
+		}
+		
 		
 	}
 	

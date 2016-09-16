@@ -25,8 +25,13 @@ public class SingleModelExecutingTask extends TemplateTask{
 			
 			InternalServiceTask internalServiceTask=new InternalServiceTask();
 			simpleLinkedFlowImpl.put(internalServiceTask);
+			
+			CriteriaTask criteriaTask=new CriteriaTask();
+			simpleLinkedFlowImpl.put(criteriaTask);
+			
 			JFlowContext flowContext=getFlowContext();
 			TemplateUtil.setModelConfig(flowContext, modelConfig);
+			
 			
 			simpleLinkedFlowImpl.start(flowContext);
 		}

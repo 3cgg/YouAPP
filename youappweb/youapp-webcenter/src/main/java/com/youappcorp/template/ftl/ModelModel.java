@@ -8,6 +8,8 @@ public class ModelModel {
 	
 	private String modelSimpleClassName;
 
+	private String variableName;
+	
 	public String getModelPackage() {
 		return modelPackage;
 	}
@@ -31,4 +33,13 @@ public class ModelModel {
 	public void setModelSimpleClassName(String modelSimpleClassName) {
 		this.modelSimpleClassName = modelSimpleClassName;
 	}
+
+	public String getVariableName() {
+		return variableName;
+	}
+
+	public void setVariableName(String variableName) {
+		this.variableName = variableName;
+	}
+	
 }

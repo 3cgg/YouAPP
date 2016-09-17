@@ -1,6 +1,7 @@
 package com.youappcorp.template.ftl;
 
 import j.jave.kernal.jave.utils.JIOUtils;
+import j.jave.kernal.taskdriven.tkdd.JTaskExecutionException;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
@@ -15,6 +16,14 @@ public class FileWriterTask extends TemplateTask{
 	public Object doRun() throws Exception {
 		
 		List<FileWrapper> fileWrappers= getInternalConfig().files();
+		
+		for(FileWrapper fileWrapper:fileWrappers){
+			File file=fileWrapper.getFile();
+			if(file.exists()){
+				throw new JTaskExecutionException("file already exists.["+file.getName()+"], please change your file name to another");
+			}
+		}
+		
 		for(FileWrapper fileWrapper:fileWrappers){
 			File file=fileWrapper.getFile();
 			if(!file.getParentFile().exists()){

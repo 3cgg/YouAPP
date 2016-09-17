@@ -1,9 +1,13 @@
 package com.youappcorp.template.ftl;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
 import j.jave.kernal.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
 
 public class TemplateRunner {
+	
+	private final static JLogger LOGGER=JLoggerFactory.getLogger(TemplateRunner.class);
 
 	public static void start(Config config) throws Exception {
 		JSimpleLinkedFlowImpl simpleLinkedFlowImpl=new JSimpleLinkedFlowImpl();
@@ -30,6 +34,7 @@ public class TemplateRunner {
 		TemplateUtil.setConfig(flowContext, config);
 		
 		simpleLinkedFlowImpl.start(flowContext);
+		LOGGER.info("tempate is processed completely.");
 	}
 	
 }

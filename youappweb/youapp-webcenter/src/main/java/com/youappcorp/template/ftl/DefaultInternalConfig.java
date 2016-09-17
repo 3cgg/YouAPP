@@ -281,6 +281,12 @@ public class DefaultInternalConfig implements InternalConfig{
 	}
 	
 	private void setModelPackage(InnerCfg innerCfg){
+		File file=new File(modelPath);
+		String modelPath=this.modelPath;
+		if(file.exists()&&file.isFile()){
+			modelPath=file.getParentFile().getAbsolutePath().replace("\\", "/");
+		}
+		
 		String split="/src/main/java/";
 		if(!modelPath.contains(split)){
 			split="/src/test/java/";
@@ -311,6 +317,9 @@ public class DefaultInternalConfig implements InternalConfig{
 			for(File fileItem:files){
 				names.add(fileItem.getName().split("[.]")[0]);
 			}
+		}
+		else if(file.exists()&&file.isFile()){
+			names.add(file.getName().split("[.]")[0]);
 		}
 		innerCfg.modelNames=names;
 	}

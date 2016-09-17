@@ -2,13 +2,25 @@ package com.youappcorp.template.ftl;
 
 public class Config {
 
+	/**
+	 *set the directory that include some models or directly certain file of model.
+	 */
 	private String modelPath;
 	
+	/**
+	 * set the module name
+	 */
 	private String moduleName;
 	
+	/**
+	 * how to configure some settings 
+	 */
 	private Class<? extends InternalConfigStrategy> internalConfigStrategyClass
 	=DefaultInternalConfigStrategy.class;
 
+	/**
+	 * how to parser model fields ( properties )
+	 */
 	private Class<? extends ModelFieldParser> modelFieldParserClass=EntityModelFieldParser.class;
 	
 	public String getModelPath() {

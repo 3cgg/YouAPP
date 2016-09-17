@@ -55,11 +55,7 @@ public class BillManagerController extends SimpleControllerSupport{
 	}
 	
 	private void toBillRecordVOPage(JPage<BillRecord> billRecordsPage) {
-		List<BillRecordVO> billRecordVOs=new ArrayList<BillRecordVO>();
-		for(BillRecord billRecord:billRecordsPage.getContent()){
-			billRecordVOs.add(toBillRecordVO(billRecord));
-		}
-		billRecordsPage.setContent(billRecordVOs);
+		billRecordsPage.setContent(toBillRecordVOs(billRecordsPage.getContent()));
 	}
 	
 	@RequestMapping(value="/getBillsByUserName")

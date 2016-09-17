@@ -91,6 +91,10 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private ServiceImplModel serviceImplModel;
 		
+		private ModelRecordVOModel modelRecordVOModel;
+		
+		private ControllerModel controllerModel;
+		
 		public DefaultModelConfig(InternalConfig internalConfig,String modelName) {
 			this.internalConfig=internalConfig;
 			this.modelName=modelName;
@@ -206,6 +210,26 @@ public class DefaultInternalConfig implements InternalConfig{
 		@Override
 		public void setServiceImplModel(ServiceImplModel serviceImplModel) {
 			this.serviceImplModel=serviceImplModel;
+		}
+
+		@Override
+		public ControllerModel controllerModel() {
+			return controllerModel;
+		}
+
+		@Override
+		public void setControllerModel(ControllerModel controllerModel) {
+			this.controllerModel=controllerModel;
+		}
+
+		@Override
+		public ModelRecordVOModel modelRecordVOModel() {
+			return modelRecordVOModel;
+		}
+
+		@Override
+		public void setModelRecordVOModel(ModelRecordVOModel modelRecordVOModel) {
+			this.modelRecordVOModel=modelRecordVOModel;
 		}
 		
 		

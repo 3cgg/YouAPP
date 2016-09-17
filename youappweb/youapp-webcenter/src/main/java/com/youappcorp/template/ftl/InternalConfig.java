@@ -76,6 +76,14 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		ServiceImplModel serviceImplModel();
 		
 		void setServiceImplModel(ServiceImplModel serviceImplModel);
+		
+		ModelRecordVOModel modelRecordVOModel();
+		
+		void setModelRecordVOModel(ModelRecordVOModel modelRecordVOModel);
+		
+		ControllerModel controllerModel();
+		
+		void setControllerModel(ControllerModel controllerModel);
 	}
 
 }

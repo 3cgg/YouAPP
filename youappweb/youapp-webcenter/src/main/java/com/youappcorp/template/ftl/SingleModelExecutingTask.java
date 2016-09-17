@@ -29,6 +29,9 @@ public class SingleModelExecutingTask extends TemplateTask{
 			ModelRecordTask modelRecordTask=new ModelRecordTask();
 			simpleLinkedFlowImpl.put(modelRecordTask);
 			
+			ModelRecordVOTask modelRecordVOTask=new ModelRecordVOTask();
+			simpleLinkedFlowImpl.put(modelRecordVOTask);
+			
 			CriteriaTask criteriaTask=new CriteriaTask();
 			simpleLinkedFlowImpl.put(criteriaTask);
 			

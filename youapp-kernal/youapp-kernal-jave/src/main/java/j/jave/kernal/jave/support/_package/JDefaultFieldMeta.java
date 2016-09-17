@@ -17,6 +17,10 @@ public class JDefaultFieldMeta implements JFieldMeta{
 	private int access;
 	
 	private Field field;
+	
+	private String getterMethodName;
+	
+	private String setterMethodName;
 
 	public String getFieldName() {
 		return fieldName;
@@ -64,5 +68,22 @@ public class JDefaultFieldMeta implements JFieldMeta{
 	public void setField(Field field) {
 		this.field = field;
 	}
+
+	public String getGetterMethodName() {
+		return getterMethodName;
+	}
+
+	public void setGetterMethodName(String getterMethodName) {
+		this.getterMethodName = getterMethodName;
+	}
+
+	public String getSetterMethodName() {
+		return setterMethodName;
+	}
+
+	public void setSetterMethodName(String setterMethodName) {
+		this.setterMethodName = setterMethodName;
+	}
+	
 	
 }

@@ -1,5 +1,6 @@
 package j.jave.kernal.jave.support._package;
 
+import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.kernal.jave.support._package.JFieldInfoProvider.JFieldInfoGen;
 
 import java.lang.reflect.Field;
@@ -14,6 +15,8 @@ public class JDefaultFieldMetaGen implements JFieldInfoGen<JDefaultFieldMeta> {
 		defaultFieldMeta.setClazz(classIncudeField);
 		defaultFieldMeta.setAnnotations(field.getAnnotations());
 		defaultFieldMeta.setField(field);
+		defaultFieldMeta.setGetterMethodName(JClassUtils.getGetterMethodName(field));
+		defaultFieldMeta.setSetterMethodName(JClassUtils.getSetterMethodName(field));
 		return defaultFieldMeta;
 	}
 	

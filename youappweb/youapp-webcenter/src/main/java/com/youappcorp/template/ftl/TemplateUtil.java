@@ -2,6 +2,11 @@ package com.youappcorp.template.ftl;
 
 import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
 
+import java.beans.Introspector;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.Date;
+
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 public class TemplateUtil {
@@ -35,9 +40,34 @@ public class TemplateUtil {
 	}
 	
 	public static String variableName(String className){
-		return
-				className.substring(0, 1).toLowerCase()
-		+className.substring(1);
+		return Introspector.decapitalize(className);
 	}
+	
+	public static String type(Field field){
+		String type=KeyNames.FIELD_TYPE_STRING;
+		Class<?> fieldType=field.getType();
+		if(fieldType==String.class){
+			type=KeyNames.FIELD_TYPE_STRING;
+		}else if(fieldType==byte.class
+				||fieldType==short.class
+				||fieldType==int.class	
+				||fieldType==long.class
+				||fieldType==float.class
+				||fieldType==double.class
+				||fieldType==Byte.class
+				||fieldType==Short.class
+				||fieldType==Integer.class
+				||fieldType==Long.class
+				||fieldType==Float.class
+				||fieldType==Double.class
+				||fieldType==BigDecimal.class
+				){
+			type=KeyNames.FIELD_TYPE_NUMERIC;
+		}else if(Date.class.isAssignableFrom(fieldType)){
+			type=KeyNames.FIELD_TYPE_DATE;
+		}
+		return type;
+	}
+	
 	
 }

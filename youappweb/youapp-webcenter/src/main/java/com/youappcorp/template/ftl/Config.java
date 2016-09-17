@@ -9,6 +9,8 @@ public class Config {
 	private Class<? extends InternalConfigStrategy> internalConfigStrategyClass
 	=DefaultInternalConfigStrategy.class;
 
+	private Class<? extends ModelFieldParser> modelFieldParserClass=EntityModelFieldParser.class;
+	
 	public String getModelPath() {
 		return modelPath;
 	}
@@ -32,6 +34,15 @@ public class Config {
 
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
+	}
+
+	public Class<? extends ModelFieldParser> getModelFieldParserClass() {
+		return modelFieldParserClass;
+	}
+
+	public void setModelFieldParserClass(
+			Class<? extends ModelFieldParser> modelFieldParserClass) {
+		this.modelFieldParserClass = modelFieldParserClass;
 	}
 	
 }

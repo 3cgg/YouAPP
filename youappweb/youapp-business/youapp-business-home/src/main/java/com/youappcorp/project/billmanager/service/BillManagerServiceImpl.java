@@ -333,7 +333,7 @@ public class BillManagerServiceImpl extends ServiceSupport implements BillManage
 			JJpaDateParam dateParam=new JJpaDateParam();
 			dateParam.setDate(JDateUtils.parseDate(billTimeEnd));
 			dateParam.setTemporalType(TemporalType.TIMESTAMP);
-			params.put("billTimeEnd", Condition.larger(dateParam));
+			params.put("billTimeEnd", Condition.smaller(dateParam));
 		}
 		String goodName=goodSearchCriteria.getGoodName();
 		if(JStringUtils.isNotNullOrEmpty(goodName)){

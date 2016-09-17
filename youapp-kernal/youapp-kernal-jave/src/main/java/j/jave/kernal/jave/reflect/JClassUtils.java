@@ -3,6 +3,7 @@
  */
 package j.jave.kernal.jave.reflect;
 
+import static java.util.Locale.ENGLISH;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JNumberUtils;
@@ -915,4 +916,39 @@ public abstract class JClassUtils {
 	private static boolean isGroovyObjectMethod(Method method) {
 		return method.getDeclaringClass().getName().equals("groovy.lang.GroovyObject");
 	}
+	
+	
+	private static String capitalize(String name) {
+        if (name == null || name.length() == 0) {
+            return name;
+        }
+        return name.substring(0, 1).toUpperCase(ENGLISH) + name.substring(1);
+    }
+	
+	public static String getSetterMethodName(Field field){
+		return getSetterMethodName(field.getName());
+	}
+	
+	public static String getGetterMethodName(Field field){
+		return getGetterMethodName(field.getName(), field.getType()==boolean.class||field.getType()==Boolean.class);
+	}
+	
+	public static String getSetterMethodName(String property){
+		String name=capitalize(property);
+		return "set"+name;
+	}
+	
+	
+	public static String getGetterMethodName(String property,boolean isBoolean){
+		String name=capitalize(property);
+		return isBoolean?("is"+name):("get"+name);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }

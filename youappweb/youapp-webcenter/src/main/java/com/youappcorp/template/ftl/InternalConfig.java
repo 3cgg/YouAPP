@@ -73,7 +73,9 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		
 		void setServiceModel(ServiceModel serviceModel);
 		
+		ServiceImplModel serviceImplModel();
 		
+		void setServiceImplModel(ServiceImplModel serviceImplModel);
 	}
 
 }

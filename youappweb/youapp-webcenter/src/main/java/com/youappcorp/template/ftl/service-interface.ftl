@@ -17,17 +17,17 @@ public interface ${simpleClassName} {
 	/**
 	 * save
 	 */
-	void ${model.serviceModel.saveMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
+	void ${model.serviceModel.saveMethodName} (${model.modelRecordModel.simpleClassName} ${model.modelRecordModel.variableName});
 	
 	/**
 	 * update
 	 */
-	void ${model.serviceModel.updateMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
+	void ${model.serviceModel.updateMethodName} (${model.modelRecordModel.simpleClassName} ${model.modelRecordModel.variableName});
 	
 	/**
 	 * delete
 	 */
-	void ${model.serviceModel.deleteMethodName} (${model.modelModel.simpleClassName} ${model.modelModel.variableName});
+	void ${model.serviceModel.deleteMethodName} (${model.modelRecordModel.simpleClassName} ${model.modelRecordModel.variableName});
 	
 	/**
 	 * delete

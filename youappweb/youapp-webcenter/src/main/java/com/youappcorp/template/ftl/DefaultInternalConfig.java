@@ -89,6 +89,8 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private ServiceModel serviceModel;
 		
+		private ServiceImplModel serviceImplModel;
+		
 		public DefaultModelConfig(InternalConfig internalConfig,String modelName) {
 			this.internalConfig=internalConfig;
 			this.modelName=modelName;
@@ -194,6 +196,16 @@ public class DefaultInternalConfig implements InternalConfig{
 		@Override
 		public void setServiceModel(ServiceModel serviceModel) {
 			this.serviceModel=serviceModel;
+		}
+
+		@Override
+		public ServiceImplModel serviceImplModel() {
+			return this.serviceImplModel;
+		}
+
+		@Override
+		public void setServiceImplModel(ServiceImplModel serviceImplModel) {
+			this.serviceImplModel=serviceImplModel;
 		}
 		
 		

@@ -17,6 +17,9 @@ public class TemplateRunner {
 		ServiceTask serviceTask=new ServiceTask();
 		simpleLinkedFlowImpl.put(serviceTask);
 		
+		ServiceImplTask serviceImplTask=new ServiceImplTask();
+		simpleLinkedFlowImpl.put(serviceImplTask);
+		
 		FileWriterTask fileWriterTask=new FileWriterTask();
 		simpleLinkedFlowImpl.put(fileWriterTask);
 		

@@ -24,6 +24,12 @@ public class DefaultInternalConfig implements InternalConfig{
 		return innerCfg.javaRelativePath;
 	}
 	
+	@Override
+	public String uiRelativePath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 	@Override
 	public String basePackage() {
@@ -332,6 +338,8 @@ public class DefaultInternalConfig implements InternalConfig{
 	private class InnerCfg{
 		
 		private String javaRelativePath;
+		
+		private String uiRelativePath;
 		
 		private String modelPackage;
 		

@@ -73,7 +73,7 @@ public class ${simpleClassName} extends SimpleControllerSupport {
 	 * delete
 	 */
 	@ResponseBody
-	@RequestMapping("/${model.controllerModel.deleteMethodName}")
+	@RequestMapping("/${model.controllerModel.deleteByIdMethodName}")
 	public ResponseModel ${model.controllerModel.deleteByIdMethodName} (String id) throws Exception {
 		// do something validation on the ${model.modelRecordVOModel.variableName}.
 		${model.serviceModel.variableName}.${model.serviceModel.deleteByIdMethodName}( id);

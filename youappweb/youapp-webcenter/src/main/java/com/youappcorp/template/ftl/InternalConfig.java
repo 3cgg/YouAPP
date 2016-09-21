@@ -5,6 +5,8 @@ import java.util.List;
 public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 
 	String javaRelativePath();
+	
+	String uiRelativePath();
 
 	String basePackage();
 	

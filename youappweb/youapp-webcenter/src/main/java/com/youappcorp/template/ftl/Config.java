@@ -12,6 +12,8 @@ public class Config {
 	 */
 	private String moduleName;
 	
+	private String uiRelativePath;
+	
 	/**
 	 * how to configure some settings 
 	 */
@@ -55,6 +57,14 @@ public class Config {
 	public void setModelFieldParserClass(
 			Class<? extends ModelFieldParser> modelFieldParserClass) {
 		this.modelFieldParserClass = modelFieldParserClass;
+	}
+
+	public String getUiRelativePath() {
+		return uiRelativePath;
+	}
+
+	public void setUiRelativePath(String uiRelativePath) {
+		this.uiRelativePath = uiRelativePath;
 	}
 	
 }

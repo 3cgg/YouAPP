@@ -15,7 +15,11 @@ public class DefaultInternalConfig implements InternalConfig{
 	
 	private InnerCfg innerCfg;
 	
-	public DefaultInternalConfig(String modelPath) {
+	private Config config;
+	
+	public DefaultInternalConfig(Config config) {
+		this.config=config;
+		this.modelPath=config.getModelPath();
 		init(modelPath);
 	}
 	
@@ -26,8 +30,7 @@ public class DefaultInternalConfig implements InternalConfig{
 	
 	@Override
 	public String uiRelativePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return innerCfg.uiRelativePath;
 	}
 	
 	
@@ -361,6 +364,11 @@ public class DefaultInternalConfig implements InternalConfig{
 	@Override
 	public List<FileWrapper> files() {
 		return innerCfg.files;
+	}
+
+	@Override
+	public Config passConfig() {
+		return config;
 	}
 
 	

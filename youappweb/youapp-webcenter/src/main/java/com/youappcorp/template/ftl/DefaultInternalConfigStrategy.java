@@ -7,8 +7,7 @@ public class DefaultInternalConfigStrategy implements InternalConfigStrategy {
 	@Override
 	public InternalConfig config(JFlowContext flowContext) {
 		Config config=TemplateUtil.getConfig(flowContext);
-		String modelPath=config.getModelPath();
-		InternalConfig internalConfig=new DefaultInternalConfig(modelPath);
+		InternalConfig internalConfig=new DefaultInternalConfig(config);
 		return internalConfig;
 	}
 	

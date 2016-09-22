@@ -2,9 +2,7 @@ package com.youappcorp.template.ftl;
 
 import j.jave.kernal.jave.model.JModel;
 
-import java.lang.reflect.Field;
-
-public class ModelField implements JModel{
+public class UIField implements JModel {
 
 	private String property;
 	
@@ -14,7 +12,7 @@ public class ModelField implements JModel{
 
 	private String column;
 	
-	private Field field;
+	private String label;
 	
 	/**
 	 * {@link KeyNames#FIELD_TYPE_NUMERIC} or {@link KeyNames#FIELD_TYPE_STRING} or 
@@ -30,6 +28,17 @@ public class ModelField implements JModel{
 	 */
 	private String sourceType;
 	
+	
+	/**
+	 * amount of columns , like "col-sm-5"
+	 */
+	private int colNum;
+	
+	/**
+	 * see display:block;
+	 */
+	private boolean block;
+
 	public String getProperty() {
 		return property;
 	}
@@ -54,14 +63,6 @@ public class ModelField implements JModel{
 		this.setterMethodName = setterMethodName;
 	}
 
-	public Field getField() {
-		return field;
-	}
-
-	public void setField(Field field) {
-		this.field = field;
-	}
-
 	public String getColumn() {
 		return column;
 	}
@@ -70,17 +71,12 @@ public class ModelField implements JModel{
 		this.column = column;
 	}
 
-	public String getSourceType() {
-		return sourceType;
+	public String getLabel() {
+		return label;
 	}
 
-	/**
-	 * {@link KeyNames#SOURCE_TYPE_APPEND} or 
-	 * {@link KeyNames#SOURCE_TYPE_CLASS}  ...
-	 * @param sourceType
-	 */
-	public void setSourceType(String sourceType) {
-		this.sourceType = sourceType;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getFieldType() {
@@ -99,4 +95,39 @@ public class ModelField implements JModel{
 		this.source = source;
 	}
 
+	public String getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+
+	public int getColNum() {
+		return colNum;
+	}
+
+	/**
+	 * amount of columns , like "col-sm-5"
+	 */
+	public void setColNum(int colNum) {
+		this.colNum = colNum;
+	}
+
+	/**
+	 * see display:block;
+	 */
+	public boolean isBlock() {
+		return block;
+	}
+
+	/**
+	 * see display:block;
+	 */
+	public void setBlock(boolean block) {
+		this.block = block;
+	}
+	
+	
+	
 }

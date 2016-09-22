@@ -1,5 +1,8 @@
 package com.youappcorp.template.ftl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Config {
 
 	/**
@@ -13,6 +16,8 @@ public class Config {
 	private String moduleName;
 	
 	private String uiRelativePath;
+	
+	private Map<String,FieldConfig> uiCriteriaFields=new HashMap<String, Config.FieldConfig>();
 	
 	/**
 	 * how to configure some settings 
@@ -65,6 +70,52 @@ public class Config {
 
 	public void setUiRelativePath(String uiRelativePath) {
 		this.uiRelativePath = uiRelativePath;
+	}
+	
+	
+	public void addUICriteriaField(FieldConfig fieldConfig){
+		uiCriteriaFields.put(fieldConfig.getProperty(), fieldConfig);
+	}
+	
+	public FieldConfig getUICriteriaField(String property){
+		return uiCriteriaFields.get(property);
+	}
+	
+	public static class FieldConfig{
+		
+		private String property;
+		
+		private String label;
+		
+		/**
+		 * {@link KeyNames#FIELD_TYPE_NUMERIC} or {@link KeyNames#FIELD_TYPE_STRING} or 
+		 * {@link KeyNames#FIELD_TYPE_DATE} ...   ;
+		 */
+		private String fieldType;
+
+		public String getProperty() {
+			return property;
+		}
+
+		public void setProperty(String property) {
+			this.property = property;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public void setLabel(String label) {
+			this.label = label;
+		}
+
+		public String getFieldType() {
+			return fieldType;
+		}
+
+		public void setFieldType(String fieldType) {
+			this.fieldType = fieldType;
+		}
 	}
 	
 }

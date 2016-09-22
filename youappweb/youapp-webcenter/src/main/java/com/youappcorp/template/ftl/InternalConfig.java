@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 
+	Config passConfig();
+	
 	String javaRelativePath();
 	
 	String uiRelativePath();

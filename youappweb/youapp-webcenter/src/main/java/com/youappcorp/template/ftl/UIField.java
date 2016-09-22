@@ -38,6 +38,12 @@ public class UIField implements JModel {
 	 * see display:block;
 	 */
 	private boolean block;
+	
+	/**
+	 * exists when {@link #sourceType} is {@link KeyNames#SOURCE_TYPE_APPEND} ,
+	 * like someTimeStart is related to someTimeEnd
+	 */
+	private String relatedProperty;
 
 	public String getProperty() {
 		return property;
@@ -128,6 +134,20 @@ public class UIField implements JModel {
 		this.block = block;
 	}
 	
-	
+	/**
+	 * exists when {@link #sourceType} is {@link KeyNames#SOURCE_TYPE_APPEND} ,
+	 * like someTimeStart is related to someTimeEnd
+	 */
+	public String getRelatedProperty() {
+		return relatedProperty;
+	}
+
+	/**
+	 * exists when {@link #sourceType} is {@link KeyNames#SOURCE_TYPE_APPEND} ,
+	 * like someTimeStart is related to someTimeEnd
+	 */
+	public void setRelatedProperty(String relatedProperty) {
+		this.relatedProperty = relatedProperty;
+	}
 	
 }

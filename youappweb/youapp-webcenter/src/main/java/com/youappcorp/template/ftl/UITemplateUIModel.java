@@ -2,13 +2,13 @@ package com.youappcorp.template.ftl;
 
 import j.jave.kernal.jave.model.JModel;
 
-public class BaseTemplateUIModel implements JModel{
+public class UITemplateUIModel implements JModel{
 	
 	private String filePath;
 	
 	private String fileName;
 	
-	private BaseTemplateUIContext uiConext;
+	private UITemplateUIContext uiConext;
 
 	public String getFilePath() {
 		return filePath;
@@ -26,11 +26,11 @@ public class BaseTemplateUIModel implements JModel{
 		this.fileName = fileName;
 	}
 
-	public BaseTemplateUIContext getUiConext() {
+	public UITemplateUIContext getUiConext() {
 		return uiConext;
 	}
 
-	public void setUiConext(BaseTemplateUIContext uiConext) {
+	public void setUiConext(UITemplateUIContext uiConext) {
 		this.uiConext = uiConext;
 	}
 	

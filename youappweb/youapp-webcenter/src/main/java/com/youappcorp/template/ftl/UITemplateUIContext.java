@@ -3,7 +3,7 @@ package com.youappcorp.template.ftl;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JStringUtils;
 
-public class BaseTemplateUIContext implements JModel{
+public class UITemplateUIContext implements JModel{
 	
 	private String listFileName;
 	

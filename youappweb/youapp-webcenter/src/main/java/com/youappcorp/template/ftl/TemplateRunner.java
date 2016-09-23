@@ -27,6 +27,9 @@ public class TemplateRunner {
 		ControllerTask controllerTask=new ControllerTask();
 		simpleLinkedFlowImpl.put(controllerTask);
 		
+		UISingleModelExecutingTask uiSingleModelExecutingTask=new UISingleModelExecutingTask();
+		simpleLinkedFlowImpl.put(uiSingleModelExecutingTask);
+		
 		FileWriterTask fileWriterTask=new FileWriterTask();
 		simpleLinkedFlowImpl.put(fileWriterTask);
 		

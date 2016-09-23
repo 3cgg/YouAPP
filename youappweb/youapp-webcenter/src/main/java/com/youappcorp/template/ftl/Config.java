@@ -17,7 +17,7 @@ public class Config {
 	
 	private String uiRelativePath;
 	
-	private Map<String,FieldConfig> uiCriteriaFields=new HashMap<String, Config.FieldConfig>();
+	private Map<String,FieldConfig> fieldConfigs=new HashMap<String, Config.FieldConfig>();
 	
 	/**
 	 * how to configure some settings 
@@ -73,12 +73,12 @@ public class Config {
 	}
 	
 	
-	public void addUICriteriaField(FieldConfig fieldConfig){
-		uiCriteriaFields.put(fieldConfig.getProperty(), fieldConfig);
+	public void addUIField(FieldConfig fieldConfig){
+		this.fieldConfigs.put(fieldConfig.getProperty(), fieldConfig);
 	}
 	
-	public FieldConfig getUICriteriaField(String property){
-		return uiCriteriaFields.get(property);
+	public FieldConfig getUIField(String property){
+		return fieldConfigs.get(property);
 	}
 	
 	public static class FieldConfig{

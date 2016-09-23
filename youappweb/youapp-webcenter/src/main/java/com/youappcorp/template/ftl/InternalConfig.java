@@ -88,6 +88,11 @@ public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 		ControllerModel controllerModel();
 		
 		void setControllerModel(ControllerModel controllerModel);
+		
+		UITemplateUIContext uiTemplateUIContext();
+		
+		void setUITemplateUIContext(UITemplateUIContext uiTemplateUIContext);
+		
 	}
 
 }

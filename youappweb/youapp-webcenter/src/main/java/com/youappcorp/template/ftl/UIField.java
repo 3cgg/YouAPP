@@ -32,7 +32,7 @@ public class UIField implements JModel {
 	/**
 	 * amount of columns , like "col-sm-5"
 	 */
-	private int colNum;
+	private int colNum=5;
 	
 	/**
 	 * see display:block;

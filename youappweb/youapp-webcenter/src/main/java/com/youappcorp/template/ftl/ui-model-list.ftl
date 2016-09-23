@@ -11,38 +11,19 @@
               <div class="box-body">
               <form class="form-horizontal"  id="search${modelModel.simpleClassName}Form">
               	
-              	<#list criteriaModel.modelFields as modelField>
-					private String ${modelField.property};
+              	<#list uiListModel.criteriaFields as modelField>
+              	<#if modelField_index % 2=0>
+              	<div class="form-group">
+              	</#if>
+              	  <label for="${modelField.property}" class="col-sm-1 control-label">${modelField.label}</label>
+                  <div class="col-sm-${modelField.colNum}">
+                    <input type="text"  name="${modelField.property}" class="form-control" id="${modelField.property}">
+                  </div>
+              	<#if modelField_index % 2=1>
+              	</div>
+              	</#if>
 					
 				</#list>
-              
-                <div class="form-group">
-                  <label for="code" class="col-sm-1 control-label">编码</label>
-
-                  <div class="col-sm-5">
-                    <input type="text"  name="code" class="form-control" id="code" placeholder="编码">
-                  </div>
-                  <label for="value" class="col-sm-1 control-label">参数值</label>
-
-                  <div class="col-sm-5">
-                    <input type="text"  name="value" class="form-control" id="value" placeholder="参数值">
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                  <label for="desc" class="col-sm-1 control-label">详细描述</label>
-
-                  <div class="col-sm-11">
-                    <input type="text"  name="desc" class="form-control" id="desc" placeholder="描述">
-                  </div>
-                </div>
-                
-                <div class="form-group">
-                	<label for="desc" class="col-sm-1 control-label"></label>
-                	<div class="col-sm-2 col-lg-1">
-	                	<input id="search${modelModel.simpleClassName}Btn" type="button" class="form-control btn-primary"  value="查询"   >
-	                </div>
-                </div>
                 </form>
               </div>
           </div>
@@ -67,12 +48,14 @@
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
-						<th></th>
-						<th>主键</th>
-						<th>编码</th>
-						<th>参数值</th>
-						<th>描述</th>
-						<th>操作</th>
+						<#if uiListModel.checkbox>
+		              	<th></th>
+		              	</#if>
+						
+						<#list uiListModel.tableFields as modelField>
+						<th>${modelField.label}</th>
+						</#list>
+						
 					</tr>
 				</thead>
             </table>
@@ -120,25 +103,17 @@
 						});
 				}
 			},
-			columns : [ 
-			{
-				"data" : "id",
-				"orderable" : false,
-				 "width": "10%"
-			}, 
-			{
-				"data" : "code",
-				"width": "10%"
-			},
-			{
-				"data" : "value",
-				"width": "10%"
-			}, 
-			{
-				"data" : "desc",
-				"width": "20%"
-			}
+			columns : [
 			
+			<#list uiListModel.tableFields as modelField>
+			{
+				"data" : "${modelField.property}",
+				"width": "${modelField.width}"
+			}
+			<#if (modelField_has_next)!>
+			,
+			</#if>			
+			</#list>
 			]
 		});
 		

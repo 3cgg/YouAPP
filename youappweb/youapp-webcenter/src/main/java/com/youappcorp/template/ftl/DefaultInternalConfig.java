@@ -104,6 +104,8 @@ public class DefaultInternalConfig implements InternalConfig{
 		
 		private ControllerModel controllerModel;
 		
+		private UITemplateUIContext uiTemplateUIContext;
+		
 		public DefaultModelConfig(InternalConfig internalConfig,String modelName) {
 			this.internalConfig=internalConfig;
 			this.modelName=modelName;
@@ -239,6 +241,17 @@ public class DefaultInternalConfig implements InternalConfig{
 		@Override
 		public void setModelRecordVOModel(ModelRecordVOModel modelRecordVOModel) {
 			this.modelRecordVOModel=modelRecordVOModel;
+		}
+
+		@Override
+		public UITemplateUIContext uiTemplateUIContext() {
+			return uiTemplateUIContext;
+		}
+
+		@Override
+		public void setUITemplateUIContext(
+				UITemplateUIContext uiTemplateUIContext) {
+			this.uiTemplateUIContext=uiTemplateUIContext;
 		}
 		
 		

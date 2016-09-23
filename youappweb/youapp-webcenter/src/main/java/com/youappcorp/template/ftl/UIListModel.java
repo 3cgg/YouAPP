@@ -3,7 +3,7 @@ package com.youappcorp.template.ftl;
 import java.util.List;
 
 
-public class UIListModel extends BaseTemplateUIModel{
+public class UIListModel extends UITemplateUIModel{
 	
 	private List<UIListCriteriaField> criteriaFields;
 	

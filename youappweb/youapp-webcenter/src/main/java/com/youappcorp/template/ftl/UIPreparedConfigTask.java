@@ -1,10 +1,10 @@
 
 package com.youappcorp.template.ftl;
 
+import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-
-import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
@@ -15,11 +15,31 @@ public class UIPreparedConfigTask extends TemplateTask {
 		
 		ModelConfig modelConfig=getModelConfig();
 		UITemplateUIContext uiTemplateUIContext=new UITemplateUIContext();
+		
+		uiTemplateUIContext.setModuleName(getConfig().getModuleName().toLowerCase());
+		uiTemplateUIContext.setUiRelativePath(getConfig().getUiRelativePath());
+		
+		uiTemplateUIContext.setUiRelativeMvcPath("/ui/pages");
 		String modelFileName=modelConfig.modelModel().getSimpleClassName().toLowerCase();
 		uiTemplateUIContext.setListFileName(modelFileName+"-list.html");
+		uiTemplateUIContext.setListFilePath(uiTemplateUIContext.getUiRelativeMvcPath()
+				+"/"+uiTemplateUIContext.getModuleName()
+				+"/"+uiTemplateUIContext.getListFileName());
+		
 		uiTemplateUIContext.setAddFileName(modelFileName+"-add.html");
-		uiTemplateUIContext.setEditFilePath(modelFileName+"-edit.html");
+		uiTemplateUIContext.setAddFilePath(uiTemplateUIContext.getUiRelativeMvcPath()
+				+"/"+uiTemplateUIContext.getModuleName()
+				+"/"+uiTemplateUIContext.getAddFileName());
+		
+		uiTemplateUIContext.setEditFileName(modelFileName+"-edit.html");
+		uiTemplateUIContext.setEditFilePath(uiTemplateUIContext.getUiRelativeMvcPath()
+				+"/"+uiTemplateUIContext.getModuleName()
+				+"/"+uiTemplateUIContext.getEditFileName());
+		
 		uiTemplateUIContext.setViewFileName(modelFileName+"-view.html");
+		uiTemplateUIContext.setViewFilePath(uiTemplateUIContext.getUiRelativeMvcPath()
+				+"/"+uiTemplateUIContext.getModuleName()
+				+"/"+uiTemplateUIContext.getViewFileName());
 		
 		ControllerModel controllerModel=modelConfig.controllerModel();
 		uiTemplateUIContext.setGetMethodUrl(controllerModel.getControllerBaseMapping()
@@ -28,14 +48,15 @@ public class UIPreparedConfigTask extends TemplateTask {
 				+"/"+controllerModel.getPageMethodName());
 		uiTemplateUIContext.setDeleteByIdMethodUrl(controllerModel.getControllerBaseMapping()
 				+"/"+controllerModel.getDeleteByIdMethodName());
+		uiTemplateUIContext.setDeleteMethodUrl(controllerModel.getControllerBaseMapping()
+				+"/"+controllerModel.getDeleteMethodName());
+		
 		uiTemplateUIContext.setSaveMethodUrl(controllerModel.getControllerBaseMapping()
 				+"/"+controllerModel.getSaveMethodName());
 		uiTemplateUIContext.setUpdateMethodUrl(controllerModel.getControllerBaseMapping()
 				+"/"+controllerModel.getUpdateMethodName());
 		
-		uiTemplateUIContext.setModuleName(getConfig().getModuleName());
 		
-		uiTemplateUIContext.setUiRelativePath(getConfig().getUiRelativePath());
 		
 		modelConfig.setUITemplateUIContext(uiTemplateUIContext);
 		

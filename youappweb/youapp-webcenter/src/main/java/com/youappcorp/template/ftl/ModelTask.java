@@ -1,12 +1,12 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-
 import java.util.List;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
+import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

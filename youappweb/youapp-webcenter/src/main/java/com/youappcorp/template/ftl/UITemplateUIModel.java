@@ -8,7 +8,7 @@ public class UITemplateUIModel implements JModel{
 	
 	private String fileName;
 	
-	private UITemplateUIContext uiConext;
+	private UITemplateUIContext uiContext;
 
 	public String getFilePath() {
 		return filePath;
@@ -26,12 +26,12 @@ public class UITemplateUIModel implements JModel{
 		this.fileName = fileName;
 	}
 
-	public UITemplateUIContext getUiConext() {
-		return uiConext;
+	public UITemplateUIContext getUiContext() {
+		return uiContext;
 	}
 
-	public void setUiConext(UITemplateUIContext uiConext) {
-		this.uiConext = uiConext;
+	public void setUiContext(UITemplateUIContext uiContext) {
+		this.uiContext = uiContext;
 	}
 	
 }

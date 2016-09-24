@@ -1,8 +1,8 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.lang.reflect.Field;
+
+import j.jave.kernal.jave.model.JModel;
 
 public class ModelField implements JModel{
 

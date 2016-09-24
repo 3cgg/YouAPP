@@ -1,11 +1,11 @@
 package com.youappcorp.template.ftl;
 
+import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
 import j.jave.kernal.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
-
-import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

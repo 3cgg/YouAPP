@@ -1,12 +1,12 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.youappcorp.template.ftl.Config.FieldConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
+import j.jave.kernal.jave.utils.JObjectUtils;
 
 public class UIDefaultListTableFieldParser implements
 		UIListTableFieldParser {
@@ -28,6 +28,12 @@ public class UIDefaultListTableFieldParser implements
 				||property.endsWith("imeEnd");
 	}
 	
+	private boolean isDesc(String property,ModelConfig modelConfig){
+		return property.endsWith("Desc")
+				||property.endsWith("Description")
+				||property.endsWith("description");
+	}
+	
 	@Override
 	public List<UIListTableField> parse(ModelConfig modelConfig)
 			throws Exception {
@@ -39,6 +45,9 @@ public class UIDefaultListTableFieldParser implements
 				UIListTableField tableField=JObjectUtils.simpleCopy(modelField, UIListTableField.class);
 				FieldConfig fieldConfig=config.getUIField(tableField.getProperty());
 				tableField.setLabel(fieldConfig==null?tableField.getProperty():fieldConfig.getLabel());
+				if(isDesc(tableField.getProperty(), modelConfig)){
+					tableField.setWidth("20%");
+				}
 				tableFields.add(tableField);
 			}
 		}

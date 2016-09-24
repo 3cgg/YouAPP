@@ -25,6 +25,8 @@ public class UITemplateUIContext implements JModel{
 	
 	private String uiRelativePath;
 	
+	private String uiRelativeMvcPath;
+	
 	private String pageMethodUrl;
 	
 	private String saveMethodUrl;
@@ -87,7 +89,7 @@ public class UITemplateUIContext implements JModel{
 
 	public String getListFilePath() {
 		if(JStringUtils.isNotNullOrEmpty(listFilePath)){
-			listFilePath=uiRelativePath+"/"+moduleName+"/"+listFileName;
+			listFilePath=uiRelativeMvcPath+"/"+moduleName+"/"+listFileName;
 		}
 		return listFilePath;
 	}
@@ -98,7 +100,7 @@ public class UITemplateUIContext implements JModel{
 
 	public String getAddFilePath() {
 		if(JStringUtils.isNotNullOrEmpty(addFilePath)){
-			addFilePath=uiRelativePath+"/"+moduleName+"/"+addFileName;
+			addFilePath=uiRelativeMvcPath+"/"+moduleName+"/"+addFileName;
 		}
 		return addFilePath;
 	}
@@ -109,7 +111,7 @@ public class UITemplateUIContext implements JModel{
 
 	public String getEditFilePath() {
 		if(JStringUtils.isNotNullOrEmpty(editFilePath)){
-			editFilePath=uiRelativePath+"/"+moduleName+"/"+editFileName;
+			editFilePath=uiRelativeMvcPath+"/"+moduleName+"/"+editFileName;
 		}
 		return editFilePath;
 	}
@@ -120,7 +122,7 @@ public class UITemplateUIContext implements JModel{
 
 	public String getViewFilePath() {
 		if(JStringUtils.isNotNullOrEmpty(viewFilePath)){
-			viewFilePath=uiRelativePath+"/"+moduleName+"/"+viewFileName;
+			viewFilePath=uiRelativeMvcPath+"/"+moduleName+"/"+viewFileName;
 		}
 		return viewFilePath;
 	}
@@ -176,5 +178,13 @@ public class UITemplateUIContext implements JModel{
 	public void setGetMethodUrl(String getMethodUrl) {
 		this.getMethodUrl = getMethodUrl;
 	}
-	
+
+	public String getUiRelativeMvcPath() {
+		return uiRelativeMvcPath;
+	}
+
+	public void setUiRelativeMvcPath(String uiRelativeMvcPath) {
+		this.uiRelativeMvcPath = uiRelativeMvcPath;
+	}
+
 }

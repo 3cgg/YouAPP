@@ -93,6 +93,15 @@ public class Config {
 		 */
 		private String fieldType;
 
+
+		public FieldConfig() {
+		}
+		
+		public FieldConfig(String property, String label) {
+			this.property = property;
+			this.label = label;
+		}
+
 		public String getProperty() {
 			return property;
 		}

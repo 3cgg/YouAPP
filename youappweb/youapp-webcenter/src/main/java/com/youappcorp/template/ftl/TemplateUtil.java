@@ -1,13 +1,13 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
-
 import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Date;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
+import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
 
 public class TemplateUtil {
 

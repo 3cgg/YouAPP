@@ -1,13 +1,13 @@
 package com.youappcorp.template.ftl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.jpa.springjpa.query.JEntityColumnMeta;
 import j.jave.platform.jpa.springjpa.query.JEntityModelMeta;
 import j.jave.platform.jpa.springjpa.query.JEntityUtilService;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class EntityModelFieldParser implements ModelFieldParser {
 

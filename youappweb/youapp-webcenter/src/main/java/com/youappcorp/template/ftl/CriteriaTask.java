@@ -1,10 +1,5 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -18,6 +13,10 @@ import java.util.Map;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import freemarker.template.Template;
+import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
@@ -48,6 +47,7 @@ public class CriteriaTask extends TemplateTask{
 				appendModelField.setFieldType(KeyNames.FIELD_TYPE_DATE);
 				appendModelField.setSourceType(KeyNames.SOURCE_TYPE_APPEND);
 				appendModelField.setSource(modelField);
+				appendModelField.setRelatedProperty(criteriaModelField.getProperty()+"End");
 				criteriaModelFields.add(appendModelField);
 				//end time
 				appendModelField=new ModelField();
@@ -57,6 +57,7 @@ public class CriteriaTask extends TemplateTask{
 				appendModelField.setFieldType(KeyNames.FIELD_TYPE_DATE);
 				appendModelField.setSourceType(KeyNames.SOURCE_TYPE_APPEND);
 				appendModelField.setSource(modelField);
+				appendModelField.setRelatedProperty(criteriaModelField.getProperty()+"Start");
 				criteriaModelFields.add(appendModelField);
 			}
 			criteriaModelField.setField(null);

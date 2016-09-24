@@ -1,10 +1,10 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.support._package.JDefaultFieldMeta;
-import j.jave.kernal.jave.support._package.JFieldOnSingleClassFinder;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import j.jave.kernal.jave.support._package.JDefaultFieldMeta;
+import j.jave.kernal.jave.support._package.JFieldOnSingleClassFinder;
 
 public class DefaultModelFieldParser implements ModelFieldParser {
 

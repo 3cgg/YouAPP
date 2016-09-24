@@ -1,9 +1,9 @@
 package com.youappcorp.template.ftl;
 
+import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
 import j.jave.kernal.taskdriven.tkdd.JBaseTask;
 import j.jave.kernal.taskdriven.tkdd.JTaskExecutionException;
-
-import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 public abstract class TemplateTask extends JBaseTask {
 

@@ -1,8 +1,5 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -15,6 +12,8 @@ import java.util.Map;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import freemarker.template.Template;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

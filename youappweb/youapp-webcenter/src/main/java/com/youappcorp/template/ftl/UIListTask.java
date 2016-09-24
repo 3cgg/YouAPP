@@ -1,8 +1,5 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -13,6 +10,8 @@ import java.util.Map;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import freemarker.template.Template;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
+import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
@@ -25,9 +24,9 @@ public class UIListTask extends TemplateTask{
 		ModelModel modelModel=modelConfig.modelModel();
 		
 		UIListModel uiListModel=new UIListModel();
-		uiListModel.setUiConext(modelConfig.uiTemplateUIContext());
-		uiListModel.setFilePath(uiListModel.getUiConext().getListFilePath());
-		uiListModel.setFileName(uiListModel.getUiConext().getListFileName());
+		uiListModel.setUiContext(modelConfig.uiTemplateUIContext());
+		uiListModel.setFilePath(uiListModel.getUiContext().getListFilePath());
+		uiListModel.setFileName(uiListModel.getUiContext().getListFileName());
 		uiListModel.setCheckbox(true);
 		UIListCriterialFieldParser listCriterialFieldParser=new UIDefaultListCriterialFieldParser();
 		uiListModel.setCriteriaFields(listCriterialFieldParser.parse(modelConfig));
@@ -54,7 +53,8 @@ public class UIListTask extends TemplateTask{
         Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
         FileWrapper fileWrapper=new FileWrapper();
-        fileWrapper.setFile(new File(uiListModel.getFilePath()));
+        fileWrapper.setFile(new File(uiListModel.getUiContext().getUiRelativePath()
+        		+uiListModel.getFilePath()));
         fileWrapper.setData(byteArrayOutputStream.toByteArray());
         getInternalConfig().addFile(fileWrapper);
 	

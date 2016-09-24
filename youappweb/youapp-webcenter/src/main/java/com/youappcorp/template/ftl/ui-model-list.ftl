@@ -15,10 +15,14 @@
               	<#if modelField_index % 2=0>
               	<div class="form-group">
               	</#if>
-              	  <label for="${modelField.property}" class="col-sm-1 control-label">${modelField.label}</label>
+              	
+              	<#if !(modelField.virtual)>
+              	   <label for="${modelField.property}" class="col-sm-1 control-label">${modelField.label}</label>
                   <div class="col-sm-${modelField.colNum}">
                     <input type="text"  name="${modelField.property}" class="form-control" id="${modelField.property}">
                   </div>
+              	</#if>
+              	  
               	<#if modelField_index % 2=1>
               	</div>
               	</#if>

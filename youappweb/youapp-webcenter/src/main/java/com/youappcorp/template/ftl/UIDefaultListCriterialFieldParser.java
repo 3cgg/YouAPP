@@ -1,8 +1,5 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
-import j.jave.kernal.jave.utils.JStringUtils;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,6 +7,9 @@ import java.util.Map.Entry;
 
 import com.youappcorp.template.ftl.Config.FieldConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
+import j.jave.kernal.jave.utils.JObjectUtils;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 public class UIDefaultListCriterialFieldParser implements
 		UIListCriterialFieldParser {
@@ -36,7 +36,8 @@ public class UIDefaultListCriterialFieldParser implements
 	
 	private boolean isDesc(String property,ModelConfig modelConfig){
 		return property.endsWith("Desc")
-				||property.endsWith("Description");
+				||property.endsWith("Description")
+				||property.endsWith("description");
 	}
 	
 	
@@ -51,8 +52,8 @@ public class UIDefaultListCriterialFieldParser implements
 				UIListCriteriaField criteriaField=JObjectUtils.simpleCopy(modelField, UIListCriteriaField.class);
 				FieldConfig fieldConfig=config.getUIField(criteriaField.getProperty());
 				criteriaField.setLabel(fieldConfig==null?criteriaField.getProperty():fieldConfig.getLabel());
-				if(isDesc(fieldConfig.getProperty(), modelConfig)){
-					criteriaField.setColNum(12);
+				if(isDesc(criteriaField.getProperty(), modelConfig)){
+					criteriaField.setColNum(8);
 				}
 				criteriaFields.add(criteriaField);
 			}

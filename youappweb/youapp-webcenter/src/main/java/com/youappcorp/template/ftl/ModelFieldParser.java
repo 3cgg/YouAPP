@@ -1,8 +1,8 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.support.parser.JParser;
-
 import java.util.List;
+
+import j.jave.kernal.jave.support.parser.JParser;
 
 public interface ModelFieldParser extends JParser {
 

@@ -101,6 +101,13 @@ public class Config {
 			this.property = property;
 			this.label = label;
 		}
+		
+
+		public FieldConfig(String property, String label, String fieldType) {
+			this.property = property;
+			this.label = label;
+			this.fieldType = fieldType;
+		}
 
 		public String getProperty() {
 			return property;

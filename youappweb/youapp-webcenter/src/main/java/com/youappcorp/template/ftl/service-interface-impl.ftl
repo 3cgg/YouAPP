@@ -29,6 +29,7 @@ import ${model.internalServiceModel.className};
 
 import ${interfaceClassName};
 
+@Service(value="${simpleClassName}.transation.jpa")
 public class ${simpleClassName} extends ServiceSupport implements ${simpleInterfaceClassName} {
 
 <#list models as model>

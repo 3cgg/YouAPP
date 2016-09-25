@@ -1,6 +1,7 @@
 package com.youappcorp.template.ftl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import j.jave.kernal.jave.utils.JIOUtils;
@@ -17,14 +18,28 @@ public class FileWriterTask extends TemplateTask{
 		
 		List<FileWrapper> fileWrappers= getInternalConfig().files();
 		
+		List<FileWrapper> targetFileWrappers= new ArrayList<>();
 		for(FileWrapper fileWrapper:fileWrappers){
+			if(getConfig().isJavaCode()){
+				if(fileWrapper.getFile().getName().endsWith(".java")){
+					targetFileWrappers.add(fileWrapper);
+				}
+			}
+			if(getConfig().isUiCode()){
+				if(fileWrapper.getFile().getName().endsWith(".html")){
+					targetFileWrappers.add(fileWrapper);
+				}
+			}
+		}
+		
+		for(FileWrapper fileWrapper:targetFileWrappers){
 			File file=fileWrapper.getFile();
 			if(file.exists()){
 				throw new JTaskExecutionException("file already exists.["+file.getName()+"], please change your file name to another");
 			}
 		}
 		
-		for(FileWrapper fileWrapper:fileWrappers){
+		for(FileWrapper fileWrapper:targetFileWrappers){
 			File file=fileWrapper.getFile();
 			if(!file.getParentFile().exists()){
 				file.getParentFile().mkdirs();

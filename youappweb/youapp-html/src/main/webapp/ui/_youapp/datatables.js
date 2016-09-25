@@ -250,7 +250,7 @@ $.fn.extend({
 	            			    onOpen: function(){
 	            			    }
 	            			});
-	            			jc.passData={rowid:$(event.target).data("rowid")};
+	            			jc.passData={rowid:$(this).data("rowid")};
 	            			event.stopPropagation();
 	            		});
 	            	}

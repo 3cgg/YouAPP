@@ -1,18 +1,20 @@
 package com.youappcorp.project.alertmanager.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+
 
 @Entity
-@Table(name="ALERT_ITEM_RECORD")
-public class AlertItemRecord extends JJpaBaseModel {
+@Table(name="ALERT_RECORD")
+public class AlertRecord extends JJpaBaseModel {
 
+	private String alertItemId;
+	
 	private Timestamp recordTime;
 
 	/**
@@ -23,6 +25,20 @@ public class AlertItemRecord extends JJpaBaseModel {
 	
 	private String description;
 	
+	/**
+	 * Y / N 
+	 */
+	private String primary;
+	
+	@Column(name="ALERT_ITEM_ID")
+	public String getAlertItemId() {
+		return alertItemId;
+	}
+
+	public void setAlertItemId(String alertItemId) {
+		this.alertItemId = alertItemId;
+	}
+
 	@Column(name="DESCRIPTION")
 	public String getDescription() {
 		return description;
@@ -32,7 +48,7 @@ public class AlertItemRecord extends JJpaBaseModel {
 		this.description = description;
 	}
 	
-	@Column(name="DATA")
+	@Column(name="_DATA")
 	public String getData() {
 		return data;
 	}
@@ -48,6 +64,15 @@ public class AlertItemRecord extends JJpaBaseModel {
 
 	public void setRecordTime(Timestamp recordTime) {
 		this.recordTime = recordTime;
+	}
+
+	@Column(name="_PRIMARY")
+	public String getPrimary() {
+		return primary;
+	}
+
+	public void setPrimary(String primary) {
+		this.primary = primary;
 	}
 	
 }

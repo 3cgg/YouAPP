@@ -28,6 +28,12 @@
               	</#if>
 					
 				</#list>
+				<div class="form-group">
+                	<label for="desc" class="col-sm-1 control-label"></label>
+                	<div class="col-sm-2 col-lg-1">
+	                	<input id="search${modelModel.simpleClassName}Btn" type="button" class="form-control btn-primary"  value="查询"   >
+	                </div>
+                </div>
                 </form>
               </div>
           </div>
@@ -59,7 +65,7 @@
 						<#list uiListModel.tableFields as modelField>
 						<th>${modelField.label}</th>
 						</#list>
-						
+						<th></th>
 					</tr>
 				</thead>
             </table>

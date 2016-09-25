@@ -1,0 +1,52 @@
+[
+	{
+		"property": "createTimeStart",
+		"label": "创建时间（起）",
+		"fieldType": "date"
+	},
+	{
+		"property": "createTimeEnd",
+		"label": "创建时间（止）",
+		"fieldType": "date"
+	},
+	{
+		"property": "updateTimeStart",
+		"label": "更新时间（起）",
+		"fieldType": "date"
+	},
+	{
+		"property": "updateTimeEnd",
+		"label": "更新时间（止）",
+		"fieldType": "date"
+	},
+	{
+		"property": "description",
+		"label": "描述",
+		"fieldType": "string"
+	},
+	{
+		"property": "status",
+		"label": "状态",
+		"fieldType": "string"
+	},
+	{
+		"property": "code",
+		"label": "编码",
+		"fieldType": "string"
+	},
+	{
+		"property": "name",
+		"label": "名称",
+		"fieldType": "string"
+	},
+	{
+		"property": "meta",
+		"label": "数据结构（元数据）",
+		"fieldType": "string"
+	},
+	{
+		"property": "recordTime",
+		"label": "记录时间",
+		"fieldType": "date"
+	}
+]

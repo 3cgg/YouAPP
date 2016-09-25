@@ -30,6 +30,10 @@ public class Config {
 	 */
 	private Class<? extends ModelFieldParser> modelFieldParserClass=EntityModelFieldParser.class;
 	
+	private boolean javaCode=true;
+	
+	private boolean uiCode=true;
+	
 	public String getModelPath() {
 		return modelPath;
 	}
@@ -81,6 +85,24 @@ public class Config {
 		return fieldConfigs.get(property);
 	}
 	
+	public boolean isJavaCode() {
+		return javaCode;
+	}
+
+	public void setJavaCode(boolean javaCode) {
+		this.javaCode = javaCode;
+	}
+
+	public boolean isUiCode() {
+		return uiCode;
+	}
+
+	public void setUiCode(boolean uiCode) {
+		this.uiCode = uiCode;
+	}
+
+
+
 	public static class FieldConfig{
 		
 		private String property;

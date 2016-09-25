@@ -1,10 +1,10 @@
 package com.youappcorp.project.alertmanager.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 /**
  * 
  * @author J
@@ -17,11 +17,11 @@ public class AlertItem extends JJpaBaseModel {
 	
 	private String name;
 	
-	private String description;
-	
 	private String status;
 	
 	private String meta;
+	
+	private String description;
 
 	@Column(name="_CODE")
 	public String getCode() {

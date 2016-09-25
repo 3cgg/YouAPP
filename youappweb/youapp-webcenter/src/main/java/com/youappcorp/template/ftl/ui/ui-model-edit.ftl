@@ -93,7 +93,7 @@
 				</#if>
 				'${modelField.property}': {
 					   required: ${modelField.fieldSpec.required},
-					   maxlength:${modelField.fieldSpec.maxLength}
+					   maxlength:${modelField.fieldSpec.maxLength?c}
 				   }
 				<#assign ind=ind+1 />   	
 				</#if>		

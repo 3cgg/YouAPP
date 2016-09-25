@@ -30,7 +30,7 @@
               	   <label for="${modelField.property}" class="col-sm-1 control-label">${modelField.label}</label>
                    <div class="col-sm-${modelField.colNum}">
                    <#if modelField.fieldSpec.fieldType="textarea"> 
-                    <textarea  id="${modelField.property} name="${modelField.property}" class="form-control" rows="3" ></textarea>
+                    <textarea  id="${modelField.property}" name="${modelField.property}" class="form-control" rows="3" ></textarea>
                     </#if>
                     <#if modelField.fieldSpec.fieldType="text"> 
                     <input  id="${modelField.property}" name="${modelField.property}" type="text" class="form-control"></input>
@@ -70,7 +70,7 @@
 						</#if>
 						'${modelField.property}': {
 							   required: ${modelField.fieldSpec.required},
-							   maxlength:${modelField.fieldSpec.maxLength}
+							   maxlength:${modelField.fieldSpec.maxLength?c}
 						   }
 						<#assign ind=ind+1 />   	
 						</#if>		

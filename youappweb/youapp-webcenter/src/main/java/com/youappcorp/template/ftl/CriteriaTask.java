@@ -4,17 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import freemarker.template.Template;
-import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.utils.JObjectUtils;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
@@ -34,37 +29,8 @@ public class CriteriaTask extends TemplateTask{
 		criteriaModel.setSimpleClassName(modelModel.getSimpleClassName()+"Criteria");
 		criteriaModel.setClassName(criteriaModel.getClassPackage()+"."
 		+criteriaModel.getSimpleClassName());
-		List<ModelField> modelFields= modelModel.getModelFields();
-		List<ModelField> criteriaModelFields=new ArrayList<ModelField>();
-		for(ModelField modelField:modelFields){
-			ModelField criteriaModelField=JObjectUtils.simpleCopy(modelField, ModelField.class);
-			if(Date.class.isAssignableFrom(criteriaModelField.getField().getType())){
-				//start time
-				ModelField appendModelField=new ModelField();
-				appendModelField.setProperty(criteriaModelField.getProperty()+"Start");
-				appendModelField.setSetterMethodName(JClassUtils.getSetterMethodName(appendModelField.getProperty()));
-				appendModelField.setGetterMethodName(JClassUtils.getGetterMethodName(appendModelField.getProperty(), false));
-				appendModelField.setFieldType(KeyNames.FIELD_TYPE_DATE);
-				appendModelField.setSourceType(KeyNames.SOURCE_TYPE_APPEND);
-				appendModelField.setSource(modelField);
-				appendModelField.setRelatedProperty(criteriaModelField.getProperty()+"End");
-				criteriaModelFields.add(appendModelField);
-				//end time
-				appendModelField=new ModelField();
-				appendModelField.setProperty(criteriaModelField.getProperty()+"End");
-				appendModelField.setSetterMethodName(JClassUtils.getSetterMethodName(appendModelField.getProperty()));
-				appendModelField.setGetterMethodName(JClassUtils.getGetterMethodName(appendModelField.getProperty(), false));
-				appendModelField.setFieldType(KeyNames.FIELD_TYPE_DATE);
-				appendModelField.setSourceType(KeyNames.SOURCE_TYPE_APPEND);
-				appendModelField.setSource(modelField);
-				appendModelField.setRelatedProperty(criteriaModelField.getProperty()+"Start");
-				criteriaModelFields.add(appendModelField);
-			}
-			criteriaModelField.setField(null);
-			criteriaModelField.setSource(modelField);
-			criteriaModelFields.add(criteriaModelField);
-		}
-		criteriaModel.setModelFields(criteriaModelFields);
+		CriteriaFieldParser criteriaFieldParser=new CriteriaDefaultFieldParser();
+		criteriaModel.setModelFields(criteriaFieldParser.parse(modelConfig));
 		
 		modelConfig.setCriteriaModel(criteriaModel);
 		

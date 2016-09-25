@@ -21,6 +21,11 @@ public class UIFieldSpec implements JModel{
 		
 	}
 	
+	public static class UIHiddenFieldSpec extends UIFieldSpec{
+		
+		
+	}
+	
 	public static class UISelectFieldSpec extends UIFieldSpec{
 		
 		

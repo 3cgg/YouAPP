@@ -3,6 +3,7 @@ package com.youappcorp.template.ftl.ui;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 import com.youappcorp.template.ftl.KeyNames;
 import com.youappcorp.template.ftl.ui.UIFieldSpec.UIDateFieldSpec;
+import com.youappcorp.template.ftl.ui.UIFieldSpec.UIHiddenFieldSpec;
 import com.youappcorp.template.ftl.ui.UIFieldSpec.UITextFieldSpec;
 import com.youappcorp.template.ftl.ui.UIFieldSpec.UITextareaFieldSpec;
 
@@ -15,6 +16,14 @@ public class FieldSpecSetter {
 	}
 
 	public void setFieldSpec(UIField uiField, ModelConfig modelConfig) {
+		
+		if(uiField.isHidden()){
+			UIHiddenFieldSpec hiddenFieldSpec=new UIHiddenFieldSpec();
+			hiddenFieldSpec.setFieldType(KeyNames.FIELD_SPEC_HIDDEN);
+			uiField.setFieldSpec(hiddenFieldSpec);
+			return ;
+		}
+		
 		if(KeyNames.FIELD_TYPE_NUMERIC.equals(uiField.getFieldType())){
 			UITextFieldSpec textFieldSpec=new UITextFieldSpec();
 			textFieldSpec.setFieldType(KeyNames.FIELD_SPEC_TEXT);

@@ -54,6 +54,8 @@ public class UIField implements JModel {
 	 * the field must not be rendered in the page view.
 	 */
 	private boolean virtual;
+	
+	private boolean hidden;
 
 	public boolean isVirtual() {
 		return virtual;
@@ -174,6 +176,14 @@ public class UIField implements JModel {
 
 	public void setFieldSpec(UIFieldSpec fieldSpec) {
 		this.fieldSpec = fieldSpec;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 	
 }

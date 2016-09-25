@@ -1,5 +1,7 @@
 package com.youappcorp.template.ftl.ui;
 
+import java.util.List;
+
 import j.jave.kernal.jave.model.JModel;
 
 public class UITemplateUIModel implements JModel{
@@ -9,7 +11,9 @@ public class UITemplateUIModel implements JModel{
 	private String fileName;
 	
 	private UITemplateUIContext uiContext;
-
+	
+	private List<UIField> hiddenFields;
+	
 	public String getFilePath() {
 		return filePath;
 	}
@@ -32,6 +36,14 @@ public class UITemplateUIModel implements JModel{
 
 	public void setUiContext(UITemplateUIContext uiContext) {
 		this.uiContext = uiContext;
+	}
+
+	public List<UIField> getHiddenFields() {
+		return hiddenFields;
+	}
+
+	public void setHiddenFields(List<UIField> hiddenFields) {
+		this.hiddenFields = hiddenFields;
 	}
 	
 }

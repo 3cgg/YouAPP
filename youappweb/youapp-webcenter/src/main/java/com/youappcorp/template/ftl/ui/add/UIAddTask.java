@@ -1,4 +1,4 @@
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui.add;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,7 +7,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.youappcorp.template.ftl.FileWrapper;
+import com.youappcorp.template.ftl.FtlConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+import com.youappcorp.template.ftl.ModelModel;
+import com.youappcorp.template.ftl.TemplateTask;
 
 import freemarker.template.Template;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
@@ -15,7 +19,7 @@ import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask
-public class UIListTask extends TemplateTask{
+public class UIAddTask extends TemplateTask{
 
 	@Override
 	public Object doRun() throws Exception {
@@ -23,16 +27,13 @@ public class UIListTask extends TemplateTask{
 		ModelConfig modelConfig=getModelConfig();
 		ModelModel modelModel=modelConfig.modelModel();
 		
-		UIListModel uiListModel=new UIListModel();
-		uiListModel.setUiContext(modelConfig.uiTemplateUIContext());
-		uiListModel.setFilePath(uiListModel.getUiContext().getListFilePath());
-		uiListModel.setFileName(uiListModel.getUiContext().getListFileName());
-		uiListModel.setCheckbox(true);
-		UIListCriterialFieldParser listCriterialFieldParser=new UIDefaultListCriterialFieldParser();
-		uiListModel.setCriteriaFields(listCriterialFieldParser.parse(modelConfig));
-
-		UIListTableFieldParser tableFieldParser=new UIDefaultListTableFieldParser();
-		uiListModel.setTableFields(tableFieldParser.parse(modelConfig));
+		UIAddModel uiAddModel=new UIAddModel();
+		uiAddModel.setUiContext(modelConfig.uiTemplateUIContext());
+		uiAddModel.setFilePath(uiAddModel.getUiContext().getAddFilePath());
+		uiAddModel.setFileName(uiAddModel.getUiContext().getAddFileName());
+		
+		UIAddFieldParser addFieldParser=new UIDefaultAddFieldParser();
+		uiAddModel.setAddFields(addFieldParser.parse(modelConfig));
 
 		/* Create a data-model */
         Map<String,Object> root = new HashMap<String, Object>();
@@ -44,17 +45,17 @@ public class UIListTask extends TemplateTask{
         root.put("serviceModel", modelConfig.serviceModel());
         root.put("modelRecordVOModel", modelConfig.modelRecordVOModel());
         root.put("controllerModel", modelConfig.controllerModel());
-        root.put("uiListModel", uiListModel);
+        root.put("uiAddModel", uiAddModel);
         
         /* Get the template (uses cache internally) */
-        Template temp = FtlConfig.get().getCfg().getTemplate("ui-model-list.ftl");
+        Template temp = FtlConfig.get().getCfg().getTemplate("ui/ui-model-add.ftl");
         /* Merge data-model with template */
         ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
         Writer out = new OutputStreamWriter(byteArrayOutputStream);
         temp.process(root, out);
         FileWrapper fileWrapper=new FileWrapper();
-        fileWrapper.setFile(new File(uiListModel.getUiContext().getUiRelativePath()
-        		+uiListModel.getFilePath()));
+        fileWrapper.setFile(new File(uiAddModel.getUiContext().getUiRelativePath()
+        		+uiAddModel.getFilePath()));
         fileWrapper.setData(byteArrayOutputStream.toByteArray());
         getInternalConfig().addFile(fileWrapper);
 	

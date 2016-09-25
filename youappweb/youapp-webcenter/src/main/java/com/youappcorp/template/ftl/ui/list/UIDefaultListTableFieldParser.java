@@ -1,10 +1,13 @@
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui.list;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.youappcorp.template.ftl.Config;
 import com.youappcorp.template.ftl.Config.FieldConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+import com.youappcorp.template.ftl.ModelField;
+import com.youappcorp.template.ftl.ModelModel;
 
 import j.jave.kernal.jave.utils.JObjectUtils;
 

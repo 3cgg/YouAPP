@@ -1,7 +1,9 @@
 
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui;
 
+import com.youappcorp.template.ftl.ControllerModel;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+import com.youappcorp.template.ftl.TemplateTask;
 
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;

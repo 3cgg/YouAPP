@@ -1,6 +1,8 @@
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui.list;
 
 import java.util.List;
+
+import com.youappcorp.template.ftl.ui.UITemplateUIModel;
 
 
 public class UIListModel extends UITemplateUIModel{

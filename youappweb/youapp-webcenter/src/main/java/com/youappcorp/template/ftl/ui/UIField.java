@@ -1,4 +1,7 @@
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui;
+
+import com.youappcorp.template.ftl.KeyNames;
+import com.youappcorp.template.ftl.ModelField;
 
 import j.jave.kernal.jave.model.JModel;
 
@@ -45,6 +48,21 @@ public class UIField implements JModel {
 	 */
 	private String relatedProperty;
 
+	private UIFieldSpec fieldSpec;
+	
+	/**
+	 * the field must not be rendered in the page view.
+	 */
+	private boolean virtual;
+
+	public boolean isVirtual() {
+		return virtual;
+	}
+
+	public void setVirtual(boolean virtual) {
+		this.virtual = virtual;
+	}
+	
 	public String getProperty() {
 		return property;
 	}
@@ -148,6 +166,14 @@ public class UIField implements JModel {
 	 */
 	public void setRelatedProperty(String relatedProperty) {
 		this.relatedProperty = relatedProperty;
+	}
+
+	public UIFieldSpec getFieldSpec() {
+		return fieldSpec;
+	}
+
+	public void setFieldSpec(UIFieldSpec fieldSpec) {
+		this.fieldSpec = fieldSpec;
 	}
 	
 }

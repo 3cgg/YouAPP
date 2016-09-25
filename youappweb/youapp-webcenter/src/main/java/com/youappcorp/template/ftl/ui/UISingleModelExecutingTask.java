@@ -1,6 +1,10 @@
-package com.youappcorp.template.ftl;
+package com.youappcorp.template.ftl.ui;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+import com.youappcorp.template.ftl.TemplateTask;
+import com.youappcorp.template.ftl.TemplateUtil;
+import com.youappcorp.template.ftl.ui.add.UIAddTask;
+import com.youappcorp.template.ftl.ui.list.UIListTask;
 
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
@@ -23,7 +27,12 @@ public class UISingleModelExecutingTask extends TemplateTask{
 			UIListTask uiListTask=new UIListTask();
 			simpleLinkedFlowImpl.put(uiListTask);
 			
+			UIAddTask uiAddTask=new UIAddTask();
+			simpleLinkedFlowImpl.put(uiAddTask);
+			
 			JFlowContext flowContext=getFlowContext();
+			TemplateUtil.setModelConfig(flowContext, modelConfig);
+			
 			simpleLinkedFlowImpl.start(flowContext);
 		}
         return true;

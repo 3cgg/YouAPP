@@ -106,7 +106,11 @@
 							  }
 							});
 					 }
-				})
+				});
+			page.root.find('#addSysParamBtn').on('click',function(){
+				page.root.find("#addSysParamForm").submit();
+			});
+			
 		});
 	</script>
 

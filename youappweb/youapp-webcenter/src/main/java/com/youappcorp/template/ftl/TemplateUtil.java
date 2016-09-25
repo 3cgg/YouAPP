@@ -35,7 +35,7 @@ public class TemplateUtil {
 		return modelConfig;
 	}
 	
-	static void setModelConfig(JFlowContext flowContext,ModelConfig modelConfig){
+	public static void setModelConfig(JFlowContext flowContext,ModelConfig modelConfig){
 		flowContext.put(KeyNames.TEMPLATE_MODEL_CONFIG_KEY, modelConfig);
 	}
 	

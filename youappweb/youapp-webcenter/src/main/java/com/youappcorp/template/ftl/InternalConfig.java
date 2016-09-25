@@ -2,6 +2,8 @@ package com.youappcorp.template.ftl;
 
 import java.util.List;
 
+import com.youappcorp.template.ftl.ui.UITemplateUIContext;
+
 public interface InternalConfig extends Iterable<InternalConfig.ModelConfig> {
 
 	Config passConfig();

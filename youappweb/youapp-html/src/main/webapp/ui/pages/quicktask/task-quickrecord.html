@@ -1,14 +1,28 @@
-<!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Timeline
-        <small>on APP Cloud</small>
-      </h1>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="timeline-box">
+	 <!-- Main content -->
+    <section class="content"  id="addAlertItemSection" >
+    	<button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/quicktask/quicktask.html");'
+	          >返回</button>
+         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+             <div class="modal-dialog">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                         <h4 class="modal-title">Modal title</h4>
+                     </div>
+                     <div class="modal-body">
+                         <p>Modal content here ...</p>
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                         <button type="button" class="btn btn-primary">Save changes</button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         
+    	
+    	<div class="timeline-box">
                 <div class="tl-row">
                     <div class="tl-item">
                         <div class="tl-bullet bg-red"></div>
@@ -19,7 +33,11 @@
                             <div class="arrow"></div>
                             <div class="popover-content">
                                 <h3 class="tl-title">Lorem ipsum</h3>
-                                <p class="tl-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p>
+                                <p class="tl-content">
+                 					 <button class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal">
+                        Launch demo modal
+                    </button>
+                 				</p>
                                 <div class="tl-time">
                                     <i class="glyph-icon icon-clock-o"></i>
                                     a few seconds ago
@@ -86,9 +104,62 @@
                     </div>
                 </div>
             </div>
-      
-      
-      
-      
+    	
+    	
     </section>
-    <!-- /.content -->
+	
+	
+	<script type="text/javascript">
+		
+		$_youapp.ready(function (){
+			
+			var page=$.extend({
+	    		root:$("#addAlertItemSection"),
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			page.root.find("#addAlertItemForm").validate({
+					rules: {
+						'code': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'name': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'status': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'meta': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'description': {
+							   required: false,
+							   maxlength:2000
+						   }
+					  },
+					  submitHandler:function(form){
+						  page.submitForm({
+							  url:'/alertmanager/saveAlertItem',
+							  formSelector:form,
+							  success:function(data){
+								  page.root.goView('/ui/pages/alertmanager/alertitem-list.html');
+							  }
+							});
+					 }
+				});
+			page.root.find('#addAlertItemBtn').on('click',function(){
+				page.root.find("#addAlertItemForm").submit();
+			});	
+		});
+	</script>
+
+

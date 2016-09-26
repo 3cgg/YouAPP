@@ -17,7 +17,7 @@ public class TemplateProcessor extends TestEventSupport {
 			config.setModelPath("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-business\\youapp-business-home\\src\\main\\java\\com\\youappcorp\\project\\alertmanager\\model");
 			config.setUiRelativePath("D:\\java_\\git-project\\YouAPP\\youappweb\\youapp-html\\src\\main\\webapp");
 			config.setModuleName("AlertManager");
-			config.setJavaCode(false);
+//			config.setJavaCode(false);
 			TemplateRunner.start(config);
 			
 		}catch(Exception e){

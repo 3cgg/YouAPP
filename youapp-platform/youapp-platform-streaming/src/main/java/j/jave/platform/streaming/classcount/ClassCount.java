@@ -1,6 +1,8 @@
 package j.jave.platform.streaming.classcount;
 
 public class ClassCount {
+	
+	private String id;
 
 	private String className;
 	
@@ -31,6 +33,13 @@ public class ClassCount {
 	public void setBatchId(long batchId) {
 		this.batchId = batchId;
 	}
-	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 }

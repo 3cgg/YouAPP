@@ -1,7 +1,6 @@
 package j.jave.platform.streaming.classcount;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,8 +12,6 @@ import org.apache.storm.trident.operation.TridentCollector;
 import org.apache.storm.trident.testing.FixedBatchSpout;
 import org.apache.storm.tuple.Fields;
 
-import j.jave.kernal.jave.utils.JIOUtils;
-
 @SuppressWarnings({"serial","unchecked"})
 public class UsingFixedBatchSpout implements LoggingAnalyseSpout{
 
@@ -23,18 +20,16 @@ public class UsingFixedBatchSpout implements LoggingAnalyseSpout{
 	private long pre;
 	
 	public UsingFixedBatchSpout() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
 	public void open(Map conf, TopologyContext context) {
 		try {
 			List<List<String>> data=new ArrayList<List<String>>();
-			String fileURI=(String) conf.get(ClassCountConf.FILE_URI);
+			String fileURI=(String) conf.get(ClassCountConfig.FILE_URI);
 			File file=new File(new URI(fileURI));
-			byte[] bytes=JIOUtils.getBytes(new FileInputStream(file));
-			String string=new String(bytes,"utf-8");
-			for(String line:string.split("\\r\\n")){
+			List<String> logs=new FileReadOnce().read(file);
+			for(String line:logs){
 				data.add(new ArrayList<String>(){{add(line);}});
 			}
 			fixedBatchSpout=new FixedBatchSpout(new Fields("record"), 20, data.toArray(new ArrayList[]{}));

@@ -1,7 +1,6 @@
 package j.jave.platform.streaming.classcount;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,14 +10,11 @@ import java.util.Map;
 import org.apache.storm.Config;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.trident.operation.TridentCollector;
-import org.apache.storm.trident.spout.IBatchSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
 import org.apache.storm.utils.Utils;
 
-import j.jave.kernal.jave.utils.JIOUtils;
-
-public class SimpleLoggingLoadingSpout implements IBatchSpout {
+public class SimpleLoggingLoadingSpout implements LoggingAnalyseSpout {
 	
 	private int recordCountPerBatch=20;
 	
@@ -30,40 +26,12 @@ public class SimpleLoggingLoadingSpout implements IBatchSpout {
 	
 	private long pre;
 	
-	private boolean isOne(String line){
-		String num=line.substring(0, 4);
-		try{
-			Integer.parseInt(num);
-			return true;
-		}catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
 	@Override
 	public void open(Map conf, TopologyContext context) {
 		try {
-			String fileURI=(String) conf.get(ClassCountConf.FILE_URI);
+			String fileURI=(String) conf.get(ClassCountConfig.FILE_URI);
 			File file=new File(new URI(fileURI));
-			byte[] bytes=JIOUtils.getBytes(new FileInputStream(file));
-			String string=new String(bytes,"utf-8");
-			String temp="";
-			for(String line:string.split("\\r\\n")){
-				boolean isOne=isOne(line);
-				if(temp.length()==0&&isOne){
-					temp=line;
-				}
-				else{
-					if(isOne){
-						data.add(temp);
-						temp=line;
-					}
-					else{
-						temp=temp+line;
-					}
-				}
-			}
-			data.add(temp);
+			data=new FileReadOnce().read(file);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

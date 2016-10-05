@@ -43,7 +43,11 @@
 		    <artifactId>storm-jdbc</artifactId>
 		    <version>1.0.2</version>
 		</dependency>
-    
+    	
+    	<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+			</dependency>
     
     <dependency>
       <groupId>junit</groupId>

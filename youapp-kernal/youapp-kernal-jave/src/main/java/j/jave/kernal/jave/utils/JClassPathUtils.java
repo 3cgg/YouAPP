@@ -1,17 +1,16 @@
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.reflect.JClassPathList;
-
 import java.io.File;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
+import j.jave.kernal.jave.exception.JInitializationException;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.jave.reflect.JClassPathList;
 
 public abstract class JClassPathUtils {
 
@@ -57,18 +56,22 @@ public abstract class JClassPathUtils {
 			File libFile=null;
 			if(libUrl!=null){
 				libFile=new File(libUrl.toURI());
-				if(!libFile.isDirectory()){
+				if(libFile.isFile()){
 					libFile=null;
 				}
 			}
 			String libFilePath=libFile==null?null:libFile.getAbsolutePath();
 			
-			URI uri=Thread.currentThread().getContextClassLoader().getResource("").toURI();
-			LOGGER.info("expected to find [WEB-INF/classes] : "+ (uri==null?"NULL":uri.toString()));
-			File classesFile=new File(uri);
-			if(!classesFile.isDirectory()){
-				classesFile=null;
+			URL rootUrl=Thread.currentThread().getContextClassLoader().getResource("");
+			LOGGER.info("expected to find [WEB-INF/classes] : "+ (rootUrl==null?"NULL":rootUrl.toString()));
+			File classesFile=null;
+			if(rootUrl!=null){
+				classesFile=new File(rootUrl.toURI());
+				if(classesFile.isFile()){
+					classesFile=null;
+				}
 			}
+			
 			String classesFilePath=classesFile==null?null:classesFile.getAbsolutePath();
 			
 			List<String> classPathFiles=getJavaClassPathFileAbsolutePaths();
@@ -79,7 +82,7 @@ public abstract class JClassPathUtils {
 						&&!filePath.equals(classesFilePath)){
 					classPathList.add(filePath);
 				}
-			}
+			} 
 			if(libFile!=null) classPathList.add(libFilePath);
 			if(classesFile!=null) classPathList.add(classesFilePath);
 		}catch(Exception e){

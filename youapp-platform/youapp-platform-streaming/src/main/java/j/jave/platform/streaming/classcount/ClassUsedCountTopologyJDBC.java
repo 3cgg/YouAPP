@@ -52,7 +52,7 @@ public class ClassUsedCountTopologyJDBC {
 		
 		
 		TridentTopology tridentTopology=new TridentTopology();
-		TridentState tridentState=tridentTopology.newStream("class-count", new SimpleLoggingLoadingSpout(60))
+		TridentState tridentState=tridentTopology.newStream("class-count", new SimpleLoggingLoadingSpout(10000))
 		.shuffle()
 		.each(new Fields("record"), new BaseFilter() {
 			@Override
@@ -61,7 +61,7 @@ public class ClassUsedCountTopologyJDBC {
 				return record.length()>0;
 			}
 		})
-		.parallelismHint(3)
+		.parallelismHint(20)
 		.shuffle()
 		.each(new Fields("record"), new BaseFunction() {
 			private RecordInfoParser recordInfoParser=new RecordInfoParser();
@@ -73,7 +73,7 @@ public class ClassUsedCountTopologyJDBC {
 				collector.emit(new Values(className,1));
 			}
 		}, new Fields("class","single-count"))
-		.parallelismHint(3)
+		.parallelismHint(35)
 		.groupBy(new Fields("class"))
 		.partitionAggregate(new Fields("class","single-count"),new Aggregator<ClassCount>() {
 
@@ -172,6 +172,8 @@ public class ClassUsedCountTopologyJDBC {
 				collector.emit(new Values(i++,classCount.getClassName(),classCount.getCount(),classCount.getBatchId()));
 			}
 		}, new Fields("id","classname","classcount","batchid"))
+		.parallelismHint(18)
+		.shuffle()
 		.partitionPersist(new JdbcStateFactory(options),
 				new Fields("id","classname","classcount","batchid"), new JdbcUpdater())
 //		.peek(new Consumer() {

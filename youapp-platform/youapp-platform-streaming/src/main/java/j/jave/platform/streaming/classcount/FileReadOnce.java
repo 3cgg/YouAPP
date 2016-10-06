@@ -20,7 +20,7 @@ public class FileReadOnce {
 	}
 
 	public List<String> read(File file) throws Exception{
-		List<String> data=new ArrayList<String>(100);
+		List<String> data=new ArrayList<String>(10000);
 		byte[] bytes=JIOUtils.getBytes(new FileInputStream(file),true);
 		String string=new String(bytes,"utf-8");
 		String temp="";

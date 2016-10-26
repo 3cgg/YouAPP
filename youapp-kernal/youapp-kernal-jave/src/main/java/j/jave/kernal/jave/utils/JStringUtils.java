@@ -1,11 +1,8 @@
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.base64.JBase64FactoryProvider;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +17,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+
+import j.jave.kernal.jave.base64.JBase64FactoryProvider;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 
 public abstract class JStringUtils {
 
@@ -1316,4 +1317,13 @@ public abstract class JStringUtils {
 	public static String arrayToCommaDelimitedString(Object[] arr) {
 		return arrayToDelimitedString(arr, ",");
 	}
+	
+	public static byte[] utf8(String string){
+		return string.getBytes(Charset.forName("utf-8"));
+	}
+	
+	public static String utf8(byte[] bytes){
+		return new String(bytes,Charset.forName("utf-8"));
+	}
+	
 }

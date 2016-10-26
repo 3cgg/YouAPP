@@ -27,6 +27,7 @@
 		<module>youapp-kernal-taskdriven</module>
 		<module>youapp-kernal-mail</module>
 		<module>youapp-kernal-zookeeper</module>
+    <module>youapp-kernal-streaming</module>
   </modules>
 	
 </project>

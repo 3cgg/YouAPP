@@ -59,6 +59,10 @@ public class Instance implements JModel,Closeable{
 		instanceNodes.put(path, instanceNode);
 	}
 	
+	public InstanceNode getInstanceNode(String path){
+		return instanceNodes.get(path);
+	}
+	
 	@Override
 	public void close() throws IOException {
 		CloseException exception=new CloseException();

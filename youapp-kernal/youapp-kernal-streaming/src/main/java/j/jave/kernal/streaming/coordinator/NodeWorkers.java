@@ -16,7 +16,7 @@ public class NodeWorkers implements Serializable {
 	private static ZookeeperExecutor executor;
 	
 	public synchronized static void startup(ZookeeperExecutor executor){
-		if(executor==null){
+		if(NodeWorkers.executor==null){
 			NodeWorkers.executor=executor;
 			SingleMonitor.startup(executor);
 		}

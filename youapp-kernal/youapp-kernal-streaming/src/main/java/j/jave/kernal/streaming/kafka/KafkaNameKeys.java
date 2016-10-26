@@ -9,9 +9,9 @@ public abstract class KafkaNameKeys implements Serializable  {
 	/**
 	 * localhost:9092,nim1.storm.com:9092,...
 	 */
-	public static final String KAFKA_SERVER="KAFKA_SERVER";
+	public static final String KAFKA_SERVER="bootstrap.servers";
 	
-	public static final String KAFKA_CONSUMER_GROUP="KAFKA_CONSUMER_GROUP";
+	public static final String KAFKA_CONSUMER_GROUP="group.id";
 		
 	/**
 	 * session.timeout.ms

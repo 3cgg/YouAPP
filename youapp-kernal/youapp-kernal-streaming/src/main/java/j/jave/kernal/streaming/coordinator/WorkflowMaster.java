@@ -14,14 +14,14 @@ import j.jave.kernal.jave.model.JModel;
 public class WorkflowMaster implements JModel ,Closeable{
 
 	/**
-	 * watcher on {@link Workflow#pluginWorkersPath}
-	 */
-	private PathChildrenCache pluginWorkersPathCache;
-
-	/**
 	 * watcher on worker trigger path /  temporary
 	 */
 	private NodeCache workflowTriggerCache;
+	
+	/**
+	 * watcher on  {@link CoordinatorPaths#BASE_PATH}/workflowadd
+	 */
+	private PathChildrenCache workfowAddCache;
 	
 	/**
 	 * all running/ already run  instance 
@@ -36,13 +36,6 @@ public class WorkflowMaster implements JModel ,Closeable{
 	@Override
 	public void close() throws IOException {
 		CloseException exception=new CloseException();
-		if(pluginWorkersPathCache!=null){
-			try {
-				pluginWorkersPathCache.close();
-			} catch (IOException e) {
-				exception.addMessage(e.getMessage());
-			}
-		}
 		if(workflowTriggerCache!=null){
 			try {
 				workflowTriggerCache.close();
@@ -80,19 +73,16 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public void addInstance(Long sequence,Instance instance){
 		instances.put(sequence, instance);
 	}
+	
+	public Instance getInstance(Long sequence){
+		return instances.get(sequence);
+	}
+	
 
 	public void addWorkflow(Workflow workflow){
 		if(!existsWorkflow(workflow.getName())){
 			workflows.put(workflow.getName(), workflow);
 		}
-	}
-	
-	public PathChildrenCache getPluginWorkersPathCache() {
-		return pluginWorkersPathCache;
-	}
-
-	public void setPluginWorkersPathCache(PathChildrenCache pluginWorkersPathCache) {
-		this.pluginWorkersPathCache = pluginWorkersPathCache;
 	}
 
 	public NodeCache getWorkflowTriggerCache() {
@@ -114,10 +104,21 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public Map<String, Workflow> getWorkflows() {
 		return workflows;
 	}
+	
+	public Workflow getWorkflow(String name){
+		return workflows.get(name);
+	}
 
 	public void setWorkflows(Map<String, Workflow> workflows) {
 		this.workflows = workflows;
 	}
-	
+
+	public PathChildrenCache getWorkfowAddCache() {
+		return workfowAddCache;
+	}
+
+	public void setWorkfowAddCache(PathChildrenCache workfowAddCache) {
+		this.workfowAddCache = workfowAddCache;
+	}
 	
 }

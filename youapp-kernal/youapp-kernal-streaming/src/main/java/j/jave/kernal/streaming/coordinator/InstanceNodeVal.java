@@ -15,6 +15,11 @@ public class InstanceNodeVal implements JModel {
 	private int id;
 	
 	/**
+	 * the instance id
+	 */
+	private long sequence;
+	
+	/**
 	 * the running status , {@link NodeData.NodeStatus}
 	 */
 	private String status;
@@ -56,7 +61,13 @@ public class InstanceNodeVal implements JModel {
 	public void setTime(long time) {
 		this.time = time;
 	}
-	
 
+	public long getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(long sequence) {
+		this.sequence = sequence;
+	}
 	
 }

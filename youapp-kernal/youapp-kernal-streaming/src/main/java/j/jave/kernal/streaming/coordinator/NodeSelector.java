@@ -19,6 +19,7 @@ import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.JProducerConnecter;
@@ -108,7 +109,7 @@ public class NodeSelector implements Serializable{
 	}
 
 	String workflowPath(final Workflow workflow){
-		return basePath+"/"+workflow.getName();
+		return workflow==null?basePath:(basePath+"/"+workflow.getName());
 	}
 	
 	String pluginWorkersPath(final Workflow workflow){
@@ -120,7 +121,8 @@ public class NodeSelector implements Serializable{
 	}
 	
 	String workflowTrigger(final Workflow workflow){
-		return basePath+"/workflow-trigger/"+workflow.getName();
+		String triggerPath=basePath+"/workflow-trigger";
+		return workflow==null?triggerPath:(triggerPath+"/"+workflow.getName());
 	}
 	
 	String leaderPath(){
@@ -140,11 +142,14 @@ public class NodeSelector implements Serializable{
 		return atomicLong.getSequence();
 	}
 	
-	public synchronized void addWorkflow(Workflow workflow){
+	private synchronized void addWorkflow(Workflow workflow){
 		if(!workflowMaster.existsWorkflow(workflow.getName())){
-			
+			attachWorkersPathWatcher(workflow);
 		}
 	}
+	
+	
+	
 	
 	private void close(long sequence,String path,String cacheType){
 		if(path!=null){
@@ -166,6 +171,8 @@ public class NodeSelector implements Serializable{
 			instanceNodeVal.setId(c.getId());
 			instanceNodeVal.setParallel(c.getParallel());
 			instanceNodeVal.setStatus(NodeStatus.ONLINE);
+			instanceNodeVal.setSequence(instance.getSequence());
+			instanceNodeVal.setTime(new Date().getTime());
 			executor.createPath(instancePath
 					,JJSON.get().formatObject(instanceNodeVal).getBytes(Charset.forName("utf-8")));
 			
@@ -191,18 +198,31 @@ public class NodeSelector implements Serializable{
 	private void complete(final String path){
 		final InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(executor.getPath(path),Charset.forName("utf-8")), InstanceNodeVal.class);
 		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
+		instanceNodeVal.setTime(new Date().getTime());
 		executor.setPath(path, JJSON.get().formatObject(instanceNodeVal));
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
-				WorkTracking workTracking=new WorkTracking();
-				workTracking.setWorkerId(String.valueOf(instanceNodeVal.getId()));
-				workTracking.setInstancePath(path);
-				workTracking.setStatus(NodeStatus.COMPLETE);
-				workTracking.setRecordTime(new Date().getTime());
+				Instance instance=workflowMaster.getInstance(instanceNodeVal.getSequence());
+				WorkTracking workTracking=
+						workTracking(instanceNodeVal.getId(), path, NodeStatus.COMPLETE, instance);
 				simpleProducer.send(workTracking);
 			}
 		});
+	}
+	
+	private WorkTracking workTracking(int workerId, String path,String status,Instance instance){
+		WorkTracking workTracking=new WorkTracking();
+		workTracking.setWorkerId(String.valueOf(workerId));
+		workTracking.setInstancePath(path);
+		workTracking.setStatus(status);
+		workTracking.setRecordTime(new Date().getTime());
+		InstanceNode instanceNode=instance.getInstanceNode(path);
+		workTracking.setWorkerName(instanceNode.getNodeData().getName());
+		workTracking.setId(JUniqueUtils.unique());
+		workTracking.setOffset(-1);
+		workTracking.setHashKey(String.valueOf(instance.getSequence()));
+		return workTracking;
 	}
 	
 	private int pathSequence(String path){
@@ -221,11 +241,8 @@ public class NodeSelector implements Serializable{
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
-				WorkTracking workTracking=new WorkTracking();
-				workTracking.setWorkerId(String.valueOf(worker));
-				workTracking.setInstancePath(instancePath);
-				workTracking.setStatus(NodeStatus.READY);
-				workTracking.setRecordTime(new Date().getTime());
+				WorkTracking workTracking=
+						workTracking(worker, instancePath, NodeStatus.READY, instance);
 				simpleProducer.send(workTracking);
 			}
 		});
@@ -322,7 +339,8 @@ public class NodeSelector implements Serializable{
 		return Integer.parseInt(path.substring(path.lastIndexOf("/")).split("-")[1]);
 	}
 	
-	private void attachWorkersPathWatcher(final Workflow workflow){
+	private synchronized void attachWorkersPathWatcher(final Workflow workflow){
+		if(workflow.getPluginWorkersPathCache()!=null) return ;
 		String _path=workflow.getPluginWorkersPath();
 		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
 				new JZooKeeperConnecter.NodeChildrenCallback() {
@@ -342,12 +360,13 @@ public class NodeSelector implements Serializable{
 				return new Thread(r, workflowPath(workflow)+"{watch works children}");
 			}
 		}),PathChildrenCacheEvent.Type.CHILD_ADDED,PathChildrenCacheEvent.Type.CHILD_REMOVED);
-		workflowMaster.setPluginWorkersPathCache(cache);
+		workflow.setPluginWorkersPathCache(cache);
 	}
 	
 	private synchronized void createMasterMeta(){
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
+		attachWorfkowTriggerWatcher(null);
 	}
 	
 	private Instance createInstance(Workflow workflow){
@@ -373,6 +392,12 @@ public class NodeSelector implements Serializable{
 	}
 	
 	private void attachWorfkowTriggerWatcher(final Workflow workflow){
+		
+		if(workflow!=null){
+			if(workflow.getWorkflowTriggerCache()!=null) return ;
+		}
+		
+		
 		final String path=workflowTrigger(workflow);
 		if(!executor.exists(path)){
 			executor.createPath(path);
@@ -382,8 +407,11 @@ public class NodeSelector implements Serializable{
 			@Override
 			public void call(JNode node) {
 				WorkflowMeta workflowMeta=JJSON.get().parse(node.getStringData(), WorkflowMeta.class);
-				Workflow workflow=new Workflow(workflowMeta.getName());
-				workflow.setNodeData(workflowMeta.getNodeData());
+				Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
+				if(workflow==null){
+					workflow=new Workflow(workflowMeta.getName());
+					workflow.setNodeData(workflowMeta.getNodeData());
+				}
 				Instance instance=createInstance(workflow);
 				start(instance);
 			}
@@ -393,7 +421,15 @@ public class NodeSelector implements Serializable{
 				return new Thread(r, workflowPath(workflow)+"{watcher workflow trigger}");
 			}
 		}));
-		workflowMaster.setWorkflowTriggerCache(cache);
+		if(workflow==null){
+			workflowMaster.setWorkflowTriggerCache(cache);
+		}else{
+			workflow.setWorkflowTriggerCache(cache);
+		}
+	}
+	
+	private void attachWorfkowAddWatcher(){
+		
 	}
 	
 	private void propagateWorkerPath(InstanceNodeVal triggerInstanceNodeVal,

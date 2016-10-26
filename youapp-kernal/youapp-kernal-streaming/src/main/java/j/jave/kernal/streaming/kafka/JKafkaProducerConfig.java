@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.kafka;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -62,6 +63,19 @@ public class JKafkaProducerConfig extends JKafkaConfig{
 		producerConfig.setValueSerializer(String.valueOf(conf.get("value.serializer")));
 		return producerConfig;
 	}
+	
+	public static Map<String, Object> def(){
+		Map<String, Object> conf=new HashMap<>();
+		conf.put("acks", "all");
+		conf.put("batch.size", 16384);
+		conf.put("buffer.memory", 33554432);
+		conf.put("linger.ms", 1);
+		conf.put("retries", 0);
+		conf.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		conf.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		return conf;
+	}
+	
 
 	/**
 	 * @return the acks

@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+import org.apache.curator.framework.recipes.cache.NodeCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
@@ -15,6 +18,11 @@ public class Workflow implements JModel,Closeable{
 	
 	private String name;
 	
+	/**
+	 * watcher on {@link #pluginWorkersPath}
+	 */
+	private PathChildrenCache pluginWorkersPathCache;
+	
 	private String pluginWorkersPath;
 
 	/**
@@ -24,6 +32,11 @@ public class Workflow implements JModel,Closeable{
 	private Map<Integer,String> workerPaths=Maps.newConcurrentMap();
 	
 	private NodeData nodeData;
+	
+	/**
+	 * watcher on the special workflow
+	 */
+	private NodeCache workflowTriggerCache;
 	
 	public Workflow(String name) {
 		this(name,Maps.newConcurrentMap(),null);
@@ -42,7 +55,23 @@ public class Workflow implements JModel,Closeable{
 	
 	@Override
 	public void close() throws IOException {
-		
+		CloseException exception=new CloseException();
+		if(pluginWorkersPathCache!=null){
+			try {
+				pluginWorkersPathCache.close();
+			} catch (IOException e) {
+				exception.addMessage(e.getMessage());
+			}
+		}
+		if(workflowTriggerCache!=null){
+			try{
+				workflowTriggerCache.close();
+			}catch (Exception e) {
+				exception.addMessage(e.getMessage());
+			}
+		}
+		if(exception.has())
+			throw exception;
 	}
 	
 	private String pluginWorkersPath(){
@@ -69,8 +98,23 @@ public class Workflow implements JModel,Closeable{
 		return pluginWorkersPath;
 	}
 	
-	void setNodeData(NodeData nodeData) {
+	public void setNodeData(NodeData nodeData) {
 		this.nodeData = nodeData;
 	}
 	
+	public void setWorkflowTriggerCache(NodeCache workflowTriggerCache) {
+		this.workflowTriggerCache = workflowTriggerCache;
+	}
+	
+	public NodeCache getWorkflowTriggerCache() {
+		return workflowTriggerCache;
+	}
+	
+	public PathChildrenCache getPluginWorkersPathCache() {
+		return pluginWorkersPathCache;
+	}
+
+	public void setPluginWorkersPathCache(PathChildrenCache pluginWorkersPathCache) {
+		this.pluginWorkersPathCache = pluginWorkersPathCache;
+	}
 }

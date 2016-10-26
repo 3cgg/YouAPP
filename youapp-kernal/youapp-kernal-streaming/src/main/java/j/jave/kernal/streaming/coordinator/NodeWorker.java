@@ -19,6 +19,7 @@ import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.zookeeper.CreateMode;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.JProducerConnecter;
@@ -128,11 +129,10 @@ public class NodeWorker implements Serializable {
 						executorService.execute(new Runnable() {
 							@Override
 							public void run() {
-								WorkTracking workTracking=new WorkTracking();
-								workTracking.setWorkerId(String.valueOf(workerPathVal.getId()));
-								workTracking.setInstancePath(tempPath);
-								workTracking.setStatus(NodeStatus.PROCESSING);
-								workTracking.setRecordTime(new Date().getTime());
+								WorkTracking workTracking=
+										workTracking(workerPathVal.getId(), 
+												workerPathVal.getSequence(), tempPath,
+												NodeStatus.PROCESSING);
 								simpleProducer.send(workTracking);
 							}
 						});
@@ -226,14 +226,26 @@ public class NodeWorker implements Serializable {
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
-				WorkTracking workTracking=new WorkTracking();
-				workTracking.setWorkerId(String.valueOf(instanceNodeVal.getId()));
-				workTracking.setInstancePath(path);
-				workTracking.setStatus(NodeStatus.COMPLETE);
-				workTracking.setRecordTime(new Date().getTime());
+				WorkTracking workTracking=
+						workTracking(instanceNodeVal.getId(), instanceNodeVal.getSequence(), path,
+								NodeStatus.COMPLETE);
 				simpleProducer.send(workTracking);
 			}
 		});
+	}
+	
+	
+	private WorkTracking workTracking(int workerId,long instanceId,String path,String status){
+		WorkTracking workTracking=new WorkTracking();
+		workTracking.setWorkerId(String.valueOf(workerId));
+		workTracking.setInstancePath(path);
+		workTracking.setStatus(status);
+		workTracking.setRecordTime(new Date().getTime());
+		workTracking.setWorkerName(this.name);
+		workTracking.setId(JUniqueUtils.unique());
+		workTracking.setOffset(-1);
+		workTracking.setHashKey(String.valueOf(instanceId));
+		return workTracking;
 	}
 	
 	private WorkerPathVal workerPathVal(){

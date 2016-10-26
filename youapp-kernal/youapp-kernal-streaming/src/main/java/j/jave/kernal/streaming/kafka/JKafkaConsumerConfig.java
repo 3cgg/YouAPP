@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.kafka;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -60,6 +61,17 @@ public class JKafkaConsumerConfig extends JKafkaConfig{
 		return consumerConfig;
 	}
 	
+	public static Map<String, Object> def(){
+		Map<String, Object> conf=new HashMap<>();
+		conf.put("auto.commit.interval.ms", "2000");
+		conf.put("enable.auto.commit", "false");
+		conf.put("group.id", "consumer-default");
+		conf.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		conf.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		conf.put("request.timeout.ms", "60000");
+		conf.put("session.timeout.ms", "40000");
+		return conf;
+	}
 
 	/**
 	 * @return the sessionTimeoutMs

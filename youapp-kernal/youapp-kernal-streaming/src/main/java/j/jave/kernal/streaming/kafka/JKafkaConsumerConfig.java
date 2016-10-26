@@ -1,6 +1,10 @@
 package j.jave.kernal.streaming.kafka;
 
+import java.util.Map;
+
 import org.apache.kafka.common.serialization.StringDeserializer;
+
+import j.jave.kernal.jave.utils.JObjectUtils;
 
 @SuppressWarnings("serial")
 public class JKafkaConsumerConfig extends JKafkaConfig{
@@ -42,6 +46,19 @@ public class JKafkaConsumerConfig extends JKafkaConfig{
 	 * {@link StringDeserializer}
 	 */
 	private String valueDeserializer;
+	
+	public static JKafkaConsumerConfig build(Map conf){
+		JKafkaConfig kafkaConfig=JKafkaConfig.build(conf);
+		JKafkaConsumerConfig consumerConfig=JObjectUtils.simpleCopy(kafkaConfig, JKafkaConsumerConfig.class);
+		consumerConfig.setAutoCommitIntervalMs(String.valueOf(conf.get("auto.commit.interval.ms")));
+		consumerConfig.setEnableAutoCommit(String.valueOf(conf.get("enable.auto.commit")));
+		consumerConfig.setGroupId(String.valueOf(conf.get("group.id")));
+		consumerConfig.setKeyDeserializer(String.valueOf(conf.get("key.deserializer")));
+		consumerConfig.setValueDeserializer(String.valueOf(conf.get("value.deserializer")));
+		consumerConfig.setRequestTimeoutMs(String.valueOf(conf.get("request.timeout.ms")));
+		consumerConfig.setSessionTimeoutMs(String.valueOf(conf.get("session.timeout.ms")));
+		return consumerConfig;
+	}
 	
 
 	/**

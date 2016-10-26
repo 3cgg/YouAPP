@@ -1,6 +1,10 @@
 package j.jave.kernal.streaming.kafka;
 
+import java.util.Map;
+
 import org.apache.kafka.common.serialization.StringSerializer;
+
+import j.jave.kernal.jave.utils.JObjectUtils;
 
 @SuppressWarnings("serial")
 public class JKafkaProducerConfig extends JKafkaConfig{
@@ -46,6 +50,18 @@ public class JKafkaProducerConfig extends JKafkaConfig{
 	private String valueSerializer;
 	
 	
+	public static JKafkaProducerConfig build(Map conf){
+		JKafkaConfig kafkaConfig=JKafkaConfig.build(conf);
+		JKafkaProducerConfig producerConfig=JObjectUtils.simpleCopy(kafkaConfig, JKafkaProducerConfig.class);
+		producerConfig.setAcks(String.valueOf(conf.get("acks")));
+		producerConfig.setBatchSize(Integer.valueOf(String.valueOf(conf.get("batch.size"))));
+		producerConfig.setBufferMemory(Integer.valueOf(String.valueOf(conf.get("buffer.memory"))));
+		producerConfig.setLingerMs(Integer.valueOf(String.valueOf(conf.get("linger.ms"))));
+		producerConfig.setRetries(Integer.valueOf(String.valueOf(conf.get("retries"))));
+		producerConfig.setKeySerializer(String.valueOf(conf.get("key.serializer")));
+		producerConfig.setValueSerializer(String.valueOf(conf.get("value.serializer")));
+		return producerConfig;
+	}
 
 	/**
 	 * @return the acks

@@ -225,7 +225,7 @@ public class JZooKeeperConnecter implements Serializable {
 			}
 		}
 		
-		CuratorFramework backend(){
+		public CuratorFramework backend(){
 			return curatorFramework;
 		}
 		

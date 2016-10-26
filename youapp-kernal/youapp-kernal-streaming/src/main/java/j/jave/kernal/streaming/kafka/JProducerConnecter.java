@@ -19,7 +19,7 @@ public class JProducerConnecter implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	<K, V> ProducerExecutor<K, V> connect() {
+	public <K, V> ProducerExecutor<K, V> connect() {
 		validate();
 		return new ProducerExecutor<K, V>() {
 			@Override

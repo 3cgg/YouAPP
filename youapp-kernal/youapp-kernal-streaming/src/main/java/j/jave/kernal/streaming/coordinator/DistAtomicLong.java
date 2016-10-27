@@ -22,7 +22,9 @@ public class DistAtomicLong implements Serializable{
 			try {
 				AtomicValue<Long>  atomicValue=  atomicLong.increment();
 				if(atomicValue.succeeded()){
-					return atomicValue.postValue();
+					long val= atomicValue.postValue();
+					System.out.println("got value "+val+" from dist atomic long ... ");
+					return val;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

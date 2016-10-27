@@ -37,6 +37,8 @@ public class NodeWorker implements Serializable {
 	
 	private String prefix="worker-";
 	
+	private String logPrefix;
+	
 	private int id;
 	
 	public String name;
@@ -58,6 +60,7 @@ public class NodeWorker implements Serializable {
 	public NodeWorker(int id, String workerName,WorkflowMeta workflowMeta,ZookeeperExecutor executor,Map conf) {
 		this.id = id;
 		this.name = workerName;
+		this.logPrefix="(worker["+workerName+"])+"+id+" ";
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
 		JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(this.conf);
@@ -73,7 +76,7 @@ public class NodeWorker implements Serializable {
 			@Override
 			public void notLeader() {
 				if(master==null) return;
-				System.out.println(" lose worker-processor eadership .... ");
+				System.out.println(logPrefix+"(Thread)+"+Thread.currentThread().getName()+" lose worker-processor eadership .... ");
 				if(master.processorsWather!=null){
 					try {
 						master.processorsWather.close();
@@ -86,6 +89,7 @@ public class NodeWorker implements Serializable {
 			
 			@Override
 			public void isLeader() {
+				System.out.println(logPrefix+"(Thread)+"+Thread.currentThread().getName()+" is worker-processor eadership .... ");
 				createMasterMeta();
 			}
 		}, Executors.newFixedThreadPool(1));
@@ -118,6 +122,7 @@ public class NodeWorker implements Serializable {
 				workerPathVal.setTime(new Date().getTime());
 				executor.createPath(path,JJSON.get().formatObject(workerPathVal).getBytes(Charset.forName("utf-8")),CreateMode.PERSISTENT);
 			}
+			System.out.println(logPrefix+"  add wahter on : "+path);
 			executor.watchPath(path, new JZooKeeperConnecter.NodeCallback () {
 				@Override
 				public void call(JNode node) {
@@ -267,9 +272,9 @@ public class NodeWorker implements Serializable {
 		while(true){
 			try{
 				synchronized (this) {
-					System.out.println(" worker ["+id+"]  go to wait .... ");
+					System.out.println(logPrefix+" go to wait .... ");
 					wait();
-					System.out.println(" wake up worker ["+id+"] .... ");
+					System.out.println(logPrefix+" waked up ... ");
 					break;
 				}
 			}catch (Exception e) {
@@ -307,6 +312,7 @@ public class NodeWorker implements Serializable {
 	
 	
 	public void release() throws Exception{
+		System.out.println(logPrefix+" delete temp path : "+tempPath);
 		executor.deletePath(tempPath);
 	}
 	

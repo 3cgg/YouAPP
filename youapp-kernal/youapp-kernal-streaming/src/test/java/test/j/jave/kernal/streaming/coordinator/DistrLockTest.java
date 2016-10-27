@@ -28,16 +28,11 @@ public class DistrLockTest {
 		
 		JZooKeeperConfig zooKeeperConfig=new JZooKeeperConfig();
 		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
-		zooKeeperConfig.setNamespace("test-a");
+		zooKeeperConfig.setNamespace("test-b");
 		ZookeeperExecutor executor=new JZooKeeperConnecter(zooKeeperConfig)
 				.connect();
 		
 		NodeSelector nodeSelector=NodeSelector.startup(executor, leaderConf);
-		
-		WorkflowMeta workflowMeta=WorkflowMetaDemoTest.get();
-		Workflow workflow=new Workflow(workflowMeta.getName());
-		workflow.setNodeData(workflowMeta.getNodeData());
-		nodeSelector.addWorkflow(workflow);
 		
 		NodeWorkers.startup(executor);
 		Utils.sleep(3000);

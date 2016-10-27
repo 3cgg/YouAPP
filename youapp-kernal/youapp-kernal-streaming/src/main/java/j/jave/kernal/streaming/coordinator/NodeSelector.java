@@ -19,6 +19,7 @@ import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
@@ -125,6 +126,10 @@ public class NodeSelector implements Serializable{
 		return workflow==null?triggerPath:(triggerPath+"/"+workflow.getName());
 	}
 	
+	String workflowAddPath(){
+		return basePath+"/workers-collection-repo";
+	}
+	
 	String leaderPath(){
 		return basePath+"/leader-latch";
 	}
@@ -142,10 +147,19 @@ public class NodeSelector implements Serializable{
 		return atomicLong.getSequence();
 	}
 	
-	private synchronized void addWorkflow(Workflow workflow){
-		if(!workflowMaster.existsWorkflow(workflow.getName())){
-			attachWorkersPathWatcher(workflow);
-		}
+	private synchronized void addWorkflow(WorkflowMeta workflowMeta){
+//		if(!workflowMaster.existsWorkflow(workflowMeta.getName())){
+			Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
+			if(workflow==null){
+				workflow=new Workflow(workflowMeta.getName());
+				workflow.setNodeData(workflowMeta.getNodeData());
+				workflowMaster.addWorkflow(workflow);
+				attachWorkersPathWatcher(workflow);
+			}
+			else{
+				workflow.setNodeData(workflowMeta.getNodeData());
+			}
+//		}
 	}
 	
 	
@@ -359,7 +373,8 @@ public class NodeSelector implements Serializable{
 			public Thread newThread(Runnable r) {
 				return new Thread(r, workflowPath(workflow)+"{watch works children}");
 			}
-		}),PathChildrenCacheEvent.Type.CHILD_ADDED,PathChildrenCacheEvent.Type.CHILD_REMOVED);
+		}),PathChildrenCacheEvent.Type.CHILD_ADDED,
+				PathChildrenCacheEvent.Type.CHILD_REMOVED);
 		workflow.setPluginWorkersPathCache(cache);
 	}
 	
@@ -367,6 +382,7 @@ public class NodeSelector implements Serializable{
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
 		attachWorfkowTriggerWatcher(null);
+		attachWorfkowAddWatcher();
 	}
 	
 	private Instance createInstance(Workflow workflow){
@@ -379,8 +395,6 @@ public class NodeSelector implements Serializable{
 		createInstancePath(instance.getWorkflow().getNodeData(),instance);
 		
 		attachInstanceChildPathWatcher(instance);
-		
-		attachWorkersPathWatcher(workflow);
 		
 		attachWorfkowTriggerWatcher(workflow);
 		
@@ -409,8 +423,7 @@ public class NodeSelector implements Serializable{
 				WorkflowMeta workflowMeta=JJSON.get().parse(node.getStringData(), WorkflowMeta.class);
 				Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
 				if(workflow==null){
-					workflow=new Workflow(workflowMeta.getName());
-					workflow.setNodeData(workflowMeta.getNodeData());
+					throw new RuntimeException("workflow is missing, to add workflow in the container.");
 				}
 				Instance instance=createInstance(workflow);
 				start(instance);
@@ -428,8 +441,33 @@ public class NodeSelector implements Serializable{
 		}
 	}
 	
-	private void attachWorfkowAddWatcher(){
-		
+	private synchronized void attachWorfkowAddWatcher(){
+		final String workflowAddPath=workflowAddPath();
+		if(!executor.exists(workflowAddPath)){
+			executor.createPath(workflowAddPath);
+		}
+		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new JZooKeeperConnecter.NodeChildrenCallback() {
+			
+			@Override
+			public void call(List<JNode> nodes) {
+				for(JNode node:nodes){
+					byte[] bytes=node.getData();
+					if(bytes==null){
+						bytes=executor.getPath(node.getPath());
+					}
+					WorkflowMeta workflowMeta=JJSON.get().parse(JStringUtils.utf8(bytes), WorkflowMeta.class);
+					addWorkflow(workflowMeta);
+				}
+			}
+		} , Executors.newFixedThreadPool(1, new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, workflowAddPath+"{watcher workflow add}");
+			}
+		}), PathChildrenCacheEvent.Type.CHILD_ADDED
+				,PathChildrenCacheEvent.Type.CHILD_REMOVED
+				,PathChildrenCacheEvent.Type.CHILD_UPDATED);
+		workflowMaster.setWorkfowAddCache(cache);
 	}
 	
 	private void propagateWorkerPath(InstanceNodeVal triggerInstanceNodeVal,

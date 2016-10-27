@@ -43,7 +43,13 @@ public class WorkflowMaster implements JModel ,Closeable{
 				exception.addMessage(e.getMessage());
 			}
 		}
-		
+		if(workfowAddCache!=null){
+			try {
+				workfowAddCache.close();
+			} catch (IOException e) {
+				exception.addMessage(e.getMessage());
+			}
+		}
 		for(Instance instance:instances.values()){
 			try{
 				instance.close();

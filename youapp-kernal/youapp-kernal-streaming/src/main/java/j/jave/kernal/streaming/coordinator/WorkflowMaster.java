@@ -2,6 +2,10 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -10,6 +14,8 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
+import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 
 public class WorkflowMaster implements JModel ,Closeable{
 
@@ -33,6 +39,9 @@ public class WorkflowMaster implements JModel ,Closeable{
 	 */
 	private Map<String, Workflow> workflows=Maps.newConcurrentMap();
 
+	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
+	=Maps.newConcurrentMap();
+	
 	@Override
 	public void close() throws IOException {
 		CloseException exception=new CloseException();
@@ -91,6 +100,22 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}
 	}
 
+	public synchronized void addWorkflowCommand(WorkflowCommand<? extends WorkflowCommandModel> workflowCommand ){
+		List<WorkflowCommand<?>> commands
+			=workflowCommands.get(workflowCommand.getGenericClass());
+		if(commands==null){
+			commands=new ArrayList<>();
+			workflowCommands.put(workflowCommand.getGenericClass(), commands);
+		}
+		commands.add(workflowCommand);
+	}
+	
+	public Collection<WorkflowCommand> workflowCommands(Class<? extends WorkflowCommandModel> clazz) {
+		Collection<WorkflowCommand<?>> commands=workflowCommands.get(clazz);
+		if(commands==null) return Collections.EMPTY_LIST;
+		return Collections.unmodifiableCollection(commands);
+	}
+	
 	public NodeCache getWorkflowTriggerCache() {
 		return workflowTriggerCache;
 	}

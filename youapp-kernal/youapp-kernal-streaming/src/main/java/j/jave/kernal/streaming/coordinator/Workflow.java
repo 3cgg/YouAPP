@@ -21,7 +21,7 @@ public class Workflow implements JModel,Closeable{
 	/**
 	 * watcher on {@link #pluginWorkersPath}
 	 */
-	private PathChildrenCache pluginWorkersPathCache;
+	private transient PathChildrenCache pluginWorkersPathCache;
 	
 	private String pluginWorkersPath;
 
@@ -31,12 +31,22 @@ public class Workflow implements JModel,Closeable{
 	 */
 	private Map<Integer,String> workerPaths=Maps.newConcurrentMap();
 	
+	/**
+	 * the workflow definition information 
+	 */
+	private WorkflowMeta workflowMeta;
+	
 	private NodeData nodeData;
+	
+	/**
+	 * how many times from the workflow beginning
+	 */
+	private long count;
 	
 	/**
 	 * watcher on the special workflow
 	 */
-	private NodeCache workflowTriggerCache;
+	private transient NodeCache workflowTriggerCache;
 	
 	public Workflow(String name) {
 		this(name,Maps.newConcurrentMap(),null);
@@ -117,4 +127,21 @@ public class Workflow implements JModel,Closeable{
 	public void setPluginWorkersPathCache(PathChildrenCache pluginWorkersPathCache) {
 		this.pluginWorkersPathCache = pluginWorkersPathCache;
 	}
+
+	public WorkflowMeta getWorkflowMeta() {
+		return workflowMeta;
+	}
+
+	public void setWorkflowMeta(WorkflowMeta workflowMeta) {
+		this.workflowMeta = workflowMeta;
+	}
+
+	public long getCount() {
+		return count;
+	}
+
+	public void setCount(long count) {
+		this.count = count;
+	}
+	
 }

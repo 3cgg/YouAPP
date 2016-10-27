@@ -6,6 +6,8 @@ public class WorkflowMeta implements JModel {
 
 	private String name;
 	
+	private long count;
+	
 	private NodeData nodeData;
 
 	public String getName() {
@@ -23,4 +25,13 @@ public class WorkflowMeta implements JModel {
 	public void setNodeData(NodeData nodeData) {
 		this.nodeData = nodeData;
 	}
+
+	public long getCount() {
+		return count;
+	}
+
+	public void setCount(long count) {
+		this.count = count;
+	}
+	
 }

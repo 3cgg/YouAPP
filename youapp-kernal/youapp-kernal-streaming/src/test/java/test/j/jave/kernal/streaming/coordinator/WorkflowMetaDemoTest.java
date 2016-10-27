@@ -8,6 +8,7 @@ public class WorkflowMetaDemoTest {
 	public static WorkflowMeta get(){
 		WorkflowMeta workflowMeta=new WorkflowMeta();
 		workflowMeta.setName("default");
+		workflowMeta.setCount(Long.MAX_VALUE);
 		workflowMeta.setNodeData(DefaultNodeDataGenerator.INSTANCE.generate("default", null));
 		return workflowMeta;
 	}

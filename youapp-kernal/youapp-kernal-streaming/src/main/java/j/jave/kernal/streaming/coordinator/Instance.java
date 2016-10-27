@@ -23,6 +23,11 @@ public class Instance implements JModel,Closeable{
 	private long sequence;
 	
 	/**
+	 * how many times from the workflow beginning
+	 */
+	private long count;
+	
+	/**
 	 * the roor path of 
 	 */
 	private String rootPath;
@@ -123,6 +128,14 @@ public class Instance implements JModel,Closeable{
 
 	public void setInstanceNodes(Map<String, InstanceNode> instanceNodes) {
 		this.instanceNodes = instanceNodes;
+	}
+
+	public long getCount() {
+		return count;
+	}
+
+	public void setCount(long count) {
+		this.count = count;
 	}
 
 }

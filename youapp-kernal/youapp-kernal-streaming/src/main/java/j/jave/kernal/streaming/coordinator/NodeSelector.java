@@ -35,6 +35,10 @@ public class NodeSelector implements Serializable{
 	
 	private Map conf;
 	
+	private String name;
+	
+	private String logPrefix;
+	
 	private String basePath=CoordinatorPaths.BASE_PATH;
 	
 	private ZookeeperExecutor executor;
@@ -55,11 +59,13 @@ public class NodeSelector implements Serializable{
 	
 	private static NodeSelector NODE_SELECTOR;
 	
-	public synchronized static NodeSelector startup(ZookeeperExecutor executor,Map conf){
+	public synchronized static NodeSelector startup(String name,ZookeeperExecutor executor,Map conf){
 		NodeSelector nodeSelector=NODE_SELECTOR;
 		if(nodeSelector==null){
 			nodeSelector=new NodeSelector(executor);
 			nodeSelector.conf=conf;
+			nodeSelector.name=name;
+			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
 			JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(conf);
 			JProducerConnecter producerConnecter=new JProducerConnecter(producerConfig);
 			ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
@@ -81,7 +87,7 @@ public class NodeSelector implements Serializable{
 			@Override
 			public void notLeader() {
 				if(workflowMaster==null) return;
-				System.out.println(" lose leadership .... ");
+				System.out.println(logPrefix()+" lose leadership .... ");
 				try {
 					workflowMaster.close();
 				} catch (IOException e) {
@@ -92,6 +98,7 @@ public class NodeSelector implements Serializable{
 			
 			@Override
 			public void isLeader() {
+				System.out.println(logPrefix()+" is leadership .... ");
 				createMasterMeta();
 			}
 		}, Executors.newFixedThreadPool(1));
@@ -379,6 +386,7 @@ public class NodeSelector implements Serializable{
 	}
 	
 	private synchronized void createMasterMeta(){
+		System.out.println(logPrefix()+" got workflow leader ... "); 
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
 		attachWorfkowTriggerWatcher(null);
@@ -524,5 +532,9 @@ public class NodeSelector implements Serializable{
 	
 	public Map getConf() {
 		return conf;
+	}
+	
+	private String logPrefix(){
+		return logPrefix;
 	}
 }

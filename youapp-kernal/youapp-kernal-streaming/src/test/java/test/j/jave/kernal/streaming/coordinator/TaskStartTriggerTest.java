@@ -3,7 +3,6 @@ package test.j.jave.kernal.streaming.coordinator;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
-import j.jave.kernal.streaming.coordinator.Workflow;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.zookeeper.JZooKeeperConfig;
 import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter;
@@ -32,7 +31,7 @@ public class TaskStartTriggerTest {
 				,JStringUtils.utf8(JJSON.get().formatObject(demo)));
 		}
 		Thread.currentThread().sleep(2000);
-		System.out.println("eeeeeeeeeeeeeeeeeeeee...............");
+		
 		executor.setPath(CoordinatorPaths.BASE_PATH
 				+"/workflow-trigger",JJSON.get().formatObject(demo));
 		Thread.currentThread().sleep(2000);

@@ -23,9 +23,9 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
-import j.jave.kernal.streaming.coordinator.command.DefaultWorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
+import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
@@ -244,12 +244,25 @@ public class NodeSelector implements Serializable{
 	}
 	
 	/**
+	 * complete current virtual node , also close some IO 
+	 * @param instance
+	 * @param _path
+	 */
+	private void completeVirtual(final Instance instance, final String _path
+			,final String completeStatus) {
+		// the virtual node is completed, set flag to complete
+		c(_path,completeStatus);
+		//close instance children node watcher, release IO
+		close(instance.getSequence(), _path, CacheType.CHILD);
+	}
+	
+	/**
 	 * is;s call  when the logical/virtual node is completed.
 	 * @param path
 	 */
-	private void complete(final String path){
+	private void c(final String path,final String completeStatus){
 		final InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(executor.getPath(path),Charset.forName("utf-8")), InstanceNodeVal.class);
-		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
+		instanceNodeVal.setStatus(completeStatus);
 		instanceNodeVal.setTime(new Date().getTime());
 		executor.setPath(path, JJSON.get().formatObject(instanceNodeVal));
 		//logging...
@@ -258,7 +271,8 @@ public class NodeSelector implements Serializable{
 			public void run() {
 				Instance instance=workflowMaster.getInstance(instanceNodeVal.getSequence());
 				WorkTracking workTracking=
-						workTracking(instanceNodeVal.getId(), path, NodeStatus.COMPLETE, instance);
+						workTracking(instanceNodeVal.getId(), path, 
+								completeStatus, instance);
 				simpleProducer.send(workTracking);
 			}
 		});
@@ -320,11 +334,12 @@ public class NodeSelector implements Serializable{
 	private void attachInstanceChildPathWatcher(final Instance instance){
 		for(String path:instance.getChildPathWatcherPaths()){
 			final String _path=path;
-			InstanceNode instanceNode=instance.getInstanceNodes().get(_path);
+			InstanceNode virtualNode=instance.getInstanceNodes().get(_path);
 			final PathChildrenCache cache= executor.watchChildrenPath(_path, new JZooKeeperConnector.NodeChildrenCallback() {
 				@Override
 				public void call(List<JNode> nodes) {
 					boolean done=true;
+					boolean withError=false;
 					for(JNode node:nodes){
 						byte[] bytes=node.getData();
 						if(bytes==null){
@@ -332,18 +347,20 @@ public class NodeSelector implements Serializable{
 						}
 						InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(bytes, Charset.forName("utf-8")),
 								InstanceNodeVal.class);
-						if(!NodeStatus.COMPLETE.equals(instanceNodeVal.getStatus())){
+						if(!isComplete(instanceNodeVal)){
 							done=false;
+						}
+						else{
+							if(NodeStatus.COMPLETE_ERROR.equals(instanceNodeVal.getStatus())){
+								withError=true;
+							}
 						}
 					}
 					
-					long instanceId=instance.getSequence();
-					
 					if(done){
-						// the virtual node is completed, set flag to complete
-						complete(_path);
-						//close instance children node watcher, release IO
-						close(instanceId, _path, CacheType.CHILD);
+						String completeStatus=withError?NodeStatus.COMPLETE_ERROR
+								:NodeStatus.COMPLETE;
+						completeVirtual(instance, _path,completeStatus);
 						if(path.equals(instance.getRootPath())){
 							executeCompleteCommand(instance);
 							executeRetryCommand(instance);
@@ -358,10 +375,7 @@ public class NodeSelector implements Serializable{
 						}
 					});
 					
-					
-					Instance instance=workflowMaster.getInstances().get(instanceId);
-					InstanceNode instanceNode=instance.getInstanceNodes().get(_path);
-					if("0".equals(instanceNode.getNodeData().getParallel())){
+					if("0".equals(virtualNode.getNodeData().getParallel())){
 						//start next node/worker in the virtual node
 						InstanceNodeVal latestNode=null;
 						for(int i=nodes.size()-1;i>-1;i--){
@@ -373,7 +387,7 @@ public class NodeSelector implements Serializable{
 							InstanceNodeVal instanceNodeVal=JJSON.get().parse(
 									new String(bytes, Charset.forName("utf-8")),
 									InstanceNodeVal.class);
-							if(!NodeStatus.COMPLETE.equals(instanceNodeVal.getStatus())){
+							if(!isComplete(instanceNodeVal)){
 								latestNode=instanceNodeVal;
 							}
 							else{
@@ -381,7 +395,7 @@ public class NodeSelector implements Serializable{
 							}
 						}
 						if(latestNode!=null){
-							NodeData nodeData=instanceNode.getNodeData();
+							NodeData nodeData=virtualNode.getNodeData();
 							NodeData find=null;
 							for(NodeData temp:nodeData.getNodes()){
 								if(temp.getId()==latestNode.getId()){
@@ -389,8 +403,14 @@ public class NodeSelector implements Serializable{
 									break;
 								}
 							}
-							propagateWorkerPath(latestNode, instanceNode, find,
-									instance);
+							if(withError){
+								propagateCompleteDirectly(latestNode, virtualNode, find,
+										instance);
+							}
+							else{
+								propagateWorkerPath(latestNode, virtualNode, find,
+										instance);
+							}
 						}
 					}
 				}
@@ -400,10 +420,15 @@ public class NodeSelector implements Serializable{
 					return new Thread(r, workflowPath(instance.getWorkflow())+"{watch children}");
 				}
 			}),PathChildrenCacheEvent.Type.CHILD_UPDATED);
-			instanceNode.setPathChildrenCache(cache);
-			instance.addInstanceNode(_path, instanceNode);
+			virtualNode.setPathChildrenCache(cache);
+			instance.addInstanceNode(_path, virtualNode);
 		}
 		
+	}
+	
+	private boolean isComplete(InstanceNodeVal instanceNodeVal) {
+		return NodeStatus.COMPLETE.equals(instanceNodeVal.getStatus())
+				||NodeStatus.COMPLETE_ERROR.equals(instanceNodeVal.getStatus());
 	}
 	
 	private int workerId(String path){
@@ -449,7 +474,7 @@ public class NodeSelector implements Serializable{
 	}
 	
 	private synchronized void addCommonCommand(){
-		workflowMaster.addWorkflowCommand(new DefaultWorkflowCompleteCommand()) ;
+		workflowMaster.addWorkflowCommand(new WorkflowCompleteCommand()) ;
 		workflowMaster.addWorkflowCommand(new WorkflowRetryCommand());
 	}
 	
@@ -579,6 +604,7 @@ public class NodeSelector implements Serializable{
 		workflowMaster.setWorkfowAddCache(cache);
 	}
 	
+	
 	/**
 	 * start a real / virtual path , whatever a real worker should be started.
 	 * if the node is virtual, find into its children.
@@ -588,25 +614,55 @@ public class NodeSelector implements Serializable{
 	 * @param instance
 	 */
 	private void propagateWorkerPath(InstanceNodeVal triggerInstanceNodeVal,
-			InstanceNode triggerInstanceNode,NodeData nodeData,Instance instance){
-		if(nodeData.hasChildren()){ // it's virtual node  
-			if("1".equals(nodeData.getParallel())){
+			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
+		if(triggerNodeData.hasChildren()){ // it's virtual node  
+			if("1".equals(triggerNodeData.getParallel())){
 				//the node is parallel , so we need start all children nodes at the time
-				for(NodeData thisNodeData:nodeData.getNodes()){
-					propagateWorkerPath(triggerInstanceNodeVal, triggerInstanceNode,
+				for(NodeData thisNodeData:triggerNodeData.getNodes()){
+					propagateWorkerPath(triggerInstanceNodeVal, virtualNode,
 							thisNodeData, instance);
 				}
 			}
 			else{
 				//we get the first node to start.
-				NodeData thisNodeData=nodeData.getNodes().get(0);
-				propagateWorkerPath(triggerInstanceNodeVal, triggerInstanceNode,
+				NodeData thisNodeData=triggerNodeData.getNodes().get(0);
+				propagateWorkerPath(triggerInstanceNodeVal, virtualNode,
 						thisNodeData, instance);
 			}
 		}else{ // it's real node, directly start 
-			start(nodeData.getId(), instancePath(nodeData.getPath(), instance), instance);
+			start(triggerNodeData.getId(), instancePath(triggerNodeData.getPath(), instance), instance);
 		}
 	}
+	
+	/**
+	 * complete all sub-node/worker directly, no need start any worker
+	 * @param triggerInstanceNodeVal
+	 * @param virtualNode
+	 * @param triggerNodeData
+	 * @param instance
+	 */
+	private void propagateCompleteDirectly(InstanceNodeVal triggerInstanceNodeVal,
+			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
+		if(triggerNodeData.hasChildren()){ // it's virtual node  
+			if("1".equals(triggerNodeData.getParallel())){
+				//the node is parallel , so we need start all children nodes at the time
+				for(NodeData thisNodeData:triggerNodeData.getNodes()){
+					propagateCompleteDirectly(triggerInstanceNodeVal, virtualNode,
+							thisNodeData, instance);
+				}
+			}
+			else{
+				//we get the first node to start.
+				NodeData thisNodeData=triggerNodeData.getNodes().get(0);
+				propagateCompleteDirectly(triggerInstanceNodeVal, virtualNode,
+						thisNodeData, instance);
+			}
+		}else{ // it's real node, directly complete 
+			c(instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_ERROR);
+		}
+	}
+	
+	
 	
 	/**
 	 * attempt to latch leader.

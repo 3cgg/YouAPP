@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.coordinator.command;
 
 import j.jave.kernal.streaming.coordinator.CommandResource;
 
-public class DefaultWorkflowCompleteCommand  extends WorkflowCommand<WorkflowCompleteModel> {
+public class WorkflowCompleteCommand  extends WorkflowCommand<WorkflowCompleteModel> {
 
 	@Override
 	protected void doExecute(WorkflowCompleteModel commandModel,CommandResource commandResource) throws Exception {

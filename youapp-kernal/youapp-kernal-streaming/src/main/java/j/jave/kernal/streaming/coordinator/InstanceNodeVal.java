@@ -69,5 +69,5 @@ public class InstanceNodeVal implements JModel {
 	public void setSequence(long sequence) {
 		this.sequence = sequence;
 	}
-	
+
 }

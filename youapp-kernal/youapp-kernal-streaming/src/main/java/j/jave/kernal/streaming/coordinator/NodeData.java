@@ -13,6 +13,7 @@ public class NodeData implements JModel{
 		String READY="READY";
 		String PROCESSING="PROCESSING";
 		String COMPLETE="COMPLETE";
+		String COMPLETE_ERROR="COMPLETE_ERROR";
 	}
 	
 	public interface NodeDataGenerator{

@@ -21,6 +21,7 @@ import org.apache.zookeeper.CreateMode;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
+import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.JProducerConnector;
 import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
@@ -49,7 +50,7 @@ public class NodeWorker implements Serializable {
 
 	private LeaderLatch processorLeaderLatch;
 	
-	private String tempPath;
+	private WorkerTemporary workerTemporary;
 	
 	private Master master;
 	
@@ -130,7 +131,10 @@ public class NodeWorker implements Serializable {
 						final WorkerPathVal workerPathVal=
 								JJSON.get().parse(node.getStringData(),WorkerPathVal.class);
 						final String tempPath=executor.createEphSequencePath(path+"/temp-");
-						setTempPath(tempPath);
+						WorkerTemporary workerTemporary=new WorkerTemporary();
+						workerTemporary.setTempPath(tempPath);
+						workerTemporary.setWorkerPathVal(workerPathVal);
+						setWorkerTemporary(workerTemporary);
 						executorService.execute(new Runnable() {
 							@Override
 							public void run() {
@@ -306,14 +310,18 @@ public class NodeWorker implements Serializable {
 		throw new TimeoutException(" worker cannot be scheduled.");
 	}
 	
-	public void setTempPath(String tempPath) {
-		this.tempPath = tempPath;
+	private void setWorkerTemporary(WorkerTemporary workerTemporary) {
+		this.workerTemporary = workerTemporary;
 	}
 	
 	
 	public void release() throws Exception{
-		System.out.println(logPrefix+" delete temp path : "+tempPath);
-		executor.deletePath(tempPath);
+		release(null);
+	}
+	
+	public void release(String errorMessage) throws Exception{
+		System.out.println(logPrefix+" delete temp path : "+workerTemporary.getTempPath());
+		executor.deletePath(workerTemporary.getTempPath());
 	}
 	
 	private void wakeup(){

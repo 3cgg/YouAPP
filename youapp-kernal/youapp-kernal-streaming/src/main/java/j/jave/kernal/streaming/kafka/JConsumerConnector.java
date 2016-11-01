@@ -18,7 +18,7 @@ import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
 @SuppressWarnings({"serial","rawtypes"})
-public class JConsumerConnecter implements Serializable {
+public class JConsumerConnector implements Serializable {
 
 	private JKafkaConsumerConfig kafkaConsumerConfig;
 	
@@ -75,7 +75,7 @@ public class JConsumerConnecter implements Serializable {
 		
 	}
 
-	public JConsumerConnecter(JKafkaConsumerConfig kafkaConsumerConfig) {
+	public JConsumerConnector(JKafkaConsumerConfig kafkaConsumerConfig) {
 		this.kafkaConsumerConfig =kafkaConsumerConfig;
 	}
 	

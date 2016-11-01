@@ -22,11 +22,11 @@ import org.apache.zookeeper.ZooDefs;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 @SuppressWarnings("serial")
-public class JZooKeeperConnecter implements Serializable {
+public class JZooKeeperConnector implements Serializable {
 
 	private JZooKeeperConfig zooKeeperConfig;
 	
-	public JZooKeeperConnecter(JZooKeeperConfig zooKeeperConfig) {
+	public JZooKeeperConnector(JZooKeeperConfig zooKeeperConfig) {
 		this.zooKeeperConfig=zooKeeperConfig;
 	}
 	

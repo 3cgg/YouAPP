@@ -30,12 +30,12 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.JProducerConnecter;
-import j.jave.kernal.streaming.kafka.JProducerConnecter.ProducerExecutor;
+import j.jave.kernal.streaming.kafka.JProducerConnector;
+import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
 import j.jave.kernal.streaming.kafka.SimpleProducer;
 import j.jave.kernal.streaming.zookeeper.JNode;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class NodeSelector implements Serializable{
@@ -74,7 +74,7 @@ public class NodeSelector implements Serializable{
 			nodeSelector.name=name;
 			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
 			JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(conf);
-			JProducerConnecter producerConnecter=new JProducerConnecter(producerConfig);
+			JProducerConnector producerConnecter=new JProducerConnector(producerConfig);
 			ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
 			SimpleProducer simpleProducer =new SimpleProducer(producerExecutor, 
 					"workflow-instance-track");
@@ -321,7 +321,7 @@ public class NodeSelector implements Serializable{
 		for(String path:instance.getChildPathWatcherPaths()){
 			final String _path=path;
 			InstanceNode instanceNode=instance.getInstanceNodes().get(_path);
-			final PathChildrenCache cache= executor.watchChildrenPath(_path, new JZooKeeperConnecter.NodeChildrenCallback() {
+			final PathChildrenCache cache= executor.watchChildrenPath(_path, new JZooKeeperConnector.NodeChildrenCallback() {
 				@Override
 				public void call(List<JNode> nodes) {
 					boolean done=true;
@@ -418,7 +418,7 @@ public class NodeSelector implements Serializable{
 		if(workflow.getPluginWorkersPathCache()!=null) return ;
 		String _path=workflow.getPluginWorkersPath();
 		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
-				new JZooKeeperConnecter.NodeChildrenCallback() {
+				new JZooKeeperConnector.NodeChildrenCallback() {
 			@Override
 			public void call(List<JNode> nodes) {
 				for(JNode node:nodes){
@@ -521,7 +521,7 @@ public class NodeSelector implements Serializable{
 		if(!executor.exists(path)){
 			executor.createPath(path);
 		}
-		NodeCache cache=executor.watchPath(path, new JZooKeeperConnecter.NodeCallback() {
+		NodeCache cache=executor.watchPath(path, new JZooKeeperConnector.NodeCallback() {
 			
 			@Override
 			public void call(JNode node) {
@@ -555,7 +555,7 @@ public class NodeSelector implements Serializable{
 		if(!executor.exists(workflowAddPath)){
 			executor.createPath(workflowAddPath);
 		}
-		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new JZooKeeperConnecter.NodeChildrenCallback() {
+		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new JZooKeeperConnector.NodeChildrenCallback() {
 			
 			@Override
 			public void call(List<JNode> nodes) {

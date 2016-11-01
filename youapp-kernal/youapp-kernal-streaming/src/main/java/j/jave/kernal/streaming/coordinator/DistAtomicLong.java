@@ -6,7 +6,7 @@ import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicLong;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 public class DistAtomicLong implements Serializable{
 

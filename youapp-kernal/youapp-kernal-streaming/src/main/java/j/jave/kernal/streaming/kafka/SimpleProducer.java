@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.kafka;
 import java.io.Serializable;
 
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.streaming.kafka.JProducerConnecter.ProducerExecutor;
+import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
 
 @SuppressWarnings("serial")
 public class SimpleProducer implements Serializable {

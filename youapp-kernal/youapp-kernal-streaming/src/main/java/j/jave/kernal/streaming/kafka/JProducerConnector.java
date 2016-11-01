@@ -10,11 +10,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 @SuppressWarnings({ "serial", "rawtypes" })
-public class JProducerConnecter implements Serializable {
+public class JProducerConnector implements Serializable {
 
 	private JKafkaProducerConfig kafkaProducerConfig;
 
-	public JProducerConnecter(JKafkaProducerConfig kafkaProducerConfig) {
+	public JProducerConnector(JKafkaProducerConfig kafkaProducerConfig) {
 		this.kafkaProducerConfig = kafkaProducerConfig;
 	}
 

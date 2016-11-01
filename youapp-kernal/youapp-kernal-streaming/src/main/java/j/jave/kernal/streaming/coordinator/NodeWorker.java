@@ -22,12 +22,12 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.JProducerConnecter;
-import j.jave.kernal.streaming.kafka.JProducerConnecter.ProducerExecutor;
+import j.jave.kernal.streaming.kafka.JProducerConnector;
+import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
 import j.jave.kernal.streaming.kafka.SimpleProducer;
 import j.jave.kernal.streaming.zookeeper.JNode;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 
 @SuppressWarnings("serial")
@@ -64,7 +64,7 @@ public class NodeWorker implements Serializable {
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
 		JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(this.conf);
-		JProducerConnecter producerConnecter=new JProducerConnecter(producerConfig);
+		JProducerConnector producerConnecter=new JProducerConnector(producerConfig);
 		ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
 		simpleProducer =new SimpleProducer(producerExecutor, 
 				"workflow-instance-track");
@@ -123,7 +123,7 @@ public class NodeWorker implements Serializable {
 				executor.createPath(path,JJSON.get().formatObject(workerPathVal).getBytes(Charset.forName("utf-8")),CreateMode.PERSISTENT);
 			}
 			System.out.println(logPrefix+"  add wahter on : "+path);
-			executor.watchPath(path, new JZooKeeperConnecter.NodeCallback () {
+			executor.watchPath(path, new JZooKeeperConnector.NodeCallback () {
 				@Override
 				public void call(JNode node) {
 					try{
@@ -207,7 +207,7 @@ public class NodeWorker implements Serializable {
 	
 	
 	private void attachPluginWorkerPathWatcher(final String path){
-		final PathChildrenCache cache= executor.watchChildrenPath(path, new JZooKeeperConnecter.NodeChildrenCallback() {
+		final PathChildrenCache cache= executor.watchChildrenPath(path, new JZooKeeperConnector.NodeChildrenCallback() {
 			@Override
 			public void call(List<JNode> nodes) {
 				if(nodes.isEmpty()){

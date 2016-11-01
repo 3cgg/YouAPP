@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.coordinator;
 
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 public class CommandResource {
 

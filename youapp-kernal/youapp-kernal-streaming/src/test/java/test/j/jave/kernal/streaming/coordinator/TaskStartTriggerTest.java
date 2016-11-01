@@ -5,8 +5,8 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.zookeeper.JZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 public class TaskStartTriggerTest {
 
@@ -16,7 +16,7 @@ public class TaskStartTriggerTest {
 		JZooKeeperConfig zooKeeperConfig=new JZooKeeperConfig();
 		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
 		zooKeeperConfig.setNamespace("test-b");
-		ZookeeperExecutor executor=new JZooKeeperConnecter(zooKeeperConfig)
+		ZookeeperExecutor executor=new JZooKeeperConnector(zooKeeperConfig)
 				.connect();
 		
 		WorkflowMeta demo=WorkflowMetaDemoTest.get();

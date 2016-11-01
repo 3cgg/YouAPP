@@ -10,8 +10,8 @@ import j.jave.kernal.streaming.coordinator.NodeWorkers;
 import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.zookeeper.JZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnecter.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
 
 public class Machine {
 	
@@ -26,7 +26,7 @@ public class Machine {
 		JZooKeeperConfig zooKeeperConfig=new JZooKeeperConfig();
 		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
 		zooKeeperConfig.setNamespace("test-b");
-		ZookeeperExecutor executor=new JZooKeeperConnecter(zooKeeperConfig)
+		ZookeeperExecutor executor=new JZooKeeperConnector(zooKeeperConfig)
 				.connect();
 		return executor;
 	}

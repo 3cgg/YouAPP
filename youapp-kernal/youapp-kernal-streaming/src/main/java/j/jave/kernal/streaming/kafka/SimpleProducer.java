@@ -22,12 +22,18 @@ public class SimpleProducer implements Serializable {
 	
 	
 	public SimpleProducer(ProducerExecutor<String, String> executor,String topic) {
-		this.executor = executor;
-		this.topic=topic;
+		this(executor,topic,null);
 	}
 	
+	public SimpleProducer(ProducerExecutor<String, String> executor) {
+		this(executor,null,null);
+	}
 	
-	public void send(FetchObj fetchObj){
+	public void send(FetchObj fetchObj,String topic){
+		send(fetchObj, topic, null);
+	}
+			
+	public void send(FetchObj fetchObj,String topic,Integer partition){
 		String val=JJSON.get().formatObject(fetchObj);
 		if(partition==null){
 			executor.send(topic,fetchObj.hashKey(),val);
@@ -35,6 +41,9 @@ public class SimpleProducer implements Serializable {
 		else{
 			executor.send(topic, partition, fetchObj.hashKey(), val);
 		}
-		
+	}
+	
+	public void send(FetchObj fetchObj){
+		send(fetchObj, topic, partition);
 	}
 }

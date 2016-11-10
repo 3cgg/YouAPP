@@ -6,6 +6,9 @@ public class WorkflowMeta implements JModel {
 
 	private String name;
 	
+	/**
+	 * the max available executing count
+	 */
 	private long count;
 	
 	private NodeData nodeData;

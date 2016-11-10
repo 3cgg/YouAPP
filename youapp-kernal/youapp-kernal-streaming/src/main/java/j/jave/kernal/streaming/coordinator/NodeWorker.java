@@ -52,7 +52,7 @@ public class NodeWorker implements Serializable {
 	
 	private WorkerTemporary workerTemporary;
 	
-	private Master master;
+	private ProcessorMaster processorMaster;
 	
 	private SimpleProducer simpleProducer;
 	
@@ -76,16 +76,14 @@ public class NodeWorker implements Serializable {
 			
 			@Override
 			public void notLeader() {
-				if(master==null) return;
+				if(processorMaster==null) return;
 				System.out.println(logPrefix+"(Thread)+"+Thread.currentThread().getName()+" lose worker-processor eadership .... ");
-				if(master.processorsWather!=null){
-					try {
-						master.processorsWather.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				try {
+					processorMaster.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				master=null;
+				processorMaster=null;
 			}
 			
 			@Override
@@ -102,12 +100,6 @@ public class NodeWorker implements Serializable {
 		String pluginWorkersPath= CoordinatorPaths.BASE_PATH
 				+"/pluginWorkers/"+workflowMeta.getName()+"-workers";
 		return pluginWorkersPath+"/"+prefix+String.valueOf(id);
-	}
-	
-	private class Master{
-		
-		PathChildrenCache processorsWather;
-		
 	}
 	
 	private void startWorker(){
@@ -171,8 +163,7 @@ public class NodeWorker implements Serializable {
 						processorLeaderLatch.start();
 						processorLeaderLatch.await();
 						createMasterMeta();
-						attachPluginWorkerPathWatcher(path);
-						
+
 						while(true){
 							try{
 								synchronized (this) {
@@ -205,8 +196,9 @@ public class NodeWorker implements Serializable {
 	}
 	
 	private synchronized void createMasterMeta(){
-		if(master!=null) return;
-		master=new Master();
+		if(processorMaster!=null) return;
+		processorMaster=new ProcessorMaster();
+		attachPluginWorkerPathWatcher(pluginWorkerPath());
 	}
 	
 	
@@ -225,7 +217,7 @@ public class NodeWorker implements Serializable {
 				return new Thread(r, path+"{cache:watch children}");
 			}
 		}),PathChildrenCacheEvent.Type.CHILD_REMOVED);
-		master.processorsWather=cache;
+		processorMaster.setProcessorsWather(cache);
 	}
 	
 	private void complete(final String path){

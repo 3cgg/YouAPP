@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.s_deprecated;
 
-import static j.jave.kernal.jave.s_deprecated.U.className;
+import static j.jave.kernal.jave.s_deprecated.D_U.className;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,13 +15,13 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
 
-public abstract class JSO {
+public abstract class D_SO {
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(JSO.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(D_SO.class);
 	
-	private JSerializerFactory defaultSerializer=new JJSONSerializerFactory();
+	private D_SerializerFactory defaultSerializer=new D_JSONSerializerFactory();
 	
-	private JClassResolver classResolver;
+	private D_ClassResolver classResolver;
 	
 	private boolean registrationRequired;
 	
@@ -29,7 +29,7 @@ public abstract class JSO {
 
 	private JJSONConfig jsonConfig;
 	
-	public JSO(JClassResolver classResolver) {
+	public D_SO(D_ClassResolver classResolver) {
 		this.classResolver=classResolver;
 	}
 
@@ -41,7 +41,7 @@ public abstract class JSO {
 	}
 
 	/** Writes an object using the specified serializer. The registered serializer is ignored. */
-	public void writeObject (OutputStream output, Object object, JSerializer serializer) {
+	public void writeObject (OutputStream output, Object object, D_Serializer serializer) {
 		if (output == null) throw new IllegalArgumentException("output cannot be null.");
 		if (object == null) throw new IllegalArgumentException("object cannot be null.");
 		if (serializer == null) throw new IllegalArgumentException("serializer cannot be null.");
@@ -57,7 +57,7 @@ public abstract class JSO {
 	}
 
 	/** Reads an object using the specified serializer. The registered serializer is ignored. */
-	public <T> T readObject (InputStream input, Class<T> type, JSerializer serializer) {
+	public <T> T readObject (InputStream input, Class<T> type, D_Serializer serializer) {
 		if (input == null) throw new IllegalArgumentException("input cannot be null.");
 		if (type == null) throw new IllegalArgumentException("type cannot be null.");
 		if (serializer == null) throw new IllegalArgumentException("serializer cannot be null.");
@@ -69,10 +69,10 @@ public abstract class JSO {
 	 * using the {@link Kryo#addDefaultSerializer(Class, Class) default serializer}.
 	 * @throws IllegalArgumentException if the class is not registered and {@link Kryo#setRegistrationRequired(boolean)} is true.
 	 * @see ClassResolver#getRegistration(Class) */
-	public JRegistration getRegistration (Class type) {
+	public D_Registration getRegistration (Class type) {
 		if (type == null) throw new IllegalArgumentException("type cannot be null.");
 
-		JRegistration registration = classResolver.getRegistration(type);
+		D_Registration registration = classResolver.getRegistration(type);
 		if (registration == null) {
 			if (Proxy.isProxyClass(type)) {
 				// If a Proxy class, treat it like an InvocationHandler because the concrete class for a proxy is generated.
@@ -83,7 +83,7 @@ public abstract class JSO {
 			} else if (EnumSet.class.isAssignableFrom(type)) {
 				registration = classResolver.getRegistration(EnumSet.class);
 			} else if (isClosure(type)) {
-				registration = classResolver.getRegistration(JClosureSerializer.Closure.class);
+				registration = classResolver.getRegistration(D_ClosureSerializer.Closure.class);
 			}
 			if (registration == null) {
 				if (registrationRequired) {
@@ -120,7 +120,7 @@ public abstract class JSO {
 	 * 
 	 * @see #newDefaultSerializer(Class)
 	 */
-	public void setDefaultSerializer(JSerializerFactory serializer) {
+	public void setDefaultSerializer(D_SerializerFactory serializer) {
 		if (serializer == null)
 			throw new IllegalArgumentException("serializer cannot be null.");
 		defaultSerializer = serializer;
@@ -133,16 +133,16 @@ public abstract class JSO {
 	 * 
 	 * @see #newDefaultSerializer(Class)
 	 */
-	public void setDefaultSerializer(Class<? extends JSerializer> serializer) {
+	public void setDefaultSerializer(Class<? extends D_Serializer> serializer) {
 		if (serializer == null)
 			throw new IllegalArgumentException("serializer cannot be null.");
-		defaultSerializer = new JReflectionSerializerFactory(serializer);
+		defaultSerializer = new D_ReflectionSerializerFactory(serializer);
 	}
 	
 	/** Called by {@link #getDefaultSerializer(Class)} when no default serializers matched the type. Subclasses can override this
 	 * method to customize behavior. The default implementation calls {@link SerializerFactory#makeSerializer(Kryo, Class)} using
 	 * the {@link #setDefaultSerializer(Class) default serializer}. */
-	protected JSerializer newDefaultSerializer (Class type) {
+	protected D_Serializer newDefaultSerializer (Class type) {
 		return defaultSerializer.makeSerializer(this, type);
 	}
 	
@@ -157,8 +157,8 @@ public abstract class JSO {
 	/** Creates a new instance of a class using {@link Registration#getInstantiator()}. If the registration's instantiator is null,
 	 * a new one is set using {@link #newInstantiator(Class)}. */
 	public <T> T newInstance (Class<T> type) {
-		JRegistration registration = getRegistration(type);
-		JObjectInstantiator instantiator = registration.getInstantiator();
+		D_Registration registration = getRegistration(type);
+		D_ObjectInstantiator instantiator = registration.getInstantiator();
 		if (instantiator == null) {
 //			instantiator = newInstantiator(type);
 			registration.setInstantiator(instantiator);

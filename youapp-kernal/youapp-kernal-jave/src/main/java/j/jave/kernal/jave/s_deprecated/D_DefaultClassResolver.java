@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.s_deprecated;
 
-import static j.jave.kernal.jave.s_deprecated.U.getWrapperClass;
+import static j.jave.kernal.jave.s_deprecated.D_U.getWrapperClass;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class JDefaultClassResolver implements JClassResolver {
+public class D_DefaultClassResolver implements D_ClassResolver {
 
-	private JSO jso;
+	private D_SO jso;
 	
-	protected final Map<Class, JRegistration> classToRegistration = new HashMap<>();
+	protected final Map<Class, D_Registration> classToRegistration = new HashMap<>();
 	
 	@Override
-	public void setJSO(JSO jso) {
+	public void setJSO(D_SO jso) {
 		this.jso=jso;
 	}
 
 	@Override
-	public JRegistration register(JRegistration registration) {
+	public D_Registration register(D_Registration registration) {
 		if (registration == null) throw new IllegalArgumentException("registration cannot be null.");
 		classToRegistration.put(registration.getType(), registration);
 		if (registration.getType().isPrimitive()) 
@@ -29,12 +29,12 @@ public class JDefaultClassResolver implements JClassResolver {
 	}
 
 	@Override
-	public JRegistration registerImplicit(Class type) {
-		return register(new JRegistration(type, jso.newDefaultSerializer(type)));
+	public D_Registration registerImplicit(Class type) {
+		return register(new D_Registration(type, jso.newDefaultSerializer(type)));
 	}
 
 	@Override
-	public JRegistration getRegistration(Class type) {
+	public D_Registration getRegistration(Class type) {
 		Class wrapperClass=type;
 		if (type.isPrimitive()) {
 			wrapperClass=getWrapperClass(type);
@@ -43,12 +43,12 @@ public class JDefaultClassResolver implements JClassResolver {
 	}
 
 	@Override
-	public JRegistration writeClass(OutputStream output, Class type) {
+	public D_Registration writeClass(OutputStream output, Class type) {
 		return null;
 	}
 
 	@Override
-	public JRegistration readClass(InputStream input) {
+	public D_Registration readClass(InputStream input) {
 		return null;
 	}
 

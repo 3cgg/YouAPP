@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.s_deprecated;
 
-public abstract class U {
+public abstract class D_U {
 	static public String className (Class type) {
 		if (type.isArray()) {
 			Class elementClass = getElementClass(type);

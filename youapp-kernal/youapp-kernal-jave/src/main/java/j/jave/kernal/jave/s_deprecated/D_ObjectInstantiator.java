@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.s_deprecated;
 
-public interface JObjectInstantiator<T> {
+public interface D_ObjectInstantiator<T> {
 
 	 /**
 	    * Returns a new instance of an object. The returned object's class is defined by the

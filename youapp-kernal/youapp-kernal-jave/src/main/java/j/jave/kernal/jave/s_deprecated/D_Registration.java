@@ -1,15 +1,15 @@
 package j.jave.kernal.jave.s_deprecated;
 
 
-public class JRegistration {
+public class D_Registration {
 
 	private final Class type;
 	
-	private JSerializer serializer;
+	private D_Serializer serializer;
 	
-	private JObjectInstantiator instantiator;
+	private D_ObjectInstantiator instantiator;
 
-	public JRegistration (Class type, JSerializer serializer) {
+	public D_Registration (Class type, D_Serializer serializer) {
 		if (type == null) throw new IllegalArgumentException("type cannot be null.");
 		if (serializer == null) throw new IllegalArgumentException("serializer cannot be null.");
 		this.type = type;
@@ -20,22 +20,22 @@ public class JRegistration {
 		return type;
 	}
 
-	public JSerializer getSerializer () {
+	public D_Serializer getSerializer () {
 		return serializer;
 	}
 
-	public void setSerializer (JSerializer serializer) {
+	public void setSerializer (D_Serializer serializer) {
 		if (serializer == null) throw new IllegalArgumentException("serializer cannot be null.");
 		this.serializer = serializer;
 	}
 
 	/** @return May be null if not yet set. */
-	public JObjectInstantiator getInstantiator () {
+	public D_ObjectInstantiator getInstantiator () {
 		return instantiator;
 	}
 
 	/** Sets the instantiator that will create a new instance of the type in {@link Kryo#newInstance(Class)}. */
-	public void setInstantiator (JObjectInstantiator instantiator) {
+	public void setInstantiator (D_ObjectInstantiator instantiator) {
 		if (instantiator == null) throw new IllegalArgumentException("instantiator cannot be null.");
 		this.instantiator = instantiator;
 	}

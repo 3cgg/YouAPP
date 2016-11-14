@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
-public abstract class JSerializer<T>  {
+public abstract class D_Serializer<T>  {
 	
 	private boolean acceptsNull, immutable;
 
@@ -12,12 +12,12 @@ public abstract class JSerializer<T>  {
 	 * <p>
 	 * This method should not be called directly, 
 	 **/
-	abstract public void write (JSO jso,OutputStream output, Object object);
+	abstract public void write (D_SO jso,OutputStream output, Object object);
 
 	/** Reads bytes and returns a new object of the specified concrete type.
 	 * <p>
 	 **/
-	abstract public T read (JSO jso,InputStream input, Class<T> type);
+	abstract public T read (D_SO jso,InputStream input, Class<T> type);
 	
 	
 	/** Returns a copy of the specified object. The default implementation returns the original if {@link #isImmutable()} is true,
@@ -28,7 +28,7 @@ public abstract class JSerializer<T>  {
 	 * <p>
 	 * This method should not be called directly, instead this serializer can be passed to {@link Kryo} copy methods that accept a
 	 * serialier. */
-	public T copy (JSO jso, T original) {
+	public T copy (D_SO jso, T original) {
 		if (immutable) return original;
 		throw new RuntimeException("Serializer does not support copy: " + getClass().getName());
 	}

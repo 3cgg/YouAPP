@@ -1,30 +1,30 @@
 package j.jave.kernal.jave.s_deprecated;
 
-import static j.jave.kernal.jave.s_deprecated.U.className;
+import static j.jave.kernal.jave.s_deprecated.D_U.className;
 
-public class JReflectionSerializerFactory implements JSerializerFactory {
+public class D_ReflectionSerializerFactory implements D_SerializerFactory {
 
-	private final Class<? extends JSerializer> serializerClass;
+	private final Class<? extends D_Serializer> serializerClass;
 
-	public JReflectionSerializerFactory (Class<? extends JSerializer> serializerClass) {
+	public D_ReflectionSerializerFactory (Class<? extends D_Serializer> serializerClass) {
 		this.serializerClass = serializerClass;
 	}
 
 	@Override
-	public JSerializer makeSerializer (JSO jso, Class<?> type) {
+	public D_Serializer makeSerializer (D_SO jso, Class<?> type) {
 		return makeSerializer(jso, serializerClass, type);
 	}
 
 	/** Creates a new instance of the specified serializer for serializing the specified class. Serializers must have a zero
 	 * argument constructor or one that takes (Kryo), (Class), or (Kryo, Class).
 	*/
-	public static JSerializer makeSerializer (JSO jso, Class<? extends JSerializer> serializerClass, Class<?> type) {
+	public static D_Serializer makeSerializer (D_SO jso, Class<? extends D_Serializer> serializerClass, Class<?> type) {
 		try {
 			try {
-				return serializerClass.getConstructor(JSO.class, Class.class).newInstance(jso, type);
+				return serializerClass.getConstructor(D_SO.class, Class.class).newInstance(jso, type);
 			} catch (NoSuchMethodException ex1) {
 				try {
-					return serializerClass.getConstructor(JSO.class).newInstance(jso);
+					return serializerClass.getConstructor(D_SO.class).newInstance(jso);
 				} catch (NoSuchMethodException ex2) {
 					try {
 						return serializerClass.getConstructor(Class.class).newInstance(type);

@@ -1,8 +1,8 @@
 package j.jave.kernal.jave.s_deprecated;
 
-public class JAccessibleInstantiator<T> extends JConstructorInstantiator<T> {
+public class D_AccessibleInstantiator<T> extends D_ConstructorInstantiator<T> {
 
-	public JAccessibleInstantiator(Class<T> type) {
+	public D_AccessibleInstantiator(Class<T> type) {
 	      super(type);
 	      if(constructor != null) {
 	         constructor.setAccessible(true);

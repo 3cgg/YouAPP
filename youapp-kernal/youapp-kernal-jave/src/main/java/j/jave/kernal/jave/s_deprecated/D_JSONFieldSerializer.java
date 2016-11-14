@@ -5,22 +5,22 @@ import java.io.OutputStream;
 
 import j.jave.kernal.jave.json.JJSON;
 
-public class JSONFieldSerializer<T> extends JFieldSerializer<T> {
+public class D_JSONFieldSerializer<T> extends D_FieldSerializer<T> {
 
 	private JJSON json;
 	
-	public JSONFieldSerializer(JJSON json) {
+	public D_JSONFieldSerializer(JJSON json) {
 		this.json=json;
 	}
 	
 	@Override
-	public void write(JSO jso, OutputStream output, Object object) {
+	public void write(D_SO jso, OutputStream output, Object object) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public T read(JSO jso, InputStream input, Class<T> type) {
+	public T read(D_SO jso, InputStream input, Class<T> type) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -2,11 +2,11 @@ package j.jave.kernal.jave.s_deprecated;
 
 import java.lang.reflect.Constructor;
 
-public class JConstructorInstantiator <T> implements JObjectInstantiator<T> {
+public class D_ConstructorInstantiator <T> implements D_ObjectInstantiator<T> {
 
 	   protected Constructor<T> constructor;
 
-	   public JConstructorInstantiator(Class<T> type) {
+	   public D_ConstructorInstantiator(Class<T> type) {
 	      try {
 	         constructor = type.getDeclaredConstructor((Class[]) null);
 	      }

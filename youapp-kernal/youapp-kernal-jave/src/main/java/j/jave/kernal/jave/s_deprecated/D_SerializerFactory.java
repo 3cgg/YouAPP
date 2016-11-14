@@ -1,6 +1,6 @@
 package j.jave.kernal.jave.s_deprecated;
 
-public interface JSerializerFactory {
+public interface D_SerializerFactory {
 
 	 /**
      * Creates a new serializer
@@ -8,5 +8,5 @@ public interface JSerializerFactory {
      * @param type The type of the object that is to be serialized.
      * @return An implementation of a serializer that is able to serialize an object of type {@code type}.
      */
-	JSerializer makeSerializer (JSO jso, Class<?> type);
+	D_Serializer makeSerializer (D_SO jso, Class<?> type);
 }

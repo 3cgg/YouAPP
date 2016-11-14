@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 
-public class JClosureSerializer extends JSerializer {
+public class D_ClosureSerializer extends D_Serializer {
 
 	/** Marker class to bind ClosureSerializer to. See also {@link Kryo#isClosure(Class)} and {@link Kryo#getRegistration(Class)} */
 	public static class Closure {
@@ -24,7 +24,7 @@ public class JClosureSerializer extends JSerializer {
 	
 	
 	@Override
-	public void write(JSO jso, OutputStream output, Object object) {
+	public void write(D_SO jso, OutputStream output, Object object) {
 		try {
 			Class type = object.getClass();
 			Method writeReplace = type.getDeclaredMethod("writeReplace");
@@ -41,7 +41,7 @@ public class JClosureSerializer extends JSerializer {
 	}
 
 	@Override
-	public Object read(JSO jso, InputStream input, Class type) {
+	public Object read(D_SO jso, InputStream input, Class type) {
 		try {
 			Object object = jso.readObject(input, serializedLambda);
 			return readResolve.invoke(object);
@@ -50,7 +50,7 @@ public class JClosureSerializer extends JSerializer {
 		}
 	}
 
-	public Object copy (JSO jso, Object original) {
+	public Object copy (D_SO jso, Object original) {
 		try {
 			Class type = original.getClass();
 			Method writeReplace = type.getDeclaredMethod("writeReplace");

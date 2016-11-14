@@ -1,6 +1,8 @@
 package j.jave.kernal.jave.json;
 
-public class JJSONConfig {
+import j.jave.kernal.jave.model.JModel;
+
+public class JJSONConfig implements JModel {
 
 	private String dateFormat;
 

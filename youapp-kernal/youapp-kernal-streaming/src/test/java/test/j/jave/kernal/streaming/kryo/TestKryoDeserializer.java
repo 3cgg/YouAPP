@@ -24,7 +24,7 @@ public class TestKryoDeserializer {
 		JSerializerFactory factory=new KryoSerializerFactory();
 		JSerializer serializer=factory.newSerializer(DefaultDeviceRecord.class);
 		File file=new File("d:/cp/kryo.bin");
-		Object defaultDeviceRecordKryo=serializer.read(new FileInputStream(file), LinkedList.class);
+		Object defaultDeviceRecordKryo=serializer.read(new FileInputStream(file), ArrayList.class);
 		long now=new Date().getTime(); 
 		System.out.println(" time : "+(now-time)+";DefaultDeviceRecord (KRYO): "+defaultDeviceRecordKryo);
 		

@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.json.JJSONConfig;
@@ -24,7 +19,7 @@ public class JJSONSerializer implements JSerializer {
 	public JJSONSerializer(JJSONConfig config,Class<?> clazz) {
 		this.JSON=JJSON.getJSON(config);
 		this.clazz=clazz;
-	}
+	} 
 	
 	@Override
 	public void write(OutputStream output, Object object) {
@@ -46,7 +41,13 @@ public class JJSONSerializer implements JSerializer {
 			T object= JSON.parse(string, type);
 			if(Collection.class.isAssignableFrom(type)){
 				Collection<Object> objects=(Collection<Object>) object;
-				List list=new ArrayList<>();
+				Collection col=(Collection) type.newInstance();
+				for(Object inner:objects){
+					String innerStr=JSON.formatObject(inner);
+					Object obj=JSON.parse(innerStr, clazz);
+					col.add(obj);
+				}
+				return (T) col;
 			}
 			return object;
 		} catch (Exception e) {

@@ -66,6 +66,13 @@
 		    <artifactId>kafka-clients</artifactId>
 		    <version>0.10.0.1</version>
 		</dependency>
+		
+		<!-- http://mvnrepository.com/artifact/io.netty/netty-all -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			 <version>4.1.6.Final</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>

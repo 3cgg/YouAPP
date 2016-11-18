@@ -16,7 +16,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import j.jave.kernal.streaming.netty.client.HttpSnoopClientInitializer;
+import j.jave.kernal.streaming.netty.client.SimpleHttpClientInitializer;
 
 public class ClientTest {
 
@@ -50,7 +50,7 @@ public class ClientTest {
 				
 				@Override
 				public void channelCreated(Channel ch) throws Exception {
-					ch.pipeline().addLast(new HttpSnoopClientInitializer(sslCtx));
+					ch.pipeline().addLast(new SimpleHttpClientInitializer(sslCtx));
 					System.out.println("channelCreated "+ch);
 				}
 				

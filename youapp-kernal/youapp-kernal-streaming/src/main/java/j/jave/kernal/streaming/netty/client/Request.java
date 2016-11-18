@@ -9,7 +9,7 @@ public abstract class Request {
 	
 	protected RequestMeta requestMeta;
 	
-	protected boolean keepAlive;
+	protected boolean keepAlive=true;
 	
 	protected String acceptEncoding;
 

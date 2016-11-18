@@ -22,7 +22,7 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import j.jave.kernal.streaming.netty.client.HttpSnoopClientInitializer;
+import j.jave.kernal.streaming.netty.client.SimpleHttpClientInitializer;
 import j.jave.kernal.streaming.netty.client.NioChannelRunnable;
 import j.jave.kernal.streaming.netty.client.Request;
 import j.jave.kernal.streaming.netty.client.RequestMeta;
@@ -49,7 +49,7 @@ public class ATest {
 	        b.attr(POOL_KEY, "bbbb");
             b.group(group)
              .channel(NioSocketChannel.class)
-             .handler(new HttpSnoopClientInitializer(sslCtx));
+             .handler(new SimpleHttpClientInitializer(sslCtx));
             // Make the connection attempt.
             ChannelFuture channelFuture=b.remoteAddress("127.0.0.1", 8080).clone().connect()
             ;		
@@ -60,7 +60,7 @@ public class ATest {
 			Request request=Request.post(requestMeta);
 			
 			
-            new NioChannelRunnable(request).run(channel);
+//            new NioChannelRunnable(request).request(channel);
 //	        ch.clo
             Thread.sleep(1000000);
             

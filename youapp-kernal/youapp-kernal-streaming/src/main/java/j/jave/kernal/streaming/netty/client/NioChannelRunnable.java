@@ -5,12 +5,16 @@ import io.netty.handler.codec.http.DefaultFullHttpRequest;
 
 public class NioChannelRunnable extends ChannelRunnable {
 	
+	public NioChannelRunnable(Request request,ChannelResponseCall responseCall) {
+		super(request,responseCall);
+	}
+	
 	public NioChannelRunnable(Request request) {
-		super(request);
+		super(request,ChannelResponseCall.NOTHING);
 	}
 	
 	@Override
-	protected void doRun(Channel channel, DefaultFullHttpRequest fullHttpRequest) throws Exception {
+	protected void doRequest(Channel channel, DefaultFullHttpRequest fullHttpRequest) throws Exception {
 		channel.writeAndFlush(fullHttpRequest);
 	}
 	

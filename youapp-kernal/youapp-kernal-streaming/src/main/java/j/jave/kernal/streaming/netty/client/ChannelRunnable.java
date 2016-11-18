@@ -17,22 +17,34 @@ import j.jave.kernal.jave.utils.JStringUtils;
 public abstract class ChannelRunnable {
 	
 	private final Request request;
+	
+	private final ChannelResponseCall responseCall;
 
-	public ChannelRunnable(Request request) {
-		super();
+	public ChannelRunnable(Request request,ChannelResponseCall responseCall) {
 		this.request = request;
+		this.responseCall=responseCall;
 	}
 	
-	public void run(Channel channel){
+	public final void response(Object object){
 		try{
-			DefaultFullHttpRequest fullHttpRequest=prepare();
-			doRun(channel,fullHttpRequest);
+			responseCall.run(request, object);
 		}catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	
-	abstract protected void doRun(Channel channel,DefaultFullHttpRequest fullHttpRequest)throws Exception;
+	public final void request(Channel channel){
+		try{
+			DefaultFullHttpRequest fullHttpRequest=prepare();
+			doRequest(channel,fullHttpRequest);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
+	abstract protected void doRequest(Channel channel,DefaultFullHttpRequest fullHttpRequest)throws Exception;
 	
 	/**
 	 * 

@@ -2,9 +2,14 @@ package j.jave.kernal.streaming.netty.client;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.ChannelPoolHandler;
@@ -17,9 +22,10 @@ import io.netty.util.concurrent.Future;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
+
 public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 
-	private JLogger logger = JLoggerFactory.getLogger(NioChannelExecutor.class);
+	private static final JLogger LOGGER = JLoggerFactory.getLogger(NioChannelExecutor.class);
 
 	private final String host;
 
@@ -58,23 +64,23 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 			channelPool = new SimpleChannelPool(b, new ChannelPoolHandler() {
 				@Override
 				public void channelReleased(Channel ch) throws Exception {
-					if (logger.isDebugEnabled()) {
-						logger.debug("channelReleased " + ch);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("channelReleased " + ch);
 					}
 				}
 
 				@Override
 				public void channelCreated(Channel ch) throws Exception {
-					if (logger.isDebugEnabled()) {
-						logger.debug("channelCreated " + ch);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("channelCreated " + ch);
 					}
-					ch.pipeline().addLast(new HttpSnoopClientInitializer(sslCtx));
+					ch.pipeline().addLast(new SimpleHttpClientInitializer(sslCtx));
 				}
 
 				@Override
 				public void channelAcquired(Channel ch) throws Exception {
-					if (logger.isDebugEnabled()) {
-						logger.debug("channelAcquired " + ch);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("channelAcquired " + ch);
 					}
 				}
 			});
@@ -83,8 +89,84 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		}
 	}
 	
+	private ReleaseChannelInboundHandler ONE=new ReleaseChannelInboundHandler();
+	
+	@Sharable
+	private class ReleaseChannelInboundHandler extends ChannelInboundHandlerAdapter{
+		@Override
+		public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+			try{
+				ctx.channel().pipeline().remove(this);
+				channelPool.release(ctx.channel());
+			}finally{
+				super.channelReadComplete(ctx);
+			}
+		}
+	}
+	
+	private ExecutorService executorService=Executors.newFixedThreadPool(10);
+	
+	private class DoResponseInboundHandler extends OnceChannelInboundHandler{
+		
+		private NioChannelRunnable channelRunnable;
+		
+		private DoResponseInboundHandler(NioChannelRunnable channelRunnable) {
+			this.channelRunnable = channelRunnable;
+		}
+		
+		@Override
+		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+			executorService.execute(new Runnable() {
+				@Override
+				public void run() {
+					channelRunnable.response(msg);
+				}
+			});
+			super.channelRead(ctx, msg);
+		}
+		
+	}
+	
+	private class ReturnResponseInboundHandler extends OnceChannelInboundHandler{
+		
+		private Object msg;
+		
+		private boolean complete;
+		
+		private ReturnResponseInboundHandler sync() throws InterruptedException{
+			if(complete){
+				return this;
+			}else{
+				synchronized (this) {
+					wait();
+					return this;
+				}
+			}
+		}
+		
+		public Object get(){
+			return msg;
+		}
+		
+		@Override
+		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+			this.msg=msg;
+			super.channelRead(ctx, msg);
+		}
+		
+		@Override
+		public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+			synchronized (this) {
+				complete=true;
+				notifyAll();
+			}
+			super.channelReadComplete(ctx);
+		}
+	}
+	
+	
 	@Override
-	public <V> Future<V> execute(NioChannelRunnable channelRunnable) {
+	public Object executeSync(NioChannelRunnable channelRunnable) throws InterruptedException {
 		Channel channel=null;
 		try{
 			Future<Channel> channelFuture= channelPool.acquire();
@@ -97,15 +179,49 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 				}catch (InterruptedException	 e) {
 				}
 			}
-			channelRunnable.run(channel);
+			ReturnResponseInboundHandler handler=new ReturnResponseInboundHandler();
+			channel.pipeline().addLast(handler);
+			channel.pipeline().addLast(ONE);
+//			ReleaseChannelInboundHandler exists= channel.pipeline().get(ReleaseChannelInboundHandler.class);
+//			if(exists==null){			}
+			channelRunnable.request(channel);
+			return handler.sync().get();
+		}catch (InterruptedException e) {
+			throw e;
 		}catch (Exception e) {
-			throw new RuntimeException(e);
-		}finally{
 			if(channel!=null){
-				channelPool.release(channel);
+				channel.close();
 			}
+			throw new RuntimeException(e);
 		}
-		return null;
+	}
+	
+	
+	@Override
+	public void execute(NioChannelRunnable channelRunnable) {
+		Channel channel=null;
+		try{
+			Future<Channel> channelFuture= channelPool.acquire();
+			while(channel==null){
+				try{
+					channel=channelFuture.get();
+				}catch (CancellationException e) {
+				}catch (ExecutionException e) {
+					throw e;
+				}catch (InterruptedException	 e) {
+				}
+			}
+			channel.pipeline().addLast(new DoResponseInboundHandler(channelRunnable));
+			channel.pipeline().addLast(ONE);
+//			ReleaseChannelInboundHandler exists= channel.pipeline().get(ReleaseChannelInboundHandler.class);
+//			if(exists==null){			}
+			channelRunnable.request(channel);
+		}catch (Exception e) {
+			if(channel!=null){
+				channel.close();
+			}
+			throw new RuntimeException(e);
+		}
 	}
 
 }

@@ -1,19 +1,17 @@
 package j.jave.kernal.streaming.netty.client;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpContentDecompressor;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.ssl.SslContext;
 
-public class HttpSnoopClientInitializer extends ChannelInitializer<SocketChannel> {
+public class SimpleHttpClientInitializer extends ChannelInitializer<SocketChannel> {
 
     private final SslContext sslCtx;
 
-    public HttpSnoopClientInitializer(SslContext sslCtx) {
+    public SimpleHttpClientInitializer(SslContext sslCtx) {
         this.sslCtx = sslCtx;
     }
 
@@ -29,20 +27,12 @@ public class HttpSnoopClientInitializer extends ChannelInitializer<SocketChannel
         p.addLast(new HttpClientCodec());
 
         // Remove the following line if you don't want automatic content decompression.
-        p.addLast(new HttpContentDecompressor());
+//        p.addLast(new HttpContentDecompressor());
 
         // Uncomment the following line if you don't want to handle HttpContents.
-        //p.addLast(new HttpObjectAggregator(1048576));
+        p.addLast(new HttpObjectAggregator(1048576));
 
-        p.addLast(new HttpSnoopClientHandler());
+        p.addLast(new SimpleHttpClientHandler());
         
-        p.addLast(new ChannelInboundHandlerAdapter(){
-        	@Override
-        	public void channelActive(ChannelHandlerContext ctx)
-        			throws Exception {
-        		super.channelActive(ctx);
-        		
-        	}
-        });
     }
 }

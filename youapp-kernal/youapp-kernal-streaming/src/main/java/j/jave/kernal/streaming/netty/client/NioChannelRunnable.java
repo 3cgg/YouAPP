@@ -1,6 +1,7 @@
 package j.jave.kernal.streaming.netty.client;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 
 public class NioChannelRunnable extends ChannelRunnable {
@@ -14,8 +15,9 @@ public class NioChannelRunnable extends ChannelRunnable {
 	}
 	
 	@Override
-	protected void doRequest(Channel channel, DefaultFullHttpRequest fullHttpRequest) throws Exception {
-		channel.writeAndFlush(fullHttpRequest);
+	protected ChannelFuture doRequest(Channel channel, DefaultFullHttpRequest fullHttpRequest) throws Exception {
+		ChannelFuture channelFuture= channel.writeAndFlush(fullHttpRequest);
+		return channelFuture;
 	}
 	
 	

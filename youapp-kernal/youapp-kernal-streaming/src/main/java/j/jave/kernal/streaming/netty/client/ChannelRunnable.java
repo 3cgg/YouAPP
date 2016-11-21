@@ -7,6 +7,7 @@ import java.util.Map;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -19,7 +20,7 @@ public abstract class ChannelRunnable {
 	private final Request request;
 	
 	private final ChannelResponseCall responseCall;
-
+	
 	public ChannelRunnable(Request request,ChannelResponseCall responseCall) {
 		this.request = request;
 		this.responseCall=responseCall;
@@ -34,17 +35,24 @@ public abstract class ChannelRunnable {
 		}
 	}
 	
-	public final void request(Channel channel){
+	public final ChannelFuture request(Channel channel){
 		try{
 			DefaultFullHttpRequest fullHttpRequest=prepare();
-			doRequest(channel,fullHttpRequest);
+			ChannelFuture channelFuture= doRequest(channel,fullHttpRequest);
+//			channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+//				@Override
+//				public void operationComplete(Future<? super Void> future) throws Exception {
+//					System.out.println("complete....");
+//				}
+//			});
+			return channelFuture;
 		}catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
 	
-	abstract protected void doRequest(Channel channel,DefaultFullHttpRequest fullHttpRequest)throws Exception;
+	abstract protected ChannelFuture doRequest(Channel channel,DefaultFullHttpRequest fullHttpRequest)throws Exception;
 	
 	/**
 	 * 

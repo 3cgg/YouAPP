@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -19,6 +20,7 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
@@ -88,6 +90,28 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 			throw new RuntimeException(e);
 		}
 	}
+	private static ExecutorService executorService=Executors.newFixedThreadPool(10);
+	 
+	@SuppressWarnings("rawtypes")
+	private static GenericPromiseListener DO=new GenericPromiseListener() {
+		
+		@Override
+		public void operationComplete(final CallPromise callPromise) throws Exception {
+			DefaultCallPromise defaultCallPromise=(DefaultCallPromise) callPromise;
+			if(defaultCallPromise.isResponsed()){
+				executorService.execute(new Runnable() {
+					@Override
+					public void run() {
+						defaultCallPromise.getChannelRunnable()
+							.response(defaultCallPromise._getResponse());
+					}
+				});
+			}
+			
+		}
+		
+	};
+	
 	
 	private ReleaseChannelInboundHandler ONE=new ReleaseChannelInboundHandler();
 	
@@ -104,69 +128,30 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		}
 	}
 	
-	private ExecutorService executorService=Executors.newFixedThreadPool(10);
-	
-	private class DoResponseInboundHandler extends OnceChannelInboundHandler{
-		
-		private NioChannelRunnable channelRunnable;
-		
-		private DoResponseInboundHandler(NioChannelRunnable channelRunnable) {
-			this.channelRunnable = channelRunnable;
-		}
-		
-		@Override
-		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-			executorService.execute(new Runnable() {
-				@Override
-				public void run() {
-					channelRunnable.response(msg);
-				}
-			});
-			super.channelRead(ctx, msg);
-		}
-		
-	}
-	
 	private class ReturnResponseInboundHandler extends OnceChannelInboundHandler{
 		
-		private Object msg;
+		private final DefaultCallPromise callPromise;
 		
-		private boolean complete;
-		
-		private ReturnResponseInboundHandler sync() throws InterruptedException{
-			if(complete){
-				return this;
-			}else{
-				synchronized (this) {
-					wait();
-					return this;
-				}
-			}
-		}
-		
-		public Object get(){
-			return msg;
+		public ReturnResponseInboundHandler(DefaultCallPromise callPromise) {
+			this.callPromise=callPromise;
 		}
 		
 		@Override
 		public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-			this.msg=msg;
+			callPromise.setResponse(msg);
 			super.channelRead(ctx, msg);
 		}
 		
 		@Override
 		public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-			synchronized (this) {
-				complete=true;
-				notifyAll();
-			}
 			super.channelReadComplete(ctx);
 		}
 	}
 	
 	
 	@Override
-	public Object executeSync(NioChannelRunnable channelRunnable) throws InterruptedException {
+	public <V> CallPromise<V> execute(NioChannelRunnable channelRunnable) throws Exception {
+
 		Channel channel=null;
 		try{
 			Future<Channel> channelFuture= channelPool.acquire();
@@ -179,43 +164,27 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 				}catch (InterruptedException	 e) {
 				}
 			}
-			ReturnResponseInboundHandler handler=new ReturnResponseInboundHandler();
+			final DefaultCallPromise<V> callPromise=new DefaultCallPromise<>(channelRunnable);
+			callPromise.addListener(DO);
+			ReturnResponseInboundHandler handler=new ReturnResponseInboundHandler(callPromise);
 			channel.pipeline().addLast(handler);
 			channel.pipeline().addLast(ONE);
 //			ReleaseChannelInboundHandler exists= channel.pipeline().get(ReleaseChannelInboundHandler.class);
 //			if(exists==null){			}
-			channelRunnable.request(channel);
-			return handler.sync().get();
-		}catch (InterruptedException e) {
-			throw e;
-		}catch (Exception e) {
-			if(channel!=null){
-				channel.close();
-			}
-			throw new RuntimeException(e);
-		}
-	}
-	
-	
-	@Override
-	public void execute(NioChannelRunnable channelRunnable) {
-		Channel channel=null;
-		try{
-			Future<Channel> channelFuture= channelPool.acquire();
-			while(channel==null){
-				try{
-					channel=channelFuture.get();
-				}catch (CancellationException e) {
-				}catch (ExecutionException e) {
-					throw e;
-				}catch (InterruptedException	 e) {
+			ChannelFuture cf= channelRunnable.request(channel);
+			callPromise.setFuture(cf);
+			cf.addListener(new GenericFutureListener<Future<? super Void>>() {
+				@Override
+				public void operationComplete(Future<? super Void> future) throws Exception {
+					ChannelFuture channelFuture=(ChannelFuture) future;
+					if(channelFuture.isSuccess()){
+						callPromise.setRequestSuccess();
+					}else  if(channelFuture.isCancelled()){
+						callPromise.setRequestCancelled();
+					}
 				}
-			}
-			channel.pipeline().addLast(new DoResponseInboundHandler(channelRunnable));
-			channel.pipeline().addLast(ONE);
-//			ReleaseChannelInboundHandler exists= channel.pipeline().get(ReleaseChannelInboundHandler.class);
-//			if(exists==null){			}
-			channelRunnable.request(channel);
+			});
+			return callPromise;
 		}catch (Exception e) {
 			if(channel!=null){
 				channel.close();

@@ -2,7 +2,6 @@ package j.jave.kernal.streaming.netty.client;
 
 public interface ChannelExecutor<T> {
 
-	void execute(T channelRunnable);
+	<V> CallPromise<V> execute(T channelRunnable) throws Exception;
 
-	Object executeSync(T channelRunnable) throws InterruptedException;
 }

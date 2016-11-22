@@ -11,14 +11,12 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.channel.pool.SimpleChannelPool;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import j.jave.kernal.jave.exception.JNestedRuntimeException;
@@ -34,35 +32,27 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 
 	private final int port;
 
-	private final boolean useSSL;
-
 	private SimpleChannelPool channelPool;
-
-	public NioChannelExecutor(String host, int port, boolean useSSL) {
-		this.host = host;
-		this.port = port;
-		this.useSSL = useSSL;
-		prepare();
-	}
+	
+	private ChannelInitializer<? extends Channel> clientInitializer;
 
 	public NioChannelExecutor(String host, int port) {
-		this(host, port, false);
+		this.host = host;
+		this.port = port;
 	}
 
-	private void prepare() {
+	NioChannelExecutor addChannelInitializer(ChannelInitializer<? extends Channel> clientInitializer){
+		this.clientInitializer=clientInitializer;
+		return this;
+	}
+	
+	NioChannelExecutor connect() {
 		try {
-			final SslContext sslCtx;
-			if (useSSL) {
-				sslCtx = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
-			} else {
-				sslCtx = null;
-			}
 			// Configure the client.
 			EventLoopGroup group = new NioEventLoopGroup();
 			Bootstrap b = new Bootstrap();
 			b.group(group)
 				.channel(NioSocketChannel.class)
-//					.handler(new HttpSnoopClientInitializer(sslCtx))
 						.remoteAddress(host, port);
 			channelPool = new SimpleChannelPool(b, new ChannelPoolHandler() {
 				@Override
@@ -77,7 +67,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 					if (LOGGER.isDebugEnabled()) {
 						LOGGER.debug("channelCreated " + ch);
 					}
-					ch.pipeline().addLast(new SimpleHttpClientInitializer(sslCtx));
+					ch.pipeline().addLast(clientInitializer);
 				}
 
 				@Override
@@ -90,6 +80,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		} catch (Exception e) {
 			throw new JNestedRuntimeException(e);
 		}
+		return this;
 	}
 	private static ExecutorService executorService=Executors.newFixedThreadPool(10);
 	 

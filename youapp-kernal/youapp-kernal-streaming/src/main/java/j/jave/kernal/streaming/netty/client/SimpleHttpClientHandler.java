@@ -46,7 +46,9 @@ public class SimpleHttpClientHandler extends SimpleChannelInboundHandler<FullHtt
     		content.readBytes(bytes);
     		stringBuffer.append(new String(bytes,Charset.forName("utf-8"))+"\r\n");
     	}
-        
+        if(LOGGER.isDebugEnabled()){
+        	LOGGER.debug(stringBuffer.toString());
+        }
     	ctx.fireChannelRead(stringBuffer);
     }
     

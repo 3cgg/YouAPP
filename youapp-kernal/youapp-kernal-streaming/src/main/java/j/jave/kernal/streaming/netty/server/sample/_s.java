@@ -30,7 +30,7 @@ import java.util.Set;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpVersion.*;
 
-public class HttpSnoopServerHandler extends SimpleChannelInboundHandler<Object> {
+public class _s extends SimpleChannelInboundHandler<Object> {
 
     private HttpRequest request;
     /** Buffer that stores the response content */

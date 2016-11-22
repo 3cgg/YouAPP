@@ -7,7 +7,7 @@ public class KryoChannelExecutor implements ChannelExecutor<NioChannelRunnable> 
 	public KryoChannelExecutor(String host,int port) {
 		SimpleHttpClientInitializer httpClientInitializer=ChannelExecutors.newSimpleHttpClientInitializer(false);
 		httpClientInitializer.addChannelHandler(new KryoClientHandler());
-		this.nioChannelExecutor=ChannelExecutors.newNioChannelExecutor(host, port);
+		this.nioChannelExecutor=ChannelExecutors.newNioChannelExecutor(host, port,httpClientInitializer);
 	}
 	
 	@Override

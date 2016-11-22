@@ -75,15 +75,4 @@ public class SimpleHttpNioChannelServer implements Closeable {
         workerGroup.shutdownGracefully();
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		SimpleHttpNioChannelServer channelServer=new SimpleHttpNioChannelServer(8080);
-		try{
-			channelServer.start();
-		}catch (Exception e) {
-			channelServer.close();
-		}
-		Thread.sleep(100000);
-		
-	}
 }

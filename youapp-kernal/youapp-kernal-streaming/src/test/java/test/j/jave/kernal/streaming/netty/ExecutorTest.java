@@ -1,16 +1,17 @@
 package test.j.jave.kernal.streaming.netty;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.netty.channel.ChannelFuture;
+import j.jave.kernal.jave.serializer.JSerializerFactory;
+import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
+import j.jave.kernal.streaming.kryo.KryoUtils;
 import j.jave.kernal.streaming.netty.client.CallPromise;
-import j.jave.kernal.streaming.netty.client.ChannelExecutors;
 import j.jave.kernal.streaming.netty.client.ChannelResponseCall;
 import j.jave.kernal.streaming.netty.client.DefaultCallPromise;
 import j.jave.kernal.streaming.netty.client.DefaultCallPromise._DefaultCallPromiseUtil;
-import j.jave.kernal.streaming.netty.client.NioChannelExecutor;
+import j.jave.kernal.streaming.netty.client.KryoChannelExecutor;
 import j.jave.kernal.streaming.netty.client.NioChannelRunnable;
 import j.jave.kernal.streaming.netty.client.Request;
 import j.jave.kernal.streaming.netty.client.RequestMeta;
@@ -18,27 +19,30 @@ import j.jave.kernal.streaming.netty.client.RequestMeta;
 public class ExecutorTest {
 
 	public static void main(String[] args) throws Exception {
+		JSerializerFactory factory=new KryoSerializerFactory();
 		
-		List<CallPromise<String>> callPromises=new ArrayList<>();
+		List<CallPromise<byte[]>> callPromises=new ArrayList<>();
 		
-		NioChannelExecutor channelExecutor=ChannelExecutors
-					.newNioChannelExecutor("127.0.0.1", 8080);
+		KryoChannelExecutor channelExecutor=new KryoChannelExecutor("127.0.0.1", 8080);
 		for(int i=0;i<100;i++){
 			RequestMeta requestMeta=new RequestMeta();
-			requestMeta.setContent(("test-"+i).getBytes(Charset.forName("utf-8")));
-			requestMeta.setUrl("http://127.0.0.1:8080/DataRemote/admin/galaxy/index");
+			requestMeta.setContent(KryoUtils.serialize(factory, new Object[]{"test-"+i}));
+			requestMeta.setUrl("http://127.0.0.1:8080/unit/rd");
 			Request request=Request.post(requestMeta);
-			CallPromise<String> callPromise= channelExecutor.execute(new NioChannelRunnable(request,new ChannelResponseCall() {
+			CallPromise<byte[]> callPromise= channelExecutor.execute(new NioChannelRunnable(request,new ChannelResponseCall() {
 				@Override
 				public void run(Request request, Object object) {
-					System.out.println("-------async-call---\r\n"+request.toString()+"\r\n"+object+"\r\n");
+					System.out.println("-------async-call---\r\n"+request.toString()+"\r\n"
+				+KryoUtils.deserialize(factory, (byte[])object, String.class)+"\r\n");
 				}
 			}));
 			callPromises.add(callPromise);
-			System.out.println("------------response-------------\r\n"+callPromise.get());
+			System.out.println("------------response-------------\r\n"+
+					KryoUtils.deserialize(factory,callPromise.get(), String.class)
+			);
 		}
 		
-		for(CallPromise<String> callPromise:callPromises){
+		for(CallPromise<byte[]> callPromise:callPromises){
 			ChannelFuture channelFuture=(ChannelFuture) _DefaultCallPromiseUtil.getChannelFuture((DefaultCallPromise<?>) callPromise);
 			System.out.println("CHANNEL : "+channelFuture.channel().hashCode()+"-hc]"+channelFuture.channel().toString());
 		}

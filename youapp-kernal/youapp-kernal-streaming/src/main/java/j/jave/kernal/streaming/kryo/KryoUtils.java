@@ -1,0 +1,22 @@
+package j.jave.kernal.streaming.kryo;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+import j.jave.kernal.jave.serializer.JSerializerFactory;
+
+public abstract class KryoUtils {
+
+	public static byte[] serialize(JSerializerFactory serializerFactory, Object object) {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		serializerFactory.newSerializer(object.getClass()).write(outputStream, object);
+		return outputStream.toByteArray();
+	}
+
+	public static <T> T deserialize(JSerializerFactory serializerFactory, byte[] bytes, Class<T> clazz) {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+		return serializerFactory.newSerializer(clazz).read(inputStream, clazz);
+	}
+	
+	
+}

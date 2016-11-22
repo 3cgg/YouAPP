@@ -9,6 +9,7 @@ import j.jave.kernal.streaming.netty.client.CallPromise;
 import j.jave.kernal.streaming.netty.client.ChannelExecutors;
 import j.jave.kernal.streaming.netty.client.ChannelResponseCall;
 import j.jave.kernal.streaming.netty.client.DefaultCallPromise;
+import j.jave.kernal.streaming.netty.client.DefaultCallPromise._DefaultCallPromiseUtil;
 import j.jave.kernal.streaming.netty.client.NioChannelExecutor;
 import j.jave.kernal.streaming.netty.client.NioChannelRunnable;
 import j.jave.kernal.streaming.netty.client.Request;
@@ -18,7 +19,7 @@ public class ExecutorTest {
 
 	public static void main(String[] args) throws Exception {
 		
-		List<DefaultCallPromise> callPromises=new ArrayList<>();
+		List<CallPromise<String>> callPromises=new ArrayList<>();
 		
 		NioChannelExecutor channelExecutor=ChannelExecutors
 					.newNioChannelExecutor("127.0.0.1", 8080);
@@ -30,15 +31,15 @@ public class ExecutorTest {
 			CallPromise<String> callPromise= channelExecutor.execute(new NioChannelRunnable(request,new ChannelResponseCall() {
 				@Override
 				public void run(Request request, Object object) {
-					System.out.println("-------async---\r\n"+request.toString()+"\r\n"+object+"\r\n");
+					System.out.println("-------async-call---\r\n"+request.toString()+"\r\n"+object+"\r\n");
 				}
 			}));
-			callPromises.add((DefaultCallPromise) callPromise);
-			System.out.println(callPromise);
+			callPromises.add(callPromise);
+			System.out.println("------------response-------------\r\n"+callPromise.get());
 		}
 		
-		for(DefaultCallPromise defaultCallPromise:callPromises){
-			ChannelFuture channelFuture=(ChannelFuture) defaultCallPromise.getFuture();
+		for(CallPromise<String> callPromise:callPromises){
+			ChannelFuture channelFuture=(ChannelFuture) _DefaultCallPromiseUtil.getChannelFuture((DefaultCallPromise<?>) callPromise);
 			System.out.println("CHANNEL : "+channelFuture.channel().hashCode()+"-hc]"+channelFuture.channel().toString());
 		}
 		

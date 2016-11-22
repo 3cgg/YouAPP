@@ -21,6 +21,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
@@ -87,7 +88,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 				}
 			});
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new JNestedRuntimeException(e);
 		}
 	}
 	private static ExecutorService executorService=Executors.newFixedThreadPool(10);
@@ -104,6 +105,23 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 					public void run() {
 						defaultCallPromise.getChannelRunnable()
 							.response(defaultCallPromise._getResponse());
+					}
+				});
+			}else if(defaultCallPromise.isDone()
+					&&defaultCallPromise.cause()!=null){
+				executorService.execute(new Runnable() {
+					@Override
+					public void run() {
+						defaultCallPromise.getChannelRunnable()
+							.fail(defaultCallPromise.cause());
+					}
+				});
+			}else if(defaultCallPromise.isCancelled()){
+				executorService.execute(new Runnable() {
+					@Override
+					public void run() {
+						defaultCallPromise.getChannelRunnable()
+							.cancelled(null);
 					}
 				});
 			}
@@ -128,6 +146,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		}
 	}
 	
+	@SuppressWarnings({"rawtypes","unchecked"})
 	private class ReturnResponseInboundHandler extends OnceChannelInboundHandler{
 		
 		private final DefaultCallPromise callPromise;
@@ -172,7 +191,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 //			ReleaseChannelInboundHandler exists= channel.pipeline().get(ReleaseChannelInboundHandler.class);
 //			if(exists==null){			}
 			ChannelFuture cf= channelRunnable.request(channel);
-			callPromise.setFuture(cf);
+			callPromise.setChannelFuture(cf);
 			cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 				@Override
 				public void operationComplete(Future<? super Void> future) throws Exception {
@@ -189,7 +208,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 			if(channel!=null){
 				channel.close();
 			}
-			throw new RuntimeException(e);
+			throw new JNestedRuntimeException(e);
 		}
 	}
 

@@ -13,6 +13,7 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 public abstract class ChannelRunnable {
@@ -21,9 +22,32 @@ public abstract class ChannelRunnable {
 	
 	private final ChannelResponseCall responseCall;
 	
+	private ChannelFailedCall failedCall=ChannelFailedCall.NOTHING;
+	
+	private ChannelCancelledCall cancelledCall=ChannelCancelledCall.NOTHING;
+	
+	
 	public ChannelRunnable(Request request,ChannelResponseCall responseCall) {
 		this.request = request;
 		this.responseCall=responseCall;
+	}
+	
+	public final void cancelled(Object cause){
+		try{
+			cancelledCall.run(request, cause);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new JNestedRuntimeException(e);
+		}
+	}
+	
+	public final void fail(Throwable cause){
+		try{
+			failedCall.run(request, cause);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new JNestedRuntimeException(e);
+		}
 	}
 	
 	public final void response(Object object){
@@ -31,7 +55,7 @@ public abstract class ChannelRunnable {
 			responseCall.run(request, object);
 		}catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new JNestedRuntimeException(e);
 		}
 	}
 	
@@ -39,16 +63,10 @@ public abstract class ChannelRunnable {
 		try{
 			DefaultFullHttpRequest fullHttpRequest=prepare();
 			ChannelFuture channelFuture= doRequest(channel,fullHttpRequest);
-//			channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
-//				@Override
-//				public void operationComplete(Future<? super Void> future) throws Exception {
-//					System.out.println("complete....");
-//				}
-//			});
 			return channelFuture;
 		}catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new JNestedRuntimeException(e);
 		}
 	}
 	
@@ -143,5 +161,14 @@ public abstract class ChannelRunnable {
 		return request.getAcceptEncoding();
 	}
 	
+	public ChannelRunnable cancelledCall(ChannelCancelledCall cancelledCall) {
+		this.cancelledCall = cancelledCall;
+		return this;
+	}
+	
+	public ChannelRunnable failedCall(ChannelFailedCall failedCall) {
+		this.failedCall = failedCall;
+		return this;
+	}
 
 }

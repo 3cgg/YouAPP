@@ -28,6 +28,7 @@ public class SimpleHttpServerHandler extends SimpleChannelInboundHandler<FullHtt
 	private static final String title="------------%s------------";
 	
 	public SimpleHttpServerHandler() {
+		System.out.println("a");
 	}
 	
     @Override

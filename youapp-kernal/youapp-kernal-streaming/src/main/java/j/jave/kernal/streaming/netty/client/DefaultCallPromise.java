@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import io.netty.util.concurrent.Future;
+import io.netty.channel.ChannelFuture;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.ThrowableUtil;
 import j.jave.kernal.jave.logging.JLogger;
@@ -21,10 +21,11 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 
 	private static final JLogger LOGGER = JLoggerFactory.getLogger(DefaultCallPromise.class);
 
-	private Future<?> future;
+	private ChannelFuture channelFuture;
 	
 	private final ChannelRunnable channelRunnable;
 	
+	@SuppressWarnings("rawtypes")
 	private static final AtomicReferenceFieldUpdater<DefaultCallPromise, Object> RESULT_UPDATER = AtomicReferenceFieldUpdater
 			.newUpdater(DefaultCallPromise.class, Object.class, "result");
 
@@ -50,18 +51,9 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 	
 	private List<GenericPromiseListener<? extends CallPromise<? super V>>> listeners=new ArrayList<>();
 	
-//	DefaultCallPromise(Future<?> future) {
-//		this.future=future;
-//	}
-	
-	public DefaultCallPromise(ChannelRunnable channelRunnable) {
+	DefaultCallPromise(ChannelRunnable channelRunnable) {
 		this.channelRunnable=channelRunnable;
 	}
-	
-	public void setFuture(Future<?> future) {
-		this.future = future;
-	}
-	
 
 	@Override
 	public V get() throws InterruptedException, ExecutionException {
@@ -94,7 +86,7 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 
 	@Override
 	public boolean cancel(boolean mayInterruptIfRunning) {
-		return future.cancel(mayInterruptIfRunning);
+		return channelFuture.cancel(mayInterruptIfRunning);
 //		if (RESULT_UPDATER.compareAndSet(this, null, CANCELLATION_CAUSE_HOLDER)) {
 //			checkNotifyWaiters();
 //			notifyListeners();
@@ -206,6 +198,7 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 		return setValue0(new CauseHolder(checkNotNull(cause, "cause")));
 	}
 
+	@SuppressWarnings("unchecked")
 	private void notifyListeners() {
 		for(GenericPromiseListener<?> listener :listeners){
 			GenericPromiseListener<CallPromise<V>> promiseListener=(GenericPromiseListener<CallPromise<V>>) listener;
@@ -284,6 +277,7 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CallPromise<V> addListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
 		for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
@@ -298,6 +292,7 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public CallPromise<V> removeListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
 		for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
@@ -465,15 +460,17 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 	@Override
 	public V getNow() {
 		Object result = this.result;
-		if (result instanceof CauseHolder || !(result instanceof ResponseHolder)
-				||(result==NOT_GET_RESPONSE_HOLDER)) {
+		if (result instanceof CauseHolder 
+				|| !(result instanceof ResponseHolder)
+					||(result==NOT_GET_RESPONSE_HOLDER)) {
 			return null;
 		}
-		return (V) _getResponse();
+		return _getResponse();
 	}
 
-	Object _getResponse() {
-		return ((ResponseHolder)result).response;
+	@SuppressWarnings("unchecked")
+	V _getResponse() {
+		return ((ResponseHolder<V>)result).response;
 	}
 
 	private static final class CauseHolder {
@@ -491,9 +488,9 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 		
 	}
 
-	private static final class ResponseHolder{
-		final Object response;
-		ResponseHolder(Object response) {
+	private static final class ResponseHolder<V>{
+		final V response;
+		ResponseHolder(V response) {
 			this.response=response;
 		}
 		
@@ -503,8 +500,15 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 		return channelRunnable;
 	}
 	
-	public Future<?> getFuture() {
-		return future;
+	void setChannelFuture(ChannelFuture channelFuture) {
+		this.channelFuture = channelFuture;
 	}
+	
+	public static class _DefaultCallPromiseUtil{
+		public static ChannelFuture getChannelFuture(DefaultCallPromise<?> defaultCallPromise){
+			return defaultCallPromise.channelFuture;
+		}
+	}
+	
 	
 }

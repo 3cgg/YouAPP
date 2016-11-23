@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import j.jave.kernal.jave.utils.JObjectUtils;
 
 @SuppressWarnings("serial")
-public class JKafkaConsumerConfig extends JKafkaConfig{
+public class KafkaConsumerConfig extends KafkaConfig{
 	
 	/**
 	 * session.timeout.ms
@@ -48,9 +48,9 @@ public class JKafkaConsumerConfig extends JKafkaConfig{
 	 */
 	private String valueDeserializer;
 	
-	public static JKafkaConsumerConfig build(Map conf){
-		JKafkaConfig kafkaConfig=JKafkaConfig.build(conf);
-		JKafkaConsumerConfig consumerConfig=JObjectUtils.simpleCopy(kafkaConfig, JKafkaConsumerConfig.class);
+	public static KafkaConsumerConfig build(Map conf){
+		KafkaConfig kafkaConfig=KafkaConfig.build(conf);
+		KafkaConsumerConfig consumerConfig=JObjectUtils.simpleCopy(kafkaConfig, KafkaConsumerConfig.class);
 		consumerConfig.setAutoCommitIntervalMs(String.valueOf(conf.get("auto.commit.interval.ms")));
 		consumerConfig.setEnableAutoCommit(String.valueOf(conf.get("enable.auto.commit")));
 		consumerConfig.setGroupId(String.valueOf(conf.get("group.id")));

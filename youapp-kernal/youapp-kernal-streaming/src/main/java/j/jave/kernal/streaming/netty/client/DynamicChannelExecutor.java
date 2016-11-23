@@ -4,9 +4,9 @@ import java.util.concurrent.Executors;
 
 import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.streaming.zookeeper.JNode;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
 public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChannelRunnable> {
@@ -22,9 +22,9 @@ public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChann
 	private ZookeeperExecutor executor=ZooKeeperExecutorGetter.getDefault();
 	
 	public DynamicChannelExecutor() {
-		executor.watchPath("/leader-host", new JZooKeeperConnector.NodeCallback() {
+		executor.watchPath("/leader-host", new ZooNodeCallback() {
 			@Override
-			public void call(JNode node) {
+			public void call(ZooNode node) {
 				canService=false;
 				active=null;
 				String led=JStringUtils.utf8(executor.getPath(node.getPath()));

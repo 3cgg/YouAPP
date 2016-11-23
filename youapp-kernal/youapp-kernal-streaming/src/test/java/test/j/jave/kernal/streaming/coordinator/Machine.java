@@ -7,26 +7,26 @@ import org.apache.kafka.common.utils.Utils;
 
 import j.jave.kernal.streaming.coordinator.NodeWorker;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
-import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
+import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConfig;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class Machine {
 	
 	public static Map conf(){
 		Map leaderConf=new HashMap<>();
 		KafkaNameKeys.setKafkaServer(leaderConf, "192.168.0.97:9092");
-		leaderConf.putAll(JKafkaProducerConfig.def());
+		leaderConf.putAll(KafkaProducerConfig.def());
 		return leaderConf;
 	}
 	
 	public static ZookeeperExecutor executor(Map conf){
-		JZooKeeperConfig zooKeeperConfig=new JZooKeeperConfig();
+		ZooKeeperConfig zooKeeperConfig=new ZooKeeperConfig();
 		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
 		zooKeeperConfig.setNamespace("test-b");
-		ZookeeperExecutor executor=new JZooKeeperConnector(zooKeeperConfig)
+		ZookeeperExecutor executor=new ZooKeeperConnector(zooKeeperConfig)
 				.connect();
 		return executor;
 	}

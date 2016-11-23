@@ -8,7 +8,7 @@ import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 
 import com.google.common.collect.Maps;
 
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 @SuppressWarnings("serial")
 public class SingleMonitor implements Serializable{

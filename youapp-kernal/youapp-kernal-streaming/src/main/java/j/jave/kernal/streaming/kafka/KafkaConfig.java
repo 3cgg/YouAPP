@@ -5,7 +5,7 @@ import java.util.Map;
 import j.jave.kernal.jave.model.JModel;
 
 @SuppressWarnings("serial")
-public class JKafkaConfig implements JModel {
+public class KafkaConfig implements JModel {
 
 	/**
 	 * bootstrap.servers i.e.  localhost:9092
@@ -27,8 +27,8 @@ public class JKafkaConfig implements JModel {
 		this.bootstrapServers = bootstrapServers;
 	}
 
-	public static JKafkaConfig build(Map conf){
-		JKafkaConfig kafkaConfig=new JKafkaConfig();
+	public static KafkaConfig build(Map conf){
+		KafkaConfig kafkaConfig=new KafkaConfig();
 		kafkaConfig.setBootstrapServers(String.valueOf(conf.get("bootstrap.servers")));
 		return kafkaConfig;
 	}

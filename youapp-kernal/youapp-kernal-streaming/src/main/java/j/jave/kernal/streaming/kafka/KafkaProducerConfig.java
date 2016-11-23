@@ -8,7 +8,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import j.jave.kernal.jave.utils.JObjectUtils;
 
 @SuppressWarnings("serial")
-public class JKafkaProducerConfig extends JKafkaConfig{
+public class KafkaProducerConfig extends KafkaConfig{
 	
 	/**
 	 * acks ;  "all"/...
@@ -51,9 +51,9 @@ public class JKafkaProducerConfig extends JKafkaConfig{
 	private String valueSerializer;
 	
 	
-	public static JKafkaProducerConfig build(Map conf){
-		JKafkaConfig kafkaConfig=JKafkaConfig.build(conf);
-		JKafkaProducerConfig producerConfig=JObjectUtils.simpleCopy(kafkaConfig, JKafkaProducerConfig.class);
+	public static KafkaProducerConfig build(Map conf){
+		KafkaConfig kafkaConfig=KafkaConfig.build(conf);
+		KafkaProducerConfig producerConfig=JObjectUtils.simpleCopy(kafkaConfig, KafkaProducerConfig.class);
 		producerConfig.setAcks(String.valueOf(conf.get("acks")));
 		producerConfig.setBatchSize(Integer.valueOf(String.valueOf(conf.get("batch.size"))));
 		producerConfig.setBufferMemory(Integer.valueOf(String.valueOf(conf.get("buffer.memory"))));

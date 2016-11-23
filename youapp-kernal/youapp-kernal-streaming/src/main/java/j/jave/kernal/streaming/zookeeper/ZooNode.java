@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.zookeeper;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JStringUtils;
 
-public class JNode implements JModel{
+public class ZooNode implements JModel{
 
 	private String path;
 	

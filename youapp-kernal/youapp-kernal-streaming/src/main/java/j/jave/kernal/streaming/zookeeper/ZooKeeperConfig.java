@@ -5,7 +5,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 
 import j.jave.kernal.jave.model.JModel;
 
-public class JZooKeeperConfig implements JModel {
+public class ZooKeeperConfig implements JModel {
 
 	private String connectString;
 	

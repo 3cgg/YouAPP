@@ -29,13 +29,14 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
-import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.JProducerConnector;
-import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
+import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
+import j.jave.kernal.streaming.kafka.ProducerConnector;
+import j.jave.kernal.streaming.kafka.ProducerConnector.ProducerExecutor;
 import j.jave.kernal.streaming.kafka.SimpleProducer;
-import j.jave.kernal.streaming.zookeeper.JNode;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
+import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class NodeSelector implements Serializable{
@@ -73,8 +74,8 @@ public class NodeSelector implements Serializable{
 			nodeSelector.conf=conf;
 			nodeSelector.name=name;
 			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
-			JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(conf);
-			JProducerConnector producerConnecter=new JProducerConnector(producerConfig);
+			KafkaProducerConfig producerConfig=KafkaProducerConfig.build(conf);
+			ProducerConnector producerConnecter=new ProducerConnector(producerConfig);
 			ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
 			SimpleProducer simpleProducer =new SimpleProducer(producerExecutor, 
 					"workflow-instance-track");
@@ -335,12 +336,12 @@ public class NodeSelector implements Serializable{
 		for(String path:instance.getChildPathWatcherPaths()){
 			final String _path=path;
 			InstanceNode virtualNode=instance.getInstanceNodes().get(_path);
-			final PathChildrenCache cache= executor.watchChildrenPath(_path, new JZooKeeperConnector.NodeChildrenCallback() {
+			final PathChildrenCache cache= executor.watchChildrenPath(_path, new ZooNodeChildrenCallback() {
 				@Override
-				public void call(List<JNode> nodes) {
+				public void call(List<ZooNode> nodes) {
 					boolean done=true;
 					boolean withError=false;
-					for(JNode node:nodes){
+					for(ZooNode node:nodes){
 						byte[] bytes=node.getData();
 						if(bytes==null){
 							bytes=executor.getPath(node.getPath());
@@ -368,9 +369,9 @@ public class NodeSelector implements Serializable{
 						return;
 					}
 					
-					Collections.sort(nodes, new Comparator<JNode>() {
+					Collections.sort(nodes, new Comparator<ZooNode>() {
 						@Override
-						public int compare(JNode o1, JNode o2) {
+						public int compare(ZooNode o1, ZooNode o2) {
 							return pathSequence(o1.getPath())-pathSequence(o2.getPath());
 						}
 					});
@@ -379,7 +380,7 @@ public class NodeSelector implements Serializable{
 						//start next node/worker in the virtual node
 						InstanceNodeVal latestNode=null;
 						for(int i=nodes.size()-1;i>-1;i--){
-							JNode tempNode=nodes.get(i);
+							ZooNode tempNode=nodes.get(i);
 							byte[] bytes=tempNode.getData();
 							if(bytes==null){
 								bytes=executor.getPath(tempNode.getPath());
@@ -443,10 +444,10 @@ public class NodeSelector implements Serializable{
 		if(workflow.getPluginWorkersPathCache()!=null) return ;
 		String _path=workflow.getPluginWorkersPath();
 		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
-				new JZooKeeperConnector.NodeChildrenCallback() {
+				new ZooNodeChildrenCallback() {
 			@Override
-			public void call(List<JNode> nodes) {
-				for(JNode node:nodes){
+			public void call(List<ZooNode> nodes) {
+				for(ZooNode node:nodes){
 					String path=node.getPath();
 					int workerId=workerId(path);
 					if(!workflow.getWorkerPaths().containsKey(workerId)){
@@ -546,10 +547,10 @@ public class NodeSelector implements Serializable{
 		if(!executor.exists(path)){
 			executor.createPath(path);
 		}
-		NodeCache cache=executor.watchPath(path, new JZooKeeperConnector.NodeCallback() {
+		NodeCache cache=executor.watchPath(path, new ZooNodeCallback() {
 			
 			@Override
-			public void call(JNode node) {
+			public void call(ZooNode node) {
 				WorkflowMeta workflowMeta=JJSON.get().parse(node.getStringData(), WorkflowMeta.class);
 				Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
 				if(workflow==null){
@@ -580,11 +581,11 @@ public class NodeSelector implements Serializable{
 		if(!executor.exists(workflowAddPath)){
 			executor.createPath(workflowAddPath);
 		}
-		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new JZooKeeperConnector.NodeChildrenCallback() {
+		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new ZooNodeChildrenCallback() {
 			
 			@Override
-			public void call(List<JNode> nodes) {
-				for(JNode node:nodes){
+			public void call(List<ZooNode> nodes) {
+				for(ZooNode node:nodes){
 					byte[] bytes=node.getData();
 					if(bytes==null){
 						bytes=executor.getPath(node.getPath());

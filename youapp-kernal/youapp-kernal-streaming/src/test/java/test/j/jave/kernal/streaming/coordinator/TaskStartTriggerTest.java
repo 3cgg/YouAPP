@@ -4,19 +4,19 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConfig;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class TaskStartTriggerTest {
 
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) throws Exception {
 		
-		JZooKeeperConfig zooKeeperConfig=new JZooKeeperConfig();
+		ZooKeeperConfig zooKeeperConfig=new ZooKeeperConfig();
 		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
 		zooKeeperConfig.setNamespace("test-b");
-		ZookeeperExecutor executor=new JZooKeeperConnector(zooKeeperConfig)
+		ZookeeperExecutor executor=new ZooKeeperConnector(zooKeeperConfig)
 				.connect();
 		
 		WorkflowMeta demo=WorkflowMetaDemoTest.get();

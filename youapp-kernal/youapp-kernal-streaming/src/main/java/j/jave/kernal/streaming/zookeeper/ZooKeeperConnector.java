@@ -22,43 +22,31 @@ import org.apache.zookeeper.ZooDefs;
 import j.jave.kernal.jave.utils.JStringUtils;
 
 @SuppressWarnings("serial")
-public class JZooKeeperConnector implements Serializable {
+public class ZooKeeperConnector implements Serializable {
 
-	private JZooKeeperConfig zooKeeperConfig;
+	private ZooKeeperConfig zooKeeperConfig;
 	
-	public JZooKeeperConnector(JZooKeeperConfig zooKeeperConfig) {
+	public ZooKeeperConnector(ZooKeeperConfig zooKeeperConfig) {
 		this.zooKeeperConfig=zooKeeperConfig;
 	}
 	
 	public ZookeeperExecutor connect(){
 		return new ZookeeperExecutor() {
 			@Override
-			protected JZooKeeperConfig zooKeeperConfigProvide() {
+			protected ZooKeeperConfig zooKeeperConfigProvide() {
 				return zooKeeperConfig;
 			}
 		};
-	}
-	
-	public interface NodeCallback extends Serializable {
-		
-		public void call(JNode node);
-		
-	}
-	
-	public interface NodeChildrenCallback extends Serializable {
-		
-		public void call(List<JNode> nodes);
-		
 	}
 	
 	public abstract class ZookeeperExecutor implements Serializable{
 		
 		private CuratorFramework curatorFramework;
 		
-		protected abstract JZooKeeperConfig zooKeeperConfigProvide();
+		protected abstract ZooKeeperConfig zooKeeperConfigProvide();
 		
 		public ZookeeperExecutor() {
-			JZooKeeperConfig zooKeeperConfig=zooKeeperConfigProvide();
+			ZooKeeperConfig zooKeeperConfig=zooKeeperConfigProvide();
 	        CuratorFramework client = CuratorFrameworkFactory.builder()
 	                .connectString(zooKeeperConfig.getConnectString())
 	                .retryPolicy(zooKeeperConfig.getRetryPolicy())
@@ -84,7 +72,7 @@ public class JZooKeeperConnector implements Serializable {
 				.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
 				.forPath(path,data);
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
@@ -96,7 +84,7 @@ public class JZooKeeperConnector implements Serializable {
 				.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
 				.forPath(path,data);
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
@@ -105,7 +93,7 @@ public class JZooKeeperConnector implements Serializable {
 				curatorFramework.setData()
 				.forPath(path,JStringUtils.utf8(data));
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
@@ -114,7 +102,7 @@ public class JZooKeeperConnector implements Serializable {
 				curatorFramework.delete()
 				.forPath(path);
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
@@ -123,11 +111,11 @@ public class JZooKeeperConnector implements Serializable {
 				return curatorFramework.getData()
 				.forPath(path);
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
-		public NodeCache watchPath(final String path,final NodeCallback nodeCallback,ExecutorService executor){
+		public NodeCache watchPath(final String path,final ZooNodeCallback nodeCallback,ExecutorService executor){
 
 			try{
 				final NodeCache nodeCache = new NodeCache(curatorFramework, path, false);
@@ -137,7 +125,7 @@ public class JZooKeeperConnector implements Serializable {
 					@Override
 					public void nodeChanged() throws Exception {
 						try{
-							JNode node=new JNode();
+							ZooNode node=new ZooNode();
 							node.setPath(path);
 							ChildData childData= nodeCache.getCurrentData();
 							if(childData==null) return ;
@@ -150,23 +138,23 @@ public class JZooKeeperConnector implements Serializable {
 				}, executor);
 				return nodeCache;
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
-		public NodeCache watchPath(final String path,final NodeCallback nodeCallback){
+		public NodeCache watchPath(final String path,final ZooNodeCallback nodeCallback){
 			ExecutorService pool = Executors.newFixedThreadPool(1);
 			return watchPath(path, nodeCallback, pool);
 		}
 		
 		
-		public PathChildrenCache watchChildrenPath(final String path,final NodeChildrenCallback nodeChildrenCallback,PathChildrenCacheEvent.Type... types){
+		public PathChildrenCache watchChildrenPath(final String path,final ZooNodeChildrenCallback nodeChildrenCallback,PathChildrenCacheEvent.Type... types){
 			ExecutorService pool = Executors.newFixedThreadPool(1);
 			return watchChildrenPath(path, nodeChildrenCallback, pool, types);
 		}
 		
 		
-		public PathChildrenCache watchChildrenPath(final String path,final NodeChildrenCallback nodeChildrenCallback,ExecutorService executor,PathChildrenCacheEvent.Type... types){
+		public PathChildrenCache watchChildrenPath(final String path,final ZooNodeChildrenCallback nodeChildrenCallback,ExecutorService executor,PathChildrenCacheEvent.Type... types){
 			try{
 				final Type[] _types;
 				if(types.length==0){
@@ -196,9 +184,9 @@ public class JZooKeeperConnector implements Serializable {
 							if(!done) return;
 							
 							List<ChildData> childDatas= childrenCache.getCurrentData();
-							List<JNode> nodes=new ArrayList<>();
+							List<ZooNode> nodes=new ArrayList<>();
 							for(ChildData childData:childDatas){
-								JNode node=new JNode();
+								ZooNode node=new ZooNode();
 								node.setPath(childData.getPath());
 								node.setData(childData.getData());
 								nodes.add(node);
@@ -211,7 +199,7 @@ public class JZooKeeperConnector implements Serializable {
 				}, executor);
 				return childrenCache;
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		
@@ -221,7 +209,7 @@ public class JZooKeeperConnector implements Serializable {
 				return curatorFramework.checkExists()
 				.forPath(path)!=null;
 			}catch (Exception e) {
-				throw new JCustomZooKeeperException(e);
+				throw new CustomZooKeeperException(e);
 			}
 		}
 		

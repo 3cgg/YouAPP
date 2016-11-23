@@ -10,11 +10,11 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 @SuppressWarnings({ "serial", "rawtypes" })
-public class JProducerConnector implements Serializable {
+public class ProducerConnector implements Serializable {
 
-	private JKafkaProducerConfig kafkaProducerConfig;
+	private KafkaProducerConfig kafkaProducerConfig;
 
-	public JProducerConnector(JKafkaProducerConfig kafkaProducerConfig) {
+	public ProducerConnector(KafkaProducerConfig kafkaProducerConfig) {
 		this.kafkaProducerConfig = kafkaProducerConfig;
 	}
 
@@ -23,7 +23,7 @@ public class JProducerConnector implements Serializable {
 		validate();
 		return new ProducerExecutor<K, V>() {
 			@Override
-			protected JKafkaProducerConfig kafkaProducerConfigProvide() {
+			protected KafkaProducerConfig kafkaProducerConfigProvide() {
 				return kafkaProducerConfig;
 			}
 		}.connecting();
@@ -37,10 +37,10 @@ public class JProducerConnector implements Serializable {
 
 		private Producer<K, V> producer;
 
-		protected abstract JKafkaProducerConfig kafkaProducerConfigProvide();
+		protected abstract KafkaProducerConfig kafkaProducerConfigProvide();
 
 		ProducerExecutor connecting() {
-			JKafkaProducerConfig kafkaProducerConfig = kafkaProducerConfigProvide();
+			KafkaProducerConfig kafkaProducerConfig = kafkaProducerConfigProvide();
 			Properties props = new Properties();
 			props.put("bootstrap.servers", kafkaProducerConfig.getBootstrapServers());
 			props.put("acks", kafkaProducerConfig.getAcks());

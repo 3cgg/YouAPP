@@ -18,9 +18,9 @@ import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
 @SuppressWarnings({"serial","rawtypes"})
-public class JConsumerConnector implements Serializable {
+public class ConsumerConnector implements Serializable {
 
-	private JKafkaConsumerConfig kafkaConsumerConfig;
+	private KafkaConsumerConfig kafkaConsumerConfig;
 	
 	public class ManualPatitionAssignConsumer{
 		/**
@@ -37,7 +37,7 @@ public class JConsumerConnector implements Serializable {
 		public <K,V>ConsumerExecutor<K, V> connect(){
 			ConsumerExecutor<K, V> consumerExecutor=new ConsumerExecutor<K, V>() {
 				@Override
-				protected JKafkaConsumerConfig kafkaConsumerConfigProvied() {
+				protected KafkaConsumerConfig kafkaConsumerConfigProvied() {
 					return getKafkaConsumerConfig();
 				}
 			};
@@ -63,7 +63,7 @@ public class JConsumerConnector implements Serializable {
 		public <K,V>ConsumerExecutor<K, V> connect(){
 			ConsumerExecutor<K, V> consumerExecutor=new ConsumerExecutor<K, V>() {
 				@Override
-				protected JKafkaConsumerConfig kafkaConsumerConfigProvied() {
+				protected KafkaConsumerConfig kafkaConsumerConfigProvied() {
 					return getKafkaConsumerConfig();
 				}
 			};
@@ -75,7 +75,7 @@ public class JConsumerConnector implements Serializable {
 		
 	}
 
-	public JConsumerConnector(JKafkaConsumerConfig kafkaConsumerConfig) {
+	public ConsumerConnector(KafkaConsumerConfig kafkaConsumerConfig) {
 		this.kafkaConsumerConfig =kafkaConsumerConfig;
 	}
 	
@@ -96,11 +96,11 @@ public class JConsumerConnector implements Serializable {
 		
 		private KafkaConsumer<K, V> consumer;
 		
-		protected abstract JKafkaConsumerConfig kafkaConsumerConfigProvied();
+		protected abstract KafkaConsumerConfig kafkaConsumerConfigProvied();
 		
 		private ConsumerExecutor connecting(){
 
-			JKafkaConsumerConfig kafkaConsumerConfig = kafkaConsumerConfigProvied();
+			KafkaConsumerConfig kafkaConsumerConfig = kafkaConsumerConfigProvied();
 			Properties props = new Properties();
 			props.put("bootstrap.servers", kafkaConsumerConfig.getBootstrapServers());
 			props.put("group.id", kafkaConsumerConfig.getGroupId());
@@ -160,7 +160,7 @@ public class JConsumerConnector implements Serializable {
 		}
 	}
 	
-	public JKafkaConsumerConfig getKafkaConsumerConfig() {
+	public KafkaConsumerConfig getKafkaConsumerConfig() {
 		return kafkaConsumerConfig;
 	}
 	

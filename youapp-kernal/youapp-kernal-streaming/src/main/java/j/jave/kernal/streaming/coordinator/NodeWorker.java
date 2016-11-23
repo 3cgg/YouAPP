@@ -22,13 +22,14 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
-import j.jave.kernal.streaming.kafka.JKafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.JProducerConnector;
-import j.jave.kernal.streaming.kafka.JProducerConnector.ProducerExecutor;
+import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
+import j.jave.kernal.streaming.kafka.ProducerConnector;
+import j.jave.kernal.streaming.kafka.ProducerConnector.ProducerExecutor;
 import j.jave.kernal.streaming.kafka.SimpleProducer;
-import j.jave.kernal.streaming.zookeeper.JNode;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
+import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 
 @SuppressWarnings("serial")
@@ -64,8 +65,8 @@ public class NodeWorker implements Serializable {
 		this.logPrefix="(worker["+workerName+"])+"+id+" ";
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
-		JKafkaProducerConfig producerConfig=JKafkaProducerConfig.build(this.conf);
-		JProducerConnector producerConnecter=new JProducerConnector(producerConfig);
+		KafkaProducerConfig producerConfig=KafkaProducerConfig.build(this.conf);
+		ProducerConnector producerConnecter=new ProducerConnector(producerConfig);
 		ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
 		simpleProducer =new SimpleProducer(producerExecutor, 
 				"workflow-instance-track");
@@ -116,9 +117,9 @@ public class NodeWorker implements Serializable {
 				executor.createPath(path,JJSON.get().formatObject(workerPathVal).getBytes(Charset.forName("utf-8")),CreateMode.PERSISTENT);
 			}
 			System.out.println(logPrefix+"  add wahter on : "+path);
-			executor.watchPath(path, new JZooKeeperConnector.NodeCallback () {
+			executor.watchPath(path, new ZooNodeCallback () {
 				@Override
-				public void call(JNode node) {
+				public void call(ZooNode node) {
 					try{
 						final WorkerPathVal workerPathVal=
 								JJSON.get().parse(node.getStringData(),WorkerPathVal.class);
@@ -203,9 +204,9 @@ public class NodeWorker implements Serializable {
 	
 	
 	private void attachPluginWorkerPathWatcher(final String path){
-		final PathChildrenCache cache= executor.watchChildrenPath(path, new JZooKeeperConnector.NodeChildrenCallback() {
+		final PathChildrenCache cache= executor.watchChildrenPath(path, new ZooNodeChildrenCallback() {
 			@Override
-			public void call(List<JNode> nodes) {
+			public void call(List<ZooNode> nodes) {
 				if(nodes.isEmpty()){
 					WorkerPathVal workerPathVal= workerPathVal();
 					complete(workerPathVal.getInstancePath());

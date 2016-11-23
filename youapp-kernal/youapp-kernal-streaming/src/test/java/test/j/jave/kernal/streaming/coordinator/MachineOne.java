@@ -6,7 +6,7 @@ import org.apache.kafka.common.utils.Utils;
 
 import j.jave.kernal.streaming.coordinator.NodeSelector;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
-import j.jave.kernal.streaming.zookeeper.JZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class MachineOne {
 

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<configuration>
+
+<!-- xmldb properties  -->
+
+<property>
+  <name>youapp.streaming.zookeeper.server</name>
+  <value>nim1.storm.com:2182,nim2.storm.com</value>
+  <description>zookeeper server</description>
+</property>
+
+<property>
+  <name>youapp.streaming.zookeeper.namespace</name>
+  <value>z-test</value>
+  <description>zookeeper namespace</description>
+</property>
+
+</configuration>

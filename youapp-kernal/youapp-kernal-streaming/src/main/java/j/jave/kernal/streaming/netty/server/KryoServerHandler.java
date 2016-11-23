@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.streaming.netty.Utils;
+import j.jave.kernal.streaming.netty.HeaderNames;
 import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
 
 public class KryoServerHandler extends SimpleChannelInboundHandler<FullHttpMessage> {
@@ -57,7 +57,7 @@ public class KryoServerHandler extends SimpleChannelInboundHandler<FullHttpMessa
     	DefaultFastMessageMeta fastMessageMeta=new DefaultFastMessageMeta();
     	fastMessageMeta.setBytes(bytes);
     	asyncRequestExecutingEvent.setFastMessageMeta(fastMessageMeta);
-    	fastMessageMeta.setUrl(Utils.controllerUri(headers));
+    	fastMessageMeta.setUrl(headers.get(HeaderNames.CONTROLLER_URI_NAME));
     	JServiceHubDelegate.get().addDelayEvent(asyncRequestExecutingEvent);
 		
     }

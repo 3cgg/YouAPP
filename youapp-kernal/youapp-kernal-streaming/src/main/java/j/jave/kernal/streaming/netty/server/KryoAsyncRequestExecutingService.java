@@ -22,12 +22,13 @@ import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
 import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.netty.HeaderNames;
 
-public class AsyncRequestExecutingService 
-extends JServiceFactorySupport<AsyncRequestExecutingService>
+public class KryoAsyncRequestExecutingService 
+extends JServiceFactorySupport<KryoAsyncRequestExecutingService>
 implements JService , AsyncRequestExecutingListener{
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(AsyncRequestExecutingService.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(KryoAsyncRequestExecutingService.class);
 	
 	private static JSerializerFactory factory=new KryoSerializerFactory();
 	
@@ -38,11 +39,13 @@ implements JService , AsyncRequestExecutingListener{
 	public Object trigger(AsyncRequestExecutingEvent event) {
 		try{
 			byte[] bytes=null;
+			String className=null;
 	    	try{
 	    		Object obj=serverExecutorService.execute(
 	    				event.getFastMessageMeta()
 	    				,event.getCtx()
 	    				,event.getHttpObject());
+	    		className=obj.getClass().getName();
 	    		if(obj instanceof byte[]){
 	    			bytes=(byte[]) obj;
 	    		}
@@ -57,17 +60,18 @@ implements JService , AsyncRequestExecutingListener{
 	    		}
 	    	}catch(Exception e){
 	    		bytes=new JNestedRuntimeException(e).getMessage().getBytes(Charset.forName("utf-8"));
+	    		className=String.class.getName();
 	    	}
 			writeResponse(event.getCtx()
     				,event.getHttpObject()
-    				,bytes);
+    				,bytes,className);
 		}catch(Exception e){
 			return false;
 		}
 		return true;
 	}
 	
-	private void writeResponse(ChannelHandlerContext ctx,Object object,byte[] bytes) {
+	private void writeResponse(ChannelHandlerContext ctx,Object object,byte[] bytes,String className) {
 		HttpObject httpObject=(HttpObject) object;
 		// Decide whether to close the connection or not.
         // Build the response object.
@@ -84,13 +88,15 @@ implements JService , AsyncRequestExecutingListener{
         // - http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-01.html#Connection
         response.headers().set(HttpHeaderNames.CONNECTION, 
         		HttpHeaderValues.KEEP_ALIVE);
+        response.headers().set(HeaderNames.KRYO_CLASS_NAME, 
+        		className);
         
         // Write the response.
         ctx.writeAndFlush(response);
 	}
 	
 	@Override
-	protected AsyncRequestExecutingService doGetService() {
+	protected KryoAsyncRequestExecutingService doGetService() {
 		return this;
 	}
 	

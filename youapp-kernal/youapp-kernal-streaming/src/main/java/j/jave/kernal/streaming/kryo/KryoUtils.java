@@ -18,5 +18,17 @@ public abstract class KryoUtils {
 		return serializerFactory.newSerializer(clazz).read(inputStream, clazz);
 	}
 	
+	/**
+	 * 
+	 * @param serializerFactory
+	 * @param bytes
+	 * @param clazz target class
+	 * @param innerClass need if the target clazz is collection
+	 * @return
+	 */
+	public static <T> T deserialize(JSerializerFactory serializerFactory, byte[] bytes, Class<T> clazz,Class<?> innerClass) {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+		return serializerFactory.newSerializer(innerClass).read(inputStream, clazz);
+	}
 	
 }

@@ -11,6 +11,10 @@ public abstract class ControllerSupport<T extends JService>
 extends JServiceFactorySupport<T>
 implements ControllerService , ControllerServiceFactory, ControllerServiceFindingListener {
 	
+	public ControllerSupport() {
+		super();
+	}
+	
 	@Override
 	public ControllerService getControllerService() {
 		return this;

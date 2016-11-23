@@ -6,6 +6,11 @@ import j.jave.kernal.jave.base64.JBase64FactoryProvider;
 
 public class DefaultFastMessageMeta extends DefaultMessageMeta implements FastMessageMeta{
 
+	/**
+	 * the type describer of {@link #bytes()}
+	 */
+	private String className;
+	
 	protected static JBase64 base64Service=
 			JBase64FactoryProvider.getBase64Factory().getBase64();
 	
@@ -33,7 +38,13 @@ public class DefaultFastMessageMeta extends DefaultMessageMeta implements FastMe
 	public byte[] bytes() {
 		return getBytes();
 	}
-	
-	
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 	
 }

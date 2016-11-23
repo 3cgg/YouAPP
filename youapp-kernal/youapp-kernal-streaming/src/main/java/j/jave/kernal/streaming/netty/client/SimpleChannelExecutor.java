@@ -15,5 +15,13 @@ public class SimpleChannelExecutor implements ChannelExecutor<NioChannelRunnable
 		return nioChannelExecutor.execute(channelRunnable);
 	}
 	
+	boolean ssl(){
+		SimpleHttpClientInitializer simpleHttpClientInitializer=(SimpleHttpClientInitializer)nioChannelExecutor.getClientInitializer();
+    	return simpleHttpClientInitializer.ssl();
+    }
+	
+	public String uri(){
+		return (ssl()?"https":"http")+"://"+nioChannelExecutor.getHost()+":"+nioChannelExecutor.getPort();
+	}
 	
 }

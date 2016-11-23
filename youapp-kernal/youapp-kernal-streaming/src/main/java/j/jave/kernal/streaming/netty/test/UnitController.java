@@ -11,19 +11,23 @@ import j.jave.kernal.streaming.netty.controller.ControllerSupport;
 import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 
 @JRequestMapping(path="/unit")
-public class UnitController extends ControllerSupport<UnitController> {
+public class UnitController extends ControllerSupport<UnitController> 
+	implements IUnitController {
 
+	@Override
 	@JRequestMapping(path="/rd")
 	public Object rd(String name){
 		return "you get it.("+name+")";
 	}
 
+	@Override
 	@JRequestMapping(path="/jvmversion")
 	public Object jvmVersion(){
 		RuntimeMXBean runtimeMXBean= ManagementFactory.getRuntimeMXBean();
 		return "JVM-VERSION.("+runtimeMXBean.getVmVersion()+")";
 	}
 	
+	@Override
 	@JRequestMapping(path="/jvm")
 	public Object jvm(){
 		RuntimeMXBean runtimeMXBean= ManagementFactory.getRuntimeMXBean();

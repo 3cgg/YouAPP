@@ -126,7 +126,8 @@ public class JAdvisedSupport extends JProxyConfig {
 	 * Invoked when advice has changed.
 	 */
 	protected void adviceChanged() {
-		this.methodCache.clear();
+		if(this.methodCache!=null)
+			this.methodCache.clear();
 	}
 
 	/**

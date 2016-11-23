@@ -20,6 +20,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import j.jave.kernal.jave.exception.JNestedRuntimeException;
+import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
@@ -203,4 +204,20 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		}
 	}
 
+	ChannelInitializer<? extends Channel> getClientInitializer() {
+		return clientInitializer;
+	}
+	
+	String getHost() {
+		return host;
+	}
+	
+	int getPort() {
+		return port;
+	}
+	
+	@Override
+	public String uri() {
+		throw new JOperationNotSupportedException("impossible to get uri, missing sufficient message.");
+	}
 }

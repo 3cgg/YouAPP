@@ -9,6 +9,8 @@ import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.HttpHeaders;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
+import j.jave.kernal.streaming.netty.HeaderNames;
+import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
 
 public class KryoClientHandler 
 	extends SimpleChannelInboundHandler<FullHttpMessage> {
@@ -25,10 +27,10 @@ public class KryoClientHandler
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpMessage msg) {
+    	HttpHeaders headers = msg.headers();
     	if(LOGGER.isDebugEnabled()){
     		String title="------------------------%s------------------------";
     		StringBuffer stringBuffer=new StringBuffer();
-    		HttpHeaders headers = msg.headers();
             if (!headers.isEmpty()) {
             	stringBuffer.append(String.format(title, "RESPONSE HEADER")).append("\r\n");
                 for (Map.Entry<String, String> h: headers) {
@@ -46,7 +48,11 @@ public class KryoClientHandler
     		bytes=new byte[content.capacity()];
     		content.readBytes(bytes);
     	}
-    	ctx.fireChannelRead(bytes);
+    	
+    	DefaultFastMessageMeta fastMessageMeta=new DefaultFastMessageMeta();
+    	fastMessageMeta.setBytes(bytes);
+    	fastMessageMeta.setClassName(headers.get(HeaderNames.KRYO_CLASS_NAME));
+    	ctx.fireChannelRead(fastMessageMeta);
     }
     
     @Override

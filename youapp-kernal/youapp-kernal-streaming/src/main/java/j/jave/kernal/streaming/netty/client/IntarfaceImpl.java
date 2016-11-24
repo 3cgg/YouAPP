@@ -117,7 +117,12 @@ public class IntarfaceImpl<T extends ControllerService> {
 				Request request=get(proxy, method, args);
 				CallPromise<Object> callPromise= channelExecutor
 							.execute(new NioChannelRunnable(request));
-				return callPromise;
+				ControllerCallPromise<Object> controllerCallPromise=new ControllerCallPromise<>(callPromise);
+				controllerCallPromise.setProxy(proxy);
+				controllerCallPromise.setMethod(method);
+				controllerCallPromise.setArgs(args);
+				controllerCallPromise.setIntarfaceImpl(IntarfaceImpl.this);
+				return controllerCallPromise;
 			}
 			@Override
 			public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {

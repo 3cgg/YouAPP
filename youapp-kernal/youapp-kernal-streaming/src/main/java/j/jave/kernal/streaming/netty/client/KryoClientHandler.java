@@ -3,6 +3,7 @@ package j.jave.kernal.streaming.netty.client;
 import java.util.Map;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpMessage;
@@ -12,6 +13,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.streaming.netty.HeaderNames;
 import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
 
+@Sharable
 public class KryoClientHandler 
 	extends SimpleChannelInboundHandler<FullHttpMessage> {
 

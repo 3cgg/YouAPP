@@ -21,13 +21,17 @@ public class JEventQueueEventResultCallBackPipe extends JEventQueuePipe {
 		return config;
 	}
 	
+	protected boolean isLaterProcess0(JEventExecution execution){
+		return false;
+	}
+	
 	@Override
 	protected JAbstractEventExecutionHandler getHandler() {
 		return new JAbstractEventExecutionHandler() {
 
 			@Override
 			public boolean isLaterProcess(JEventExecution execution) {
-				return false;
+				return isLaterProcess0(execution);
 			}
 			
 			@Override

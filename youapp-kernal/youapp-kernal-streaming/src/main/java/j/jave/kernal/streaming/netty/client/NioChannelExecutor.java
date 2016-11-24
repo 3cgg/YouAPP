@@ -12,6 +12,7 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.ChannelPoolHandler;
@@ -53,6 +54,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 			EventLoopGroup group = new NioEventLoopGroup();
 			Bootstrap b = new Bootstrap();
 			b.group(group)
+				.option(ChannelOption.SO_KEEPALIVE, true)
 				.channel(NioSocketChannel.class)
 						.remoteAddress(host, port);
 			channelPool = new SimpleChannelPool(b, new ChannelPoolHandler() {
@@ -164,11 +166,26 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 	public <V> CallPromise<V> execute(NioChannelRunnable channelRunnable) throws Exception {
 
 		Channel channel=null;
+		short count=0;
 		try{
 			Future<Channel> channelFuture= channelPool.acquire();
 			while(channel==null){
 				try{
-					channel=channelFuture.get();
+					if(channelFuture.isDone()){
+						if(channelFuture.isSuccess()){
+							channel=channelFuture.get();
+						}
+						else{
+							if(LOGGER.isDebugEnabled()){
+								LOGGER.debug(channelFuture.cause().getMessage(),channelFuture.cause());
+							}
+							channelFuture= channelPool.acquire();
+							count++;
+							if(count>3)
+								throw new JNestedRuntimeException(channelFuture.cause());
+						}
+					}
+					
 				}catch (CancellationException e) {
 				}catch (ExecutionException e) {
 					throw e;
@@ -184,15 +201,21 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 //			if(exists==null){			}
 			ChannelFuture cf= channelRunnable.request(channel);
 			callPromise.setChannelFuture(cf);
+//			if(cf instanceof ChannelPromise){
+//				ChannelPromise channelPromise=(ChannelPromise) cf;
+//				channelPromise.setUncancellable();
+//			}
 			cf.addListener(new GenericFutureListener<Future<? super Void>>() {
 				@Override
 				public void operationComplete(Future<? super Void> future) throws Exception {
 					ChannelFuture channelFuture=(ChannelFuture) future;
 					if(channelFuture.isSuccess()){
+						callPromise.setRequestUncancellable();
 						callPromise.setRequestSuccess();
 					}else  if(channelFuture.isCancelled()){
 						callPromise.setRequestCancelled();
 					}
+					
 				}
 			});
 			return callPromise;

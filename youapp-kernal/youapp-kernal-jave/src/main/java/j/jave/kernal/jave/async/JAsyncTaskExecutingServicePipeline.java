@@ -4,11 +4,12 @@ import j.jave.kernal.eventdriven.servicehub.JEventQueueEventExecutingPipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueueEventResultCallBackPipe;
 import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline;
 import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
+import j.jave.kernal.jave.utils.JStringUtils;
 
 public class JAsyncTaskExecutingServicePipeline extends JEventQueuePipeline {
 
 	public JAsyncTaskExecutingServicePipeline(String name) {
-		super("-Sync-Executing-Service");
+		super(JStringUtils.isNotNullOrEmpty(name)?"-Sync-Executing-Service":name);
 	}
 	
 	@Override

@@ -22,5 +22,14 @@ public class SimpleKryoIntarfaceImplUtil {
 				new KryoIntarfaceImpl<M>(controllerService, dynamicChannelExecutor);
 		return intarface.asyncProxy();
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <V> ControllerCallPromise<V> asyncExecute(Object object,ControllerAsyncCall asyncCall){
+		ControllerCallPromise callPromise=(ControllerCallPromise) object;
+		callPromise.setControllerAsyncCall(asyncCall);
+		ControllerAsyncExecutor.get().execute(callPromise);
+		return callPromise;
+	}
+	
 
 }

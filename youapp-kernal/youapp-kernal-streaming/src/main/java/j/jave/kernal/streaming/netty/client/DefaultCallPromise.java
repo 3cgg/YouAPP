@@ -158,7 +158,7 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 	@Override
 	public boolean setRequestSuccess() {
 		if (RESULT_UPDATER.compareAndSet(this, 
-				TransportStatus.UNCANCELLABLE, 
+				REQUEST_UNCANCELLED_HOLDER, 
 				REQUEST_SUCCESS_HOLDER)) {
 			return true;
 		}
@@ -273,15 +273,27 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 
 	@Override
 	public CallPromise<V> addListener(GenericPromiseListener<? extends CallPromise<? super V>> listener) {
-		listeners.add(listener);
+		synchronized (listeners) {
+			listeners.add(listener);
+		}
+		
+		if(isDone()){
+			notifyListeners();
+		}
+		
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public CallPromise<V> addListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
-		for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
-			addListener(listener);
+		synchronized (this.listeners) {
+			for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
+				this.listeners.add(listener);
+			}
+		}
+		if(isDone()){
+			notifyListeners();
 		}
 		return this;
 	}

@@ -1,4 +1,4 @@
-package j.jave.kernal.streaming.netty.test;
+package j.jave.kernal.streaming.netty.examples;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -8,27 +8,27 @@ import java.util.Map;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
-import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 
-@JRequestMapping(path="/unit")
 public class UnitController extends ControllerSupport<UnitController> 
 	implements IUnitController {
 
 	@Override
-	@JRequestMapping(path="/rd")
+	public String sup(String name) {
+		return "you(sup) get it.("+name+")";
+	}
+	
+	@Override
 	public Object rd(String name){
 		return "you get it.("+name+")";
 	}
 
 	@Override
-	@JRequestMapping(path="/jvmversion")
 	public Object jvmVersion(){
 		RuntimeMXBean runtimeMXBean= ManagementFactory.getRuntimeMXBean();
 		return "JVM-VERSION.("+runtimeMXBean.getVmVersion()+")";
 	}
 	
 	@Override
-	@JRequestMapping(path="/jvm")
 	public Object jvm(){
 		RuntimeMXBean runtimeMXBean= ManagementFactory.getRuntimeMXBean();
 		Map<String, String> info=new HashMap<>();

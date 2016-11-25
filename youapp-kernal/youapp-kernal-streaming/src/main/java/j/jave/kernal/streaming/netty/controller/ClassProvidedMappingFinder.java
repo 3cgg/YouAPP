@@ -1,6 +1,7 @@
 package j.jave.kernal.streaming.netty.controller;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 import j.jave.kernal.jave.support.JProvider;
@@ -41,6 +42,13 @@ public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<Cl
 				boolean valid=clazz.isAnnotationPresent(JRequestMapping.class);
 				return !valid;
 			}
+			
+			@Override
+			public int[] methodModifiers() {
+				return new int[]{Modifier.PUBLIC|Modifier.ABSTRACT};
+			}
+			
+			
 		});
 		methodFinder.setMethodInfo(mappingMetaInfoGen);
 	}

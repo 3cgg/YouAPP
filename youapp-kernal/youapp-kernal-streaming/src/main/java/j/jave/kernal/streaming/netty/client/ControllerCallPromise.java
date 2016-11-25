@@ -5,6 +5,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * combined with {@link IntarfaceImpl#asyncProxy()} to support ASYNC RPC.
+ * @author JIAZJ
+ *
+ * @param <V>
+ * @see ControllerAsyncCall
+ */
 public class ControllerCallPromise<V> implements CallPromise<V>{
 
 	private final CallPromise callPromise;

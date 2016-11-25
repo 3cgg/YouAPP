@@ -4,14 +4,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.netty.client.SimpleKryoIntarfaceImplUtil;
-import j.jave.kernal.streaming.netty.test.IUnitController;
+import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
+import j.jave.kernal.streaming.netty.examples.IUnitController;
 
 public class ControllerTestSync {
 
 	public static void main(String[] args) {
 		try{
-			IUnitController controller=SimpleKryoIntarfaceImplUtil.syncProxy(IUnitController.class);
+			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
 			ExecutorService service=Executors.newFixedThreadPool(1);
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
@@ -19,7 +19,10 @@ public class ControllerTestSync {
 					@Override
 					public void run() {
 						Object object1=controller.rd(_i+"----"+JUniqueUtils.unique());
-						System.out.println("---------response----------"+object1);
+						System.out.println("---------rd response----------"+object1);
+						
+						object1=controller.sup(_i+"----"+JUniqueUtils.unique());
+						System.out.println("---------sup response----------"+object1);
 					}
 				});
 			}

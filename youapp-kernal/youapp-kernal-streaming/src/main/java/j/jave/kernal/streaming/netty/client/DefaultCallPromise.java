@@ -17,6 +17,12 @@ import io.netty.util.internal.ThrowableUtil;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
+/**
+ * wrapped {@link ChannelFuture} , high layer can be independent to the concrete  
+ * @author JIAZJ
+ *
+ * @param <V>
+ */
 public class DefaultCallPromise<V> implements CallPromise<V> {
 
 	private static final JLogger LOGGER = JLoggerFactory.getLogger(DefaultCallPromise.class);

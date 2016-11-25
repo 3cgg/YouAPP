@@ -3,8 +3,8 @@ package test.j.jave.kernal.streaming.netty.controller;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.netty.client.ControllerAsyncCall;
-import j.jave.kernal.streaming.netty.client.SimpleKryoIntarfaceImplUtil;
-import j.jave.kernal.streaming.netty.test.IUnitController;
+import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
+import j.jave.kernal.streaming.netty.examples.IUnitController;
 
 public class ControllerTestAsync {
 
@@ -17,14 +17,22 @@ public class ControllerTestAsync {
 	public static void main(String[] args) {
 		try{
 			initialize();
-			IUnitController controller=SimpleKryoIntarfaceImplUtil.asyncProxy(IUnitController.class);
+			IUnitController controller=SimpleIntarfaceImplUtil.asyncProxy(IUnitController.class);
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
-				SimpleKryoIntarfaceImplUtil.asyncExecute(controller.rd(_i+"----"+JUniqueUtils.unique())
+				SimpleIntarfaceImplUtil.asyncExecute(controller.rd(_i+"----"+JUniqueUtils.unique())
 						,new ControllerAsyncCall() {
 							@Override
 							public void run(Object object) {
-								System.out.println("---Thread["+Thread.currentThread().getName()+"]------response----------"+object);
+								System.out.println("---rd Thread["+Thread.currentThread().getName()+"]------response----------"+object);
+							}
+						});
+				controller.sup(_i+"----"+JUniqueUtils.unique());
+				SimpleIntarfaceImplUtil.asyncExecute(null
+						,new ControllerAsyncCall() {
+							@Override
+							public void run(Object object) {
+								System.out.println("---sup Thread["+Thread.currentThread().getName()+"]------response----------"+object);
 							}
 						});
 				

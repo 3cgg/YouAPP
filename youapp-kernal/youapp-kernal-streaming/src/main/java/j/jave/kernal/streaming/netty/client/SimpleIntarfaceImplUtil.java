@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.netty.client;
 
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 
-public class SimpleKryoIntarfaceImplUtil {
+public class SimpleIntarfaceImplUtil {
 
 	static DynamicChannelExecutor dynamicChannelExecutor=new DynamicChannelExecutor() {
 		@Override

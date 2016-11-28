@@ -14,6 +14,8 @@ public class ControllerTestSync {
 
 	private static StringBuffer stringBuffer=new StringBuffer(100000);
 	
+	private static volatile int max=0;
+	
 	public static void main(String[] args) {
 		try{
 			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
@@ -22,8 +24,9 @@ public class ControllerTestSync {
 				@Override
 				public void run() {
 					try{
-						System.out.println(stringBuffer.substring(stringBuffer.length()-300, stringBuffer.length()));
+						System.out.println(max+"<>"+stringBuffer.substring(stringBuffer.length()-300, stringBuffer.length()));
 					}catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}, 1, 10, TimeUnit.SECONDS);
@@ -33,11 +36,18 @@ public class ControllerTestSync {
 				service.execute(new Runnable() {
 					@Override
 					public void run() {
-						Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
-						stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call name]----  response----------"+object1);
-						
-						object1=controller.superName(_i+"----"+JUniqueUtils.unique());
-						stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call superName]----response----------"+object1);
+						try{
+							if(max<_i){
+								max=_i;
+							}
+							Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
+							stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call name]----  response----------"+object1);
+							
+							object1=controller.superName(_i+"----"+JUniqueUtils.unique());
+							stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call superName]----response----------"+object1);
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				});
 			}

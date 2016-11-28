@@ -4,6 +4,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -51,7 +52,12 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 	NioChannelExecutor connect() {
 		try {
 			// Configure the client.
-			EventLoopGroup group = new NioEventLoopGroup();
+			EventLoopGroup group = new NioEventLoopGroup(5,new ThreadFactory() {
+				@Override
+				public Thread newThread(Runnable r) {
+					return new Thread(r,"netty-client-io");
+				}
+			});
 			Bootstrap b = new Bootstrap();
 			b.group(group)
 				.option(ChannelOption.SO_KEEPALIVE, true)

@@ -2,6 +2,7 @@ package j.jave.kernal.streaming.netty.server;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.ThreadFactory;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
@@ -48,8 +49,18 @@ public class SimpleHttpNioChannelServer implements Closeable {
         }
 
         // Configure the server.
-        EventLoopGroup bossGroup = new NioEventLoopGroup(3);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(50);
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"netty-server-acceptor-io");
+			}
+		});
+        EventLoopGroup workerGroup = new NioEventLoopGroup(50,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"netty-server-worker-io");
+			}
+		});
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)

@@ -15,11 +15,7 @@ implements JService , ControllerCallPromiseListener{
 	public Object trigger(ControllerCallPromiseEvent event) {
 		try{
 			final ControllerCallPromise callPromise=event.getCallPromise();
-			Object object=null;
-			if(callPromise.isResponsed()){
-				object=callPromise.get();
-			}else if((object=callPromise.cause())!=null);
-			callPromise.getControllerAsyncCall().run(object);
+			callPromise.notifyListeners();
 		}catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			return false;

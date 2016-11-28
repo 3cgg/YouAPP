@@ -1,5 +1,7 @@
 package j.jave.kernal.streaming.netty.client;
 
+import java.lang.reflect.Method;
+
 /**
  * combined with {@link IntarfaceImpl#asyncProxy()} to support ASYNC RPC.
  * @author JIAZJ
@@ -10,8 +12,20 @@ public interface ControllerAsyncCall {
 
 	/**
 	 * 
-	 * @param object  the response result of RPC
+	 * @param proxy
+	 * @param method
+	 * @param args
+	 * @param returnVal  the response result of RPC
 	 */
-	void run(Object object);
+	void success(Object proxy, Method method, Object[] args, Object returnVal);
+	
+	/**
+	 * 
+	 * @param proxy
+	 * @param method
+	 * @param args
+	 * @param throwable
+	 */
+	void fail(Object proxy, Method method, Object[] args, Throwable throwable);
 	
 }

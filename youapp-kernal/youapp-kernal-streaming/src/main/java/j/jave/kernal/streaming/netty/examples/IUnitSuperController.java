@@ -6,6 +6,6 @@ import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 @JRequestMapping(path="/unit")
 public interface IUnitSuperController extends ControllerService{
 
-	@JRequestMapping(path="/sup")
-	String sup(String name);
+	@JRequestMapping(path="/superName")
+	String superName(String name);
 }

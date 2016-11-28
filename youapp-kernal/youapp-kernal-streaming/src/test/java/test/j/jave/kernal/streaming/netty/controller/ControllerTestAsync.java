@@ -1,8 +1,10 @@
 package test.j.jave.kernal.streaming.netty.controller;
 
+import java.lang.reflect.Method;
+
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.netty.client.ControllerAsyncCall;
+import j.jave.kernal.streaming.netty.client.SimpleControllerAsyncCall;
 import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
@@ -20,22 +22,22 @@ public class ControllerTestAsync {
 			IUnitController controller=SimpleIntarfaceImplUtil.asyncProxy(IUnitController.class);
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
-				SimpleIntarfaceImplUtil.asyncExecute(controller.rd(_i+"----"+JUniqueUtils.unique())
-						,new ControllerAsyncCall() {
-							@Override
-							public void run(Object object) {
-								System.out.println("---rd Thread["+Thread.currentThread().getName()+"]------response----------"+object);
-							}
-						});
-				controller.sup(_i+"----"+JUniqueUtils.unique());
-				SimpleIntarfaceImplUtil.asyncExecute(null
-						,new ControllerAsyncCall() {
-							@Override
-							public void run(Object object) {
-								System.out.println("---sup Thread["+Thread.currentThread().getName()+"]------response----------"+object);
-							}
-						});
-				
+				SimpleIntarfaceImplUtil.async(controller.name(_i+"----"+JUniqueUtils.unique()))
+				.addControllerAsyncCall(new SimpleControllerAsyncCall() {
+					@Override
+					public void success(Object proxy, Method method, Object[] args, Object returnVal) {
+						System.out.println("---rd Thread["+Thread.currentThread().getName()
+									+"]------response----------"+returnVal);
+					}
+				});
+				SimpleIntarfaceImplUtil.async(controller.superName(_i+"----"+JUniqueUtils.unique()))
+				.addControllerAsyncCall(new SimpleControllerAsyncCall() {
+					@Override
+					public void success(Object proxy, Method method, Object[] args, Object returnVal) {
+						System.out.println("---sup Thread["+Thread.currentThread().getName()
+									+"]------response----------"+returnVal);
+					}
+				});
 			}
 			controller.hashCode();
 //			System.out.println(controller);

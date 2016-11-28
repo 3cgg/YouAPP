@@ -16,7 +16,6 @@ import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.streaming.kryo.KryoUtils;
 import j.jave.kernal.streaming.netty.controller.ClassProvidedMappingFinder;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
-import j.jave.kernal.streaming.netty.controller.IControllerImplementer;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
 import j.jave.kernal.streaming.netty.controller._Util;
 import net.sf.cglib.proxy.MethodProxy;
@@ -145,7 +144,18 @@ public class IntarfaceImpl<T extends ControllerService> {
 				controllerCallPromise.setMethod(method);
 				controllerCallPromise.setArgs(args);
 				controllerCallPromise.setIntarfaceImpl(IntarfaceImpl.this);
-				return controllerCallPromise;
+				SimpleIntarfaceImplUtil.THREAD_LOCAL.set(controllerCallPromise);
+				Class<?> returnType=method.getReturnType();
+				if(byte.class==returnType
+						||short.class==returnType
+						||int.class==returnType
+						||long.class==returnType
+						||float.class==returnType
+						||double.class==returnType
+						){
+					return 0;
+				}
+				return null;
 			}
 			@Override
 			public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {

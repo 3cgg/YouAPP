@@ -306,15 +306,19 @@ public class DefaultCallPromise<V> implements CallPromise<V> {
 
 	@Override
 	public CallPromise<V> removeListener(GenericPromiseListener<? extends CallPromise<? super V>> listener) {
-		listeners.remove(listener);
+		synchronized (listeners) {
+			listeners.remove(listener);
+		}
 		return this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public CallPromise<V> removeListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
-		for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
-			removeListener(listener);
+		synchronized (listeners) {
+			for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
+				removeListener(listener);
+			}
 		}
 		return this;
 	}

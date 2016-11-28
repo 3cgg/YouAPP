@@ -13,12 +13,12 @@ public class UnitController extends ControllerSupport<UnitController>
 	implements IUnitController {
 
 	@Override
-	public String sup(String name) {
-		return "you(sup) get it.("+name+")";
+	public String superName(String name) {
+		return "you get it . super name ("+name+")";
 	}
 	
 	@Override
-	public Object rd(String name){
+	public Object name(String name){
 		return "you get it.("+name+")";
 	}
 

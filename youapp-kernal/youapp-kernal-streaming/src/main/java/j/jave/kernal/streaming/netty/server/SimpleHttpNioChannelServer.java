@@ -49,7 +49,7 @@ public class SimpleHttpNioChannelServer implements Closeable {
 
         // Configure the server.
         EventLoopGroup bossGroup = new NioEventLoopGroup(3);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(5);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(50);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)

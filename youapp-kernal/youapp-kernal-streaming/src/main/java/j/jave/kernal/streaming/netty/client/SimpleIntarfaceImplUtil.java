@@ -23,12 +23,27 @@ public class SimpleIntarfaceImplUtil {
 		return intarface.asyncProxy();
 	}
 	
+	static final ThreadLocal<ControllerCallPromise> THREAD_LOCAL=new ThreadLocal<>();
+	
+	
+	/**
+	 * the method is together with {@link #asyncProxy(Class)}, like
+	 * <p>IUnitController unitController=SimpleIntarfaceImplUtil.asyncProxy(IUnitController.class);
+	 * <br/>SimpleIntarfaceImplUtil.async(unitController.name("myname"))
+	 * 												.addControllerAsyncCall(...)
+	 * @param expression  like object.methed(args)
+	 * @return
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static <V> ControllerCallPromise<V> asyncExecute(Object object,ControllerAsyncCall asyncCall){
-		ControllerCallPromise callPromise=(ControllerCallPromise) object;
-		callPromise.setControllerAsyncCall(asyncCall);
-		ControllerAsyncExecutor.get().execute(callPromise);
-		return callPromise;
+	public static <V> ControllerCallPromise<V> async(Object expression){
+		try{
+			ControllerCallPromise callPromise=THREAD_LOCAL.get();
+			ControllerAsyncExecutor.get().execute(callPromise);
+			return callPromise;
+		}finally{
+			THREAD_LOCAL.remove();
+		}
+		
 	}
 	
 

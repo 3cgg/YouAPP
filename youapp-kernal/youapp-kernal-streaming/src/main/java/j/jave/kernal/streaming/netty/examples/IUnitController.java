@@ -8,8 +8,8 @@ import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 public interface IUnitController extends IControllerImplementer<UnitController>
 ,IUnitSuperController{
 
-	@JRequestMapping(path="/rd")
-	Object rd(String unique);
+	@JRequestMapping(path="/name")
+	Object name(String unique);
 
 	@JRequestMapping(path="/jvmversion")
 	Object jvmVersion();

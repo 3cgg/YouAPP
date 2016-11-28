@@ -1,7 +1,6 @@
 package test.j.jave.kernal.streaming.netty.controller;
 
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -10,14 +9,14 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
-public class ControllerTestSync {
+public class ControllerTestSync2 {
 
 	private static StringBuffer stringBuffer=new StringBuffer(100000);
 	
+	
 	public static void main(String[] args) {
 		try{
-			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
-			ExecutorService service=Executors.newFixedThreadPool(5);
+			
 			Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 				@Override
 				public void run() {
@@ -27,21 +26,18 @@ public class ControllerTestSync {
 					}
 				}
 			}, 1, 10, TimeUnit.SECONDS);
-			System.out.println("start:"+JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
+			
+			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
+			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
-				service.execute(new Runnable() {
-					@Override
-					public void run() {
-						Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
-						stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call name]----  response----------"+object1);
-						
-						object1=controller.superName(_i+"----"+JUniqueUtils.unique());
-						stringBuffer.append("\r\n"+JDateUtils.formatWithSeconds(new Date())+"-----[call superName]----response----------"+object1);
-					}
-				});
+				Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
+				stringBuffer.append("\r\n-----[call name]----  response----------"+object1);
+				
+				object1=controller.superName(_i+"----"+JUniqueUtils.unique());
+				stringBuffer.append("\r\n-----[call superName]----response----------"+object1);
 			}
-			System.out.println("end:"+JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
+			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
 			controller.hashCode();
 //			System.out.println(controller);
 		}catch(Exception e){

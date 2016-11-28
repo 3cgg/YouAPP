@@ -1,9 +1,14 @@
 package j.jave.kernal.streaming.netty.client;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 
 /**
  * combined with {@link IntarfaceImpl#asyncProxy()} to support ASYNC RPC.
@@ -14,9 +19,11 @@ import java.util.concurrent.TimeoutException;
  */
 public class ControllerCallPromise<V> implements CallPromise<V>{
 
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ControllerCallPromise.class);
+	
 	private final CallPromise callPromise;
 	
-	private ControllerAsyncCall controllerAsyncCall;
+	private List<GenericPromiseListener<? extends CallPromise<? super V>>> listeners=new ArrayList<>();
 	
 	private IntarfaceImpl intarfaceImpl;
 	
@@ -30,12 +37,20 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 		this.callPromise =callPromise;
 	}
 	
-	public void setControllerAsyncCall(ControllerAsyncCall controllerAsyncCall) {
-		this.controllerAsyncCall = controllerAsyncCall;
-	}
-	
-	ControllerAsyncCall getControllerAsyncCall() {
-		return controllerAsyncCall;
+	public void addControllerAsyncCall(ControllerAsyncCall controllerAsyncCall) {
+		addListener(new GenericPromiseListener<CallPromise<? super V>>() {
+			@Override
+			public void operationComplete(CallPromise<? super V> callPromise) throws Exception {
+				if(callPromise.isDone()){
+					if(callPromise.isResponsed()){
+						controllerAsyncCall.success(proxy, method, args, callPromise.get());
+					}
+					else if(callPromise.cause()!=null){
+						controllerAsyncCall.success(proxy, method, args, callPromise.cause());
+					}
+				}
+			}
+		});
 	}
 	
 	public void setArgs(Object[] args) {
@@ -125,28 +140,62 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 
 	@Override
 	public CallPromise<V> addListener(GenericPromiseListener<? extends CallPromise<? super V>> listener) {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (listeners) {
+			listeners.add(listener);
+		}
+		
+		if(isDone()){
+			notifyListeners();
+		}
+		
+		return this;
 	}
 
 	@Override
 	public CallPromise<V> addListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (this.listeners) {
+			for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
+				this.listeners.add(listener);
+			}
+		}
+		if(isDone()){
+			notifyListeners();
+		}
+		return this;
 	}
 
 	@Override
 	public CallPromise<V> removeListener(GenericPromiseListener<? extends CallPromise<? super V>> listener) {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (listeners) {
+			listeners.remove(listener);
+		}
+		return this;
 	}
 
 	@Override
 	public CallPromise<V> removeListeners(GenericPromiseListener<? extends CallPromise<? super V>>... listeners) {
-		// TODO Auto-generated method stub
-		return null;
+		synchronized (listeners) {
+			for(GenericPromiseListener<? extends CallPromise<? super V>> listener :listeners){
+				removeListener(listener);
+			}
+		}
+		return this;
 	}
 
+	@SuppressWarnings("unchecked")
+	void notifyListeners() {
+		for(GenericPromiseListener<?> listener :listeners){
+			GenericPromiseListener<CallPromise<V>> promiseListener=(GenericPromiseListener<CallPromise<V>>) listener;
+			 try {
+				 promiseListener.operationComplete(this);
+		        } catch (Throwable t) {
+		        	LOGGER.warn("An exception was thrown by " +
+		        			promiseListener.getClass().getName() + ".operationComplete()", t);
+		        }
+		}
+	}
+	
+	
 	@Override
 	public CallPromise<V> await() throws InterruptedException {
 		return callPromise.await();
@@ -201,4 +250,17 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 	CallPromise getCallPromise() {
 		return callPromise;
 	}
+	
+	Object getProxy() {
+		return proxy;
+	}
+	public Method getMethod() {
+		return method;
+	}
+	
+	public Object[] getArgs() {
+		return args;
+	}
+	
+	
 }

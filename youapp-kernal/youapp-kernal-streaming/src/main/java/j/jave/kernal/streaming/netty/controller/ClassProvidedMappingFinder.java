@@ -7,8 +7,10 @@ import java.util.List;
 import j.jave.kernal.jave.support.JProvider;
 import j.jave.kernal.jave.support.JResourceFinder;
 import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
+import j.jave.kernal.jave.support._package.JAbstractMethodFinder.JMethodFilter;
 import j.jave.kernal.jave.support._package.JDefaultMethodFilter;
 import j.jave.kernal.jave.support._package.JMethodInfoProvider;
+import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.kernal.jave.support._package.JMethodOnSingleClassFinder;
 
 /**
@@ -19,38 +21,107 @@ import j.jave.kernal.jave.support._package.JMethodOnSingleClassFinder;
  */
 public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<ClassProvidedMappingFinder> {
 	
+	public static final MappingMetaFindStrategy ANNOTATION=new AnnotationFind();
+	
+	public static final MappingMetaFindStrategy INTERFACE=new SimpleInterfaceFind();
+	
+	
 	private JAbstractMethodFinder<MappingMeta> methodFinder;
 	
-	private Class<?> thisClass;
+	private final MappingMetaFindStrategy mappingMetaFindStrategy;
+	
+	private final Class<?> thisClass;
 	
 	public ClassProvidedMappingFinder(Class<?> clazz){
-		this.thisClass=clazz;
+		this(clazz,null);
 	}
+	
+	public ClassProvidedMappingFinder(Class<?> clazz,MappingMetaFindStrategy mappingMetaFindStrategy){
+		this.thisClass=clazz;
+		MappingMetaFindStrategy defaut=mappingMetaFindStrategy==null?
+				ANNOTATION:mappingMetaFindStrategy;
+		this.mappingMetaFindStrategy=defaut;
+	}
+	
+	
+	private static class SimpleInterfaceFind implements MappingMetaFindStrategy{
+
+		@Override
+		public JMethodInfoGen<MappingMeta> methodInfoGen(Class<?> clazz) {
+			return new InterfaceMappingMetaInfoGen(clazz.getClassLoader());
+		}
+
+		@Override
+		public JMethodFilter methodFilter(Class<?> clazz) {
+
+			return new JDefaultMethodFilter(){
+				@Override
+				public boolean filter(Method method, Class<?> classIncudeMethod) {
+					return !classIncudeMethod.isInterface();
+				}
+				
+				@Override
+				public boolean filter(Class<?> clazz) {
+					return !clazz.isInterface();
+				}
+				
+				@Override
+				public int[] methodModifiers() {
+					return new int[]{Modifier.PUBLIC|Modifier.ABSTRACT};
+				}
+			};
+		
+		}
+		
+	}
+	
+	private static class AnnotationFind implements MappingMetaFindStrategy{
+
+		@Override
+		public JMethodInfoGen<MappingMeta> methodInfoGen(Class<?> clazz) {
+			return new AnnotationMappingMetaInfoGen(clazz.getClassLoader());
+		}
+
+		@Override
+		public JMethodFilter methodFilter(Class<?> clazz) {
+			return new JDefaultMethodFilter(){
+				@Override
+				public boolean filter(Method method, Class<?> classIncudeMethod) {
+					boolean valid=method.isAnnotationPresent(JRequestMapping.class);
+					return !valid;
+				}
+				
+				@Override
+				public boolean filter(Class<?> clazz) {
+					boolean valid=clazz.isAnnotationPresent(JRequestMapping.class);
+					return !valid;
+				}
+				
+				@Override
+				public int[] methodModifiers() {
+					return new int[]{Modifier.PUBLIC|Modifier.ABSTRACT};
+				}
+				
+				
+			};
+		}
+		
+	}
+	
+	
+	public static interface MappingMetaFindStrategy{
+		
+		JMethodInfoGen<MappingMeta> methodInfoGen(Class<?> clazz);
+		
+		JMethodFilter methodFilter(Class<?> clazz);
+		
+	}
+	
 
 	private void clean(){
-		MappingMetaInfoGen mappingMetaInfoGen=new MappingMetaInfoGen(thisClass.getClassLoader());
 		methodFinder=new JMethodOnSingleClassFinder<MappingMeta>(thisClass);
-		methodFinder.setMethodFilter(new JDefaultMethodFilter(){
-			@Override
-			public boolean filter(Method method, Class<?> classIncudeMethod) {
-				boolean valid=method.isAnnotationPresent(JRequestMapping.class);
-				return !valid;
-			}
-			
-			@Override
-			public boolean filter(Class<?> clazz) {
-				boolean valid=clazz.isAnnotationPresent(JRequestMapping.class);
-				return !valid;
-			}
-			
-			@Override
-			public int[] methodModifiers() {
-				return new int[]{Modifier.PUBLIC|Modifier.ABSTRACT};
-			}
-			
-			
-		});
-		methodFinder.setMethodInfo(mappingMetaInfoGen);
+		methodFinder.setMethodFilter(mappingMetaFindStrategy.methodFilter(thisClass));
+		methodFinder.setMethodInfo(mappingMetaFindStrategy.methodInfoGen(thisClass));
 	}
 	
 //	private volatile boolean flag=true;

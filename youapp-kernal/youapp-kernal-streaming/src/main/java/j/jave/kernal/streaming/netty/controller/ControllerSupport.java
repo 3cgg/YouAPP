@@ -30,21 +30,41 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 		List<Class<?>> interfaces=new ArrayList<>();
 		allInterfaces(getClass(), interfaces);
 		for(Class<?> intarface:interfaces){
-			ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(intarface);
-			List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
-			for(MappingMeta meta:mappingMetas){
-				String controllerServiceName=getControllerServiceName();
-				if(JStringUtils.isNullOrEmpty(controllerServiceName)){
-					throw new JInitializationException("the controller name ["+this.getClass().getName()
-							+"] must be provided.");
-				}
-				meta.setControllerName(getControllerServiceName());
-				meta.setControllerServiceFactory(this);
-				MappingControllerManager.get().putMappingMeta(meta.getPath(), meta);
-			}
+			findOnAnnotation(intarface);
+			findOnInterface(intarface);
 		}
     	
 		return "the controller ["+this.getClass().getName()+"] is internally registered  OK";
+	}
+	
+	private void findOnInterface(Class<?> intarface) {
+		ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(intarface,ClassProvidedMappingFinder.INTERFACE);
+		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
+		for(MappingMeta meta:mappingMetas){
+			String controllerServiceName=getControllerServiceName();
+			if(JStringUtils.isNullOrEmpty(controllerServiceName)){
+				throw new JInitializationException("the controller name ["+this.getClass().getName()
+						+"] must be provided.");
+			}
+			meta.setControllerName(getControllerServiceName());
+			meta.setControllerServiceFactory(this);
+			MappingControllerManager.get().putMappingMeta(meta.getPath(), meta);
+		}
+	}
+
+	private void findOnAnnotation(Class<?> intarface) {
+		ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(intarface);
+		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
+		for(MappingMeta meta:mappingMetas){
+			String controllerServiceName=getControllerServiceName();
+			if(JStringUtils.isNullOrEmpty(controllerServiceName)){
+				throw new JInitializationException("the controller name ["+this.getClass().getName()
+						+"] must be provided.");
+			}
+			meta.setControllerName(getControllerServiceName());
+			meta.setControllerServiceFactory(this);
+			MappingControllerManager.get().putMappingMeta(meta.getPath(), meta);
+		}
 	}
 
 	@SuppressWarnings("unchecked")

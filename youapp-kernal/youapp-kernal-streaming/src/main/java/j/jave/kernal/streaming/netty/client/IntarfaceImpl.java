@@ -49,15 +49,30 @@ public class IntarfaceImpl<T extends ControllerService> {
 		List<Class<?>> interfaces=new ArrayList<>();
 		allInterfaces(intarface, interfaces);
 		for(Class<?> intarfaceClass:interfaces){
-			ClassProvidedMappingFinder classProvidedMappingFinder
-			=new ClassProvidedMappingFinder(intarfaceClass);
-			List<MappingMeta> mappingMetas= classProvidedMappingFinder
-						.find().getMappingMetas();
-			for(MappingMeta mappingMeta:mappingMetas){
-				this.mappingMetas.put(mappingMeta.getMethod(), mappingMeta);
-			}
+			findOnAnnotation(intarfaceClass);
+			findOnInterface(intarfaceClass);
 		}
 		
+	}
+	
+	private void findOnInterface(Class<?> intarfaceClass) {
+		ClassProvidedMappingFinder classProvidedMappingFinder
+		=new ClassProvidedMappingFinder(intarfaceClass,ClassProvidedMappingFinder.INTERFACE);
+		List<MappingMeta> mappingMetas= classProvidedMappingFinder
+					.find().getMappingMetas();
+		for(MappingMeta mappingMeta:mappingMetas){
+			this.mappingMetas.put(mappingMeta.getMethod(), mappingMeta);
+		}
+	}
+
+	private void findOnAnnotation(Class<?> intarfaceClass) {
+		ClassProvidedMappingFinder classProvidedMappingFinder
+		=new ClassProvidedMappingFinder(intarfaceClass);
+		List<MappingMeta> mappingMetas= classProvidedMappingFinder
+					.find().getMappingMetas();
+		for(MappingMeta mappingMeta:mappingMetas){
+			this.mappingMetas.put(mappingMeta.getMethod(), mappingMeta);
+		}
 	}
 	
 	private void allInterfaces(Class<?> clazz,List<Class<?>> interfaces){

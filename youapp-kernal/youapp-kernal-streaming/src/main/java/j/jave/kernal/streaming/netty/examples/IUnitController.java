@@ -6,17 +6,9 @@ import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 
 @JRequestMapping(path="/unit")
 public interface IUnitController extends IControllerImplementer<UnitController>
-,IUnitSuperController{
+,IUnitSuperController,IJVMController{
 
 	@JRequestMapping(path="/name")
 	Object name(String unique);
-
-	@JRequestMapping(path="/jvmversion")
-	Object jvmVersion();
-
-	@JRequestMapping(path="/jvm")
-	Object jvm();
-	
-	
 
 }

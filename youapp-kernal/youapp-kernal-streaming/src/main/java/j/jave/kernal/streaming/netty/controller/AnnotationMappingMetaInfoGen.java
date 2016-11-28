@@ -5,11 +5,11 @@ import java.lang.reflect.Parameter;
 
 import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
-public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
+public class AnnotationMappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 
 	private ClassLoader classLoader;
 	
-	public MappingMetaInfoGen(ClassLoader classLoader) {
+	public AnnotationMappingMetaInfoGen(ClassLoader classLoader) {
 		this.classLoader=classLoader;
 	}
 

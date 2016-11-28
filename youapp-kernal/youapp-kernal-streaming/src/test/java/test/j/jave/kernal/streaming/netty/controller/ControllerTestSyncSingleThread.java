@@ -9,7 +9,7 @@ import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
-public class ControllerTestSync2 {
+public class ControllerTestSyncSingleThread {
 
 	private static StringBuffer stringBuffer=new StringBuffer(100000);
 	
@@ -36,6 +36,10 @@ public class ControllerTestSync2 {
 				
 				object1=controller.superName(_i+"----"+JUniqueUtils.unique());
 				stringBuffer.append("\r\n-----[call superName]----response----------"+object1);
+				
+				object1=controller.jvm();
+				stringBuffer.append("\r\n-----[call jvm]----response----------"+object1);
+				
 			}
 			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
 			controller.hashCode();

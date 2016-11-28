@@ -19,15 +19,14 @@ import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.zookeeper.CreateMode;
 
 import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
-import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.ProducerConnector;
-import j.jave.kernal.streaming.kafka.ProducerConnector.ProducerExecutor;
-import j.jave.kernal.streaming.kafka.SimpleProducer;
-import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
+import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
 import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
@@ -55,7 +54,7 @@ public class NodeWorker implements Serializable {
 	
 	private ProcessorMaster processorMaster;
 	
-	private SimpleProducer simpleProducer;
+	private TrackingService trackingService;
 	
 	private ExecutorService executorService=Executors.newFixedThreadPool(3);
 	
@@ -65,11 +64,7 @@ public class NodeWorker implements Serializable {
 		this.logPrefix="(worker["+workerName+"])+"+id+" ";
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
-		KafkaProducerConfig producerConfig=KafkaProducerConfig.build(this.conf);
-		ProducerConnector producerConnecter=new ProducerConnector(producerConfig);
-		ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
-		simpleProducer =new SimpleProducer(producerExecutor, 
-				"workflow-instance-track");
+		trackingService=TrackingServiceFactory.build(conf);
 		this.executor=executor;
 		processorLeaderLatch=new LeaderLatch(executor.backend(),
 				processorLeaderPath());
@@ -135,7 +130,7 @@ public class NodeWorker implements Serializable {
 										workTracking(workerPathVal.getId(), 
 												workerPathVal.getSequence(), tempPath,
 												NodeStatus.PROCESSING);
-								simpleProducer.send(workTracking);
+								trackingService.track(workTracking);
 							}
 						});
 						wakeup();
@@ -231,7 +226,7 @@ public class NodeWorker implements Serializable {
 				WorkTracking workTracking=
 						workTracking(instanceNodeVal.getId(), instanceNodeVal.getSequence(), path,
 								NodeStatus.COMPLETE);
-				simpleProducer.send(workTracking);
+				trackingService.track(workTracking);
 			}
 		});
 	}
@@ -242,7 +237,9 @@ public class NodeWorker implements Serializable {
 		workTracking.setWorkerId(String.valueOf(workerId));
 		workTracking.setInstancePath(path);
 		workTracking.setStatus(status);
-		workTracking.setRecordTime(new Date().getTime());
+		Date date=new Date();
+		workTracking.setRecordTime(date.getTime());
+		workTracking.setRecordTimeStr(JDateUtils.formatWithSeconds(date));
 		workTracking.setWorkerName(this.name);
 		workTracking.setId(JUniqueUtils.unique());
 		workTracking.setOffset(-1);

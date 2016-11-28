@@ -12,6 +12,8 @@ public class WorkTracking extends BaseFetchObj  {
 	private String status;
 	
 	private String instancePath;
+	
+	private String trackingTopic;
 
 	public String getWorkerId() {
 		return workerId;
@@ -45,4 +47,12 @@ public class WorkTracking extends BaseFetchObj  {
 		this.instancePath = instancePath;
 	}
 
+	public String getTrackingTopic() {
+		return trackingTopic;
+	}
+
+	public void setTrackingTopic(String trackingTopic) {
+		this.trackingTopic = trackingTopic;
+	}
+	
 }

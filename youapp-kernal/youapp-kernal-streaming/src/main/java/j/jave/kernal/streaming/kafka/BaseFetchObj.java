@@ -8,6 +8,8 @@ public  class BaseFetchObj implements FetchObj {
 	
 	private long recordTime;
 	
+	private String recordTimeStr;
+	
 	private String hashKey;
 	
 	private Notify notify;
@@ -69,6 +71,14 @@ public  class BaseFetchObj implements FetchObj {
 
 	public void setHashKey(String hashKey) {
 		this.hashKey = hashKey;
+	}
+
+	public String getRecordTimeStr() {
+		return recordTimeStr;
+	}
+
+	public void setRecordTimeStr(String recordTimeStr) {
+		this.recordTimeStr = recordTimeStr;
 	}
 	
 }

@@ -15,4 +15,17 @@
   <description>zookeeper namespace</description>
 </property>
 
+<property>
+  <name>youapp.streaming.netty.server.port</name>
+  <value>8080</value>
+  <description>leader always listener on the port</description>
+</property>
+
+<property>
+  <name>youapp.streaming.workflow.tracking.kafka.topic</name>
+  <value>workflow-instance-track</value>
+  <description>kafka</description>
+</property>
+
+
 </configuration>

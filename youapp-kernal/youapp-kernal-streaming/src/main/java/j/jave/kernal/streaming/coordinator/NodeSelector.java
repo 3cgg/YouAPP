@@ -2,6 +2,8 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +24,7 @@ import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.kernal.streaming.NetUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
@@ -29,12 +32,10 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
-import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
-import j.jave.kernal.streaming.kafka.ProducerConnector;
-import j.jave.kernal.streaming.kafka.ProducerConnector.ProducerExecutor;
-import j.jave.kernal.streaming.kafka.SimpleProducer;
-import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
+import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
 import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
@@ -57,7 +58,7 @@ public class NodeSelector implements Serializable{
 
 	private WorkflowMaster workflowMaster;
 	
-	private SimpleProducer simpleProducer;
+	private TrackingService trackingService;
 	
 	private ExecutorService executorService=Executors.newFixedThreadPool(3);
 	
@@ -74,12 +75,7 @@ public class NodeSelector implements Serializable{
 			nodeSelector.conf=conf;
 			nodeSelector.name=name;
 			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
-			KafkaProducerConfig producerConfig=KafkaProducerConfig.build(conf);
-			ProducerConnector producerConnecter=new ProducerConnector(producerConfig);
-			ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
-			SimpleProducer simpleProducer =new SimpleProducer(producerExecutor, 
-					"workflow-instance-track");
-			nodeSelector.simpleProducer=simpleProducer;
+			nodeSelector.trackingService=TrackingServiceFactory.build(conf);
 			NODE_SELECTOR=nodeSelector;
 		}
 		return NODE_SELECTOR;
@@ -153,6 +149,9 @@ public class NodeSelector implements Serializable{
 		return basePath;
 	}
 	
+	String leaderRegisterPath(){
+		return basePath+"/leader-host";
+	}
 	
 	String simpleTrackingPath(){
 		return basePath+"-tasks-tracking/sequence";
@@ -274,7 +273,7 @@ public class NodeSelector implements Serializable{
 				WorkTracking workTracking=
 						workTracking(instanceNodeVal.getId(), path, 
 								completeStatus, instance);
-				simpleProducer.send(workTracking);
+				trackingService.track(workTracking);
 			}
 		});
 	}
@@ -317,7 +316,7 @@ public class NodeSelector implements Serializable{
 			public void run() {
 				WorkTracking workTracking=
 						workTracking(worker, instancePath, NodeStatus.READY, instance);
-				simpleProducer.send(workTracking);
+				trackingService.track(workTracking);
 			}
 		});
 		
@@ -471,7 +470,25 @@ public class NodeSelector implements Serializable{
 		workflowMaster=new WorkflowMaster();
 		attachWorfkowTriggerWatcher(null);
 		attachWorfkowAddWatcher();
+		registerLeaderInZookeeper();
 		addCommonCommand();
+	}
+	
+	private void registerLeaderInZookeeper(){
+		InetAddress inetAddress=NetUtils.getLocalAddress();
+		String hostAddress=inetAddress.getHostAddress();
+		String pid = ManagementFactory.getRuntimeMXBean().getName();  
+        int indexOf = pid.indexOf('@');  
+        if (indexOf > 0){  
+            pid = pid.substring(0, indexOf);  
+        }  
+        String msg=hostAddress+"[pid-"+pid+"]";
+		if(!executor.exists(leaderRegisterPath())){
+			executor.createPath(leaderRegisterPath(), msg.getBytes(Charset.forName("utf-8")));
+		}
+		else{
+			executor.setPath(leaderRegisterPath(), msg);
+		}
 	}
 	
 	private synchronized void addCommonCommand(){

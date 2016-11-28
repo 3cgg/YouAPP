@@ -10,23 +10,8 @@ public class SimpleProducer implements Serializable {
 
 	private ProducerExecutor<String, String> executor;
 	
-	private String topic ;
-	
-	private Integer partition ;
-	
-	public SimpleProducer(ProducerExecutor<String, String> executor,String topic,Integer partition) {
-		this.executor = executor;
-		this.topic=topic;
-		this.partition=partition;
-	}
-	
-	
-	public SimpleProducer(ProducerExecutor<String, String> executor,String topic) {
-		this(executor,topic,null);
-	}
-	
 	public SimpleProducer(ProducerExecutor<String, String> executor) {
-		this(executor,null,null);
+		this.executor = executor;
 	}
 	
 	public void send(FetchObj fetchObj,String topic){
@@ -43,7 +28,4 @@ public class SimpleProducer implements Serializable {
 		}
 	}
 	
-	public void send(FetchObj fetchObj){
-		send(fetchObj, topic, partition);
-	}
 }

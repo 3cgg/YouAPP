@@ -64,6 +64,10 @@ public class ZooKeeperConnector implements Serializable {
 			return createPath(path,new byte[]{},CreateMode.EPHEMERAL_SEQUENTIAL);
 		}
 		
+		public String createPath(String path,String data){
+			return createPath(path, JStringUtils.utf8(data));
+		}
+		
 		public String createPath(String path,byte[] data){
 			try{
 				return curatorFramework.create()
@@ -74,6 +78,10 @@ public class ZooKeeperConnector implements Serializable {
 			}catch (Exception e) {
 				throw new CustomZooKeeperException(e);
 			}
+		}
+		
+		public String createPath(String path,String data,CreateMode createMode){
+			return createPath(path, JStringUtils.utf8(data), createMode);
 		}
 		
 		public String createPath(String path,byte[] data,CreateMode createMode){
@@ -88,13 +96,18 @@ public class ZooKeeperConnector implements Serializable {
 			}
 		}
 		
-		public void setPath(String path,String data){
+		
+		public void setPath(String path,byte[] data){
 			try{
 				curatorFramework.setData()
-				.forPath(path,JStringUtils.utf8(data));
+				.forPath(path,data);
 			}catch (Exception e) {
 				throw new CustomZooKeeperException(e);
 			}
+		}
+		
+		public void setPath(String path,String data){
+			setPath(path,JStringUtils.utf8(data));
 		}
 		
 		public void deletePath(String path){

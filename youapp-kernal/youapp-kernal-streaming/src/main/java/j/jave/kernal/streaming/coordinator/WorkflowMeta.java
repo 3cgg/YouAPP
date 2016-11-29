@@ -4,6 +4,9 @@ import j.jave.kernal.jave.model.JModel;
 
 public class WorkflowMeta implements JModel {
 
+	/**
+	 * the workflow name
+	 */
 	private String name;
 	
 	/**

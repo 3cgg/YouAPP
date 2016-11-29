@@ -23,6 +23,11 @@ public class Instance implements JModel,Closeable{
 	private long sequence;
 	
 	/**
+	 * the workflow parameters/configuration
+	 */
+	private Map<String, Object> conf;
+	
+	/**
 	 * how many times from the workflow beginning
 	 */
 	private long count;
@@ -138,4 +143,12 @@ public class Instance implements JModel,Closeable{
 		this.count = count;
 	}
 
+	public Map<String, Object> getConf() {
+		return conf;
+	}
+
+	public void setConf(Map<String, Object> conf) {
+		this.conf = conf;
+	}
+	
 }

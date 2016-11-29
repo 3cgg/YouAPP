@@ -2,7 +2,6 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,8 +18,11 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 
+import com.google.common.collect.Maps;
+
 import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.serializer.JSerializerFactory;
+import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
@@ -30,15 +32,19 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
+import j.jave.kernal.streaming.coordinator.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
+import j.jave.kernal.streaming.kryo.KryoUtils;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
 import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 @SuppressWarnings({"serial","rawtypes"})
-public class NodeSelector implements Serializable{
+public class NodeLeader implements Serializable{
+	
+	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
 	private Map conf;
 	
@@ -46,7 +52,7 @@ public class NodeSelector implements Serializable{
 	
 	private String logPrefix;
 	
-	private String basePath=CoordinatorPaths.BASE_PATH;
+	private static String basePath=CoordinatorPaths.BASE_PATH;
 	
 	private ZookeeperExecutor executor;
 	
@@ -64,12 +70,12 @@ public class NodeSelector implements Serializable{
 		private static final String CHILD="patch_child";
 	}
 	
-	private static NodeSelector NODE_SELECTOR;
+	private static NodeLeader NODE_SELECTOR;
 	
-	public synchronized static NodeSelector startup(String name,ZookeeperExecutor executor,Map conf){
-		NodeSelector nodeSelector=NODE_SELECTOR;
+	public synchronized static NodeLeader startup(String name,ZookeeperExecutor executor,Map conf){
+		NodeLeader nodeSelector=NODE_SELECTOR;
 		if(nodeSelector==null){
-			nodeSelector=new NodeSelector(executor);
+			nodeSelector=new NodeLeader(executor);
 			nodeSelector.conf=conf;
 			nodeSelector.name=name;
 			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
@@ -79,7 +85,12 @@ public class NodeSelector implements Serializable{
 		return NODE_SELECTOR;
 	}
 	
-	private NodeSelector(ZookeeperExecutor executor) {
+	public static NodeLeader get(){
+		JAssert.isNotNull(NODE_SELECTOR,"leader is not ready, retry later");
+		return NODE_SELECTOR;
+	}
+	
+	private NodeLeader(ZookeeperExecutor executor) {
 		this.executor = executor;
 		this.atomicLong=new DistAtomicLong(executor);
 		leaderLatch=new LeaderLatch(executor.backend(),
@@ -135,23 +146,23 @@ public class NodeSelector implements Serializable{
 		return workflow==null?triggerPath:(triggerPath+"/"+workflow.getName());
 	}
 	
-	String workflowAddPath(){
+	public static String workflowAddPath(){
 		return basePath+"/workers-collection-repo";
 	}
 	
-	String leaderPath(){
+	public static String leaderPath(){
 		return basePath+"/leader-latch";
 	}
 	
-	String basePath(){
+	public static String basePath(){
 		return basePath;
 	}
 	
-	String leaderRegisterPath(){
+	public static String leaderRegisterPath(){
 		return basePath+"/leader-host";
 	}
 	
-	String simpleTrackingPath(){
+	public static String simpleTrackingPath(){
 		return basePath+"-tasks-tracking/sequence";
 	}
 	
@@ -214,8 +225,8 @@ public class NodeSelector implements Serializable{
 			instanceNodeVal.setStatus(NodeStatus.ONLINE);
 			instanceNodeVal.setSequence(instance.getSequence());
 			instanceNodeVal.setTime(new Date().getTime());
-			executor.createPath(instancePath
-					,JJSON.get().formatObject(instanceNodeVal).getBytes(Charset.forName("utf-8")));
+			executor.createPath(instancePath,
+					KryoUtils.serialize(serializerFactory, instanceNodeVal));
 			
 			InstanceNode instanceNode=new InstanceNode();
 			instanceNode.setSequence(instance.getSequence());
@@ -259,10 +270,11 @@ public class NodeSelector implements Serializable{
 	 * @param path
 	 */
 	private void c(final String path,final String completeStatus){
-		final InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(executor.getPath(path),Charset.forName("utf-8")), InstanceNodeVal.class);
+		final InstanceNodeVal instanceNodeVal=
+				KryoUtils.deserialize(serializerFactory, executor.getPath(path), InstanceNodeVal.class);
 		instanceNodeVal.setStatus(completeStatus);
 		instanceNodeVal.setTime(new Date().getTime());
-		executor.setPath(path, JJSON.get().formatObject(instanceNodeVal));
+		executor.setPath(path, KryoUtils.serialize(serializerFactory, instanceNodeVal));
 		//logging...
 		executorService.execute(new Runnable() {
 			@Override
@@ -307,8 +319,10 @@ public class NodeSelector implements Serializable{
 		workerPathVal.setTime(new Date().getTime());
 		workerPathVal.setSequence(instance.getSequence());
 		workerPathVal.setInstancePath(instancePath);
+		workerPathVal.setConf(instance.getConf());
+		
 		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
-				JJSON.get().formatObject(workerPathVal));
+				KryoUtils.serialize(serializerFactory, workerPathVal));
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -343,8 +357,8 @@ public class NodeSelector implements Serializable{
 						if(bytes==null){
 							bytes=executor.getPath(node.getPath());
 						}
-						InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(bytes, Charset.forName("utf-8")),
-								InstanceNodeVal.class);
+						InstanceNodeVal instanceNodeVal=
+								KryoUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 						if(!isComplete(instanceNodeVal)){
 							done=false;
 						}
@@ -382,9 +396,8 @@ public class NodeSelector implements Serializable{
 							if(bytes==null){
 								bytes=executor.getPath(tempNode.getPath());
 							}
-							InstanceNodeVal instanceNodeVal=JJSON.get().parse(
-									new String(bytes, Charset.forName("utf-8")),
-									InstanceNodeVal.class);
+							InstanceNodeVal instanceNodeVal=
+									KryoUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 							if(!isComplete(instanceNodeVal)){
 								latestNode=instanceNodeVal;
 							}
@@ -476,9 +489,10 @@ public class NodeSelector implements Serializable{
 		
 		LeaderNodeMetaGetter leaderMetaGetter=
 					new LeaderNodeMetaGetter(JConfiguration.get());
-        String msg=JJSON.get().formatObject(leaderMetaGetter);
+        byte[] msg=
+        		KryoUtils.serialize(serializerFactory, leaderMetaGetter.nodeMeta());
 		if(!executor.exists(leaderRegisterPath())){
-			executor.createPath(leaderRegisterPath(), JStringUtils.utf8(msg));
+			executor.createPath(leaderRegisterPath(), msg);
 		}
 		else{
 			executor.setPath(leaderRegisterPath(), msg);
@@ -521,12 +535,13 @@ public class NodeSelector implements Serializable{
 		
 	}
 	
-	private Instance createInstance(Workflow workflow){
+	private Instance createInstance(Workflow workflow,Map<String, Object> conf){
 		
 		Long sequence=getSequence();
 		Instance instance=new Instance();
 		instance.setWorkflow(workflow);
 		instance.setSequence(sequence);
+		instance.setConf(conf);
 		
 		createInstancePath(instance.getWorkflow().getNodeData(),instance);
 		
@@ -542,11 +557,24 @@ public class NodeSelector implements Serializable{
 		return instance;
 	}
 	
+	public void startWorkflow(String name,Map<String, Object> conf){
+		JAssert.isNotEmpty(name);
+		Workflow workflow=workflowMaster.getWorkflow(name);
+		if(workflow==null){
+			throw new RuntimeException("workflow is missing, to add workflow in the container.");
+		}
+		Instance instance=createInstance(workflow,conf);
+		start(instance);
+	}
+	
+	
 	/**
-	 * a registering queue , any workflow need start
-	 *  should be registered override the node {@link #workflowTrigger(Workflow)}  in the zookeeper.
+	 * a registering queue , workflow need be registered 
+	 * in the node {@link #workflowTrigger(Workflow)}  in the zookeeper.
 	 * @param workflow
+	 * @see IWorkflowService#triggerWorkflow(String, Map)
 	 */
+	@Deprecated
 	private void attachWorfkowTriggerWatcher(final Workflow workflow){
 		
 		if(workflow!=null){
@@ -562,13 +590,9 @@ public class NodeSelector implements Serializable{
 			
 			@Override
 			public void call(ZooNode node) {
-				WorkflowMeta workflowMeta=JJSON.get().parse(node.getStringData(), WorkflowMeta.class);
-				Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
-				if(workflow==null){
-					throw new RuntimeException("workflow is missing, to add workflow in the container.");
-				}
-				Instance instance=createInstance(workflow);
-				start(instance);
+				WorkflowMeta workflowMeta=
+						KryoUtils.deserialize(serializerFactory, node.getData(), WorkflowMeta.class);
+				startWorkflow(workflowMeta.getName(), Maps.newHashMap());
 			}
 		}, Executors.newFixedThreadPool(1, new ThreadFactory() {
 			@Override
@@ -601,7 +625,8 @@ public class NodeSelector implements Serializable{
 					if(bytes==null){
 						bytes=executor.getPath(node.getPath());
 					}
-					WorkflowMeta workflowMeta=JJSON.get().parse(JStringUtils.utf8(bytes), WorkflowMeta.class);
+					WorkflowMeta workflowMeta=
+							KryoUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
 					addWorkflow(workflowMeta);
 				}
 			}

@@ -1,5 +1,7 @@
 package j.jave.kernal.streaming.coordinator;
 
+import java.util.Map;
+
 import j.jave.kernal.jave.model.JModel;
 
 /**
@@ -24,6 +26,11 @@ public class WorkerPathVal implements JModel {
 	 * the related instance path
 	 */
 	private String instancePath;
+	
+	/**
+	 * the workflow parameters/configuration
+	 */
+	private Map<String, Object> conf; 
 	
 	/**
 	 * the record tieme
@@ -60,6 +67,14 @@ public class WorkerPathVal implements JModel {
 
 	public void setTime(long time) {
 		this.time = time;
+	}
+
+	public Map<String, Object> getConf() {
+		return conf;
+	}
+
+	public void setConf(Map<String, Object> conf) {
+		this.conf = conf;
 	}
 
 	

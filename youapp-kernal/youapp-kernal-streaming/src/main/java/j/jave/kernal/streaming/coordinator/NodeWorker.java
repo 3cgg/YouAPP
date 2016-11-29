@@ -2,7 +2,6 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,13 +17,14 @@ import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.zookeeper.CreateMode;
 
-import j.jave.kernal.jave.json.JJSON;
+import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
+import j.jave.kernal.streaming.kryo.KryoUtils;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
@@ -34,6 +34,8 @@ import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 @SuppressWarnings("serial")
 public class NodeWorker implements Serializable {
 
+	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
+	
 	private Map conf;
 	
 	private String prefix="worker-";
@@ -109,7 +111,8 @@ public class NodeWorker implements Serializable {
 				WorkerPathVal workerPathVal=new WorkerPathVal();
 				workerPathVal.setId(id);
 				workerPathVal.setTime(new Date().getTime());
-				executor.createPath(path,JJSON.get().formatObject(workerPathVal).getBytes(Charset.forName("utf-8")),CreateMode.PERSISTENT);
+				executor.createPath(path,
+						KryoUtils.serialize(serializerFactory, workerPathVal),CreateMode.PERSISTENT);
 			}
 			System.out.println(logPrefix+"  add wahter on : "+path);
 			executor.watchPath(path, new ZooNodeCallback () {
@@ -117,7 +120,8 @@ public class NodeWorker implements Serializable {
 				public void call(ZooNode node) {
 					try{
 						final WorkerPathVal workerPathVal=
-								JJSON.get().parse(node.getStringData(),WorkerPathVal.class);
+								KryoUtils.deserialize(serializerFactory, node.getData(), 
+										WorkerPathVal.class);
 						final String tempPath=executor.createEphSequencePath(path+"/temp-");
 						WorkerTemporary workerTemporary=new WorkerTemporary();
 						workerTemporary.setTempPath(tempPath);
@@ -217,9 +221,12 @@ public class NodeWorker implements Serializable {
 	}
 	
 	private void complete(final String path){
-		final InstanceNodeVal instanceNodeVal=JJSON.get().parse(new String(executor.getPath(path),Charset.forName("utf-8")), InstanceNodeVal.class);
+		final InstanceNodeVal instanceNodeVal=
+				KryoUtils.deserialize(serializerFactory, executor.getPath(path),
+						InstanceNodeVal.class);
 		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
-		executor.setPath(path, JJSON.get().formatObject(instanceNodeVal));
+		executor.setPath(path, 
+				KryoUtils.serialize(serializerFactory, instanceNodeVal));
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -249,7 +256,7 @@ public class NodeWorker implements Serializable {
 	
 	private WorkerPathVal workerPathVal(){
 		byte[] bytes= executor.getPath(pluginWorkerPath());
-		return JJSON.get().parse(new String(bytes,Charset.forName("utf-8")),WorkerPathVal.class); 
+		return KryoUtils.deserialize(serializerFactory, bytes, WorkerPathVal.class);
 	}
 	
 	public int getId() {

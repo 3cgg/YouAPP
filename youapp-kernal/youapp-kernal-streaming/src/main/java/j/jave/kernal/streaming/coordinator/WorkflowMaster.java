@@ -22,6 +22,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 	/**
 	 * watcher on worker trigger path /  temporary
 	 */
+	@Deprecated
 	private NodeCache workflowTriggerCache;
 	
 	/**

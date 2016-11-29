@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.netty.client;
 
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 
-public class SimpleIntarfaceImplUtil {
+public class SimpleInterfaceImplUtil {
 
 	static DynamicChannelExecutor dynamicChannelExecutor=new DynamicChannelExecutor() {
 		@Override
@@ -12,14 +12,14 @@ public class SimpleIntarfaceImplUtil {
 	}; 
 	
 	public static <M extends ControllerService> M syncProxy(Class<M> controllerService ){
-		KryoIntarfaceImpl<M> intarface=
-				new KryoIntarfaceImpl<M>(controllerService, dynamicChannelExecutor);
+		KryoInterfaceImpl<M> intarface=
+				new KryoInterfaceImpl<M>(controllerService, dynamicChannelExecutor);
 		return intarface.syncProxy();
 	}
 	
 	public static <M extends ControllerService> M asyncProxy(Class<M> controllerService ){
-		KryoIntarfaceImpl<M> intarface=
-				new KryoIntarfaceImpl<M>(controllerService, dynamicChannelExecutor);
+		KryoInterfaceImpl<M> intarface=
+				new KryoInterfaceImpl<M>(controllerService, dynamicChannelExecutor);
 		return intarface.asyncProxy();
 	}
 	

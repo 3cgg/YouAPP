@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
 public class ControllerTestSyncMultiThread {
@@ -18,7 +18,7 @@ public class ControllerTestSyncMultiThread {
 	
 	public static void main(String[] args) {
 		try{
-			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
+			IUnitController controller=SimpleInterfaceImplUtil.syncProxy(IUnitController.class);
 			ExecutorService service=Executors.newFixedThreadPool(5);
 			Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 				@Override

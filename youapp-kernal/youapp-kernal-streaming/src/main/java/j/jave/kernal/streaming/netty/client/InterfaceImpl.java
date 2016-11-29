@@ -22,7 +22,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * interface proxy has two connection ways of async / sync related to the proxy object. 
- * And async object must be combined with {@link SimpleIntarfaceImplUtil#asyncExecute(Object, ControllerAsyncCall)}
+ * And async object must be combined with {@link SimpleInterfaceImplUtil#asyncExecute(Object, ControllerAsyncCall)}
  * , {@link ControllerCallPromise} and {@link ControllerAsyncCall}
  * @author JIAZJ
  *
@@ -30,9 +30,9 @@ import net.sf.cglib.proxy.MethodProxy;
  * @see #asyncProxy()
  * @see #syncProxy()
  * @see ControllerCallPromise
- * @see SimpleIntarfaceImplUtil
+ * @see SimpleInterfaceImplUtil
  */
-public class IntarfaceImpl<T extends ControllerService> {
+public class InterfaceImpl<T extends ControllerService> {
 
 	private final JSerializerFactory factory;
 	
@@ -42,7 +42,7 @@ public class IntarfaceImpl<T extends ControllerService> {
 	
 	private Map<Method, MappingMeta> mappingMetas=Maps.newHashMap();
 
-	public IntarfaceImpl(Class<T> intarface,ChannelExecutor<NioChannelRunnable> channelExecutor,JSerializerFactory factory) {
+	public InterfaceImpl(Class<T> intarface,ChannelExecutor<NioChannelRunnable> channelExecutor,JSerializerFactory factory) {
 		this.intarface = intarface;
 		this.channelExecutor=channelExecutor;
 		this.factory=factory;
@@ -158,8 +158,8 @@ public class IntarfaceImpl<T extends ControllerService> {
 				controllerCallPromise.setProxy(proxy);
 				controllerCallPromise.setMethod(method);
 				controllerCallPromise.setArgs(args);
-				controllerCallPromise.setIntarfaceImpl(IntarfaceImpl.this);
-				SimpleIntarfaceImplUtil.THREAD_LOCAL.set(controllerCallPromise);
+				controllerCallPromise.setIntarfaceImpl(InterfaceImpl.this);
+				SimpleInterfaceImplUtil.THREAD_LOCAL.set(controllerCallPromise);
 				Class<?> returnType=method.getReturnType();
 				if(byte.class==returnType
 						||short.class==returnType

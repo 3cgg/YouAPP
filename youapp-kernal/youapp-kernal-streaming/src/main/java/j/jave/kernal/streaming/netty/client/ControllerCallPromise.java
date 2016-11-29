@@ -11,7 +11,7 @@ import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
 /**
- * combined with {@link IntarfaceImpl#asyncProxy()} to support ASYNC RPC.
+ * combined with {@link InterfaceImpl#asyncProxy()} to support ASYNC RPC.
  * @author JIAZJ
  *
  * @param <V>
@@ -25,7 +25,7 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 	
 	private List<GenericPromiseListener<? extends CallPromise<? super V>>> listeners=new ArrayList<>();
 	
-	private IntarfaceImpl intarfaceImpl;
+	private InterfaceImpl intarfaceImpl;
 	
 	private Object proxy;
 	
@@ -63,7 +63,7 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 		this.proxy = proxy;
 	}
 
-	public void setIntarfaceImpl(IntarfaceImpl intarfaceImpl) {
+	public void setIntarfaceImpl(InterfaceImpl intarfaceImpl) {
 		this.intarfaceImpl = intarfaceImpl;
 	}
 	@Override

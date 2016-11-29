@@ -8,9 +8,9 @@ import j.jave.kernal.streaming.kryo.KryoUtils;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
 
-public class KryoIntarfaceImpl<T extends ControllerService> extends IntarfaceImpl<T> {
+public class KryoInterfaceImpl<T extends ControllerService> extends InterfaceImpl<T> {
 
-	public KryoIntarfaceImpl(Class<T> intarface,ChannelExecutor<NioChannelRunnable> kryoChannelExecutor) {
+	public KryoInterfaceImpl(Class<T> intarface,ChannelExecutor<NioChannelRunnable> kryoChannelExecutor) {
 		super(intarface, kryoChannelExecutor, new KryoSerializerFactory());
 	}
 	

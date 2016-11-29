@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
 public class ControllerTestSyncSingleThread {
@@ -27,7 +27,7 @@ public class ControllerTestSyncSingleThread {
 				}
 			}, 1, 10, TimeUnit.SECONDS);
 			
-			IUnitController controller=SimpleIntarfaceImplUtil.syncProxy(IUnitController.class);
+			IUnitController controller=SimpleInterfaceImplUtil.syncProxy(IUnitController.class);
 			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
 			for(int i=0;i<1000000;i++){
 				final int _i=i;

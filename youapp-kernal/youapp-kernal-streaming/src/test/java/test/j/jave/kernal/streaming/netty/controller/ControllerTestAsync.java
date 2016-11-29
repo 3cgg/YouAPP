@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.netty.client.SimpleControllerAsyncCall;
-import j.jave.kernal.streaming.netty.client.SimpleIntarfaceImplUtil;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
 
 public class ControllerTestAsync {
@@ -19,10 +19,10 @@ public class ControllerTestAsync {
 	public static void main(String[] args) {
 		try{
 			initialize();
-			IUnitController controller=SimpleIntarfaceImplUtil.asyncProxy(IUnitController.class);
+			IUnitController controller=SimpleInterfaceImplUtil.asyncProxy(IUnitController.class);
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
-				SimpleIntarfaceImplUtil.async(controller.name(_i+"----"+JUniqueUtils.unique()))
+				SimpleInterfaceImplUtil.async(controller.name(_i+"----"+JUniqueUtils.unique()))
 				.addControllerAsyncCall(new SimpleControllerAsyncCall() {
 					@Override
 					public void success(Object proxy, Method method, Object[] args, Object returnVal) {
@@ -30,7 +30,7 @@ public class ControllerTestAsync {
 									+"]------response----------"+returnVal);
 					}
 				});
-				SimpleIntarfaceImplUtil.async(controller.superName(_i+"----"+JUniqueUtils.unique()))
+				SimpleInterfaceImplUtil.async(controller.superName(_i+"----"+JUniqueUtils.unique()))
 				.addControllerAsyncCall(new SimpleControllerAsyncCall() {
 					@Override
 					public void success(Object proxy, Method method, Object[] args, Object returnVal) {

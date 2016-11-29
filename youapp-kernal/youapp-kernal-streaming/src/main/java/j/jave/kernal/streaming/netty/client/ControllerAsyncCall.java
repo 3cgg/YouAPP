@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.netty.client;
 import java.lang.reflect.Method;
 
 /**
- * combined with {@link IntarfaceImpl#asyncProxy()} to support ASYNC RPC.
+ * combined with {@link InterfaceImpl#asyncProxy()} to support ASYNC RPC.
  * @author JIAZJ
  *
  * @see ControllerCallPromise

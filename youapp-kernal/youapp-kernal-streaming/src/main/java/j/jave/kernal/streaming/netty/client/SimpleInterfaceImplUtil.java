@@ -29,7 +29,7 @@ public class SimpleInterfaceImplUtil {
 	/**
 	 * the method is together with {@link #asyncProxy(Class)}, like
 	 * <p>IUnitController unitController=SimpleIntarfaceImplUtil.asyncProxy(IUnitController.class);
-	 * <br/>SimpleIntarfaceImplUtil.async(unitController.name("myname"))
+	 * <br/>SimpleInterfaceImplUtil.async(unitController.name("myname"))
 	 * 												.addControllerAsyncCall(...)
 	 * @param expression  like object.methed(args)
 	 * @return

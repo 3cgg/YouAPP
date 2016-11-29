@@ -2,8 +2,6 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,10 +19,10 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.NetUtils;
 import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
@@ -475,16 +473,12 @@ public class NodeSelector implements Serializable{
 	}
 	
 	private void registerLeaderInZookeeper(){
-		InetAddress inetAddress=NetUtils.getLocalAddress();
-		String hostAddress=inetAddress.getHostAddress();
-		String pid = ManagementFactory.getRuntimeMXBean().getName();  
-        int indexOf = pid.indexOf('@');  
-        if (indexOf > 0){  
-            pid = pid.substring(0, indexOf);  
-        }  
-        String msg=hostAddress+"[pid-"+pid+"]";
+		
+		LeaderNodeMetaGetter leaderMetaGetter=
+					new LeaderNodeMetaGetter(JConfiguration.get());
+        String msg=JJSON.get().formatObject(leaderMetaGetter);
 		if(!executor.exists(leaderRegisterPath())){
-			executor.createPath(leaderRegisterPath(), msg.getBytes(Charset.forName("utf-8")));
+			executor.createPath(leaderRegisterPath(), JStringUtils.utf8(msg));
 		}
 		else{
 			executor.setPath(leaderRegisterPath(), msg);

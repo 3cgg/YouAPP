@@ -12,4 +12,10 @@ public class ConfigNames {
 	//youapp.streaming.workflow.tracking.kafka.topic
 	public static final String STREAMING_WORKFLOW_TRACKING_KAFKA_TOPIC="youapp.streaming.workflow.tracking.kafka.topic";
 	
+	//youapp.streaming.node.id
+	public static final String STREAMING_NODE_ID="youapp.streaming.node.id";
+	
+	//youapp.streaming.node.name
+	public static final String STREAMING_NODE_NAME="youapp.streaming.node.name";
+		
 }

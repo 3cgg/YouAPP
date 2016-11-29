@@ -22,6 +22,18 @@
 </property>
 
 <property>
+  <name>youapp.streaming.node.id</name>
+  <value>1</value>
+  <description>node id</description>
+</property>
+
+<property>
+  <name>youapp.streaming.node.name</name>
+  <value></value>
+  <description>node name</description>
+</property>
+
+<property>
   <name>youapp.streaming.workflow.tracking.kafka.topic</name>
   <value>workflow-instance-track</value>
   <description>kafka</description>

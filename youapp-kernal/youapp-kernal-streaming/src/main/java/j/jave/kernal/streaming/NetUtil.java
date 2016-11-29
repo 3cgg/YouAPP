@@ -8,10 +8,10 @@ import java.util.regex.Pattern;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 
-public class NetUtils {
+public class NetUtil {
 
 
-    private static final JLogger  logger           = JLoggerFactory.getLogger(NetUtils.class);  
+    private static final JLogger  logger           = JLoggerFactory.getLogger(NetUtil.class);  
   
     private static final Pattern IP_PATTERN       = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");  
   

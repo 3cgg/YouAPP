@@ -29,8 +29,8 @@ public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChann
 	
 	private ScheduledExecutorService scheduledExecutorService=Executors.newScheduledThreadPool(1);
 	
-	public DynamicChannelExecutor() {
-		final String ldHostPath="/leader-host";
+	public DynamicChannelExecutor(String znodePath) {
+		final String ldHostPath=znodePath;
 		scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
 			@Override
 			public void run() {

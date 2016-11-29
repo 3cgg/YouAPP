@@ -1,4 +1,4 @@
-package test.j.jave.kernal.streaming.coordinator;
+package test.j.jave.kernal.streaming.coordinator.a;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,23 +1,24 @@
-package test.j.jave.kernal.streaming.coordinator;
+package test.j.jave.kernal.streaming.coordinator.b;
+
+import java.util.Map;
+
+import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector;
+import j.jave.kernal.streaming.coordinator.leader.IWorkflowService;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
-public class TaskStartTriggerTest {
+public class TaskStartTrigger {
 
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) throws Exception {
 		
-		ZooKeeperConfig zooKeeperConfig=new ZooKeeperConfig();
-		zooKeeperConfig.setConnectString("nim1.storm.com:2182,nim2.storm.com");
-		zooKeeperConfig.setNamespace("test-b");
-		ZookeeperExecutor executor=new ZooKeeperConnector(zooKeeperConfig)
-				.connect();
+		ZookeeperExecutor executor=ZooKeeperExecutorGetter.getDefault();
 		
 		WorkflowMeta demo=WorkflowMetaDemoTest.get();
 		//basePath+"/workflow-trigger/"+workflow.getName();
@@ -32,8 +33,10 @@ public class TaskStartTriggerTest {
 		}
 		Thread.currentThread().sleep(2000);
 		
-		executor.setPath(CoordinatorPaths.BASE_PATH
-				+"/workflow-trigger",JJSON.get().formatObject(demo));
+		IWorkflowService workflowService=SimpleInterfaceImplUtil.syncProxy(IWorkflowService.class);
+		Map<String, Object> pams=Maps.newHashMap();
+		pams.put("vl", "0nly");
+		workflowService.triggerWorkflow(demo.getName(), pams);
 		Thread.currentThread().sleep(2000);
 		
 	}

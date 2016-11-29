@@ -56,6 +56,10 @@ public class ZooKeeperConnector implements Serializable {
 	        curatorFramework=client;
 		}
 		
+		public String createPath(String path,CreateMode createMode){
+			return createPath(path, new byte[]{}, createMode);
+		}
+		
 		public String createPath(String path){
 			return createPath(path,new byte[]{},CreateMode.PERSISTENT);
 		}
@@ -69,15 +73,7 @@ public class ZooKeeperConnector implements Serializable {
 		}
 		
 		public String createPath(String path,byte[] data){
-			try{
-				return curatorFramework.create()
-				.creatingParentContainersIfNeeded()
-				.withMode(CreateMode.PERSISTENT)
-				.withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)
-				.forPath(path,data);
-			}catch (Exception e) {
-				throw new CustomZooKeeperException(e);
-			}
+			return createPath(path, data, CreateMode.PERSISTENT);
 		}
 		
 		public String createPath(String path,String data,CreateMode createMode){

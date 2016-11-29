@@ -18,4 +18,21 @@ public class ConfigNames {
 	//youapp.streaming.node.name
 	public static final String STREAMING_NODE_NAME="youapp.streaming.node.name";
 		
+	//youapp.streaming.rpc.host.znode
+	
+	public static final String STREAMING_RPC_HOST_ZNODE="youapp.streaming.rpc.host.znode";
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

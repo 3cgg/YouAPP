@@ -1,4 +1,4 @@
-package test.j.jave.kernal.streaming.coordinator;
+package test.j.jave.kernal.streaming.coordinator.a;
 
 import j.jave.kernal.streaming.coordinator.DefaultNodeDataGenerator;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;

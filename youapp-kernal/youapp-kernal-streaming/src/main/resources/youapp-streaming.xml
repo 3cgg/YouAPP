@@ -39,5 +39,11 @@
   <description>kafka</description>
 </property>
 
+<property>
+  <name>youapp.streaming.rpc.host.znode</name>
+  <value>/leader-host</value>
+  <description>zookeeper node from which the remote host can be found</description>
+</property>
+
 
 </configuration>

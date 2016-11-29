@@ -108,11 +108,12 @@ public class NodeWorker implements Serializable {
 		try{
 			singleMonitor.acquire();
 			if(!executor.exists(path)){
-				WorkerPathVal workerPathVal=new WorkerPathVal();
-				workerPathVal.setId(id);
-				workerPathVal.setTime(new Date().getTime());
+//				WorkerPathVal workerPathVal=new WorkerPathVal();
+//				workerPathVal.setId(id);
+//				workerPathVal.setTime(new Date().getTime());
 				executor.createPath(path,
-						KryoUtils.serialize(serializerFactory, workerPathVal),CreateMode.PERSISTENT);
+//						KryoUtils.serialize(serializerFactory, workerPathVal),
+						CreateMode.PERSISTENT);
 			}
 			System.out.println(logPrefix+"  add wahter on : "+path);
 			executor.watchPath(path, new ZooNodeCallback () {
@@ -311,6 +312,9 @@ public class NodeWorker implements Serializable {
 		this.workerTemporary = workerTemporary;
 	}
 	
+	public Map<String, Object> getWorkflowConf(){
+		return workerTemporary.getWorkerPathVal().getConf();
+	}
 	
 	public void release() throws Exception{
 		release(null);

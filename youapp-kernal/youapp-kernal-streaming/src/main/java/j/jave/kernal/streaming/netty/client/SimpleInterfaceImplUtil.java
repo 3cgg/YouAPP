@@ -1,15 +1,22 @@
 package j.jave.kernal.streaming.netty.client;
 
+import j.jave.kernal.JConfiguration;
+import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 
 public class SimpleInterfaceImplUtil {
 
-	static DynamicChannelExecutor dynamicChannelExecutor=new DynamicChannelExecutor() {
-		@Override
-		protected ChannelExecutor<NioChannelRunnable> doGetActive(String host, int port) throws Exception {
-			return new KryoChannelExecutor(host,port);
-		}
-	}; 
+	static DynamicChannelExecutor dynamicChannelExecutor=null;
+	
+	static{
+		String znodePath=JConfiguration.get().getString(ConfigNames.STREAMING_RPC_HOST_ZNODE);
+		dynamicChannelExecutor=new DynamicChannelExecutor(znodePath) {
+			@Override
+			protected ChannelExecutor<NioChannelRunnable> doGetActive(String host, int port) throws Exception {
+				return new KryoChannelExecutor(host,port);
+			}
+		}; 
+	}
 	
 	public static <M extends ControllerService> M syncProxy(Class<M> controllerService ){
 		KryoInterfaceImpl<M> intarface=

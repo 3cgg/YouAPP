@@ -187,8 +187,17 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 							}
 							channelFuture= channelPool.acquire();
 							count++;
-							if(count>3)
-								throw new JNestedRuntimeException(channelFuture.cause());
+							if(count>3){
+								Throwable throwable=null;
+								while(true){
+									if(channelFuture.isDone()){
+										throwable=channelFuture.cause();
+										break;
+									}
+								}
+								LOGGER.error(throwable.getMessage(), throwable);
+								throw new JNestedRuntimeException(throwable);
+							}
 						}
 					}
 					

@@ -1,4 +1,4 @@
-package j.jave.kernal.streaming.coordinator.leader;
+package j.jave.kernal.streaming.coordinator.rpc.leader;
 
 import java.util.Map;
 
@@ -7,12 +7,12 @@ import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.streaming.coordinator.NodeLeader;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.coordinator._SerializeFactoryGetter;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
-public class WorkflowService extends ControllerSupport<IWorkflowService>
+public class WorkflowService extends ControllerSupport<WorkflowService>
 implements IWorkflowService{
 
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
@@ -33,7 +33,7 @@ implements IWorkflowService{
 			return false;
 		}
 		executor.createPath(tempPath, 
-				KryoUtils.serialize(serializerFactory, workflowMeta));
+				SerializerUtils.serialize(serializerFactory, workflowMeta));
 		return true;
 	}
 
@@ -48,7 +48,7 @@ implements IWorkflowService{
 
 	@Override
 	public boolean triggerWorkflow(String name,Map<String, Object> conf) {
-		NodeLeader.get().startWorkflow(name, conf);
+		NodeLeader.runtime().startWorkflow(name, conf);
 		return false;
 	}
 	

@@ -24,7 +24,7 @@ import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
@@ -121,7 +121,7 @@ public class NodeWorker implements Serializable {
 				public void call(ZooNode node) {
 					try{
 						final WorkerPathVal workerPathVal=
-								KryoUtils.deserialize(serializerFactory, node.getData(), 
+								SerializerUtils.deserialize(serializerFactory, node.getData(), 
 										WorkerPathVal.class);
 						final String tempPath=executor.createEphSequencePath(path+"/temp-");
 						WorkerTemporary workerTemporary=new WorkerTemporary();
@@ -223,11 +223,11 @@ public class NodeWorker implements Serializable {
 	
 	private void complete(final String path){
 		final InstanceNodeVal instanceNodeVal=
-				KryoUtils.deserialize(serializerFactory, executor.getPath(path),
+				SerializerUtils.deserialize(serializerFactory, executor.getPath(path),
 						InstanceNodeVal.class);
 		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
 		executor.setPath(path, 
-				KryoUtils.serialize(serializerFactory, instanceNodeVal));
+				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -257,7 +257,7 @@ public class NodeWorker implements Serializable {
 	
 	private WorkerPathVal workerPathVal(){
 		byte[] bytes= executor.getPath(pluginWorkerPath());
-		return KryoUtils.deserialize(serializerFactory, bytes, WorkerPathVal.class);
+		return SerializerUtils.deserialize(serializerFactory, bytes, WorkerPathVal.class);
 	}
 	
 	public int getId() {

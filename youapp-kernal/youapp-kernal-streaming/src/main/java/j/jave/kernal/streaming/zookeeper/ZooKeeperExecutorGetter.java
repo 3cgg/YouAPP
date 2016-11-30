@@ -6,6 +6,12 @@ import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class ZooKeeperExecutorGetter {
 
+	/**
+	 * the common entrance to retrieve default zookeeper connection.
+	 * @return
+	 * @see ConfigNames#STREAMING_ZOOKEEPER_SERVER
+	 * @see ConfigNames#STREAMING_ZOOKEEPER_NAMESPACE
+	 */
 	public static ZookeeperExecutor getDefault(){
 		JConfiguration configuration=JConfiguration.get();
 		ZooKeeperConfig zooKeeperConfig=new ZooKeeperConfig();

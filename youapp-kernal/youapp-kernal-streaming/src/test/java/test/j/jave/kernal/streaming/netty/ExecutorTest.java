@@ -6,7 +6,7 @@ import java.util.List;
 import io.netty.channel.ChannelFuture;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.client.CallPromise;
 import j.jave.kernal.streaming.netty.client.ChannelResponseCall;
 import j.jave.kernal.streaming.netty.client.DefaultCallPromise;
@@ -26,19 +26,19 @@ public class ExecutorTest {
 		KryoChannelExecutor channelExecutor=new KryoChannelExecutor("127.0.0.1", 8080);
 		for(int i=0;i<100;i++){
 			RequestMeta requestMeta=new RequestMeta();
-			requestMeta.setContent(KryoUtils.serialize(factory, new Object[]{"test-"+i}));
+			requestMeta.setContent(SerializerUtils.serialize(factory, new Object[]{"test-"+i}));
 			requestMeta.setUrl("http://127.0.0.1:8080/unit/rd");
 			Request request=Request.post(requestMeta);
 			CallPromise<byte[]> callPromise= channelExecutor.execute(new NioChannelRunnable(request,new ChannelResponseCall() {
 				@Override
 				public void run(Request request, Object object) {
 					System.out.println("-------async-call---\r\n"+request.toString()+"\r\n"
-				+KryoUtils.deserialize(factory, (byte[])object, String.class)+"\r\n");
+				+SerializerUtils.deserialize(factory, (byte[])object, String.class)+"\r\n");
 				}
 			}));
 			callPromises.add(callPromise);
 			System.out.println("------------response-------------\r\n"+
-					KryoUtils.deserialize(factory,callPromise.get(), String.class)
+					SerializerUtils.deserialize(factory,callPromise.get(), String.class)
 			);
 		}
 		

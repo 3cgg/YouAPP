@@ -1,6 +1,5 @@
 package test.j.jave.kernal.streaming.coordinator.b;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.kafka.common.utils.Utils;

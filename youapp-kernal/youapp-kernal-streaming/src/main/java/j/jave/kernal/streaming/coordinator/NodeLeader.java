@@ -32,10 +32,10 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
-import j.jave.kernal.streaming.coordinator.leader.IWorkflowService;
+import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
@@ -72,6 +72,13 @@ public class NodeLeader implements Serializable{
 	
 	private static NodeLeader NODE_SELECTOR;
 	
+	/**
+	 * start up a node leader... (as a node of the leader cluster)
+	 * @param name identified node name
+	 * @param executor zookeeper connection
+	 * @param conf the leader node config
+	 * @return
+	 */
 	public synchronized static NodeLeader startup(String name,ZookeeperExecutor executor,Map conf){
 		NodeLeader nodeSelector=NODE_SELECTOR;
 		if(nodeSelector==null){
@@ -85,7 +92,11 @@ public class NodeLeader implements Serializable{
 		return NODE_SELECTOR;
 	}
 	
-	public static NodeLeader get(){
+	/**
+	 * get the runtime / available node leader...
+	 * @return
+	 */
+	public static NodeLeader runtime(){
 		JAssert.isNotNull(NODE_SELECTOR,"leader is not ready, retry later");
 		return NODE_SELECTOR;
 	}
@@ -147,7 +158,7 @@ public class NodeLeader implements Serializable{
 	}
 	
 	public static String workflowAddPath(){
-		return basePath+"/workers-collection-repo";
+		return basePath+"/workflow-meta-collection";
 	}
 	
 	public static String leaderPath(){
@@ -226,7 +237,7 @@ public class NodeLeader implements Serializable{
 			instanceNodeVal.setSequence(instance.getSequence());
 			instanceNodeVal.setTime(new Date().getTime());
 			executor.createPath(instancePath,
-					KryoUtils.serialize(serializerFactory, instanceNodeVal));
+					SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 			
 			InstanceNode instanceNode=new InstanceNode();
 			instanceNode.setSequence(instance.getSequence());
@@ -271,10 +282,10 @@ public class NodeLeader implements Serializable{
 	 */
 	private void c(final String path,final String completeStatus){
 		final InstanceNodeVal instanceNodeVal=
-				KryoUtils.deserialize(serializerFactory, executor.getPath(path), InstanceNodeVal.class);
+				SerializerUtils.deserialize(serializerFactory, executor.getPath(path), InstanceNodeVal.class);
 		instanceNodeVal.setStatus(completeStatus);
 		instanceNodeVal.setTime(new Date().getTime());
-		executor.setPath(path, KryoUtils.serialize(serializerFactory, instanceNodeVal));
+		executor.setPath(path, SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		//logging...
 		executorService.execute(new Runnable() {
 			@Override
@@ -322,7 +333,7 @@ public class NodeLeader implements Serializable{
 		workerPathVal.setConf(instance.getConf());
 		
 		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
-				KryoUtils.serialize(serializerFactory, workerPathVal));
+				SerializerUtils.serialize(serializerFactory, workerPathVal));
 		executorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -358,7 +369,7 @@ public class NodeLeader implements Serializable{
 							bytes=executor.getPath(node.getPath());
 						}
 						InstanceNodeVal instanceNodeVal=
-								KryoUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
+								SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 						if(!isComplete(instanceNodeVal)){
 							done=false;
 						}
@@ -397,7 +408,7 @@ public class NodeLeader implements Serializable{
 								bytes=executor.getPath(tempNode.getPath());
 							}
 							InstanceNodeVal instanceNodeVal=
-									KryoUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
+									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 							if(!isComplete(instanceNodeVal)){
 								latestNode=instanceNodeVal;
 							}
@@ -490,7 +501,7 @@ public class NodeLeader implements Serializable{
 		LeaderNodeMetaGetter leaderMetaGetter=
 					new LeaderNodeMetaGetter(JConfiguration.get());
         byte[] msg=
-        		KryoUtils.serialize(serializerFactory, leaderMetaGetter.nodeMeta());
+        		SerializerUtils.serialize(serializerFactory, leaderMetaGetter.nodeMeta());
 		if(!executor.exists(leaderRegisterPath())){
 			executor.createPath(leaderRegisterPath(), msg);
 		}
@@ -591,7 +602,7 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void call(ZooNode node) {
 				WorkflowMeta workflowMeta=
-						KryoUtils.deserialize(serializerFactory, node.getData(), WorkflowMeta.class);
+						SerializerUtils.deserialize(serializerFactory, node.getData(), WorkflowMeta.class);
 				startWorkflow(workflowMeta.getName(), Maps.newHashMap());
 			}
 		}, Executors.newFixedThreadPool(1, new ThreadFactory() {
@@ -626,7 +637,7 @@ public class NodeLeader implements Serializable{
 						bytes=executor.getPath(node.getPath());
 					}
 					WorkflowMeta workflowMeta=
-							KryoUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
+							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
 					addWorkflow(workflowMeta);
 				}
 			}

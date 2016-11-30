@@ -8,7 +8,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
-import j.jave.kernal.streaming.coordinator.leader.IWorkflowService;
+import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;

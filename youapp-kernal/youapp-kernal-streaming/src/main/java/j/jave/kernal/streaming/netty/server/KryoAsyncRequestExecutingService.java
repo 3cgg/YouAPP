@@ -21,7 +21,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.HeaderNames;
 
 public class KryoAsyncRequestExecutingService 
@@ -53,7 +53,7 @@ implements JService , AsyncRequestExecutingListener{
 //	    			bytes=String.valueOf(obj).getBytes(Charset.forName("utf-8"));
 //	    		}
 	    		else{
-	    			bytes=KryoUtils.serialize(factory, obj);
+	    			bytes=SerializerUtils.serialize(factory, obj);
 	    		}
 	    		if(LOGGER.isDebugEnabled()){
 	    			LOGGER.debug(bytes);

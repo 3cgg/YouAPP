@@ -1,4 +1,4 @@
-package j.jave.kernal.streaming.coordinator.leader;
+package j.jave.kernal.streaming.coordinator.rpc.leader;
 
 import java.util.Map;
 

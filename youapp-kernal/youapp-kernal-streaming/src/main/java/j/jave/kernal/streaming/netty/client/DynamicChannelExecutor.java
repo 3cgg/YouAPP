@@ -92,6 +92,7 @@ public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChann
 		if(!canService){
 			synchronized (this) {
 				try {
+					LOGGER.info("connection is not ready, wait...");
 					wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();

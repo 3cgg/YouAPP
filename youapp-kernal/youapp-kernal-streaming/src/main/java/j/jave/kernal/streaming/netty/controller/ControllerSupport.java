@@ -5,10 +5,9 @@ import java.util.List;
 
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JStringUtils;
 
-public abstract class ControllerSupport<T extends JService> 
+public abstract class ControllerSupport<T extends ControllerSupport<T>> 
 extends JServiceFactorySupport<T>
 implements ControllerService , ControllerServiceFactory, ControllerServiceFindingListener {
 	

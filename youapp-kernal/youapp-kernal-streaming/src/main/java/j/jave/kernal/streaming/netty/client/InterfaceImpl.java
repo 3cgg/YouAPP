@@ -13,7 +13,7 @@ import j.jave.kernal.jave.aop.JSingletonTargetSource;
 import j.jave.kernal.jave.aop.JTargetSource;
 import j.jave.kernal.jave.proxy.JSimpleProxy;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
-import j.jave.kernal.streaming.kryo.KryoUtils;
+import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.controller.ClassProvidedMappingFinder;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
@@ -93,7 +93,7 @@ public class InterfaceImpl<T extends ControllerService> {
 			
 			RequestMeta requestMeta=new RequestMeta();
 			if(args==null) args=new Object[]{};
-			requestMeta.setContent(KryoUtils.serialize(factory, args));
+			requestMeta.setContent(SerializerUtils.serialize(factory, args));
 			requestMeta.setUrl(uri()+mappingMeta.getPath());
 			Request request=Request.post(requestMeta);
 			return request;

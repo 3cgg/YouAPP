@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 
-public abstract class KryoUtils {
+public abstract class SerializerUtils {
 
 	public static byte[] serialize(JSerializerFactory serializerFactory, Object object) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

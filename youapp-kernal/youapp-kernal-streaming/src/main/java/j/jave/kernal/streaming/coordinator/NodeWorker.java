@@ -46,8 +46,6 @@ public class NodeWorker implements Serializable {
 	
 	private Map conf;
 	
-	private String logPrefix;
-	
 	private int id;
 	
 	public String name;
@@ -73,7 +71,6 @@ public class NodeWorker implements Serializable {
 	public NodeWorker(int id, String workerName,WorkflowMeta workflowMeta,ZookeeperExecutor executor,Map conf) {
 		this.id = id;
 		this.name = workerName;
-		this.logPrefix="(worker["+workerName+"])+"+id+" ";
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
 		trackingService=TrackingServiceFactory.build(conf);
@@ -126,9 +123,7 @@ public class NodeWorker implements Serializable {
 				port=8080;
 			}
 			workerNodeMeta.setPort(port);
-			String workerProcessorPath=pluginWorkerProcessorPath()
-															+"/"+workerNodeMeta.getHost()
-															+"-"+workerNodeMeta.getPid();
+			String workerProcessorPath=realProcessorPath(workerNodeMeta);
 			executor.createPath(workerProcessorPath, SerializerUtils.serialize(serializerFactory, workerNodeMeta));
 			executor.createEphSequencePath(workerProcessorPath+"/temp-");
 			
@@ -157,7 +152,7 @@ public class NodeWorker implements Serializable {
 			@Override
 			public void notLeader() {
 				if(processorMaster==null) return;
-				System.out.println(logPrefix+"(Thread)+"+Thread.currentThread().getName()+" lose worker-processor leadership .... ");
+				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-processor leadership .... ");
 				try {
 					processorMaster.close();
 				} catch (IOException e) {
@@ -168,7 +163,7 @@ public class NodeWorker implements Serializable {
 			
 			@Override
 			public void isLeader() {
-				System.out.println(logPrefix+"(Thread)+"+Thread.currentThread().getName()+" is worker-processor leadership .... ");
+				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-processor leadership .... ");
 				createMasterMeta();
 			}
 		}, Executors.newFixedThreadPool(1));
@@ -208,6 +203,12 @@ public class NodeWorker implements Serializable {
 			}
 		});
 	}
+
+	private String realProcessorPath(WorkerNodeMeta workerNodeMeta) {
+		return pluginWorkerProcessorPath()
+														+"/"+workerNodeMeta.getHost()
+														+"-"+workerNodeMeta.getPid();
+	}
 	
 	/**
 	 * leader code
@@ -216,6 +217,14 @@ public class NodeWorker implements Serializable {
 		if(processorMaster!=null) return;
 		processorMaster=new ProcessorMaster();
 		attachPluginWorkerPathWatcher(pluginWorkerPath());
+		updateLeaderProcessor();
+	}
+	
+	private void updateLeaderProcessor(){
+		WorkerNodeMeta workerNodeMeta=processor.getWorkerNodeMeta();
+		String workerProcessorPath=realProcessorPath(workerNodeMeta);
+		workerNodeMeta.setLeader(true);
+		executor.setPath(workerProcessorPath, SerializerUtils.serialize(serializerFactory, workerNodeMeta));
 	}
 	
 	/**
@@ -225,7 +234,7 @@ public class NodeWorker implements Serializable {
 	 */
 	private void attachPluginWorkerPathWatcher(final String pluginWorkerPath){
 		
-		System.out.println(logPrefix+"  add wahter on : "+pluginWorkerPath);
+		logInfo(" add wahter on : "+pluginWorkerPath);
 		executor.watchPath(pluginWorkerPath, new ZooNodeCallback () {
 			@Override
 			public void call(ZooNode node) {
@@ -347,9 +356,9 @@ public class NodeWorker implements Serializable {
 		while(true){
 			try{
 				synchronized (this) {
-					System.out.println(logPrefix+" go to wait .... ");
+					logInfo(JDateUtils.formatWithSeconds(new Date())+" go to wait .... ");
 					wait();
-					System.out.println(logPrefix+" waked up ... ");
+					logInfo(JDateUtils.formatWithSeconds(new Date())+" waked up ... ");
 					break;
 				}
 			}catch (Exception e) {
@@ -394,7 +403,7 @@ public class NodeWorker implements Serializable {
 	}
 	
 	public void release(Throwable t) throws Exception{
-		System.out.println(logPrefix+" delete temp path : "+workerTemporary.getTempPath());
+		logInfo(" delete temp path : "+workerTemporary.getTempPath());
 		executor.deletePath(workerTemporary.getTempPath());
 	}
 	
@@ -438,4 +447,7 @@ public class NodeWorker implements Serializable {
 		return String.format("---worker-id[%s]--%s---", new Object[]{id,msg});
 	}
 	
+	private void logInfo(String msg) {
+		LOGGER.info(getMessage(msg));
+	}
 }

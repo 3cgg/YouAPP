@@ -2,11 +2,14 @@ package j.jave.kernal.streaming.coordinator;
 
 public class WorkerNodeMeta extends NodeMeta {
 
-	private final boolean leader=true;
+	private boolean leader=false;
 
 	public boolean isLeader() {
 		return leader;
 	}
 	
+	public void setLeader(boolean leader) {
+		this.leader = leader;
+	}
 	
 }

@@ -143,4 +143,7 @@ public class Workflow implements JModel,Closeable{
 		this.count = count;
 	}
 	
+	public boolean containsWorker(int workerId){
+		return nodeData.containsWorker(workerId);
+	}
 }

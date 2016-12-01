@@ -17,7 +17,7 @@ public class MachineWorkerTwo {
 		
 		NodeWorkers.startup(executor);
 		Utils.sleep(3000);
-		Machine.start(0, 3,Machine.conf());
+		Machine.start(0, 3);
 		Utils.sleep(10000);
 	}
 	

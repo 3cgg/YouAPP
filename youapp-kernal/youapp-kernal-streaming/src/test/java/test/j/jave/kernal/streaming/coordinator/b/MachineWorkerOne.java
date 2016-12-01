@@ -17,7 +17,7 @@ public class MachineWorkerOne {
 		
 		NodeWorkers.startup(executor);
 		Utils.sleep(3000);
-		Machine.start(0, 1,Machine.conf());
+		Machine.start(0, 1);
 		Utils.sleep(10000);
 	}
 	

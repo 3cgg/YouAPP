@@ -82,5 +82,18 @@ public class NodeData implements JModel,IParallel{
 		return IParallel._TRUE.equals(parallel);
 	}
 
+	public boolean containsWorker(int worker){
+		boolean contains=id==worker;
+		if(contains){
+			return true;
+		}
+		for(NodeData nodeData:nodes){
+			contains=nodeData.containsWorker(worker);
+			if(contains){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

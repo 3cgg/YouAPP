@@ -47,7 +47,7 @@ import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 @SuppressWarnings({"serial","rawtypes"})
 public class NodeLeader implements Serializable{
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeLeader.class);
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
@@ -118,7 +118,7 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void notLeader() {
 				if(workflowMaster==null) return;
-				System.out.println(logPrefix()+" lose leadership .... ");
+				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-schedule leadership .... ");
 				try {
 					workflowMaster.close();
 				} catch (IOException e) {
@@ -129,7 +129,7 @@ public class NodeLeader implements Serializable{
 			
 			@Override
 			public void isLeader() {
-				System.out.println(logPrefix()+" is leadership .... ");
+				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-schedule leadership .... ");
 				try {
 					createMasterMeta();
 				} catch (Exception e) {
@@ -337,6 +337,17 @@ public class NodeLeader implements Serializable{
 	 * @param instance
 	 */
 	private void start(final int worker,final String instancePath,final Instance instance){
+		
+		if(!instance.getWorkflow().containsWorker(worker)){
+			throw new RuntimeException("the worker["+worker+"] does not exist.");
+		}
+		
+		if(!instance.getWorkflow().getWorkerPaths().containsKey(worker)){
+			throw new RuntimeException("the worker["+worker+"] does not exist.");
+		}
+		
+		logInfo("-find to start worker : "+worker +""); 
+		
 		final WorkerPathVal workerPathVal=new WorkerPathVal();
 		workerPathVal.setId(worker);
 		workerPathVal.setTime(new Date().getTime());
@@ -489,7 +500,7 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private synchronized void createMasterMeta() throws Exception{
-		System.out.println(logPrefix()+" got workflow leader ... "); 
+		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
 		attachWorfkowTriggerWatcher(null);
@@ -788,6 +799,10 @@ public class NodeLeader implements Serializable{
 	
 	private void logError(Exception e) {
 		LOGGER.error(getMessage(e.getMessage()), e);
+	}
+	
+	private void logInfo(String msg) {
+		LOGGER.info(getMessage(msg));
 	}
 	
 	private String getMessage(String msg){

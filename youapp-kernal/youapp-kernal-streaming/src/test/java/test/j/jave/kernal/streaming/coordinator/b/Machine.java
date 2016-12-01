@@ -29,20 +29,20 @@ public class Machine {
 		return ZooKeeperExecutorGetter.getDefault();
 	}
 
-	public static void start(int start,int end,Map conf){
+	public static void start(int start,int end){
 		for(int i=start;i<(end+1);i++){
 			final int _i=i;
 			new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
-
+					Map conf=Machine.conf();
+					int port=random.nextInt(9000-8080)+8080+_i;
+					System.out.println("port:"+port);
+					conf.put(WorkerConfigNames.WORKER_NETTY_PORT, port);
+					NodeWorker nodeWorker=NodeWorkers.get(_i, "name-"+_i
+							, WorkflowMetaDemoTest.get(), conf);
 					while(true){
-						int port=random.nextInt(9000-8080)+8080;
-						System.out.println("port:"+port);
-						conf.put(WorkerConfigNames.WORKER_NETTY_PORT, port);
-						NodeWorker nodeWorker=NodeWorkers.get(_i, "name-"+_i
-								, WorkflowMetaDemoTest.get(), conf);
 						try{
 							nodeWorker.acquire();
 							System.out.println(nodeWorker.getId()+ " get lock , wait some time.");

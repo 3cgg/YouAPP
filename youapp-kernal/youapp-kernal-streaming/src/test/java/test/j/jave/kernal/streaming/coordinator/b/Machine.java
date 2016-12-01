@@ -2,17 +2,21 @@ package test.j.jave.kernal.streaming.coordinator.b;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.kafka.common.utils.Utils;
 
 import j.jave.kernal.streaming.coordinator.NodeWorker;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
+import j.jave.kernal.streaming.coordinator.WorkerConfigNames;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
 public class Machine {
+	
+	private static Random random=new Random();
 	
 	public static Map conf(){
 		Map leaderConf=new HashMap<>();
@@ -34,6 +38,9 @@ public class Machine {
 				public void run() {
 
 					while(true){
+						int port=random.nextInt(9000-8080)+8080;
+						System.out.println("port:"+port);
+						conf.put(WorkerConfigNames.WORKER_NETTY_PORT, port);
 						NodeWorker nodeWorker=NodeWorkers.get(_i, "name-"+_i
 								, WorkflowMetaDemoTest.get(), conf);
 						try{

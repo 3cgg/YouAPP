@@ -2,10 +2,10 @@ package j.jave.kernal.streaming.coordinator;
 
 import j.jave.kernal.jave.model.JModel;
 
-public abstract class NodeMeta implements JModel {
+public class NodeMeta implements JModel {
 	
 	/**
-	 * the leader id
+	 * the node id
 	 */
 	private int id;
 	
@@ -23,6 +23,11 @@ public abstract class NodeMeta implements JModel {
 	 * the node processor id
 	 */
 	private int pid;
+	
+	/**
+	 * the http port
+	 */
+	private int port;
 
 	public int getId() {
 		return id;
@@ -55,8 +60,13 @@ public abstract class NodeMeta implements JModel {
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	
-	
-	
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 	
 }

@@ -2,23 +2,10 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import j.jave.kernal.jave.model.JModel;
 
-public class NodeData implements JModel{
-	
-	public interface NodeStatus{
-		String ONLINE="ONLINE";
-		String READY="READY";
-		String PROCESSING="PROCESSING";
-		String COMPLETE="COMPLETE";
-		String COMPLETE_ERROR="COMPLETE_ERROR";
-	}
-	
-	public interface NodeDataGenerator{
-		NodeData generate(String name,Map map);
-	}
+public class NodeData implements JModel,IParallel{
 	
 	/**
 	 * the worker id , that may be a virtual /  real worker 
@@ -91,6 +78,9 @@ public class NodeData implements JModel{
 		parent.nodes.add(this);
 	}
 	
+	public boolean isParallel(){
+		return IParallel._TRUE.equals(parallel);
+	}
 
 	
 }

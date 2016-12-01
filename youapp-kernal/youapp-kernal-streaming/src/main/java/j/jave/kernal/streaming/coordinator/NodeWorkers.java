@@ -43,6 +43,12 @@ public class NodeWorkers implements Serializable {
 		return nodeWorker;
 	}
 	
-	
+	public static synchronized NodeWorker get(int id){
+		NodeWorker nodeWorker=  map.get(id);
+		if(nodeWorker==null){
+			throw new IllegalStateException("node worker is missing : "+id);
+		}
+		return nodeWorker;
+	}
 	
 }

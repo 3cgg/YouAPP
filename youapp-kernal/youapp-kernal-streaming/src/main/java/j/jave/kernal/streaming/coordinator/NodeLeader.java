@@ -21,12 +21,14 @@ import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.JConfiguration;
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
-import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
+import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
@@ -36,6 +38,7 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
 import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
+import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
@@ -43,6 +46,8 @@ import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class NodeLeader implements Serializable{
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
@@ -65,6 +70,8 @@ public class NodeLeader implements Serializable{
 	private TrackingService trackingService;
 	
 	private ExecutorService executorService=Executors.newFixedThreadPool(3);
+	
+	private SimpleHttpNioChannelServer server;
 	
 	public static abstract class CacheType{
 		private static final String CHILD="patch_child";
@@ -115,7 +122,7 @@ public class NodeLeader implements Serializable{
 				try {
 					workflowMaster.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					logError(e);
 				}
 				workflowMaster=null;
 			}
@@ -123,7 +130,12 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void isLeader() {
 				System.out.println(logPrefix()+" is leadership .... ");
-				createMasterMeta();
+				try {
+					createMasterMeta();
+				} catch (Exception e) {
+					logError(e);
+					throw new IllegalStateException(e);
+				}
 			}
 		}, Executors.newFixedThreadPool(1));
 		
@@ -215,7 +227,7 @@ public class NodeLeader implements Serializable{
 					instanceNode.getPathChildrenCache().close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logError(e);
 			}
 		}
 	}
@@ -269,7 +281,7 @@ public class NodeLeader implements Serializable{
 	 * @param _path
 	 */
 	private void completeVirtual(final Instance instance, final String _path
-			,final String completeStatus) {
+			,final NodeStatus completeStatus) {
 		// the virtual node is completed, set flag to complete
 		c(_path,completeStatus);
 		//close instance children node watcher, release IO
@@ -280,7 +292,7 @@ public class NodeLeader implements Serializable{
 	 * is;s call  when the logical/virtual node is completed.
 	 * @param path
 	 */
-	private void c(final String path,final String completeStatus){
+	private void c(final String path,final NodeStatus completeStatus){
 		final InstanceNodeVal instanceNodeVal=
 				SerializerUtils.deserialize(serializerFactory, executor.getPath(path), InstanceNodeVal.class);
 		instanceNodeVal.setStatus(completeStatus);
@@ -299,7 +311,7 @@ public class NodeLeader implements Serializable{
 		});
 	}
 	
-	private WorkTracking workTracking(int workerId, String path,String status,Instance instance){
+	private WorkTracking workTracking(int workerId, String path,NodeStatus status,Instance instance){
 		WorkTracking workTracking=new WorkTracking();
 		workTracking.setWorkerId(String.valueOf(workerId));
 		workTracking.setInstancePath(path);
@@ -364,24 +376,18 @@ public class NodeLeader implements Serializable{
 					boolean done=true;
 					boolean withError=false;
 					for(ZooNode node:nodes){
-						byte[] bytes=node.getData();
-						if(bytes==null){
-							bytes=executor.getPath(node.getPath());
-						}
+						byte[] bytes=node.getDataAsPossible(executor);
 						InstanceNodeVal instanceNodeVal=
 								SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 						if(!isComplete(instanceNodeVal)){
 							done=false;
-						}
-						else{
-							if(NodeStatus.COMPLETE_ERROR.equals(instanceNodeVal.getStatus())){
-								withError=true;
-							}
+						}else if(instanceNodeVal.getStatus().isCompleteWithError()){
+							withError=true;
 						}
 					}
 					
 					if(done){
-						String completeStatus=withError?NodeStatus.COMPLETE_ERROR
+						NodeStatus completeStatus=withError?NodeStatus.COMPLETE_ERROR
 								:NodeStatus.COMPLETE;
 						completeVirtual(instance, _path,completeStatus);
 						if(path.equals(instance.getRootPath())){
@@ -398,15 +404,12 @@ public class NodeLeader implements Serializable{
 						}
 					});
 					
-					if("0".equals(virtualNode.getNodeData().getParallel())){
+					if(!virtualNode.getNodeData().isParallel()){
 						//start next node/worker in the virtual node
 						InstanceNodeVal latestNode=null;
 						for(int i=nodes.size()-1;i>-1;i--){
 							ZooNode tempNode=nodes.get(i);
-							byte[] bytes=tempNode.getData();
-							if(bytes==null){
-								bytes=executor.getPath(tempNode.getPath());
-							}
+							byte[] bytes=tempNode.getDataAsPossible(executor);
 							InstanceNodeVal instanceNodeVal=
 									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 							if(!isComplete(instanceNodeVal)){
@@ -449,8 +452,7 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private boolean isComplete(InstanceNodeVal instanceNodeVal) {
-		return NodeStatus.COMPLETE.equals(instanceNodeVal.getStatus())
-				||NodeStatus.COMPLETE_ERROR.equals(instanceNodeVal.getStatus());
+		return instanceNodeVal.getStatus().isComplete();
 	}
 	
 	private int workerId(String path){
@@ -486,28 +488,58 @@ public class NodeLeader implements Serializable{
 		workflow.setPluginWorkersPathCache(cache);
 	}
 	
-	private synchronized void createMasterMeta(){
+	private synchronized void createMasterMeta() throws Exception{
 		System.out.println(logPrefix()+" got workflow leader ... "); 
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
 		attachWorfkowTriggerWatcher(null);
 		attachWorfkowAddWatcher();
 		registerLeaderInZookeeper();
+		registerRPCInZookeeper();
+		startServer();
 		addCommonCommand();
 	}
 	
-	private void registerLeaderInZookeeper(){
+	private void startServer() throws Exception{
+		LeaderNodeMeta nodeMeta=workflowMaster.getLeaderNodeMeta();
+		server =
+				new SimpleHttpNioChannelServer(nodeMeta.getPort());
+		server.start();
+	}
+	
+	private void registerRPCInZookeeper(){
+		LeaderNodeMeta leaderNodeMeta=workflowMaster.getLeaderNodeMeta();
+		String rpcNode=JConfiguration.get().getString(ConfigNames.STREAMING_RPC_HOST_ZNODE);
+		String data=leaderNodeMeta.getHost()
+				+":"
+				+JConfiguration.get().getInt(ConfigNames.STREAMING_NETTY_SERVER_PORT, 8080);
+		if(executor.exists(rpcNode)){
+			executor.setPath(rpcNode, data);
+		}else{
+			executor.createPath(rpcNode, data);
+		}
+	}
+	
+	private LeaderNodeMeta registerLeaderInZookeeper(){
 		
 		LeaderNodeMetaGetter leaderMetaGetter=
 					new LeaderNodeMetaGetter(JConfiguration.get());
+		LeaderNodeMeta leaderNodeMeta=leaderMetaGetter.nodeMeta();
+		Integer port=(Integer) conf.get(ConfigNames.STREAMING_NETTY_SERVER_PORT);
+		if(port!=null){
+			leaderNodeMeta.setPort(port);
+		}
+		
+		workflowMaster.setLeaderNodeMeta(leaderNodeMeta);
         byte[] msg=
-        		SerializerUtils.serialize(serializerFactory, leaderMetaGetter.nodeMeta());
+        		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
 		if(!executor.exists(leaderRegisterPath())){
 			executor.createPath(leaderRegisterPath(), msg);
 		}
 		else{
 			executor.setPath(leaderRegisterPath(), msg);
 		}
+		return leaderNodeMeta;
 	}
 	
 	private synchronized void addCommonCommand(){
@@ -602,7 +634,7 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void call(ZooNode node) {
 				WorkflowMeta workflowMeta=
-						SerializerUtils.deserialize(serializerFactory, node.getData(), WorkflowMeta.class);
+						SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), WorkflowMeta.class);
 				startWorkflow(workflowMeta.getName(), Maps.newHashMap());
 			}
 		}, Executors.newFixedThreadPool(1, new ThreadFactory() {
@@ -632,10 +664,7 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void call(List<ZooNode> nodes) {
 				for(ZooNode node:nodes){
-					byte[] bytes=node.getData();
-					if(bytes==null){
-						bytes=executor.getPath(node.getPath());
-					}
+					byte[] bytes=node.getDataAsPossible(executor);
 					WorkflowMeta workflowMeta=
 							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
 					addWorkflow(workflowMeta);
@@ -664,7 +693,7 @@ public class NodeLeader implements Serializable{
 	private void propagateWorkerPath(InstanceNodeVal triggerInstanceNodeVal,
 			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
 		if(triggerNodeData.hasChildren()){ // it's virtual node  
-			if("1".equals(triggerNodeData.getParallel())){
+			if(triggerNodeData.isParallel()){
 				//the node is parallel , so we need start all children nodes at the time
 				for(NodeData thisNodeData:triggerNodeData.getNodes()){
 					propagateWorkerPath(triggerInstanceNodeVal, virtualNode,
@@ -692,7 +721,7 @@ public class NodeLeader implements Serializable{
 	private void propagateCompleteDirectly(InstanceNodeVal triggerInstanceNodeVal,
 			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
 		if(triggerNodeData.hasChildren()){ // it's virtual node  
-			if("1".equals(triggerNodeData.getParallel())){
+			if(triggerNodeData.isParallel()){
 				//the node is parallel , so we need start all children nodes at the time
 				for(NodeData thisNodeData:triggerNodeData.getNodes()){
 					propagateCompleteDirectly(triggerInstanceNodeVal, virtualNode,
@@ -732,14 +761,15 @@ public class NodeLeader implements Serializable{
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			logError(e);
+			throw new IllegalStateException(e);
 		}finally {
 			try {
 				if(leaderLatch.hasLeadership()){
 					leaderLatch.close();
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logError(e);
 			}
 		}
 	}
@@ -754,5 +784,13 @@ public class NodeLeader implements Serializable{
 	
 	private String logPrefix(){
 		return logPrefix;
+	}
+	
+	private void logError(Exception e) {
+		LOGGER.error(getMessage(e.getMessage()), e);
+	}
+	
+	private String getMessage(String msg){
+		return String.format("---leader-name[%s]--%s---", new Object[]{name,msg});
 	}
 }

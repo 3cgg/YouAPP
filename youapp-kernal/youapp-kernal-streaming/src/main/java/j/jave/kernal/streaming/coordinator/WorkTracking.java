@@ -9,7 +9,7 @@ public class WorkTracking extends BaseFetchObj  {
 	
 	private String workerName;
 	
-	private String status;
+	private NodeStatus status;
 	
 	private String instancePath;
 	
@@ -30,12 +30,12 @@ public class WorkTracking extends BaseFetchObj  {
 	public void setWorkerName(String workerName) {
 		this.workerName = workerName;
 	}
-
-	public String getStatus() {
+	
+	public NodeStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(NodeStatus status) {
 		this.status = status;
 	}
 

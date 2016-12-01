@@ -39,6 +39,8 @@ public class WorkflowMaster implements JModel ,Closeable{
 	 * all workflows in the cluster
 	 */
 	private Map<String, Workflow> workflows=Maps.newConcurrentMap();
+	
+	private LeaderNodeMeta leaderNodeMeta;
 
 	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
 	=Maps.newConcurrentMap();
@@ -152,5 +154,14 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public void setWorkfowAddCache(PathChildrenCache workfowAddCache) {
 		this.workfowAddCache = workfowAddCache;
 	}
+
+	public LeaderNodeMeta getLeaderNodeMeta() {
+		return leaderNodeMeta;
+	}
+
+	public void setLeaderNodeMeta(LeaderNodeMeta leaderNodeMeta) {
+		this.leaderNodeMeta = leaderNodeMeta;
+	}
+	
 	
 }

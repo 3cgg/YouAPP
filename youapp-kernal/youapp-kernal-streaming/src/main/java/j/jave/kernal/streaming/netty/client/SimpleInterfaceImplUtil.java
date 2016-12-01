@@ -24,6 +24,12 @@ public class SimpleInterfaceImplUtil {
 		return intarface.syncProxy();
 	}
 	
+	public static <M extends ControllerService> M syncProxy(Class<M> controllerService,ChannelExecutor<NioChannelRunnable> channelExecutor){
+		KryoInterfaceImpl<M> intarface=
+				new KryoInterfaceImpl<M>(controllerService, channelExecutor);
+		return intarface.syncProxy();
+	}
+	
 	public static <M extends ControllerService> M asyncProxy(Class<M> controllerService ){
 		KryoInterfaceImpl<M> intarface=
 				new KryoInterfaceImpl<M>(controllerService, dynamicChannelExecutor);

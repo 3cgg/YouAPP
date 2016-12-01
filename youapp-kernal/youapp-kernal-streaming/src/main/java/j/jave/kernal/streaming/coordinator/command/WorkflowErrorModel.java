@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.coordinator.command;
 
-import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
+import j.jave.kernal.streaming.coordinator.NodeStatus;
 
 public class WorkflowErrorModel extends BaseCommandModel {
 

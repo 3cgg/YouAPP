@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.coordinator;
 
 import j.jave.kernal.jave.model.JModel;
 
-public class InstanceNodeVal implements JModel {
+public class InstanceNodeVal implements JModel,IParallel {
 
 	/**
 	 * 1 is parrallel, otherwise 0
@@ -20,9 +20,9 @@ public class InstanceNodeVal implements JModel {
 	private long sequence;
 	
 	/**
-	 * the running status , {@link NodeData.NodeStatus}
+	 * the running status , {@link NodeStatus}
 	 */
-	private String status;
+	private NodeStatus status;
 	
 	/**
 	 * the record time
@@ -46,11 +46,11 @@ public class InstanceNodeVal implements JModel {
 		this.id = id;
 	}
 
-	public String getStatus() {
+	public NodeStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(NodeStatus status) {
 		this.status = status;
 	}
 
@@ -70,4 +70,7 @@ public class InstanceNodeVal implements JModel {
 		this.sequence = sequence;
 	}
 
+	public boolean isParallel(){
+		return IParallel._TRUE.equals(parallel);
+	}
 }

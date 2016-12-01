@@ -11,7 +11,6 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.streaming.coordinator.NodeData.NodeDataGenerator;
 
 @SuppressWarnings("serial")
 public class Workflow implements JModel,Closeable{

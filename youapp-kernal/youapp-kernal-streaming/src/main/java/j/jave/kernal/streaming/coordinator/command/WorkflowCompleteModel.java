@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.coordinator.command;
 
-import j.jave.kernal.streaming.coordinator.NodeData.NodeStatus;
+import j.jave.kernal.streaming.coordinator.NodeStatus;
 
 public class WorkflowCompleteModel extends BaseCommandModel {
 
@@ -8,13 +8,13 @@ public class WorkflowCompleteModel extends BaseCommandModel {
 	 * the status of workflow instance , maybe any one of {@link NodeStatus}
 	 * @see NodeStatus
 	 */
-	private String status;
+	private NodeStatus status;
 
-	public String getStatus() {
+	public NodeStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(NodeStatus status) {
 		this.status = status;
 	}
 	

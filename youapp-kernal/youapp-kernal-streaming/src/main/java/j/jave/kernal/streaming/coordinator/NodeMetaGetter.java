@@ -35,6 +35,7 @@ public abstract class NodeMetaGetter<T extends NodeMeta> {
             pid = pid.substring(0, indexOf);  
         }  
         nodeMeta.setPid(Integer.parseInt(pid));
+        nodeMeta.setPort(configuration.getInt(ConfigNames.STREAMING_NETTY_SERVER_PORT, -1));
 	}
 	
 }

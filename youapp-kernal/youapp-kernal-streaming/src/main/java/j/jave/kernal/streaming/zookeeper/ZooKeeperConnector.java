@@ -2,6 +2,7 @@ package j.jave.kernal.streaming.zookeeper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +19,8 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent.Type;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
+
+import com.google.common.collect.Collections2;
 
 import j.jave.kernal.jave.utils.JStringUtils;
 
@@ -119,6 +122,18 @@ public class ZooKeeperConnector implements Serializable {
 			try{
 				return curatorFramework.getData()
 				.forPath(path);
+			}catch (Exception e) {
+				throw new CustomZooKeeperException(e);
+			}
+		}
+		
+		public List<String> getChildren(String path){
+			try{
+				List<String> child=curatorFramework.getChildren().forPath(path);
+				if(child==null){
+					child=Collections.EMPTY_LIST;
+				}
+				return child;
 			}catch (Exception e) {
 				throw new CustomZooKeeperException(e);
 			}

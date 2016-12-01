@@ -3,7 +3,6 @@ package j.jave.kernal.streaming.coordinator;
 import java.util.Map;
 
 import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.streaming.coordinator.NodeData.NodeDataGenerator;
 
 
 public class DefaultNodeDataGenerator implements NodeDataGenerator {

@@ -13,7 +13,7 @@ import j.jave.kernal.jave.aop.JSingletonTargetSource;
 import j.jave.kernal.jave.aop.JTargetSource;
 import j.jave.kernal.jave.proxy.JSimpleProxy;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
-import j.jave.kernal.streaming.kryo.SerializerUtils;
+import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.streaming.netty.controller.ClassProvidedMappingFinder;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;

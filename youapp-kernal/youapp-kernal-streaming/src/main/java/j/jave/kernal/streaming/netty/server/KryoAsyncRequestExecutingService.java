@@ -19,9 +19,9 @@ import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
+import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.HeaderNames;
 
 public class KryoAsyncRequestExecutingService 

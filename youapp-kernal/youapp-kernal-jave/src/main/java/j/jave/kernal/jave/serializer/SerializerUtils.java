@@ -1,9 +1,7 @@
-package j.jave.kernal.streaming.kryo;
+package j.jave.kernal.jave.serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
-import j.jave.kernal.jave.serializer.JSerializerFactory;
 
 public abstract class SerializerUtils {
 

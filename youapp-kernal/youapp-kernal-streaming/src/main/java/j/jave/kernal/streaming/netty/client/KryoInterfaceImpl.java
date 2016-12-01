@@ -3,9 +3,9 @@ package j.jave.kernal.streaming.netty.client;
 import java.lang.reflect.Method;
 
 import j.jave.kernal.jave.reflect.JClassUtils;
+import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JLangUtils;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import j.jave.kernal.streaming.kryo.SerializerUtils;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -41,6 +42,9 @@ import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 public class NodeWorker implements Serializable {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
+	
+	private final String sequence=new Random().nextInt(100)+"-"+ 
+			JUniqueUtils.sequence();
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
@@ -408,7 +412,21 @@ public class NodeWorker implements Serializable {
 	}
 	
 	private synchronized void wakeup(){
+		logInfo(" ok , let's wakeup itself (notifyAll) ");
 		notifyAll();
+	}
+	
+	private boolean hasDone(WorkerExecutingPathVal workerExecutingPathVal){
+		String workerExecutingPath=workerExecutingPathVal.getWorkerExecutingPath();
+		List<String> paths=executor.getChildren(workerExecutingPath);
+		boolean done=false;
+		for (String string : paths) {
+			if(string.indexOf(sequence)!=-1){
+				done=true;
+				break;
+			}
+		}
+		return done;
 	}
 	
 	/**
@@ -416,8 +434,10 @@ public class NodeWorker implements Serializable {
 	 * @param workerExecutingPathVal
 	 */
 	public void wakeup(WorkerExecutingPathVal workerExecutingPathVal){
+		logInfo(" ready to wakeup itself ");
 		String workerExecutingPath=workerExecutingPathVal.getWorkerExecutingPath();
-		if(executor.getChildren(workerExecutingPath).isEmpty()){  // avoid wake up multiple times
+		boolean done=hasDone(workerExecutingPathVal);
+		if(!done){  // avoid wake up multiple times
 			final String tempPath=executor.createEphSequencePath(
 					workerExecutingPath+"/temp-");
 			WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
@@ -436,6 +456,8 @@ public class NodeWorker implements Serializable {
 				}
 			});
 			wakeup();
+		}else{
+			logInfo(" already done , skip ");
 		}
 	}
 	

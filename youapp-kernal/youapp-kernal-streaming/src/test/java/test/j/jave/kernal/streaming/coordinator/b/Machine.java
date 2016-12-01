@@ -44,9 +44,10 @@ public class Machine {
 							, WorkflowMetaDemoTest.get(), conf);
 					while(true){
 						try{
+							System.out.println(nodeWorker.getId()+ "=== ready to get lock .");
 							nodeWorker.acquire();
-							System.out.println(nodeWorker.getId()+ " get lock , wait some time.");
-							Utils.sleep(10000);
+							System.out.println(nodeWorker.getId()+ "=== got lock , wait some executing time .");
+							Utils.sleep(10000); 
 						}catch (Exception e) {
 							e.printStackTrace();
 						}finally {

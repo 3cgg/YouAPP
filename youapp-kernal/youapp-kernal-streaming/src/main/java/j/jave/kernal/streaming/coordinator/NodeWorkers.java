@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.google.common.collect.Maps;
 
+import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 @SuppressWarnings({"serial","rawtypes"})
@@ -35,9 +36,11 @@ public class NodeWorkers implements Serializable {
 	
 	public static synchronized NodeWorker get(int id,String name,WorkflowMeta workflowMeta,Map conf){
 		validate();
+		conf.put(ConfigNames.STREAMING_NODE_ID, id);
+		conf.put(ConfigNames.STREAMING_NODE_NAME, name);
 		NodeWorker nodeWorker=  map.get(id);
 		if(nodeWorker==null){
-			nodeWorker=new NodeWorker(id, name, workflowMeta,executor,conf);
+			nodeWorker=new NodeWorker(workflowMeta,conf,executor);
 			map.put(id, nodeWorker);
 		}
 		return nodeWorker;

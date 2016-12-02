@@ -6,9 +6,9 @@ import java.util.Random;
 
 import org.apache.kafka.common.utils.Utils;
 
+import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.NodeWorker;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
-import j.jave.kernal.streaming.coordinator.WorkerConfigNames;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
@@ -39,7 +39,7 @@ public class Machine {
 					Map conf=Machine.conf();
 					int port=random.nextInt(9000-8080)+8080+_i;
 					System.out.println("port:"+port);
-					conf.put(WorkerConfigNames.WORKER_NETTY_PORT, port);
+					conf.put(ConfigNames.STREAMING_WORKER_NETTY_SERVER_PORT, port);
 					NodeWorker nodeWorker=NodeWorkers.get(_i, "name-"+_i
 							, WorkflowMetaDemoTest.get(), conf);
 					while(true){

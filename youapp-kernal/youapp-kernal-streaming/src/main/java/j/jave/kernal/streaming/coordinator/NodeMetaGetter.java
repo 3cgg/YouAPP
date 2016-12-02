@@ -2,6 +2,7 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
+import java.util.Map;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.utils.JAssert;
@@ -11,20 +12,24 @@ import j.jave.kernal.streaming.NetUtil;
 
 public abstract class NodeMetaGetter<T extends NodeMeta> {
 
-	private final JConfiguration configuration;
+	protected final JConfiguration configuration;
 	
-	public NodeMetaGetter(JConfiguration configuration) {
+	protected final Map conf;
+	
+	public NodeMetaGetter(JConfiguration configuration,Map conf) {
 		this.configuration = configuration;
+		this.conf=conf;
 	}
 
 	abstract public T nodeMeta();
 	
 	protected void _setBasicOnNodeMeta(NodeMeta nodeMeta){
-		int id=configuration.getInt(ConfigNames.STREAMING_NODE_ID, -1);
+		int id=getInt(ConfigNames.STREAMING_NODE_ID, -1);
 		JAssert.isTrue(id!=-1,"node id must be positive");
+		nodeMeta.setId(id);
 		InetAddress inetAddress=NetUtil.getLocalAddress();
 		nodeMeta.setHost(inetAddress.getHostAddress());
-		String name=configuration.getString(ConfigNames.STREAMING_NODE_NAME);
+		String name=getString(ConfigNames.STREAMING_NODE_NAME,"");
 		if(JStringUtils.isNullOrEmpty(name)){
 			name=inetAddress.getHostName();
 		}
@@ -35,7 +40,22 @@ public abstract class NodeMetaGetter<T extends NodeMeta> {
             pid = pid.substring(0, indexOf);  
         }  
         nodeMeta.setPid(Integer.parseInt(pid));
-        nodeMeta.setPort(configuration.getInt(ConfigNames.STREAMING_NETTY_SERVER_PORT, -1));
+	}
+	
+	protected int getInt(String key,int defVal){
+		Integer count=(Integer) conf.get(key);
+		if(count==null){
+			count=configuration.getInt(key,defVal);
+		}
+		return count;
+	}
+	
+	protected String getString(String key,String defVal){
+		String string=(String) conf.get(key);
+		if(string==null){
+			string=configuration.getString(key,defVal);
+		}
+		return string;
 	}
 	
 }

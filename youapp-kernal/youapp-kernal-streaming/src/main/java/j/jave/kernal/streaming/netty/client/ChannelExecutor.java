@@ -1,6 +1,8 @@
 package j.jave.kernal.streaming.netty.client;
 
-public interface ChannelExecutor<T> {
+import java.io.Closeable;
+
+public interface ChannelExecutor<T> extends Closeable {
 
 	<V> CallPromise<V> execute(T channelRunnable) throws Exception;
 

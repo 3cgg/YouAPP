@@ -16,12 +16,6 @@
 </property>
 
 <property>
-  <name>youapp.streaming.netty.server.port</name>
-  <value>8080</value>
-  <description>leader always listener on the port</description>
-</property>
-
-<property>
   <name>youapp.streaming.node.id</name>
   <value>1</value>
   <description>node id</description>
@@ -39,8 +33,29 @@
   <description>kafka</description>
 </property>
 
+
 <property>
-  <name>youapp.streaming.rpc.host.znode</name>
+  <name>youapp.streaming.leader.netty.server.port</name>
+  <value>8080</value>
+  <description>leader always listener on the port</description>
+</property>
+
+
+<property>
+  <name>youapp.streaming.leader.zookeeper.thread.count</name>
+  <value>10</value>
+  <description>leader node zookeeper thread count</description>
+</property>
+
+<property>
+  <name>youapp.streaming.leader.logging.thread.count</name>
+  <value>3</value>
+  <description>leader node logging thread count</description>
+</property>
+
+
+<property>
+  <name>youapp.streaming.leader.rpc.host.znode</name>
   <value>/leader-host</value>
   <description>zookeeper node from which the remote host can be found</description>
 </property>

@@ -1,5 +1,7 @@
 package j.jave.kernal.streaming.netty.client;
 
+import java.io.IOException;
+
 public class SimpleChannelExecutor implements ChannelExecutor<NioChannelRunnable> {
 
 	private NioChannelExecutor nioChannelExecutor;
@@ -22,6 +24,11 @@ public class SimpleChannelExecutor implements ChannelExecutor<NioChannelRunnable
 	
 	public String uri(){
 		return (ssl()?"https":"http")+"://"+nioChannelExecutor.getHost()+":"+nioChannelExecutor.getPort();
+	}
+
+	@Override
+	public void close() throws IOException {
+		nioChannelExecutor.close();
 	}
 	
 }

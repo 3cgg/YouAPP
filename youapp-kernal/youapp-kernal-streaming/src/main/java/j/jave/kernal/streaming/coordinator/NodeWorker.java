@@ -29,7 +29,7 @@ import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
 import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
-import j.jave.kernal.streaming.netty.client.KryoChannelExecutor;
+import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
 import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
@@ -43,17 +43,24 @@ public class NodeWorker implements Serializable {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
 	
+	private static KryoChannelExecutorPool executorPool=new KryoChannelExecutorPool();
+	
 	private final String sequence=new Random().nextInt(100)+"-"+ 
 			JUniqueUtils.sequence();
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
-	private Map conf;
+	private final WorkerNodeMeta workerNodeMeta;
 	
-	private int id;
+	private final Map conf;
 	
-	public String name;
+	private final int id;
 	
+	public final String name;
+	
+	/**
+	 * what workflow the worker is servicing for
+	 */
 	private WorkflowMeta workflowMeta;
 	
 	private ZookeeperExecutor executor;
@@ -68,17 +75,34 @@ public class NodeWorker implements Serializable {
 	
 	private TrackingService trackingService;
 	
-	private ExecutorService executorService=Executors.newFixedThreadPool(3);
+	private ExecutorService loggingExecutorService=null;
+	
+	private ExecutorService zooKeeperExecutorService=null;
 	
 	private SimpleHttpNioChannelServer server;
 	
-	public NodeWorker(int id, String workerName,WorkflowMeta workflowMeta,ZookeeperExecutor executor,Map conf) {
-		this.id = id;
-		this.name = workerName;
+	public NodeWorker(WorkflowMeta workflowMeta,Map conf,ZookeeperExecutor executor) {
+		this.workerNodeMeta=new WorkerNodeMetaGetter(JConfiguration.get(), conf).nodeMeta();
+		this.id = workerNodeMeta.getId();
+		this.name = workerNodeMeta.getName();
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
 		trackingService=TrackingServiceFactory.build(conf);
 		this.executor=executor;
+		this.loggingExecutorService=Executors.newFixedThreadPool(workerNodeMeta.getLogThreadCount(),
+				new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"{worker["+getId()+"]-logging(node["+id+"] worker...)}");
+			}
+		});
+		this.zooKeeperExecutorService=Executors.newFixedThreadPool(workerNodeMeta.getZkThreadCount(),
+				new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"{zookeeper watcher(node["+id+"] worker...)}");
+			}
+		});
 		startWorker();
 	}
 
@@ -120,13 +144,6 @@ public class NodeWorker implements Serializable {
 //						KryoUtils.serialize(serializerFactory, workerPathVal),
 						CreateMode.PERSISTENT);
 			}
-			WorkerNodeMetaGetter metaGetter=new WorkerNodeMetaGetter(JConfiguration.get());
-			WorkerNodeMeta workerNodeMeta=metaGetter.nodeMeta();
-			Integer port=(Integer) conf.get(WorkerConfigNames.WORKER_NETTY_PORT);
-			if(port==null){
-				port=8080;
-			}
-			workerNodeMeta.setPort(port);
 			String workerProcessorPath=realProcessorPath(workerNodeMeta);
 			executor.createPath(workerProcessorPath, SerializerUtils.serialize(serializerFactory, workerNodeMeta));
 			executor.createEphSequencePath(workerProcessorPath+"/temp-");
@@ -170,12 +187,17 @@ public class NodeWorker implements Serializable {
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-processor leadership .... ");
 				createMasterMeta();
 			}
-		}, Executors.newFixedThreadPool(1));
+		}, Executors.newFixedThreadPool(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "{worker["+getId()+"]-processor-leader-listener...}");
+			}
+		}));
 		Executors.newFixedThreadPool(1, new ThreadFactory() {
 			
 			@Override
 			public Thread newThread(Runnable r) {
-				return new Thread(r, pluginWorkerPath+"{watch children(leader)}");
+				return new Thread(r, "{worker["+getId()+"]-processor-leader-selector(leader)}");
 			}
 		}).execute(new Runnable() {
 			
@@ -271,12 +293,7 @@ public class NodeWorker implements Serializable {
 								}
 							}
 						}
-					}, Executors.newFixedThreadPool(1, new ThreadFactory() {
-						@Override
-						public Thread newThread(Runnable r) {
-							return new Thread(r, pluginWorkerPath+"{cache:watch children}");
-						}
-					}),PathChildrenCacheEvent.Type.CHILD_REMOVED);
+					}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_REMOVED);
 					processorMaster.addProcessorsWather(workerExecutingPath, cache);
 					// notify sub-processors of worker
 					String processorPath=pluginWorkerProcessorPath();
@@ -289,7 +306,7 @@ public class NodeWorker implements Serializable {
 										executor.getPath(relProcessorPath), WorkerNodeMeta.class);
 							IWorkerService workerService=
 									SimpleInterfaceImplUtil.syncProxy(IWorkerService.class,
-											new KryoChannelExecutor(workerNodeMeta.getHost(),
+											executorPool.get(workerNodeMeta.getHost(),
 													workerNodeMeta.getPort()));
 							workerService.notifyWorkers(workerExecutingPathVal);
 						}
@@ -298,12 +315,7 @@ public class NodeWorker implements Serializable {
 					LOGGER.error(e.getMessage(), e);
 				}
 			}
-		},Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, pluginWorkerPath());
-			}
-		}));
+		},zooKeeperExecutorService);
 		
 	}
 	
@@ -314,7 +326,7 @@ public class NodeWorker implements Serializable {
 		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
 		executor.setPath(path, 
 				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
-		executorService.execute(new Runnable() {
+		loggingExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				WorkTracking workTracking=
@@ -445,7 +457,7 @@ public class NodeWorker implements Serializable {
 			workerTemporary.setTempPath(tempPath);
 			workerTemporary.setWorkerPathVal(workerPathVal);
 			setWorkerTemporary(workerTemporary);
-			executorService.execute(new Runnable() {
+			loggingExecutorService.execute(new Runnable() {
 				@Override
 				public void run() {
 					WorkTracking workTracking=

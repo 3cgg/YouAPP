@@ -17,10 +17,12 @@ public class MachineLeaderTwo {
 		JServiceFactoryManager.get().registerAllServices();
 		
 		Map leaderConf=Machine.conf();
-		leaderConf.put(ConfigNames.STREAMING_NETTY_SERVER_PORT, 8081);
+		leaderConf.put(ConfigNames.STREAMING_NODE_ID, 2);
+		leaderConf.put(ConfigNames.STREAMING_NODE_NAME, "MAC-TWO");
+		leaderConf.put(ConfigNames.STREAMING_LEADER_NETTY_SERVER_PORT, 8081);
 		ZookeeperExecutor executor=Machine.executor(leaderConf);
 		
-		NodeLeader nodeSelector=NodeLeader.startup("MAC-TWO",executor, leaderConf);
+		NodeLeader nodeSelector=NodeLeader.startup(executor, leaderConf);
 		
 		Utils.sleep(10000);
 	}

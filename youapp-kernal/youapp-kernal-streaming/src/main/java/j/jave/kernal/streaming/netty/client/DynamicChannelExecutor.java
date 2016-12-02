@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.netty.client;
 
+import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -50,9 +51,22 @@ public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChann
 		}, 1,10, TimeUnit.SECONDS);
 	}
 	
+	private void _closeActive(){
+		if(active!=null){
+			try {
+				active.close();
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(), e);
+			}
+		}
+		active=null;
+		host=null;
+		port=-1;
+	}
+	
 	private void loadLeaderHost(String ldHostPath) {
 		canService=false;
-		active=null;
+		_closeActive();
 		String led=JStringUtils.utf8(executor.getPath(ldHostPath));
 		String[] ld=led.split(":");
 		host=ld[0];
@@ -113,4 +127,9 @@ public abstract class DynamicChannelExecutor implements ChannelExecutor<NioChann
 		return getActive().uri();
 	}
 
+	@Override
+	public void close() throws IOException {
+		canService();
+		getActive().close();
+	}
 }

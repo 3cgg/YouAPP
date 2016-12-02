@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.netty.client;
 
+import java.io.IOException;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -257,5 +258,10 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 	@Override
 	public String uri() {
 		throw new JOperationNotSupportedException("impossible to get uri, missing sufficient message.");
+	}
+
+	@Override
+	public void close() throws IOException {
+		channelPool.close();
 	}
 }

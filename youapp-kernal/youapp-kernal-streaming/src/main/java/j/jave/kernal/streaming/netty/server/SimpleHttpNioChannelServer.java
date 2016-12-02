@@ -52,13 +52,13 @@ public class SimpleHttpNioChannelServer implements Closeable {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1,new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
-				return new Thread(r,"netty-server-acceptor-io");
+				return new Thread(r,"netty-server-acceptor-io-port-"+port);
 			}
 		});
         EventLoopGroup workerGroup = new NioEventLoopGroup(50,new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
-				return new Thread(r,"netty-server-worker-io");
+				return new Thread(r,"netty-server-worker-io-port-"+port);
 			}
 		});
         try {

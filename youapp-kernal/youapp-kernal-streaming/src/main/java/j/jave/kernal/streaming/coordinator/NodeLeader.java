@@ -51,15 +51,17 @@ public class NodeLeader implements Serializable{
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
-	private Map conf;
+	private final Map conf;
+
+	private final LeaderNodeMeta leaderNodeMeta;
 	
-	private String name;
+	private final int id;
 	
-	private String logPrefix;
+	private final String name;
 	
 	private static String basePath=CoordinatorPaths.BASE_PATH;
 	
-	private ZookeeperExecutor executor;
+	private final ZookeeperExecutor executor;
 	
 	private LeaderLatch leaderLatch;
 	
@@ -69,7 +71,9 @@ public class NodeLeader implements Serializable{
 	
 	private TrackingService trackingService;
 	
-	private ExecutorService executorService=Executors.newFixedThreadPool(3);
+	private ExecutorService loggingExecutorService=null;
+	
+	private ExecutorService zooKeeperExecutorService=null;
 	
 	private SimpleHttpNioChannelServer server;
 	
@@ -86,14 +90,10 @@ public class NodeLeader implements Serializable{
 	 * @param conf the leader node config
 	 * @return
 	 */
-	public synchronized static NodeLeader startup(String name,ZookeeperExecutor executor,Map conf){
+	public synchronized static NodeLeader startup(ZookeeperExecutor executor,Map conf){
 		NodeLeader nodeSelector=NODE_SELECTOR;
 		if(nodeSelector==null){
-			nodeSelector=new NodeLeader(executor);
-			nodeSelector.conf=conf;
-			nodeSelector.name=name;
-			nodeSelector.logPrefix="selector["+nodeSelector.name+"] ";
-			nodeSelector.trackingService=TrackingServiceFactory.build(conf);
+			nodeSelector=new NodeLeader(conf, executor);
 			NODE_SELECTOR=nodeSelector;
 		}
 		return NODE_SELECTOR;
@@ -108,9 +108,29 @@ public class NodeLeader implements Serializable{
 		return NODE_SELECTOR;
 	}
 	
-	private NodeLeader(ZookeeperExecutor executor) {
+	private NodeLeader(Map conf,ZookeeperExecutor executor) {
+		this.conf=conf;
+		this.leaderNodeMeta=new LeaderNodeMetaGetter(JConfiguration.get(), conf).nodeMeta();
+		this.id=leaderNodeMeta.getId();
+		this.name=leaderNodeMeta.getName();
 		this.executor = executor;
 		this.atomicLong=new DistAtomicLong(executor);
+		trackingService=TrackingServiceFactory.build(conf);
+		loggingExecutorService=Executors.newFixedThreadPool(leaderNodeMeta.getLogThreadCount()
+				,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"{logging(leader node)}");
+			}
+		});
+		zooKeeperExecutorService=Executors.newFixedThreadPool(leaderNodeMeta.getZkThreadCount()
+				,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"{zookeeper watcher(leader node)}");
+			}
+		});
+		
 		leaderLatch=new LeaderLatch(executor.backend(),
 				leaderPath());
 		leaderLatch.addListener(new LeaderLatchListener() {
@@ -137,12 +157,17 @@ public class NodeLeader implements Serializable{
 					throw new IllegalStateException(e);
 				}
 			}
-		}, Executors.newFixedThreadPool(1));
+		}, Executors.newFixedThreadPool(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, "node-leader-listener(leader)...");
+			}
+		}));
 		
 		Executors.newFixedThreadPool(1, new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
-				return new Thread(r, "worker-selector");
+				return new Thread(r, "node-leader-selector(leader)");
 			}
 		}).execute(new Runnable() {
 			@Override
@@ -299,7 +324,7 @@ public class NodeLeader implements Serializable{
 		instanceNodeVal.setTime(new Date().getTime());
 		executor.setPath(path, SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		//logging...
-		executorService.execute(new Runnable() {
+		loggingExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				Instance instance=workflowMaster.getInstance(instanceNodeVal.getSequence());
@@ -357,7 +382,7 @@ public class NodeLeader implements Serializable{
 		
 		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
 				SerializerUtils.serialize(serializerFactory, workerPathVal));
-		executorService.execute(new Runnable() {
+		loggingExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
 				WorkTracking workTracking=
@@ -450,12 +475,7 @@ public class NodeLeader implements Serializable{
 						}
 					}
 				}
-			}, Executors.newFixedThreadPool(1, new ThreadFactory() {
-				@Override
-				public Thread newThread(Runnable r) {
-					return new Thread(r, workflowPath(instance.getWorkflow())+"{watch children}");
-				}
-			}),PathChildrenCacheEvent.Type.CHILD_UPDATED);
+			}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_UPDATED);
 			virtualNode.setPathChildrenCache(cache);
 			instance.addInstanceNode(_path, virtualNode);
 		}
@@ -489,12 +509,7 @@ public class NodeLeader implements Serializable{
 					}
 				}
 			}
-		}, Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, workflowPath(workflow)+"{watch works children}");
-			}
-		}),PathChildrenCacheEvent.Type.CHILD_ADDED,
+		}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_ADDED,
 				PathChildrenCacheEvent.Type.CHILD_REMOVED);
 		workflow.setPluginWorkersPathCache(cache);
 	}
@@ -520,10 +535,10 @@ public class NodeLeader implements Serializable{
 	
 	private void registerRPCInZookeeper(){
 		LeaderNodeMeta leaderNodeMeta=workflowMaster.getLeaderNodeMeta();
-		String rpcNode=JConfiguration.get().getString(ConfigNames.STREAMING_RPC_HOST_ZNODE);
+		String rpcNode=JConfiguration.get().getString(ConfigNames.STREAMING_LEADER_RPC_HOST_ZNODE);
 		String data=leaderNodeMeta.getHost()
 				+":"
-				+JConfiguration.get().getInt(ConfigNames.STREAMING_NETTY_SERVER_PORT, 8080);
+				+leaderNodeMeta.getPort();
 		if(executor.exists(rpcNode)){
 			executor.setPath(rpcNode, data);
 		}else{
@@ -532,15 +547,6 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private LeaderNodeMeta registerLeaderInZookeeper(){
-		
-		LeaderNodeMetaGetter leaderMetaGetter=
-					new LeaderNodeMetaGetter(JConfiguration.get());
-		LeaderNodeMeta leaderNodeMeta=leaderMetaGetter.nodeMeta();
-		Integer port=(Integer) conf.get(ConfigNames.STREAMING_NETTY_SERVER_PORT);
-		if(port!=null){
-			leaderNodeMeta.setPort(port);
-		}
-		
 		workflowMaster.setLeaderNodeMeta(leaderNodeMeta);
         byte[] msg=
         		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
@@ -792,11 +798,7 @@ public class NodeLeader implements Serializable{
 	public Map getConf() {
 		return conf;
 	}
-	
-	private String logPrefix(){
-		return logPrefix;
-	}
-	
+
 	private void logError(Exception e) {
 		LOGGER.error(getMessage(e.getMessage()), e);
 	}
@@ -807,5 +809,9 @@ public class NodeLeader implements Serializable{
 	
 	private String getMessage(String msg){
 		return String.format("---leader-name[%s]--%s---", new Object[]{name,msg});
+	}
+	
+	public int getId() {
+		return id;
 	}
 }

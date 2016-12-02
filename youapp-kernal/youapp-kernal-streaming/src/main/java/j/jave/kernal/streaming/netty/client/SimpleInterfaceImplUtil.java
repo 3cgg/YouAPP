@@ -9,7 +9,7 @@ public class SimpleInterfaceImplUtil {
 	static DynamicChannelExecutor dynamicChannelExecutor=null;
 	
 	static{
-		String znodePath=JConfiguration.get().getString(ConfigNames.STREAMING_RPC_HOST_ZNODE);
+		String znodePath=JConfiguration.get().getString(ConfigNames.STREAMING_LEADER_RPC_HOST_ZNODE);
 		dynamicChannelExecutor=new DynamicChannelExecutor(znodePath) {
 			@Override
 			protected ChannelExecutor<NioChannelRunnable> doGetActive(String host, int port) throws Exception {

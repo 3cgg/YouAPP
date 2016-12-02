@@ -9,6 +9,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.streaming.coordinator.NodeWorker.InstaneCheck;
 
 public class ProcessorMaster implements JModel ,Closeable{
 
@@ -16,6 +17,8 @@ public class ProcessorMaster implements JModel ,Closeable{
 	 * KEY : executing worker path / include instance id
 	 */
 	private Map<String, PathChildrenCache> processorsWathers=Maps.newHashMap();
+	
+	private InstaneCheck instaneCheck;
 	
 	@Override
 	public void close() throws IOException {
@@ -28,6 +31,7 @@ public class ProcessorMaster implements JModel ,Closeable{
 				exception.addMessage(e.getMessage());
 			}
 		}
+		instaneCheck=null;
 		if(exception.has())
 			throw exception;
 	}
@@ -45,17 +49,14 @@ public class ProcessorMaster implements JModel ,Closeable{
 			cache.close();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public InstaneCheck instaneCheck() {
+		return instaneCheck;
+	}
+
+	public void setInstaneCheck(InstaneCheck instaneCheck) {
+		this.instaneCheck = instaneCheck;
+	}
 	
 	
 	

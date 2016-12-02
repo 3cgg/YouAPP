@@ -11,12 +11,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.zookeeper.CreateMode;
+
+import com.google.common.collect.Maps;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.logging.JLogger;
@@ -67,10 +70,19 @@ public class NodeWorker implements Serializable {
 
 	private LeaderLatch processorLeaderLatch;
 	
+	/**
+	 * which instance of the workfkow at this time 
+	 */
 	private WorkerTemporary workerTemporary;
 	
+	/**
+	 * leader code
+	 */
 	private ProcessorMaster processorMaster;
 	
+	/**
+	 * the processor/thread meta data info , never be changed from born
+	 */
 	private Processor processor;
 	
 	private TrackingService trackingService;
@@ -80,6 +92,8 @@ public class NodeWorker implements Serializable {
 	private ExecutorService zooKeeperExecutorService=null;
 	
 	private SimpleHttpNioChannelServer server;
+	
+	private ReentrantLock instanceLock=new ReentrantLock();
 	
 	public NodeWorker(WorkflowMeta workflowMeta,Map conf,ZookeeperExecutor executor) {
 		this.workerNodeMeta=new WorkerNodeMetaGetter(JConfiguration.get(), conf).nodeMeta();
@@ -242,6 +256,8 @@ public class NodeWorker implements Serializable {
 	private synchronized void createMasterMeta(){
 		if(processorMaster!=null) return;
 		processorMaster=new ProcessorMaster();
+		InstaneCheck instaneCheck=new InstaneCheck();
+		processorMaster.setInstaneCheck(instaneCheck);
 		attachPluginWorkerPathWatcher(pluginWorkerPath());
 		updateLeaderProcessor();
 	}
@@ -251,6 +267,20 @@ public class NodeWorker implements Serializable {
 		String workerProcessorPath=realProcessorPath(workerNodeMeta);
 		workerNodeMeta.setLeader(true);
 		executor.setPath(workerProcessorPath, SerializerUtils.serialize(serializerFactory, workerNodeMeta));
+	}
+	
+	class InstaneCheck{
+		
+		private Map<Long, WorkerPathVal> instances=Maps.newHashMap();
+		
+		private boolean isDone(WorkerPathVal workerPathVal){
+			boolean contains=instances.containsKey(workerPathVal.getSequence());
+			if(!contains){
+				instances.put(workerPathVal.getSequence(), workerPathVal);
+			}
+			return contains;
+		}
+		
 	}
 	
 	/**
@@ -268,6 +298,15 @@ public class NodeWorker implements Serializable {
 					final WorkerPathVal workerPathVal=
 							SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), 
 									WorkerPathVal.class);
+					instanceLock.lock();
+					try{
+						if(processorMaster.instaneCheck().isDone(workerPathVal)){
+							logInfo(" for instance["+workerPathVal.getSequence()+"] is triggered, skip this calling");
+							return;
+						}
+					}finally{
+						instanceLock.unlock();
+					}
 					String workerExecutingPath=pluginWorkerInstancePath(workerPathVal.getSequence());
 					executor.createPath(workerExecutingPath, 
 							SerializerUtils.serialize(serializerFactory, workerPathVal));
@@ -309,6 +348,9 @@ public class NodeWorker implements Serializable {
 											executorPool.get(workerNodeMeta.getHost(),
 													workerNodeMeta.getPort()));
 							workerService.notifyWorkers(workerExecutingPathVal);
+						}else{
+							//may delete the node (broken from the zookeeper)
+							executor.deletePath(relProcessorPath);
 						}
 					}
 				}catch (Exception e) {

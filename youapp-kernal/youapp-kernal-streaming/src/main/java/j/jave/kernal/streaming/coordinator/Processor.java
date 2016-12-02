@@ -2,6 +2,11 @@ package j.jave.kernal.streaming.coordinator;
 
 import j.jave.kernal.jave.model.JModel;
 
+/**
+ * the processor meta data info
+ * @author JIAZJ
+ *
+ */
 public class Processor implements JModel{
 
 	private String tempPath;

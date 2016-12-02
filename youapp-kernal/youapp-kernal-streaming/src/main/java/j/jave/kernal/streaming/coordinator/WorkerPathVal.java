@@ -36,6 +36,11 @@ public class WorkerPathVal implements JModel {
 	 * the record tieme
 	 */
 	private long time;
+	
+	/**
+	 * the instance node status
+	 */
+	private NodeStatus nodeStatus;
 
 	public int getId() {
 		return id;
@@ -75,6 +80,14 @@ public class WorkerPathVal implements JModel {
 
 	public void setConf(Map<String, Object> conf) {
 		this.conf = conf;
+	}
+
+	public NodeStatus getNodeStatus() {
+		return nodeStatus;
+	}
+
+	public void setNodeStatus(NodeStatus nodeStatus) {
+		this.nodeStatus = nodeStatus;
 	}
 
 	

@@ -28,6 +28,7 @@ import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
+import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
 import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
@@ -307,13 +308,19 @@ public class NodeWorker implements Serializable {
 					}finally{
 						instanceLock.unlock();
 					}
-					String workerExecutingPath=pluginWorkerInstancePath(workerPathVal.getSequence());
+					String workerExecutingBasePath=pluginWorkerInstancePath(workerPathVal.getSequence());
+					final String workerExecutingPath=workerExecutingBasePath+"/exenodes";
+					final String workerExecutingErrorPath=workerExecutingBasePath+"/error";
 					executor.createPath(workerExecutingPath, 
+							SerializerUtils.serialize(serializerFactory, workerPathVal));
+					executor.createPath(workerExecutingErrorPath, 
 							SerializerUtils.serialize(serializerFactory, workerPathVal));
 					
 					WorkerExecutingPathVal workerExecutingPathVal=new WorkerExecutingPathVal();
 					workerExecutingPathVal.setWorkerExecutingPath(workerExecutingPath);
 					workerExecutingPathVal.setWorkerPathVal(workerPathVal);
+					
+					workerExecutingPathVal.setWorkerExecutingErrorPath(workerExecutingErrorPath); 
 					// add watcher on the worker executing path for every workflow instance
 					final PathChildrenCache cache= 
 					executor.watchChildrenPath(workerExecutingPath, new ZooNodeChildrenCallback() {
@@ -322,7 +329,17 @@ public class NodeWorker implements Serializable {
 							if(nodes.isEmpty()){
 								try{
 									WorkerPathVal workerPathVal= workerPathVal();
-									complete(workerPathVal.getInstancePath());
+									List<String> errorPaths=executor.getChildren(workerExecutingErrorPath);
+									StringBuffer buffer=new StringBuffer();
+									for(String errorPath:errorPaths){
+										String error=SerializerUtils.deserialize(serializerFactory, 
+												executor.getPath(workerExecutingErrorPath+"/"+errorPath)
+												, String.class);
+										buffer.append(error+"\r\n------------------------------------+\r\n");
+									}
+									complete(workerPathVal.getInstancePath(),
+											buffer.length()>0?
+											new RuntimeException(buffer.toString()):null);
 								}finally{
 									try {
 										processorMaster.closeInstance(workerExecutingPath);
@@ -361,11 +378,19 @@ public class NodeWorker implements Serializable {
 		
 	}
 	
-	private void complete(final String path){
+	private void complete(final String path,Throwable t){
 		final InstanceNodeVal instanceNodeVal=
 				SerializerUtils.deserialize(serializerFactory, executor.getPath(path),
 						InstanceNodeVal.class);
-		instanceNodeVal.setStatus(NodeStatus.COMPLETE);
+		NodeStatus nodeStatus=null;
+		if(t==null){
+			nodeStatus=NodeStatus.COMPLETE;
+		}else{
+			nodeStatus=NodeStatus.COMPLETE_ERROR;
+			nodeStatus.setThrowable(t);
+		}
+		instanceNodeVal.setStatus(nodeStatus);
+		
 		executor.setPath(path, 
 				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		loggingExecutorService.execute(new Runnable() {
@@ -453,7 +478,7 @@ public class NodeWorker implements Serializable {
 	}
 	
 	public Map<String, Object> getWorkflowConf(){
-		return workerTemporary.getWorkerPathVal().getConf();
+		return workerTemporary.getWorkerExecutingPathVal().getWorkerPathVal().getConf();
 	}
 	
 	public void release() throws Exception{
@@ -463,6 +488,11 @@ public class NodeWorker implements Serializable {
 	public void release(Throwable t) throws Exception{
 		logInfo(" delete temp path : "+workerTemporary.getTempPath());
 		executor.deletePath(workerTemporary.getTempPath());
+		if(t!=null){
+			executor.createPath(workerTemporary.getWorkerExecutingPathVal().getWorkerExecutingErrorPath()+"/e-"
+					,SerializerUtils.serialize(serializerFactory, Util.getMsg(t))
+			,CreateMode.EPHEMERAL_SEQUENTIAL);
+		}
 	}
 	
 	private synchronized void wakeup(){
@@ -497,7 +527,7 @@ public class NodeWorker implements Serializable {
 			WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
 			WorkerTemporary workerTemporary=new WorkerTemporary();
 			workerTemporary.setTempPath(tempPath);
-			workerTemporary.setWorkerPathVal(workerPathVal);
+			workerTemporary.setWorkerExecutingPathVal(workerExecutingPathVal);
 			setWorkerTemporary(workerTemporary);
 			loggingExecutorService.execute(new Runnable() {
 				@Override

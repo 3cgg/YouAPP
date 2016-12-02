@@ -1,6 +1,7 @@
 package j.jave.kernal.streaming.coordinator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author JIAZJ
@@ -16,7 +17,9 @@ public enum NodeStatus {
 	
 	COMPLETE("COMPLETE"),
 	
-	COMPLETE_ERROR("COMPLETE_ERROR");
+	COMPLETE_ERROR("COMPLETE_ERROR"),
+	
+	COMPLETE_SKIP("COMPLETE_SKIP");
 	
 	private final String name;
 	
@@ -37,27 +40,34 @@ public enum NodeStatus {
 		return name;
 	}
 	
-	public CauseHolder getCause() {
-		return cause;
+	public List<Throwable> getCause() {
+		return cause.cause;
 	}
 	
 	public boolean hasError(){
 		return !cause.cause.isEmpty();
 	}
 	
-	public void setThrowable(Throwable t){
+	public NodeStatus setThrowable(Throwable t){
 		if(COMPLETE_ERROR!=this){
 			throw new IllegalStateException("ONLY "+COMPLETE_ERROR.name+" can accept exception info.");
 		}
 		cause.addThrowable(t);
+		return this;
 	}
 	
 	public boolean isComplete(){
 		return NodeStatus.COMPLETE.equals(this)
-				||NodeStatus.COMPLETE_ERROR.equals(this);
+				||NodeStatus.COMPLETE_ERROR.equals(this)
+				||NodeStatus.COMPLETE_SKIP.equals(this)
+				;
 	}
 
 	public boolean isCompleteWithError(){
 		return NodeStatus.COMPLETE_ERROR.equals(this);
+	}
+	
+	public boolean isSkip(){
+		return NodeStatus.COMPLETE_SKIP.equals(this);
 	}
 }

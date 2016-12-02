@@ -9,6 +9,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.streaming.Util;
 
 /**
  * the instance is created when a new workflow is started
@@ -56,7 +57,9 @@ public class Instance implements JModel,Closeable{
 	 * the node path , instance node mapping
 	 */
 	private Map<String, InstanceNode> instanceNodes=Maps.newConcurrentMap();
-
+	
+	private List<String> errors=new ArrayList<>();
+	
 	public void addChildPathWatcherPath(String path){
 		childPathWatcherPaths.add(path);
 	}
@@ -83,6 +86,9 @@ public class Instance implements JModel,Closeable{
 				exception.addMessage(e.getMessage());
 			}
 		}
+		
+		errors.clear();
+		errors=null;
 		if(exception.has())
 			throw exception;
 	}
@@ -151,4 +157,23 @@ public class Instance implements JModel,Closeable{
 		this.conf = conf;
 	}
 	
+	public void addError(Throwable error){
+		addError(Util.getMsg(error));
+	}
+	
+	public void addError(String error){
+		errors.add(error);
+	}
+	
+	public List<String> getErrors() {
+		return errors;
+	}
+	
+	public String getErrorMessage() {
+		StringBuffer buffer=new StringBuffer();
+		for(String string:errors){
+			buffer.append(string+"\r\n----------------------------------\r\n");
+		}
+		return buffer.toString();
+	}
 }

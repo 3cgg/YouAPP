@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -26,6 +27,7 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.ConfigNames;
@@ -33,6 +35,8 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteModel;
+import j.jave.kernal.streaming.coordinator.command.WorkflowErrorCommand;
+import j.jave.kernal.streaming.coordinator.command.WorkflowErrorModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
 import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
@@ -341,7 +345,9 @@ public class NodeLeader implements Serializable{
 		workTracking.setWorkerId(String.valueOf(workerId));
 		workTracking.setInstancePath(path);
 		workTracking.setStatus(status);
-		workTracking.setRecordTime(new Date().getTime());
+		Date date=new Date();
+		workTracking.setRecordTime(date.getTime());
+		workTracking.setRecordTimeStr(JDateUtils.formatWithSeconds(date));
 		InstanceNode instanceNode=instance.getInstanceNode(path);
 		workTracking.setWorkerName(instanceNode.getNodeData().getName());
 		workTracking.setId(JUniqueUtils.unique());
@@ -411,24 +417,45 @@ public class NodeLeader implements Serializable{
 				public void call(List<ZooNode> nodes) {
 					boolean done=true;
 					boolean withError=false;
+					boolean withSkip=false;
+					int skipCount=nodes.size();
 					for(ZooNode node:nodes){
 						byte[] bytes=node.getDataAsPossible(executor);
 						InstanceNodeVal instanceNodeVal=
 								SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
+						if(!instanceNodeVal.getStatus().isSkip()){
+							skipCount--;
+						}
 						if(!isComplete(instanceNodeVal)){
 							done=false;
 						}else if(instanceNodeVal.getStatus().isCompleteWithError()){
 							withError=true;
+							instanceNodeVal.getStatus().getCause().forEach(new Consumer<Throwable>() {
+								@Override
+								public void accept(Throwable t) {
+									instance.addError(t);
+								}
+							});
 						}
 					}
+					withSkip=skipCount==nodes.size();
 					
 					if(done){
-						NodeStatus completeStatus=withError?NodeStatus.COMPLETE_ERROR
-								:NodeStatus.COMPLETE;
+						NodeStatus completeStatus=null;
+						if(withError){
+							completeStatus=NodeStatus.COMPLETE_ERROR;
+						}else if(withSkip){
+							completeStatus=NodeStatus.COMPLETE_SKIP;
+						}else{
+							completeStatus=NodeStatus.COMPLETE;
+						}
 						completeVirtual(instance, _path,completeStatus);
 						if(path.equals(instance.getRootPath())){
 							executeCompleteCommand(instance);
 							executeRetryCommand(instance);
+							if(withError){
+								executeErrorCommand(instance);
+							}
 						}
 						return;
 					}
@@ -562,6 +589,18 @@ public class NodeLeader implements Serializable{
 	private synchronized void addCommonCommand(){
 		workflowMaster.addWorkflowCommand(new WorkflowCompleteCommand()) ;
 		workflowMaster.addWorkflowCommand(new WorkflowRetryCommand());
+		workflowMaster.addWorkflowCommand(new WorkflowErrorCommand());
+	}
+	
+	private void executeErrorCommand(final Instance instance) {
+		WorkflowErrorModel workflowErrorModel=new WorkflowErrorModel();
+		workflowErrorModel.setIsntanceId(instance.getSequence());
+		workflowErrorModel.setRecordTime(new Date().getTime());
+		workflowErrorModel.setMessage(instance.getErrorMessage());
+		workflowErrorModel.setWorkflow(instance.getWorkflow());
+		workflowErrorModel.setWorkflowName(instance.getWorkflow().getName());
+		workflowErrorModel.setConf(instance.getConf());
+		executeCommand(workflowErrorModel);
 	}
 	
 	private void executeRetryCommand(final Instance instance) {
@@ -571,6 +610,7 @@ public class NodeLeader implements Serializable{
 		retryModel.setRecordTime(new Date().getTime());
 		retryModel.setWorkflow(instance.getWorkflow());
 		retryModel.setWorkflowName(instance.getWorkflow().getName());
+		retryModel.setConf(instance.getConf());
 		executeCommand(retryModel);
 	}
 	
@@ -581,6 +621,7 @@ public class NodeLeader implements Serializable{
 		completeModel.setStatus(NodeStatus.COMPLETE);
 		completeModel.setWorkflow(instance.getWorkflow());
 		completeModel.setWorkflowName(instance.getWorkflow().getName());
+		completeModel.setConf(instance.getConf());
 		executeCommand(completeModel);
 	}
 	
@@ -752,7 +793,7 @@ public class NodeLeader implements Serializable{
 						thisNodeData, instance);
 			}
 		}else{ // it's real node, directly complete 
-			c(instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_ERROR);
+			c(instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_SKIP);
 		}
 	}
 	

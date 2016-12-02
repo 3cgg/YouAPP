@@ -52,7 +52,7 @@ public class Machine {
 							e.printStackTrace();
 						}finally {
 							try {
-								nodeWorker.release();
+								nodeWorker.release(new RuntimeException("test error..."));
 								System.out.println(nodeWorker.getId()+ " release lock");
 							} catch (Exception e) {
 								e.printStackTrace();

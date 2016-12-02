@@ -10,6 +10,11 @@ public class WorkerExecutingPathVal implements JModel {
 	 * created worker path per workflow instance calling
 	 */
 	private String workerExecutingPath;
+	
+	/**
+	 * created worker path per workflow instance calling
+	 */
+	private String workerExecutingErrorPath;
 
 	public WorkerPathVal getWorkerPathVal() {
 		return workerPathVal;
@@ -25,6 +30,14 @@ public class WorkerExecutingPathVal implements JModel {
 
 	public void setWorkerExecutingPath(String workerExecutingPath) {
 		this.workerExecutingPath = workerExecutingPath;
+	}
+
+	public String getWorkerExecutingErrorPath() {
+		return workerExecutingErrorPath;
+	}
+
+	public void setWorkerExecutingErrorPath(String workerExecutingErrorPath) {
+		this.workerExecutingErrorPath = workerExecutingErrorPath;
 	}
 	
 }

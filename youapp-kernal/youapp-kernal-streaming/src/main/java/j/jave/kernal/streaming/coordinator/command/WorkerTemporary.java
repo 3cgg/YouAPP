@@ -1,20 +1,20 @@
 package j.jave.kernal.streaming.coordinator.command;
 
 import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.streaming.coordinator.WorkerPathVal;
+import j.jave.kernal.streaming.coordinator.WorkerExecutingPathVal;
 
 public class WorkerTemporary implements JModel {
 
-	private WorkerPathVal workerPathVal;
+	private WorkerExecutingPathVal workerExecutingPathVal;
 	
 	private String tempPath;
 
-	public WorkerPathVal getWorkerPathVal() {
-		return workerPathVal;
+	public WorkerExecutingPathVal getWorkerExecutingPathVal() {
+		return workerExecutingPathVal;
 	}
 
-	public void setWorkerPathVal(WorkerPathVal workerPathVal) {
-		this.workerPathVal = workerPathVal;
+	public void setWorkerExecutingPathVal(WorkerExecutingPathVal workerExecutingPathVal) {
+		this.workerExecutingPathVal = workerExecutingPathVal;
 	}
 
 	public String getTempPath() {

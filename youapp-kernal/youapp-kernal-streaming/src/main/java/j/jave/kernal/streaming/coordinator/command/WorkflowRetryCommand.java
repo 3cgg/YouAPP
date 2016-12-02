@@ -1,8 +1,7 @@
 package j.jave.kernal.streaming.coordinator.command;
 
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.streaming.coordinator.CommandResource;
-import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
+import j.jave.kernal.streaming.coordinator.NodeLeader;
 
 public class WorkflowRetryCommand  extends WorkflowCommand<WorkflowRetryModel> {
 
@@ -13,11 +12,9 @@ public class WorkflowRetryCommand  extends WorkflowCommand<WorkflowRetryModel> {
 			System.out.println(" instance("+commandModel.getIsntanceId()
 			+"),count("+commandModel.getCount()+"); from workflow("+commandModel.getWorkflowName()+") is completed,"
 					+ " we need restart the worklow to the max count : "+commandModel.getMaxCount());
-
-			commandResource.getExecutor().
-			setPath(CoordinatorPaths.BASE_PATH
-					+"/workflow-trigger",
-					JJSON.get().formatObject(commandModel.getWorkflow().getWorkflowMeta()));
+			
+			NodeLeader.runtime().startWorkflow(commandModel.getWorkflowName()
+					, commandModel.getConf());
 			commandModel.setCount(commandModel.getCount()+1);
 		}
 		else{

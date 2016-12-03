@@ -8,7 +8,9 @@ import java.util.Map;
 import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
+import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 
+@JRequestMapping(path="/unit")
 public class UnitController extends ControllerSupport<UnitController> 
 	implements IUnitController {
 

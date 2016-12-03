@@ -7,7 +7,8 @@ public abstract class _Util {
 	public static void allInterfaces(Class<?> clazz,List<Class<?>> interfaces){
 		if(ControllerService.class.isAssignableFrom(clazz)
 				&&IControllerImplementer.class!=clazz
-				&&ControllerService.class!=clazz){
+				&&ControllerService.class!=clazz
+				&&clazz.isInterface()){
 			interfaces.add(clazz);
 		}
 		Class<?>[] directInterfaces=clazz.getInterfaces();

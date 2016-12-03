@@ -32,13 +32,25 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 			findOnAnnotation(intarface);
 			findOnInterface(intarface);
 		}
+		
+		findOnClass(this.getClass());
     	
 		return "the controller ["+this.getClass().getName()+"] is internally registered  OK";
+	}
+	
+	private void findOnClass(Class<?> clazz) {
+		ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(clazz,ClassProvidedMappingFinder.CLASS);
+		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
+		_addMappingMeta0(mappingMetas);
 	}
 	
 	private void findOnInterface(Class<?> intarface) {
 		ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(intarface,ClassProvidedMappingFinder.INTERFACE);
 		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
+		_addMappingMeta0(mappingMetas);
+	}
+
+	private void _addMappingMeta0(List<MappingMeta> mappingMetas) {
 		for(MappingMeta meta:mappingMetas){
 			String controllerServiceName=getControllerServiceName();
 			if(JStringUtils.isNullOrEmpty(controllerServiceName)){
@@ -54,16 +66,7 @@ implements ControllerService , ControllerServiceFactory, ControllerServiceFindin
 	private void findOnAnnotation(Class<?> intarface) {
 		ClassProvidedMappingFinder mappingFinder=new ClassProvidedMappingFinder(intarface);
 		List<MappingMeta> mappingMetas= mappingFinder.find().getMappingMetas();
-		for(MappingMeta meta:mappingMetas){
-			String controllerServiceName=getControllerServiceName();
-			if(JStringUtils.isNullOrEmpty(controllerServiceName)){
-				throw new JInitializationException("the controller name ["+this.getClass().getName()
-						+"] must be provided.");
-			}
-			meta.setControllerName(getControllerServiceName());
-			meta.setControllerServiceFactory(this);
-			MappingControllerManager.get().putMappingMeta(meta.getPath(), meta);
-		}
+		_addMappingMeta0(mappingMetas);
 	}
 
 	@SuppressWarnings("unchecked")

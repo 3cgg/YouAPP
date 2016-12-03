@@ -5,7 +5,7 @@ import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.streaming.netty.controller.ControllerExecutorService;
-import j.jave.kernal.streaming.netty.controller.FastMessageMeta;
+import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
 
 public class ServerExecutorService 
 extends JServiceFactorySupport<ServerExecutorService>
@@ -21,7 +21,7 @@ implements JService
 			.getService(this, ControllerExecutorService.class);
 	
 	
-	public Object execute(FastMessageMeta fastMessageMeta,ChannelHandlerContext ctx,Object httpObject) throws Exception{
+	public Object execute(RPCFullMessage fastMessageMeta,ChannelHandlerContext ctx,Object httpObject) throws Exception{
 		return controllerExecutorService.execute(fastMessageMeta);
 	}
 	

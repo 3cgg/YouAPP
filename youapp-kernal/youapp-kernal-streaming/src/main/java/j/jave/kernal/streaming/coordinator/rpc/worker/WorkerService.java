@@ -4,7 +4,9 @@ import j.jave.kernal.streaming.coordinator.NodeWorker;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
 import j.jave.kernal.streaming.coordinator.WorkerExecutingPathVal;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
+import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 
+@JRequestMapping(path="/workerservice")
 public class WorkerService extends ControllerSupport<WorkerService>
 implements IWorkerService{
 	

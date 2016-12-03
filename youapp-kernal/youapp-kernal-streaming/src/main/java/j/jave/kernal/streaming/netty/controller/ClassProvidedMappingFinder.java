@@ -25,6 +25,8 @@ public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<Cl
 	
 	public static final MappingMetaFindStrategy INTERFACE=new SimpleInterfaceFind();
 	
+	public static final MappingMetaFindStrategy CLASS=new SimpleClassFind();
+	
 	
 	private JAbstractMethodFinder<MappingMeta> methodFinder;
 	
@@ -43,6 +45,38 @@ public class ClassProvidedMappingFinder implements JProvider, JResourceFinder<Cl
 		this.mappingMetaFindStrategy=defaut;
 	}
 	
+	
+	private static class SimpleClassFind implements MappingMetaFindStrategy{
+
+		@Override
+		public JMethodInfoGen<MappingMeta> methodInfoGen(Class<?> clazz) {
+			return new ClassMappingMetaInfoGen(clazz.getClassLoader());
+		}
+
+		@Override
+		public JMethodFilter methodFilter(Class<?> clazz) {
+
+			return new JDefaultMethodFilter(){
+				@Override
+				public boolean filter(Method method, Class<?> classIncudeMethod) {
+					return classIncudeMethod.isInterface()
+							||classIncudeMethod==Object.class;
+				}
+				
+				@Override
+				public boolean filter(Class<?> clazz) {
+					return clazz.isInterface();
+				}
+				
+				@Override
+				public int[] methodModifiers() {
+					return new int[]{Modifier.PUBLIC};
+				}
+			};
+		
+		}
+		
+	}
 	
 	private static class SimpleInterfaceFind implements MappingMetaFindStrategy{
 

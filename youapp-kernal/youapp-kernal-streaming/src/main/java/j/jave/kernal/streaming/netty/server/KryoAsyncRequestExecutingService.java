@@ -42,7 +42,7 @@ implements JService , AsyncRequestExecutingListener{
 			String className=null;
 	    	try{
 	    		Object obj=serverExecutorService.execute(
-	    				event.getFastMessageMeta()
+	    				event.getRpcFullMessage()
 	    				,event.getCtx()
 	    				,event.getHttpObject());
 	    		className=obj.getClass().getName();

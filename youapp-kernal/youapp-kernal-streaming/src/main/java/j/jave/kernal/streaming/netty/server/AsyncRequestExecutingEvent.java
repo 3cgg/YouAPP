@@ -6,7 +6,7 @@ package j.jave.kernal.streaming.netty.server;
 import io.netty.channel.ChannelHandlerContext;
 import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
 import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
-import j.jave.kernal.streaming.netty.controller.FastMessageMeta;
+import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
 
 /**
  * @author J
@@ -14,7 +14,7 @@ import j.jave.kernal.streaming.netty.controller.FastMessageMeta;
 @JListenerOnEvent(name=AsyncRequestExecutingListener.class)
 public class AsyncRequestExecutingEvent extends JYouAPPEvent<AsyncRequestExecutingEvent> {
 	
-	private FastMessageMeta fastMessageMeta;
+	private RPCFullMessage rpcFullMessage;
 	
 	private ChannelHandlerContext ctx;
 	
@@ -28,9 +28,6 @@ public class AsyncRequestExecutingEvent extends JYouAPPEvent<AsyncRequestExecuti
 		super(source,priority);
 	}
 	
-	public FastMessageMeta getFastMessageMeta() {
-		return fastMessageMeta;
-	}
 
 	public ChannelHandlerContext getCtx() {
 		return ctx;
@@ -48,8 +45,14 @@ public class AsyncRequestExecutingEvent extends JYouAPPEvent<AsyncRequestExecuti
 		this.httpObject = httpObject;
 	}
 
-	public void setFastMessageMeta(FastMessageMeta fastMessageMeta) {
-		this.fastMessageMeta = fastMessageMeta;
+	public RPCFullMessage getRpcFullMessage() {
+		return rpcFullMessage;
 	}
+
+	public void setRpcFullMessage(RPCFullMessage rpcFullMessage) {
+		this.rpcFullMessage = rpcFullMessage;
+	}
+
+	
 	
 }

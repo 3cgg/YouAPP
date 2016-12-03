@@ -85,8 +85,6 @@ public abstract class ChannelRunnable {
                 HttpVersion.HTTP_1_1, httpMethod(), uri.getRawPath(),
                 Unpooled.wrappedBuffer(content()));
     	fullHttpRequest.headers().set(HttpHeaderNames.HOST, uri.getHost());
-    	fullHttpRequest.headers().set(HeaderNames.CONTROLLER_URI_NAME,
-    			uri.getRawPath());
         //is keep-alive
         if(isKeepAlive()){
         	fullHttpRequest.headers().set(HttpHeaderNames.CONNECTION, 
@@ -110,7 +108,6 @@ public abstract class ChannelRunnable {
 			add(HttpHeaderNames.CONNECTION.toString());
 			add(HttpHeaderNames.ACCEPT_ENCODING.toString());
 			add(HttpHeaderNames.CONTENT_LENGTH.toString());
-			add(HeaderNames.CONTROLLER_URI_NAME);
 			add(HeaderNames.KRYO_CLASS_NAME);
 			_key=_key.substring(1);
 		}

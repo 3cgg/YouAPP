@@ -9,9 +9,11 @@ import j.jave.kernal.streaming.coordinator.NodeLeader;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.coordinator._SerializeFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
+import j.jave.kernal.streaming.netty.controller.JRequestMapping;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
+@JRequestMapping(path="/workflowservice")
 public class WorkflowService extends ControllerSupport<WorkflowService>
 implements IWorkflowService{
 

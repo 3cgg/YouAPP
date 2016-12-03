@@ -39,7 +39,7 @@ public class ParameterNameGet {
         	InputStream is=classLoader.getResourceAsStream(clazz.getName().replace('.', '/')
                         + ".class");
             ClassReader classReader = new ClassReader(is);  
-            classReader.accept(new ClassVisitor(Opcodes.ASM4) {  
+            classReader.accept(new ClassVisitor(Opcodes.ASM5) {  
                 @Override  
                 public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {  
                     if(LOGGER.isDebugEnabled()){
@@ -50,7 +50,7 @@ public class ParameterNameGet {
                     if (!method.getName().equals(name) || !Arrays.equals(argumentTypes, types)) {  
                         return null;  
                     }  
-                    return new MethodVisitor(Opcodes.ASM4) {  
+                    return new MethodVisitor(Opcodes.ASM5) {  
                         @Override  
                         public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {  
                             if (Modifier.isStatic(method.getModifiers())) {  

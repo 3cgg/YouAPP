@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Stopwatch;
 
-import j.jave.kernal.dataexchange.model.MessageMeta;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.jave.reflect.JReflectionUtils;
 import j.jave.kernal.jave.service.JService;
 import j.jave.kernal.jave.utils.JDateUtils;
+import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
 
 /**
  * 
@@ -38,9 +38,9 @@ implements JService {
 	
 	private static final MappingControllerManager mappingControllerManager =MappingControllerManager.get();
 	
-	public Object execute(MessageMeta messageMeta) throws Exception{
+	public Object execute(RPCFullMessage messageMeta) throws Exception{
 
-		String endpoint=messageMeta.url();
+		String endpoint=messageMeta.uri();
 		
 		MappingMeta mappingMeta= mappingControllerManager.getMappingMeta(endpoint);
 		
@@ -74,9 +74,9 @@ implements JService {
 		
 	}
 	
-	MethodParamParser methodParamParser=new DefaultMethodParamParser();
-	private Object[] resolveArgs(ControllerService controllerService,MappingMeta mappingMeta,MessageMeta messageMeta) throws Exception{
-		return methodParamParser.parse(controllerService, mappingMeta,  (FastMessageMeta) messageMeta);
+//	MethodParamParser methodParamParser=new DefaultMethodParamParser();
+	private Object[] resolveArgs(ControllerService controllerService,MappingMeta mappingMeta,RPCFullMessage messageMeta) throws Exception{
+		return messageMeta.decoder().decode(mappingMeta);
 	}
 	 
 }

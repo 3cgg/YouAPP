@@ -1,6 +1,8 @@
 package j.jave.kernal.streaming.netty.server;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -10,6 +12,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.codec.http.multipart.Attribute;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
@@ -74,21 +78,34 @@ public class ComplexServerHandler extends SimpleChannelInboundHandler<FullHttpRe
     		}
     	}else{
     		Map<String, Object> content=Maps.newHashMap();
-    		HttpPostRequestDecoder httpPostRequestDecoder=new HttpPostRequestDecoder(msg);
-        	while(httpPostRequestDecoder.hasNext()){
-        		InterfaceHttpData interfaceHttpData= httpPostRequestDecoder.next();
-        		if (interfaceHttpData.getHttpDataType() == HttpDataType.Attribute) {  
-                    Attribute attribute = (Attribute) interfaceHttpData;  
-                    try {
-						content.put(attribute.getName(), attribute.getValue());
-					} catch (IOException e) {
-					}
-                }  
-        	}
+    		
+    		if(HttpMethod.GET==msg.method()){
+    			QueryStringDecoder decoder = new QueryStringDecoder(msg.uri());
+                decoder.parameters().entrySet().forEach( entry -> {
+                	List<String> values=entry.getValue();
+                	content.put(entry.getKey(), values.size()>1?values.toArray(new String[]{}):values.get(0));
+                });
+    		}else if(HttpMethod.POST==msg.method()){
+    			HttpPostRequestDecoder httpPostRequestDecoder=new HttpPostRequestDecoder(msg);
+            	while(httpPostRequestDecoder.hasNext()){
+            		InterfaceHttpData interfaceHttpData= httpPostRequestDecoder.next();
+            		if (interfaceHttpData.getHttpDataType() == HttpDataType.Attribute) {  
+                        Attribute attribute = (Attribute) interfaceHttpData;  
+                        try {
+    						content.put(attribute.getName(), attribute.getValue());
+    					} catch (IOException e) {
+    					}
+                    }  
+            	}
+    		}
     		fullMessage=new FormRPCFullMessage();
     		fullMessage.setContent(content);
     	}
-    	fullMessage.setUri(msg.uri());
+    	try {
+			fullMessage.setUri(new java.net.URI(msg.uri()).getPath());
+		} catch (URISyntaxException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
     	asyncRequestExecutingEvent.setRpcFullMessage(fullMessage);
     	JServiceHubDelegate.get().addDelayEvent(asyncRequestExecutingEvent);
 		

@@ -10,8 +10,7 @@ import io.netty.handler.codec.http.FullHttpMessage;
 import io.netty.handler.codec.http.HttpHeaders;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.streaming.netty.HeaderNames;
-import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
+import j.jave.kernal.streaming.netty.msg.SimpleRPCFullResponse;
 
 @Sharable
 public class KryoClientHandler 
@@ -51,10 +50,9 @@ public class KryoClientHandler
     		content.readBytes(bytes);
     	}
     	
-    	DefaultFastMessageMeta fastMessageMeta=new DefaultFastMessageMeta();
-    	fastMessageMeta.setBytes(bytes);
-    	fastMessageMeta.setClassName(headers.get(HeaderNames.KRYO_CLASS_NAME));
-    	ctx.fireChannelRead(fastMessageMeta);
+    	SimpleRPCFullResponse simpleRPCFullResponse=new SimpleRPCFullResponse();
+    	simpleRPCFullResponse.setContent(bytes);
+    	ctx.fireChannelRead(simpleRPCFullResponse);
     }
     
     @Override

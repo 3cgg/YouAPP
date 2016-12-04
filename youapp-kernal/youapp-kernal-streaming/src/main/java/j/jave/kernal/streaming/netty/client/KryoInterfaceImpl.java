@@ -6,7 +6,7 @@ import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JLangUtils;
 import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
-import j.jave.kernal.streaming.netty.controller.DefaultFastMessageMeta;
+import j.jave.kernal.streaming.netty.msg.SimpleRPCFullResponse;
 
 public class KryoInterfaceImpl<T extends ControllerService> extends InterfaceImpl<T> {
 
@@ -16,8 +16,8 @@ public class KryoInterfaceImpl<T extends ControllerService> extends InterfaceImp
 	
 	@Override
 	protected Object deserialize(Object proxy, Method method, Object[] args, Object returnVal) {
-		DefaultFastMessageMeta fastMessageMeta=(DefaultFastMessageMeta)returnVal;
-		Object[] objects=SerializerUtils.deserialize(getFactory(), fastMessageMeta.bytes(),Object[].class);
+		SimpleRPCFullResponse simpleRPCFullResponse=(SimpleRPCFullResponse)returnVal;
+		Object[] objects=SerializerUtils.deserialize(getFactory(), (byte[])simpleRPCFullResponse.content(),Object[].class);
 		if(objects!=null&&objects.length>0){
 			Object object=objects[0];
 			if(!JLangUtils.wrapper(method.getReturnType())

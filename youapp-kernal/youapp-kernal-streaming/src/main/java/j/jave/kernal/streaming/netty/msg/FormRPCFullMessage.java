@@ -17,12 +17,12 @@ public class FormRPCFullMessage extends SimpleRPCFullMessage {
 	}
 	
 	@Override
-	public RPCFullResponse response() {
+	public RPCFullResponseWriter response() {
 		return response;
 	}
 	
 	
-	private class FormDecoder implements RPCMsgDecoder{
+	private class FormDecoder implements RPCMsgDecoder<MappingMeta>{
 		@Override
 		public Object[] decode(MappingMeta mappingMeta) {
 			MethodParamMeta[] methodParamMetas= mappingMeta.getMethodParams();

@@ -14,7 +14,7 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 	
 	
 	
-	protected class KryoResponse implements RPCFullResponse{
+	protected class KryoResponse implements RPCFullResponseWriter{
 
 		private KryoEncoder encoder=new KryoEncoder();
 		
@@ -36,7 +36,7 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 		}
 
 		@Override
-		public RPCFullResponse offer(Object object) {
+		public RPCFullResponseWriter offer(Object object) {
 			objects.add(object);
 			return this;
 		}
@@ -50,7 +50,7 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 	}
 	
 	
-	protected class JSONResponse implements RPCFullResponse{
+	protected class JSONResponse implements RPCFullResponseWriter{
 		
 		private JSONEncoder encoder=new JSONEncoder();
 		
@@ -69,7 +69,7 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 		}
 
 		@Override
-		public RPCFullResponse offer(Object object) {
+		public RPCFullResponseWriter offer(Object object) {
 			objects.add(object);
 			return this;
 		}

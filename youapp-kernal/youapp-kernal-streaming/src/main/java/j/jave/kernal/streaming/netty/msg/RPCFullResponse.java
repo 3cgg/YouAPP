@@ -1,14 +1,5 @@
 package j.jave.kernal.streaming.netty.msg;
 
-public interface RPCFullResponse {
+public interface RPCFullResponse extends MessageContent {
 
-	RPCMsgEncoder encoder();
-	
-	RPCFullResponse offer(Object object);
-	
-	/**
-	 * get the data encoded by {@link #encoder()}
-	 * @return
-	 */
-	Object get();
 }

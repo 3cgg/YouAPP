@@ -19,11 +19,11 @@ public class KryoRPCFullMessage extends SimpleRPCFullMessage {
 	}
 	
 	@Override
-	public RPCFullResponse response() {
+	public RPCFullResponseWriter response() {
 		return response;
 	}
 	
-	private class KryoDecoder implements RPCMsgDecoder{
+	private class KryoDecoder implements RPCMsgDecoder<MappingMeta>{
 		
 		private JSerializerFactory factory=_KryoSerializerFactoryGetter.get();
 		

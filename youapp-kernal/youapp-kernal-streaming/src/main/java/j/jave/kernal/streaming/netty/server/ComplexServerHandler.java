@@ -23,13 +23,13 @@ import j.jave.kernal.streaming.netty.msg.FormRPCFullMessage;
 import j.jave.kernal.streaming.netty.msg.KryoRPCFullMessage;
 import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
 
-public class KryoServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class ComplexServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(KryoServerHandler.class);
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(ComplexServerHandler.class);
 	
 	private static final String title="------------%s------------";
 	
-	public KryoServerHandler() {
+	public ComplexServerHandler() {
 	}
 	
     @Override

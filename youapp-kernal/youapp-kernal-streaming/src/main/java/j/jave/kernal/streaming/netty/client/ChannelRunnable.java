@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -11,11 +12,11 @@ import io.netty.channel.ChannelFuture;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
 import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.streaming.netty.HeaderNames;
 
 public abstract class ChannelRunnable {
 	
@@ -84,17 +85,24 @@ public abstract class ChannelRunnable {
     	DefaultFullHttpRequest fullHttpRequest = new DefaultFullHttpRequest(
                 HttpVersion.HTTP_1_1, httpMethod(), uri.getRawPath(),
                 Unpooled.wrappedBuffer(content()));
-    	fullHttpRequest.headers().set(HttpHeaderNames.HOST, uri.getHost());
+    	HttpHeaders httpHeaders=fullHttpRequest.headers();
+    	
+    	Map<String, Object> headers=request.getRequestMeta().getHeaders();
+		for(Entry<String, Object> entry:headers.entrySet()){
+			httpHeaders.set(entry.getKey(),entry.getValue());
+		}
+    	
+    	httpHeaders.set(HttpHeaderNames.HOST, uri.getHost());
         //is keep-alive
         if(isKeepAlive()){
-        	fullHttpRequest.headers().set(HttpHeaderNames.CONNECTION, 
+        	httpHeaders.set(HttpHeaderNames.CONNECTION, 
         			HttpHeaderValues.KEEP_ALIVE);
         }
         if(JStringUtils.isNotNullOrEmpty(acceptEncoding())){
-        	fullHttpRequest.headers().set(HttpHeaderNames.ACCEPT_ENCODING, 
+        	httpHeaders.set(HttpHeaderNames.ACCEPT_ENCODING, 
             		HttpHeaderValues.GZIP);
         }
-        fullHttpRequest.headers().set(HttpHeaderNames.CONTENT_LENGTH, 
+        httpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, 
         		content().length);
     	return fullHttpRequest;
 	}
@@ -108,7 +116,6 @@ public abstract class ChannelRunnable {
 			add(HttpHeaderNames.CONNECTION.toString());
 			add(HttpHeaderNames.ACCEPT_ENCODING.toString());
 			add(HttpHeaderNames.CONTENT_LENGTH.toString());
-			add(HeaderNames.KRYO_CLASS_NAME);
 			_key=_key.substring(1);
 		}
 

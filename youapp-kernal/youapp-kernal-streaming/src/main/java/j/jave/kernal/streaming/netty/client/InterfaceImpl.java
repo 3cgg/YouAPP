@@ -14,6 +14,8 @@ import j.jave.kernal.jave.aop.JTargetSource;
 import j.jave.kernal.jave.proxy.JSimpleProxy;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
+import j.jave.kernal.streaming.netty.HeaderNames;
+import j.jave.kernal.streaming.netty.HeaderValues;
 import j.jave.kernal.streaming.netty.controller.ClassProvidedMappingFinder;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
@@ -95,6 +97,8 @@ public class InterfaceImpl<T extends ControllerService> {
 			if(args==null) args=new Object[]{};
 			requestMeta.setContent(SerializerUtils.serialize(factory, args));
 			requestMeta.setUrl(uri()+mappingMeta.getPath());
+			requestMeta.addHeader(HeaderNames.ENCODER_NAME
+					, HeaderValues.ENCODER_KRYO);
 			Request request=Request.post(requestMeta);
 			return request;
 		}

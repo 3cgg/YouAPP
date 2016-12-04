@@ -27,7 +27,7 @@ public class ExecutorTest {
 		for(int i=0;i<100;i++){
 			RequestMeta requestMeta=new RequestMeta();
 			requestMeta.setContent(SerializerUtils.serialize(factory, new Object[]{"test-"+i}));
-			requestMeta.setUrl("http://127.0.0.1:8080/unit/rd");
+			requestMeta.setUrl("http://127.0.0.1:8080/unit/name");
 			Request request=Request.post(requestMeta);
 			CallPromise<byte[]> callPromise= channelExecutor.execute(new NioChannelRunnable(request,new ChannelResponseCall() {
 				@Override

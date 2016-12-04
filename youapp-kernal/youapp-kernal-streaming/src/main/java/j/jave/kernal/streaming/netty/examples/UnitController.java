@@ -5,7 +5,6 @@ import java.lang.management.RuntimeMXBean;
 import java.util.HashMap;
 import java.util.Map;
 
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
 import j.jave.kernal.streaming.netty.controller.JRequestMapping;
@@ -39,7 +38,7 @@ public class UnitController extends ControllerSupport<UnitController>
 		info.put("Spec-Name", runtimeMXBean.getSpecName());
 		info.put("VM-Vendor", runtimeMXBean.getVmVendor());
 		info.put("ID(PID/HOSTNAME)", runtimeMXBean.getName());
-		return JJSON.get().formatObject(info);
+		return info;
 	}
 	
 	@Override

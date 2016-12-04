@@ -3,21 +3,29 @@ package j.jave.kernal.streaming.netty.msg;
 import java.io.ByteArrayInputStream;
 
 import j.jave.kernal.jave.serializer.JSerializerFactory;
-import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
+import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
 import j.jave.kernal.streaming.netty.controller.MethodParamMeta;
 
 public class KryoRPCFullMessage extends SimpleRPCFullMessage {
 
-	private static JSerializerFactory factory=new KryoSerializerFactory();
-
+	private KryoDecoder decoder=new KryoDecoder();
+	
+	private KryoResponse response=new KryoResponse();
+	
 	@Override
 	public KryoDecoder decoder() {
-		return new KryoDecoder();
+		return decoder;
+	}
+	
+	@Override
+	public RPCFullResponse response() {
+		return response;
 	}
 	
 	private class KryoDecoder implements RPCMsgDecoder{
 		
+		private JSerializerFactory factory=_KryoSerializerFactoryGetter.get();
 		
 		@Override
 		public Object[] decode(MappingMeta mappingMeta) {

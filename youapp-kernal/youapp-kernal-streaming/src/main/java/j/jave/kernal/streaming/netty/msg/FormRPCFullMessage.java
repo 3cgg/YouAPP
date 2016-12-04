@@ -7,10 +7,20 @@ import j.jave.kernal.streaming.netty.controller.MethodParamMeta;
 
 public class FormRPCFullMessage extends SimpleRPCFullMessage {
 
+	private JSONResponse response=new JSONResponse();
+	
+	private FormDecoder decoder=new FormDecoder();
+	
 	@Override
-	public  FormDecoder decoder() {
-		return new FormDecoder();
+	public RPCMsgDecoder decoder() {
+		return decoder;
 	}
+	
+	@Override
+	public RPCFullResponse response() {
+		return response;
+	}
+	
 	
 	private class FormDecoder implements RPCMsgDecoder{
 		@Override

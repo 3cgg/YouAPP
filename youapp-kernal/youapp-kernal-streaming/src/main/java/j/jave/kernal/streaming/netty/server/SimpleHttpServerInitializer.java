@@ -28,7 +28,7 @@ public class SimpleHttpServerInitializer extends ChannelInitializer<SocketChanne
 //        p.addLast(new HttpResponseEncoder());
         // Remove the following line if you don't want automatic content compression.
 //        p.addLast(new HttpContentCompressor());
-        p.addLast(new KryoServerHandler());
+        p.addLast(new ComplexServerHandler());
 //        p.addLast(new HttpSnoopServerHandler());
     }
 }

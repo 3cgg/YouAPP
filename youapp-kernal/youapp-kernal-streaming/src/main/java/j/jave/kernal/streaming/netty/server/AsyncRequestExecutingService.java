@@ -4,8 +4,6 @@ import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
-import java.nio.charset.Charset;
-
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -15,22 +13,18 @@ import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpObject;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.exception.JNestedRuntimeException;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.serializer.JSerializerFactory;
-import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import j.jave.kernal.streaming.netty.HeaderNames;
+import j.jave.kernal.streaming.Util;
+import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
+import j.jave.kernal.streaming.netty.server.ServerExecuteException.ErrorCode;
 
-public class KryoAsyncRequestExecutingService 
-extends JServiceFactorySupport<KryoAsyncRequestExecutingService>
+public class AsyncRequestExecutingService 
+extends JServiceFactorySupport<AsyncRequestExecutingService>
 implements JService , AsyncRequestExecutingListener{
 	
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(KryoAsyncRequestExecutingService.class);
-	
-	private static JSerializerFactory factory=new KryoSerializerFactory();
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(AsyncRequestExecutingService.class);
 	
 	private ServerExecutorService serverExecutorService=JServiceHubDelegate.get()
 			.getService(this, ServerExecutorService.class);
@@ -38,46 +32,51 @@ implements JService , AsyncRequestExecutingListener{
 	@Override
 	public Object trigger(AsyncRequestExecutingEvent event) {
 		try{
-			byte[] bytes=null;
-			String className=null;
+//			String className=null;
+			RPCFullMessage rpcFullMessage=event.getRpcFullMessage();
 	    	try{
 	    		Object obj=serverExecutorService.execute(
-	    				event.getRpcFullMessage()
+	    				rpcFullMessage
 	    				,event.getCtx()
 	    				,event.getHttpObject());
-	    		className=obj.getClass().getName();
-	    		if(obj instanceof byte[]){
-	    			bytes=(byte[]) obj;
-	    		}
+	    		rpcFullMessage.response().offer(obj);
+//	    		className=obj.getClass().getName();
+//	    		if(obj instanceof byte[]){
+//	    			bytes=(byte[]) obj;
+//	    		}
 //	    		else if(obj instanceof String){
 //	    			bytes=String.valueOf(obj).getBytes(Charset.forName("utf-8"));
 //	    		}
-	    		else{
-	    			bytes=SerializerUtils.serialize(factory, obj);
-	    		}
+//	    		else{
+//	    			bytes=(byte[]) rpcFullMessage.response().offer(obj).get();
+//	    		}
 	    		if(LOGGER.isDebugEnabled()){
-	    			LOGGER.debug(bytes);
+	    			LOGGER.debug(obj);
 	    		}
 	    	}catch(Exception e){
-	    		bytes=new JNestedRuntimeException(e).getMessage().getBytes(Charset.forName("utf-8"));
-	    		className=String.class.getName();
+	    		ServerExecuteException exception=new ServerExecuteException();
+	    		exception.setCode(ErrorCode.E0001);
+	    		exception.setMsg(Util.getMsg(e));
+	    		rpcFullMessage.response().offer(exception).get();
+//	    		className=ServerExecuteException.class.getName();
 	    	}
 			writeResponse(event.getCtx()
     				,event.getHttpObject()
-    				,bytes,className);
+    				,rpcFullMessage);
 		}catch(Exception e){
 			return false;
 		}
 		return true;
 	}
 	
-	private void writeResponse(ChannelHandlerContext ctx,Object object,byte[] bytes,String className) {
+	private void writeResponse(ChannelHandlerContext ctx,Object object
+			,RPCFullMessage rpcFullMessage) {
 		HttpObject httpObject=(HttpObject) object;
 		// Decide whether to close the connection or not.
         // Build the response object.
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HTTP_1_1, httpObject.decoderResult().isSuccess()? OK : BAD_REQUEST,
-                Unpooled.copiedBuffer(bytes));
+                Unpooled.copiedBuffer((byte[]) rpcFullMessage.response().get()));
 
         response.headers().set(HttpHeaderNames.CONTENT_TYPE,
         		"text/plain; charset=UTF-8");
@@ -88,15 +87,12 @@ implements JService , AsyncRequestExecutingListener{
         // - http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-01.html#Connection
         response.headers().set(HttpHeaderNames.CONNECTION, 
         		HttpHeaderValues.KEEP_ALIVE);
-        response.headers().set(HeaderNames.KRYO_CLASS_NAME, 
-        		className);
-        
         // Write the response.
         ctx.writeAndFlush(response);
 	}
 	
 	@Override
-	protected KryoAsyncRequestExecutingService doGetService() {
+	protected AsyncRequestExecutingService doGetService() {
 		return this;
 	}
 	

@@ -34,11 +34,11 @@ public class ControllerTestSyncSingleThread {
 				Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
 				stringBuffer.append("\r\n-----[call name]----  response----------"+object1);
 				
-				object1=controller.superName(_i+"----"+JUniqueUtils.unique());
-				stringBuffer.append("\r\n-----[call superName]----response----------"+object1);
-				
-				object1=controller.jvm();
-				stringBuffer.append("\r\n-----[call jvm]----response----------"+object1);
+//				object1=controller.superName(_i+"----"+JUniqueUtils.unique());
+//				stringBuffer.append("\r\n-----[call superName]----response----------"+object1);
+//				
+//				object1=controller.jvm();
+//				stringBuffer.append("\r\n-----[call jvm]----response----------"+object1);
 				
 			}
 			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));

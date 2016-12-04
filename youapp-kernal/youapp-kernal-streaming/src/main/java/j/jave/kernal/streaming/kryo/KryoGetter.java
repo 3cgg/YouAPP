@@ -1,6 +1,9 @@
 package j.jave.kernal.streaming.kryo;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
+
+import j.jave.kernal.streaming.netty.server.ServerExecuteException;
 
 public  abstract class KryoGetter {
 
@@ -16,6 +19,7 @@ public  abstract class KryoGetter {
 	
 	public final Kryo getKryo(Class<?> clazz) {
 		Kryo kryo= kryos.get();
+		kryo.addDefaultSerializer(ServerExecuteException.class, JavaSerializer.class);
 		affactKryo(clazz);
 		return kryo;
 	}

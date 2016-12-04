@@ -20,6 +20,9 @@ public class UnitController extends ControllerSupport<UnitController>
 	
 	@Override
 	public Object name(String name){
+		if("exception".equals(name)){
+			throw new RuntimeException("only for exception test");
+		}
 		return "you get it.("+name+")";
 	}
 

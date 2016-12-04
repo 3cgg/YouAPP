@@ -43,6 +43,11 @@ public class ComplexServerHandler extends SimpleChannelInboundHandler<FullHttpRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) {
+    	
+    	if(LOGGER.isDebugEnabled()){
+    		LOGGER.debug("access to url : "+msg.uri());
+    	}
+    	
     	HttpHeaders headers = msg.headers();
     	if(LOGGER.isDebugEnabled()){
     		StringBuffer stringBuffer=new StringBuffer();

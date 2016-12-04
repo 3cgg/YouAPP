@@ -9,6 +9,8 @@ import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
+import j.jave.kernal.streaming.netty.server.ErrorCode;
+import j.jave.kernal.streaming.netty.server.ServerExecuteException;
 
 public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements RPCFullMessage{
 	
@@ -37,7 +39,12 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 
 		@Override
 		public RPCFullResponseWriter offer(Object object) {
-			objects.add(object);
+			if((object instanceof Throwable)
+					&&ServerExecuteException.class!=object.getClass()){
+				objects.add(new ServerExecuteException(ErrorCode.E0001, (Throwable) object));
+			}else{
+				objects.add(object);
+			}
 			return this;
 		}
 

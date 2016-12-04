@@ -10,15 +10,15 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
+import io.netty.handler.codec.http.HttpMessage;
 import io.netty.handler.codec.http.HttpObject;
+import io.netty.handler.codec.http.HttpUtil;
 import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.netty.msg.RPCFullMessage;
-import j.jave.kernal.streaming.netty.server.ServerExecuteException.ErrorCode;
 
 public class AsyncRequestExecutingService 
 extends JServiceFactorySupport<AsyncRequestExecutingService>
@@ -54,10 +54,8 @@ implements JService , AsyncRequestExecutingListener{
 	    			LOGGER.debug(obj);
 	    		}
 	    	}catch(Exception e){
-	    		ServerExecuteException exception=new ServerExecuteException();
-	    		exception.setCode(ErrorCode.E0001);
-	    		exception.setMsg(Util.getMsg(e));
-	    		rpcFullMessage.response().offer(exception).get();
+	    		ServerExecuteException exception=new ServerExecuteException(ErrorCode.E0001,e);
+	    		rpcFullMessage.response().offer(exception);
 //	    		className=ServerExecuteException.class.getName();
 	    	}
 			writeResponse(event.getCtx()
@@ -85,10 +83,19 @@ implements JService , AsyncRequestExecutingListener{
         response.headers().setInt(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
         // Add keep alive header as per:
         // - http://www.w3.org/Protocols/HTTP/1.1/draft-ietf-http-v11-spec-01.html#Connection
-        response.headers().set(HttpHeaderNames.CONNECTION, 
-        		HttpHeaderValues.KEEP_ALIVE);
+        boolean keepAlive=HttpUtil.isKeepAlive((HttpMessage) httpObject);
+        if(keepAlive){
+        	response.headers().set(HttpHeaderNames.CONNECTION, 
+            		HttpHeaderValues.KEEP_ALIVE);
+        }else{
+        	response.headers().set(HttpHeaderNames.CONNECTION, 
+            		HttpHeaderValues.CLOSE);
+        }
         // Write the response.
         ctx.writeAndFlush(response);
+        if(!keepAlive){
+        	ctx.close();
+        }
 	}
 	
 	@Override

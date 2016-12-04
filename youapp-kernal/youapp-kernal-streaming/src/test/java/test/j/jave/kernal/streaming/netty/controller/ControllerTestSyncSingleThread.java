@@ -13,6 +13,7 @@ public class ControllerTestSyncSingleThread {
 
 	private static StringBuffer stringBuffer=new StringBuffer(100000);
 	
+	private static int count=0;
 	
 	public static void main(String[] args) {
 		try{
@@ -21,7 +22,7 @@ public class ControllerTestSyncSingleThread {
 				@Override
 				public void run() {
 					try{
-						System.out.println(stringBuffer.substring(stringBuffer.length()-300, stringBuffer.length()));
+						System.out.println("count["+count+"];"+stringBuffer.substring(stringBuffer.length()-300, stringBuffer.length()));
 					}catch (Exception e) {
 					}
 				}
@@ -31,9 +32,19 @@ public class ControllerTestSyncSingleThread {
 			System.out.println(JDateUtils.format(new Date(),JDateUtils.yyyyMMddHHmmss));
 			for(int i=0;i<1000000;i++){
 				final int _i=i;
-				Object object1=controller.name(_i+"----"+JUniqueUtils.unique());
-				stringBuffer.append("\r\n-----[call name]----  response----------"+object1);
+				Object object1=null;
+				if(_i==1){
+					try{
+						object1=controller.name("exception");
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+				}else{
+					object1=controller.name(_i+"----"+JUniqueUtils.unique());
+				}
 				
+				stringBuffer.append("\r\n-----[call name]----  response----------"+object1);
+				count++;
 //				object1=controller.superName(_i+"----"+JUniqueUtils.unique());
 //				stringBuffer.append("\r\n-----[call superName]----response----------"+object1);
 //				
@@ -45,7 +56,6 @@ public class ControllerTestSyncSingleThread {
 			controller.hashCode();
 //			System.out.println(controller);
 		}catch(Exception e){
-			e.printStackTrace();
 //			LOGGER.error(" cannot proxy for class : "+ this.getServiceClass() + " ,"+getServiceImplClass());
 			throw e;
 		}

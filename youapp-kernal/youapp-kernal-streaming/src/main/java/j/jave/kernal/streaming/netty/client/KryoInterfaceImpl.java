@@ -7,6 +7,7 @@ import j.jave.kernal.jave.utils.JLangUtils;
 import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
 import j.jave.kernal.streaming.netty.msg.SimpleRPCFullResponse;
+import j.jave.kernal.streaming.netty.server.ServerExecuteException;
 
 public class KryoInterfaceImpl<T extends ControllerService> extends InterfaceImpl<T> {
 
@@ -20,6 +21,9 @@ public class KryoInterfaceImpl<T extends ControllerService> extends InterfaceImp
 		Object[] objects=SerializerUtils.deserialize(getFactory(), (byte[])simpleRPCFullResponse.content(),Object[].class);
 		if(objects!=null&&objects.length>0){
 			Object object=objects[0];
+			if(object instanceof ServerExecuteException){
+				throw (ServerExecuteException)object;
+			}
 			if(!JLangUtils.wrapper(method.getReturnType())
 					.isAssignableFrom(JLangUtils.wrapper(object.getClass()))){
 				throw new RuntimeException("return object type["+

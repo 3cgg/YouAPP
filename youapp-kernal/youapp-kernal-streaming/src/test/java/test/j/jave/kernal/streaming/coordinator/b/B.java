@@ -32,7 +32,7 @@ public class B {
 	
 	public static void main(String[] args) {
 //		String path="/a/b/c";
-		String path=NodeLeader.basePath()+"/instance/default/71/root/denoise-1";
+		String path=NodeLeader.basePath()+"/instance/default/88/root/denoise-1";
 //		if(!executor.exists(path)){
 //			executor.createPath(path);
 //		}

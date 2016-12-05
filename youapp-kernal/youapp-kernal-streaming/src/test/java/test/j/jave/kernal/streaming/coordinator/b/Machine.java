@@ -47,7 +47,7 @@ public class Machine {
 							System.out.println(nodeWorker.getId()+ "=== ready to get lock .");
 							nodeWorker.acquire();
 							System.out.println(nodeWorker.getId()+ "=== got lock , wait some executing time .");
-							Utils.sleep(10000); 
+							Utils.sleep(1000); 
 						}catch (Exception e) {
 							e.printStackTrace();
 						}finally {

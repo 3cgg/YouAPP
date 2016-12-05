@@ -245,13 +245,20 @@ public class NodeWorker implements Serializable {
 	}
 	
 	public void release(Throwable t) throws Exception{
-		logInfo(" delete temp path : "+workerTemporary.getTempPath());
-		executor.deletePath(workerTemporary.getTempPath());
-		if(t!=null){
-			executor.createPath(workerTemporary.getWorkerExecutingPathVal().getWorkerExecutingErrorPath()+"/e-"
-					,SerializerUtils.serialize(serializerFactory, Util.getMsg(t))
-			,CreateMode.EPHEMERAL_SEQUENTIAL);
+		try{
+			logInfo(" delete temp path : "+workerTemporary.getTempPath());
+			if(t!=null){
+				executor.createPath(workerTemporary.getWorkerExecutingPathVal().getWorkerExecutingErrorPath()+"/e-"
+						,SerializerUtils.serialize(serializerFactory, Util.getMsg(t))
+				,CreateMode.EPHEMERAL_SEQUENTIAL);
+			}
+			executor.deletePath(workerTemporary.getTempPath());
+		}catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}finally{
+			
 		}
+		
 	}
 	
 	private synchronized void wakeup(){

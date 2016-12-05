@@ -40,8 +40,11 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowErrorModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
 import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
+import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
+import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
@@ -52,6 +55,8 @@ import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 public class NodeLeader implements Serializable{
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeLeader.class);
+	
+	private static KryoChannelExecutorPool executorPool=new KryoChannelExecutorPool();
 	
 	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
@@ -187,6 +192,19 @@ public class NodeLeader implements Serializable{
 	
 	String pluginWorkersPath(final Workflow workflow){
 		return basePath+"/pluginWorkers/"+workflow.getName()+"-workers";
+	}
+	
+	String pluginWorkerPath(int workerId,Instance instance){
+		String pluginWorkersPath= pluginWorkersPath(instance.getWorkflow());
+		return pluginWorkersPath+"/worker-"+String.valueOf(workerId);
+	}
+	
+	String pluginWorkerInstancePath(int workerId,Instance instance){
+		return pluginWorkerPath(workerId,instance)+"/instance/"+instance.getSequence();
+	}
+	
+	String pluginWorkerProcessorPath(int workerId,Instance instance){
+		return pluginWorkerPath(workerId, instance)+"/processor";
 	}
 	
 	String instancePath(String path,Instance instance){
@@ -377,7 +395,7 @@ public class NodeLeader implements Serializable{
 			throw new RuntimeException("the worker["+worker+"] does not exist.");
 		}
 		
-		logInfo("-find to start worker : "+worker +""); 
+		logInfo("-find to start worker : "+worker +", instance : "+instance.getSequence()); 
 		
 		final WorkerPathVal workerPathVal=new WorkerPathVal();
 		workerPathVal.setId(worker);
@@ -386,8 +404,11 @@ public class NodeLeader implements Serializable{
 		workerPathVal.setInstancePath(instancePath);
 		workerPathVal.setConf(instance.getConf());
 		
-		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
-				SerializerUtils.serialize(serializerFactory, workerPathVal));
+//		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
+//				SerializerUtils.serialize(serializerFactory, workerPathVal));
+		
+		startRealWorker(workerPathVal, instance);
+		
 		loggingExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -433,7 +454,7 @@ public class NodeLeader implements Serializable{
 							instanceNodeVal.getStatus().getCause().forEach(new Consumer<Throwable>() {
 								@Override
 								public void accept(Throwable t) {
-									instance.addError(t);
+									instance.addError(node.getPath(),t);
 								}
 							});
 						}
@@ -524,6 +545,9 @@ public class NodeLeader implements Serializable{
 	private synchronized void attachWorkersPathWatcher(final Workflow workflow){
 		if(workflow.getPluginWorkersPathCache()!=null) return ;
 		String _path=workflow.getPluginWorkersPath();
+		if(!executor.exists(_path)){
+			executor.createPath(_path);
+		}
 		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
 				new ZooNodeChildrenCallback() {
 			@Override
@@ -553,6 +577,10 @@ public class NodeLeader implements Serializable{
 		addCommonCommand();
 	}
 	
+	/**
+	 * node leader  code
+	 * @throws Exception
+	 */
 	private void startServer() throws Exception{
 		LeaderNodeMeta nodeMeta=workflowMaster.getLeaderNodeMeta();
 		server =
@@ -560,6 +588,9 @@ public class NodeLeader implements Serializable{
 		server.start();
 	}
 	
+	/**
+	 * node leader code
+	 */
 	private void registerRPCInZookeeper(){
 		LeaderNodeMeta leaderNodeMeta=workflowMaster.getLeaderNodeMeta();
 		String rpcNode=JConfiguration.get().getString(ConfigNames.STREAMING_LEADER_RPC_HOST_ZNODE);
@@ -573,6 +604,10 @@ public class NodeLeader implements Serializable{
 		}
 	}
 	
+	/**
+	 * node leader code
+	 * @return
+	 */
 	private LeaderNodeMeta registerLeaderInZookeeper(){
 		workflowMaster.setLeaderNodeMeta(leaderNodeMeta);
         byte[] msg=
@@ -625,6 +660,7 @@ public class NodeLeader implements Serializable{
 		executeCommand(completeModel);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void executeCommand(WorkflowCommandModel commandModel){
 		
 		Collection<WorkflowCommand> commands=  workflowMaster.workflowCommands(commandModel.getClass());
@@ -830,6 +866,121 @@ public class NodeLeader implements Serializable{
 				logError(e);
 			}
 		}
+	}
+	
+	
+	/**
+	 * start the real worker...
+	 * @param workerPathVal
+	 * @param instance
+	 */
+	private void startRealWorker(final WorkerPathVal workerPathVal,Instance instance){
+		final int workerId=workerPathVal.getId();
+		WorkerMaster workerMaster=instance.workerMaster();
+		try{
+			if(workerMaster.instaneCheck().isDone(workerPathVal)){
+				logInfo(" for instance["+workerPathVal.getSequence()+"] is triggered, skip this calling");
+				return;
+			}
+		}finally{
+		}
+		String workerExecutingBasePath=pluginWorkerInstancePath(workerId,instance);
+		final String workerExecutingPath=workerExecutingBasePath+"/exenodes";
+		final String workerExecutingErrorPath=workerExecutingBasePath+"/error";
+		executor.createPath(workerExecutingPath, 
+				SerializerUtils.serialize(serializerFactory, workerPathVal));
+		executor.createPath(workerExecutingErrorPath, 
+				SerializerUtils.serialize(serializerFactory, workerPathVal));
+		
+		WorkerExecutingPathVal workerExecutingPathVal=new WorkerExecutingPathVal();
+		workerExecutingPathVal.setWorkerExecutingPath(workerExecutingPath);
+		workerExecutingPathVal.setWorkerPathVal(workerPathVal);
+		
+		workerExecutingPathVal.setWorkerExecutingErrorPath(workerExecutingErrorPath); 
+		// add watcher on the worker executing path for every instance
+		final PathChildrenCache cache= 
+		executor.watchChildrenPath(workerExecutingPath, new ZooNodeChildrenCallback() {
+			@Override
+			public void call(List<ZooNode> nodes) {
+				if(nodes.isEmpty()){
+					try{
+						WorkerPathVal workerPathVal= 
+								SerializerUtils.deserialize(serializerFactory, 
+										executor.getPath(workerExecutingErrorPath), WorkerPathVal.class);
+						List<String> errorPaths=executor.getChildren(workerExecutingErrorPath);
+						StringBuffer buffer=new StringBuffer();
+						for(String errorPath:errorPaths){
+							String error=SerializerUtils.deserialize(serializerFactory, 
+									executor.getPath(workerExecutingErrorPath+"/"+errorPath)
+									, String.class);
+							buffer.append(error+"\r\n------------------------------------+\r\n");
+						}
+						completeWorker(workerPathVal.getInstancePath(),instance,
+								buffer.length()>0?
+								new RuntimeException(buffer.toString()):null);
+					}finally{
+						try {
+							workerMaster.closeInstance(workerExecutingPath);
+						} catch (Exception e) {
+							LOGGER.error(e.getMessage(), e);
+						}
+					}
+				}
+			}
+		}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_REMOVED);
+		workerMaster.addProcessorsWather(workerExecutingPath, cache);
+		
+		// notify sub-processors of worker
+		String processorPath=pluginWorkerProcessorPath(workerId, instance);
+		List<String> chls=executor.getChildren(processorPath);
+		for(String chPath:chls){
+			String relProcessorPath=processorPath+"/"+chPath;
+			if(!executor.getChildren(relProcessorPath).isEmpty()){
+				WorkerNodeMeta workerNodeMeta=
+					SerializerUtils.deserialize(serializerFactory, 
+							executor.getPath(relProcessorPath), WorkerNodeMeta.class);
+				IWorkerService workerService=
+						SimpleInterfaceImplUtil.syncProxy(IWorkerService.class,
+								executorPool.get(workerNodeMeta.getHost(),
+										workerNodeMeta.getPort()));
+				workerService.notifyWorkers(workerExecutingPathVal);
+			}else{
+				//may delete the node (broken from the zookeeper)
+				executor.deletePath(relProcessorPath);
+			}
+		}
+	}
+	
+	/**
+	 * complete the real worker...
+	 * @param path
+	 * @param instance
+	 * @param t
+	 */
+	private void completeWorker(final String path,Instance instance,Throwable t){
+		final InstanceNodeVal instanceNodeVal=
+				SerializerUtils.deserialize(serializerFactory, executor.getPath(path),
+						InstanceNodeVal.class);
+		NodeStatus nodeStatus=null;
+		if(t==null){
+			nodeStatus=NodeStatus.COMPLETE;
+		}else{
+			nodeStatus=NodeStatus.COMPLETE_ERROR;
+			nodeStatus.setThrowable(t);
+		}
+		instanceNodeVal.setStatus(nodeStatus);
+		
+		executor.setPath(path, 
+				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
+		loggingExecutorService.execute(new Runnable() {
+			@Override
+			public void run() {
+				WorkTracking workTracking=
+						workTracking(instanceNodeVal.getId(), path,
+								instanceNodeVal.getStatus(),instance);
+				trackingService.track(workTracking);
+			}
+		});
 	}
 	
 	ZookeeperExecutor getExecutor() {

@@ -3,6 +3,7 @@ package j.jave.kernal.streaming.coordinator;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +59,12 @@ public class Instance implements JModel,Closeable{
 	 */
 	private Map<String, InstanceNode> instanceNodes=Maps.newConcurrentMap();
 	
-	private List<String> errors=new ArrayList<>();
+	/**
+	 * KEY :  worker path
+	 */
+	private Map<String,String> errors=Maps.newHashMap();
+	
+	private WorkerMaster workerMaster=new WorkerMaster();
 	
 	public void addChildPathWatcherPath(String path){
 		childPathWatcherPaths.add(path);
@@ -157,23 +163,34 @@ public class Instance implements JModel,Closeable{
 		this.conf = conf;
 	}
 	
-	public void addError(Throwable error){
-		addError(Util.getMsg(error));
+	public void addError(String path,Throwable error){
+		addError(path,Util.getMsg(error));
 	}
 	
-	public void addError(String error){
-		errors.add(error);
+	public void addError(String path,String error){
+		if(!errors.containsKey(path)){
+			errors.put(path, error);
+		}
 	}
 	
-	public List<String> getErrors() {
-		return errors;
+	public Collection<String> errors() {
+		return errors.values();
 	}
 	
 	public String getErrorMessage() {
 		StringBuffer buffer=new StringBuffer();
-		for(String string:errors){
+		for(String string:errors()){
 			buffer.append(string+"\r\n----------------------------------\r\n");
 		}
 		return buffer.toString();
 	}
+	
+	public WorkerMaster workerMaster() {
+		return workerMaster;
+	}
+	
+	
+	
+	
+	
 }

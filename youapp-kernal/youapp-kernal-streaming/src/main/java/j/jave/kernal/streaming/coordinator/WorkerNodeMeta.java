@@ -5,16 +5,6 @@ public class WorkerNodeMeta extends NodeMeta {
 	private int zkThreadCount;
 	
 	private int logThreadCount;
-	
-	private boolean leader=false;
-
-	public boolean isLeader() {
-		return leader;
-	}
-	
-	public void setLeader(boolean leader) {
-		this.leader = leader;
-	}
 
 	public int getZkThreadCount() {
 		return zkThreadCount;

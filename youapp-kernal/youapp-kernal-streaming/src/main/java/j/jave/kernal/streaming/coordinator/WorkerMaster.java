@@ -9,17 +9,30 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.streaming.coordinator.NodeWorker.InstaneCheck;
 
-public class ProcessorMaster implements JModel ,Closeable{
+public class WorkerMaster implements JModel ,Closeable{
 
 	/**
 	 * KEY : executing worker path / include instance id
 	 */
 	private Map<String, PathChildrenCache> processorsWathers=Maps.newHashMap();
 	
-	private InstaneCheck instaneCheck;
+	private InstaneCheck instaneCheck=new InstaneCheck();
 	
+	class InstaneCheck{
+		
+		private Map<Long, WorkerPathVal> instances=Maps.newHashMap();
+		
+		boolean isDone(WorkerPathVal workerPathVal){
+			boolean contains=instances.containsKey(workerPathVal.getSequence());
+			if(!contains){
+				instances.put(workerPathVal.getSequence(), workerPathVal);
+			}
+			return contains;
+		}
+		
+	}
+
 	@Override
 	public void close() throws IOException {
 		CloseException exception=new CloseException();

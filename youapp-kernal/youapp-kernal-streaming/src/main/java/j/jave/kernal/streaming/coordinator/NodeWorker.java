@@ -1,6 +1,5 @@
 package j.jave.kernal.streaming.coordinator;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,15 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.curator.framework.recipes.cache.PathChildrenCache;
-import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
-import org.apache.curator.framework.recipes.leader.LeaderLatch;
-import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.apache.zookeeper.CreateMode;
-
-import com.google.common.collect.Maps;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.logging.JLogger;
@@ -30,24 +22,16 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
-import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
-import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
-import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
-import j.jave.kernal.streaming.zookeeper.ZooNode;
-import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
-import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 
 @SuppressWarnings("serial")
 public class NodeWorker implements Serializable {
 
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
-	
-	private static KryoChannelExecutorPool executorPool=new KryoChannelExecutorPool();
 	
 	private final String sequence=new Random().nextInt(100)+"-"+ 
 			JUniqueUtils.sequence();
@@ -68,18 +52,11 @@ public class NodeWorker implements Serializable {
 	private WorkflowMeta workflowMeta;
 	
 	private ZookeeperExecutor executor;
-
-	private LeaderLatch processorLeaderLatch;
 	
 	/**
 	 * which instance of the workfkow at this time 
 	 */
 	private WorkerTemporary workerTemporary;
-	
-	/**
-	 * leader code
-	 */
-	private ProcessorMaster processorMaster;
 	
 	/**
 	 * the processor/thread meta data info , never be changed from born
@@ -93,8 +70,6 @@ public class NodeWorker implements Serializable {
 	private ExecutorService zooKeeperExecutorService=null;
 	
 	private SimpleHttpNioChannelServer server;
-	
-	private ReentrantLock instanceLock=new ReentrantLock();
 	
 	public NodeWorker(WorkflowMeta workflowMeta,Map conf,ZookeeperExecutor executor) {
 		this.workerNodeMeta=new WorkerNodeMetaGetter(JConfiguration.get(), conf).nodeMeta();
@@ -127,9 +102,9 @@ public class NodeWorker implements Serializable {
 		return pluginWorkersPath+"/worker-"+String.valueOf(id);
 	}
 	
-	private String pluginWorkerInstancePath(long sequence){
-		return pluginWorkerPath()+"/instance/"+sequence;
-	}
+//	private String pluginWorkerInstancePath(long sequence){
+//		return pluginWorkerPath()+"/instance/"+sequence;
+//	}
 	
 	private String pluginWorkerProcessorPath(){
 		return pluginWorkerPath()+"/processor";
@@ -179,231 +154,15 @@ public class NodeWorker implements Serializable {
 				logError(e);
 			}
 		}
-		
-		// processor leader latch...
-		processorLeaderLatch=new LeaderLatch(executor.backend(),
-				processorLeaderPath());
-		processorLeaderLatch.addListener(new LeaderLatchListener() {
-			
-			@Override
-			public void notLeader() {
-				if(processorMaster==null) return;
-				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-processor leadership .... ");
-				try {
-					processorMaster.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				processorMaster=null;
-			}
-			
-			@Override
-			public void isLeader() {
-				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-processor leadership .... ");
-				createMasterMeta();
-			}
-		}, Executors.newFixedThreadPool(1,new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, "{worker["+getId()+"]-processor-leader-listener...}");
-			}
-		}));
-		Executors.newFixedThreadPool(1, new ThreadFactory() {
-			
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, "{worker["+getId()+"]-processor-leader-selector(leader)}");
-			}
-		}).execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				try{
-					processorLeaderLatch.start();
-					processorLeaderLatch.await();
-					createMasterMeta();
 
-					while(true){
-						try{
-							synchronized (this) {
-								wait();
-							}
-						}catch (InterruptedException e) {
-						}
-					}
-					
-				}catch (Exception e) {
-					logError(e);
-				}finally {
-					try {
-						processorLeaderLatch.close();
-					} catch (Exception e) {
-						logError(e);
-					}
-				}
-			}
-		});
 	}
 
 	private String realProcessorPath(WorkerNodeMeta workerNodeMeta) {
 		return pluginWorkerProcessorPath()
 														+"/"+workerNodeMeta.getHost()
-														+"-"+workerNodeMeta.getPid();
+														+"-"+workerNodeMeta.getPid()
+														+"-sequence["+sequence+"]";
 	}
-	
-	/**
-	 * leader code
-	 */
-	private synchronized void createMasterMeta(){
-		if(processorMaster!=null) return;
-		processorMaster=new ProcessorMaster();
-		InstaneCheck instaneCheck=new InstaneCheck();
-		processorMaster.setInstaneCheck(instaneCheck);
-		attachPluginWorkerPathWatcher(pluginWorkerPath());
-		updateLeaderProcessor();
-	}
-	
-	private void updateLeaderProcessor(){
-		WorkerNodeMeta workerNodeMeta=processor.getWorkerNodeMeta();
-		String workerProcessorPath=realProcessorPath(workerNodeMeta);
-		workerNodeMeta.setLeader(true);
-		executor.setPath(workerProcessorPath, SerializerUtils.serialize(serializerFactory, workerNodeMeta));
-	}
-	
-	class InstaneCheck{
-		
-		private Map<Long, WorkerPathVal> instances=Maps.newHashMap();
-		
-		private boolean isDone(WorkerPathVal workerPathVal){
-			boolean contains=instances.containsKey(workerPathVal.getSequence());
-			if(!contains){
-				instances.put(workerPathVal.getSequence(), workerPathVal);
-			}
-			return contains;
-		}
-		
-	}
-	
-	/**
-	 * add watcher on the worker path, expect the znode is trigger per workflow instance,
-	 * leader  code
-	 * @param pluginWorkerPath
-	 */
-	private void attachPluginWorkerPathWatcher(final String pluginWorkerPath){
-		
-		logInfo(" add wahter on : "+pluginWorkerPath);
-		executor.watchPath(pluginWorkerPath, new ZooNodeCallback () {
-			@Override
-			public void call(ZooNode node) {
-				try{
-					final WorkerPathVal workerPathVal=
-							SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), 
-									WorkerPathVal.class);
-					instanceLock.lock();
-					try{
-						if(processorMaster.instaneCheck().isDone(workerPathVal)){
-							logInfo(" for instance["+workerPathVal.getSequence()+"] is triggered, skip this calling");
-							return;
-						}
-					}finally{
-						instanceLock.unlock();
-					}
-					String workerExecutingBasePath=pluginWorkerInstancePath(workerPathVal.getSequence());
-					final String workerExecutingPath=workerExecutingBasePath+"/exenodes";
-					final String workerExecutingErrorPath=workerExecutingBasePath+"/error";
-					executor.createPath(workerExecutingPath, 
-							SerializerUtils.serialize(serializerFactory, workerPathVal));
-					executor.createPath(workerExecutingErrorPath, 
-							SerializerUtils.serialize(serializerFactory, workerPathVal));
-					
-					WorkerExecutingPathVal workerExecutingPathVal=new WorkerExecutingPathVal();
-					workerExecutingPathVal.setWorkerExecutingPath(workerExecutingPath);
-					workerExecutingPathVal.setWorkerPathVal(workerPathVal);
-					
-					workerExecutingPathVal.setWorkerExecutingErrorPath(workerExecutingErrorPath); 
-					// add watcher on the worker executing path for every workflow instance
-					final PathChildrenCache cache= 
-					executor.watchChildrenPath(workerExecutingPath, new ZooNodeChildrenCallback() {
-						@Override
-						public void call(List<ZooNode> nodes) {
-							if(nodes.isEmpty()){
-								try{
-									WorkerPathVal workerPathVal= workerPathVal();
-									List<String> errorPaths=executor.getChildren(workerExecutingErrorPath);
-									StringBuffer buffer=new StringBuffer();
-									for(String errorPath:errorPaths){
-										String error=SerializerUtils.deserialize(serializerFactory, 
-												executor.getPath(workerExecutingErrorPath+"/"+errorPath)
-												, String.class);
-										buffer.append(error+"\r\n------------------------------------+\r\n");
-									}
-									complete(workerPathVal.getInstancePath(),
-											buffer.length()>0?
-											new RuntimeException(buffer.toString()):null);
-								}finally{
-									try {
-										processorMaster.closeInstance(workerExecutingPath);
-									} catch (Exception e) {
-										LOGGER.error(e.getMessage(), e);
-									}
-								}
-							}
-						}
-					}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_REMOVED);
-					processorMaster.addProcessorsWather(workerExecutingPath, cache);
-					// notify sub-processors of worker
-					String processorPath=pluginWorkerProcessorPath();
-					List<String> chls=executor.getChildren(processorPath);
-					for(String chPath:chls){
-						String relProcessorPath=processorPath+"/"+chPath;
-						if(!executor.getChildren(relProcessorPath).isEmpty()){
-							WorkerNodeMeta workerNodeMeta=
-								SerializerUtils.deserialize(serializerFactory, 
-										executor.getPath(relProcessorPath), WorkerNodeMeta.class);
-							IWorkerService workerService=
-									SimpleInterfaceImplUtil.syncProxy(IWorkerService.class,
-											executorPool.get(workerNodeMeta.getHost(),
-													workerNodeMeta.getPort()));
-							workerService.notifyWorkers(workerExecutingPathVal);
-						}else{
-							//may delete the node (broken from the zookeeper)
-							executor.deletePath(relProcessorPath);
-						}
-					}
-				}catch (Exception e) {
-					LOGGER.error(e.getMessage(), e);
-				}
-			}
-		},zooKeeperExecutorService);
-		
-	}
-	
-	private void complete(final String path,Throwable t){
-		final InstanceNodeVal instanceNodeVal=
-				SerializerUtils.deserialize(serializerFactory, executor.getPath(path),
-						InstanceNodeVal.class);
-		NodeStatus nodeStatus=null;
-		if(t==null){
-			nodeStatus=NodeStatus.COMPLETE;
-		}else{
-			nodeStatus=NodeStatus.COMPLETE_ERROR;
-			nodeStatus.setThrowable(t);
-		}
-		instanceNodeVal.setStatus(nodeStatus);
-		
-		executor.setPath(path, 
-				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
-		loggingExecutorService.execute(new Runnable() {
-			@Override
-			public void run() {
-				WorkTracking workTracking=
-						workTracking(instanceNodeVal.getId(), instanceNodeVal.getSequence(), path,
-								NodeStatus.COMPLETE);
-				trackingService.track(workTracking);
-			}
-		});
-	}
-	
 	
 	private WorkTracking workTracking(int workerId,long instanceId,String path,NodeStatus status){
 		WorkTracking workTracking=new WorkTracking();
@@ -420,10 +179,10 @@ public class NodeWorker implements Serializable {
 		return workTracking;
 	}
 	
-	private WorkerPathVal workerPathVal(){
-		byte[] bytes= executor.getPath(pluginWorkerPath());
-		return SerializerUtils.deserialize(serializerFactory, bytes, WorkerPathVal.class);
-	}
+//	private WorkerPathVal workerPathVal(){
+//		byte[] bytes= executor.getPath(pluginWorkerPath());
+//		return SerializerUtils.deserialize(serializerFactory, bytes, WorkerPathVal.class);
+//	}
 	
 	public int getId() {
 		return id;

@@ -26,6 +26,7 @@ public class TaskStartTrigger {
 		
 		System.out.println("end...");
 		Thread.currentThread().sleep(2000);
+		System.exit(0);
 		
 	}
 	

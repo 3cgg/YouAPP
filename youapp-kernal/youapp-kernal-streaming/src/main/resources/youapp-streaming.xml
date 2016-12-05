@@ -29,7 +29,7 @@
 
 <property>
   <name>youapp.streaming.workflow.tracking.kafka.topic</name>
-  <value>workflow-instance-track</value>
+  <value>wit</value>
   <description>kafka</description>
 </property>
 

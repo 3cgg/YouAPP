@@ -21,14 +21,30 @@ public class WorkerMaster implements JModel ,Closeable{
 	
 	class InstaneCheck{
 		
-		private Map<Long, WorkerPathVal> instances=Maps.newHashMap();
+		private Map<String, NodeStatus> status=Maps.newHashMap();
 		
-		boolean isDone(WorkerPathVal workerPathVal){
-			boolean contains=instances.containsKey(workerPathVal.getSequence());
-			if(!contains){
-				instances.put(workerPathVal.getSequence(), workerPathVal);
+		boolean isComplete(String path,NodeStatus nodeStatus){
+			NodeStatus _nodeStatus=get(path);
+			if(_nodeStatus.isComplete()){
+				return true;
 			}
-			return contains;
+			else{
+				status.put(path, nodeStatus);
+				return false;
+			}
+		}
+		
+		boolean isStart(String path){
+			NodeStatus nodeStatus=get(path);
+			if(nodeStatus==null){
+				status.put(path, NodeStatus.PROCESSING);
+				return false;
+			}
+			return true;
+		}
+
+		private NodeStatus get(String path) {
+			return status.get(path);
 		}
 		
 	}

@@ -31,6 +31,7 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.ConfigNames;
+import j.jave.kernal.streaming.coordinator.WorkerMaster.InstaneCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
@@ -91,6 +92,9 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private static NodeLeader NODE_SELECTOR;
+	
+	
+	private final Object sync=new Object();
 	
 	/**
 	 * start up a node leader... (as a node of the leader cluster)
@@ -404,11 +408,13 @@ public class NodeLeader implements Serializable{
 		workerPathVal.setInstancePath(instancePath);
 		workerPathVal.setConf(instance.getConf());
 		
+		boolean isStart=isStart(workerPathVal, instance);
+		if(isStart){
+			return;
+		}
 //		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
 //				SerializerUtils.serialize(serializerFactory, workerPathVal));
-		
 		startRealWorker(workerPathVal, instance);
-		
 		loggingExecutorService.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -421,7 +427,7 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private void start(Instance instance){
-		propagateWorkerPath(null, null, instance.getWorkflow().getNodeData(), instance);
+		propagateWorkerPath(null,instance.getWorkflow().getNodeData(), null,instance);
 	}
 	
 	/**
@@ -470,12 +476,18 @@ public class NodeLeader implements Serializable{
 						}else{
 							completeStatus=NodeStatus.COMPLETE;
 						}
-						completeVirtual(instance, _path,completeStatus);
-						if(path.equals(instance.getRootPath())){
-							executeCompleteCommand(instance);
-							executeRetryCommand(instance);
-							if(withError){
-								executeErrorCommand(instance);
+						synchronized (sync) {
+							InstaneCheck instaneCheck= instance.workerMaster().instaneCheck();
+							instaneCheck.isStart(_path);
+							if(!instaneCheck.isComplete(_path, completeStatus)){
+								completeVirtual(instance, _path,completeStatus);
+								if(path.equals(instance.getRootPath())){
+									executeCompleteCommand(instance);
+									executeRetryCommand(instance);
+									if(withError){
+										executeErrorCommand(instance);
+									}
+								}
 							}
 						}
 						return;
@@ -490,34 +502,34 @@ public class NodeLeader implements Serializable{
 					
 					if(!virtualNode.getNodeData().isParallel()){
 						//start next node/worker in the virtual node
-						InstanceNodeVal latestNode=null;
+						InstanceNodeVal latestInsanceNode=null;
 						for(int i=nodes.size()-1;i>-1;i--){
 							ZooNode tempNode=nodes.get(i);
 							byte[] bytes=tempNode.getDataAsPossible(executor);
 							InstanceNodeVal instanceNodeVal=
 									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
 							if(!isComplete(instanceNodeVal)){
-								latestNode=instanceNodeVal;
+								latestInsanceNode=instanceNodeVal;
 							}
 							else{
 								break;
 							}
 						}
-						if(latestNode!=null){
+						if(latestInsanceNode!=null){
 							NodeData nodeData=virtualNode.getNodeData();
-							NodeData find=null;
+							NodeData latestNodeData=null;
 							for(NodeData temp:nodeData.getNodes()){
-								if(temp.getId()==latestNode.getId()){
-									find=temp;
+								if(temp.getId()==latestInsanceNode.getId()){
+									latestNodeData=temp;
 									break;
 								}
 							}
 							if(withError){
-								propagateCompleteDirectly(latestNode, virtualNode, find,
+								propagateCompleteDirectly(latestInsanceNode,  latestNodeData,virtualNode,
 										instance);
 							}
 							else{
-								propagateWorkerPath(latestNode, virtualNode, find,
+								propagateWorkerPath(latestInsanceNode,  latestNodeData,virtualNode,
 										instance);
 							}
 						}
@@ -779,26 +791,26 @@ public class NodeLeader implements Serializable{
 	/**
 	 * start a real / virtual path , whatever a real worker should be started.
 	 * if the node is virtual, find into its children.
-	 * @param triggerInstanceNodeVal
-	 * @param triggerInstanceNode
-	 * @param nodeData
+	 * @param triggerInstanceNodeVal point to the same node as triggerNodeData
+	 * @param triggerNodeData
+	 * @param virtualNode
 	 * @param instance
 	 */
 	private void propagateWorkerPath(InstanceNodeVal triggerInstanceNodeVal,
-			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
+			NodeData triggerNodeData,InstanceNode virtualNode,Instance instance){
 		if(triggerNodeData.hasChildren()){ // it's virtual node  
 			if(triggerNodeData.isParallel()){
 				//the node is parallel , so we need start all children nodes at the time
 				for(NodeData thisNodeData:triggerNodeData.getNodes()){
-					propagateWorkerPath(triggerInstanceNodeVal, virtualNode,
-							thisNodeData, instance);
+					propagateWorkerPath(triggerInstanceNodeVal,
+							thisNodeData, virtualNode,instance);
 				}
 			}
 			else{
 				//we get the first node to start.
 				NodeData thisNodeData=triggerNodeData.getNodes().get(0);
-				propagateWorkerPath(triggerInstanceNodeVal, virtualNode,
-						thisNodeData, instance);
+				propagateWorkerPath(triggerInstanceNodeVal,
+						thisNodeData, virtualNode,instance);
 			}
 		}else{ // it's real node, directly start 
 			start(triggerNodeData.getId(), instancePath(triggerNodeData.getPath(), instance), instance);
@@ -807,26 +819,26 @@ public class NodeLeader implements Serializable{
 	
 	/**
 	 * complete all sub-node/worker directly, no need start any worker
-	 * @param triggerInstanceNodeVal
-	 * @param virtualNode
+	 * @param triggerInstanceNodeVal point to the same node as triggerNodeData
 	 * @param triggerNodeData
+	 * @param virtualNode
 	 * @param instance
 	 */
 	private void propagateCompleteDirectly(InstanceNodeVal triggerInstanceNodeVal,
-			InstanceNode virtualNode,NodeData triggerNodeData,Instance instance){
+			NodeData triggerNodeData,InstanceNode virtualNode,Instance instance){
 		if(triggerNodeData.hasChildren()){ // it's virtual node  
 			if(triggerNodeData.isParallel()){
 				//the node is parallel , so we need start all children nodes at the time
 				for(NodeData thisNodeData:triggerNodeData.getNodes()){
-					propagateCompleteDirectly(triggerInstanceNodeVal, virtualNode,
-							thisNodeData, instance);
+					propagateCompleteDirectly(triggerInstanceNodeVal, 
+							thisNodeData,virtualNode, instance);
 				}
 			}
 			else{
 				//we get the first node to start.
 				NodeData thisNodeData=triggerNodeData.getNodes().get(0);
-				propagateCompleteDirectly(triggerInstanceNodeVal, virtualNode,
-						thisNodeData, instance);
+				propagateCompleteDirectly(triggerInstanceNodeVal, 
+						thisNodeData,virtualNode, instance);
 			}
 		}else{ // it's real node, directly complete 
 			c(instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_SKIP);
@@ -874,16 +886,10 @@ public class NodeLeader implements Serializable{
 	 * @param workerPathVal
 	 * @param instance
 	 */
-	private void startRealWorker(final WorkerPathVal workerPathVal,Instance instance){
+	private boolean startRealWorker(final WorkerPathVal workerPathVal,Instance instance){
 		final int workerId=workerPathVal.getId();
 		WorkerMaster workerMaster=instance.workerMaster();
-		try{
-			if(workerMaster.instaneCheck().isDone(workerPathVal)){
-				logInfo(" for instance["+workerPathVal.getSequence()+"] is triggered, skip this calling");
-				return;
-			}
-		}finally{
-		}
+		
 		String workerExecutingBasePath=pluginWorkerInstancePath(workerId,instance);
 		final String workerExecutingPath=workerExecutingBasePath+"/exenodes";
 		final String workerExecutingErrorPath=workerExecutingBasePath+"/error";
@@ -949,6 +955,15 @@ public class NodeLeader implements Serializable{
 				executor.deletePath(relProcessorPath);
 			}
 		}
+		return true;
+	}
+
+	private synchronized boolean isStart(final WorkerPathVal workerPathVal, Instance instance) {
+		if(instance.workerMaster().instaneCheck().isStart(workerPathVal.getInstancePath())){
+			logInfo(" for instance["+workerPathVal.getSequence()+"] is triggered, skip this calling");
+			return true;
+		}
+		return false;
 	}
 	
 	/**

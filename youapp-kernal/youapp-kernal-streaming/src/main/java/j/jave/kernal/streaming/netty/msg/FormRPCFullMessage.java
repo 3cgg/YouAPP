@@ -2,6 +2,7 @@ package j.jave.kernal.streaming.netty.msg;
 
 import java.util.Map;
 
+import j.jave.kernal.jave.support.parser.JDefaultSimpleDataParser;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
 import j.jave.kernal.streaming.netty.controller.MethodParamMeta;
 
@@ -30,7 +31,8 @@ public class FormRPCFullMessage extends SimpleRPCFullMessage {
 			Map<String, Object> content=(Map<String, Object>) content();
 			for(int i=0;i<methodParamMetas.length;i++){
 				MethodParamMeta meta=methodParamMetas[i];
-				params[i]=content.get(meta.getName());
+				JDefaultSimpleDataParser dataParser=JDefaultSimpleDataParser.getDefault();
+				params[i]=dataParser.parse(meta.getType(), content.get(meta.getName()));
 			}
 			return params;
 		}

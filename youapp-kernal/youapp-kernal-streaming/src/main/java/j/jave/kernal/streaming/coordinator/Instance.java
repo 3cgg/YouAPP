@@ -78,6 +78,10 @@ public class Instance implements JModel,Closeable{
 		instanceNodes.put(path, instanceNode);
 	}
 	
+	public void updateInstanceNodeVal(String path, InstanceNodeVal instanceNodeVal){
+		getInstanceNode(path).setInstanceNodeVal(instanceNodeVal);
+	}
+	
 	public InstanceNode getInstanceNode(String path){
 		return instanceNodes.get(path);
 	}
@@ -186,6 +190,11 @@ public class Instance implements JModel,Closeable{
 	}
 	
 	public WorkerMaster workerMaster() {
+		return workerMaster;
+	}
+	
+	@Deprecated
+	public WorkerMaster getWorkerMaster() {
 		return workerMaster;
 	}
 	

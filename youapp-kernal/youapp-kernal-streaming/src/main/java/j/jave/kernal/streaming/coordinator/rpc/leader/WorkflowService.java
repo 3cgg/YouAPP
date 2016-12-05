@@ -1,11 +1,14 @@
 package j.jave.kernal.streaming.coordinator.rpc.leader;
 
+import java.util.Collection;
 import java.util.Map;
 
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.streaming.coordinator.Instance;
 import j.jave.kernal.streaming.coordinator.NodeLeader;
+import j.jave.kernal.streaming.coordinator.WorkflowMaster;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.coordinator._SerializeFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.ControllerSupport;
@@ -54,5 +57,14 @@ implements IWorkflowService{
 		return false;
 	}
 	
+	public Instance getInstance(Long sequence){
+		WorkflowMaster workflowMaster=NodeLeader.runtime().workflowMaster();
+		return workflowMaster.getInstance(sequence);
+	}
+	
+	public Collection<Long> getInstances(){
+		WorkflowMaster workflowMaster=NodeLeader.runtime().workflowMaster();
+		return workflowMaster.getInstances().keySet();
+	}
 
 }

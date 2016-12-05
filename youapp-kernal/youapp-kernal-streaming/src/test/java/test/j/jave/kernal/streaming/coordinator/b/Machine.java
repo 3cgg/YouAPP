@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.apache.kafka.common.utils.Utils;
 
+import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.NodeWorker;
 import j.jave.kernal.streaming.coordinator.NodeWorkers;
@@ -17,6 +18,8 @@ import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 public class Machine {
 	
 	private static Random random=new Random();
+	
+	private static long count=0;
 	
 	public static Map conf(){
 		Map leaderConf=new HashMap<>();
@@ -46,13 +49,20 @@ public class Machine {
 						try{
 							System.out.println(nodeWorker.getId()+ "=== ready to get lock .");
 							nodeWorker.acquire();
-							System.out.println(nodeWorker.getId()+ "=== got lock , wait some executing time .");
-							Utils.sleep(1000); 
+							System.out.println("worker["+nodeWorker.getId()+ "]; param : ----- "
+									+JJSON.get().formatObject(nodeWorker.getWorkflowConf())
+									+"-----; ===got lock , wait some executing time .");
+							count++;
+							Utils.sleep(3000);
 						}catch (Exception e) {
 							e.printStackTrace();
 						}finally {
 							try {
-								nodeWorker.release(new RuntimeException("test error..."));
+								if(count%10==0){
+									nodeWorker.release(new RuntimeException("test error["+count+"]..."));
+								}else{
+									nodeWorker.release();
+								}
 								System.out.println(nodeWorker.getId()+ " release lock");
 							} catch (Exception e) {
 								e.printStackTrace();

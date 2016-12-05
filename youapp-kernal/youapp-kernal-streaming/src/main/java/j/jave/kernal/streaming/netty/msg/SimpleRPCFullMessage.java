@@ -8,6 +8,7 @@ import j.jave.kernal.jave.json.JJSON;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
+import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
 import j.jave.kernal.streaming.netty.server.ErrorCode;
 import j.jave.kernal.streaming.netty.server.ServerExecuteException;
@@ -83,7 +84,12 @@ public abstract class SimpleRPCFullMessage extends SimpleFullMessage implements 
 
 		@Override
 		public Object get() {
-			return JStringUtils.utf8((String) encoder().encode(objects.toArray()));
+			try{
+				return JStringUtils.utf8((String) encoder().encode(objects.toArray()));
+			}catch (Exception e) {
+				return JStringUtils.utf8((String) encoder().encode(Util.getMsg(e)));
+			}
+			
 		}
 		
 	}

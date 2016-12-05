@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import j.jave.kernal.jave.model.JModel;
 
 public class InstanceNode implements JModel,Closeable{
@@ -22,7 +24,8 @@ public class InstanceNode implements JModel,Closeable{
 	/**
 	 * the wather on the {@link #path}
 	 */
-	private PathChildrenCache pathChildrenCache;
+	@JsonIgnore
+	private transient PathChildrenCache pathChildrenCache;
 	
 	/**
 	 * the zookeeper path

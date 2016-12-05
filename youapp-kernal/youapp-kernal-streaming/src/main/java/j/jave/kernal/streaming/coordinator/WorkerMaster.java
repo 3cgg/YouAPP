@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
@@ -15,7 +16,8 @@ public class WorkerMaster implements JModel ,Closeable{
 	/**
 	 * KEY : executing worker path / include instance id
 	 */
-	private Map<String, PathChildrenCache> processorsWathers=Maps.newHashMap();
+	@JsonIgnore
+	private transient Map<String, PathChildrenCache> processorsWathers=Maps.newHashMap();
 	
 	private InstaneCheck instaneCheck=new InstaneCheck();
 	
@@ -23,7 +25,12 @@ public class WorkerMaster implements JModel ,Closeable{
 		
 		private Map<String, NodeStatus> status=Maps.newHashMap();
 		
+		public Map<String, NodeStatus> getStatus() {
+			return status;
+		}
+		
 		boolean isComplete(String path,NodeStatus nodeStatus){
+			isStart(path);
 			NodeStatus _nodeStatus=get(path);
 			if(_nodeStatus.isComplete()){
 				return true;
@@ -83,10 +90,12 @@ public class WorkerMaster implements JModel ,Closeable{
 		return instaneCheck;
 	}
 
-	public void setInstaneCheck(InstaneCheck instaneCheck) {
+	void setInstaneCheck(InstaneCheck instaneCheck) {
 		this.instaneCheck = instaneCheck;
 	}
 	
-	
+	public InstaneCheck getInstaneCheck() {
+		return instaneCheck;
+	}
 	
 }

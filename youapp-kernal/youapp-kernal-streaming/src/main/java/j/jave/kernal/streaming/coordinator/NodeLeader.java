@@ -334,7 +334,7 @@ public class NodeLeader implements Serializable{
 	private void completeVirtual(final Instance instance, final String _path
 			,final NodeStatus completeStatus) {
 		// the virtual node is completed, set flag to complete
-		c(_path,completeStatus);
+		c(instance,_path,completeStatus);
 		//close instance children node watcher, release IO
 		close(instance.getSequence(), _path, CacheType.CHILD);
 	}
@@ -343,11 +343,15 @@ public class NodeLeader implements Serializable{
 	 * is;s call  when the logical/virtual node is completed.
 	 * @param path
 	 */
-	private void c(final String path,final NodeStatus completeStatus){
+	private void c(Instance instance,final String path,final NodeStatus completeStatus){
 		final InstanceNodeVal instanceNodeVal=
 				SerializerUtils.deserialize(serializerFactory, executor.getPath(path), InstanceNodeVal.class);
 		instanceNodeVal.setStatus(completeStatus);
 		instanceNodeVal.setTime(new Date().getTime());
+		
+		instance.updateInstanceNodeVal(path, instanceNodeVal);
+		instance.workerMaster().instaneCheck().isComplete(path, completeStatus);
+		
 		executor.setPath(path, SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		//logging...
 		loggingExecutorService.execute(new Runnable() {
@@ -438,7 +442,7 @@ public class NodeLeader implements Serializable{
 	private void attachInstanceChildPathWatcher(final Instance instance){
 		for(String path:instance.getChildPathWatcherPaths()){
 			final String _path=path;
-			InstanceNode virtualNode=instance.getInstanceNodes().get(_path);
+			InstanceNode virtualNode=instance.getInstanceNode(_path);
 			final PathChildrenCache cache= executor.watchChildrenPath(_path, new ZooNodeChildrenCallback() {
 				@Override
 				public void call(List<ZooNode> nodes) {
@@ -478,7 +482,6 @@ public class NodeLeader implements Serializable{
 						}
 						synchronized (sync) {
 							InstaneCheck instaneCheck= instance.workerMaster().instaneCheck();
-							instaneCheck.isStart(_path);
 							if(!instaneCheck.isComplete(_path, completeStatus)){
 								completeVirtual(instance, _path,completeStatus);
 								if(path.equals(instance.getRootPath())){
@@ -537,10 +540,11 @@ public class NodeLeader implements Serializable{
 				}
 			}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_UPDATED);
 			virtualNode.setPathChildrenCache(cache);
-			instance.addInstanceNode(_path, virtualNode);
 		}
 		
 	}
+	
+	
 	
 	private boolean isComplete(InstanceNodeVal instanceNodeVal) {
 		return instanceNodeVal.getStatus().isComplete();
@@ -841,7 +845,7 @@ public class NodeLeader implements Serializable{
 						thisNodeData,virtualNode, instance);
 			}
 		}else{ // it's real node, directly complete 
-			c(instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_SKIP);
+			c(instance,instancePath(triggerNodeData.getPath(), instance), NodeStatus.COMPLETE_SKIP);
 		}
 	}
 	
@@ -984,7 +988,8 @@ public class NodeLeader implements Serializable{
 			nodeStatus.setThrowable(t);
 		}
 		instanceNodeVal.setStatus(nodeStatus);
-		
+		instance.updateInstanceNodeVal(path, instanceNodeVal);
+		instance.workerMaster().instaneCheck().isComplete(path, nodeStatus);
 		executor.setPath(path, 
 				SerializerUtils.serialize(serializerFactory, instanceNodeVal));
 		loggingExecutorService.execute(new Runnable() {
@@ -1020,5 +1025,9 @@ public class NodeLeader implements Serializable{
 	
 	public int getId() {
 		return id;
+	}
+	
+	public WorkflowMaster workflowMaster() {
+		return workflowMaster;
 	}
 }

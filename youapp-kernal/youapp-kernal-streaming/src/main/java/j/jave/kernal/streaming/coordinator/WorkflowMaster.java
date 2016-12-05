@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 	/**
 	 * all running/ already run  instance 
 	 */
-	private Map<Long,Instance> instances=Maps.newConcurrentMap();
+	private LinkedHashMap<Long,Instance> instances=Maps.newLinkedHashMap();
 	
 	/**
 	 * all workflows in the cluster
@@ -131,7 +132,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		return instances;
 	}
 
-	public void setInstances(Map<Long, Instance> instances) {
+	void setInstances(LinkedHashMap<Long, Instance> instances) {
 		this.instances = instances;
 	}
 

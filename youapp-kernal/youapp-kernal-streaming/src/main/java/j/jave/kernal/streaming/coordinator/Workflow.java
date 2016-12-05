@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
@@ -20,6 +21,7 @@ public class Workflow implements JModel,Closeable{
 	/**
 	 * watcher on {@link #pluginWorkersPath}
 	 */
+	@JsonIgnore
 	private transient PathChildrenCache pluginWorkersPathCache;
 	
 	private String pluginWorkersPath;
@@ -45,6 +47,7 @@ public class Workflow implements JModel,Closeable{
 	/**
 	 * watcher on the special workflow
 	 */
+	@JsonIgnore
 	private transient NodeCache workflowTriggerCache;
 	
 	public Workflow(String name) {

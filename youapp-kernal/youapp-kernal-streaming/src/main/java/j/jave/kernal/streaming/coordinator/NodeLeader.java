@@ -453,6 +453,17 @@ public class NodeLeader implements Serializable{
 				@Override
 				public void call(List<ZooNode> nodes) {
 					try{
+						
+						//check if the virtual is already completed
+						byte[] vbytes=executor.getPath(_path);
+						if(vbytes!=null&&vbytes.length>0){
+							InstanceNodeVal virtualNodeVal=
+									SerializerUtils.deserialize(serializerFactory, vbytes, InstanceNodeVal.class);
+							if(virtualNodeVal.getStatus().isComplete()){
+								return ;
+							}
+						}
+						
 						boolean done=true;
 						boolean withError=false;
 						boolean withSkip=false;
@@ -567,14 +578,7 @@ public class NodeLeader implements Serializable{
 	
 	private void completeInstance(final Instance instance,NodeStatus nodeStatus) throws Exception {
 		instance.close();
-		workflowMaster.completeInstance(instance, new TaskCallBack() {
-			@Override
-			public void call(Task task) {
-				Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
-						task.getParams());
-				start(instance);
-			}
-		});
+		workflowMaster.completeInstance(instance, getTaskCakkBack());
 	}
 	
 	
@@ -754,17 +758,38 @@ public class NodeLeader implements Serializable{
 		Task task=new Task();
 		task.setWorkflowName(name);
 		task.setParams(conf);
-		workflowMaster.addTask(task,new TaskCallBack() {
+		workflowMaster.addTask(task,getTaskCakkBack());
+		
+	}
+
+	private TaskCallBack getTaskCakkBack() {
+		return new TaskCallBack() {
 			@Override
 			public void call(Task task) {
-				Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
-						task.getParams());
-				WorkflowCheck workflowCheck=workflowMaster.getWorkflow(task.getWorkflowName()).workflowCheck();
-				workflowCheck.tryLock(instance.getSequence());
-				start(instance);
+				if(task!=null){
+					Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
+							task.getParams());
+					WorkflowCheck workflowCheck=workflowMaster.getWorkflow(task.getWorkflowName()).workflowCheck();
+					try{
+						if(!workflowCheck.tryLock(instance.getSequence())){
+							throw new IllegalStateException("workflow is locked : "+workflowCheck.getLockSequence());
+						}
+						start(instance);
+					}catch (Exception e) {
+						// the virtual node is completed, set flag to complete
+						NodeStatus nodeStatus=NodeStatus.COMPLETE_ERROR.setThrowable(e);
+						c(instance,instance.getRootPath(),nodeStatus);
+						try {
+							instance.addError(instance.getRootPath(), e);
+							completeInstance(instance,nodeStatus);
+						} catch (Exception e1) {
+							LOGGER.error(e1.getMessage(), e1);
+						}
+					}
+					
+				}
 			}
-		});
-		
+		};
 	}
 	
 	

@@ -19,7 +19,7 @@ public class TaskStartTrigger {
 		
 		workflowService.addWorkflow(demo);
 		Thread.currentThread().sleep(2000);
-		for(int i=0;i<100;i++){
+		for(int i=0;i<30000;i++){
 			Map<String, Object> pams=Maps.newHashMap();
 			pams.put("val", i+"-nly");
 			pams.put("index", i);

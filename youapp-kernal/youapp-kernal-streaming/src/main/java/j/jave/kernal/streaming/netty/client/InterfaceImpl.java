@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.esotericsoftware.kryo.util.Util;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.aop.JAdvisedSupport;
@@ -164,15 +165,17 @@ public class InterfaceImpl<T extends ControllerService> {
 				controllerCallPromise.setArgs(args);
 				controllerCallPromise.setIntarfaceImpl(InterfaceImpl.this);
 				SimpleInterfaceImplUtil.THREAD_LOCAL.set(controllerCallPromise);
-				Class<?> returnType=method.getReturnType();
-				if(byte.class==returnType
-						||short.class==returnType
-						||int.class==returnType
-						||long.class==returnType
-						||float.class==returnType
-						||double.class==returnType
+				Class<?> wrapperType=Util.getWrapperClass(method.getReturnType());
+				if(Byte.class==wrapperType
+						||Short.class==wrapperType
+						||Integer.class==wrapperType
+						||Long.class==wrapperType
+						||Float.class==wrapperType
+						||Double.class==wrapperType
 						){
 					return 0;
+				}else if(Boolean.class==wrapperType){
+					return true;
 				}
 				return null;
 			}

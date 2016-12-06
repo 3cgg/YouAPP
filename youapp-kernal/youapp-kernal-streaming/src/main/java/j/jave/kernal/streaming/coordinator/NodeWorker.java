@@ -88,7 +88,12 @@ public class NodeWorker implements Serializable {
 		trackingService=TrackingServiceFactory.build(conf);
 		workflowService=SimpleInterfaceImplUtil.asyncProxy(IWorkflowService.class);
 		this.executor=executor;
-		heartBeatExecutorService=Executors.newScheduledThreadPool(1);
+		heartBeatExecutorService=Executors.newScheduledThreadPool(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"{worker["+getId()+"]-heart-beat-to-leader");
+			}
+		});
 		
 		this.loggingExecutorService=Executors.newFixedThreadPool(workerNodeMeta.getLogThreadCount(),
 				new ThreadFactory() {
@@ -160,22 +165,26 @@ public class NodeWorker implements Serializable {
 				
 				@Override
 				public void run() {
-					WorkerTemporary workerTemporary=getWorkerTemporary();
-					if(workerTemporary!=null){
-						ExecutingWorker executingWorker=new ExecutingWorker();
-						WorkerExecutingPathVal workerExecutingPathVal=workerTemporary.getWorkerExecutingPathVal();
-						WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
-						executingWorker.setSequence(workerPathVal.getSequence());
-						executingWorker.setWorkerId(id);
-						executingWorker.setWorkerInstancePath(workerTemporary.getTempPath());
-						executingWorker.setWorkflowInstancePath(workerPathVal.getInstancePath());
-						Date date=new Date();
-						executingWorker.setTime(date.getTime());
-						executingWorker.setTimeStr(JDateUtils.formatWithSeconds(date));
-						workflowService.sendHeartbeats(executingWorker);
+					try{
+						WorkerTemporary workerTemporary=getWorkerTemporary();
+						if(workerTemporary!=null){
+							ExecutingWorker executingWorker=new ExecutingWorker();
+							WorkerExecutingPathVal workerExecutingPathVal=workerTemporary.getWorkerExecutingPathVal();
+							WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
+							executingWorker.setSequence(workerPathVal.getSequence());
+							executingWorker.setWorkerId(id);
+							executingWorker.setWorkerInstancePath(workerTemporary.getTempPath());
+							executingWorker.setWorkflowInstancePath(workerPathVal.getInstancePath());
+							Date date=new Date();
+							executingWorker.setTime(date.getTime());
+							executingWorker.setTimeStr(JDateUtils.formatWithMSeconds(date));
+							workflowService.sendHeartbeats(executingWorker);
+						}
+					}catch (Exception e) {
+						LOGGER.error(e.getMessage(), e);
 					}
 				}
-			}, 0, workerNodeMeta.getHeartBeatTimeMs(),TimeUnit.MICROSECONDS);
+			}, 0, workerNodeMeta.getHeartBeatTimeMs(),TimeUnit.MILLISECONDS);
 		}catch (Exception e) {
 			logError(e);
 		}finally{

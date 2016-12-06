@@ -222,12 +222,17 @@ public class Instance implements JModel,Closeable{
 	}
 	
 	public String getHeartBeatTimeStr() {
-		return JDateUtils.formatWithSeconds(new Date(heartBeatTime));
+		if(heartBeatTime<0) return "";
+		return JDateUtils.formatWithMSeconds(new Date(heartBeatTime));
 	}
 	
 	public synchronized boolean sendHeartbeats(ExecutingWorker executingWorker){
 		setHeartBeatTime(executingWorker.getTime());
-		executingWorkers.offer(executingWorker);
+		boolean success=executingWorkers.offer(executingWorker);
+		if(!success){
+			executingWorkers.remove();
+			executingWorkers.offer(executingWorker);
+		}
 		return true;
 	}
 	

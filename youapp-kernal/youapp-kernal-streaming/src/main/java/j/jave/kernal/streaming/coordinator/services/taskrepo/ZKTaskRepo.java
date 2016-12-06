@@ -62,8 +62,10 @@ public class ZKTaskRepo implements TaskRepo {
 	public synchronized Task getTaskByWorfklowName(String workflowName) {
 		Queue<Task> ts= tasks.get(workflowName);
 		Task task=ts.poll();
-		temp.remove(task.getId());
-		executor.deletePath(task.getZkNode());
+		if(task!=null){
+			temp.remove(task.getId());
+			executor.deletePath(task.getZkNode());
+		}
 		return task;
 	}
 

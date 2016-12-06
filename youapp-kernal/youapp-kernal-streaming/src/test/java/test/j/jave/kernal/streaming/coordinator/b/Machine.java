@@ -53,7 +53,7 @@ public class Machine {
 									+JJSON.get().formatObject(nodeWorker.getWorkflowConf())
 									+"-----; ===got lock , wait some executing time .");
 							count++;
-							Utils.sleep(10000);
+							Utils.sleep(3000);
 						}catch (Exception e) {
 							e.printStackTrace();
 						}finally {

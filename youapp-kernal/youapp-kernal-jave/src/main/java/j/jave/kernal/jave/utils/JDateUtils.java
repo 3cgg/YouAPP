@@ -3,14 +3,14 @@
  */
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 
 /**
  * @author J
@@ -22,6 +22,9 @@ public abstract class JDateUtils {
 	public static final String ddMMyyyyHHmmss="dd/MM/yyyy HH:mm:ss";
 	
 	public static final String yyyyMMddHHmmss="yyyy-MM-dd HH:mm:ss";
+	
+	public static final String yyyyMMddHHmmssSSS="yyyy-MM-dd HH:mm:ss,SSS";
+	
 	
 	public static final String ANY="ANY";
 	
@@ -53,6 +56,10 @@ public abstract class JDateUtils {
 	 */
 	public static String formatWithSeconds(Date timestamp){
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(timestamp) ;
+	}
+	
+	public static String formatWithMSeconds(Date timestamp){
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS").format(timestamp) ;
 	}
 	
 	/**

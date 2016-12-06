@@ -32,6 +32,7 @@ import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.WorkerMaster.InstaneCheck;
+import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
@@ -40,8 +41,11 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowErrorCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowErrorModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
+import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
+import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
+import j.jave.kernal.streaming.coordinator.services.taskrepo.ZKTaskRepo;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
 import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
@@ -403,7 +407,7 @@ public class NodeLeader implements Serializable{
 			throw new RuntimeException("the worker["+worker+"] does not exist.");
 		}
 		
-		logInfo("-find to start worker : "+worker +", instance : "+instance.getSequence()); 
+		logInfo("- ready to start worker : "+worker +", instance : "+instance.getSequence()); 
 		
 		final WorkerPathVal workerPathVal=new WorkerPathVal();
 		workerPathVal.setId(worker);
@@ -416,6 +420,8 @@ public class NodeLeader implements Serializable{
 		if(isStart){
 			return;
 		}
+		logInfo("- now to start worker : "+worker +", instance : "+instance.getSequence()); 
+		
 //		executor.setPath(instance.getWorkflow().getWorkerPaths().get(worker),
 //				SerializerUtils.serialize(serializerFactory, workerPathVal));
 		startRealWorker(workerPathVal, instance);
@@ -446,97 +452,112 @@ public class NodeLeader implements Serializable{
 			final PathChildrenCache cache= executor.watchChildrenPath(_path, new ZooNodeChildrenCallback() {
 				@Override
 				public void call(List<ZooNode> nodes) {
-					boolean done=true;
-					boolean withError=false;
-					boolean withSkip=false;
-					int skipCount=nodes.size();
-					for(ZooNode node:nodes){
-						byte[] bytes=node.getDataAsPossible(executor);
-						InstanceNodeVal instanceNodeVal=
-								SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
-						if(!instanceNodeVal.getStatus().isSkip()){
-							skipCount--;
+					try{
+						boolean done=true;
+						boolean withError=false;
+						boolean withSkip=false;
+						int skipCount=nodes.size();
+						for(ZooNode node:nodes){
+							byte[] bytes=node.getDataAsPossible(executor);
+							InstanceNodeVal instanceNodeVal=
+									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
+							if(!instanceNodeVal.getStatus().isSkip()){
+								skipCount--;
+							}
+							if(!isComplete(instanceNodeVal)){
+								done=false;
+							}else if(instanceNodeVal.getStatus().isCompleteWithError()){
+								withError=true;
+								instanceNodeVal.getStatus().getCause().forEach(new Consumer<Throwable>() {
+									@Override
+									public void accept(Throwable t) {
+										instance.addError(node.getPath(),t);
+									}
+								});
+							}
 						}
-						if(!isComplete(instanceNodeVal)){
-							done=false;
-						}else if(instanceNodeVal.getStatus().isCompleteWithError()){
-							withError=true;
-							instanceNodeVal.getStatus().getCause().forEach(new Consumer<Throwable>() {
-								@Override
-								public void accept(Throwable t) {
-									instance.addError(node.getPath(),t);
-								}
-							});
-						}
-					}
-					withSkip=skipCount==nodes.size();
-					
-					if(done){
-						NodeStatus completeStatus=null;
-						if(withError){
-							completeStatus=NodeStatus.COMPLETE_ERROR;
-						}else if(withSkip){
-							completeStatus=NodeStatus.COMPLETE_SKIP;
-						}else{
-							completeStatus=NodeStatus.COMPLETE;
-						}
-						synchronized (sync) {
-							InstaneCheck instaneCheck= instance.workerMaster().instaneCheck();
-							if(!instaneCheck.isComplete(_path, completeStatus)){
-								completeVirtual(instance, _path,completeStatus);
-								if(path.equals(instance.getRootPath())){
-									executeCompleteCommand(instance);
-									executeRetryCommand(instance);
-									if(withError){
-										executeErrorCommand(instance);
+						withSkip=skipCount==nodes.size();
+						
+						if(done){
+							NodeStatus completeStatus=null;
+							if(withError){
+								completeStatus=NodeStatus.COMPLETE_ERROR;
+							}else if(withSkip){
+								completeStatus=NodeStatus.COMPLETE_SKIP;
+							}else{
+								completeStatus=NodeStatus.COMPLETE;
+							}
+							synchronized (sync) {
+								InstaneCheck instaneCheck= instance.workerMaster().instaneCheck();
+								if(!instaneCheck.isComplete(_path, completeStatus)){
+									completeVirtual(instance, _path,completeStatus);
+									if(path.equals(instance.getRootPath())){
+										executeCompleteCommand(instance);
+//										executeRetryCommand(instance);  // avoid turn on this function , should close retry function
+										if(withError){
+											executeErrorCommand(instance);
+										}
+										completeInstance(instance,completeStatus);
 									}
 								}
 							}
+							return;
 						}
-						return;
-					}
-					
-					Collections.sort(nodes, new Comparator<ZooNode>() {
-						@Override
-						public int compare(ZooNode o1, ZooNode o2) {
-							return pathSequence(o1.getPath())-pathSequence(o2.getPath());
-						}
-					});
-					
-					if(!virtualNode.getNodeData().isParallel()){
-						//start next node/worker in the virtual node
-						InstanceNodeVal latestInsanceNode=null;
-						for(int i=nodes.size()-1;i>-1;i--){
-							ZooNode tempNode=nodes.get(i);
-							byte[] bytes=tempNode.getDataAsPossible(executor);
-							InstanceNodeVal instanceNodeVal=
-									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
-							if(!isComplete(instanceNodeVal)){
-								latestInsanceNode=instanceNodeVal;
+						
+						Collections.sort(nodes, new Comparator<ZooNode>() {
+							@Override
+							public int compare(ZooNode o1, ZooNode o2) {
+								return pathSequence(o1.getPath())-pathSequence(o2.getPath());
 							}
-							else{
-								break;
-							}
-						}
-						if(latestInsanceNode!=null){
-							NodeData nodeData=virtualNode.getNodeData();
-							NodeData latestNodeData=null;
-							for(NodeData temp:nodeData.getNodes()){
-								if(temp.getId()==latestInsanceNode.getId()){
-									latestNodeData=temp;
+						});
+						
+
+						if(!virtualNode.getNodeData().isParallel()){
+							//start next node/worker in the virtual node
+							InstanceNodeVal latestInsanceNode=null;
+							for(int i=nodes.size()-1;i>-1;i--){
+								ZooNode tempNode=nodes.get(i);
+								byte[] bytes=tempNode.getDataAsPossible(executor);
+								InstanceNodeVal instanceNodeVal=
+										SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
+								if(!isComplete(instanceNodeVal)){
+									latestInsanceNode=instanceNodeVal;
+								}
+								else{
 									break;
 								}
 							}
-							if(withError){
-								propagateCompleteDirectly(latestInsanceNode,  latestNodeData,virtualNode,
-										instance);
-							}
-							else{
-								propagateWorkerPath(latestInsanceNode,  latestNodeData,virtualNode,
-										instance);
+							if(latestInsanceNode!=null){
+								NodeData nodeData=virtualNode.getNodeData();
+								NodeData latestNodeData=null;
+								for(NodeData temp:nodeData.getNodes()){
+									if(temp.getId()==latestInsanceNode.getId()){
+										latestNodeData=temp;
+										break;
+									}
+								}
+								if(withError){
+									propagateCompleteDirectly(latestInsanceNode,  latestNodeData,virtualNode,
+											instance);
+								}
+								else{
+									propagateWorkerPath(latestInsanceNode,  latestNodeData,virtualNode,
+											instance);
+								}
 							}
 						}
+					}catch (Exception e) {
+						// the virtual node is completed, set flag to complete
+						NodeStatus nodeStatus=NodeStatus.COMPLETE_ERROR.setThrowable(e);
+						c(instance,instance.getRootPath(),nodeStatus);
+						try {
+							instance.addError(_path, e);
+							completeInstance(instance,nodeStatus);
+						} catch (Exception e1) {
+							LOGGER.error(e1.getMessage(), e1);
+						}
 					}
+					
 				}
 			}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_UPDATED);
 			virtualNode.setPathChildrenCache(cache);
@@ -544,6 +565,17 @@ public class NodeLeader implements Serializable{
 		
 	}
 	
+	private void completeInstance(final Instance instance,NodeStatus nodeStatus) throws Exception {
+		instance.close();
+		workflowMaster.completeInstance(instance, new TaskCallBack() {
+			@Override
+			public void call(Task task) {
+				Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
+						task.getParams());
+				start(instance);
+			}
+		});
+	}
 	
 	
 	private boolean isComplete(InstanceNodeVal instanceNodeVal) {
@@ -585,6 +617,9 @@ public class NodeLeader implements Serializable{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster();
+		TaskRepo taskRepo=new ZKTaskRepo(executor, leaderNodeMeta.getTaskRepoPath());
+		workflowMaster.setTaskRepo(taskRepo);
+		
 		attachWorfkowTriggerWatcher(null);
 		attachWorfkowAddWatcher();
 		registerLeaderInZookeeper();
@@ -703,7 +738,7 @@ public class NodeLeader implements Serializable{
 		attachWorfkowTriggerWatcher(workflow);
 		
 		workflow.setCount(workflow.getCount()+1);
-		instance.setCount(workflow.getCount());
+//		instance.setCount(workflow.getCount());
 		
 		workflowMaster.addInstance(sequence, instance);
 		
@@ -716,8 +751,20 @@ public class NodeLeader implements Serializable{
 		if(workflow==null){
 			throw new RuntimeException("workflow is missing, to add workflow in the container.");
 		}
-		Instance instance=createInstance(workflow,conf);
-		start(instance);
+		Task task=new Task();
+		task.setWorkflowName(name);
+		task.setParams(conf);
+		workflowMaster.addTask(task,new TaskCallBack() {
+			@Override
+			public void call(Task task) {
+				Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
+						task.getParams());
+				WorkflowCheck workflowCheck=workflowMaster.getWorkflow(task.getWorkflowName()).workflowCheck();
+				workflowCheck.tryLock(instance.getSequence());
+				start(instance);
+			}
+		});
+		
 	}
 	
 	
@@ -943,9 +990,11 @@ public class NodeLeader implements Serializable{
 		// notify sub-processors of worker
 		String processorPath=pluginWorkerProcessorPath(workerId, instance);
 		List<String> chls=executor.getChildren(processorPath);
+		boolean hasProcessor=false;
 		for(String chPath:chls){
 			String relProcessorPath=processorPath+"/"+chPath;
 			if(!executor.getChildren(relProcessorPath).isEmpty()){
+				hasProcessor=true;
 				WorkerNodeMeta workerNodeMeta=
 					SerializerUtils.deserialize(serializerFactory, 
 							executor.getPath(relProcessorPath), WorkerNodeMeta.class);
@@ -958,6 +1007,9 @@ public class NodeLeader implements Serializable{
 				//may delete the node (broken from the zookeeper)
 				executor.deletePath(relProcessorPath);
 			}
+		}
+		if(!hasProcessor){
+			throw new IllegalStateException(" worker["+workerPathVal.getId()+"] is offline");
 		}
 		return true;
 	}
@@ -1002,6 +1054,15 @@ public class NodeLeader implements Serializable{
 			}
 		});
 	}
+	
+	
+	public boolean sendHeartbeats(ExecutingWorker executingWorker){
+		long sequence=executingWorker.getSequence();
+		Instance instance=workflowMaster.getInstance(sequence);
+		instance.sendHeartbeats(executingWorker);
+		return true;
+	}
+	
 	
 	ZookeeperExecutor getExecutor() {
 		return executor;

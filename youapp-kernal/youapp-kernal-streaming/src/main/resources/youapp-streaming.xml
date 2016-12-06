@@ -60,5 +60,10 @@
   <description>zookeeper node from which the remote host can be found</description>
 </property>
 
+<property>
+  <name>youapp.streaming.leader.taskrepo.znode</name>
+  <value>/tasks</value>
+  <description>zookeeper node for task</description>
+</property>
 
 </configuration>

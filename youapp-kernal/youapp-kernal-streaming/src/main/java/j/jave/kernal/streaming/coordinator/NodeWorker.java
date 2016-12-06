@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -22,8 +23,11 @@ import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.coordinator.command.WorkerTemporary;
+import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
+import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
+import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
@@ -65,11 +69,15 @@ public class NodeWorker implements Serializable {
 	
 	private TrackingService trackingService;
 	
-	private ExecutorService loggingExecutorService=null;
+	private ExecutorService loggingExecutorService;
 	
-	private ExecutorService zooKeeperExecutorService=null;
+	private ExecutorService zooKeeperExecutorService;
 	
 	private SimpleHttpNioChannelServer server;
+	
+	private IWorkflowService workflowService;
+	
+	private ScheduledExecutorService heartBeatExecutorService;
 	
 	public NodeWorker(WorkflowMeta workflowMeta,Map conf,ZookeeperExecutor executor) {
 		this.workerNodeMeta=new WorkerNodeMetaGetter(JConfiguration.get(), conf).nodeMeta();
@@ -78,7 +86,10 @@ public class NodeWorker implements Serializable {
 		this.workflowMeta=workflowMeta;
 		this.conf=conf;
 		trackingService=TrackingServiceFactory.build(conf);
+		workflowService=SimpleInterfaceImplUtil.asyncProxy(IWorkflowService.class);
 		this.executor=executor;
+		heartBeatExecutorService=Executors.newScheduledThreadPool(1);
+		
 		this.loggingExecutorService=Executors.newFixedThreadPool(workerNodeMeta.getLogThreadCount(),
 				new ThreadFactory() {
 			@Override
@@ -142,9 +153,29 @@ public class NodeWorker implements Serializable {
 			startServer(workerNodeMeta);
 			
 			Processor processor=new Processor();
-			processor.setTempPath(workerProcessorPath);
+			processor.setNodePath(workerProcessorPath);
 			processor.setWorkerNodeMeta(workerNodeMeta);
 			this.processor=processor;
+			heartBeatExecutorService.scheduleAtFixedRate(new Runnable() {
+				
+				@Override
+				public void run() {
+					WorkerTemporary workerTemporary=getWorkerTemporary();
+					if(workerTemporary!=null){
+						ExecutingWorker executingWorker=new ExecutingWorker();
+						WorkerExecutingPathVal workerExecutingPathVal=workerTemporary.getWorkerExecutingPathVal();
+						WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
+						executingWorker.setSequence(workerPathVal.getSequence());
+						executingWorker.setWorkerId(id);
+						executingWorker.setWorkerInstancePath(workerTemporary.getTempPath());
+						executingWorker.setWorkflowInstancePath(workerPathVal.getInstancePath());
+						Date date=new Date();
+						executingWorker.setTime(date.getTime());
+						executingWorker.setTimeStr(JDateUtils.formatWithSeconds(date));
+						workflowService.sendHeartbeats(executingWorker);
+					}
+				}
+			}, 0, workerNodeMeta.getHeartBeatTimeMs(),TimeUnit.MICROSECONDS);
 		}catch (Exception e) {
 			logError(e);
 		}finally{
@@ -253,6 +284,7 @@ public class NodeWorker implements Serializable {
 				,CreateMode.EPHEMERAL_SEQUENTIAL);
 			}
 			executor.deletePath(workerTemporary.getTempPath());
+			workerTemporary=null;
 		}catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}finally{
@@ -322,4 +354,17 @@ public class NodeWorker implements Serializable {
 	private void logInfo(String msg) {
 		LOGGER.info(getMessage(msg));
 	}
+	
+	private WorkerTemporary getWorkerTemporary() {
+		return workerTemporary;
+	}
+	
+	/**
+	 * the indication path by current worker processor/thread , never changed
+	 * @return
+	 */
+	public String getProcessorPath() {
+		return processor.getNodePath();
+	}
+	
 }

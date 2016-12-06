@@ -18,6 +18,7 @@ public class WorkerNodeMetaGetter extends NodeMetaGetter<WorkerNodeMeta> {
 		workerNodeMeta.setPort(getInt(ConfigNames.STREAMING_WORKER_NETTY_SERVER_PORT, 8080));
 		workerNodeMeta.setZkThreadCount(getInt(ConfigNames.STREAMING_WORKER_ZOOKEEPER_THREAD_COUNT,9));
 		workerNodeMeta.setLogThreadCount(getInt(ConfigNames.STREAMING_WORKER_LOGGING_THREAD_COUNT, 9));
+		workerNodeMeta.setHeartBeatTimeMs(getInt(ConfigNames.STREAMING_WORKER_HEARTBEATS_TIME_MS, 1000));
 		return workerNodeMeta;
 	}
 

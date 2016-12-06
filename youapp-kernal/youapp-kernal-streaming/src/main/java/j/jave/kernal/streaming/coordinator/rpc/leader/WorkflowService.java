@@ -8,6 +8,7 @@ import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.streaming.coordinator.Instance;
 import j.jave.kernal.streaming.coordinator.NodeLeader;
+import j.jave.kernal.streaming.coordinator.Workflow;
 import j.jave.kernal.streaming.coordinator.WorkflowMaster;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
 import j.jave.kernal.streaming.coordinator._SerializeFactoryGetter;
@@ -55,6 +56,19 @@ implements IWorkflowService{
 	public boolean triggerWorkflow(String name,Map<String, Object> conf) {
 		NodeLeader.runtime().startWorkflow(name, conf);
 		return false;
+	}
+	
+	@Override
+	public boolean sendHeartbeats(ExecutingWorker executingWorker) {
+		return NodeLeader.runtime().sendHeartbeats(executingWorker);
+	}
+	
+	public Collection<String> getWorkflows(){
+		return NodeLeader.runtime().workflowMaster().getWorkflows().keySet();
+	}
+	
+	public Workflow getWorkflow(String name){
+		return NodeLeader.runtime().workflowMaster().getWorkflow(name);
 	}
 	
 	public Instance getInstance(Long sequence){

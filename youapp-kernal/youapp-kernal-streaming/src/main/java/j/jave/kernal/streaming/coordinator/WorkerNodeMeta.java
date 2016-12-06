@@ -6,6 +6,8 @@ public class WorkerNodeMeta extends NodeMeta {
 	
 	private int logThreadCount;
 
+	private int heartBeatTimeMs;
+
 	public int getZkThreadCount() {
 		return zkThreadCount;
 	}
@@ -21,5 +23,14 @@ public class WorkerNodeMeta extends NodeMeta {
 	public void setLogThreadCount(int logThreadCount) {
 		this.logThreadCount = logThreadCount;
 	}
+
+	public int getHeartBeatTimeMs() {
+		return heartBeatTimeMs;
+	}
+
+	public void setHeartBeatTimeMs(int heartBeatTimeMs) {
+		this.heartBeatTimeMs = heartBeatTimeMs;
+	}
+	
 	
 }

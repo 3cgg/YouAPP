@@ -6,6 +6,8 @@ public class LeaderNodeMeta extends NodeMeta {
 	
 	private int logThreadCount;
 	
+	private String taskRepoPath;
+	
 	private final boolean leader=true;
 
 	public boolean isLeader() {
@@ -34,6 +36,14 @@ public class LeaderNodeMeta extends NodeMeta {
 
 	public void setLogThreadCount(int logThreadCount) {
 		this.logThreadCount = logThreadCount;
+	}
+
+	public String getTaskRepoPath() {
+		return taskRepoPath;
+	}
+
+	public void setTaskRepoPath(String taskRepoPath) {
+		this.taskRepoPath = taskRepoPath;
 	}
 	
 	

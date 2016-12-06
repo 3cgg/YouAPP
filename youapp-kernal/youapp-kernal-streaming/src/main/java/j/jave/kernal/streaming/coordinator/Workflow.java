@@ -50,6 +50,8 @@ public class Workflow implements JModel,Closeable{
 	@JsonIgnore
 	private transient NodeCache workflowTriggerCache;
 	
+	private WorkflowCheck workflowCheck=new WorkflowCheck();
+	
 	public Workflow(String name) {
 		this(name,Maps.newConcurrentMap(),null);
 	}
@@ -63,6 +65,61 @@ public class Workflow implements JModel,Closeable{
 		pluginWorkersPath=pluginWorkersPath();
 		if(nodeDataGenerator!=null)
 			this.nodeData=nodeDataGenerator.generate(name, conf);
+	}
+	
+	class WorkflowCheck{
+		
+		/**
+		 * which executing instance of the workflow
+		 */
+		private volatile Long lockSequence;
+		
+		/**
+		 * check whether the workflow is running if any instance of the workflow is not completed.
+		 * @return
+		 */
+		boolean isLock(){
+			return lockSequence!=null;
+		}
+		
+		/**
+		 * attempt to express the workflow is ready for next start
+		 * @param sequence
+		 * @return
+		 */
+		synchronized boolean release(Long sequence){
+			if(tryLock(sequence)){
+				lockSequence=null;
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		/**
+		 * attempt to lock the workflow
+		 * @param sequence
+		 * @return
+		 */
+		synchronized boolean tryLock(Long sequence){
+			if(isLock()){
+				if(_isLock0(sequence)){
+					return true;
+				}
+				return false;
+			}
+			lockSequence=sequence;
+			return true;
+		}
+
+		private boolean _isLock0(Long sequence) {
+			return lockSequence.compareTo(sequence)==0;
+		}
+		
+		public Long getLockSequence() {
+			return lockSequence;
+		}
+		
 	}
 	
 	@Override
@@ -149,4 +206,14 @@ public class Workflow implements JModel,Closeable{
 	public boolean containsWorker(int workerId){
 		return nodeData.containsWorker(workerId);
 	}
+	
+	public WorkflowCheck workflowCheck() {
+		return workflowCheck;
+	}
+	
+	@Deprecated
+	public WorkflowCheck getWorkflowCheck() {
+		return workflowCheck;
+	}
+	
 }

@@ -28,6 +28,10 @@ public class ConfigNames {
 	//youapp.streaming.leader.logging.thread.count
 	public static final String STREAMING_LEADER_LOGGING_THREAD_COUNT="youapp.streaming.leader.logging.thread.count";
 	
+	//youapp.streaming.leader.taskrepo.znode
+	public static final String STREAMING_LEADER_TASKREPO_ZNODE="youapp.streaming.leader.taskrepo.znode";
+	
+	
 	//youapp.streaming.worker.netty.server.port
 	public static final String STREAMING_WORKER_NETTY_SERVER_PORT="youapp.streaming.worker.netty.server.port";
 			
@@ -37,7 +41,9 @@ public class ConfigNames {
 		//youapp.streaming.worker.logging.thread.count
 		public static final String STREAMING_WORKER_LOGGING_THREAD_COUNT="youapp.streaming.worker.logging.thread.count";
 
-	
+		//youapp.streaming.worker.heartbeats.time.ms
+		public static final String STREAMING_WORKER_HEARTBEATS_TIME_MS="youapp.streaming.worker.heartbeats.time.ms";
+
 	
 	
 	

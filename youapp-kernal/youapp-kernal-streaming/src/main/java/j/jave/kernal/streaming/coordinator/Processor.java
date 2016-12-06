@@ -9,16 +9,16 @@ import j.jave.kernal.jave.model.JModel;
  */
 public class Processor implements JModel{
 
-	private String tempPath;
+	private String nodePath;
 	
 	private WorkerNodeMeta workerNodeMeta;
 
-	public String getTempPath() {
-		return tempPath;
+	public String getNodePath() {
+		return nodePath;
 	}
 
-	public void setTempPath(String tempPath) {
-		this.tempPath = tempPath;
+	public void setNodePath(String nodePath) {
+		this.nodePath = nodePath;
 	}
 
 	public WorkerNodeMeta getWorkerNodeMeta() {

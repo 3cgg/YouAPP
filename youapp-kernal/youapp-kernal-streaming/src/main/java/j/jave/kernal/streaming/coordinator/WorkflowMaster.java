@@ -12,11 +12,14 @@ import java.util.Map;
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
+import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
 
 public class WorkflowMaster implements JModel ,Closeable{
 
@@ -42,9 +45,15 @@ public class WorkflowMaster implements JModel ,Closeable{
 	private Map<String, Workflow> workflows=Maps.newConcurrentMap();
 	
 	private LeaderNodeMeta leaderNodeMeta;
+	
+	@JsonIgnore
+	private transient TaskRepo taskRepo;
 
 	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
 	=Maps.newConcurrentMap();
+	
+	public WorkflowMaster() {
+	}
 	
 	@Override
 	public void close() throws IOException {
@@ -162,6 +171,35 @@ public class WorkflowMaster implements JModel ,Closeable{
 
 	public void setLeaderNodeMeta(LeaderNodeMeta leaderNodeMeta) {
 		this.leaderNodeMeta = leaderNodeMeta;
+	}
+	
+	public void setTaskRepo(TaskRepo taskRepo) {
+		this.taskRepo = taskRepo;
+	}
+	
+	public synchronized String addTask(Task task,TaskCallBack taskCallBack){
+		String taskId=taskRepo.addTask(task);
+		WorkflowCheck workflowCheck=getWorkflow(task.getWorkflowName()).workflowCheck();
+		if(!workflowCheck.isLock()){
+			taskCallBack.call(taskRepo.getTaskByWorfklowName(task.getWorkflowName()));
+		}
+		return taskId;
+	}
+	
+	public synchronized void completeInstance(Long sequence,TaskCallBack taskCallBack){
+		completeInstance(getInstance(sequence), taskCallBack);
+	}
+	
+	public synchronized void completeInstance(Instance instance,TaskCallBack taskCallBack){
+		String workflowName=instance.getWorkflow().getName();
+		Workflow workflow=getWorkflow(workflowName);
+		Long sequence=instance.getSequence();
+		if(workflow.workflowCheck().tryLock(sequence)){
+			workflow.workflowCheck().release(sequence);
+			taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName));
+		}else{
+			throw new RuntimeException("workflow[locked:"+workflow.workflowCheck().getLockSequence()+"] is not locked by the instance : "+sequence);
+		}
 	}
 	
 	

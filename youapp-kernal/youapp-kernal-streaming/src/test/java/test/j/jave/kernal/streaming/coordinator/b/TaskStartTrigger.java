@@ -19,10 +19,12 @@ public class TaskStartTrigger {
 		
 		workflowService.addWorkflow(demo);
 		Thread.currentThread().sleep(2000);
-		
-		Map<String, Object> pams=Maps.newHashMap();
-		pams.put("vl", "0nly");
-		workflowService.triggerWorkflow(demo.getName(), pams);
+		for(int i=0;i<100;i++){
+			Map<String, Object> pams=Maps.newHashMap();
+			pams.put("val", i+"-nly");
+			pams.put("index", i);
+			workflowService.triggerWorkflow(demo.getName(), pams);
+		}
 		
 		System.out.println("end...");
 		Thread.currentThread().sleep(2000);

@@ -30,5 +30,6 @@ public interface IWorkflowService extends ControllerService , IControllerImpleme
 	 */
 	boolean triggerWorkflow(String name,Map<String, Object> conf);
 	
+	boolean sendHeartbeats(ExecutingWorker executingWorker);
 	
 }

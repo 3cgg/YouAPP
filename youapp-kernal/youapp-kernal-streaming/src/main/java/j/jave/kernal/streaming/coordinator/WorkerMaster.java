@@ -67,7 +67,6 @@ public class WorkerMaster implements JModel ,Closeable{
 				exception.addMessage(e.getMessage());
 			}
 		}
-		instaneCheck=null;
 		if(exception.has())
 			throw exception;
 	}

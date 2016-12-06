@@ -4,13 +4,18 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.streaming.Util;
+import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 
 /**
  * the instance is created when a new workflow is started
@@ -32,7 +37,7 @@ public class Instance implements JModel,Closeable{
 	/**
 	 * how many times from the workflow beginning
 	 */
-	private long count;
+	private long count=1;
 	
 	/**
 	 * the roor path of 
@@ -66,6 +71,10 @@ public class Instance implements JModel,Closeable{
 	
 	private WorkerMaster workerMaster=new WorkerMaster();
 	
+	private long heartBeatTime=-1;
+	
+	private Queue<ExecutingWorker> executingWorkers=Queues.newLinkedBlockingQueue(10);
+	
 	public void addChildPathWatcherPath(String path){
 		childPathWatcherPaths.add(path);
 	}
@@ -97,8 +106,12 @@ public class Instance implements JModel,Closeable{
 			}
 		}
 		
-		errors.clear();
-		errors=null;
+		try{
+			workerMaster.close();
+		}catch (Exception e) {
+			exception.addMessage(e.getMessage());
+		}
+		
 		if(exception.has())
 			throw exception;
 	}
@@ -197,9 +210,31 @@ public class Instance implements JModel,Closeable{
 	public WorkerMaster getWorkerMaster() {
 		return workerMaster;
 	}
+
+	public long getHeartBeatTime() {
+		return heartBeatTime;
+	}
 	
+	public void setHeartBeatTime(long heartBeatTime) {
+		if(this.heartBeatTime<heartBeatTime){
+			this.heartBeatTime = heartBeatTime;
+		}
+	}
 	
+	public String getHeartBeatTimeStr() {
+		return JDateUtils.formatWithSeconds(new Date(heartBeatTime));
+	}
 	
+	public synchronized boolean sendHeartbeats(ExecutingWorker executingWorker){
+		setHeartBeatTime(executingWorker.getTime());
+		executingWorkers.offer(executingWorker);
+		return true;
+	}
+	
+	@Deprecated
+	public Queue<ExecutingWorker> getExecutingWorkers() {
+		return executingWorkers;
+	}
 	
 	
 }

@@ -29,6 +29,9 @@ import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
+import j.jave.kernal.streaming.coordinator.command.WorkflowCompleteCommand;
+import j.jave.kernal.streaming.coordinator.command.WorkflowErrorCommand;
+import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
@@ -87,6 +90,9 @@ public class WorkflowMaster implements JModel ,Closeable{
 	@JsonIgnore
 	private static transient ScheduledExecutorService workflowStatusExecutorService=_workflowStatusExecutorService();
 
+	@JsonIgnore
+	private transient final InstanceCtl instanceCtl;
+	
 	private static ScheduledExecutorService _workflowStatusExecutorService() {
 		return 
 				Executors.newScheduledThreadPool(1,new ThreadFactory() {
@@ -133,16 +139,24 @@ public class WorkflowMaster implements JModel ,Closeable{
 		executor=nodeLeader.getExecutor();
 		taskRepo=new ZKTaskRepo(executor, 
 				leaderNodeMeta.getTaskRepoPath());
+		instanceCtl=new InstanceCtl(nodeLeader, this);
 		
 		startWorkflowStatusCheck(leaderNodeMeta);
 		startWorkflowWorkersIfActive();
 //		startWorkflowAddWatcher();
 		startWorfkowTriggerWatcher();
 		startLeaderFollowerIfActive();
+		addCommonCommand();
 		
 		workflowMetaRepo=_workflowMetaRepo(nodeLeader);
 	}
 
+	private void addCommonCommand(){
+		addWorkflowCommand(new WorkflowCompleteCommand()) ;
+		addWorkflowCommand(new WorkflowRetryCommand());
+		addWorkflowCommand(new WorkflowErrorCommand());
+	}
+	
 	private ZKWorkflowMetaRepo _workflowMetaRepo(NodeLeader nodeLeader) {
 		return new ZKWorkflowMetaRepo(nodeLeader.getExecutor(), 
 				NodeLeader.workflowAddPath(), new ChangedCallBack() {
@@ -391,7 +405,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 								if(interval>leaderNodeMeta.getWorkflowToOnlineMs()){
 									workflow.setOnline();
 									Task task=taskRepo.getTaskByWorfklowName(workflow.getName());
-									nodeLeader.startTask(task);
+									instanceCtl.startTask(task);
 								}
 							}
 						}
@@ -557,5 +571,23 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public String removeWorkflowMeta(String workflowName){
 		return workflowMetaRepo.removeWorkflowMeta(workflowName);
 	}
-		
+	
+	/**
+	 * start workflow if possible
+	 * @param name
+	 * @param conf
+	 */
+	public void startWorkflow(String name,Map<String, Object> conf){
+		Workflow workflow=getWorkflow(name);
+		if(workflow==null){
+			throw new RuntimeException("workflow is missing, to add workflow in the container.");
+		}
+		Task task=new Task();
+		task.setWorkflowName(name);
+		task.setParams(conf);
+		addTask(task,instanceCtl.getTaskCallBack());
+	}
+	
+	
+	
 }

@@ -96,6 +96,7 @@ public class NodeLeader implements Serializable{
 		this.id=leaderNodeMeta.getId();
 		this.name=leaderNodeMeta.getName();
 		this.executor = executor;
+		SingleMonitor.startup(executor);
 		trackingService=TrackingServiceFactory.build(conf);
 		registerAsFollowerInZookeeper();
 		
@@ -120,8 +121,8 @@ public class NodeLeader implements Serializable{
 			
 			@Override
 			public void notLeader() {
-				if(workflowMaster==null) return;
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-schedule leadership .... ");
+				if(workflowMaster==null) return;
 				closeWorkflowMaster();
 			}
 			
@@ -348,6 +349,7 @@ public class NodeLeader implements Serializable{
 	private void startLeader(){
 		
 		try {
+			logInfo("(Thread)+"+Thread.currentThread().getName()+" attempt to join worker-schedule leadership .... ");
 			leaderLatch.start();
 			while(true){
 				try{

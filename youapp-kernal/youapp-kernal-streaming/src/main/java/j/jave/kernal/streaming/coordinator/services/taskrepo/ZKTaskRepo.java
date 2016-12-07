@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.coordinator.services.taskrepo;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,17 +38,25 @@ public class ZKTaskRepo implements TaskRepo {
 	public ZKTaskRepo(ZookeeperExecutor executor,String path) {
 		this.executor=executor;
 		this.path = path;
+		_init();
 	}
-
-	@Override
-	public synchronized String addTask(Task task) {
-		if(JStringUtils.isNullOrEmpty(task.getId())){
-			task.setId(JUniqueUtils.sequence());
+	
+	private void _init(){
+		if(executor.exists(path)){
+			List<String> paths=executor.getChildren(path);
+			paths.forEach(ph->{
+				String taskPath=path+"/"+ph;
+				byte[] bytes=executor.getPath(taskPath);
+				if(bytes!=null&&bytes.length>0){
+					Task task=SerializerUtils.deserialize(serializerFactory, bytes, Task.class);
+					task.setZkNode(taskPath);
+					_addTask(task);
+				}
+			});
 		}
-		String zkPath=executor.createPath(path+"/tk-"
-				, SerializerUtils.serialize(serializerFactory, task)
-				,CreateMode.PERSISTENT_SEQUENTIAL);
-		task.setZkNode(zkPath);
+	}
+	
+	private String _addTask(Task task){
 		Queue<Task> ts= tasks.get(task.getWorkflowName());
 		if(ts==null){
 			ts=new LinkedBlockingQueue<>();
@@ -59,8 +68,23 @@ public class ZKTaskRepo implements TaskRepo {
 	}
 
 	@Override
+	public synchronized String addTask(Task task) {
+		if(JStringUtils.isNullOrEmpty(task.getId())){
+			task.setId(JUniqueUtils.sequence());
+		}
+		if(JStringUtils.isNullOrEmpty(task.getZkNode())){
+			String zkPath=executor.createPath(path+"/tk-"
+					, SerializerUtils.serialize(serializerFactory, task)
+					,CreateMode.PERSISTENT_SEQUENTIAL);
+			task.setZkNode(zkPath);
+		}
+		return _addTask(task);
+	}
+
+	@Override
 	public synchronized Task getTaskByWorfklowName(String workflowName) {
 		Queue<Task> ts= tasks.get(workflowName);
+		if(ts==null) return null;
 		Task task=ts.poll();
 		if(task!=null){
 			temp.remove(task.getId());

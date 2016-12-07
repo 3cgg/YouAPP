@@ -13,6 +13,8 @@ public enum WorkflowStatus {
 	
 	ONLINE("ONLINE"),
 	
+	STOP("STOP"),
+	
 	ERROR("ERROR");
 	
 	private final String name;
@@ -51,17 +53,21 @@ public enum WorkflowStatus {
 	}
 	
 	public boolean isOffline(){
-		return WorkflowStatus.OFFLINE.equals(this)
+		return WorkflowStatus.OFFLINE==(this)
 				;
 	}
 	
 	public boolean isOnline(){
-		return WorkflowStatus.ONLINE.equals(this)
+		return WorkflowStatus.ONLINE==(this)
 				;
 	}
 
 	public boolean isError(){
-		return WorkflowStatus.ERROR.equals(this);
+		return WorkflowStatus.ERROR==(this);
+	}
+	
+	public boolean isStop(){
+		return WorkflowStatus.STOP==this;
 	}
 	
 }

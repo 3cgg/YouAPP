@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
@@ -23,12 +24,22 @@ import com.google.common.collect.Maps;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.serializer.JSerializerFactory;
+import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
 import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
+import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
+import j.jave.kernal.streaming.coordinator.services.taskrepo.ZKTaskRepo;
+import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.ChangedCallBack;
+import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.WorkflowMetaRepo;
+import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.ZKWorkflowMetaRepo;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import j.jave.kernal.streaming.zookeeper.ZooNode;
+import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
+import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 public class WorkflowMaster implements JModel ,Closeable{
 
@@ -36,6 +47,12 @@ public class WorkflowMaster implements JModel ,Closeable{
 	
 	@JsonIgnore
 	private final transient NodeLeader nodeLeader;
+	
+	@JsonIgnore
+	private final transient ZookeeperExecutor executor;
+	
+	@JsonIgnore
+	private final transient JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
 	/**
 	 * watcher on worker trigger path /  temporary
@@ -64,6 +81,9 @@ public class WorkflowMaster implements JModel ,Closeable{
 	private transient TaskRepo taskRepo;
 	
 	@JsonIgnore
+	private transient WorkflowMetaRepo workflowMetaRepo;
+	
+	@JsonIgnore
 	private static transient ScheduledExecutorService workflowStatusExecutorService=
 		Executors.newScheduledThreadPool(1,new ThreadFactory() {
 		@Override
@@ -88,8 +108,165 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public WorkflowMaster(NodeLeader nodeLeader,LeaderNodeMeta leaderNodeMeta) {
 		this.nodeLeader=nodeLeader;
 		this.leaderNodeMeta=leaderNodeMeta;
+		executor=nodeLeader.getExecutor();
+		taskRepo=new ZKTaskRepo(executor, 
+				leaderNodeMeta.getTaskRepoPath());
+		workflowMetaRepo=_workflowMetaRepo(nodeLeader);
 		startWorkflowStatusCheck(leaderNodeMeta);
 		startWorkflowWorkersIfActive();
+		startWorkflowAddWatcher();
+		startWorfkowTriggerWatcher();
+	}
+
+	private ZKWorkflowMetaRepo _workflowMetaRepo(NodeLeader nodeLeader) {
+		return new ZKWorkflowMetaRepo(nodeLeader.getExecutor(), 
+				NodeLeader.workflowAddPath(), new ChangedCallBack() {
+					
+					@Override
+					public void removeable(List<WorkflowMeta> workflowMetas) {
+						for (WorkflowMeta workflowMeta : workflowMetas) {
+							if(workflowMeta!=null){
+								try {
+									removeWorkflowMeta(workflowMeta);
+								} catch (Exception e) {
+									nodeLeader.logError(e);
+								}
+							}
+						}
+					}
+					
+					@Override
+					public void addable(List<WorkflowMeta> workflowMetas) {
+						for (WorkflowMeta workflowMeta : workflowMetas) {
+							if(workflowMeta!=null){
+								addWorkflowMeta(workflowMeta);
+							}
+						}
+					}
+				});
+	}
+	
+	synchronized void removeWorkflowMeta(WorkflowMeta workflowMeta) throws Exception{
+		Workflow workflow=getWorkflow(workflowMeta.getName());
+		if(workflow!=null){
+			try{
+				workflow.setStop();
+			}finally{
+				workflow.close();
+			}
+			workflows.remove(workflow.getName());
+		}
+	}
+	
+	
+	
+	/**
+	 * add workflows to current master instance, including attaching any watcher on worker registered path.
+	 * @param workflowMeta
+	 */
+	synchronized void addWorkflowMeta(WorkflowMeta workflowMeta){
+//		if(!workflowMaster.existsWorkflow(workflowMeta.getName())){
+			Workflow workflow=getWorkflow(workflowMeta.getName());
+			if(workflow==null){
+				workflow=new Workflow(workflowMeta.getName());
+				workflow.setNodeData(workflowMeta.getNodeData());
+				workflow.setWorkflowMeta(workflowMeta);
+				addWorkflow(workflow);
+				attachWorkersPathWatcher(workflow);
+			}
+			else{
+//				workflow.setNodeData(workflowMeta.getNodeData());
+				throw new IllegalStateException("workflow["+workflowMeta.getName()+"] already exists,update this after uninstalling this");
+			}
+//		}
+	}
+	
+	/**
+	 * watcher on the path {@link #pluginWorkersPath(Workflow)} find all real workers in the workflow.
+	 * @param workflow
+	 */
+	private void attachWorkersPathWatcher(final Workflow workflow){
+		if(workflow.getPluginWorkersPathCache()!=null) return ;
+		String _path=workflow.pluginWorkersPath();
+		if(!executor.exists(_path)){
+			executor.createPath(_path);
+		}
+		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
+				new ZooNodeChildrenCallback() {
+			@Override
+			public void call(List<ZooNode> nodes) {
+				for(ZooNode node:nodes){
+					String path=node.getPath();
+					int workerId=workerId(path);
+					if(!workflow.getWorkerPaths().containsKey(workerId)){
+						workflow.addWorkerPath(workerId, path);
+					}
+				}
+			}
+		}, nodeLeader.zooKeeperExecutorService(),
+				PathChildrenCacheEvent.Type.CHILD_ADDED,
+				PathChildrenCacheEvent.Type.CHILD_REMOVED);
+		workflow.setPluginWorkersPathCache(cache);
+	}
+	
+	/**
+	 * all workflows should be registered in the {@link #workflowAddPath()} as a child node
+	 * in the zookeeper
+	 */
+	private synchronized void startWorkflowAddWatcher(){
+		final String workflowAddPath=NodeLeader.workflowAddPath();
+		if(!executor.exists(workflowAddPath)){
+			executor.createPath(workflowAddPath);
+		}
+		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, 
+				new ZooNodeChildrenCallback() {
+			
+			@Override
+			public void call(List<ZooNode> nodes) {
+				for(ZooNode node:nodes){
+					byte[] bytes=node.getDataAsPossible(executor);
+					WorkflowMeta workflowMeta=
+							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
+					addWorkflowMeta(workflowMeta);
+				}
+			}
+		} , Executors.newFixedThreadPool(1, new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r, workflowAddPath+"{watcher workflow add}");
+			}
+		}), PathChildrenCacheEvent.Type.CHILD_ADDED
+				,PathChildrenCacheEvent.Type.CHILD_REMOVED
+				,PathChildrenCacheEvent.Type.CHILD_UPDATED);
+		this.workfowAddCache =(cache);
+	}
+	
+	
+	/**
+	 * a registering queue , workflow need be registered 
+	 * in the node {@link #workflowTrigger(Workflow)}  in the zookeeper.
+	 * @param workflow
+	 * @see IWorkflowService#triggerWorkflow(String, Map)
+	 */
+	@Deprecated
+	private void startWorfkowTriggerWatcher(){
+		final String path=nodeLeader.workflowTrigger(null);
+		if(!executor.exists(path)){
+			executor.createPath(path);
+		}
+		NodeCache cache=executor.watchPath(path, new ZooNodeCallback() {
+			@Override
+			public void call(ZooNode node) {
+				WorkflowMeta workflowMeta=
+						SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), WorkflowMeta.class);
+				nodeLeader.startWorkflow(workflowMeta.getName(), Maps.newHashMap());
+			}
+		}, nodeLeader.zooKeeperExecutorService());
+		this.workflowTriggerCache =(cache);
+	}
+	
+	private int workerId(String path){
+		return Integer.parseInt(path.substring(path.lastIndexOf("/")).split("-")[1]);
 	}
 
 	private void startWorkflowWorkersIfActive() {
@@ -131,7 +308,6 @@ public class WorkflowMaster implements JModel ,Closeable{
 	}
 	
 	private void checkWorkerIfActive(Workflow workflow){
-		ZookeeperExecutor executor=nodeLeader.getExecutor();
 		Map<Integer, String> workerPaths=workflow.getWorkerPaths();
 		workerPaths.entrySet().forEach(entry ->{
 			try{
@@ -227,7 +403,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 	}
 	
 
-	public void addWorkflow(Workflow workflow){
+	private void addWorkflow(Workflow workflow){
 		if(!existsWorkflow(workflow.getName())){
 			workflows.put(workflow.getName(), workflow);
 		}
@@ -277,20 +453,8 @@ public class WorkflowMaster implements JModel ,Closeable{
 		this.workflows = workflows;
 	}
 
-	public PathChildrenCache getWorkfowAddCache() {
-		return workfowAddCache;
-	}
-
-	public void setWorkfowAddCache(PathChildrenCache workfowAddCache) {
-		this.workfowAddCache = workfowAddCache;
-	}
-
 	public LeaderNodeMeta getLeaderNodeMeta() {
 		return leaderNodeMeta;
-	}
-	
-	public void setTaskRepo(TaskRepo taskRepo) {
-		this.taskRepo = taskRepo;
 	}
 	
 	public synchronized String addTask(Task task,TaskCallBack taskCallBack){

@@ -5,6 +5,11 @@ import j.jave.kernal.jave.model.JModel;
 public class WorkflowMeta implements JModel {
 
 	/**
+	 * the unique id / znode path
+	 */
+	private String unique;
+	
+	/**
 	 * the workflow name
 	 */
 	private String name;
@@ -39,5 +44,14 @@ public class WorkflowMeta implements JModel {
 	public void setCount(long count) {
 		this.count = count;
 	}
+
+	public String getUnique() {
+		return unique;
+	}
+
+	public void setUnique(String unique) {
+		this.unique = unique;
+	}
+	
 	
 }

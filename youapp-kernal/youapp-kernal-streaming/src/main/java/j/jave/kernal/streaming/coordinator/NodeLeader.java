@@ -13,13 +13,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.function.Consumer;
 
-import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
-
-import com.google.common.collect.Maps;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.logging.JLogger;
@@ -42,10 +39,7 @@ import j.jave.kernal.streaming.coordinator.command.WorkflowErrorModel;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowRetryModel;
 import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
-import j.jave.kernal.streaming.coordinator.rpc.leader.IWorkflowService;
 import j.jave.kernal.streaming.coordinator.rpc.worker.IWorkerService;
-import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
-import j.jave.kernal.streaming.coordinator.services.taskrepo.ZKTaskRepo;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
 import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
@@ -53,7 +47,6 @@ import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
-import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
 import j.jave.kernal.streaming.zookeeper.ZooNodeChildrenCallback;
 
 @SuppressWarnings({"serial","rawtypes"})
@@ -96,7 +89,6 @@ public class NodeLeader implements Serializable{
 	}
 	
 	private static NodeLeader NODE_SELECTOR;
-	
 	
 	private final Object sync=new Object();
 	
@@ -248,26 +240,7 @@ public class NodeLeader implements Serializable{
 		return atomicLong.getSequence();
 	}
 	
-	/**
-	 * add workflows to current master instance, including attaching any watcher on worker registered path.
-	 * @param workflowMeta
-	 */
-	private synchronized void addWorkflow(WorkflowMeta workflowMeta){
-//		if(!workflowMaster.existsWorkflow(workflowMeta.getName())){
-			Workflow workflow=workflowMaster.getWorkflow(workflowMeta.getName());
-			if(workflow==null){
-				workflow=new Workflow(workflowMeta.getName());
-				workflow.setNodeData(workflowMeta.getNodeData());
-				workflow.setWorkflowMeta(workflowMeta);
-				workflowMaster.addWorkflow(workflow);
-				attachWorkersPathWatcher(workflow);
-			}
-			else{
-//				workflow.setNodeData(workflowMeta.getNodeData());
-				throw new IllegalStateException("workflow["+workflowMeta.getName()+"] already exists,update this after uninstalling this");
-			}
-//		}
-	}
+	
 	
 	/**
 	 * close any IO related to current instance node.
@@ -586,47 +559,12 @@ public class NodeLeader implements Serializable{
 	private boolean isComplete(InstanceNodeVal instanceNodeVal) {
 		return instanceNodeVal.getStatus().isComplete();
 	}
-	
-	private int workerId(String path){
-		return Integer.parseInt(path.substring(path.lastIndexOf("/")).split("-")[1]);
-	}
-	
-	/**
-	 * watcher on the path {@link #pluginWorkersPath(Workflow)} find all real workers in the workflow.
-	 * @param workflow
-	 */
-	private synchronized void attachWorkersPathWatcher(final Workflow workflow){
-		if(workflow.getPluginWorkersPathCache()!=null) return ;
-		String _path=workflow.pluginWorkersPath();
-		if(!executor.exists(_path)){
-			executor.createPath(_path);
-		}
-		final PathChildrenCache cache= executor.watchChildrenPath(_path, 
-				new ZooNodeChildrenCallback() {
-			@Override
-			public void call(List<ZooNode> nodes) {
-				for(ZooNode node:nodes){
-					String path=node.getPath();
-					int workerId=workerId(path);
-					if(!workflow.getWorkerPaths().containsKey(workerId)){
-						workflow.addWorkerPath(workerId, path);
-					}
-				}
-			}
-		}, zooKeeperExecutorService,PathChildrenCacheEvent.Type.CHILD_ADDED,
-				PathChildrenCacheEvent.Type.CHILD_REMOVED);
-		workflow.setPluginWorkersPathCache(cache);
-	}
-	
+
 	private synchronized void createMasterMeta() throws Exception{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		if(workflowMaster!=null) return;
 		workflowMaster=new WorkflowMaster(this,leaderNodeMeta);
-		TaskRepo taskRepo=new ZKTaskRepo(executor, leaderNodeMeta.getTaskRepoPath());
-		workflowMaster.setTaskRepo(taskRepo);
 		
-		attachWorfkowTriggerWatcher(null);
-		attachWorfkowAddWatcher();
 		registerLeaderInZookeeper();
 		registerRPCInZookeeper();
 		startServer();
@@ -739,8 +677,6 @@ public class NodeLeader implements Serializable{
 		
 		attachInstanceChildPathWatcher(instance);
 		
-		attachWorfkowTriggerWatcher(workflow);
-		
 		workflow.setCount(workflow.getCount()+1);
 //		instance.setCount(workflow.getCount());
 		
@@ -793,75 +729,6 @@ public class NodeLeader implements Serializable{
 	}
 	
 	
-	/**
-	 * a registering queue , workflow need be registered 
-	 * in the node {@link #workflowTrigger(Workflow)}  in the zookeeper.
-	 * @param workflow
-	 * @see IWorkflowService#triggerWorkflow(String, Map)
-	 */
-	@Deprecated
-	private void attachWorfkowTriggerWatcher(final Workflow workflow){
-		
-		if(workflow!=null){
-			if(workflow.getWorkflowTriggerCache()!=null) return ;
-		}
-		
-		
-		final String path=workflowTrigger(workflow);
-		if(!executor.exists(path)){
-			executor.createPath(path);
-		}
-		NodeCache cache=executor.watchPath(path, new ZooNodeCallback() {
-			
-			@Override
-			public void call(ZooNode node) {
-				WorkflowMeta workflowMeta=
-						SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), WorkflowMeta.class);
-				startWorkflow(workflowMeta.getName(), Maps.newHashMap());
-			}
-		}, Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, workflowPath(workflow)+"{watcher workflow trigger}");
-			}
-		}));
-		if(workflow==null){
-			workflowMaster.setWorkflowTriggerCache(cache);
-		}else{
-			workflow.setWorkflowTriggerCache(cache);
-		}
-	}
-	
-	/**
-	 * all workflows should be registered in the {@link #workflowAddPath()} as a child node
-	 * in the zookeeper
-	 */
-	private synchronized void attachWorfkowAddWatcher(){
-		final String workflowAddPath=workflowAddPath();
-		if(!executor.exists(workflowAddPath)){
-			executor.createPath(workflowAddPath);
-		}
-		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, new ZooNodeChildrenCallback() {
-			
-			@Override
-			public void call(List<ZooNode> nodes) {
-				for(ZooNode node:nodes){
-					byte[] bytes=node.getDataAsPossible(executor);
-					WorkflowMeta workflowMeta=
-							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
-					addWorkflow(workflowMeta);
-				}
-			}
-		} , Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, workflowAddPath+"{watcher workflow add}");
-			}
-		}), PathChildrenCacheEvent.Type.CHILD_ADDED
-				,PathChildrenCacheEvent.Type.CHILD_REMOVED
-				,PathChildrenCacheEvent.Type.CHILD_UPDATED);
-		workflowMaster.setWorkfowAddCache(cache);
-	}
 	
 	
 	/**
@@ -1112,5 +979,9 @@ public class NodeLeader implements Serializable{
 	
 	public WorkflowMaster workflowMaster() {
 		return workflowMaster;
+	}
+	
+	ExecutorService zooKeeperExecutorService() {
+		return zooKeeperExecutorService;
 	}
 }

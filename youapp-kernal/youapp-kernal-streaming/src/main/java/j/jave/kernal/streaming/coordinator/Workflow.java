@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,11 +46,11 @@ public class Workflow implements JModel,Closeable{
 	 */
 	private long count;
 	
-	/**
-	 * watcher on the special workflow
-	 */
-	@JsonIgnore
-	private transient NodeCache workflowTriggerCache;
+//	/**
+//	 * watcher on the special workflow
+//	 */
+//	@JsonIgnore
+//	private transient NodeCache workflowTriggerCache;
 	
 	/**
 	 * what time the workflow is online , i.e. the status changes to the {@link WorkflowStatus#ONLINE}
@@ -156,13 +155,13 @@ public class Workflow implements JModel,Closeable{
 				exception.addMessage(e.getMessage());
 			}
 		}
-		if(workflowTriggerCache!=null){
-			try{
-				workflowTriggerCache.close();
-			}catch (Exception e) {
-				exception.addMessage(e.getMessage());
-			}
-		}
+//		if(workflowTriggerCache!=null){
+//			try{
+//				workflowTriggerCache.close();
+//			}catch (Exception e) {
+//				exception.addMessage(e.getMessage());
+//			}
+//		}
 		if(exception.has())
 			throw exception;
 	}
@@ -196,13 +195,13 @@ public class Workflow implements JModel,Closeable{
 		this.nodeData = nodeData;
 	}
 	
-	public void setWorkflowTriggerCache(NodeCache workflowTriggerCache) {
-		this.workflowTriggerCache = workflowTriggerCache;
-	}
-	
-	public NodeCache getWorkflowTriggerCache() {
-		return workflowTriggerCache;
-	}
+//	public void setWorkflowTriggerCache(NodeCache workflowTriggerCache) {
+//		this.workflowTriggerCache = workflowTriggerCache;
+//	}
+//	
+//	public NodeCache getWorkflowTriggerCache() {
+//		return workflowTriggerCache;
+//	}
 	
 	public PathChildrenCache getPluginWorkersPathCache() {
 		return pluginWorkersPathCache;
@@ -265,6 +264,11 @@ public class Workflow implements JModel,Closeable{
 
 	synchronized void setOnline() {
 		this.status = WorkflowStatus.ONLINE;
+		setOnlineStartTime(new Date().getTime());
+	}
+	
+	synchronized void setStop() {
+		this.status = WorkflowStatus.STOP;
 		setOnlineStartTime(new Date().getTime());
 	}
 }

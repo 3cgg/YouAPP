@@ -31,6 +31,12 @@ public class ConfigNames {
 	//youapp.streaming.leader.taskrepo.znode
 	public static final String STREAMING_LEADER_TASKREPO_ZNODE="youapp.streaming.leader.taskrepo.znode";
 	
+	//youapp.streaming.leader.workflow.status.ms
+	public static final String STREAMING_LEADER_WORKFLOW_STATUS_MS="youapp.streaming.leader.workflow.status.ms";
+	
+	//youapp.streaming.leader.workflow.to.online.ms
+	public static final String STREAMING_LEADER_WORKFLOW_TO_ONLINE_MS="youapp.streaming.leader.workflow.to.online.ms";
+	
 	
 	//youapp.streaming.worker.netty.server.port
 	public static final String STREAMING_WORKER_NETTY_SERVER_PORT="youapp.streaming.worker.netty.server.port";

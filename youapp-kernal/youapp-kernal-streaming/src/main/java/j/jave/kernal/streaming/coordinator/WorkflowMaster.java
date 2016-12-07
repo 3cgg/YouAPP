@@ -5,9 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.curator.framework.recipes.cache.NodeCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
@@ -15,14 +20,23 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
+import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 import j.jave.kernal.streaming.coordinator.services.taskrepo.TaskRepo;
+import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class WorkflowMaster implements JModel ,Closeable{
 
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeWorker.class);
+	
+	@JsonIgnore
+	private final transient NodeLeader nodeLeader;
+	
 	/**
 	 * watcher on worker trigger path /  temporary
 	 */
@@ -44,15 +58,118 @@ public class WorkflowMaster implements JModel ,Closeable{
 	 */
 	private Map<String, Workflow> workflows=Maps.newConcurrentMap();
 	
-	private LeaderNodeMeta leaderNodeMeta;
+	private final LeaderNodeMeta leaderNodeMeta;
 	
 	@JsonIgnore
 	private transient TaskRepo taskRepo;
+	
+	@JsonIgnore
+	private static transient ScheduledExecutorService workflowStatusExecutorService=
+		Executors.newScheduledThreadPool(1,new ThreadFactory() {
+		@Override
+		public Thread newThread(Runnable r) {
+			return new Thread(r,"workflow-offline-online-check");
+		}
+	});
+	
+	@JsonIgnore
+	private static transient ScheduledExecutorService workflowCheckExecutorService=
+			Executors.newScheduledThreadPool(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"workflow-assemble-check");
+			}
+		});
+	
 
 	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
 	=Maps.newConcurrentMap();
 	
-	public WorkflowMaster() {
+	public WorkflowMaster(NodeLeader nodeLeader,LeaderNodeMeta leaderNodeMeta) {
+		this.nodeLeader=nodeLeader;
+		this.leaderNodeMeta=leaderNodeMeta;
+		startWorkflowStatusCheck(leaderNodeMeta);
+		startWorkflowWorkersIfActive();
+	}
+
+	private void startWorkflowWorkersIfActive() {
+		workflowCheckExecutorService.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			public void run() {
+				for(Workflow workflow:workflows.values()){
+					checkWorkerIfActive(workflow);
+				}
+			}
+		}, 0, 30000, TimeUnit.MILLISECONDS);
+	}
+
+	private void startWorkflowStatusCheck(LeaderNodeMeta leaderNodeMeta) {
+		workflowStatusExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try{
+					for(Workflow workflow:workflows.values()){
+						if(workflow.workflowCheck().isOffline()){
+							long onlineTime=workflow.getOnlineStartTime();
+							Date date=new Date();
+							if(onlineTime==-1){
+								workflow.setOnlineStartTime(date.getTime());
+							}else{
+								long interval=date.getTime()-onlineTime;
+								if(interval>leaderNodeMeta.getWorkflowToOnlineMs()){
+									workflow.setOnline();
+								}
+							}
+						}
+					}
+				}catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+				}
+			}
+		}, 0, leaderNodeMeta.getWorkflowStatusMs(),TimeUnit.MILLISECONDS);
+	}
+	
+	private void checkWorkerIfActive(Workflow workflow){
+		ZookeeperExecutor executor=nodeLeader.getExecutor();
+		Map<Integer, String> workerPaths=workflow.getWorkerPaths();
+		workerPaths.entrySet().forEach(entry ->{
+			try{
+				SingleMonitor singleMonitor=SingleMonitor.get(
+						RestrictLockPath.workerLockPath(workflow.getName(), entry.getKey())); 
+				try{
+					singleMonitor.acquire();
+					Integer workerId=entry.getKey();
+					String processorPath=nodeLeader.pluginWorkerProcessorPath(workerId, workflow);
+					List<String> chls=executor.getChildren(processorPath);
+					boolean hasProcessor=false;
+					for(String chPath:chls){
+						String relProcessorPath=processorPath+"/"+chPath;
+						if(!executor.getChildren(relProcessorPath).isEmpty()){
+							hasProcessor=true;
+						}else{
+							//may delete the node (broken from the zookeeper)
+							executor.deletePath(relProcessorPath);
+						}
+					}
+					if(!hasProcessor){
+						String pluginWorkerPath=nodeLeader.pluginWorkerPath(workerId, workflow);
+						executor.deletePath(pluginWorkerPath);
+						LOGGER.info(" worker["+workerId+"] is offline , remove it."); 
+					}
+				}catch (Exception e) {
+					nodeLeader.logError(e);
+				}finally{
+					try {
+						singleMonitor.release();
+					} catch (Exception e) {
+						nodeLeader.logError(e);
+					}
+				}
+			}catch (Exception e) {
+				nodeLeader.logError(e);
+			}
+		});
 	}
 	
 	@Override
@@ -89,6 +206,9 @@ public class WorkflowMaster implements JModel ,Closeable{
 			}
 		}
 		workflows.clear();
+		
+		workflowCheckExecutorService.shutdownNow();
+		workflowStatusExecutorService.shutdownNow();
 		
 		if(exception.has())
 			throw exception;
@@ -168,10 +288,6 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public LeaderNodeMeta getLeaderNodeMeta() {
 		return leaderNodeMeta;
 	}
-
-	public void setLeaderNodeMeta(LeaderNodeMeta leaderNodeMeta) {
-		this.leaderNodeMeta = leaderNodeMeta;
-	}
 	
 	public void setTaskRepo(TaskRepo taskRepo) {
 		this.taskRepo = taskRepo;
@@ -202,5 +318,13 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}
 	}
 	
+	public boolean sendHeartbeats(ExecutingWorker executingWorker){
+		long sequence=executingWorker.getSequence();
+		Instance instance=getInstance(sequence);
+		if(instance!=null){
+			instance.sendHeartbeats(executingWorker);
+		}
+		return true;
+	}
 	
 }

@@ -66,4 +66,16 @@
   <description>zookeeper node for task</description>
 </property>
 
+<property>
+  <name>youapp.streaming.leader.workflow.status.ms</name>
+  <value>3000</value>
+  <description>the time period check the workflow status</description>
+</property>
+
+<property>
+  <name>youapp.streaming.leader.workflow.to.online.ms</name>
+  <value>10000</value>
+  <description>the time the workflow status changes from offline to online </description>
+</property>
+
 </configuration>

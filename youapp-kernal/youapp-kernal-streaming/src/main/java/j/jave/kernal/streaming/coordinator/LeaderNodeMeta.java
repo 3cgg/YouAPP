@@ -8,6 +8,10 @@ public class LeaderNodeMeta extends NodeMeta {
 	
 	private String taskRepoPath;
 	
+	private int workflowStatusMs;
+	
+	private int workflowToOnlineMs;
+	
 	private final boolean leader=true;
 
 	public boolean isLeader() {
@@ -45,7 +49,21 @@ public class LeaderNodeMeta extends NodeMeta {
 	public void setTaskRepoPath(String taskRepoPath) {
 		this.taskRepoPath = taskRepoPath;
 	}
-	
-	
+
+	public int getWorkflowStatusMs() {
+		return workflowStatusMs;
+	}
+
+	public void setWorkflowStatusMs(int workflowStatusMs) {
+		this.workflowStatusMs = workflowStatusMs;
+	}
+
+	public int getWorkflowToOnlineMs() {
+		return workflowToOnlineMs;
+	}
+
+	public void setWorkflowToOnlineMs(int workflowToOnlineMs) {
+		this.workflowToOnlineMs = workflowToOnlineMs;
+	}
 	
 }

@@ -199,20 +199,20 @@ public class NodeLeader implements Serializable{
 	}
 	
 	String pluginWorkersPath(final Workflow workflow){
-		return basePath+"/pluginWorkers/"+workflow.getName()+"-workers";
+		return workflow.pluginWorkersPath();
 	}
 	
-	String pluginWorkerPath(int workerId,Instance instance){
-		String pluginWorkersPath= pluginWorkersPath(instance.getWorkflow());
+	String pluginWorkerPath(int workerId,Workflow workflow){
+		String pluginWorkersPath= pluginWorkersPath(workflow);
 		return pluginWorkersPath+"/worker-"+String.valueOf(workerId);
 	}
 	
 	String pluginWorkerInstancePath(int workerId,Instance instance){
-		return pluginWorkerPath(workerId,instance)+"/instance/"+instance.getSequence();
+		return pluginWorkerPath(workerId,instance.getWorkflow())+"/instance/"+instance.getSequence();
 	}
 	
-	String pluginWorkerProcessorPath(int workerId,Instance instance){
-		return pluginWorkerPath(workerId, instance)+"/processor";
+	String pluginWorkerProcessorPath(int workerId,Workflow workflow){
+		return pluginWorkerPath(workerId, workflow)+"/processor";
 	}
 	
 	String instancePath(String path,Instance instance){
@@ -263,7 +263,8 @@ public class NodeLeader implements Serializable{
 				attachWorkersPathWatcher(workflow);
 			}
 			else{
-				workflow.setNodeData(workflowMeta.getNodeData());
+//				workflow.setNodeData(workflowMeta.getNodeData());
+				throw new IllegalStateException("workflow["+workflowMeta.getName()+"] already exists,update this after uninstalling this");
 			}
 //		}
 	}
@@ -596,7 +597,7 @@ public class NodeLeader implements Serializable{
 	 */
 	private synchronized void attachWorkersPathWatcher(final Workflow workflow){
 		if(workflow.getPluginWorkersPathCache()!=null) return ;
-		String _path=workflow.getPluginWorkersPath();
+		String _path=workflow.pluginWorkersPath();
 		if(!executor.exists(_path)){
 			executor.createPath(_path);
 		}
@@ -620,7 +621,7 @@ public class NodeLeader implements Serializable{
 	private synchronized void createMasterMeta() throws Exception{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		if(workflowMaster!=null) return;
-		workflowMaster=new WorkflowMaster();
+		workflowMaster=new WorkflowMaster(this,leaderNodeMeta);
 		TaskRepo taskRepo=new ZKTaskRepo(executor, leaderNodeMeta.getTaskRepoPath());
 		workflowMaster.setTaskRepo(taskRepo);
 		
@@ -664,7 +665,6 @@ public class NodeLeader implements Serializable{
 	 * @return
 	 */
 	private LeaderNodeMeta registerLeaderInZookeeper(){
-		workflowMaster.setLeaderNodeMeta(leaderNodeMeta);
         byte[] msg=
         		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
 		if(!executor.exists(leaderRegisterPath())){
@@ -1013,7 +1013,7 @@ public class NodeLeader implements Serializable{
 		workerMaster.addProcessorsWather(workerExecutingPath, cache);
 		
 		// notify sub-processors of worker
-		String processorPath=pluginWorkerProcessorPath(workerId, instance);
+		String processorPath=pluginWorkerProcessorPath(workerId, instance.getWorkflow());
 		List<String> chls=executor.getChildren(processorPath);
 		boolean hasProcessor=false;
 		for(String chPath:chls){
@@ -1082,10 +1082,7 @@ public class NodeLeader implements Serializable{
 	
 	
 	public boolean sendHeartbeats(ExecutingWorker executingWorker){
-		long sequence=executingWorker.getSequence();
-		Instance instance=workflowMaster.getInstance(sequence);
-		instance.sendHeartbeats(executingWorker);
-		return true;
+		return workflowMaster.sendHeartbeats(executingWorker);
 	}
 	
 	
@@ -1097,11 +1094,11 @@ public class NodeLeader implements Serializable{
 		return conf;
 	}
 
-	private void logError(Exception e) {
+	void logError(Exception e) {
 		LOGGER.error(getMessage(e.getMessage()), e);
 	}
 	
-	private void logInfo(String msg) {
+	void logInfo(String msg) {
 		LOGGER.info(getMessage(msg));
 	}
 	

@@ -138,8 +138,7 @@ public class NodeWorker implements Serializable {
 	private void startWorker(){
 		final String pluginWorkerPath=pluginWorkerPath();
 		SingleMonitor singleMonitor=SingleMonitor.get(
-				CoordinatorPaths.BASE_PATH
-				+"/worker-register-sync-lock/"+workflowMeta.getName()+"/"+id); 
+				RestrictLockPath.workerLockPath(workflowMeta.getName(), id)); 
 		try{
 			singleMonitor.acquire();
 			if(!executor.exists(pluginWorkerPath)){
@@ -161,30 +160,7 @@ public class NodeWorker implements Serializable {
 			processor.setNodePath(workerProcessorPath);
 			processor.setWorkerNodeMeta(workerNodeMeta);
 			this.processor=processor;
-			heartBeatExecutorService.scheduleAtFixedRate(new Runnable() {
-				
-				@Override
-				public void run() {
-					try{
-						WorkerTemporary workerTemporary=getWorkerTemporary();
-						if(workerTemporary!=null){
-							ExecutingWorker executingWorker=new ExecutingWorker();
-							WorkerExecutingPathVal workerExecutingPathVal=workerTemporary.getWorkerExecutingPathVal();
-							WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
-							executingWorker.setSequence(workerPathVal.getSequence());
-							executingWorker.setWorkerId(id);
-							executingWorker.setWorkerInstancePath(workerTemporary.getTempPath());
-							executingWorker.setWorkflowInstancePath(workerPathVal.getInstancePath());
-							Date date=new Date();
-							executingWorker.setTime(date.getTime());
-							executingWorker.setTimeStr(JDateUtils.formatWithMSeconds(date));
-							workflowService.sendHeartbeats(executingWorker);
-						}
-					}catch (Exception e) {
-						LOGGER.error(e.getMessage(), e);
-					}
-				}
-			}, 0, workerNodeMeta.getHeartBeatTimeMs(),TimeUnit.MILLISECONDS);
+			scheduleHeartBeats();
 		}catch (Exception e) {
 			logError(e);
 		}finally{
@@ -195,6 +171,37 @@ public class NodeWorker implements Serializable {
 			}
 		}
 
+	}
+
+	/**
+	 * send heart beat to node leader , include instance/workflow meta...
+	 */
+	private void scheduleHeartBeats() {
+		heartBeatExecutorService.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			public void run() {
+				try{
+					WorkerTemporary workerTemporary=getWorkerTemporary();
+					if(workerTemporary!=null){
+						ExecutingWorker executingWorker=new ExecutingWorker();
+						WorkerExecutingPathVal workerExecutingPathVal=workerTemporary.getWorkerExecutingPathVal();
+						WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
+						executingWorker.setSequence(workerPathVal.getSequence());
+						executingWorker.setWorkerId(id);
+						executingWorker.setWorkflowName(workflowMeta.getName());
+						executingWorker.setWorkerInstancePath(workerTemporary.getTempPath());
+						executingWorker.setWorkflowInstancePath(workerPathVal.getInstancePath());
+						Date date=new Date();
+						executingWorker.setTime(date.getTime());
+						executingWorker.setTimeStr(JDateUtils.formatWithMSeconds(date));
+						workflowService.sendHeartbeats(executingWorker);
+					}
+				}catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+				}
+			}
+		}, 0, workerNodeMeta.getHeartBeatTimeMs(),TimeUnit.MILLISECONDS);
 	}
 
 	private String realProcessorPath(WorkerNodeMeta workerNodeMeta) {

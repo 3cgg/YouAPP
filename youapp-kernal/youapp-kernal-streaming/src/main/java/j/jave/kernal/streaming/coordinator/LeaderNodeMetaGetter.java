@@ -20,6 +20,9 @@ public class LeaderNodeMetaGetter extends NodeMetaGetter<LeaderNodeMeta> {
 		leaderNodeMeta.setZkThreadCount(getInt(ConfigNames.STREAMING_LEADER_ZOOKEEPER_THREAD_COUNT,9));
 		leaderNodeMeta.setLogThreadCount(getInt(ConfigNames.STREAMING_LEADER_LOGGING_THREAD_COUNT, 9));
 		leaderNodeMeta.setTaskRepoPath(getString(ConfigNames.STREAMING_LEADER_TASKREPO_ZNODE, "/tasks-"+JUniqueUtils.SEQUECE+"-repo"));
+		leaderNodeMeta.setWorkflowStatusMs(getInt(ConfigNames.STREAMING_LEADER_WORKFLOW_STATUS_MS,3000));
+		leaderNodeMeta.setWorkflowStatusMs(getInt(ConfigNames.STREAMING_LEADER_WORKFLOW_TO_ONLINE_MS,10000));
+		
 		return leaderNodeMeta;
 	}
 

@@ -7,6 +7,11 @@ public class ExecutingWorker implements JModel {
 	private int workerId;
 	
 	/**
+	 * the workflow name the worker belongs to
+	 */
+	private String workflowName;
+	
+	/**
 	 * the instance sequence.
 	 */
 	private long sequence;
@@ -18,6 +23,8 @@ public class ExecutingWorker implements JModel {
 	private long time;
 	
 	private String timeStr;
+	
+	
 
 	public int getWorkerId() {
 		return workerId;
@@ -25,6 +32,14 @@ public class ExecutingWorker implements JModel {
 
 	public void setWorkerId(int workerId) {
 		this.workerId = workerId;
+	}
+
+	public String getWorkflowName() {
+		return workflowName;
+	}
+
+	public void setWorkflowName(String workflowName) {
+		this.workflowName = workflowName;
 	}
 
 	public long getSequence() {

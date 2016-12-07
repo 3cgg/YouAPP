@@ -3,6 +3,7 @@ package j.jave.kernal.streaming.coordinator;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -12,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.jave.model.JModel;
+import j.jave.kernal.jave.utils.JDateUtils;
+import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 
 @SuppressWarnings("serial")
 public class Workflow implements JModel,Closeable{
@@ -24,7 +27,7 @@ public class Workflow implements JModel,Closeable{
 	@JsonIgnore
 	private transient PathChildrenCache pluginWorkersPathCache;
 	
-	private String pluginWorkersPath;
+	private final String pluginWorkersPath;
 
 	/**
 	 * automatically initialized later, watcher children updated on {@link #pluginWorkersPath}
@@ -50,7 +53,16 @@ public class Workflow implements JModel,Closeable{
 	@JsonIgnore
 	private transient NodeCache workflowTriggerCache;
 	
+	/**
+	 * what time the workflow is online , i.e. the status changes to the {@link WorkflowStatus#ONLINE}
+	 */
+	private long onlineStartTime=-1;
+	
+	private WorkflowStatus status=WorkflowStatus.OFFLINE;
+	
 	private WorkflowCheck workflowCheck=new WorkflowCheck();
+	
+//	private final Object sync=new Object();
 	
 	public Workflow(String name) {
 		this(name,Maps.newConcurrentMap(),null);
@@ -73,6 +85,18 @@ public class Workflow implements JModel,Closeable{
 		 * which executing instance of the workflow
 		 */
 		private volatile Long lockSequence;
+		
+		boolean isOffline(){
+			return status.isOffline();
+		}
+		
+		boolean isOnline(){
+			return status.isOnline();
+		}
+		
+		boolean isError(){
+			return status.isError();
+		}
 		
 		/**
 		 * check whether the workflow is running if any instance of the workflow is not completed.
@@ -143,7 +167,7 @@ public class Workflow implements JModel,Closeable{
 			throw exception;
 	}
 	
-	private String pluginWorkersPath(){
+	String pluginWorkersPath(){
 		return CoordinatorPaths.BASE_PATH+"/pluginWorkers/"+name+"-workers";
 	}
 
@@ -163,6 +187,7 @@ public class Workflow implements JModel,Closeable{
 		return nodeData;
 	}
 	
+	@Deprecated
 	public String getPluginWorkersPath() {
 		return pluginWorkersPath;
 	}
@@ -216,4 +241,30 @@ public class Workflow implements JModel,Closeable{
 		return workflowCheck;
 	}
 	
+	public String getOnlineStartTimeStr() {
+		if(onlineStartTime<0) return "";
+		return JDateUtils.formatWithMSeconds(new Date(onlineStartTime));
+	}
+	
+	public long getOnlineStartTime() {
+		return onlineStartTime;
+	}
+	
+	synchronized void setOnlineStartTime(long onlineStartTime) {
+		if(this.onlineStartTime<onlineStartTime){
+			this.onlineStartTime=onlineStartTime;
+		}
+	}
+	
+	boolean sendHeartbeats(ExecutingWorker executingWorker){
+		if(workflowCheck.isOffline()){
+			setOnlineStartTime(executingWorker.getTime());
+		}
+		return true;
+	}
+
+	synchronized void setOnline() {
+		this.status = WorkflowStatus.ONLINE;
+		setOnlineStartTime(new Date().getTime());
+	}
 }

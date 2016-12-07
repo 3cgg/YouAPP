@@ -11,7 +11,7 @@
 
 <property>
   <name>youapp.streaming.zookeeper.namespace</name>
-  <value>z-test</value>
+  <value>v-test</value>
   <description>zookeeper namespace</description>
 </property>
 

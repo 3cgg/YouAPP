@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.coordinator;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
@@ -54,9 +55,9 @@ public class NodeLeader implements Serializable{
 	
 	private static final JLogger LOGGER=JLoggerFactory.getLogger(NodeLeader.class);
 	
-	private static KryoChannelExecutorPool executorPool=new KryoChannelExecutorPool();
+	private final static KryoChannelExecutorPool executorPool=new KryoChannelExecutorPool();
 	
-	private JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
+	private final JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
 	
 	private final Map conf;
 
@@ -93,6 +94,11 @@ public class NodeLeader implements Serializable{
 	private final Object sync=new Object();
 	
 	/**
+	 * never used in other case
+	 */
+	private final Object lockLeaderLatch=new Object();
+	
+	/**
 	 * start up a node leader... (as a node of the leader cluster)
 	 * @param name identified node name
 	 * @param executor zookeeper connection
@@ -125,6 +131,8 @@ public class NodeLeader implements Serializable{
 		this.executor = executor;
 		this.atomicLong=new DistAtomicLong(executor);
 		trackingService=TrackingServiceFactory.build(conf);
+		registerAsFollowerInZookeeper();
+		
 		loggingExecutorService=Executors.newFixedThreadPool(leaderNodeMeta.getLogThreadCount()
 				,new ThreadFactory() {
 			@Override
@@ -148,12 +156,7 @@ public class NodeLeader implements Serializable{
 			public void notLeader() {
 				if(workflowMaster==null) return;
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-schedule leadership .... ");
-				try {
-					workflowMaster.close();
-				} catch (IOException e) {
-					logError(e);
-				}
-				workflowMaster=null;
+				closeWorkflowMaster();
 			}
 			
 			@Override
@@ -163,7 +166,7 @@ public class NodeLeader implements Serializable{
 					createMasterMeta();
 				} catch (Exception e) {
 					logError(e);
-					throw new IllegalStateException(e);
+					exitIfCloseWorkflowMasterNeed();
 				}
 			}
 		}, Executors.newFixedThreadPool(1,new ThreadFactory() {
@@ -228,8 +231,12 @@ public class NodeLeader implements Serializable{
 		return basePath;
 	}
 	
-	public static String leaderRegisterPath(){
-		return basePath+"/leader-host";
+	public static String leaderFollowerRegisterPath(){
+		return basePath+"/leader-as-follower-host";
+	}
+	
+	public static String leaderIsLeaderRegisterPath(){
+		return basePath+"/leader-is-leader-host";
 	}
 	
 	public static String simpleTrackingPath(){
@@ -562,13 +569,49 @@ public class NodeLeader implements Serializable{
 
 	private synchronized void createMasterMeta() throws Exception{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
-		if(workflowMaster!=null) return;
+		closeWorkflowMaster();
+		leaderNodeMeta.setLeader(true);
 		workflowMaster=new WorkflowMaster(this,leaderNodeMeta);
-		
-		registerLeaderInZookeeper();
+		registerLeaderIsLeaderInZookeeper();
 		registerRPCInZookeeper();
 		startServer();
 		addCommonCommand();
+	}
+	
+	private void exitIfCloseWorkflowMasterNeed() {
+		if(workflowMaster!=null) {
+			try{
+				workflowMaster.close();
+				workflowMaster=null;
+			}catch (Exception e) {
+				logError(e);
+			}
+		}
+		try{
+			synchronized (this) {
+				wait(10000);
+			}
+		}catch (Exception e1) {
+			logError(e1);
+		}
+		System.exit(-1);
+	}
+
+	private void closeWorkflowMaster() {
+		if(workflowMaster!=null) {
+			try{
+				workflowMaster.close();
+				workflowMaster=null;
+			}catch (Exception e) {
+				logError(e);
+				try{
+					wait(10000);
+				}catch (Exception e1) {
+					logError(e1);
+				}
+				System.exit(-1);
+			}
+		}
 	}
 	
 	/**
@@ -598,18 +641,50 @@ public class NodeLeader implements Serializable{
 		}
 	}
 	
+	private String realLeaderFollowerPath() {
+		return leaderFollowerRegisterPath()
+														+"/"+id
+														+"-"+leaderNodeMeta.getHost()
+														+"-"+leaderNodeMeta.getPid();
+	}
+	
 	/**
 	 * node leader code
 	 * @return
 	 */
-	private LeaderNodeMeta registerLeaderInZookeeper(){
+	private synchronized LeaderNodeMeta registerAsFollowerInZookeeper(){
         byte[] msg=
         		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
-		if(!executor.exists(leaderRegisterPath())){
-			executor.createPath(leaderRegisterPath(), msg);
+        String realLeaderFollowerPath=realLeaderFollowerPath();
+		if(!executor.exists(realLeaderFollowerPath)){
+			executor.createPath(realLeaderFollowerPath, msg);
+			executor.createEphSequencePath(realLeaderFollowerPath+"/t-");
 		}
 		else{
-			executor.setPath(leaderRegisterPath(), msg);
+			executor.setPath(realLeaderFollowerPath, msg);
+			if(executor.getChildren(realLeaderFollowerPath).isEmpty()){
+				executor.createEphSequencePath(realLeaderFollowerPath+"/t-");
+			}
+		}
+		return leaderNodeMeta;
+	}
+	
+	/**
+	 * node leader code
+	 * @return
+	 */
+	private synchronized LeaderNodeMeta registerLeaderIsLeaderInZookeeper(){
+        byte[] msg=
+        		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
+        String realLeaderIsLeaderPath=leaderIsLeaderRegisterPath();
+		if(!executor.exists(realLeaderIsLeaderPath)){
+			executor.createPath(realLeaderIsLeaderPath, msg);
+		}else{
+			executor.setPath(realLeaderIsLeaderPath, msg);
+		}
+		String realLeaderFollowerPath=realLeaderFollowerPath();
+		if(executor.exists(realLeaderFollowerPath)){
+			executor.deletePath(realLeaderFollowerPath);
 		}
 		return leaderNodeMeta;
 	}
@@ -702,34 +777,49 @@ public class NodeLeader implements Serializable{
 		return new TaskCallBack() {
 			@Override
 			public void call(Task task) {
-				if(task!=null){
-					Instance instance=createInstance(workflowMaster.getWorkflow(task.getWorkflowName()),
-							task.getParams());
-					WorkflowCheck workflowCheck=workflowMaster.getWorkflow(task.getWorkflowName()).workflowCheck();
-					try{
-						if(!workflowCheck.tryLock(instance.getSequence())){
-							throw new IllegalStateException("workflow is locked : "+workflowCheck.getLockSequence());
-						}
-						start(instance);
-					}catch (Exception e) {
-						// the virtual node is completed, set flag to complete
-						NodeStatus nodeStatus=NodeStatus.COMPLETE_ERROR.setThrowable(e);
-						c(instance,instance.getRootPath(),nodeStatus);
-						try {
-							instance.addError(instance.getRootPath(), e);
-							completeInstance(instance,nodeStatus);
-						} catch (Exception e1) {
-							LOGGER.error(e1.getMessage(), e1);
-						}
-					}
-					
-				}
+				startTask(task);
 			}
 		};
 	}
 	
-	
-	
+	/**
+	 * start the task.
+	 * @param task
+	 */
+	void startTask(Task task) {
+		if(task!=null){
+			Workflow workflow=workflowMaster.getWorkflow(task.getWorkflowName());
+			if(workflow==null){
+				logInfo(" the workflow["+task.getWorkflowName()+"] is removed; task id : "+task.getId());
+				return;
+			}
+			WorkflowCheck workflowCheck=workflow.workflowCheck();
+			if(workflowCheck.isOffline()){
+				logInfo(" the workflow["+task.getWorkflowName()+"] is offline;task id : "+task.getId());
+				return;
+			}
+			
+			Instance instance=createInstance(workflow,
+					task.getParams());
+			try{
+				if(!workflowCheck.tryLock(instance.getSequence())){
+					throw new IllegalStateException("workflow is locked : "+workflowCheck.getLockSequence());
+				}
+				start(instance);
+			}catch (Exception e) {
+				// the virtual node is completed, set flag to complete
+				NodeStatus nodeStatus=NodeStatus.COMPLETE_ERROR.setThrowable(e);
+				c(instance,instance.getRootPath(),nodeStatus);
+				try {
+					instance.addError(instance.getRootPath(), e);
+					completeInstance(instance,nodeStatus);
+				} catch (Exception e1) {
+					LOGGER.error(e1.getMessage(), e1);
+				}
+			}
+			
+		}
+	}
 	
 	/**
 	 * start a real / virtual path , whatever a real worker should be started.
@@ -797,13 +887,27 @@ public class NodeLeader implements Serializable{
 		
 		try {
 			leaderLatch.start();
-			leaderLatch.await();
-			createMasterMeta();
+			while(true){
+				try{
+					leaderLatch.await();
+					break;
+				}catch (InterruptedException e) {
+					continue;
+				}catch (EOFException e) {
+					logError(e);
+					exitIfCloseWorkflowMasterNeed();
+				}catch (Exception e) {
+					logError(e);
+					exitIfCloseWorkflowMasterNeed();
+				}
+			}
+			
+//			createMasterMeta();  // avoid do again and again , see isLeader listener... LeaderLatchListener
 			
 			while(true){
 				try{
-					synchronized (this) {
-						wait();
+					synchronized (lockLeaderLatch) {
+						lockLeaderLatch.wait();
 					}
 				}catch (InterruptedException e) {
 				}
@@ -811,7 +915,7 @@ public class NodeLeader implements Serializable{
 			
 		} catch (Exception e) {
 			logError(e);
-			throw new IllegalStateException(e);
+			exitIfCloseWorkflowMasterNeed();
 		}finally {
 			try {
 				if(leaderLatch.hasLeadership()){
@@ -819,6 +923,7 @@ public class NodeLeader implements Serializable{
 				}
 			} catch (IOException e) {
 				logError(e);
+				exitIfCloseWorkflowMasterNeed();
 			}
 		}
 	}
@@ -950,6 +1055,14 @@ public class NodeLeader implements Serializable{
 	
 	public boolean sendHeartbeats(ExecutingWorker executingWorker){
 		return workflowMaster.sendHeartbeats(executingWorker);
+	}
+	
+	public String addWorkflowMeta(WorkflowMeta workflowMeta){
+		return workflowMaster.addWorkflowMeta(workflowMeta);
+	}
+	
+	public String removeWorkflowMeta(String workflowName){
+		return workflowMaster.removeWorkflowMeta(workflowName);
 	}
 	
 	

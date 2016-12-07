@@ -63,7 +63,8 @@ public class WorkflowMaster implements JModel ,Closeable{
 	/**
 	 * watcher on  {@link CoordinatorPaths#BASE_PATH}/workflowadd
 	 */
-	private PathChildrenCache workfowAddCache;
+	@Deprecated
+	private transient PathChildrenCache workfowAddCache;
 	
 	/**
 	 * all running/ already run  instance 
@@ -84,24 +85,45 @@ public class WorkflowMaster implements JModel ,Closeable{
 	private transient WorkflowMetaRepo workflowMetaRepo;
 	
 	@JsonIgnore
-	private static transient ScheduledExecutorService workflowStatusExecutorService=
-		Executors.newScheduledThreadPool(1,new ThreadFactory() {
-		@Override
-		public Thread newThread(Runnable r) {
-			return new Thread(r,"workflow-offline-online-check");
-		}
-	});
+	private static transient ScheduledExecutorService workflowStatusExecutorService=_workflowStatusExecutorService();
+
+	private static ScheduledExecutorService _workflowStatusExecutorService() {
+		return 
+				Executors.newScheduledThreadPool(1,new ThreadFactory() {
+					@Override
+					public Thread newThread(Runnable r) {
+						return new Thread(r,"workflow-offline-online-check");
+					}
+				});
+	}
 	
 	@JsonIgnore
 	private static transient ScheduledExecutorService workflowCheckExecutorService=
-			Executors.newScheduledThreadPool(1,new ThreadFactory() {
+														_workflowCheckExecutorService();
+	
+	public static ScheduledExecutorService _workflowCheckExecutorService() {
+		return Executors.newScheduledThreadPool(1,new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable r) {
 				return new Thread(r,"workflow-assemble-check");
 			}
 		});
+	}
 	
+	@JsonIgnore
+	private static transient ScheduledExecutorService workflowFollowerIfActiveCheckExecutorService=
+			_workflowFollowerIfActiveCheckExecutorService();
 
+	public static ScheduledExecutorService _workflowFollowerIfActiveCheckExecutorService() {
+		return Executors.newScheduledThreadPool(1,new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				return new Thread(r,"leader-follower-if-active-check");
+			}
+		});
+	}
+	
+	
 	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
 	=Maps.newConcurrentMap();
 	
@@ -111,11 +133,14 @@ public class WorkflowMaster implements JModel ,Closeable{
 		executor=nodeLeader.getExecutor();
 		taskRepo=new ZKTaskRepo(executor, 
 				leaderNodeMeta.getTaskRepoPath());
-		workflowMetaRepo=_workflowMetaRepo(nodeLeader);
+		
 		startWorkflowStatusCheck(leaderNodeMeta);
 		startWorkflowWorkersIfActive();
-		startWorkflowAddWatcher();
+//		startWorkflowAddWatcher();
 		startWorfkowTriggerWatcher();
+		startLeaderFollowerIfActive();
+		
+		workflowMetaRepo=_workflowMetaRepo(nodeLeader);
 	}
 
 	private ZKWorkflowMetaRepo _workflowMetaRepo(NodeLeader nodeLeader) {
@@ -127,7 +152,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 						for (WorkflowMeta workflowMeta : workflowMetas) {
 							if(workflowMeta!=null){
 								try {
-									removeWorkflowMeta(workflowMeta);
+									_removeWorkflowMeta(workflowMeta);
 								} catch (Exception e) {
 									nodeLeader.logError(e);
 								}
@@ -139,14 +164,14 @@ public class WorkflowMaster implements JModel ,Closeable{
 					public void addable(List<WorkflowMeta> workflowMetas) {
 						for (WorkflowMeta workflowMeta : workflowMetas) {
 							if(workflowMeta!=null){
-								addWorkflowMeta(workflowMeta);
+								_addWorkflowMeta(workflowMeta);
 							}
 						}
 					}
 				});
 	}
 	
-	synchronized void removeWorkflowMeta(WorkflowMeta workflowMeta) throws Exception{
+	synchronized void _removeWorkflowMeta(WorkflowMeta workflowMeta) throws Exception{
 		Workflow workflow=getWorkflow(workflowMeta.getName());
 		if(workflow!=null){
 			try{
@@ -164,7 +189,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 	 * add workflows to current master instance, including attaching any watcher on worker registered path.
 	 * @param workflowMeta
 	 */
-	synchronized void addWorkflowMeta(WorkflowMeta workflowMeta){
+	synchronized void _addWorkflowMeta(WorkflowMeta workflowMeta){
 //		if(!workflowMaster.existsWorkflow(workflowMeta.getName())){
 			Workflow workflow=getWorkflow(workflowMeta.getName());
 			if(workflow==null){
@@ -209,37 +234,38 @@ public class WorkflowMaster implements JModel ,Closeable{
 		workflow.setPluginWorkersPathCache(cache);
 	}
 	
-	/**
-	 * all workflows should be registered in the {@link #workflowAddPath()} as a child node
-	 * in the zookeeper
-	 */
-	private synchronized void startWorkflowAddWatcher(){
-		final String workflowAddPath=NodeLeader.workflowAddPath();
-		if(!executor.exists(workflowAddPath)){
-			executor.createPath(workflowAddPath);
-		}
-		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, 
-				new ZooNodeChildrenCallback() {
-			
-			@Override
-			public void call(List<ZooNode> nodes) {
-				for(ZooNode node:nodes){
-					byte[] bytes=node.getDataAsPossible(executor);
-					WorkflowMeta workflowMeta=
-							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
-					addWorkflowMeta(workflowMeta);
-				}
-			}
-		} , Executors.newFixedThreadPool(1, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable r) {
-				return new Thread(r, workflowAddPath+"{watcher workflow add}");
-			}
-		}), PathChildrenCacheEvent.Type.CHILD_ADDED
-				,PathChildrenCacheEvent.Type.CHILD_REMOVED
-				,PathChildrenCacheEvent.Type.CHILD_UPDATED);
-		this.workfowAddCache =(cache);
-	}
+//	/**
+//	 * all workflows should be registered in the {@link #workflowAddPath()} as a child node
+//	 * in the zookeeper
+//	 */
+//	@Deprecated
+//	private synchronized void startWorkflowAddWatcher(){
+//		final String workflowAddPath=NodeLeader.workflowAddPath();
+//		if(!executor.exists(workflowAddPath)){
+//			executor.createPath(workflowAddPath);
+//		}
+//		PathChildrenCache cache=  executor.watchChildrenPath(workflowAddPath, 
+//				new ZooNodeChildrenCallback() {
+//			
+//			@Override
+//			public void call(List<ZooNode> nodes) {
+//				for(ZooNode node:nodes){
+//					byte[] bytes=node.getDataAsPossible(executor);
+//					WorkflowMeta workflowMeta=
+//							SerializerUtils.deserialize(serializerFactory, bytes, WorkflowMeta.class);
+//					_addWorkflowMeta(workflowMeta);
+//				}
+//			}
+//		} , Executors.newFixedThreadPool(1, new ThreadFactory() {
+//			@Override
+//			public Thread newThread(Runnable r) {
+//				return new Thread(r, workflowAddPath+"{watcher workflow add}");
+//			}
+//		}), PathChildrenCacheEvent.Type.CHILD_ADDED
+//				,PathChildrenCacheEvent.Type.CHILD_REMOVED
+//				,PathChildrenCacheEvent.Type.CHILD_UPDATED);
+//		this.workfowAddCache =(cache);
+//	}
 	
 	
 	/**
@@ -268,8 +294,32 @@ public class WorkflowMaster implements JModel ,Closeable{
 	private int workerId(String path){
 		return Integer.parseInt(path.substring(path.lastIndexOf("/")).split("-")[1]);
 	}
+	
+	
+	private void startLeaderFollowerIfActive(){
+		if(workflowFollowerIfActiveCheckExecutorService.isShutdown()){
+			workflowFollowerIfActiveCheckExecutorService=_workflowFollowerIfActiveCheckExecutorService();
+		}
+		workflowFollowerIfActiveCheckExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				final String leaderFollowerRegisterPath=NodeLeader.leaderFollowerRegisterPath();
+				executor.getChildren(leaderFollowerRegisterPath).forEach(realRegisterPath->{
+					String realPath=leaderFollowerRegisterPath
+													+"/"+realRegisterPath;
+					if(executor.getChildren(realPath).isEmpty()){
+						nodeLeader.logInfo("follwer path["+realPath+"] is offline.");
+						executor.deletePath(realPath);
+					}
+				});
+			}
+		}, 0, 10000, TimeUnit.MILLISECONDS);
+	}
 
 	private void startWorkflowWorkersIfActive() {
+		if(workflowCheckExecutorService.isShutdown()){
+			workflowCheckExecutorService=_workflowCheckExecutorService();
+		}
 		workflowCheckExecutorService.scheduleAtFixedRate(new Runnable() {
 			
 			@Override
@@ -278,33 +328,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 					checkWorkerIfActive(workflow);
 				}
 			}
-		}, 0, 30000, TimeUnit.MILLISECONDS);
-	}
-
-	private void startWorkflowStatusCheck(LeaderNodeMeta leaderNodeMeta) {
-		workflowStatusExecutorService.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				try{
-					for(Workflow workflow:workflows.values()){
-						if(workflow.workflowCheck().isOffline()){
-							long onlineTime=workflow.getOnlineStartTime();
-							Date date=new Date();
-							if(onlineTime==-1){
-								workflow.setOnlineStartTime(date.getTime());
-							}else{
-								long interval=date.getTime()-onlineTime;
-								if(interval>leaderNodeMeta.getWorkflowToOnlineMs()){
-									workflow.setOnline();
-								}
-							}
-						}
-					}
-				}catch (Exception e) {
-					LOGGER.error(e.getMessage(), e);
-				}
-			}
-		}, 0, leaderNodeMeta.getWorkflowStatusMs(),TimeUnit.MILLISECONDS);
+		}, 0, 10000, TimeUnit.MILLISECONDS);
 	}
 	
 	private void checkWorkerIfActive(Workflow workflow){
@@ -347,6 +371,39 @@ public class WorkflowMaster implements JModel ,Closeable{
 			}
 		});
 	}
+
+	private void startWorkflowStatusCheck(LeaderNodeMeta leaderNodeMeta) {
+		if(workflowStatusExecutorService.isShutdown()){
+			workflowStatusExecutorService=_workflowStatusExecutorService();
+		}
+		workflowStatusExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				try{
+					for(Workflow workflow:workflows.values()){
+						if(workflow.workflowCheck().isOffline()){
+							long onlineTime=workflow.getOnlineStartTime();
+							Date date=new Date();
+							if(onlineTime==-1){
+								workflow.setOnlineStartTime(date.getTime());
+							}else{
+								long interval=date.getTime()-onlineTime;
+								if(interval>leaderNodeMeta.getWorkflowToOnlineMs()){
+									workflow.setOnline();
+									Task task=taskRepo.getTaskByWorfklowName(workflow.getName());
+									nodeLeader.startTask(task);
+								}
+							}
+						}
+					}
+				}catch (Exception e) {
+					LOGGER.error(e.getMessage(), e);
+				}
+			}
+		}, 0, leaderNodeMeta.getWorkflowStatusMs(),TimeUnit.MILLISECONDS);
+	}
+	
+	
 	
 	@Override
 	public void close() throws IOException {
@@ -385,6 +442,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		
 		workflowCheckExecutorService.shutdownNow();
 		workflowStatusExecutorService.shutdownNow();
+		workflowFollowerIfActiveCheckExecutorService.shutdownNow();
 		
 		if(exception.has())
 			throw exception;
@@ -460,7 +518,8 @@ public class WorkflowMaster implements JModel ,Closeable{
 	public synchronized String addTask(Task task,TaskCallBack taskCallBack){
 		String taskId=taskRepo.addTask(task);
 		WorkflowCheck workflowCheck=getWorkflow(task.getWorkflowName()).workflowCheck();
-		if(!workflowCheck.isLock()){
+		if(workflowCheck.isOnline()
+				&&!workflowCheck.isLock()){
 			taskCallBack.call(taskRepo.getTaskByWorfklowName(task.getWorkflowName()));
 		}
 		return taskId;
@@ -491,4 +550,12 @@ public class WorkflowMaster implements JModel ,Closeable{
 		return true;
 	}
 	
+	public String addWorkflowMeta(WorkflowMeta workflowMeta){
+		return workflowMetaRepo.addWorkflowMeta(workflowMeta);
+	}
+	
+	public String removeWorkflowMeta(String workflowName){
+		return workflowMetaRepo.removeWorkflowMeta(workflowName);
+	}
+		
 }

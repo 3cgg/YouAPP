@@ -271,4 +271,9 @@ public class Workflow implements JModel,Closeable{
 		this.status = WorkflowStatus.STOP;
 		setOnlineStartTime(new Date().getTime());
 	}
+	
+	public WorkflowStatus getStatus() {
+		return status;
+	}
+	
 }

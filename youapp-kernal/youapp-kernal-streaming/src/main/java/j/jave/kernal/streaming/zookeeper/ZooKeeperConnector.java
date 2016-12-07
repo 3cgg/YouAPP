@@ -20,8 +20,6 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
 
-import com.google.common.collect.Collections2;
-
 import j.jave.kernal.jave.utils.JStringUtils;
 
 @SuppressWarnings("serial")
@@ -112,6 +110,7 @@ public class ZooKeeperConnector implements Serializable {
 		public void deletePath(String path){
 			try{
 				curatorFramework.delete()
+				.deletingChildrenIfNeeded()
 				.forPath(path);
 			}catch (Exception e) {
 				throw new CustomZooKeeperException(e);

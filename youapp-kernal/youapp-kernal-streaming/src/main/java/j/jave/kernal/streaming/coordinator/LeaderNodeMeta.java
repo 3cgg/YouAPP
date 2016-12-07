@@ -12,7 +12,7 @@ public class LeaderNodeMeta extends NodeMeta {
 	
 	private int workflowToOnlineMs;
 	
-	private final boolean leader=true;
+	private boolean leader=false;
 
 	public boolean isLeader() {
 		return leader;
@@ -64,6 +64,10 @@ public class LeaderNodeMeta extends NodeMeta {
 
 	public void setWorkflowToOnlineMs(int workflowToOnlineMs) {
 		this.workflowToOnlineMs = workflowToOnlineMs;
+	}
+	
+	public void setLeader(boolean leader) {
+		this.leader = leader;
 	}
 	
 }

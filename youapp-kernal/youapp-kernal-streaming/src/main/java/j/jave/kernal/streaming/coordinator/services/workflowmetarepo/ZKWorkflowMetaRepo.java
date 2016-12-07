@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.coordinator.services.workflowmetarepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,11 @@ public class ZKWorkflowMetaRepo extends SimpleWorkflowMetaRepo {
 		super(changedCallBack);
 		this.executor=executor;
 		this.path = path;
+		if(!executor.exists(path)){
+			executor.createPath(path);
+		}
 		_init();
+		notifyAdded(new ArrayList<>(workflowMetas.values()));
 	}
 
 	private void _init(){

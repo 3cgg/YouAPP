@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import j.jave.kernal.jave.serializer.JSerializerFactory;
-import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
+import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.Instance;
 import j.jave.kernal.streaming.coordinator.NodeLeader;
 import j.jave.kernal.streaming.coordinator.Workflow;
@@ -33,22 +33,14 @@ implements IWorkflowService{
 	@Override
 	public boolean addWorkflow(WorkflowMeta workflowMeta) {
 		JAssert.isNotEmpty(workflowMeta.getName());
-		final String workflowAddPath=NodeLeader.workflowAddPath();
-		String tempPath=workflowAddPath+"/"+workflowMeta.getName();
-		if(executor.exists(tempPath)){
-			return false;
-		}
-		executor.createPath(tempPath, 
-				SerializerUtils.serialize(serializerFactory, workflowMeta));
-		return true;
+		String unique=NodeLeader.runtime().addWorkflowMeta(workflowMeta);
+		return JStringUtils.isNotNullOrEmpty(unique);
 	}
 
 	@Override
 	public boolean removeWorkflow(String name) {
 		JAssert.isNotEmpty(name);
-		final String workflowAddPath=NodeLeader.workflowAddPath();
-		String tempPath=workflowAddPath+"/"+name;
-		executor.deletePath(tempPath);
+		NodeLeader.runtime().removeWorkflowMeta(name);
 		return true;
 	}
 

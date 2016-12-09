@@ -8,6 +8,7 @@ import j.jave.kernal.jave.utils.JAssert;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.Instance;
 import j.jave.kernal.streaming.coordinator.NodeLeader;
+import j.jave.kernal.streaming.coordinator.Task;
 import j.jave.kernal.streaming.coordinator.Workflow;
 import j.jave.kernal.streaming.coordinator.WorkflowMaster;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
@@ -73,4 +74,14 @@ implements IWorkflowService{
 		return workflowMaster.getInstances().keySet();
 	}
 
+	public Collection<Task> getTasks(){
+		WorkflowMaster workflowMaster=NodeLeader.runtime().workflowMaster();
+		return workflowMaster.getTasks();
+	}
+	
+	public Task getTask(String unique){
+		WorkflowMaster workflowMaster=NodeLeader.runtime().workflowMaster();
+		return workflowMaster.getTask(unique);
+	}
+	
 }

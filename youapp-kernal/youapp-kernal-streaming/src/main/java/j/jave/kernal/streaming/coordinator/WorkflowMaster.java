@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -142,7 +144,6 @@ public class WorkflowMaster implements JModel ,Closeable{
 		instanceCtl=new InstanceCtl(nodeLeader, this);
 		
 		startWorkflowStatusCheck(leaderNodeMeta);
-		startWorkflowWorkersIfActive();
 //		startWorkflowAddWatcher();
 		startWorfkowTriggerWatcher();
 		startLeaderFollowerIfActive();
@@ -211,7 +212,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 				workflow.setNodeData(workflowMeta.getNodeData());
 				workflow.setWorkflowMeta(workflowMeta);
 				addWorkflow(workflow);
-				attachWorkersPathWatcher(workflow);
+				startWorkersPathWatcher(workflow);
 			}
 			else{
 //				workflow.setNodeData(workflowMeta.getNodeData());
@@ -224,7 +225,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 	 * watcher on the path {@link #pluginWorkersPath(Workflow)} find all real workers in the workflow.
 	 * @param workflow
 	 */
-	private void attachWorkersPathWatcher(final Workflow workflow){
+	private void startWorkersPathWatcher(final Workflow workflow){
 		if(workflow.getPluginWorkersPathCache()!=null) return ;
 		String _path=workflow.pluginWorkersPath();
 		if(!executor.exists(_path)){
@@ -345,45 +346,84 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}, 0, 10000, TimeUnit.MILLISECONDS);
 	}
 	
-	private void checkWorkerIfActive(Workflow workflow){
-		Map<Integer, String> workerPaths=workflow.getWorkerPaths();
-		workerPaths.entrySet().forEach(entry ->{
-			try{
-				SingleMonitor singleMonitor=SingleMonitor.get(
-						RestrictLockPath.workerLockPath(workflow.getName(), entry.getKey())); 
+	private boolean checkWorkerIfActive(Workflow workflow){
+		boolean valid=false;
+		try{
+			Map<Integer, String> workerPaths=workflow.getWorkerPaths();
+			Iterator<Entry<Integer, String>> iterator=workerPaths.entrySet().iterator();
+			while(iterator.hasNext()){
+				Entry<Integer, String> entry=iterator.next();
 				try{
-					singleMonitor.acquire();
-					Integer workerId=entry.getKey();
-					String processorPath=nodeLeader.pluginWorkerProcessorPath(workerId, workflow);
-					List<String> chls=executor.getChildren(processorPath);
-					boolean hasProcessor=false;
-					for(String chPath:chls){
-						String relProcessorPath=processorPath+"/"+chPath;
-						if(!executor.getChildren(relProcessorPath).isEmpty()){
-							hasProcessor=true;
-						}else{
-							//may delete the node (broken from the zookeeper)
-							executor.deletePath(relProcessorPath);
+					SingleMonitor singleMonitor=SingleMonitor.get(
+							RestrictLockPath.workerLockPath(workflow.getName(), entry.getKey())); 
+					try{
+						singleMonitor.acquire();
+						Integer workerId=entry.getKey();
+						String processorPath=nodeLeader.pluginWorkerProcessorPath(workerId, workflow);
+						if(!executor.exists(processorPath)){
+							LOGGER.info(" worker["+workerId+"] is offline , remove it."); 
+							iterator.remove();
 						}
-					}
-					if(!hasProcessor){
-						String pluginWorkerPath=nodeLeader.pluginWorkerPath(workerId, workflow);
-						executor.deletePath(pluginWorkerPath);
-						LOGGER.info(" worker["+workerId+"] is offline , remove it."); 
+						List<String> chls=executor.getChildren(processorPath);
+						boolean hasProcessor=false;
+						for(String chPath:chls){
+							String relProcessorPath=processorPath+"/"+chPath;
+							if(!executor.getChildren(relProcessorPath).isEmpty()){
+								hasProcessor=true;
+							}else{
+								//may delete the node (broken from the zookeeper)
+								executor.deletePath(relProcessorPath);
+							}
+						}
+						if(!hasProcessor){
+							String pluginWorkerPath=nodeLeader.pluginWorkerPath(workerId, workflow);
+							executor.deletePath(pluginWorkerPath);
+							LOGGER.info(" worker["+workerId+"] is offline , remove it."); 
+							iterator.remove();
+						}
+					}catch (Exception e) {
+						nodeLeader.logError(e);
+					}finally{
+						try {
+							singleMonitor.release();
+						} catch (Exception e) {
+							nodeLeader.logError(e);
+						}
 					}
 				}catch (Exception e) {
 					nodeLeader.logError(e);
-				}finally{
-					try {
-						singleMonitor.release();
-					} catch (Exception e) {
-						nodeLeader.logError(e);
+				}
+			}
+			workerPaths=workflow.getWorkerPaths();
+			List<Integer> workers=workflow.getNodeData().getWorkers();
+			String missingWorkers="";
+			for (Integer defWorkerId : workers) {
+				if(!workerPaths.containsKey(defWorkerId)){
+					missingWorkers=missingWorkers+","+defWorkerId;
+				}
+			}
+			if(missingWorkers.length()>0){
+				WorkflowErrorCode.E0002.clearCause();
+				workflow.setError(WorkflowErrorCode.E0002.setThrowable(
+						new IllegalStateException("workers["+missingWorkers+"] is offline")));
+			}else{
+				if(workflow.workflowCheck().isError()){
+					if(workflow.containsError(WorkflowErrorCode.E0002)){
+						workflow.removeError(WorkflowErrorCode.E0002,new SimpleCallBack() {
+							@Override
+							public void call(Object object) {
+								notifyWorkflowStart(workflow, instanceCtl.getTaskCallBack());
+							}
+						});
+						
 					}
 				}
-			}catch (Exception e) {
-				nodeLeader.logError(e);
+				valid=true;
 			}
-		});
+		}catch (Exception e) {
+			nodeLeader.logError(e);
+		}
+		return valid;
 	}
 
 	private void startWorkflowStatusCheck(LeaderNodeMeta leaderNodeMeta) {
@@ -404,8 +444,10 @@ public class WorkflowMaster implements JModel ,Closeable{
 								long interval=date.getTime()-onlineTime;
 								if(interval>leaderNodeMeta.getWorkflowToOnlineMs()){
 									workflow.setOnline();
-									Task task=taskRepo.getTaskByWorfklowName(workflow.getName());
-									instanceCtl.startTask(task);
+									if(checkWorkerIfActive(workflow)){
+										notifyWorkflowStart(workflow, instanceCtl.getTaskCallBack());
+									}
+									startWorkflowWorkersIfActive();
 								}
 							}
 						}
@@ -529,13 +571,26 @@ public class WorkflowMaster implements JModel ,Closeable{
 		return leaderNodeMeta;
 	}
 	
-	public synchronized String addTask(Task task,TaskCallBack taskCallBack){
-		String taskId=taskRepo.addTask(task);
-		WorkflowCheck workflowCheck=getWorkflow(task.getWorkflowName()).workflowCheck();
+	private void notifyWorkflowStart(Workflow workflow,TaskCallBack taskCallBack){
+		String workflowName=workflow.getName();
+		WorkflowCheck workflowCheck=workflow.workflowCheck();
+		if(workflowCheck.isError()){
+			int i=0;
+			for(Throwable t:workflow.getStatus().getCause()){
+				nodeLeader.logError(new IllegalStateException("workflow["+workflowName+"] error["+
+									(++i)+"]; ")
+						.initCause(t));
+			}
+		}
 		if(workflowCheck.isOnline()
 				&&!workflowCheck.isLock()){
-			taskCallBack.call(taskRepo.getTaskByWorfklowName(task.getWorkflowName()));
+			taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName));
 		}
+	}
+	
+	public synchronized String addTask(Task task,TaskCallBack taskCallBack){
+		String taskId=taskRepo.addTask(task);
+		notifyWorkflowStart(getWorkflow(task.getWorkflowName()), taskCallBack);
 		return taskId;
 	}
 	
@@ -549,7 +604,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		Long sequence=instance.getSequence();
 		if(workflow.workflowCheck().tryLock(sequence)){
 			workflow.workflowCheck().release(sequence);
-			taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName));
+			notifyWorkflowStart(workflow, taskCallBack);
 		}else{
 			throw new RuntimeException("workflow[locked:"+workflow.workflowCheck().getLockSequence()+"] is not locked by the instance : "+sequence);
 		}
@@ -588,6 +643,14 @@ public class WorkflowMaster implements JModel ,Closeable{
 		addTask(task,instanceCtl.getTaskCallBack());
 	}
 	
+	public Collection<Task> getTasks(){
+		ZKTaskRepo _taskRepo=(ZKTaskRepo)taskRepo;
+		return _taskRepo.getAllTasks();
+	}
 	
+	public Task getTask(String unique){
+		ZKTaskRepo _taskRepo=(ZKTaskRepo)taskRepo;
+		return _taskRepo.getTask(unique);
+	}
 	
 }

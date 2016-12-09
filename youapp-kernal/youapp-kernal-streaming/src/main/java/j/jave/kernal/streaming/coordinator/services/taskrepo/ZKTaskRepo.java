@@ -1,5 +1,6 @@
 package j.jave.kernal.streaming.coordinator.services.taskrepo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -97,5 +98,12 @@ public class ZKTaskRepo implements TaskRepo {
 	public Task peek(String taskId) {
 		return temp.get(taskId);
 	}
-
+	
+	public Collection<Task> getAllTasks(){
+		return temp.values();
+	}
+	
+	public Task getTask(String unique){
+		return temp.get(unique);
+	}
 }

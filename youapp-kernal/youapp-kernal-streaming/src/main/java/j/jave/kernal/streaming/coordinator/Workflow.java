@@ -4,7 +4,12 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
@@ -59,7 +64,22 @@ public class Workflow implements JModel,Closeable{
 	
 	private WorkflowStatus status=WorkflowStatus.OFFLINE;
 	
+	private final Object sync=new Object();
+	
 	private WorkflowCheck workflowCheck=new WorkflowCheck();
+	
+	private static ScheduledExecutorService workflowStatusExecutorService=_workflowStatusExecutorService();
+	
+	private static ScheduledExecutorService _workflowStatusExecutorService() {
+		return 
+				Executors.newScheduledThreadPool(1,new ThreadFactory() {
+					@Override
+					public Thread newThread(Runnable r) {
+						return new Thread(r,"workflow-status-check");
+					}
+				});
+	}
+	
 	
 //	private final Object sync=new Object();
 	
@@ -106,7 +126,7 @@ public class Workflow implements JModel,Closeable{
 		}
 		
 		/**
-		 * attempt to express the workflow is ready for next start
+		 * release current instance,means the workflow is ready for next start
 		 * @param sequence
 		 * @return
 		 */
@@ -179,7 +199,7 @@ public class Workflow implements JModel,Closeable{
 	}
 	
 	public Map<Integer, String> getWorkerPaths() {
-		return Collections.unmodifiableMap(workerPaths);
+		return workerPaths;
 	}
 
 	public NodeData getNodeData() {
@@ -269,11 +289,67 @@ public class Workflow implements JModel,Closeable{
 	
 	synchronized void setStop() {
 		this.status = WorkflowStatus.STOP;
-		setOnlineStartTime(new Date().getTime());
+	}
+	
+	synchronized void setError(Throwable t) {
+		setError(WorkflowErrorCode.E0001.setThrowable(t));
+	}
+	
+	synchronized boolean containsError(WorkflowErrorCode errorCode){
+		return this.status.containsError(errorCode);
+	}
+	
+	synchronized void setError(WorkflowErrorCode errorCode){
+		if(this.status.isError()){
+			this.status.setErrorCode(errorCode);
+		}else{
+			this.status = WorkflowStatus.ERROR.setErrorCode(errorCode);
+		}
+	}
+	
+	synchronized void removeError(WorkflowErrorCode errorCode,SimpleCallBack callBack){
+		if(this.status.isError()){
+			this.status.removeError(errorCode);
+			notifyWorkflowRecoverIf(callBack);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void notifyWorkflowRecoverIf(final SimpleCallBack callBack){
+		if(workflowStatusExecutorService.isShutdown()){
+			workflowStatusExecutorService=_workflowStatusExecutorService();
+		}
+		workflowStatusExecutorService.schedule(new Runnable() {
+			@Override
+			public void run() {
+				synchronized (sync) {
+					WorkflowStatus status=Workflow.this.status;
+					if(status.isError()
+							&&status.recoverIf()){
+						setOnline();
+						callBack.call(null);
+					}
+				}
+			}
+		}, 10000, TimeUnit.MILLISECONDS);
 	}
 	
 	public WorkflowStatus getStatus() {
 		return status;
+	}
+	
+	/**
+	 * only for JSON VIEW
+	 * @return
+	 */
+	@Deprecated
+	public List<Throwable> getErrors(){
+		if(status.isError()){
+			return status.getCause();
+		}
+		return Collections.EMPTY_LIST;
 	}
 	
 }

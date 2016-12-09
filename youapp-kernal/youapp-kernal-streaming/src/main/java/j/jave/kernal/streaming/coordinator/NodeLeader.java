@@ -417,7 +417,7 @@ public class NodeLeader implements Serializable{
 		return conf;
 	}
 
-	void logError(Exception e) {
+	void logError(Throwable e) {
 		LOGGER.error(getMessage(e.getMessage()), e);
 	}
 	

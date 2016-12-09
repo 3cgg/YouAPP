@@ -1,6 +1,7 @@
 package j.jave.kernal.streaming.coordinator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import j.jave.kernal.jave.model.JModel;
@@ -81,7 +82,12 @@ public class NodeData implements JModel,IParallel{
 	public boolean isParallel(){
 		return IParallel._TRUE.equals(parallel);
 	}
-
+	
+	/**
+	 * check if the worker belongs itself, i.e.  
+	 * @param worker
+	 * @return
+	 */
 	public boolean containsWorker(int worker){
 		boolean contains=id==worker;
 		if(contains){
@@ -94,6 +100,23 @@ public class NodeData implements JModel,IParallel{
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * return itself and all children workers - 
+	 * @return
+	 */
+	public List<Integer> getWorkers(){
+		if(nodes==null||nodes.isEmpty()){
+			return Arrays.asList(getId());
+		}else{
+			List<Integer> parent=new ArrayList<>();
+			for(NodeData nodeData:nodes){
+				List<Integer> child=nodeData.getWorkers();
+				parent.addAll(child);
+			}
+			return parent;
+		}
 	}
 	
 }

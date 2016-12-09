@@ -118,7 +118,7 @@ public class InstanceCtl {
 	private void start(final int worker,final String instancePath,final Instance instance){
 		
 		if(!instance.getWorkflow().containsWorker(worker)){
-			throw new RuntimeException("the worker["+worker+"] does not exist.");
+			throw new RuntimeException("the worker["+worker+"] is invalid.");
 		}
 		
 		if(!instance.getWorkflow().getWorkerPaths().containsKey(worker)){

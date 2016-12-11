@@ -122,6 +122,7 @@ public class NodeLeader implements Serializable{
 			@Override
 			public void notLeader() {
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-schedule leadership .... ");
+				setAsFollower();
 				if(workflowMaster==null) return;
 				closeWorkflowMaster();
 			}
@@ -130,6 +131,7 @@ public class NodeLeader implements Serializable{
 			public void isLeader() {
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-schedule leadership .... ");
 				try {
+					setAsLeader();
 					createMasterMeta();
 				} catch (Exception e) {
 					logError(e);
@@ -214,13 +216,19 @@ public class NodeLeader implements Serializable{
 	private synchronized void createMasterMeta() throws Exception{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		closeWorkflowMaster();
-		leaderNodeMeta.setLeader(true);
 		workflowMaster=new WorkflowMaster(this,leaderNodeMeta);
 		registerLeaderIsLeaderInZookeeper();
 		registerRPCInZookeeper();
 		startServer();
 	}
+
+	private void setAsLeader() {
+		leaderNodeMeta.setLeader(true);
+	}
 	
+	private void setAsFollower() {
+		leaderNodeMeta.setLeader(false);
+	}
 	
 	
 	private void exitIfCloseWorkflowMasterNeed() {

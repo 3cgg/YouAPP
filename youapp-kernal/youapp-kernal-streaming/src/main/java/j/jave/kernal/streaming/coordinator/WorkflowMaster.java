@@ -23,11 +23,13 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
+import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.logging.JLogger;
 import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
+import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.Workflow.WorkflowCheck;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
@@ -41,6 +43,7 @@ import j.jave.kernal.streaming.coordinator.services.taskrepo.ZKTaskRepo;
 import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.ChangedCallBack;
 import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.WorkflowMetaRepo;
 import j.jave.kernal.streaming.coordinator.services.workflowmetarepo.ZKWorkflowMetaRepo;
+import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import j.jave.kernal.streaming.zookeeper.ZooNode;
 import j.jave.kernal.streaming.zookeeper.ZooNodeCallback;
@@ -58,6 +61,9 @@ public class WorkflowMaster implements JModel ,Closeable{
 	
 	@JsonIgnore
 	private final transient JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
+	
+	@JsonIgnore
+	private transient SimpleHttpNioChannelServer server;
 	
 	/**
 	 * watcher on worker trigger path /  temporary
@@ -135,21 +141,71 @@ public class WorkflowMaster implements JModel ,Closeable{
 	private Map<Class<?>,List<WorkflowCommand<?>>> workflowCommands
 	=Maps.newConcurrentMap();
 	
-	public WorkflowMaster(NodeLeader nodeLeader,LeaderNodeMeta leaderNodeMeta) {
+	public WorkflowMaster(NodeLeader nodeLeader,LeaderNodeMeta leaderNodeMeta) throws Exception {
 		this.nodeLeader=nodeLeader;
 		this.leaderNodeMeta=leaderNodeMeta;
 		executor=nodeLeader.getExecutor();
 		taskRepo=new ZKTaskRepo(executor, 
 				leaderNodeMeta.getTaskRepoPath());
 		instanceCtl=new InstanceCtl(nodeLeader, this);
-		
+		registerLeaderIsLeaderInZookeeper();
+		registerRPCInZookeeper();
 		startWorkflowStatusCheck(leaderNodeMeta);
 //		startWorkflowAddWatcher();
 		startWorfkowTriggerWatcher();
 		startLeaderFollowerIfActive();
 		addCommonCommand();
-		
+		startServer();
 		workflowMetaRepo=_workflowMetaRepo(nodeLeader);
+	}
+	
+	
+	/**
+	 * node leader code
+	 * @return
+	 */
+	private synchronized LeaderNodeMeta registerLeaderIsLeaderInZookeeper(){
+        byte[] msg=
+        		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
+        String realLeaderIsLeaderPath=NodeLeader.leaderIsLeaderRegisterPath();
+		if(!executor.exists(realLeaderIsLeaderPath)){
+			executor.createPath(realLeaderIsLeaderPath, msg);
+		}else{
+			executor.setPath(realLeaderIsLeaderPath, msg);
+		}
+		String realLeaderFollowerPath=nodeLeader.realLeaderFollowerPath();
+		if(executor.exists(realLeaderFollowerPath)){
+			executor.deletePath(realLeaderFollowerPath);
+		}
+		return leaderNodeMeta;
+	}
+	
+	/**
+	 * node leader code
+	 */
+	private void registerRPCInZookeeper(){
+		String rpcNode=JConfiguration.get().getString(
+				ConfigNames.STREAMING_LEADER_RPC_HOST_ZNODE);
+		String data=leaderNodeMeta.getHost()
+				+":"
+				+leaderNodeMeta.getPort();
+		if(executor.exists(rpcNode)){
+			executor.setPath(rpcNode, data);
+		}else{
+			executor.createPath(rpcNode, data);
+		}
+	}
+	
+	
+	
+	/**
+	 * node leader  code
+	 * @throws Exception
+	 */
+	private void startServer() throws Exception{
+		server =
+				new SimpleHttpNioChannelServer(leaderNodeMeta.getPort());
+		server.start();
 	}
 
 	private void addCommonCommand(){
@@ -496,9 +552,21 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}
 		workflows.clear();
 		
-		workflowCheckExecutorService.shutdownNow();
-		workflowStatusExecutorService.shutdownNow();
-		workflowFollowerIfActiveCheckExecutorService.shutdownNow();
+		try{
+			if(server!=null){
+				server.close();
+			}
+		}catch (Exception e) {
+			exception.addMessage(e.getMessage());
+		}
+		
+		try{
+			workflowCheckExecutorService.shutdownNow();
+			workflowStatusExecutorService.shutdownNow();
+			workflowFollowerIfActiveCheckExecutorService.shutdownNow();
+		}catch (Exception e) {
+			exception.addMessage(e.getMessage());
+		}
 		
 		if(exception.has())
 			throw exception;

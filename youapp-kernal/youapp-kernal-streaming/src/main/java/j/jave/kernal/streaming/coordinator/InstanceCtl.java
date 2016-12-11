@@ -44,7 +44,7 @@ public class InstanceCtl {
 	
 	private final WorkflowMaster workflowMaster;
 	
-	private DistAtomicLong atomicLong;
+	private final DistAtomicLong atomicLong;
 	
 	private final Object sync=new Object();
 	
@@ -52,13 +52,15 @@ public class InstanceCtl {
 	private final transient ZookeeperExecutor executor;
 	
 	@JsonIgnore
-	private final transient JSerializerFactory serializerFactory=_SerializeFactoryGetter.get();
+	private final transient JSerializerFactory serializerFactory;
 
 	public InstanceCtl(NodeLeader nodeLeader, WorkflowMaster workflowMaster) {
 		this.nodeLeader = nodeLeader;
 		this.workflowMaster = workflowMaster;
 		this.executor=nodeLeader.getExecutor();
-		this.atomicLong=new DistAtomicLong(executor);
+		this.atomicLong=new DistAtomicLong(executor,
+				NodeLeader.basePath()+"/instance-atomic-long");
+		this.serializerFactory=nodeLeader.getSerializerFactory();
 	}
 	
 	public static abstract class CacheType{

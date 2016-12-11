@@ -6,15 +6,27 @@ import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicLong;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class DistAtomicLong implements Serializable{
 
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(DistAtomicLong.class);
+
 	private DistributedAtomicLong atomicLong;
 	
-	public DistAtomicLong(ZookeeperExecutor executor) {
+	private final String _path;
+	
+	/**
+	 * 
+	 * @param executor
+	 * @param path  /locks/atomic-long
+	 */
+	public DistAtomicLong(ZookeeperExecutor executor,String path) {
+		this._path=path;
 		atomicLong=new DistributedAtomicLong(executor.backend(),
-				"/locks/atomic-long", new ExponentialBackoffRetry(1000, 3));
+				path, new ExponentialBackoffRetry(1000, 3));
 	}
 	
 	public long getSequence(){
@@ -23,11 +35,10 @@ public class DistAtomicLong implements Serializable{
 				AtomicValue<Long>  atomicValue=  atomicLong.increment();
 				if(atomicValue.succeeded()){
 					long val= atomicValue.postValue();
-					System.out.println("got value "+val+" from dist atomic long ... ");
 					return val;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error(_path+" {atomic long error}. ", e);
 			}
 		}
 	}

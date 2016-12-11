@@ -17,12 +17,10 @@ import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.jave.serializer.SerializerUtils;
 import j.jave.kernal.jave.utils.JAssert;
-import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingService;
 import j.jave.kernal.streaming.coordinator.services.tracking.TrackingServiceFactory;
 import j.jave.kernal.streaming.netty.client.KryoChannelExecutorPool;
-import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 @SuppressWarnings({"serial","rawtypes"})
@@ -42,21 +40,19 @@ public class NodeLeader implements Serializable{
 	
 	private final String name;
 	
-	private static String basePath=CoordinatorPaths.BASE_PATH;
+	private final static  String basePath=CoordinatorPaths.BASE_PATH;
 	
 	private final ZookeeperExecutor executor;
 	
-	private LeaderLatch leaderLatch;
+	private final LeaderLatch leaderLatch;
 
 	private WorkflowMaster workflowMaster;
 	
-	private TrackingService trackingService;
+	private final TrackingService trackingService;
 	
-	private ExecutorService loggingExecutorService=null;
+	private final ExecutorService loggingExecutorService;
 	
-	private ExecutorService zooKeeperExecutorService=null;
-	
-	private SimpleHttpNioChannelServer server;
+	private final ExecutorService zooKeeperExecutorService;
 	
 	private static NodeLeader NODE_SELECTOR;
 	
@@ -120,15 +116,15 @@ public class NodeLeader implements Serializable{
 		leaderLatch.addListener(new LeaderLatchListener() {
 			
 			@Override
-			public void notLeader() {
+			public synchronized void notLeader() {
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" lose worker-schedule leadership .... ");
 				setAsFollower();
-				if(workflowMaster==null) return;
+				registerAsFollowerInZookeeper();
 				closeWorkflowMaster();
 			}
 			
 			@Override
-			public void isLeader() {
+			public synchronized void isLeader() {
 				logInfo("(Thread)+"+Thread.currentThread().getName()+" is worker-schedule leadership .... ");
 				try {
 					setAsLeader();
@@ -213,13 +209,14 @@ public class NodeLeader implements Serializable{
 	}
 	
 
+	/**
+	 * create workflow master 
+	 * @throws Exception
+	 */
 	private synchronized void createMasterMeta() throws Exception{
 		logInfo("(Thread)+"+Thread.currentThread().getName()+" got worker-schedule leadership .... ");
 		closeWorkflowMaster();
 		workflowMaster=new WorkflowMaster(this,leaderNodeMeta);
-		registerLeaderIsLeaderInZookeeper();
-		registerRPCInZookeeper();
-		startServer();
 	}
 
 	private void setAsLeader() {
@@ -230,16 +227,11 @@ public class NodeLeader implements Serializable{
 		leaderNodeMeta.setLeader(false);
 	}
 	
-	
-	private void exitIfCloseWorkflowMasterNeed() {
-		if(workflowMaster!=null) {
-			try{
-				workflowMaster.close();
-				workflowMaster=null;
-			}catch (Exception e) {
-				logError(e);
-			}
-		}
+	/**
+	 * exit JVM , close some resource if its workflow master
+	 */
+	void exitIfCloseWorkflowMasterNeed() {
+		closeWorkflowMaster();
 		try{
 			synchronized (this) {
 				wait(10000);
@@ -250,7 +242,7 @@ public class NodeLeader implements Serializable{
 		System.exit(-1);
 	}
 
-	private void closeWorkflowMaster() {
+	void closeWorkflowMaster() {
 		if(workflowMaster!=null) {
 			try{
 				workflowMaster.close();
@@ -267,34 +259,9 @@ public class NodeLeader implements Serializable{
 		}
 	}
 	
-	/**
-	 * node leader  code
-	 * @throws Exception
-	 */
-	private void startServer() throws Exception{
-		LeaderNodeMeta nodeMeta=workflowMaster.getLeaderNodeMeta();
-		server =
-				new SimpleHttpNioChannelServer(nodeMeta.getPort());
-		server.start();
-	}
 	
-	/**
-	 * node leader code
-	 */
-	private void registerRPCInZookeeper(){
-		LeaderNodeMeta leaderNodeMeta=workflowMaster.getLeaderNodeMeta();
-		String rpcNode=JConfiguration.get().getString(ConfigNames.STREAMING_LEADER_RPC_HOST_ZNODE);
-		String data=leaderNodeMeta.getHost()
-				+":"
-				+leaderNodeMeta.getPort();
-		if(executor.exists(rpcNode)){
-			executor.setPath(rpcNode, data);
-		}else{
-			executor.createPath(rpcNode, data);
-		}
-	}
 	
-	private String realLeaderFollowerPath() {
+	String realLeaderFollowerPath() {
 		return leaderFollowerRegisterPath()
 														+"/"+id
 														+"-"+leaderNodeMeta.getHost()
@@ -322,25 +289,7 @@ public class NodeLeader implements Serializable{
 		return leaderNodeMeta;
 	}
 	
-	/**
-	 * node leader code
-	 * @return
-	 */
-	private synchronized LeaderNodeMeta registerLeaderIsLeaderInZookeeper(){
-        byte[] msg=
-        		SerializerUtils.serialize(serializerFactory, leaderNodeMeta);
-        String realLeaderIsLeaderPath=leaderIsLeaderRegisterPath();
-		if(!executor.exists(realLeaderIsLeaderPath)){
-			executor.createPath(realLeaderIsLeaderPath, msg);
-		}else{
-			executor.setPath(realLeaderIsLeaderPath, msg);
-		}
-		String realLeaderFollowerPath=realLeaderFollowerPath();
-		if(executor.exists(realLeaderFollowerPath)){
-			executor.deletePath(realLeaderFollowerPath);
-		}
-		return leaderNodeMeta;
-	}
+	
 	
 	
 	
@@ -459,5 +408,9 @@ public class NodeLeader implements Serializable{
 	
 	KryoChannelExecutorPool getChannelExecutorPool() {
 		return channelExecutorPool;
+	}
+	
+	JSerializerFactory getSerializerFactory() {
+		return serializerFactory;
 	}
 }

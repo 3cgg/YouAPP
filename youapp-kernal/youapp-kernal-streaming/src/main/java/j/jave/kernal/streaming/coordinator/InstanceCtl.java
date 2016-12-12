@@ -71,7 +71,7 @@ public class InstanceCtl {
 	 * start the task.
 	 * @param task
 	 */
-	void startTask(Task task) {
+	void startTask(Task task) throws Exception {
 		if(task!=null){
 			Workflow workflow=workflowMaster.getWorkflow(task.getWorkflowName());
 			if(workflow==null){
@@ -94,12 +94,13 @@ public class InstanceCtl {
 			}catch (Exception e) {
 				// the virtual node is completed, set flag to complete
 				NodeStatus nodeStatus=NodeStatus.COMPLETE_ERROR.setThrowable(e);
-				c(instance,instance.getRootPath(),nodeStatus);
 				try {
 					instance.addError(instance.getRootPath(), e);
-					completeInstance(instance,nodeStatus);
+					c(instance,instance.getRootPath(),nodeStatus);
 				} catch (Exception e1) {
 					logError(e1);
+				}finally{
+					completeInstance(instance,nodeStatus);
 				}
 			}
 			
@@ -297,22 +298,31 @@ public class InstanceCtl {
 	
 	
 	private Instance createInstance(Workflow workflow,Map<String, Object> conf){
-		
-		Long sequence=getSequence();
 		Instance instance=new Instance();
-		instance.setWorkflow(workflow);
-		instance.setSequence(sequence);
-		instance.setConf(conf);
-		
-		createInstancePath(instance.getWorkflow().getNodeData(),instance);
-		
-		attachInstanceChildPathWatcher(instance);
-		
-		workflow.setCount(workflow.getCount()+1);
-//		instance.setCount(workflow.getCount());
-		
-		workflowMaster.addInstance(sequence, instance);
-		
+		try{
+			Long sequence=getSequence();
+			
+			instance.setWorkflow(workflow);
+			instance.setSequence(sequence);
+			instance.setConf(conf);
+			
+			createInstancePath(instance.getWorkflow().getNodeData(),instance);
+			
+			attachInstanceChildPathWatcher(instance);
+			
+			workflow.setCount(workflow.getCount()+1);
+	//		instance.setCount(workflow.getCount());
+			
+			workflowMaster.addInstance(sequence, instance);
+		}catch (Exception e) {
+			logError(e);
+			try {
+				instance.close();
+			} catch (IOException e1) {
+				logError(e1);
+			}
+			throw new IllegalStateException(e);
+		}
 		return instance;
 	}
 	
@@ -689,8 +699,12 @@ public class InstanceCtl {
 	TaskCallBack getTaskCallBack() {
 		return new TaskCallBack() {
 			@Override
-			public void call(Task task) {
-				startTask(task);
+			public void call(Task task,SimpleCallBack callBack) {
+				try{
+					startTask(task);
+				}catch (Throwable e) {
+					callBack.call(e);
+				}
 			}
 		};
 	}

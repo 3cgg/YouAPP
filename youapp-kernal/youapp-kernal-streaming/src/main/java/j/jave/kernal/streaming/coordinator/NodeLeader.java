@@ -382,7 +382,7 @@ public class NodeLeader implements Serializable{
 		LOGGER.info(getMessage(msg));
 	}
 	
-	private String getMessage(String msg){
+	String getMessage(String msg){
 		return String.format("---leader-name[%s]--%s---", new Object[]{name,msg});
 	}
 	

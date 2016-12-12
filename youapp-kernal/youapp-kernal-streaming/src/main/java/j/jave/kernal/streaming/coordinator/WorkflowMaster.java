@@ -465,6 +465,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 			}else{
 				if(workflow.workflowCheck().isError()){
 					if(workflow.containsError(WorkflowErrorCode.E0002)){
+						LOGGER.info(nodeLeader.getMessage("attempt to recover workflow :"+workflow.getName()));
 						workflow.removeError(WorkflowErrorCode.E0002,new SimpleCallBack() {
 							@Override
 							public void call(Object object) {
@@ -652,7 +653,15 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}
 		if(workflowCheck.isOnline()
 				&&!workflowCheck.isLock()){
-			taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName));
+			taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName),new SimpleCallBack() {
+				@Override
+				public void call(Object object) {
+					if(object instanceof Throwable){
+						nodeLeader.logError((Throwable) object);
+						taskCallBack.call(taskRepo.getTaskByWorfklowName(workflowName), this);
+					}
+				}
+			});
 		}
 	}
 	

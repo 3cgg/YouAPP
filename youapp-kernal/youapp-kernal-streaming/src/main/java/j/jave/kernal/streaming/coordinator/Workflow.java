@@ -16,12 +16,17 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
+import j.jave.kernal.jave.logging.JLogger;
+import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.streaming.coordinator.rpc.leader.ExecutingWorker;
 
 @SuppressWarnings("serial")
 public class Workflow implements JModel,Closeable{
+	
+	private static final JLogger LOGGER=JLoggerFactory.getLogger(Workflow.class);
+	
 	
 	private String name;
 	
@@ -325,9 +330,11 @@ public class Workflow implements JModel,Closeable{
 			@Override
 			public void run() {
 				synchronized (sync) {
+					LOGGER.info("attempt to recover workflow :"+getName());
 					WorkflowStatus status=Workflow.this.status;
 					if(status.isError()
 							&&status.recoverIf()){
+						LOGGER.info("recover workflow :"+getName());
 						setOnline();
 						callBack.call(null);
 					}

@@ -84,8 +84,16 @@ public class InstanceCtl {
 				return;
 			}
 			
-			Instance instance=createInstance(workflow,
-					task.getParams());
+			Instance instance=null;
+			
+			try{
+				instance=createInstance(workflow,
+						task.getParams());
+			}catch (IllegalStateException e) {
+				logInfo(" the instance cannot be created;task id : "+task.getId());
+				throw e;
+			}
+			
 			try{
 				if(!workflowCheck.tryLock(instance.getSequence())){
 					throw new IllegalStateException("workflow is locked : "+workflowCheck.getLockSequence());
@@ -297,15 +305,28 @@ public class InstanceCtl {
 	}
 	
 	
-	private Instance createInstance(Workflow workflow,Map<String, Object> conf){
+	/**
+	 * create an instance , including some check ,  later start 
+	 * @param workflow
+	 * @param conf
+	 * @return
+	 * @throws IllegalStateException
+	 */
+	private Instance createInstance(Workflow workflow,Map<String, Object> conf) throws IllegalStateException{
 		Instance instance=new Instance();
+		instance.setWorkflow(workflow);
+		instance.setConf(conf);
 		try{
 			Long sequence=getSequence();
-			
-			instance.setWorkflow(workflow);
-			instance.setSequence(sequence);
-			instance.setConf(conf);
-			
+			while(true){
+				instance.setSequence(sequence);
+				String instancePath=nodeLeader.instancePath("",instance);
+				if(!executor.exists(instancePath)){
+					break;
+				}
+				logInfo("sequence-path["+instancePath+"] is already used, drop ... ");
+				sequence=getSequence();
+			}
 			createInstancePath(instance.getWorkflow().getNodeData(),instance);
 			
 			attachInstanceChildPathWatcher(instance);

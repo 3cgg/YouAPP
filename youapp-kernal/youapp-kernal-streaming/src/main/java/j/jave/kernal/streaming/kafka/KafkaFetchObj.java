@@ -7,14 +7,8 @@ import java.io.Serializable;
  * @author JIAZJ
  *
  */
-public interface FetchObj extends Serializable {
+public interface KafkaFetchObj extends Serializable, KafkaHashKey, KafkaIn {
 
-	/**
-	 * according to the offset in the kafka partition
-	 * @return
-	 */
-	public long offset();
-	
 	/**
 	 * the record time , generally the record is create at the time.
 	 * @return
@@ -27,11 +21,5 @@ public interface FetchObj extends Serializable {
 	 */
 	public String id();
 	
-	/**
-	 * the record is partitioned according to the hash value;
-	 * hash value% partition number
-	 * @return
-	 */
-	public String hashKey();
 	
 }

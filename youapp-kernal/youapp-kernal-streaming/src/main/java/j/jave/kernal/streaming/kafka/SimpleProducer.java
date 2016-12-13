@@ -16,26 +16,30 @@ public class SimpleProducer implements Serializable {
 		this.executor = executor;
 	}
 	
-	public void send(FetchObj fetchObj,String topic){
-		send(fetchObj, topic,_JSONSerializerFactoryGetter.get());
+	public void send(Object object,String topic){
+		send(object, topic,_JSONSerializerFactoryGetter.get());
 	}
 	
-	public void send(FetchObj fetchObj,String topic,JSerializerFactory serializerFactory){
-		send(fetchObj, topic, null, serializerFactory);
+	public void send(Object object,String topic,JSerializerFactory serializerFactory){
+		send(object, topic, null, serializerFactory);
 	}
 	
-	public void send(FetchObj fetchObj,String topic,Integer partition,JSerializerFactory serializerFactory){
-		Object val=SerializerUtils.serialize(serializerFactory, fetchObj);
+	public void send(Object object,String topic,Integer partition,JSerializerFactory serializerFactory){
+		Object val=SerializerUtils.serialize(serializerFactory, object);
+		String key=null;
+		if(object instanceof KafkaFetchObj){
+			key=((KafkaFetchObj) object).hashKey();
+		}
 		if(partition==null){
-			executor.send(topic,fetchObj.hashKey(),val);
+			executor.send(topic,key,val);
 		}
 		else{
-			executor.send(topic, partition, fetchObj.hashKey(), val);
+			executor.send(topic, partition, key, val);
 		}
 	}
 	
-	public void send(FetchObj fetchObj,String topic,Integer partition){
-		send(fetchObj, topic, partition, _JSONSerializerFactoryGetter.get());
+	public void send(Object object,String topic,Integer partition){
+		send(object, topic, partition, _JSONSerializerFactoryGetter.get());
 	}
 	
 }

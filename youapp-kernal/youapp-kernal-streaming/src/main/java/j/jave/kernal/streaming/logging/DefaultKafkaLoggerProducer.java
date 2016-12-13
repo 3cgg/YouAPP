@@ -1,14 +1,13 @@
 package j.jave.kernal.streaming.logging;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import j.jave.kernal.JConfiguration;
 import j.jave.kernal.jave.logging.LoggerType;
-import j.jave.kernal.jave.utils.JDateUtils;
 import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.ConfigNames;
+import j.jave.kernal.streaming.Util;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
 import j.jave.kernal.streaming.kafka.ProducerConnector;
@@ -65,14 +64,16 @@ public class DefaultKafkaLoggerProducer implements IKafkaLoggerProducer {
 		}
 	}
 
-	private KafkaLoggerRecord newLoggerRecord(LoggerType type,Object message,Throwable t) {
-		KafkaLoggerRecord kafkaLoggerRecord= new KafkaLoggerRecord(message,null);
-		Date date=new Date();
-//		kafkaLoggerRecord.setRecordTime(date.getTime());
-		kafkaLoggerRecord.setRecordTimeStr(JDateUtils.formatWithMSeconds(date));
-		kafkaLoggerRecord.setHashKey(type.getName());
-//		kafkaLoggerRecord.setId(JUniqueUtils.unique());
-		return kafkaLoggerRecord;
+	private Object newLoggerRecord(LoggerType type,Object message,Throwable t) {
+//		KafkaLoggerRecord kafkaLoggerRecord= new KafkaLoggerRecord(message,null);
+//		Date date=new Date();
+////		kafkaLoggerRecord.setRecordTime(date.getTime());
+//		kafkaLoggerRecord.setRecordTimeStr(JDateUtils.formatWithMSeconds(date));
+//		kafkaLoggerRecord.setHashKey(type.getName());
+////		kafkaLoggerRecord.setId(JUniqueUtils.unique());
+//		return kafkaLoggerRecord;
+		
+		return message+(t==null?"":"\r\n"+Util.getMsg(t));
 	}
 	
 	

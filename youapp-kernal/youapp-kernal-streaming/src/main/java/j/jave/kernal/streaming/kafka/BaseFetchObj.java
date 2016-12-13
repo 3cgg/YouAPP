@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.kafka;
 
-public  class BaseFetchObj implements FetchObj {
+public  class BaseFetchObj implements KafkaFetchObj {
 
 	private String id;
 	

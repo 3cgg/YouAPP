@@ -3,10 +3,6 @@
  */
 package j.jave.kernal.jave.utils;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.reflect.JClassUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,11 +14,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+import j.jave.kernal.jave.reflect.JClassUtils;
+
 /**
  * @author J
  */
 public abstract class JJARUtils {
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(JJARUtils.class);
 	
 	private static final String URI="jar:%s!/%s";
 	
@@ -55,7 +52,6 @@ public abstract class JJARUtils {
 			}
 			return classes;
 		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
 			throw new JUtilException(e); 
 		}finally{
 			if(file!=null){
@@ -99,7 +95,6 @@ public abstract class JJARUtils {
 				}
 			}
 		} catch (IOException e) {
-			LOGGER.error(e.getMessage(), e);
 			throw new JUtilException(e); 
 		}finally{
 			if(file!=null){

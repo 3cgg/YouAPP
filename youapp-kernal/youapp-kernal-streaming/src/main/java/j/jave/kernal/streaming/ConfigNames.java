@@ -7,6 +7,10 @@ public class ConfigNames {
 	
 	public static final String STREAMING_ZOOKEEPER_NAMESPACE="youapp.streaming.zookeeper.namespace";
 	
+	//youapp.streaming.kafka.server
+	public static final String STREAMING_KAFKA_SERVER="youapp.streaming.kafka.server";
+	
+	
 	//youapp.streaming.workflow.tracking.kafka.topic
 	public static final String STREAMING_WORKFLOW_TRACKING_KAFKA_TOPIC="youapp.streaming.workflow.tracking.kafka.topic";
 	

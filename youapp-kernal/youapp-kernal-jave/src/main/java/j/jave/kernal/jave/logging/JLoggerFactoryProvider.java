@@ -8,13 +8,15 @@ import j.jave.kernal.jave.reflect.JClassUtils;
 
 public class JLoggerFactoryProvider implements JExtensionProvider {
 
-	private final static JLogger LOGGER=JLoggerFactoryProvider.getLoggerFactory().getLogger(JLoggerFactoryProvider.class);
+	private final static JLogger LOGGER=JLoggerFactoryProvider.console()
+			.getLogger(JLoggerFactoryProvider.class);
 	
 	public static JILoggerFactory getLoggerFactory(JConfiguration configuration){
 		if(configuration==null){
 			return JSystemConsoleLoggerFactory.get();
 		}
-		String loggerFactoryString=configuration.getString(JProperties.LOGGER_FACTORY, JSLF4JLoggerFactory.class.getName());
+		String loggerFactoryString=configuration.getString(JProperties.LOGGER_FACTORY, 
+				JSLF4JLoggerFactory.class.getName());
 		if(loggerFactoryString.equals(JSLF4JLoggerFactory.class.getName())){
 			return JSLF4JLoggerFactory.get();
 		}
@@ -35,4 +37,24 @@ public class JLoggerFactoryProvider implements JExtensionProvider {
 	public static JILoggerFactory getLoggerFactory(){
 		return getLoggerFactory(JConfiguration.get());
 	}
+	
+	public static JILoggerFactory slf4j(){
+		return JSLF4JLoggerFactory.get();
+	}
+	
+	public static JILoggerFactory console(){
+		return JSystemConsoleLoggerFactory.get();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

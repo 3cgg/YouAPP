@@ -30,7 +30,6 @@ public abstract class KafkaNameKeys implements Serializable  {
 	
 	public static final String getKafkaServer(Map context){
 		String val= (String) context.get(KAFKA_SERVER);
-		if(isEmptyOrNull(val)) throw new RuntimeException("kafka server host is missing.");
 		return val;
 	}
 

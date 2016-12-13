@@ -72,7 +72,7 @@ public class KafkaProducerConfig extends KafkaConfig{
 		conf.put("linger.ms", 1);
 		conf.put("retries", 0);
 		conf.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-		conf.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+		conf.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 		return conf;
 	}
 	

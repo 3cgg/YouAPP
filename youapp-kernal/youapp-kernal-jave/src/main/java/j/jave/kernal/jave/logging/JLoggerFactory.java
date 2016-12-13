@@ -5,12 +5,17 @@ public class JLoggerFactory {
 	
 	private static JILoggerFactory loggerFactory;
 	
+	private static final Object sync=new Object();
+	
 	private static JILoggerFactory getLoggerFactory() {
-		return JLoggerFactoryProvider.getLoggerFactory();
-	}
-
-	private static boolean testLogger(JILoggerFactory loggerFactory) {
-		return loggerFactory!=null&&loggerFactory.available();
+		if(loggerFactory==null){
+			synchronized (sync) {
+				if(loggerFactory==null){
+					loggerFactory=JLoggerFactoryProvider.getLoggerFactory();
+				}
+			}
+		}
+		return loggerFactory;
 	}
 	
 	public static JLogger getLogger(String name){

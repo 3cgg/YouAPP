@@ -8,13 +8,9 @@ import java.util.List;
 import java.util.Properties;
 
 import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.jave.reflect.JClassPathList;
 
 public abstract class JClassPathUtils {
-
-	private static final JLogger LOGGER =JLoggerFactory.getLogger(JClassPathUtils.class);
 	
 	/**
 	 * get all CLASSPATH files.  see java.class.path property.
@@ -52,7 +48,6 @@ public abstract class JClassPathUtils {
 		try{
 			// for web
 			URL libUrl=Thread.currentThread().getContextClassLoader().getResource("../lib");
-			LOGGER.info("expected to find [WEB-INF/lib] : "+ (libUrl==null?"NULL":libUrl.toString()));
 			File libFile=null;
 			if(libUrl!=null){
 				libFile=new File(libUrl.toURI());
@@ -63,7 +58,6 @@ public abstract class JClassPathUtils {
 			String libFilePath=libFile==null?null:libFile.getAbsolutePath();
 			
 			URL rootUrl=Thread.currentThread().getContextClassLoader().getResource("");
-			LOGGER.info("expected to find [WEB-INF/classes] : "+ (rootUrl==null?"NULL":rootUrl.toString()));
 			File classesFile=null;
 			if(rootUrl!=null){
 				classesFile=new File(rootUrl.toURI());
@@ -86,7 +80,6 @@ public abstract class JClassPathUtils {
 			if(libFile!=null) classPathList.add(libFilePath);
 			if(classesFile!=null) classPathList.add(classesFilePath);
 		}catch(Exception e){
-			LOGGER.error(e.getMessage(), e);
 			throw new JInitializationException(e);
 		}
 		return classPathList;

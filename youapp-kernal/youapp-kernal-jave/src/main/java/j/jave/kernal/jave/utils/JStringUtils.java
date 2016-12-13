@@ -19,12 +19,8 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import j.jave.kernal.jave.base64.JBase64FactoryProvider;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 
 public abstract class JStringUtils {
-
-	private static final JLogger LOGGER=JLoggerFactory.getLogger(JStringUtils.class);
 	
 	/**
 	 * extract all bytes from the {@link InputStream}. 	
@@ -75,7 +71,6 @@ public abstract class JStringUtils {
 		try {
 			return JBase64FactoryProvider.getBase64Factory().getBase64().decodeBase64(string);
 		} catch (Exception e) {
-			LOGGER.warn("", e);
 			throw new JUtilException(e);
 		}
 	}

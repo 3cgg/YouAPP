@@ -27,9 +27,9 @@ public class KafkaTrackingService implements TrackingService {
 		this.conf=conf;
 		KafkaProducerConfig producerConfig=KafkaProducerConfig.build(this.conf);
 		ProducerConnector producerConnecter=new ProducerConnector(producerConfig);
-		ProducerExecutor<String,String> producerExecutor=  producerConnecter.connect();
+		ProducerExecutor<String,Object> producerExecutor=  producerConnecter.connect();
 		simpleProducer =new SimpleProducer(producerExecutor);
-		DEFAULT_TOPIC=JConfiguration.get().getString(
+		DEFAULT_TOPIC=JConfiguration.newInstance().getString(
 				ConfigNames.STREAMING_WORKFLOW_TRACKING_KAFKA_TOPIC);
 	}
 	

@@ -31,7 +31,7 @@ public class JSimplePipelineLogger implements JLogger {
 	}
 
 	private void prepare(List<JLogger> loggers) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			if(!debugEnabled){
 				debugEnabled=logger.isDebugEnabled();
 			}
@@ -50,7 +50,7 @@ public class JSimplePipelineLogger implements JLogger {
 			if(!fatalEnabled){
 				fatalEnabled=logger.isFatalEnabled();
 			}
-		});
+		}
 	}
 	
 	
@@ -98,86 +98,86 @@ public class JSimplePipelineLogger implements JLogger {
 
 	@Override
 	public void trace(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.trace(message);
-		});
+		}
 	}
 
 	@Override
 	public void trace(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.trace(message, t);
-		});
+		}
 	}
 
 	@Override
 	public void debug(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.debug(message);
-		});
+		}
 	}
 
 	@Override
 	public void debug(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.debug(message, t);
-		});
+		}
 	}
 
 	@Override
 	public void info(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.info(message);
-		});
+		}
 	}
 
 	@Override
 	public void info(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.info(message, t);
-		});
+		}
 	}
 
 	@Override
 	public void warn(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.warn(message);
-		});
+		}
 	}
 
 	@Override
 	public void warn(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.warn(message, t);
-		});
+		}
 	}
 
 	@Override
 	public void error(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.error(message);
-		});
+		}
 	}
 
 	@Override
 	public void error(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.error(message, t);
-		});
+		}
 	}
 
 	@Override
 	public void fatal(Object message) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.fatal(message);
-		});
+		}
 	}
 
 	@Override
 	public void fatal(Object message, Throwable t) {
-		loggers.forEach(logger->{
+		for (JLogger logger : loggers) {
 			logger.fatal(message, t);
-		});
+		}
 	}
 
 }

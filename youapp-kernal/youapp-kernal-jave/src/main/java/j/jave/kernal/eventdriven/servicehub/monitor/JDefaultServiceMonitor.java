@@ -190,7 +190,7 @@ implements JServiceMonitorService{
 	}
 	
 	@Override
-	public Object trigger(JEventRequestEndNotifyEvent event) {
+	public Object trigger(final JEventRequestEndNotifyEvent event) {
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("end event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
 		}
@@ -215,7 +215,7 @@ implements JServiceMonitorService{
 	}
 	
 	@Override
-	public Object trigger(JEventRequestStartNotifyEvent event) {
+	public Object trigger(final JEventRequestStartNotifyEvent event) {
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("start event priority  : "+event.getPriority()+"  name : "+event.getClass().getName());
 		}

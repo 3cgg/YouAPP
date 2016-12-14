@@ -44,7 +44,7 @@ public class JSimplePropertyExtendBinder implements JPropertyExtendBinder{
 		}
 		JPropertyAnnotationConfig config=new JPropertyAnnotationConfig();
 		config.setPropertyAnnotationHandlers(propertyExtendHandlers);
-		config.setClassIdentifiers(Arrays.asList(JPropertyExtendable.class));
+		config.setClassIdentifiers((List)Arrays.asList(JPropertyExtendable.class));
 		propertyAnnotationProcessor=JPropertyAnnotationProcessor.build(config);
 	}
 	

@@ -61,7 +61,7 @@ public class JSimplePropertyAnnoationValidator<T> implements JValidator<T>{
 		}
 		JPropertyAnnotationConfig config=new JPropertyAnnotationConfig();
 		config.setPropertyAnnotationHandlers(propertyAnnotationValidatorHandlers);
-		config.setClassIdentifiers(Arrays.asList(JValidatable.class));
+		config.setClassIdentifiers((List)Arrays.asList(JValidatable.class));
 		propertyAnnotationProcessor=JPropertyAnnotationProcessor.build(config);
 	}
 	

@@ -20,6 +20,11 @@ public class JClassPathList implements JView{
 			for(String path:paths){
 				add(path);
 			}
+		}else if(fileAbsolutePath.contains(":")){
+			String[] paths=fileAbsolutePath.split(":");
+			for(String path:paths){
+				add(path);
+			}
 		}else{
 			if(JStringUtils.isNotNullOrEmpty(fileAbsolutePath)
 					&&!fileAbsolutePaths.contains(fileAbsolutePath)){

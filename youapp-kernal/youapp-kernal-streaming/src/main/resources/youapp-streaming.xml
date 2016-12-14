@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <configuration>
 
-
+<!--
 <property>
   <name>youapp.logger.factory</name>
   <value>j.jave.kernal.streaming.logging.SimpleLoggerFactory</value>
   <description>Slf4j/KAFKA logging API.</description>
 </property>
-<!---->
+-->
 <!--  -->
 
 

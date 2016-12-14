@@ -41,8 +41,13 @@ class JConfigMetaMap extends HashMap<String, JConfigMeta>{
 				loadConfiguration(inputStream);
 			}
 			//classpath
-			LOGGER.info("scanning from classpath.");
+			LOGGER.info(" to find more config...");
 			List<File> files= JClassPathUtils.getRuntimeClassPathFiles();
+			for (File file : files) {
+				String info="classpath file : "+file.getAbsolutePath();
+				System.out.println(info);
+				LOGGER.info(info);
+			}
 			processFiles(files);
 			
 //				// for web
@@ -82,6 +87,7 @@ class JConfigMetaMap extends HashMap<String, JConfigMeta>{
 					}
 					jarFile= new JarFile(jarFilePath);
 					LOGGER.info("scanning configuration from : "+ jarFilePath+"!/"+jarEntry.getName());
+					System.out.println("read conf : "+ jarFilePath+"!/"+jarEntry.getName());
 					loadConfiguration(jarFile.getInputStream(jarEntry));
 				}finally{
 					if(jarFile!=null){
@@ -162,12 +168,14 @@ class JConfigMetaMap extends HashMap<String, JConfigMeta>{
 						configMeta.setOverride(isOverride);
 					}
 					put(name, configMeta);
+					System.out.println(configMeta.getName()+"="+configMeta.getValue()+";"+configMeta.isOverride()); 
 				}
 			}
 		}
 	}
 	
 	private void loadConfiguration(File file) throws Exception{
+		System.out.println("read conf: "+file.getAbsolutePath());
 		loadConfiguration(new FileInputStream(file));
 	}
 	

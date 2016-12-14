@@ -2,6 +2,7 @@ package j.jave.kernal.streaming.storm;
 
 import java.util.Map;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -64,9 +65,9 @@ public abstract class BaseSimpleKafkaSpout extends BaseRichSpout {
 	
 	protected void doNextTuple() throws Exception{
 		ConsumerRecords<String, Object> consumerRecords= consumer.poll(0);
-		consumerRecords.forEach(consumerRecord->{
+		for (ConsumerRecord<String, Object> consumerRecord : consumerRecords) {
 			collector.emit(new Values(consumerRecord.value()));
-		});
+		}
 	}
 	
 	protected final Object getConf(String key){

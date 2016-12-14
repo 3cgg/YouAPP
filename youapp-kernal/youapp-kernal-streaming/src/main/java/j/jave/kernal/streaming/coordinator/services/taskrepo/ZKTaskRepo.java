@@ -45,7 +45,7 @@ public class ZKTaskRepo implements TaskRepo {
 	private void _init(){
 		if(executor.exists(path)){
 			List<String> paths=executor.getChildren(path);
-			paths.forEach(ph->{
+			for (String ph : paths) {
 				String taskPath=path+"/"+ph;
 				byte[] bytes=executor.getPath(taskPath);
 				if(bytes!=null&&bytes.length>0){
@@ -53,7 +53,7 @@ public class ZKTaskRepo implements TaskRepo {
 					task.setZkNode(taskPath);
 					_addTask(task);
 				}
-			});
+			}
 		}
 	}
 	

@@ -214,7 +214,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		addWorkflowCommand(new WorkflowErrorCommand());
 	}
 	
-	private ZKWorkflowMetaRepo _workflowMetaRepo(NodeLeader nodeLeader) {
+	private ZKWorkflowMetaRepo _workflowMetaRepo(final NodeLeader nodeLeader) {
 		return new ZKWorkflowMetaRepo(nodeLeader.getExecutor(), 
 				NodeLeader.workflowAddPath(), new ChangedCallBack() {
 					
@@ -356,7 +356,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 			public void call(ZooNode node) {
 				WorkflowMeta workflowMeta=
 						SerializerUtils.deserialize(serializerFactory, node.getDataAsPossible(executor), WorkflowMeta.class);
-				nodeLeader.startWorkflow(workflowMeta.getName(), Maps.newHashMap());
+				nodeLeader.startWorkflow(workflowMeta.getName(), Maps.<String,Object>newHashMap());
 			}
 		}, nodeLeader.zooKeeperExecutorService());
 		this.workflowTriggerCache =(cache);
@@ -375,14 +375,15 @@ public class WorkflowMaster implements JModel ,Closeable{
 			@Override
 			public void run() {
 				final String leaderFollowerRegisterPath=NodeLeader.leaderFollowerRegisterPath();
-				executor.getChildren(leaderFollowerRegisterPath).forEach(realRegisterPath->{
+				List<String> realRegisterPaths=executor.getChildren(leaderFollowerRegisterPath);
+				for (String realRegisterPath : realRegisterPaths) {
 					String realPath=leaderFollowerRegisterPath
-													+"/"+realRegisterPath;
+							+"/"+realRegisterPath;
 					if(executor.getChildren(realPath).isEmpty()){
-						nodeLeader.logInfo("follwer path["+realPath+"] is offline.");
-						executor.deletePath(realPath);
+					nodeLeader.logInfo("follwer path["+realPath+"] is offline.");
+					executor.deletePath(realPath);
 					}
-				});
+				}
 			}
 		}, 0, 10000, TimeUnit.MILLISECONDS);
 	}
@@ -402,7 +403,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		}, 0, 10000, TimeUnit.MILLISECONDS);
 	}
 	
-	private boolean checkWorkerIfActive(Workflow workflow){
+	private boolean checkWorkerIfActive(final Workflow workflow){
 		boolean valid=false;
 		try{
 			Map<Integer, String> workerPaths=workflow.getWorkerPaths();
@@ -483,7 +484,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		return valid;
 	}
 
-	private void startWorkflowStatusCheck(LeaderNodeMeta leaderNodeMeta) {
+	private void startWorkflowStatusCheck(final LeaderNodeMeta leaderNodeMeta) {
 		if(workflowStatusExecutorService.isShutdown()){
 			workflowStatusExecutorService=_workflowStatusExecutorService();
 		}
@@ -602,7 +603,7 @@ public class WorkflowMaster implements JModel ,Closeable{
 		commands.add(workflowCommand);
 	}
 	
-	public Collection<WorkflowCommand> workflowCommands(Class<? extends WorkflowCommandModel> clazz) {
+	public Collection workflowCommands(Class<? extends WorkflowCommandModel> clazz) {
 		Collection<WorkflowCommand<?>> commands=workflowCommands.get(clazz);
 		if(commands==null) return Collections.EMPTY_LIST;
 		return Collections.unmodifiableCollection(commands);
@@ -640,8 +641,8 @@ public class WorkflowMaster implements JModel ,Closeable{
 		return leaderNodeMeta;
 	}
 	
-	private void notifyWorkflowStart(Workflow workflow,TaskCallBack taskCallBack){
-		String workflowName=workflow.getName();
+	private void notifyWorkflowStart(Workflow workflow,final TaskCallBack taskCallBack){
+		final String workflowName=workflow.getName();
 		WorkflowCheck workflowCheck=workflow.workflowCheck();
 		if(workflowCheck.isError()){
 			int i=0;

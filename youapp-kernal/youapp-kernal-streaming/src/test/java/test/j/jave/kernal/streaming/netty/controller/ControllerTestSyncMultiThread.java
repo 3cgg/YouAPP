@@ -18,7 +18,7 @@ public class ControllerTestSyncMultiThread {
 	
 	public static void main(String[] args) {
 		try{
-			IUnitController controller=SimpleInterfaceImplUtil.syncProxy(IUnitController.class);
+			final IUnitController controller=SimpleInterfaceImplUtil.syncProxy(IUnitController.class);
 			ExecutorService service=Executors.newFixedThreadPool(5);
 			Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 				@Override

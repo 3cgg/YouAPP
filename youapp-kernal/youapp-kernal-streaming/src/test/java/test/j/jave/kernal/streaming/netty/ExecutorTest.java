@@ -19,7 +19,7 @@ import j.jave.kernal.streaming.netty.client.RequestMeta;
 public class ExecutorTest {
 
 	public static void main(String[] args) throws Exception {
-		JSerializerFactory factory=new KryoSerializerFactory();
+		final JSerializerFactory factory=new KryoSerializerFactory();
 		
 		List<CallPromise<byte[]>> callPromises=new ArrayList<>();
 		

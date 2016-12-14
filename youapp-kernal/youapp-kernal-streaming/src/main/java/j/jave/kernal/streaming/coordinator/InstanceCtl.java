@@ -176,7 +176,7 @@ public class InstanceCtl {
 	private void attachInstanceChildPathWatcher(final Instance instance){
 		for(String path:instance.getChildPathWatcherPaths()){
 			final String _path=path;
-			InstanceNode virtualNode=instance.getInstanceNode(_path);
+			final InstanceNode virtualNode=instance.getInstanceNode(_path);
 			final PathChildrenCache cache= executor.watchChildrenPath(_path, new ZooNodeChildrenCallback() {
 				@Override
 				public void call(List<ZooNode> nodes) {
@@ -197,6 +197,7 @@ public class InstanceCtl {
 						boolean withSkip=false;
 						int skipCount=nodes.size();
 						for(ZooNode node:nodes){
+							final ZooNode _node=node;
 							byte[] bytes=node.getDataAsPossible(executor);
 							InstanceNodeVal instanceNodeVal=
 									SerializerUtils.deserialize(serializerFactory, bytes, InstanceNodeVal.class);
@@ -210,7 +211,7 @@ public class InstanceCtl {
 								instanceNodeVal.getStatus().getCause().forEach(new Consumer<Throwable>() {
 									@Override
 									public void accept(Throwable t) {
-										instance.addError(node.getPath(),t);
+										instance.addError(_node.getPath(),t);
 									}
 								});
 							}
@@ -230,7 +231,7 @@ public class InstanceCtl {
 								InstaneCheck instaneCheck= instance.workerMaster().instaneCheck();
 								if(!instaneCheck.isComplete(_path, completeStatus)){
 									completeVirtual(instance, _path,completeStatus);
-									if(path.equals(instance.getRootPath())){
+									if(_path.equals(instance.getRootPath())){
 										executeCompleteCommand(instance);
 //										executeRetryCommand(instance);  // avoid turn on this function , should close retry function
 										if(withError){
@@ -412,9 +413,9 @@ public class InstanceCtl {
 	 * @param workerPathVal
 	 * @param instance
 	 */
-	private boolean startRealWorker(final WorkerPathVal workerPathVal,Instance instance){
+	private boolean startRealWorker(final WorkerPathVal workerPathVal,final Instance instance){
 		final int workerId=workerPathVal.getId();
-		WorkerMaster workerMaster=instance.workerMaster();
+		final WorkerMaster workerMaster=instance.workerMaster();
 		
 		String workerExecutingBasePath=nodeLeader.pluginWorkerInstancePath(workerId,instance);
 		final String workerExecutingPath=workerExecutingBasePath+"/exenodes";
@@ -503,7 +504,7 @@ public class InstanceCtl {
 	 * @param instance
 	 * @param t
 	 */
-	private void completeWorker(final String path,Instance instance,Throwable t){
+	private void completeWorker(final String path,final Instance instance,Throwable t){
 		final InstanceNodeVal instanceNodeVal=
 				SerializerUtils.deserialize(serializerFactory, executor.getPath(path),
 						InstanceNodeVal.class);

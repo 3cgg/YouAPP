@@ -3,6 +3,7 @@ package j.jave.kernal.streaming.storm.examples.loganalysis;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -30,12 +31,12 @@ public class LogAnalysisKafkaSpout extends BaseSimpleKafkaSpout {
 	@Override
 	protected void doNextTuple() throws Exception {
 		ConsumerRecords<String, Object> consumerRecords= consumer().poll(0);
-		consumerRecords.forEach(consumerRecord->{
+		for (ConsumerRecord<String, Object> consumerRecord : consumerRecords) {
 			String record=SerializerUtils.deserialize(serializerFactory,
 					(byte[])consumerRecord.value(), String.class);
 			collector.emit(new Values(record));
 			collector.emit("log-stream",new Values(atomicLong.incrementAndGet()));
-		});
+		}
 	}
 	
 	@Override

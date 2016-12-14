@@ -338,7 +338,7 @@ public class NodeWorker implements Serializable {
 		if(!done){  // avoid wake up multiple times
 			final String tempPath=executor.createEphSequencePath(
 					workerExecutingPath+"/temp-");
-			WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
+			final WorkerPathVal workerPathVal=workerExecutingPathVal.getWorkerPathVal();
 			WorkerTemporary workerTemporary=new WorkerTemporary();
 			workerTemporary.setTempPath(tempPath);
 			workerTemporary.setWorkerExecutingPathVal(workerExecutingPathVal);

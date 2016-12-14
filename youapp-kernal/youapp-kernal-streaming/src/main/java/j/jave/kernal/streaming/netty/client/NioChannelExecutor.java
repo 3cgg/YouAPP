@@ -99,7 +99,7 @@ public class NioChannelExecutor implements ChannelExecutor<NioChannelRunnable>{
 		
 		@Override
 		public void operationComplete(final CallPromise callPromise) throws Exception {
-			DefaultCallPromise defaultCallPromise=(DefaultCallPromise) callPromise;
+			final DefaultCallPromise defaultCallPromise=(DefaultCallPromise) callPromise;
 			if(defaultCallPromise.isResponsed()){
 				executorService.execute(new Runnable() {
 					@Override

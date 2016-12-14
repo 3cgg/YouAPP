@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.common.collect.Maps;
 
@@ -86,10 +87,10 @@ public class ComplexServerHandler extends SimpleChannelInboundHandler<FullHttpRe
     		
     		if(HttpMethod.GET==msg.method()){
     			QueryStringDecoder decoder = new QueryStringDecoder(msg.uri());
-                decoder.parameters().entrySet().forEach( entry -> {
-                	List<String> values=entry.getValue();
+    			for(Entry<String, List<String>> entry:decoder.parameters().entrySet()){
+    				List<String> values=entry.getValue();
                 	content.put(entry.getKey(), values.size()>1?values.toArray(new String[]{}):values.get(0));
-                });
+    			}
     		}else if(HttpMethod.POST==msg.method()){
     			HttpPostRequestDecoder httpPostRequestDecoder=new HttpPostRequestDecoder(msg);
             	while(httpPostRequestDecoder.hasNext()){

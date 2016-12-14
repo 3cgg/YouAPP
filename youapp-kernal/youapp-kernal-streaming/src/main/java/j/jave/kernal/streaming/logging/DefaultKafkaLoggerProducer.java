@@ -55,9 +55,9 @@ public class DefaultKafkaLoggerProducer implements IKafkaLoggerProducer {
 		try{
 			if(topicMatch.matches(logger)){
 				List<String> topics= topicMatch.getTopics();
-				topics.forEach(topic->{
+				for (String topic : topics) {
 					producer.send(newLoggerRecord(type,message,null), topic);
-				});
+				}
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -82,9 +82,9 @@ public class DefaultKafkaLoggerProducer implements IKafkaLoggerProducer {
 		try{
 			if(topicMatch.matches(logger)){
 				List<String> topics= topicMatch.getTopics();
-				topics.forEach(topic->{
+				for (String topic : topics) {
 					producer.send(newLoggerRecord(type,message,t), topic);
-				});
+				}
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

@@ -37,7 +37,7 @@ public class ControllerCallPromise<V> implements CallPromise<V>{
 		this.callPromise =callPromise;
 	}
 	
-	public void addControllerAsyncCall(ControllerAsyncCall controllerAsyncCall) {
+	public void addControllerAsyncCall(final ControllerAsyncCall controllerAsyncCall) {
 		addListener(new GenericPromiseListener<CallPromise<? super V>>() {
 			@Override
 			public void operationComplete(CallPromise<? super V> callPromise) throws Exception {

@@ -13,7 +13,7 @@ public class ZooKeeperExecutorGetter {
 	 * @see ConfigNames#STREAMING_ZOOKEEPER_NAMESPACE
 	 */
 	public static ZookeeperExecutor getDefault(){
-		JConfiguration configuration=JConfiguration.get();
+		JConfiguration configuration=JConfiguration.newInstance();
 		ZooKeeperConfig zooKeeperConfig=new ZooKeeperConfig();
 		zooKeeperConfig.setConnectString(configuration.getString(ConfigNames.STREAMING_ZOOKEEPER_SERVER));
 		zooKeeperConfig.setNamespace(configuration.getString(ConfigNames.STREAMING_ZOOKEEPER_NAMESPACE));

@@ -17,6 +17,8 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
+import j.jave.kernal.jave.utils.JStringUtils;
+
 @SuppressWarnings({"serial","rawtypes"})
 public class ConsumerConnector implements Serializable {
 
@@ -31,6 +33,19 @@ public class ConsumerConnector implements Serializable {
 		public ManualPatitionAssignConsumer addPartition(String topic,int partition){
 			TopicPartition topicPartition=new TopicPartition(topic, partition);
 			topicPartitions.add(topicPartition);
+			return this;
+		}
+		
+		public ManualPatitionAssignConsumer addPartition(String topic,int[] partitions){
+			if(JStringUtils.isNullOrEmpty(topic)){
+				throw new IllegalArgumentException("topic is empty");
+			}
+			if(partitions==null){
+				throw new IllegalArgumentException("topic partition is null");
+			}
+			for (int i : partitions) {
+				addPartition(topic, i);
+			}
 			return this;
 		}
 		

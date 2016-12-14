@@ -16,12 +16,12 @@ public abstract class KafkaNameKeys implements Serializable  {
 	/**
 	 * session.timeout.ms
 	 */
-	public static final String KAFKA_MESSAGE_TIMEOUT="KAFKA_MESSAGE_TIMEOUT";
+	public static final String KAFKA_MESSAGE_TIMEOUT="session.timeout.ms";
 
 	/**
 	 * request.timeout.ms
 	 */
-	public static final String KAFKA_REQUEST_TIMEOUT="KAFKA_REQUEST_TIMEOUT";
+	public static final String KAFKA_REQUEST_TIMEOUT="request.timeout.ms";
 
 	
 	public static final void setKafkaServer(Map context,String server){

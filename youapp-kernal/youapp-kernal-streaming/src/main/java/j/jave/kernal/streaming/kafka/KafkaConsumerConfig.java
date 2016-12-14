@@ -63,13 +63,13 @@ public class KafkaConsumerConfig extends KafkaConfig{
 	
 	public static Map<String, Object> def(){
 		Map<String, Object> conf=new HashMap<>();
-		conf.put("auto.commit.interval.ms", "2000");
+		conf.put("auto.commit.interval.ms", 2000);
 		conf.put("enable.auto.commit", "false");
 		conf.put("group.id", "consumer-default");
 		conf.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		conf.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-		conf.put("request.timeout.ms", "60000");
-		conf.put("session.timeout.ms", "40000");
+		conf.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
+		conf.put("request.timeout.ms", 60000);
+		conf.put("session.timeout.ms", 40000);
 		return conf;
 	}
 

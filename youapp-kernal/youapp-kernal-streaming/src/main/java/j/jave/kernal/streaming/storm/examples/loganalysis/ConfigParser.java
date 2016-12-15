@@ -18,6 +18,8 @@ public class ConfigParser implements JParser {
 	public Config parse(String[] args){
 		Config conf=new Config();
 		conf.setMessageTimeoutSecs(600);
+		conf.setDebug(true);
+		conf.put(Config.TOPOLOGY_EVENTLOGGER_EXECUTORS, 1);
 		
 		conf.putAll(KafkaConsumerConfig.def());
 		JConfiguration configuration=JConfiguration.newInstance();

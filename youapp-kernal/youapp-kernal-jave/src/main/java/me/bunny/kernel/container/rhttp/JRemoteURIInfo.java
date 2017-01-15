@@ -1,7 +1,7 @@
 package me.bunny.kernel.container.rhttp;
 
+import me.bunny.kernel._c.model.JModel;
 import me.bunny.kernel.http.JHttpType;
-import me.bunny.kernel.jave.model.JModel;
 
 public class JRemoteURIInfo implements JModel {
 	

@@ -7,7 +7,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class InstanceNode implements JModel,Closeable{
 

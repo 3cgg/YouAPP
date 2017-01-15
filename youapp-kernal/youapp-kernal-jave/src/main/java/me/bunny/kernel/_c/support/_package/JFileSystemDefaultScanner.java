@@ -1,0 +1,102 @@
+package me.bunny.kernel._c.support._package;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.utils.JCollectionUtils;
+
+/**
+ * load all classes from <strong>a file directory</strong> via passing a predefined ClassLoader,otherwise uses current thread class loader.
+ * @author J
+ *
+ */
+public class JFileSystemDefaultScanner extends JAbstractClassesScanner implements JClassesScanner{
+	
+	private Class<?>[] superClasses;
+	
+	private boolean scanJar=true;
+	
+	public boolean isScanJar() {
+		return scanJar;
+	}
+
+	public void setScanJar(boolean scanJar) {
+		this.scanJar = scanJar;
+	}
+
+	public JFileSystemDefaultScanner(File file) {
+		super(file);
+	}
+	
+	public JFileSystemDefaultScanner(File file,Class<?>... superClasses) {
+		super(file);
+		this.superClasses=superClasses;
+	}
+	
+	@Override
+	protected Set<Class<?>> doScan() {
+		try {
+			Set<Class<?>> classes=new HashSet<Class<?>>();
+			if(JCollectionUtils.hasInArray(includePackages)){
+				for (int i = 0; i < includePackages.length; i++) {
+					String packg=includePackages[i];
+					String packgPath=packg.replace(".", "/");
+					File packFile=new File(file.getPath()+"/"+packgPath);
+					loadClassFromFile(classes, packFile);
+				}
+			}
+			else{
+				loadClassFromFile(classes, file);
+			}
+			return classes;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
+	private void loadClassFromFile(Set<Class<?>> classes,File file){
+		if(file.exists()){
+			if(file.isDirectory()){
+				File[] files=file.listFiles();
+				for(int i=0;i<files.length;i++){
+					File innerFile=files[i];
+					loadClassFromFile(classes, innerFile);
+				}
+			}
+			else{//file
+				if(!file.getName().endsWith(".class")){
+					if(file.getName().endsWith(".jar")){
+						JJARDefaultScanner jarScanner=new JJARDefaultScanner(file,superClasses);
+						jarScanner.setClassLoader(this.classLoader);
+						jarScanner.setExpression(this.expression);
+						jarScanner.setIncludeClassNames(this.includeClassNames);
+						jarScanner.setIncludePackages(this.includePackages);
+						jarScanner.setExpression(this.expression);
+						classes.addAll(jarScanner.scan());
+					}
+					return ;
+				}
+				String fileURIPath= file.toURI().toString();
+				String classPathPath=this.file.toURI().toString();
+				String className=fileURIPath.substring(classPathPath.length()).replace("/", ".").replace(".class", "");
+				Class<?> clazz = JClassUtils.load(className, classLoader);
+				if(JCollectionUtils.hasInArray(superClasses)){
+					for(Class<?> superClass:superClasses){
+						if(JClassUtils.isAssignable(superClass, clazz, true)){
+							classes.add(clazz);
+							break;
+						}
+					}
+				}
+				else{
+					classes.add(clazz);
+				}
+			}
+		}
+	}
+	
+	
+}

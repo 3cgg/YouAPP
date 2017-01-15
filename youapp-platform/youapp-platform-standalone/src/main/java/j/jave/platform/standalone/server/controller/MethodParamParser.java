@@ -1,6 +1,6 @@
 package j.jave.platform.standalone.server.controller;
 
-import me.bunny.kernel.jave.support.parser.JParser;
+import me.bunny.kernel._c.support.parser.JParser;
 
 public interface MethodParamParser extends JParser{
 

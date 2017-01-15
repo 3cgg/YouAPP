@@ -1,7 +1,7 @@
 package com.youappcorp.project.runtimeurl.model;
 
-import me.bunny.kernel.jave.model.JModel;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.model.JModel;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 public class RuntimeUrl implements JModel {
 

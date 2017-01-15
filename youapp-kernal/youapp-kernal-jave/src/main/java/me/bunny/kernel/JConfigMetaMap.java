@@ -16,15 +16,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactoryProvider;
-import me.bunny.kernel.jave.utils.JClassPathUtils;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
-import me.bunny.kernel.jave.utils.JJARUtils;
-import me.bunny.kernel.jave.utils.JLangUtils;
-import me.bunny.kernel.jave.utils.JStringUtils;
-import me.bunny.kernel.jave.xml.node.JW3CStandardGetter;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactoryProvider;
+import me.bunny.kernel._c.utils.JClassPathUtils;
+import me.bunny.kernel._c.utils.JCollectionUtils;
+import me.bunny.kernel._c.utils.JJARUtils;
+import me.bunny.kernel._c.utils.JLangUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.kernel._c.xml.node.JW3CStandardGetter;
 
 class JConfigMetaMap extends HashMap<String, JConfigMeta>{
 	

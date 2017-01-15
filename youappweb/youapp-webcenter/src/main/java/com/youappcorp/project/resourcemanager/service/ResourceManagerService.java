@@ -9,9 +9,9 @@ import com.youappcorp.project.resourcemanager.model.ResourceRecord;
 import com.youappcorp.project.resourcemanager.model.ResourceRole;
 import com.youappcorp.project.resourcemanager.vo.ResourceSearchCriteria;
 
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
 
 public interface ResourceManagerService{
 

@@ -7,8 +7,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 /**
  * combined with {@link InterfaceImpl#asyncProxy()} to support ASYNC RPC.

@@ -1,6 +1,6 @@
 package j.jave.platform.sps.multiv;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface ComponentVersionPostService extends JService{
 

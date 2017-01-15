@@ -4,9 +4,9 @@
 package j.jave.platform.sps.core.autoloader;
 
 import j.jave.kernal.sqlloader.dml.JSQLDMLLoader;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

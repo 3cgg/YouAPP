@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 class MappingControllerManager{
 	

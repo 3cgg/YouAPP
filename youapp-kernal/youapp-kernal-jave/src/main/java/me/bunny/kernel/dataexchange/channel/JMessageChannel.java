@@ -2,11 +2,11 @@ package me.bunny.kernel.dataexchange.channel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import me.bunny.kernel._c.utils.JCollectionUtils;
 import me.bunny.kernel.eventdriven.servicehub.EventExecutionResult;
 import me.bunny.kernel.eventdriven.servicehub.JAsyncCallback;
 import me.bunny.kernel.eventdriven.servicehub.JEventExecution;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 public class JMessageChannel 
 implements JChannel<JMessage> {

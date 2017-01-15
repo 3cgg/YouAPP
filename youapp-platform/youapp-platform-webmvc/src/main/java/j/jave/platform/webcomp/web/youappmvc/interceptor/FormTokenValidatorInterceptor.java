@@ -5,9 +5,9 @@ import j.jave.platform.webcomp.web.form.FormIdentification;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.model.ResponseStatus;
 import j.jave.platform.webcomp.web.youappmvc.ViewConstants;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

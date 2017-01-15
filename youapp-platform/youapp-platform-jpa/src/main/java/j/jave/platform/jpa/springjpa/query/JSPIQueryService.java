@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface JSPIQueryService extends JService {
 

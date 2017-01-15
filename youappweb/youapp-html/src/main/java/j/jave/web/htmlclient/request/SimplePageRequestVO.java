@@ -1,6 +1,6 @@
 package j.jave.web.htmlclient.request;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 
 public class SimplePageRequestVO implements JModel {

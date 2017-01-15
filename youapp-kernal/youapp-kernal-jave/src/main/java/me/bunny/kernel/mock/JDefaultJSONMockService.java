@@ -1,8 +1,8 @@
 package me.bunny.kernel.mock;
 
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class JDefaultJSONMockService
 extends JServiceFactorySupport<JDefaultJSONMockService>

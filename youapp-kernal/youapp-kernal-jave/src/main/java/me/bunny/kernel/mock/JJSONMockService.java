@@ -1,6 +1,6 @@
 package me.bunny.kernel.mock;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 /**
  * for {@link JJSONMock}, ANNOTATION-DRIVEN.

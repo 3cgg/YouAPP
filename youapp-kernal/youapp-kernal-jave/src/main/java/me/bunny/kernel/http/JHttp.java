@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 
 

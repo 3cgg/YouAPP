@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public abstract class SimpleWorkflowMetaRepo implements WorkflowMetaRepo {
 	

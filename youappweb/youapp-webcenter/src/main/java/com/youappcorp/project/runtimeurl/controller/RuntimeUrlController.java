@@ -2,10 +2,10 @@ package com.youappcorp.project.runtimeurl.controller;
 
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
-import me.bunny.kernel.jave.support._package.JDefaultParamMeta;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultParamMeta;
 
 import java.util.ArrayList;
 import java.util.List;

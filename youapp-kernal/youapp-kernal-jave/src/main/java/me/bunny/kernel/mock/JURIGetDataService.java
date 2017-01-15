@@ -2,7 +2,7 @@ package me.bunny.kernel.mock;
 
 import java.util.Map;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface JURIGetDataService extends JService{
 

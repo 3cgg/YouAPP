@@ -8,13 +8,13 @@ import org.w3c.dom.Node;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-import me.bunny.kernel.jave.xml.node.JClassNameGetter;
-import me.bunny.kernel.jave.xml.node.JIDGetter;
-import me.bunny.kernel.jave.xml.node.JMixedGetter;
-import me.bunny.kernel.jave.xml.node.JNameGetter;
-import me.bunny.kernel.jave.xml.node.JTagNameGetter;
-import me.bunny.kernel.jave.xml.node.JW3CStandardGetter;
-import me.bunny.kernel.jave.xml.node.JXPathGetter;
+import me.bunny.kernel._c.xml.node.JClassNameGetter;
+import me.bunny.kernel._c.xml.node.JIDGetter;
+import me.bunny.kernel._c.xml.node.JMixedGetter;
+import me.bunny.kernel._c.xml.node.JNameGetter;
+import me.bunny.kernel._c.xml.node.JTagNameGetter;
+import me.bunny.kernel._c.xml.node.JW3CStandardGetter;
+import me.bunny.kernel._c.xml.node.JXPathGetter;
 
 public class HtmlUnitNodeGetter implements JClassNameGetter, JNameGetter,
 		JTagNameGetter, JXPathGetter ,JIDGetter,JMixedGetter {

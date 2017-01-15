@@ -5,8 +5,8 @@ import j.jave.module.crawl.def.JWebModelDefProperties;
 import j.jave.module.crawl.def.JWebNodeFieldValue;
 import j.jave.module.crawl.node.JNodeGetterUtil;
 import j.jave.module.crawl.parser.JNodeValueParserUtil;
-import me.bunny.kernel.jave.xml.node.JNodeGetter;
-import me.bunny.kernel.jave.xml.node.JXPathGetter;
+import me.bunny.kernel._c.xml.node.JNodeGetter;
+import me.bunny.kernel._c.xml.node.JXPathGetter;
 
 import java.lang.reflect.Method;
 import java.util.List;

@@ -3,7 +3,7 @@ package me.bunny.kernel.eventdriven.servicehub.monitor;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class JServiceRuntimeMeta implements JModel {
 	

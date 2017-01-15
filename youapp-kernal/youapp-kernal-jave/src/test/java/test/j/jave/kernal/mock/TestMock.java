@@ -3,8 +3,8 @@ package test.j.jave.kernal.mock;
 import org.junit.Test;
 
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.io.JURIPart;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.io.JURIPart;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 import me.bunny.kernel.mock.JDefaultJSONMockService;
 import me.bunny.kernel.mock.JDefaultMockURIPrefix;
 import me.bunny.kernel.mock.JJSONMockModelParser;

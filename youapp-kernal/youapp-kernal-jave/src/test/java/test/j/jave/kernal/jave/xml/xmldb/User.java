@@ -3,10 +3,10 @@
  */
 package test.j.jave.kernal.jave.xml.xmldb;
 
-import me.bunny.kernel.jave.model.JBaseModel;
-import me.bunny.kernel.jave.model.support.JColumn;
-import me.bunny.kernel.jave.model.support.JSQLType;
-import me.bunny.kernel.jave.model.support.JTable;
+import me.bunny.kernel._c.model.JBaseModel;
+import me.bunny.kernel._c.model.support.JColumn;
+import me.bunny.kernel._c.model.support.JSQLType;
+import me.bunny.kernel._c.model.support.JTable;
 
 /**
  * @author Administrator

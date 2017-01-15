@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.form;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class FormIdentification implements JModel {
 

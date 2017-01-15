@@ -4,9 +4,9 @@
 package com.youappcorp.project.codetable.model;
 
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-import me.bunny.kernel.jave.model.support.JColumn;
-import me.bunny.kernel.jave.model.support.JSQLType;
-import me.bunny.kernel.jave.model.support.JTable;
+import me.bunny.kernel._c.model.support.JColumn;
+import me.bunny.kernel._c.model.support.JSQLType;
+import me.bunny.kernel._c.model.support.JTable;
 
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;

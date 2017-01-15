@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
-import me.bunny.kernel.jave.proxy.JAtomicResourceSession;
+import me.bunny.kernel._c.proxy.JAtomicResourceSession;
 
 public interface JSQLExecutingSession extends JAtomicResourceSession{
 	

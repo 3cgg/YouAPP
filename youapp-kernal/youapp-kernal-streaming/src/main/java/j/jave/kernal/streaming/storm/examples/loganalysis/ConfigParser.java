@@ -10,8 +10,8 @@ import j.jave.kernal.streaming.kafka.KafkaConsumerConfig;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.storm.StormConfigNames;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.support.parser.JParser;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.support.parser.JParser;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class ConfigParser implements JParser {
 

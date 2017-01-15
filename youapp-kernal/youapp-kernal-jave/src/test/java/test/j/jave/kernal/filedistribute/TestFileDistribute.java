@@ -3,10 +3,10 @@ package test.j.jave.kernal.filedistribute;
 import java.io.File;
 
 import junit.framework.TestCase;
+import me.bunny.kernel._c.io.JFile;
 import me.bunny.kernel.filedistribute.JFileDistService;
 import me.bunny.kernel.filedistribute.JFileDistServicers;
 import me.bunny.kernel.http.JHttpFactoryProvider;
-import me.bunny.kernel.jave.io.JFile;
 
 public class TestFileDistribute extends TestCase{
 

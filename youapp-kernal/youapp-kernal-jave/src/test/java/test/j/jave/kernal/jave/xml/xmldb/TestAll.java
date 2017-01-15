@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import me.bunny.kernel.jave.proxy.JAtomicResourceProxy;
-import me.bunny.kernel.jave.xml.dom4j.util.JXMLUtils;
-import me.bunny.kernel.jave.xml.xmldb.JXMLSession;
-import me.bunny.kernel.jave.xml.xmldb.dom4j.JDom4jNodeGetter;
+import me.bunny.kernel._c.proxy.JAtomicResourceProxy;
+import me.bunny.kernel._c.xml.dom4j.util.JXMLUtils;
+import me.bunny.kernel._c.xml.xmldb.JXMLSession;
+import me.bunny.kernel._c.xml.xmldb.dom4j.JDom4jNodeGetter;
 
 public class TestAll extends TestCase{
 

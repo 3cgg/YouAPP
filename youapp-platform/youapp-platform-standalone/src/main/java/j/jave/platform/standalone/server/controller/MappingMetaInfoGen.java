@@ -3,7 +3,7 @@ package j.jave.platform.standalone.server.controller;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-import me.bunny.kernel.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
+import me.bunny.kernel._c.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 

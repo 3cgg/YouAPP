@@ -1,6 +1,6 @@
 package me.bunny.kernel.eventdriven.servicehub;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 /**
  * wrap the event result, including any potential runtime exception.

@@ -3,7 +3,7 @@ package j.jave.web.htmlclient.request;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class FileAttachedParamVO implements JModel {
 	

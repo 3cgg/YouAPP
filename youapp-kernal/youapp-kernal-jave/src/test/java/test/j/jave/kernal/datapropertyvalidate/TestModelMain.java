@@ -1,6 +1,6 @@
 package test.j.jave.kernal.datapropertyvalidate;
 
-import me.bunny.kernel.jave.support.validate.annotationvalidator.JSimplePropertyAnnoationValidator;
+import me.bunny.kernel._c.support.validate.annotationvalidator.JSimplePropertyAnnoationValidator;
 
 public class TestModelMain {
 

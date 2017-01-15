@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.io.JClassRootPathResolver;
+import me.bunny.kernel._c.io.JClassRootPathResolver;
 import net.sf.ehcache.CacheManager;
 
 

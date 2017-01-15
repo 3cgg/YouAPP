@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JPageable;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JPageable;
 
 public class JSingleEntityQuery {
 	

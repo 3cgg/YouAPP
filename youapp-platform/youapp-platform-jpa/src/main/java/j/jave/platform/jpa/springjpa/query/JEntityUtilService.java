@@ -3,9 +3,9 @@ package j.jave.platform.jpa.springjpa.query;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.service.JService;
 
 public class JEntityUtilService
 extends JServiceFactorySupport<JEntityUtilService>

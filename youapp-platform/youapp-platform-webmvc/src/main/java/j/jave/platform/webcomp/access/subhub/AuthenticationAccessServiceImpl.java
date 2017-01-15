@@ -9,10 +9,10 @@ import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheService;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.utils.JStringUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.List;

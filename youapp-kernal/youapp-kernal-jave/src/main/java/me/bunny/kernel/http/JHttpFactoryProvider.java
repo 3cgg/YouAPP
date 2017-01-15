@@ -2,11 +2,11 @@ package me.bunny.kernel.http;
 
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel.JProperties;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.extension.JExtensionProvider;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JClassUtils;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.extension.JExtensionProvider;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JClassUtils;
 
 
 public class JHttpFactoryProvider implements JExtensionProvider {

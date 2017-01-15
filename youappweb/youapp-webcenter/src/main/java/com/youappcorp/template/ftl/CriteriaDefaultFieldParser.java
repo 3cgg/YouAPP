@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 public class CriteriaDefaultFieldParser implements CriteriaFieldParser{
 

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import junit.framework.TestCase;
 import me.bunny.kernel.JConfigMeta;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel._c.json.JJSON;
 
 import org.junit.Test;
 

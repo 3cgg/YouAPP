@@ -2,14 +2,14 @@ package j.jave.platform.standalone.server.netty.http;
 
 import java.net.URI;
 
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.support.parser.JParser;
 import me.bunny.kernel.dataexchange.impl.JByteDecoder;
 import me.bunny.kernel.dataexchange.impl.JDefaultMessageMetaReceiverBuilder;
 import me.bunny.kernel.dataexchange.model.DefaultMessageMeta;
 import me.bunny.kernel.dataexchange.model.MessageMeta;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.support.parser.JParser;
 
 public class MessaageMetaExtractService
 extends JServiceFactorySupport<MessaageMetaExtractService>

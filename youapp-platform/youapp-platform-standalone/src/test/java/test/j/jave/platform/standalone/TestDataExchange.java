@@ -6,17 +6,17 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import me.bunny.kernel._c.base64.JBase64;
+import me.bunny.kernel._c.base64.JBase64FactoryProvider;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.dataexchange.impl.JByteDecoder;
 import me.bunny.kernel.dataexchange.impl.JDefaultMessageMetaSenderBuilder;
 import me.bunny.kernel.dataexchange.impl.JEncoderRegisterService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 import me.bunny.kernel.eventdriven.servicehub.notify.JEventRequestStartNotifyEvent;
 import me.bunny.kernel.eventdriven.servicehub.notify.JServiceAddNotifyEvent;
-import me.bunny.kernel.jave.base64.JBase64;
-import me.bunny.kernel.jave.base64.JBase64FactoryProvider;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 public class TestDataExchange extends test.j.jave.platform.standalone.TestEventSupport{
 	

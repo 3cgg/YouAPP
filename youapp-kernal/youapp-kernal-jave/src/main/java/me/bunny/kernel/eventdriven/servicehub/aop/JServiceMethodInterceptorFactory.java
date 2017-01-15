@@ -1,7 +1,7 @@
 package me.bunny.kernel.eventdriven.servicehub.aop;
 
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactory;
-import me.bunny.kernel.jave.service.JService;
 
 
 public interface JServiceMethodInterceptorFactory<T extends JServiceMethodInterceptor

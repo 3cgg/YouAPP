@@ -1,7 +1,7 @@
 package j.jave.web.htmlclient.request;
 
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.model.JModel;
 
 public class FileUploaderVO implements JModel {
 	

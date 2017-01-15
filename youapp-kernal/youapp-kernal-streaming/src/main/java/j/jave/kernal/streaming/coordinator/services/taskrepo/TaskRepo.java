@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.coordinator.services.taskrepo;
 
 import j.jave.kernal.streaming.coordinator.Task;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface TaskRepo extends JService{
 

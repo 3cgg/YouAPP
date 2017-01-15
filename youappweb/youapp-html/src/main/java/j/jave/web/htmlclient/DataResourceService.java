@@ -2,7 +2,7 @@ package j.jave.web.htmlclient;
 
 import java.util.Map;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface DataResourceService extends JService{
 	

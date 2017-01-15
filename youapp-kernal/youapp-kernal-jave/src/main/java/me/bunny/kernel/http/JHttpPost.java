@@ -11,7 +11,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 
 /**

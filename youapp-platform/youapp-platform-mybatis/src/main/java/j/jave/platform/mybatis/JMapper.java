@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 import org.apache.ibatis.annotations.Param;
 
-import me.bunny.kernel.jave.model.JBaseModel;
-import me.bunny.kernel.jave.model.JUNDeletable;
-import me.bunny.kernel.jave.persist.JIPersist;
+import me.bunny.kernel._c.model.JBaseModel;
+import me.bunny.kernel._c.model.JUNDeletable;
+import me.bunny.kernel._c.persist.JIPersist;
 
 /**
  * the interface indicate all children interface is a mapper used in mybatis. 

@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Set;
 
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.support.JPriorityBlockingQueue;
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JEventQueuePipe;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryRegister;
 import me.bunny.kernel.eventdriven.servicehub.JEventQueuePipeline.JEventQueuePipeInfo;
 import me.bunny.kernel.eventdriven.servicehub.JEventQueuePipeline.JEventQueuePipeProvider;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager.JServiceMetaProvider;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager.ServiceMeta;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.support.JPriorityBlockingQueue;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 /**
  * the context goes through all the application.

@@ -12,10 +12,10 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
-import me.bunny.kernel.jave.serializer.JJSONSerializerFactory;
-import me.bunny.kernel.jave.serializer.JJavaObjectSerializerFactory;
-import me.bunny.kernel.jave.serializer.JSerializer;
-import me.bunny.kernel.jave.serializer.JSerializerFactory;
+import me.bunny.kernel._c.serializer.JJSONSerializerFactory;
+import me.bunny.kernel._c.serializer.JJavaObjectSerializerFactory;
+import me.bunny.kernel._c.serializer.JSerializer;
+import me.bunny.kernel._c.serializer.JSerializerFactory;
 
 public class TestKryo {
 

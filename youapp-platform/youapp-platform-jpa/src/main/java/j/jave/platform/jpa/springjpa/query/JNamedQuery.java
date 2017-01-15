@@ -6,10 +6,10 @@ import javax.persistence.Query;
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.query.QueryUtils;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JAssert;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JAssert;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class JNamedQuery extends JQuery<JNamedQuery> {
 

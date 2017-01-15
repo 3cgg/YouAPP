@@ -3,7 +3,7 @@
  */
 package me.bunny.kernel.eventdriven.exception;
 
-import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel._c.exception.JNestedRuntimeException;
 
 /**
  * any service provider can throw the exception to notify any exception occurs , 

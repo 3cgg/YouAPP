@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.util.Map;
 
-import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel._c.json.JJSON;
 
 
 public class DefaultNodeDataGenerator implements NodeDataGenerator {

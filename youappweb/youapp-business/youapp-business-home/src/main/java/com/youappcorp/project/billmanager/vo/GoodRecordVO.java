@@ -2,7 +2,7 @@ package com.youappcorp.project.billmanager.vo;
 
 import com.youappcorp.project.billmanager.model.GoodRecord;
 
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 public class GoodRecordVO extends GoodRecord {
 

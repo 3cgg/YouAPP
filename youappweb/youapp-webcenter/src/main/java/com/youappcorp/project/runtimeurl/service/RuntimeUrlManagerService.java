@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.youappcorp.project.runtimeurl.model.RuntimeUrl;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface RuntimeUrlManagerService extends JService {
 	

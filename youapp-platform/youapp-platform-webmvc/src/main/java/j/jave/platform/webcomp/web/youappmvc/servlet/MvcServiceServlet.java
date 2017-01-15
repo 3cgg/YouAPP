@@ -13,10 +13,10 @@ import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletExceptionUtil;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletRequestInvocation;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.HttpServletResponseUtil;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.JSONServletViewHandler;
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import java.io.IOException;
 

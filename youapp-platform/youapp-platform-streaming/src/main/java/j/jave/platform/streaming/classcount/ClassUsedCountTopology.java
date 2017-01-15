@@ -25,7 +25,7 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Values;
 import org.apache.storm.utils.Utils;
 
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class ClassUsedCountTopology {

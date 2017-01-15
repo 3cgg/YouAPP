@@ -12,7 +12,7 @@ import j.jave.kernal.streaming.coordinator.NodeWorkers;
 import j.jave.kernal.streaming.kafka.KafkaNameKeys;
 import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
-import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel._c.json.JJSON;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
 
 public class Machine {

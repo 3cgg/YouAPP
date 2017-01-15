@@ -2,11 +2,11 @@ package j.jave.platform.webcomp.core.service;
 
 import java.io.Serializable;
 
+import me.bunny.kernel._c.model.JModel;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JPageable;
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JModel;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JPageable;
-import me.bunny.kernel.jave.service.JService;
 
 /**
  * service template.

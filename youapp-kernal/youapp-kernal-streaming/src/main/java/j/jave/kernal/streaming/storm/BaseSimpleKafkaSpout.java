@@ -13,8 +13,8 @@ import org.apache.storm.tuple.Values;
 
 import j.jave.kernal.streaming.kafka.ConsumerConnector;
 import j.jave.kernal.streaming.kafka.ConsumerConnector.ConsumerExecutor;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 import j.jave.kernal.streaming.kafka.KafkaConsumerConfig;
 
 public abstract class BaseSimpleKafkaSpout extends BaseRichSpout {

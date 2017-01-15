@@ -6,7 +6,7 @@ package j.jave.platform.webcomp.web.youappmvc.plugins.pageable;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JPageImpl;
+import me.bunny.kernel._c.model.JPageImpl;
 
 /**
  * @author J

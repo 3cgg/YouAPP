@@ -2,13 +2,13 @@ package com.youappcorp.project.menumanager.controller;
 
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JPageImpl;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.support.treeview.JHierarchyTreeView;
-import me.bunny.kernel.jave.support.treeview.JTree;
-import me.bunny.kernel.jave.support.treeview.JTree.Action;
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JPageImpl;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.support.treeview.JHierarchyTreeView;
+import me.bunny.kernel._c.support.treeview.JTree;
+import me.bunny.kernel._c.support.treeview.JTree.Action;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package me.bunny.kernel.mock;
 
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 public interface JMockClassGetter {
 

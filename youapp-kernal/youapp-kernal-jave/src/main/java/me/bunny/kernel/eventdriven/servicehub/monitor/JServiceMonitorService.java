@@ -2,13 +2,13 @@ package me.bunny.kernel.eventdriven.servicehub.monitor;
 
 import java.util.List;
 
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedListener;
 import me.bunny.kernel.eventdriven.servicehub.notify.JEventRequestEndNotifyListener;
 import me.bunny.kernel.eventdriven.servicehub.notify.JEventRequestStartNotifyListener;
 import me.bunny.kernel.eventdriven.servicehub.notify.JServiceAddNotifyListener;
 import me.bunny.kernel.eventdriven.servicehub.notify.JServicesRegisterEndNotifyListener;
 import me.bunny.kernel.eventdriven.servicehub.notify.JServicesRegisterStartNotifyListener;
-import me.bunny.kernel.jave.service.JService;
 
 public interface JServiceMonitorService extends JService
 , JServiceAddNotifyListener, JServiceHubInitializedListener

@@ -1,9 +1,9 @@
 package me.bunny.kernel.mock;
 
+import me.bunny.kernel._c.io.JURIPart;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 import me.bunny.kernel.container.JScheme;
 import me.bunny.kernel.container._resource.JResourceURIParserService;
-import me.bunny.kernel.jave.io.JURIPart;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
 
 public class JDefaultMockURIPrefix implements JURIPart<JDefaultMethodMeta> {
 

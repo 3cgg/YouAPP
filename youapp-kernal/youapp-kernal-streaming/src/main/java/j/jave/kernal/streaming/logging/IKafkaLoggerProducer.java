@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.logging;
 
-import me.bunny.kernel.jave.logging.LoggerType;
+import me.bunny.kernel._c.logging.LoggerType;
 
 public interface IKafkaLoggerProducer {
 

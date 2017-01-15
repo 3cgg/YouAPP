@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class JDefaultMemcachedDisServiceFactory extends
 		JServiceFactorySupport<JDefaultMemcachedDisService> {

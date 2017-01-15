@@ -1,6 +1,6 @@
 package me.bunny.kernel.container._resource;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 
 public interface JResourceURIGetService extends JService {

@@ -3,11 +3,11 @@ package j.jave.kernal.zookeeper;
 import java.util.List;
 
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.JServiceOrder;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedEvent;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedListener;
-import me.bunny.kernel.jave.service.JService;
 
 @JServiceOrder(value=1000,listenerClasses={JServiceHubInitializedListener.class})
 public class JZooKeeperService

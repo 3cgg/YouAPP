@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.coordinator.services.tracking;
 
 import j.jave.kernal.streaming.coordinator.WorkTracking;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface TrackingService extends JService {
 

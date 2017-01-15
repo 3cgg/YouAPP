@@ -2,7 +2,7 @@ package me.bunny.kernel.mock;
 
 import java.lang.annotation.Annotation;
 
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 public class JDefaultJSONMockModelParser implements JJSONMockModelParser{
 	

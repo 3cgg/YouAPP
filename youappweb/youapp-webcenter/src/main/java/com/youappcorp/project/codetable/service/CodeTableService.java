@@ -11,9 +11,9 @@ import com.youappcorp.project.codetable.model.ParamType;
 import com.youappcorp.project.codetable.vo.ParamCriteriaInVO;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
 
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
 
 /**
  * @author J

@@ -3,10 +3,10 @@ package j.jave.platform.webcomp.web.youappmvc.controller;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import java.util.Collection;
 import java.util.Collections;

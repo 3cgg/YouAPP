@@ -9,16 +9,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.mail.Session;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.security.JMD5Cipher;
-import me.bunny.kernel.jave.service.JCacheService;
-import me.bunny.kernel.jave.support.JDefaultHashCacheService;
-import me.bunny.kernel.jave.utils.JAssert;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
-import me.bunny.kernel.jave.utils.JPropertiesUtils;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.security.JMD5Cipher;
+import me.bunny.kernel._c.service.JCacheService;
+import me.bunny.kernel._c.support.JDefaultHashCacheService;
+import me.bunny.kernel._c.utils.JAssert;
+import me.bunny.kernel._c.utils.JCollectionUtils;
+import me.bunny.kernel._c.utils.JPropertiesUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 /**
  * mail session pool

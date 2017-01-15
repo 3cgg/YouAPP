@@ -4,7 +4,7 @@
 package j.jave.platform.sps.support.ehcache.subhub;
 
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-import me.bunny.kernel.jave.utils.JAssert;
+import me.bunny.kernel._c.utils.JAssert;
 import net.sf.ehcache.Ehcache;
 
 import org.springframework.beans.factory.FactoryBean;

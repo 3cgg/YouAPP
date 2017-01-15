@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.bunny.kernel.jave.model.JModel;
-import me.bunny.kernel.jave.utils.JAssert;
+import me.bunny.kernel._c.model.JModel;
+import me.bunny.kernel._c.utils.JAssert;
 
 public class JCondition implements JModel {
 	

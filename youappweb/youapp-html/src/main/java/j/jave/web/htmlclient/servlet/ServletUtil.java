@@ -18,11 +18,11 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JIOUtils;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JIOUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public abstract class ServletUtil {
 

@@ -1,6 +1,6 @@
 package j.jave.platform.sps.core.servicehub;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface SpringApplicationServiceNameCheckService extends JService{
 

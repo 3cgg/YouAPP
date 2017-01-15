@@ -9,18 +9,18 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.support.JDefaultHashCacheService;
+import me.bunny.kernel._c.sync.JSyncMonitorRegisterService;
+import me.bunny.kernel._c.sync.JSyncMonitorWakeupEvent;
+import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.dataexchange.model.MessageMeta.MessageMetaNames;
 import me.bunny.kernel.eventdriven.servicehub.EventExecutionResult;
 import me.bunny.kernel.eventdriven.servicehub.JAsyncCallback;
 import me.bunny.kernel.eventdriven.servicehub.JEventExecution;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.support.JDefaultHashCacheService;
-import me.bunny.kernel.jave.sync.JSyncMonitorRegisterService;
-import me.bunny.kernel.jave.sync.JSyncMonitorWakeupEvent;
-import me.bunny.kernel.jave.utils.JStringUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 

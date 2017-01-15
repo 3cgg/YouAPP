@@ -1,7 +1,7 @@
 package com.youappcorp.template.ftl.ui;
 
-import me.bunny.kernel.jave.model.JModel;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.model.JModel;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class UITemplateUIContext implements JModel{
 	

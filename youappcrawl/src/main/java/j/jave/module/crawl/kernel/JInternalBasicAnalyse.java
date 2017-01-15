@@ -3,7 +3,7 @@ package j.jave.module.crawl.kernel;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebNodeFieldKey;
 import j.jave.module.crawl.def.JWebNodeModel;
-import me.bunny.kernel.jave.xml.util.JNodeWrapper;
+import me.bunny.kernel._c.xml.util.JNodeWrapper;
 
 import java.lang.reflect.Method;
 import java.util.Collections;

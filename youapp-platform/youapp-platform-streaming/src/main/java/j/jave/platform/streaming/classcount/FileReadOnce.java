@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.utils.JIOUtils;
+import me.bunny.kernel._c.utils.JIOUtils;
 
 public class FileReadOnce {
 	

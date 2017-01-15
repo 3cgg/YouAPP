@@ -1,8 +1,8 @@
 package me.bunny.kernel.mock;
 
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.io.JURIPart;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.io.JURIPart;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 public class JMethodNameAsFileParser extends JURIGetJSONMockModelParser {
 	

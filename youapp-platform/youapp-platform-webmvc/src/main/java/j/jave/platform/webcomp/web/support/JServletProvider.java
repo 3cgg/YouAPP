@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.support;
 
-import me.bunny.kernel.jave.support.JProvider;
+import me.bunny.kernel._c.support.JProvider;
 
 /**
  * Servlet context provider.

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 import org.junit.Test;
 

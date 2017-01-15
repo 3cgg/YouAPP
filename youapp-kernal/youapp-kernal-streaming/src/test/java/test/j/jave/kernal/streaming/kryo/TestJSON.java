@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import me.bunny.kernel.jave.serializer.JJSONSerializerFactory;
-import me.bunny.kernel.jave.serializer.JSerializer;
+import me.bunny.kernel._c.serializer.JJSONSerializerFactory;
+import me.bunny.kernel._c.serializer.JSerializer;
 
 public class TestJSON {
 

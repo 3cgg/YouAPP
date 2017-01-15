@@ -4,11 +4,11 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.reflect.JReflectionUtils;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultParamMeta;
 import me.bunny.kernel.container.JExecutableURIUtil;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.reflect.JReflectionUtils;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
-import me.bunny.kernel.jave.support._package.JDefaultParamMeta;
 
 public class JMockClassMockModelParser implements JJSONMockModelParser {
 

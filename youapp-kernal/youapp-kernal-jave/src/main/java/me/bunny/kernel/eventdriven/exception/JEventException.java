@@ -3,7 +3,7 @@
  */
 package me.bunny.kernel.eventdriven.exception;
 
-import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel._c.exception.JNestedRuntimeException;
 
 /**
  * the exception thrown when event executed failure.

@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.model;
 
 import j.jave.platform.webcomp.web.form.FormIdentification;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 
 @SuppressWarnings("serial")

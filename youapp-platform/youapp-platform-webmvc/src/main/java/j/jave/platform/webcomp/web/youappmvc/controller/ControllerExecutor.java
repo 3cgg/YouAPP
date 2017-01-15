@@ -10,11 +10,11 @@ import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinderAdapter;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JReflectionUtils;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.utils.JDateUtils;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JReflectionUtils;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.utils.JDateUtils;
 
 import org.apache.commons.lang3.time.StopWatch;
 

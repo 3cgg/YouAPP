@@ -1,6 +1,6 @@
 package me.bunny.kernel.container;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 /**
  * the URI model for any executable URI associated to any container.

@@ -2,7 +2,7 @@ package j.jave.platform.sps.core.servicehub;
 
 import org.springframework.context.ApplicationContext;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface SpringApplicationServiceGetService extends JService{
 

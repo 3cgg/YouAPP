@@ -3,9 +3,9 @@ package j.jave.kernal.streaming.kafka;
 import java.io.Serializable;
 
 import j.jave.kernal.streaming.kafka.ProducerConnector.ProducerExecutor;
-import me.bunny.kernel.jave.serializer.JSerializerFactory;
-import me.bunny.kernel.jave.serializer.SerializerUtils;
-import me.bunny.kernel.jave.serializer._JSONSerializerFactoryGetter;
+import me.bunny.kernel._c.serializer.JSerializerFactory;
+import me.bunny.kernel._c.serializer.SerializerUtils;
+import me.bunny.kernel._c.serializer._JSONSerializerFactoryGetter;
 
 @SuppressWarnings("serial")
 public class SimpleProducer implements Serializable {

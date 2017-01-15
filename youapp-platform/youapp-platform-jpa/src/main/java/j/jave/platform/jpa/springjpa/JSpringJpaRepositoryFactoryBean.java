@@ -11,7 +11,7 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
-import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel._c.model.JBaseModel;
 
 public class JSpringJpaRepositoryFactoryBean<R extends JpaRepository<T, I>, T extends JBaseModel, I extends Serializable>
 		extends JpaRepositoryFactoryBean<R, T, I> {

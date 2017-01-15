@@ -2,8 +2,8 @@ package test.com.youappcorp.project.param;
 
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
-import me.bunny.kernel.jave.support.random.JSimpleObjectRandomBinder;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.support.random.JSimpleObjectRandomBinder;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 import java.util.Date;
 

@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.bind;
 
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.kernel._c.reflect.JClassUtils;
 import me.bunny.kernel.dataexchange.impl.interimpl.JObjectTransModel;
-import me.bunny.kernel.jave.reflect.JClassUtils;
 
 import java.util.HashMap;
 import java.util.Map;

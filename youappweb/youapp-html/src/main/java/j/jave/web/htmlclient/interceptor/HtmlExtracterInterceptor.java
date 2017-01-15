@@ -5,10 +5,10 @@ import java.util.Collections;
 import j.jave.web.htmlclient.RequestParamNames;
 import j.jave.web.htmlclient.ServletRequestContext;
 import j.jave.web.htmlclient.request.RequestHtml;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 

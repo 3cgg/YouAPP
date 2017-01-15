@@ -1,7 +1,7 @@
 package com.youappcorp.project.usermanager.service;
 
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;
-import me.bunny.kernel.jave.persist.JIPersist;
+import me.bunny.kernel._c.persist.JIPersist;
 
 import java.sql.Timestamp;
 import java.util.Date;

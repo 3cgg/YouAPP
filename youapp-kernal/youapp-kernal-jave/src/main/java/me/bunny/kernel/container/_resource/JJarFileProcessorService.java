@@ -2,12 +2,12 @@ package me.bunny.kernel.container._resource;
 
 import java.net.URI;
 
+import me.bunny.kernel._c.exception.JOperationNotSupportedException;
+import me.bunny.kernel._c.support._resource.JResourceStreamException;
+import me.bunny.kernel._c.utils.JIOUtils;
 import me.bunny.kernel.container.JExecutableURIUtil;
 import me.bunny.kernel.container.JURIInfo;
 import me.bunny.kernel.container.JExecutableURIUtil.Type;
-import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
-import me.bunny.kernel.jave.support._resource.JResourceStreamException;
-import me.bunny.kernel.jave.utils.JIOUtils;
 
 public class JJarFileProcessorService implements JResourceProcessorService {
 	

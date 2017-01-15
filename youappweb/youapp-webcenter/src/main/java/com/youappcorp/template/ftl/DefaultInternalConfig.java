@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.youappcorp.template.ftl.ui.UITemplateUIContext;
 
-import me.bunny.kernel.jave.utils.JAssert;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JAssert;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class DefaultInternalConfig implements InternalConfig{
 	

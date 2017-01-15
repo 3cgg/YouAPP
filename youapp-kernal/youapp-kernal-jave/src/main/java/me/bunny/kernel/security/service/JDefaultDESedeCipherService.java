@@ -1,7 +1,7 @@
 package me.bunny.kernel.security.service;
 
-import me.bunny.kernel.jave.security.JDESedeCipher;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.security.JDESedeCipher;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class JDefaultDESedeCipherService implements JDESedeCipherService {
 

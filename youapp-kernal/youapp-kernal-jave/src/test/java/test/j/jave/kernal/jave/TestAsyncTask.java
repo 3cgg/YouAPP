@@ -2,9 +2,9 @@ package test.j.jave.kernal.jave;
 
 import org.junit.Test;
 
+import me.bunny.kernel._c.async.JAsyncExecutor;
+import me.bunny.kernel._c.async.JAsyncTaskExecutingService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.async.JAsyncExecutor;
-import me.bunny.kernel.jave.async.JAsyncTaskExecutingService;
 import test.j.jave.kernal.eventdriven.TestEventSupport;
 
 public class TestAsyncTask extends TestEventSupport {

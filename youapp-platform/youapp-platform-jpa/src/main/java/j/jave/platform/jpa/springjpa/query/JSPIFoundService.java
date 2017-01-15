@@ -8,9 +8,9 @@ import javax.persistence.spi.PersistenceProviderResolverHolder;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.utils.JCollectionUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 public class JSPIFoundService extends JServiceFactorySupport<JSPIFoundService>
 implements JService

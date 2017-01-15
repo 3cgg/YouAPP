@@ -2,8 +2,8 @@ package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

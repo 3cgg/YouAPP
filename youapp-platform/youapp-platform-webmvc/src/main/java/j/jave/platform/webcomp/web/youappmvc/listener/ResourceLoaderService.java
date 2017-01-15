@@ -5,11 +5,11 @@ import j.jave.platform.sps.core.servicehub.SpringApplicationContextInitializedLi
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
 import j.jave.platform.webcomp.web.cache.resource.ResourceCacheServiceSupportUtil;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.support.resourceuri.InitialResource;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.support.resourceuri.InitialResource;
 
 import java.util.Set;
 

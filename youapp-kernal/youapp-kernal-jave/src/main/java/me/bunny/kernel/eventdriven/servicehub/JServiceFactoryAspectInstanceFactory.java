@@ -1,9 +1,9 @@
 package me.bunny.kernel.eventdriven.servicehub;
 
+import me.bunny.kernel._c.aop.JAopConfigException;
+import me.bunny.kernel._c.aop.JAspectInstanceFactory;
+import me.bunny.kernel._c.utils.JAssert;
 import me.bunny.kernel.eventdriven.servicehub.aop.JServiceMethodInterceptorFactory;
-import me.bunny.kernel.jave.aop.JAopConfigException;
-import me.bunny.kernel.jave.aop.JAspectInstanceFactory;
-import me.bunny.kernel.jave.utils.JAssert;
 
 public class JServiceFactoryAspectInstanceFactory implements JAspectInstanceFactory {
 

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import com.youappcorp.template.ftl.ModelField;
 

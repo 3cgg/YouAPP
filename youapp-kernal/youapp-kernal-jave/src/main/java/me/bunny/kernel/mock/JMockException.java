@@ -1,6 +1,6 @@
 package me.bunny.kernel.mock;
 
-import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel._c.exception.JNestedRuntimeException;
 
 public class JMockException extends JNestedRuntimeException {
 	

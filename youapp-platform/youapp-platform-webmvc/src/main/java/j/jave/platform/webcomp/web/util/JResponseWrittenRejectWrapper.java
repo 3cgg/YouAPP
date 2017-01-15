@@ -7,7 +7,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
+import me.bunny.kernel._c.exception.JOperationNotSupportedException;
 
 /**
  * 

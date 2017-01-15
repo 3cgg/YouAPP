@@ -5,10 +5,10 @@ package me.bunny.kernel.filedistribute;
 
 import java.net.URI;
 
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
 import me.bunny.kernel.filedistribute.eventdriven.JFileDistStoreListener;
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.service.JService;
 
 /**
  * distribute the file to remote or local location. 

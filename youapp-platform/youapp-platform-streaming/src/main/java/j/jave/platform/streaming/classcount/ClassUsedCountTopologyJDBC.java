@@ -28,7 +28,7 @@ import org.apache.storm.utils.Utils;
 
 import com.google.common.collect.Maps;
 
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class ClassUsedCountTopologyJDBC {

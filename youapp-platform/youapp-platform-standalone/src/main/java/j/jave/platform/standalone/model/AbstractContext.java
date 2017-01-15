@@ -2,7 +2,7 @@ package j.jave.platform.standalone.model;
 
 
 import io.netty.channel.ChannelHandlerContext;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class AbstractContext implements JModel{
 	

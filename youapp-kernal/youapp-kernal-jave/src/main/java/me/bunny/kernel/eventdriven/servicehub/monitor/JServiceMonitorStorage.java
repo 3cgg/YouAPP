@@ -1,7 +1,7 @@
 package me.bunny.kernel.eventdriven.servicehub.monitor;
 
 import me.bunny.kernel.JProperties;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 /**
  * store any monitoring model, if any other custom one ( XML configuration) is not found, use {@link JDefaultServiceMonitorStorage} ad default.

@@ -10,7 +10,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel._c.model.JBaseModel;
 
 @MappedSuperclass
 public class JJpaBaseModel extends JBaseModel {

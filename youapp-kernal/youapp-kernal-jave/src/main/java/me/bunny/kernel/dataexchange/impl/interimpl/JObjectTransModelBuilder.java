@@ -1,9 +1,9 @@
 package me.bunny.kernel.dataexchange.impl.interimpl;
 
-import me.bunny.kernel.jave.base64.JBase64;
-import me.bunny.kernel.jave.base64.JBase64FactoryProvider;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.utils.JObjectSerializableUtils;
+import me.bunny.kernel._c.base64.JBase64;
+import me.bunny.kernel._c.base64.JBase64FactoryProvider;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.utils.JObjectSerializableUtils;
 
 public class JObjectTransModelBuilder {
 

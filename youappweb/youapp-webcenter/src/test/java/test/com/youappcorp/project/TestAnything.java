@@ -1,10 +1,10 @@
 package test.com.youappcorp.project;
 
 import junit.framework.TestCase;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.model.JPageable;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.model.JPageable;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.service.PageableService;

@@ -2,9 +2,9 @@ package me.bunny.kernel.security.service;
 
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel.JProperties;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 public class JDESedeCipherServiceFactory extends JServiceFactorySupport<JDESedeCipherService> {
 

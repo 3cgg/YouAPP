@@ -3,9 +3,9 @@ package j.jave.platform.jpa.springjpa.spi;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.jpa.springjpa.query.JQueryUtil;
 import j.jave.platform.jpa.springjpa.query.JSPIQueryService;
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.util.List;
 

@@ -9,16 +9,16 @@ import java.util.Set;
 
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel.JProperties;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.support._package.JDefaultClassesScanner;
+import me.bunny.kernel._c.utils.JCollectionUtils;
 import me.bunny.kernel.eventdriven.context.JEventDrivenContext;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedEvent;
 import me.bunny.kernel.eventdriven.servicehub.monitor.JDefaultServiceMonitor;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.support._package.JDefaultClassesScanner;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 /**
  * call the method {@link #registerAllServices()} to register all services when you need.

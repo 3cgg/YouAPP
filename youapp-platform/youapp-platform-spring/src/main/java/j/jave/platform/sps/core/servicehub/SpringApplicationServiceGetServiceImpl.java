@@ -4,8 +4,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 @Service(value="GET-SERVICE-INS-FROM-APPLICATION-AOP")
 public class SpringApplicationServiceGetServiceImpl

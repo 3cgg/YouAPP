@@ -3,7 +3,7 @@
  */
 package j.jave.web.htmlclient.form;
 
-import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel._c.exception.JNestedRuntimeException;
 
 public class TokenMaxException extends JNestedRuntimeException {
 

@@ -5,7 +5,7 @@ package j.jave.platform.webcomp.core.service;
 
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 
 /**

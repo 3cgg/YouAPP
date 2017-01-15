@@ -10,9 +10,9 @@ import com.youappcorp.template.ftl.Config.FieldConfig;
 
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.utils.JAssert;
-import me.bunny.kernel.jave.utils.JIOUtils;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.utils.JAssert;
+import me.bunny.kernel._c.utils.JIOUtils;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

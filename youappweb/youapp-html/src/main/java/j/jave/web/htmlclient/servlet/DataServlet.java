@@ -3,9 +3,9 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.web.htmlclient.interceptor.DataRequestServletRequestInvocation;
 import j.jave.web.htmlclient.interceptor.DefaultDataRequestServletRequestInvocation;
 import j.jave.web.htmlclient.response.ResponseModel;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 import java.io.IOException;
 

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
 import j.jave.kernal.streaming.netty.controller.MethodParamMeta;
-import me.bunny.kernel.jave.support.parser.JDefaultSimpleDataParser;
+import me.bunny.kernel._c.support.parser.JDefaultSimpleDataParser;
 
 public class FormRPCFullMessage extends SimpleRPCFullMessage {
 

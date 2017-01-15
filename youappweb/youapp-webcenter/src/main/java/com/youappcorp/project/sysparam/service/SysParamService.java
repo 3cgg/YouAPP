@@ -3,8 +3,8 @@ package com.youappcorp.project.sysparam.service;
 import com.youappcorp.project.sysparam.model.SysParam;
 import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
 
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
 
 public interface SysParamService {
 

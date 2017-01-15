@@ -3,12 +3,12 @@ package me.bunny.kernel.container._resource;
 import java.net.URI;
 
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.support._resource.JResourceStreamException;
 import me.bunny.kernel.container.JExecutableURIUtil;
 import me.bunny.kernel.container.JURIInfo;
 import me.bunny.kernel.http.JHttpBase;
 import me.bunny.kernel.http.JHttpFactoryProvider;
 import me.bunny.kernel.http.JResponseHandler;
-import me.bunny.kernel.jave.support._resource.JResourceStreamException;
 
 public class JHttpURLConnectionProcessorService implements JResourceProcessorService {
 

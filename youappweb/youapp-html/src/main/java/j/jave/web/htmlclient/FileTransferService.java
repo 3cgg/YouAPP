@@ -3,8 +3,8 @@ package j.jave.web.htmlclient;
 import java.net.URI;
 import java.util.Map;
 
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.service.JService;
 
 public interface FileTransferService extends JService {
 

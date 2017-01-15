@@ -7,8 +7,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import com.google.common.collect.Maps;
 
 import j.jave.kernal.streaming.coordinator.Task;
-import me.bunny.kernel.jave.utils.JStringUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 public class SimpleTaskRepo implements TaskRepo {
 	

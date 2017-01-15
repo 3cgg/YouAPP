@@ -9,8 +9,8 @@ import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
 import com.youappcorp.project.containermanager.vo.AppMetaCriteria;
 import com.youappcorp.project.containermanager.vo.URLMappingMetaCriteria;
 
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
 
 public interface ContainerManagerService {
 

@@ -1,9 +1,9 @@
 package me.bunny.kernel.container;
 
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedEvent;
 import me.bunny.kernel.eventdriven.servicehub.listener.JServiceHubInitializedListener;
-import me.bunny.kernel.jave.service.JService;
 
 public class JResourceContainerRegister
 extends JServiceFactorySupport<JResourceContainerRegister>

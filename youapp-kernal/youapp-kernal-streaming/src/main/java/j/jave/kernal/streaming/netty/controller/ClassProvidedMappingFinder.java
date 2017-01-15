@@ -4,14 +4,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import me.bunny.kernel.jave.support.JProvider;
-import me.bunny.kernel.jave.support.JResourceFinder;
-import me.bunny.kernel.jave.support._package.JAbstractMethodFinder;
-import me.bunny.kernel.jave.support._package.JDefaultMethodFilter;
-import me.bunny.kernel.jave.support._package.JMethodInfoProvider;
-import me.bunny.kernel.jave.support._package.JMethodOnSingleClassFinder;
-import me.bunny.kernel.jave.support._package.JAbstractMethodFinder.JMethodFilter;
-import me.bunny.kernel.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
+import me.bunny.kernel._c.support.JProvider;
+import me.bunny.kernel._c.support.JResourceFinder;
+import me.bunny.kernel._c.support._package.JAbstractMethodFinder;
+import me.bunny.kernel._c.support._package.JDefaultMethodFilter;
+import me.bunny.kernel._c.support._package.JMethodInfoProvider;
+import me.bunny.kernel._c.support._package.JMethodOnSingleClassFinder;
+import me.bunny.kernel._c.support._package.JAbstractMethodFinder.JMethodFilter;
+import me.bunny.kernel._c.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 /**
  * detect specified resources , wrap the information via {@link MappingMeta}

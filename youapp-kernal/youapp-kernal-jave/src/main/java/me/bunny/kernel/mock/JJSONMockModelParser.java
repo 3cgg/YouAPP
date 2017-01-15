@@ -1,7 +1,7 @@
 package me.bunny.kernel.mock;
 
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
-import me.bunny.kernel.jave.support.parser.JParser;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support.parser.JParser;
 
 public interface JJSONMockModelParser extends JParser {
 

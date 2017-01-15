@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream;
 import j.jave.kernal.streaming.kryo._KryoSerializerFactoryGetter;
 import j.jave.kernal.streaming.netty.controller.MappingMeta;
 import j.jave.kernal.streaming.netty.controller.MethodParamMeta;
-import me.bunny.kernel.jave.serializer.JSerializerFactory;
+import me.bunny.kernel._c.serializer.JSerializerFactory;
 
 public class KryoRPCFullMessage extends SimpleRPCFullMessage {
 

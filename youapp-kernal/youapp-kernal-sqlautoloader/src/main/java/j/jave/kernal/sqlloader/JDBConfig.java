@@ -8,11 +8,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
 
-import me.bunny.kernel.jave.io.JClassRootPathResolver;
-import me.bunny.kernel.jave.io.JFileResource;
-import me.bunny.kernel.jave.io.JInputStreamWrapperSource;
-import me.bunny.kernel.jave.utils.JPropertiesUtils;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.io.JClassRootPathResolver;
+import me.bunny.kernel._c.io.JFileResource;
+import me.bunny.kernel._c.io.JInputStreamWrapperSource;
+import me.bunny.kernel._c.utils.JPropertiesUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 /**
  * default DB properties configuration.

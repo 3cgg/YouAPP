@@ -4,10 +4,10 @@ import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
 import j.jave.platform.webcomp.web.youappmvc.subhub.servletconfig.ServletConfigService;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class AuthenticationInterceptor implements ServletRequestInterceptor {
 	

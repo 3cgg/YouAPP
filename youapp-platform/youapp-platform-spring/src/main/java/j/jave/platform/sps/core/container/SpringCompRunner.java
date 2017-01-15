@@ -1,11 +1,11 @@
 package j.jave.platform.sps.core.container;
 
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
+import me.bunny.kernel._c.exception.JOperationNotSupportedException;
 import me.bunny.kernel.container.JExecutableURIGenerator;
 import me.bunny.kernel.container.JExecutableURIUtil;
 import me.bunny.kernel.container.JRunner;
 import me.bunny.kernel.container.JScheme;
-import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
 
 import java.net.URI;
 

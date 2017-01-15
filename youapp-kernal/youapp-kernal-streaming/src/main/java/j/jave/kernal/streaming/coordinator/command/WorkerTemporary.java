@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.coordinator.command;
 
 import j.jave.kernal.streaming.coordinator.WorkerExecutingPathVal;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class WorkerTemporary implements JModel {
 

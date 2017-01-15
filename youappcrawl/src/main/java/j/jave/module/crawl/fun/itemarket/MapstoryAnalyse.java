@@ -2,8 +2,8 @@ package j.jave.module.crawl.fun.itemarket;
 
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.kernel.JNodeAnalyse;
-import me.bunny.kernel.jave.xml.util.JNodeWrapper;
-import me.bunny.kernel.jave.xml.util.JNodeWrapperWalker;
+import me.bunny.kernel._c.xml.util.JNodeWrapper;
+import me.bunny.kernel._c.xml.util.JNodeWrapperWalker;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -18,10 +18,10 @@ import com.youappcorp.project.usermanager.vo.GroupSearchCriteria;
 import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
 import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
 
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.service.JService;
 
 
 public interface UserManagerService extends JService{

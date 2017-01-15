@@ -1,6 +1,6 @@
 package j.jave.kernal.mail;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 /**
  * mail service

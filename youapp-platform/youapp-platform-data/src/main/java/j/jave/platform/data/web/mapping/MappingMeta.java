@@ -4,7 +4,7 @@
 package j.jave.platform.data.web.mapping;
 
 import j.jave.platform.data.common.MethodParamMeta;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 /**
  * @author J

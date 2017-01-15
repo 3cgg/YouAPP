@@ -1,7 +1,7 @@
 package com.youappcorp.project.resourcemanager.service;
 
 import j.jave.platform.webcomp.core.service.InternalServiceSupport;
-import me.bunny.kernel.jave.persist.JIPersist;
+import me.bunny.kernel._c.persist.JIPersist;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

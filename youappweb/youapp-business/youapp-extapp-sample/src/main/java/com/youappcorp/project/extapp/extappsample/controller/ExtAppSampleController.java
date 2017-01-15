@@ -2,10 +2,10 @@ package com.youappcorp.project.extapp.extappsample.controller;
 
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
+import me.bunny.kernel._c.model.JPageImpl;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JPageImpl;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

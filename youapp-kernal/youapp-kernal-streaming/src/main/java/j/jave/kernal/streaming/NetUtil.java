@@ -5,8 +5,8 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 public class NetUtil {
 

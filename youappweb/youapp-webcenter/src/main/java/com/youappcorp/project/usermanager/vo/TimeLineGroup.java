@@ -3,7 +3,7 @@ package com.youappcorp.project.usermanager.vo;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class TimeLineGroup implements JModel {
 

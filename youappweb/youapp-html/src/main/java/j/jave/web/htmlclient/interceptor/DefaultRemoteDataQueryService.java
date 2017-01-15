@@ -3,12 +3,12 @@ package j.jave.web.htmlclient.interceptor;
 import j.jave.web.htmlclient.WebHtmlClientProperties;
 import j.jave.web.htmlclient.request.RequestVO;
 import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.utils.JAssert;
 import me.bunny.kernel.container.JContainerDelegate;
 import me.bunny.kernel.container.JResourceContainer;
 import me.bunny.kernel.container.JResourceContainerConfig;
 import me.bunny.kernel.container.JExecutableURIUtil.Type;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.utils.JAssert;
 
 import java.net.URI;
 

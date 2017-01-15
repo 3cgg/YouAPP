@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.netty.client;
 
 import java.lang.reflect.Method;
 
-import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel._c.exception.JNestedRuntimeException;
 
 public class SimpleControllerAsyncCall implements ControllerAsyncCall {
 

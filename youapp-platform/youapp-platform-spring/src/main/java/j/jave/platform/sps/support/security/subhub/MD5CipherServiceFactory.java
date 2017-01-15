@@ -1,7 +1,7 @@
 package j.jave.platform.sps.support.security.subhub;
 
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-import me.bunny.kernel.jave.security.exception.JSecurityException;
+import me.bunny.kernel._c.security.exception.JSecurityException;
 import me.bunny.kernel.security.service.JDefaultMD5CipherService;
 
 import org.springframework.beans.factory.annotation.Autowired;

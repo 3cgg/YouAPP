@@ -3,7 +3,7 @@ package me.bunny.kernel.eventdriven.servicehub;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 
 /**

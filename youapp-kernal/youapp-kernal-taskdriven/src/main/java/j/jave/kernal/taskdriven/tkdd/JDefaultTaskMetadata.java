@@ -4,10 +4,10 @@ import java.util.Set;
 
 import javax.security.auth.Subject;
 
-import me.bunny.kernel.jave.auth.JAuthUtils;
-import me.bunny.kernel.jave.auth.JCredentials;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.auth.JAuthUtils;
+import me.bunny.kernel._c.auth.JCredentials;
+import me.bunny.kernel._c.utils.JCollectionUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 
 @SuppressWarnings("serial")

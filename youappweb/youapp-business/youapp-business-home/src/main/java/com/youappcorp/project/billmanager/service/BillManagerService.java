@@ -11,9 +11,9 @@ import com.youappcorp.project.billmanager.model.GoodRecord;
 import com.youappcorp.project.billmanager.vo.BillSearchCriteria;
 import com.youappcorp.project.billmanager.vo.GoodSearchCriteria;
 
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JPageable;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JPageable;
 
 /**
  * @author J

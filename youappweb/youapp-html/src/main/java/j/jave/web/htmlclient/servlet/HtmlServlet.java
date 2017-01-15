@@ -4,9 +4,9 @@ import j.jave.web.htmlclient.SyncHtmlResponseService;
 import j.jave.web.htmlclient.interceptor.DefaultHtmlRequestServletRequestInvocation;
 import j.jave.web.htmlclient.interceptor.HtmlRequestServletRequestInvocation;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 import java.io.IOException;
 

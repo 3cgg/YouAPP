@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.support.JLinkedBlockingQueue;
 import me.bunny.kernel.eventdriven.servicehub.JEventExecutionQueueElementDistributer.EventExecutionHandler;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.support.JLinkedBlockingQueue;
 
 /**
  * the class describers a structure of a single queue on which a main thread scans , and poll a head element to a handler {@link EventExecutionHandler} 

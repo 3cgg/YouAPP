@@ -9,9 +9,9 @@ import java.util.Set;
 
 import javax.persistence.Column;
 
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.reflect.JPropertyNotFoundException;
-import me.bunny.kernel.jave.support.JFinder;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.reflect.JPropertyNotFoundException;
+import me.bunny.kernel._c.support.JFinder;
 
 public class JEntityMetaFinder implements JFinder<JEntityModelMeta>{
 

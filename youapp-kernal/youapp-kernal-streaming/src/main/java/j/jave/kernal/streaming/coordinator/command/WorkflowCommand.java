@@ -4,7 +4,7 @@ import java.lang.reflect.ParameterizedType;
 
 import j.jave.kernal.streaming.coordinator.CommandResource;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public abstract class WorkflowCommand<T extends WorkflowCommandModel> {
 	

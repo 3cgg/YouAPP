@@ -2,12 +2,12 @@ package me.bunny.kernel.container._resource;
 
 import java.net.URI;
 
+import me.bunny.kernel._c.support._resource.JResourceNotSupportedException;
+import me.bunny.kernel._c.utils.JAssert;
 import me.bunny.kernel.container.JExecutableURIUtil;
 import me.bunny.kernel.container.JResourceURIParser;
 import me.bunny.kernel.container.JExecutableURIUtil.Type;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
-import me.bunny.kernel.jave.support._resource.JResourceNotSupportedException;
-import me.bunny.kernel.jave.utils.JAssert;
 
 public class JResourceURIParserService
 extends JServiceFactorySupport<JResourceURIParserService>

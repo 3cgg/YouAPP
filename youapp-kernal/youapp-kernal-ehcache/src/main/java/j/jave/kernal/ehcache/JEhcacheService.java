@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.ehcache;
 
-import me.bunny.kernel.jave.service.JCacheService;
+import me.bunny.kernel._c.service.JCacheService;
 
 /**
  * @author J

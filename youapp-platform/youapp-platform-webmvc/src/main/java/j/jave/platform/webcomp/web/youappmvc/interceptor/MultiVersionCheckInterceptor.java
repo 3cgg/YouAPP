@@ -4,9 +4,9 @@ import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.VerMappingMeta;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

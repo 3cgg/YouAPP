@@ -1,7 +1,7 @@
 package me.bunny.kernel.security.service;
 
-import me.bunny.kernel.jave.security.exception.JSecurityException;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.security.exception.JSecurityException;
+import me.bunny.kernel._c.service.JService;
 
 public interface JMD5CipherService extends JService {
 

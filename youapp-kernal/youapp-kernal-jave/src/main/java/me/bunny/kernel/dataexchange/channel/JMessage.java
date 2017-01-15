@@ -1,7 +1,7 @@
 package me.bunny.kernel.dataexchange.channel;
 
+import me.bunny.kernel._c.model.JModel;
 import me.bunny.kernel.dataexchange.impl.JEncoderRegisterService;
-import me.bunny.kernel.jave.model.JModel;
 
 public class JMessage implements JModel{
 

@@ -10,7 +10,7 @@ import j.jave.module.crawl.kernel.JXPathWebDataGetter;
 import j.jave.module.crawl.parser.JElementWithSingleTextParser;
 import j.jave.module.crawl.parser.JNodeValueParser;
 import j.jave.module.crawl.parser.JTextNodeParser;
-import me.bunny.kernel.jave.xml.node.JNodeGetter;
+import me.bunny.kernel._c.xml.node.JNodeGetter;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

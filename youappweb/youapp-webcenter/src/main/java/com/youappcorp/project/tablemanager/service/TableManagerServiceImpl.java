@@ -1,17 +1,17 @@
 package com.youappcorp.project.tablemanager.service;
 
 import j.jave.platform.data.web.model.Criteria;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.model.JBaseModel;
+import me.bunny.kernel._c.model.JPageable;
+import me.bunny.kernel._c.model.support.JColumn;
+import me.bunny.kernel._c.model.support.JModelRepo;
+import me.bunny.kernel._c.model.support.JTable;
+import me.bunny.kernel._c.persist.JIPersist;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.support._package.JDefaultClassesScanner;
 import me.bunny.kernel.eventdriven.exception.JServiceException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.model.JBaseModel;
-import me.bunny.kernel.jave.model.JPageable;
-import me.bunny.kernel.jave.model.support.JColumn;
-import me.bunny.kernel.jave.model.support.JModelRepo;
-import me.bunny.kernel.jave.model.support.JTable;
-import me.bunny.kernel.jave.persist.JIPersist;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.support._package.JDefaultClassesScanner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

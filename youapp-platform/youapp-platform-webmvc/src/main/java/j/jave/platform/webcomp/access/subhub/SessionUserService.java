@@ -4,7 +4,7 @@
 package j.jave.platform.webcomp.access.subhub;
 
 import j.jave.platform.webcomp.core.service.SessionUser;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 /**
  * the interface to new SessionUser.

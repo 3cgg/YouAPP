@@ -2,7 +2,7 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.util.Map;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public class Task implements JModel {
 

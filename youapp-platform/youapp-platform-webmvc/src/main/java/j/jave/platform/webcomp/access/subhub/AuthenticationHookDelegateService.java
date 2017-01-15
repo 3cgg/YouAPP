@@ -2,7 +2,7 @@ package j.jave.platform.webcomp.access.subhub;
 
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

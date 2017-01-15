@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JPageable;
-import me.bunny.kernel.jave.utils.JAssert;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JPageable;
+import me.bunny.kernel._c.utils.JAssert;
 
 public abstract class JQuery<T extends JQuery<T>> {
 	

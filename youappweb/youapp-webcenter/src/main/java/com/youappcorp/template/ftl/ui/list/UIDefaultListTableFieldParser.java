@@ -7,7 +7,7 @@ import com.youappcorp.template.ftl.Config;
 import com.youappcorp.template.ftl.Config.FieldConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 import com.youappcorp.template.ftl.ModelField;
 import com.youappcorp.template.ftl.ModelModel;

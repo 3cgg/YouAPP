@@ -5,7 +5,7 @@ package j.jave.platform.sps.core.context;
 
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
+import me.bunny.kernel._c.utils.JCollectionUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

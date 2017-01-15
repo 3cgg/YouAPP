@@ -3,11 +3,11 @@ package j.jave.web.htmlclient.interceptor;
 import j.jave.web.htmlclient.form.FormIdentification;
 import j.jave.web.htmlclient.form.VoidDuplicateSubmitService;
 import j.jave.web.htmlclient.response.ResponseModel;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.utils.JStringUtils;
 
 /**
  * promise the form only can be submit once.

@@ -1,6 +1,6 @@
 package j.jave.kernal.ehcache;
 
-import me.bunny.kernel.jave.service.JServiceAware;
+import me.bunny.kernel._c.service.JServiceAware;
 
 public interface JEhcacheServiceAware  extends JServiceAware{
 

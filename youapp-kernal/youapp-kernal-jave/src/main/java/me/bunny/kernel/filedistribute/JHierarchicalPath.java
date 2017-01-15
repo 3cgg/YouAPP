@@ -3,9 +3,9 @@
  */
 package me.bunny.kernel.filedistribute;
 
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.utils.JStringUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 
 /**

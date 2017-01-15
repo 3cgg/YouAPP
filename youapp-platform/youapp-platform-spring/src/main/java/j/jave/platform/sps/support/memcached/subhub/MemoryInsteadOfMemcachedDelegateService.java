@@ -4,9 +4,9 @@ import j.jave.kernal.memcached.event.JMemcachedDisAddEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisDeleteEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisGetEvent;
 import j.jave.kernal.memcached.event.JMemcachedDisSetEvent;
+import me.bunny.kernel._c.cache.JInMemorySerializableCacheService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.cache.JInMemorySerializableCacheService;
 
 public class MemoryInsteadOfMemcachedDelegateService
 extends JServiceFactorySupport<MemoryInsteadOfMemcachedDelegateService>

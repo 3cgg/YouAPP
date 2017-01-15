@@ -4,10 +4,10 @@ import j.jave.platform.webcomp.web.cache.response.ResponseCacheModel;
 import j.jave.platform.webcomp.web.cache.response.ResponseEhcacheCacheService;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.model.ResponseStatus;
+import me.bunny.kernel._c.io.JFile;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.io.JFile;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
 /**
  * Filter on all requests, check if the response need be stored into memory or not.
  * The decider is {@link MemoryCachedService#isNeedCache(String)},

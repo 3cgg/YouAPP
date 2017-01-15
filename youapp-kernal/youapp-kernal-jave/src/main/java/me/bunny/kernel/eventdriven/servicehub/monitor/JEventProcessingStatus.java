@@ -2,9 +2,9 @@ package me.bunny.kernel.eventdriven.servicehub.monitor;
 
 import java.util.Date;
 
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.model.JModel;
 import me.bunny.kernel.eventdriven.servicehub.JQueueElement;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.model.JModel;
 
 public class JEventProcessingStatus implements JModel,JQueueElement {
 

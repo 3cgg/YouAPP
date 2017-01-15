@@ -10,14 +10,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.model.JPageImpl;
-import me.bunny.kernel.jave.model.JPageable;
-import me.bunny.kernel.jave.model.JSimplePageable;
-import me.bunny.kernel.jave.utils.JAssert;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.model.JPageImpl;
+import me.bunny.kernel._c.model.JPageable;
+import me.bunny.kernel._c.model.JSimplePageable;
+import me.bunny.kernel._c.utils.JAssert;
+import me.bunny.kernel._c.utils.JCollectionUtils;
 
 abstract class JQueryExecution {
 	

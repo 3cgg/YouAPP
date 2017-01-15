@@ -1,6 +1,6 @@
 package test.j.jave.kernal.aop.jnterface;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 public interface TestLoggerService extends JService {
 

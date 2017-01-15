@@ -3,7 +3,7 @@
  */
 package j.jave.platform.standalone.server.controller;
 
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 
 
 /**

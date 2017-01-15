@@ -12,7 +12,7 @@ import com.youappcorp.template.ftl.ui.FieldSpecSetter;
 import com.youappcorp.template.ftl.ui.UIField;
 import com.youappcorp.template.ftl.ui.UIHiddenFieldParser;
 
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 public class UIDefaultEditHidenFieldParser implements
 		UIHiddenFieldParser {

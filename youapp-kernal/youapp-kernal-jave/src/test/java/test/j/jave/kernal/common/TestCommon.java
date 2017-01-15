@@ -3,7 +3,7 @@ package test.j.jave.kernal.common;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel._c.json.JJSON;
 
 public class TestCommon extends TestCase {
 

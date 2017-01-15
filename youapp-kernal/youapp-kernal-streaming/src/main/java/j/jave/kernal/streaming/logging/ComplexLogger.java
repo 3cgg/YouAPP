@@ -3,8 +3,8 @@ package j.jave.kernal.streaming.logging;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JSimplePipelineLogger;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JSimplePipelineLogger;
 
 public class ComplexLogger extends JSimplePipelineLogger {
 

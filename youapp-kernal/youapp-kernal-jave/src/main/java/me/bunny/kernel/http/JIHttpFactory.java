@@ -1,6 +1,6 @@
 package me.bunny.kernel.http;
 
-import me.bunny.kernel.jave.extension.JIFactory;
+import me.bunny.kernel._c.extension.JIFactory;
 
 public interface JIHttpFactory extends JIFactory {
 

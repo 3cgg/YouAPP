@@ -4,8 +4,8 @@ import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

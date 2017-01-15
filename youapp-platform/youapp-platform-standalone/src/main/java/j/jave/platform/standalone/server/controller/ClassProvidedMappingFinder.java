@@ -2,11 +2,11 @@ package j.jave.platform.standalone.server.controller;
 
 import java.util.List;
 
-import me.bunny.kernel.jave.support.JProvider;
-import me.bunny.kernel.jave.support.JResourceFinder;
-import me.bunny.kernel.jave.support._package.JAbstractMethodFinder;
-import me.bunny.kernel.jave.support._package.JMethodInfoProvider;
-import me.bunny.kernel.jave.support._package.JMethodOnSingleClassFinder;
+import me.bunny.kernel._c.support.JProvider;
+import me.bunny.kernel._c.support.JResourceFinder;
+import me.bunny.kernel._c.support._package.JAbstractMethodFinder;
+import me.bunny.kernel._c.support._package.JMethodInfoProvider;
+import me.bunny.kernel._c.support._package.JMethodOnSingleClassFinder;
 
 /**
  * detect specified resources , wrap the information via {@link MappingMeta}

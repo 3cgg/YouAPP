@@ -3,8 +3,8 @@ package j.jave.platform.jpa.springjpa.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JModel;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.model.JModel;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 public class JOrder implements JModel {
 

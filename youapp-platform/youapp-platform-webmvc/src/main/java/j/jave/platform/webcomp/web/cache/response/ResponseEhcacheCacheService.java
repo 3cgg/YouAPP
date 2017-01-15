@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.cache.response;
 
-import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel._c.service.JService;
 
 /**
  * indicate the response cached service provided by Ehcache.

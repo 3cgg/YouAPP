@@ -7,8 +7,8 @@ import com.youappcorp.project.alertmanager.model.AlertRecord;
 import com.youappcorp.project.alertmanager.model.AlertRecordRecord;
 import com.youappcorp.project.alertmanager.vo.AlertRecordCriteria;
 
-import me.bunny.kernel.jave.model.JPage;
-import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel._c.model.JPage;
+import me.bunny.kernel._c.model.JSimplePageable;
 
 
 

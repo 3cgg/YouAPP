@@ -2,10 +2,10 @@ package j.jave.platform.jpa.springjpa.query;
 
 import java.util.Collection;
 
+import me.bunny.kernel._c.reflect.JPropertyNotFoundException;
+import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.reflect.JPropertyNotFoundException;
-import me.bunny.kernel.jave.service.JService;
 
 public class JEntityValidateService
 extends JServiceFactorySupport<JEntityValidateService>

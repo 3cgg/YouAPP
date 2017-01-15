@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
 import j.jave.platform.data.web.mapping.MappingMeta;
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 import java.util.Collection;
 

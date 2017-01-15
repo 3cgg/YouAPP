@@ -4,14 +4,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.bunny.kernel._c.exception.JOperationNotSupportedException;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.support._resource.JResourceNotSupportedException;
 import me.bunny.kernel.container.JExecutableURIUtil;
 import me.bunny.kernel.container.JResourceContainerConfig;
 import me.bunny.kernel.container.JExecutableURIUtil.Type;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.support._resource.JResourceNotSupportedException;
 
 public class JResourceAccessService
 extends JServiceFactorySupport<JResourceAccessService>

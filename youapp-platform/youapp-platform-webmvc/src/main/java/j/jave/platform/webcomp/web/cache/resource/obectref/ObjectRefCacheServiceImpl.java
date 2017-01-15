@@ -2,9 +2,9 @@ package j.jave.platform.webcomp.web.cache.resource.obectref;
 
 import j.jave.platform.webcomp.web.cache.resource.ResourceCacheServiceSupport;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.support.resourceuri.IdentifierGenerator;
-import me.bunny.kernel.jave.support.resourceuri.ResourceCacheModel;
-import me.bunny.kernel.jave.support.resourceuri.SimpleStringIdentifierGenerator;
+import me.bunny.kernel._c.support.resourceuri.IdentifierGenerator;
+import me.bunny.kernel._c.support.resourceuri.ResourceCacheModel;
+import me.bunny.kernel._c.support.resourceuri.SimpleStringIdentifierGenerator;
 
 import org.springframework.stereotype.Service;
 

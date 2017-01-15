@@ -3,11 +3,11 @@ package j.jave.platform.webcomp.web.youappmvc.listener;
 import j.jave.kernal.sqlloader.JSQLConfigure;
 import j.jave.kernal.sqlloader.ddl.JPropertiesSQLDDLCreateFactory;
 import j.jave.kernal.sqlloader.ddl.JSQLDDLCreateFactory;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.reflect.JClassUtils;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

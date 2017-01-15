@@ -1,6 +1,6 @@
 package me.bunny.kernel.eventdriven.servicehub;
 
-import me.bunny.kernel.jave.eventdriven.JEventListener;
+import me.bunny.kernel._c.eventdriven.JEventListener;
 
 /**
  * basic listener which all listeners should extend, provides the boundary to other system.

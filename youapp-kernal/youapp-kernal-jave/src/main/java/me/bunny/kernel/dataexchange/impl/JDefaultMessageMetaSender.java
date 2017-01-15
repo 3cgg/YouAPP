@@ -1,15 +1,15 @@
 package me.bunny.kernel.dataexchange.impl;
 
+import me.bunny.kernel._c.base64.JBase64;
+import me.bunny.kernel._c.base64.JBase64FactoryProvider;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel.dataexchange.channel.JMessage;
 import me.bunny.kernel.dataexchange.channel.JMessageChannel;
 import me.bunny.kernel.dataexchange.channel.JResponseFuture;
 import me.bunny.kernel.dataexchange.exception.JDataExchangeException;
 import me.bunny.kernel.dataexchange.model.MessageMeta;
-import me.bunny.kernel.jave.base64.JBase64;
-import me.bunny.kernel.jave.base64.JBase64FactoryProvider;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 class JDefaultMessageMetaSender {
 

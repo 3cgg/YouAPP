@@ -3,7 +3,7 @@ package j.jave.platform.webcomp.web.youappmvc.controller;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.data.web.model.JInputModel;
 import j.jave.platform.webcomp.core.service.ServiceContext;
-import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel._c.model.JSimplePageable;
 
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;

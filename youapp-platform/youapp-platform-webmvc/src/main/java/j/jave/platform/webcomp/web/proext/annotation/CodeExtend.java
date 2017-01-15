@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import me.bunny.kernel.jave.support.databind.proext.annotation.PropertyExtendable;
+import me.bunny.kernel._c.support.databind.proext.annotation.PropertyExtendable;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

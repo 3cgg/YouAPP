@@ -7,12 +7,12 @@ import java.util.List;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 
-import me.bunny.kernel.jave.aop.JAdvisedSupport;
-import me.bunny.kernel.jave.aop.JAspectJAroundAdvice;
-import me.bunny.kernel.jave.aop.JJdkDynamicAopProxy;
-import me.bunny.kernel.jave.aop.JSimpleAspectInstanceFactory;
-import me.bunny.kernel.jave.aop.JSingletonTargetSource;
-import me.bunny.kernel.jave.aop.JTargetSource;
+import me.bunny.kernel._c.aop.JAdvisedSupport;
+import me.bunny.kernel._c.aop.JAspectJAroundAdvice;
+import me.bunny.kernel._c.aop.JJdkDynamicAopProxy;
+import me.bunny.kernel._c.aop.JSimpleAspectInstanceFactory;
+import me.bunny.kernel._c.aop.JSingletonTargetSource;
+import me.bunny.kernel._c.aop.JTargetSource;
 import test.j.jave.kernal.eventdriven.TestEventSupport;
 
 public class TestAop extends TestEventSupport {

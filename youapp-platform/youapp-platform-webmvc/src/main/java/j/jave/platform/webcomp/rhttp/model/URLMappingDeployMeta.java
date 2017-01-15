@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.rhttp.model;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 
 /**

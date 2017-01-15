@@ -7,12 +7,12 @@ import j.jave.platform.webcomp.rhttp.DefaultRemoteHttpDeployService;
 import j.jave.platform.webcomp.rhttp.model.AppDeploy;
 import j.jave.platform.webcomp.rhttp.model.AppDeployMeta;
 import j.jave.platform.webcomp.rhttp.model.URLMappingDeployMeta;
+import me.bunny.kernel._c.exception.JInitializationException;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
+import me.bunny.kernel._c.service.JService;
+import me.bunny.kernel._c.utils.JCollectionUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
-import me.bunny.kernel.jave.exception.JInitializationException;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
-import me.bunny.kernel.jave.service.JService;
-import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,8 +3,8 @@ package j.jave.web.htmlclient.servlet;
 import j.jave.web.htmlclient.DefaultHtmlFileService;
 import j.jave.web.htmlclient.thymeleaf.ServletTemplateResolver;
 import j.jave.web.htmlclient.thymeleaf.ThymeleafHtmlFileService;
-import me.bunny.kernel.jave.logging.JLogger;
-import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel._c.logging.JLogger;
+import me.bunny.kernel._c.logging.JLoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;

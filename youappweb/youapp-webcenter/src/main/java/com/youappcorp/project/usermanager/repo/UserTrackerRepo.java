@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.youappcorp.project.usermanager.model.UserTracker;
 
-import me.bunny.kernel.jave.persist.JIPersist;
+import me.bunny.kernel._c.persist.JIPersist;
 
 /**
  * @author J

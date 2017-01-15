@@ -7,8 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
 import j.jave.kernal.streaming.netty.examples.IUnitController;
-import me.bunny.kernel.jave.utils.JDateUtils;
-import me.bunny.kernel.jave.utils.JUniqueUtils;
+import me.bunny.kernel._c.utils.JDateUtils;
+import me.bunny.kernel._c.utils.JUniqueUtils;
 
 public class ControllerTestSyncMultiThread {
 

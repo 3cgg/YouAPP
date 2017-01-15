@@ -2,11 +2,11 @@ package j.jave.platform.webcomp.web.youappmvc.container;
 
 import j.jave.platform.data.web.mapping.MappingMeta;
 import me.bunny.kernel.JConfiguration;
-import me.bunny.kernel.jave.io.JURIPart;
-import me.bunny.kernel.jave.json.JJSON;
-import me.bunny.kernel.jave.proxy.JSimpleProxy;
-import me.bunny.kernel.jave.proxy.JSimpleProxy.Callback;
-import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel._c.io.JURIPart;
+import me.bunny.kernel._c.json.JJSON;
+import me.bunny.kernel._c.proxy.JSimpleProxy;
+import me.bunny.kernel._c.proxy.JSimpleProxy.Callback;
+import me.bunny.kernel._c.support._package.JDefaultMethodMeta;
 import me.bunny.kernel.mock.JDefaultJSONMockService;
 import me.bunny.kernel.mock.JDefaultMockURIPrefix;
 import me.bunny.kernel.mock.JJSONMockModelParser;

@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.cache.resource.obectref;
 
-import me.bunny.kernel.jave.support.resourceuri.ResourceCacheModel;
-import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel._c.support.resourceuri.ResourceCacheModel;
+import me.bunny.kernel._c.utils.JStringUtils;
 
 class ObjectRefCacheModelUtil {
 

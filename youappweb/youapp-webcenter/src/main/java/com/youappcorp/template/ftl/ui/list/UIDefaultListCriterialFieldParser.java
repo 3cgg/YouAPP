@@ -11,7 +11,7 @@ import com.youappcorp.template.ftl.ModelField;
 import com.youappcorp.template.ftl.ui.Buckets;
 import com.youappcorp.template.ftl.ui.FieldSpecSetter;
 
-import me.bunny.kernel.jave.utils.JObjectUtils;
+import me.bunny.kernel._c.utils.JObjectUtils;
 
 public class UIDefaultListCriterialFieldParser implements
 		UIListCriterialFieldParser {

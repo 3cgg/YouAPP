@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.coordinator;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 @SuppressWarnings("serial")
 public class CloseException extends RuntimeException implements JModel{

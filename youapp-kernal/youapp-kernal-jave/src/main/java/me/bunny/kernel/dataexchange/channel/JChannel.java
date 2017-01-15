@@ -1,6 +1,6 @@
 package me.bunny.kernel.dataexchange.channel;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 public interface JChannel<T extends JModel> {
 

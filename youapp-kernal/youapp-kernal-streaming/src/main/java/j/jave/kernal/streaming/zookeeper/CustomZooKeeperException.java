@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.zookeeper;
 
-import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel._c.model.JModel;
 
 @SuppressWarnings("serial")
 public class CustomZooKeeperException extends RuntimeException implements JModel{

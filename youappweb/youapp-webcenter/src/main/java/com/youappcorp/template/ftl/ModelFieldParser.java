@@ -2,7 +2,7 @@ package com.youappcorp.template.ftl;
 
 import java.util.List;
 
-import me.bunny.kernel.jave.support.parser.JParser;
+import me.bunny.kernel._c.support.parser.JParser;
 
 public interface ModelFieldParser extends JParser {
 

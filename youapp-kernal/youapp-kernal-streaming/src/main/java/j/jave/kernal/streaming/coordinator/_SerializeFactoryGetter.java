@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.coordinator;
 
-import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
+import me.bunny.kernel.jave.serializer.JSerializerFactory;
 
 public class _SerializeFactoryGetter {
 

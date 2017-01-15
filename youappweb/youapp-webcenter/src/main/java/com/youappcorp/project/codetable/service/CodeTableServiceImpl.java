@@ -3,9 +3,9 @@
  */
 package com.youappcorp.project.codetable.service;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 import java.util.List;
 

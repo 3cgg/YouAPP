@@ -1,7 +1,7 @@
 package j.jave.platform.mybatis.plugin.pageable;
 
-import j.jave.kernal.jave.model.JPageImpl;
 import j.jave.platform.data.web.model.SimplePageRequest;
+import me.bunny.kernel.jave.model.JPageImpl;
 
 import java.awt.print.Pageable;
 import java.lang.reflect.Method;

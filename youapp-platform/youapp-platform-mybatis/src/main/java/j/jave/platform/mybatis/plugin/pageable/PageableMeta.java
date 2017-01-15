@@ -1,6 +1,6 @@
 package j.jave.platform.mybatis.plugin.pageable;
 
-import j.jave.kernal.jave.model.JPageImpl;
+import me.bunny.kernel.jave.model.JPageImpl;
 
 public class PageableMeta {
 

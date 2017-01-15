@@ -2,7 +2,7 @@ package com.youappcorp.template.ftl.ui;
 
 import com.youappcorp.template.ftl.KeyNames;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class UIFieldSpec implements JModel{
 

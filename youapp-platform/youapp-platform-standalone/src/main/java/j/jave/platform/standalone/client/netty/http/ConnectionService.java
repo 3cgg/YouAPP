@@ -1,8 +1,8 @@
 package j.jave.platform.standalone.client.netty.http;
 
-import j.jave.kernal.dataexchange.channel.JMessage;
-
 import java.util.Map;
+
+import me.bunny.kernel.dataexchange.channel.JMessage;
 
 interface ConnectionService {
 

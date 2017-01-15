@@ -1,7 +1,7 @@
 package j.jave.web.htmlclient.request;
 
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel.jave.model.JModel;
 
 public class RequestVO implements JModel {
 	

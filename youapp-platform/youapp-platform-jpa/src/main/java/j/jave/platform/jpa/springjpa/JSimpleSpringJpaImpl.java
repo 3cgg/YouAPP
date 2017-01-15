@@ -1,8 +1,5 @@
 package j.jave.platform.jpa.springjpa;
 
-import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JPageable;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
+import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel.jave.model.JPageable;
 
 public class JSimpleSpringJpaImpl<T extends JBaseModel,ID extends Serializable> 
 	extends SimpleJpaRepository<T, ID> implements JSpringJpaRepository<T,ID> {

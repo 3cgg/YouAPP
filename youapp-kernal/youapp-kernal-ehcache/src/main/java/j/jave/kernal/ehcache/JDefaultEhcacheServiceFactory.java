@@ -1,7 +1,7 @@
 package j.jave.kernal.ehcache;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 
 public class JDefaultEhcacheServiceFactory extends JServiceFactorySupport<JDefaultEhcacheService> {
 

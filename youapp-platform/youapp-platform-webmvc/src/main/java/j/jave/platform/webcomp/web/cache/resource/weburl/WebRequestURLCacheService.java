@@ -3,8 +3,8 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.weburl;
 
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheServiceGetListener;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheService;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheServiceGetListener;
 
 
 

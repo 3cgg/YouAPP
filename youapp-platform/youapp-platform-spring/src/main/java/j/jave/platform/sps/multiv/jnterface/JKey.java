@@ -1,11 +1,11 @@
 package j.jave.platform.sps.multiv.jnterface;
 
-import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.io.JInputStreamWrapperSource;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
 import j.jave.platform.sps.multiv.ComponentMetaNames;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.ComponentProperties;
+import me.bunny.kernel.jave.exception.JInitializationException;
+import me.bunny.kernel.jave.io.JInputStreamWrapperSource;
+import me.bunny.kernel.jave.utils.JPropertiesUtils;
 
 import java.io.InputStream;
 import java.util.Properties;

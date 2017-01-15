@@ -1,6 +1,6 @@
 package com.youappcorp.project.containermanager.model;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class ModuleState implements JModel {
 

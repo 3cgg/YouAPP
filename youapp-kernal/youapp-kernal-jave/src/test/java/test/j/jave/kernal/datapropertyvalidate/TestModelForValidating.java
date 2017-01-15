@@ -1,13 +1,13 @@
 package test.j.jave.kernal.datapropertyvalidate;
 
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JDate;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JDouble;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JFloat;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JInt;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JLength;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JNotEmpty;
-import j.jave.kernal.jave.support.validate.annotationvalidator.annotation.JNotNull;
+import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JDate;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JDouble;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JFloat;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JInt;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JLength;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JNotEmpty;
+import me.bunny.kernel.jave.support.validate.annotationvalidator.annotation.JNotNull;
 
 
 public class TestModelForValidating implements JModel {

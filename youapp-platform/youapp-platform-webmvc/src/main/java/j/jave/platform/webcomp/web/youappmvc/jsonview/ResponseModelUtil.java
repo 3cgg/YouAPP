@@ -1,11 +1,11 @@
 package j.jave.platform.webcomp.web.youappmvc.jsonview;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

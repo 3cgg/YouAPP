@@ -3,10 +3,10 @@
  */
 package j.jave.platform.sps.core.autoloader;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.sqlloader.dml.JSQLDMLLoader;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,10 +1,10 @@
 package j.jave.platform.webcomp.web.cache.resource.coderef;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
-import j.jave.kernal.jave.support.resourceuri.SimpleStringIdentifierGenerator;
-import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.platform.webcomp.web.cache.resource.ResourceCacheServiceSupport;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.support.resourceuri.IdentifierGenerator;
+import me.bunny.kernel.jave.support.resourceuri.SimpleStringIdentifierGenerator;
+import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 import java.util.List;
 

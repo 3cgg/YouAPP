@@ -1,11 +1,11 @@
 package j.jave.platform.sps.core.container;
 
-import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.JRunnerLoader;
-import j.jave.kernal.container.JMicroContainerConfig;
-import j.jave.kernal.jave.exception.JInitializationException;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
+import me.bunny.kernel.container.JMicroContainerConfig;
+import me.bunny.kernel.container.JRunner;
+import me.bunny.kernel.container.JRunnerLoader;
+import me.bunny.kernel.jave.exception.JInitializationException;
 
 import java.net.URL;
 

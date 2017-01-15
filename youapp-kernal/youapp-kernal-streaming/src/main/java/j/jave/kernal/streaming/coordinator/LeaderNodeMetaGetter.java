@@ -2,9 +2,9 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.util.Map;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.kernal.streaming.ConfigNames;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 public class LeaderNodeMetaGetter extends NodeMetaGetter<LeaderNodeMeta> {
 

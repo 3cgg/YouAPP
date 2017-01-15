@@ -1,17 +1,17 @@
 package j.jave.platform.webcomp.web.util;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.support.JProvider;
-import j.jave.kernal.jave.support.JResourceFinder;
-import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
-import j.jave.kernal.jave.support._package.JMethodInfoProvider;
-import j.jave.kernal.jave.support._package.JMethodOnClassPathFinder;
-import j.jave.kernal.jave.support._package.JAbstractMethodFinder.JMethodFilter;
-import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.reflect.JClassUtils;
+import me.bunny.kernel.jave.support.JProvider;
+import me.bunny.kernel.jave.support.JResourceFinder;
+import me.bunny.kernel.jave.support._package.JAbstractMethodFinder;
+import me.bunny.kernel.jave.support._package.JMethodInfoProvider;
+import me.bunny.kernel.jave.support._package.JMethodOnClassPathFinder;
+import me.bunny.kernel.jave.support._package.JAbstractMethodFinder.JMethodFilter;
+import me.bunny.kernel.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

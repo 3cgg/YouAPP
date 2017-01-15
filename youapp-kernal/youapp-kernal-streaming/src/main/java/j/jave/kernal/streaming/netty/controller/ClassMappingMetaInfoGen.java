@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.netty.controller;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
+import me.bunny.kernel.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 public class ClassMappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 

@@ -1,8 +1,8 @@
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.eventdriven.servicehub.JEventQueuePipeline;
-import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.eventdriven.servicehub.JEventQueuePipeline;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPEvent;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class ControllerCallPromisePipeline extends JEventQueuePipeline {
 

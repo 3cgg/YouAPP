@@ -3,8 +3,8 @@
  */
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.eventdriven.servicehub.JEventOnListener;
-import j.jave.kernal.eventdriven.servicehub.JYouAPPListener;
+import me.bunny.kernel.eventdriven.servicehub.JEventOnListener;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPListener;
 
 /**
  * @author J

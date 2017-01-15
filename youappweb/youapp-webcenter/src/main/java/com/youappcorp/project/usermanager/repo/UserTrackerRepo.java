@@ -3,11 +3,11 @@
  */
 package com.youappcorp.project.usermanager.repo;
 
-import j.jave.kernal.jave.persist.JIPersist;
-
 import java.util.List;
 
 import com.youappcorp.project.usermanager.model.UserTracker;
+
+import me.bunny.kernel.jave.persist.JIPersist;
 
 /**
  * @author J

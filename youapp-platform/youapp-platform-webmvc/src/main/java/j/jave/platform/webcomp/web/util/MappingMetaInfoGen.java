@@ -6,10 +6,10 @@ import java.lang.reflect.Parameter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import j.jave.kernal.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 import j.jave.platform.data.common.MethodParamMeta;
 import j.jave.platform.data.util.ParameterNameGet;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.kernel.jave.support._package.JMethodInfoProvider.JMethodInfoGen;
 
 public class MappingMetaInfoGen implements JMethodInfoGen<MappingMeta> {
 

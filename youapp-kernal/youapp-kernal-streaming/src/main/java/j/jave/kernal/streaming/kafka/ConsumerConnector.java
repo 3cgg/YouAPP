@@ -17,7 +17,7 @@ import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 @SuppressWarnings({"serial","rawtypes"})
 public class ConsumerConnector implements Serializable {

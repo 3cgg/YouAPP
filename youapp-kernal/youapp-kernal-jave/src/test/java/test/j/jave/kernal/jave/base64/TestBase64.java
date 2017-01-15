@@ -1,8 +1,8 @@
 package test.j.jave.kernal.jave.base64;
 
-import j.jave.kernal.jave.base64.JBase64FactoryProvider;
-import j.jave.kernal.jave.utils.JAssert;
 import junit.framework.TestCase;
+import me.bunny.kernel.jave.base64.JBase64FactoryProvider;
+import me.bunny.kernel.jave.utils.JAssert;
 
 public class TestBase64 extends TestCase{
 

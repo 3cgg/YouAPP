@@ -1,6 +1,6 @@
 package j.jave.platform.streaming.classcount;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class RecordInfo implements JModel{
 	private String className;

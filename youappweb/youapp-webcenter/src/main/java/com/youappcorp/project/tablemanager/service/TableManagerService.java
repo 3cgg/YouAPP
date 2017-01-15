@@ -1,8 +1,8 @@
 package com.youappcorp.project.tablemanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.model.JBaseModel;
 import j.jave.platform.data.web.model.Criteria;
+import me.bunny.kernel.eventdriven.exception.JServiceException;
+import me.bunny.kernel.jave.model.JBaseModel;
 
 import java.util.List;
 

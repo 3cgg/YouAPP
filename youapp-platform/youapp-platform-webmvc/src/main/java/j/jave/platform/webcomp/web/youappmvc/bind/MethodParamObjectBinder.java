@@ -1,9 +1,9 @@
 package j.jave.platform.webcomp.web.youappmvc.bind;
 
-import j.jave.kernal.jave.support.JDataBinder;
-import j.jave.kernal.jave.support.databind.JDataBindingException;
 import j.jave.platform.data.common.MethodParamObject;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.kernel.jave.support.JDataBinder;
+import me.bunny.kernel.jave.support.databind.JDataBindingException;
 
 public interface MethodParamObjectBinder extends JDataBinder {
 	

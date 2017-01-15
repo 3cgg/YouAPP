@@ -7,7 +7,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 
-import j.jave.kernal.jave.serializer.JSerializer;
+import me.bunny.kernel.jave.serializer.JSerializer;
 
 public class KryoSerializer implements JSerializer {
 

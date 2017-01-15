@@ -15,8 +15,8 @@ import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import j.jave.kernal.jave.exception.JNestedRuntimeException;
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public abstract class ChannelRunnable {
 	

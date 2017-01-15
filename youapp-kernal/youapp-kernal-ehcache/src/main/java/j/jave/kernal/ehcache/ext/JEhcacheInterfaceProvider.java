@@ -2,9 +2,9 @@ package j.jave.kernal.ehcache.ext;
 
 import j.jave.kernal.ehcache.JDefaultEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheProperties;
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.service.JServiceInterfaceShared;
-import j.jave.kernal.jave.service.JXMLConfigProvider;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.service.JServiceInterfaceShared;
+import me.bunny.kernel.jave.service.JXMLConfigProvider;
 
 @JServiceInterfaceShared
 public final class JEhcacheInterfaceProvider extends JXMLConfigProvider {

@@ -2,9 +2,9 @@ package j.jave.kernal.streaming.coordinator.command;
 
 import java.lang.reflect.ParameterizedType;
 
-import j.jave.kernal.jave.model.JModel;
 import j.jave.kernal.streaming.coordinator.CommandResource;
 import j.jave.kernal.streaming.coordinator.command.WorkflowCommand.WorkflowCommandModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public abstract class WorkflowCommand<T extends WorkflowCommandModel> {
 	

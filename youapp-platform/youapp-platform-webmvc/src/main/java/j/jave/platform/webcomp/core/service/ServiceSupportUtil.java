@@ -1,11 +1,11 @@
 package j.jave.platform.webcomp.core.service;
 
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageable;
-import j.jave.kernal.jave.model.JSimplePageable;
 import j.jave.platform.data.web.model.SimplePageRequest;
+import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JPageImpl;
+import me.bunny.kernel.jave.model.JPageable;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 import org.springframework.data.domain.Page;
 

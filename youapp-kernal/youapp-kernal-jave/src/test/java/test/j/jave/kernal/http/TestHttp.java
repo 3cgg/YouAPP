@@ -1,7 +1,7 @@
 package test.j.jave.kernal.http;
 
-import j.jave.kernal.http.JHttpFactoryProvider;
 import junit.framework.TestCase;
+import me.bunny.kernel.http.JHttpFactoryProvider;
 
 public class TestHttp extends TestCase {
 

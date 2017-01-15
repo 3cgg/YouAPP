@@ -1,9 +1,9 @@
 package j.jave.platform.sps.core.servicehub;
 
-import j.jave.kernal.jave.utils.JStringUtils;
-
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 @Service(value="CHECK-SPRING-BEAN-NAME-AS-CLASS-NAME-BEAN")
 public class ServiceNameSameAsClassNameCheckService

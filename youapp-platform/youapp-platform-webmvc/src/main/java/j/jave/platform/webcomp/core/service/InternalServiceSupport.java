@@ -1,19 +1,19 @@
 package j.jave.platform.webcomp.core.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.exception.JConcurrentException;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageImpl;
-import j.jave.kernal.jave.model.JPageable;
-import j.jave.kernal.jave.model.support.interceptor.JDefaultModelInvocation;
-import j.jave.kernal.jave.persist.JIPersist;
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.web.model.SimplePageRequest;
 import j.jave.platform.jpa.springjpa.query.JSingleEntityQuery;
+import me.bunny.kernel.eventdriven.exception.JServiceException;
+import me.bunny.kernel.jave.exception.JConcurrentException;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JPageImpl;
+import me.bunny.kernel.jave.model.JPageable;
+import me.bunny.kernel.jave.model.support.interceptor.JDefaultModelInvocation;
+import me.bunny.kernel.jave.persist.JIPersist;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.sql.Timestamp;

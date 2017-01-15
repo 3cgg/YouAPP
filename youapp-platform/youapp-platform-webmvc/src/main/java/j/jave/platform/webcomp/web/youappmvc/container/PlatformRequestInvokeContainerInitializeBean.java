@@ -1,10 +1,10 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.JContainerDelegate;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.sps.core.container.SpringContainerConfig;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
+import me.bunny.kernel.container.JContainerDelegate;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

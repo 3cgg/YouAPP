@@ -1,7 +1,5 @@
 package j.jave.platform.jpa.springjpa;
 
-import j.jave.kernal.jave.model.JBaseModel;
-
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
@@ -11,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import me.bunny.kernel.jave.model.JBaseModel;
 
 @MappedSuperclass
 public class JJpaBaseModel extends JBaseModel {

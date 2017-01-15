@@ -2,8 +2,8 @@ package j.jave.kernal.streaming.coordinator;
 
 import java.util.Map;
 
-import j.jave.kernal.JConfiguration;
 import j.jave.kernal.streaming.ConfigNames;
+import me.bunny.kernel.JConfiguration;
 
 public class WorkerNodeMetaGetter extends NodeMetaGetter<WorkerNodeMeta> {
 

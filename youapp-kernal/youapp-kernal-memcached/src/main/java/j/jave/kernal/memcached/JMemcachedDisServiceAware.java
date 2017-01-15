@@ -1,6 +1,6 @@
 package j.jave.kernal.memcached;
 
-import j.jave.kernal.jave.service.JServiceAware;
+import me.bunny.kernel.jave.service.JServiceAware;
 
 public interface JMemcachedDisServiceAware extends JServiceAware {
 

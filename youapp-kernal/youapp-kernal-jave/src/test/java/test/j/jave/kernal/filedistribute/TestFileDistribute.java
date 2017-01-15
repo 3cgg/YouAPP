@@ -2,11 +2,11 @@ package test.j.jave.kernal.filedistribute;
 
 import java.io.File;
 
-import j.jave.kernal.filedistribute.JFileDistService;
-import j.jave.kernal.filedistribute.JFileDistServicers;
-import j.jave.kernal.http.JHttpFactoryProvider;
-import j.jave.kernal.jave.io.JFile;
 import junit.framework.TestCase;
+import me.bunny.kernel.filedistribute.JFileDistService;
+import me.bunny.kernel.filedistribute.JFileDistServicers;
+import me.bunny.kernel.http.JHttpFactoryProvider;
+import me.bunny.kernel.jave.io.JFile;
 
 public class TestFileDistribute extends TestCase{
 

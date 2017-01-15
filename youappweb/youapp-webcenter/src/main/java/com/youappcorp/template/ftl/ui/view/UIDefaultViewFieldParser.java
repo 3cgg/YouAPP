@@ -11,7 +11,7 @@ import com.youappcorp.template.ftl.ModelModel;
 import com.youappcorp.template.ftl.ui.Buckets;
 import com.youappcorp.template.ftl.ui.FieldSpecSetter;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
+import me.bunny.kernel.jave.utils.JObjectUtils;
 
 public class UIDefaultViewFieldParser implements
 		UIViewFieldParser {

@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.access.subhub;
 
-import j.jave.kernal.jave.service.JService;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
+import me.bunny.kernel.jave.service.JService;
 
 import java.util.List;
 

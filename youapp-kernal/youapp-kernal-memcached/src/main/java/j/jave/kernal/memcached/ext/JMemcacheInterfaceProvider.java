@@ -1,10 +1,10 @@
 package j.jave.kernal.memcached.ext;
 
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.service.JServiceInterfaceShared;
-import j.jave.kernal.jave.service.JXMLConfigProvider;
 import j.jave.kernal.memcached.JDefaultMemcachedDisService;
 import j.jave.kernal.memcached.JMemcacheProperties;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.service.JServiceInterfaceShared;
+import me.bunny.kernel.jave.service.JXMLConfigProvider;
 
 @JServiceInterfaceShared
 public final class JMemcacheInterfaceProvider extends JXMLConfigProvider {

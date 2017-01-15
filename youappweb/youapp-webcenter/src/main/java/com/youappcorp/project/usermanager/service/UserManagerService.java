@@ -1,10 +1,5 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.kernal.jave.service.JService;
-
 import java.util.List;
 
 import com.youappcorp.project.BusinessException;
@@ -22,6 +17,11 @@ import com.youappcorp.project.usermanager.model.UserRole;
 import com.youappcorp.project.usermanager.vo.GroupSearchCriteria;
 import com.youappcorp.project.usermanager.vo.RoleSearchCriteria;
 import com.youappcorp.project.usermanager.vo.UserSearchCriteria;
+
+import me.bunny.kernel.eventdriven.exception.JServiceException;
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel.jave.service.JService;
 
 
 public interface UserManagerService extends JService{

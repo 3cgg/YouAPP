@@ -1,13 +1,13 @@
 package j.jave.web.htmlclient.interceptor;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.filedistribute.JFileDistService;
-import j.jave.kernal.filedistribute.JFileDistServicers;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.web.htmlclient.request.FileAttachedParamVO;
 import j.jave.web.htmlclient.request.FileUploaderVO;
 import j.jave.web.htmlclient.response.ResponseModel;
+import me.bunny.kernel.eventdriven.exception.JServiceException;
+import me.bunny.kernel.filedistribute.JFileDistService;
+import me.bunny.kernel.filedistribute.JFileDistServicers;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 import java.net.URI;
 

@@ -1,9 +1,5 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.utils.JCollectionUtils;
-
 import java.util.List;
 
 import javax.persistence.spi.PersistenceProvider;
@@ -11,6 +7,10 @@ import javax.persistence.spi.PersistenceProviderResolver;
 import javax.persistence.spi.PersistenceProviderResolverHolder;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
+
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 public class JSPIFoundService extends JServiceFactorySupport<JSPIFoundService>
 implements JService

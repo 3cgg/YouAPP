@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package me.bunny.kernel.jave.exception;
+
+/**
+ * any case of initializing can throw this exception to notify others.
+ * @author J
+ */
+public class JInitializationException extends JNestedRuntimeException {
+
+	public JInitializationException(String message){
+		super(message);
+	}
+	
+	public JInitializationException(Exception e){
+		super(e);
+	}
+	
+	
+}

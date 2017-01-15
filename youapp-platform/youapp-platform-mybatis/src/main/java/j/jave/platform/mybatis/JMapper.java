@@ -5,11 +5,11 @@ package j.jave.platform.mybatis;
 
 import java.io.Serializable;
 
-import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.model.JUNDeletable;
-import j.jave.kernal.jave.persist.JIPersist;
-
 import org.apache.ibatis.annotations.Param;
+
+import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel.jave.model.JUNDeletable;
+import me.bunny.kernel.jave.persist.JIPersist;
 
 /**
  * the interface indicate all children interface is a mapper used in mybatis. 

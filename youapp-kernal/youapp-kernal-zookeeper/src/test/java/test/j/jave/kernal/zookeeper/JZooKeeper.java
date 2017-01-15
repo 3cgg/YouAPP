@@ -1,7 +1,5 @@
 package test.j.jave.kernal.zookeeper;
 
-import j.jave.kernal.jave.utils.JStringUtils;
-
 import java.io.IOException;
 
 import org.apache.zookeeper.CreateMode;
@@ -11,6 +9,8 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
+
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class JZooKeeper {
 

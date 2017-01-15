@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.streaming.netty.controller;
 
-import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
 
 
 /**

@@ -13,9 +13,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 public class ParameterNameGet {
 

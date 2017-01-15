@@ -1,9 +1,9 @@
 package j.jave.platform.jpa.springjpa.spi;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
 import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.jpa.springjpa.query.JQueryUtil;
 import j.jave.platform.jpa.springjpa.query.JSPIQueryService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 
 import java.util.List;
 

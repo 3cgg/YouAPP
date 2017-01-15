@@ -1,8 +1,8 @@
 package j.jave.web.htmlclient.interceptor;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.web.htmlclient.SyncHtmlResponseService;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 
 /**

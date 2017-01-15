@@ -3,7 +3,7 @@
  */
 package j.jave.web.htmlclient.request;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 /**
  * @author J

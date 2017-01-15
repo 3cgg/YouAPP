@@ -1,8 +1,8 @@
 package com.youappcorp.project.billmanager.model;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
 import j.jave.platform.data.web.model.JInputModel;
 import j.jave.platform.data.web.model.JOutputModel;
+import me.bunny.kernel.jave.utils.JObjectUtils;
 
 public class BillRecord extends Bill implements JOutputModel , JInputModel {
 

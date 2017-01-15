@@ -1,16 +1,5 @@
 package j.jave.platform.webcomp.rhttp;
 
-import j.jave.kernal.container.JContainerDelegate;
-import j.jave.kernal.container.rhttp.JRemoteHttpContainerConfig;
-import j.jave.kernal.container.rhttp.JRemoteURIInfo;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.http.JHttpType;
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
 import j.jave.platform.sps.core.context.SpringContextSupport;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
@@ -24,6 +13,17 @@ import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelega
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainerConfig;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeTestContainerConfig;
+import me.bunny.kernel.container.JContainerDelegate;
+import me.bunny.kernel.container.rhttp.JRemoteHttpContainerConfig;
+import me.bunny.kernel.container.rhttp.JRemoteURIInfo;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.http.JHttpType;
+import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 import java.io.File;
 import java.net.URI;

@@ -1,9 +1,9 @@
 package j.jave.platform.webcomp.web.youappmvc.plugins.pageable;
 
-import j.jave.kernal.jave.model.JPageable;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.service.PageableService;
 import j.jave.platform.webcomp.web.youappmvc.service.PageableServiceFactory;
+import me.bunny.kernel.jave.model.JPageable;
 
 import org.springframework.stereotype.Service;
 

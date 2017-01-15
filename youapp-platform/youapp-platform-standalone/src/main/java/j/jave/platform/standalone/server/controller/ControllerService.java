@@ -1,6 +1,6 @@
 package j.jave.platform.standalone.server.controller;
 
-import j.jave.kernal.jave.service.JService;
+import me.bunny.kernel.jave.service.JService;
 
 public interface ControllerService extends JService{
 

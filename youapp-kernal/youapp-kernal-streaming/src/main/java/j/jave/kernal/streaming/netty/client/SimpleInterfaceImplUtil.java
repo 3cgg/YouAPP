@@ -1,8 +1,8 @@
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.JConfiguration;
 import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.netty.controller.ControllerService;
+import me.bunny.kernel.JConfiguration;
 
 public class SimpleInterfaceImplUtil {
 

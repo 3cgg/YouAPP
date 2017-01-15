@@ -1,9 +1,9 @@
 package j.jave.web.htmlclient.request;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import me.bunny.kernel.jave.model.JModel;
 
 public class FileAttachedParamVO implements JModel {
 	

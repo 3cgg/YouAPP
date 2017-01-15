@@ -1,6 +1,6 @@
 package j.jave.kernal.memcached;
 
-import j.jave.kernal.jave.service.JServiceInterface;
+import me.bunny.kernel.jave.service.JServiceInterface;
 
 @JServiceInterface
 public interface JDefaultMemcachedDisService extends JMemcachedDisService {

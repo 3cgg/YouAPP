@@ -6,10 +6,11 @@ import java.util.List;
 import com.youappcorp.template.ftl.Config;
 import com.youappcorp.template.ftl.Config.FieldConfig;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
+
+import me.bunny.kernel.jave.utils.JObjectUtils;
+
 import com.youappcorp.template.ftl.ModelField;
 import com.youappcorp.template.ftl.ModelModel;
-
-import j.jave.kernal.jave.utils.JObjectUtils;
 
 public class UIDefaultListTableFieldParser implements
 		UIListTableFieldParser {

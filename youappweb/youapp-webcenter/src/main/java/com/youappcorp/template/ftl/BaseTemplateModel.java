@@ -1,7 +1,7 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class BaseTemplateModel implements JModel{
 

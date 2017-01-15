@@ -9,7 +9,7 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class WorkerMaster implements JModel ,Closeable{
 

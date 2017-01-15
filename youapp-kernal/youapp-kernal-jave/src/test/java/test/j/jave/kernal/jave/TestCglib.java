@@ -1,7 +1,7 @@
 package test.j.jave.kernal.jave;
 
-import j.jave.kernal.jave.proxy.JSimpleProxy;
 import junit.framework.TestCase;
+import me.bunny.kernel.jave.proxy.JSimpleProxy;
 
 public class TestCglib extends TestCase {
 

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
+import me.bunny.kernel.jave.utils.JObjectUtils;
 
 @SuppressWarnings("serial")
 public class KafkaProducerConfig extends KafkaConfig{

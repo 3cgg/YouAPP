@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.form;
 
-import j.jave.kernal.jave.service.JService;
+import me.bunny.kernel.jave.service.JService;
 
 public interface TokenStorageService extends JService {
 

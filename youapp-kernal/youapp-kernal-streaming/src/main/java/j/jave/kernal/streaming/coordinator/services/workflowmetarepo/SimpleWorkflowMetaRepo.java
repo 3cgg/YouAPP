@@ -3,8 +3,8 @@ package j.jave.kernal.streaming.coordinator.services.workflowmetarepo;
 import java.util.Arrays;
 import java.util.List;
 
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.streaming.coordinator.WorkflowMeta;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public abstract class SimpleWorkflowMetaRepo implements WorkflowMetaRepo {
 	

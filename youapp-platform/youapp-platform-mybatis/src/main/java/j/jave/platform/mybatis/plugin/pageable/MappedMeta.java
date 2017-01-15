@@ -1,6 +1,6 @@
 package j.jave.platform.mybatis.plugin.pageable;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class MappedMeta implements JModel {
 

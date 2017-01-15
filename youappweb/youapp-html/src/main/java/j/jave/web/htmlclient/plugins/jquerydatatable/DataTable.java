@@ -3,7 +3,7 @@
  */
 package j.jave.web.htmlclient.plugins.jquerydatatable;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class DataTable implements JModel{
 	

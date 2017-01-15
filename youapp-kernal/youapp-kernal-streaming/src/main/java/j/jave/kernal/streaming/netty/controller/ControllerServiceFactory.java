@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.netty.controller;
 
-import j.jave.kernal.jave.service.JService;
+import me.bunny.kernel.jave.service.JService;
 
 public interface ControllerServiceFactory extends JService{
 

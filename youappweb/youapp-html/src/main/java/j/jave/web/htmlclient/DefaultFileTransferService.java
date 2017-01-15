@@ -1,9 +1,9 @@
 package j.jave.web.htmlclient;
 
-import j.jave.kernal.jave.io.JFile;
-
 import java.net.URI;
 import java.util.Map;
+
+import me.bunny.kernel.jave.io.JFile;
 
 public class DefaultFileTransferService implements FileTransferService {
 

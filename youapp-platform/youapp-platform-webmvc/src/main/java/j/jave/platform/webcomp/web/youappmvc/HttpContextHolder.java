@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc;
 
-import j.jave.kernal.jave.model.JModel;
 import j.jave.platform.webcomp.core.service.DefaultSessionUser;
+import me.bunny.kernel.jave.model.JModel;
 
 /**
  * Http Context Holder.

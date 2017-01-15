@@ -3,10 +3,10 @@
  */
 package com.youappcorp.project.codetable.model;
 
-import j.jave.kernal.jave.model.support.JColumn;
-import j.jave.kernal.jave.model.support.JSQLType;
-import j.jave.kernal.jave.model.support.JTable;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+import me.bunny.kernel.jave.model.support.JColumn;
+import me.bunny.kernel.jave.model.support.JSQLType;
+import me.bunny.kernel.jave.model.support.JTable;
 
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;

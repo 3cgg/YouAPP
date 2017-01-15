@@ -1,10 +1,10 @@
 package com.youappcorp.project.runtimeurl.service;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-
 import com.youappcorp.project.runtimeurl.model.RuntimeUrl;
 import com.youappcorp.project.runtimeurl.vo.RuntimeUrlCriteriaInVO;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 public interface RuntimeUrlService {
 	

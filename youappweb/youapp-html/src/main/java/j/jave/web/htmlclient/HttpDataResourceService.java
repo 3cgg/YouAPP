@@ -1,8 +1,8 @@
 package j.jave.web.htmlclient;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-
 import java.util.Map;
+
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
 
 public class HttpDataResourceService
 extends JServiceFactorySupport<HttpDataResourceService>

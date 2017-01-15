@@ -2,8 +2,8 @@ package test.j.jave.kernal.common;
 
 import java.util.Map;
 
-import j.jave.kernal.jave.json.JJSON;
 import junit.framework.TestCase;
+import me.bunny.kernel.jave.json.JJSON;
 
 public class TestCommon extends TestCase {
 

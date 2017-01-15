@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.access.subhub;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class AuthorizedResource implements JModel {
 

@@ -1,10 +1,10 @@
 package j.jave.platform.webcomp.web.youappmvc.service;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.service.JService;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.youappmvc.plugins.pageable.JQueryDataTablePageService;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.service.JService;
 
 public class PageableServiceFactory<T extends JService> extends SpringServiceFactorySupport<T> {
 	

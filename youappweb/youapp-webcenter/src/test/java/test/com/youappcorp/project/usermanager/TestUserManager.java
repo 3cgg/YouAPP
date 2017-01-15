@@ -1,11 +1,11 @@
 package test.com.youappcorp.project.usermanager;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.support.random.JSimpleObjectRandomBinder;
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.support.random.JSimpleObjectRandomBinder;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

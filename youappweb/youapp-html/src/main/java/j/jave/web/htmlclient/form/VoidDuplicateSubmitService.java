@@ -1,7 +1,7 @@
 package j.jave.web.htmlclient.form;
 
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.support.validate.JValidatingException;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.support.validate.JValidatingException;
 
 public interface VoidDuplicateSubmitService extends JService {
 	

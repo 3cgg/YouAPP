@@ -1,9 +1,9 @@
 package j.jave.platform.webcomp.web.youappmvc;
 
-import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModel;
-import j.jave.kernal.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUser;
+import me.bunny.kernel.dataexchange.impl.interimpl.JObjectTransModel;
+import me.bunny.kernel.dataexchange.impl.interimpl.JObjectTransModelProtocol;
 
 import java.net.URI;
 import java.util.Collection;

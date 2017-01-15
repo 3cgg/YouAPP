@@ -1,14 +1,13 @@
 package test.j.jave.kernal.jave;
 
-import j.jave.kernal.JConfigMeta;
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.json.JJSON;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import junit.framework.TestCase;
+import me.bunny.kernel.JConfigMeta;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.json.JJSON;
 
 import org.junit.Test;
 

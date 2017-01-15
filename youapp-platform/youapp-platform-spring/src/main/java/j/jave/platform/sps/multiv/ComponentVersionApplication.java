@@ -1,6 +1,6 @@
 package j.jave.platform.sps.multiv;
 
-import j.jave.kernal.container.JIdentifier;
+import me.bunny.kernel.container.JIdentifier;
 
 
 public abstract class ComponentVersionApplication  implements JIdentifier{

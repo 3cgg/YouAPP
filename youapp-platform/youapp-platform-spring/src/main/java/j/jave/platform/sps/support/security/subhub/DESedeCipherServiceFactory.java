@@ -1,8 +1,8 @@
 package j.jave.platform.sps.support.security.subhub;
 
-import j.jave.kernal.security.service.JDESedeCipherService;
-import j.jave.kernal.security.service.JDefaultDESedeCipherService;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.kernel.security.service.JDESedeCipherService;
+import me.bunny.kernel.security.service.JDefaultDESedeCipherService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

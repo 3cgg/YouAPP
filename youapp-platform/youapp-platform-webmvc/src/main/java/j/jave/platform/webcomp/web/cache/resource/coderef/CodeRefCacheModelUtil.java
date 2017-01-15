@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.cache.resource.coderef;
 
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class CodeRefCacheModelUtil {
 

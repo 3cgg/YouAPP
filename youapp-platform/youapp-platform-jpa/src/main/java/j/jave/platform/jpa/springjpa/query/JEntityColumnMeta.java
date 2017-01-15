@@ -1,6 +1,6 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.support._package.JDefaultFieldMeta;
+import me.bunny.kernel.jave.support._package.JDefaultFieldMeta;
 
 public class JEntityColumnMeta extends JDefaultFieldMeta {
 	

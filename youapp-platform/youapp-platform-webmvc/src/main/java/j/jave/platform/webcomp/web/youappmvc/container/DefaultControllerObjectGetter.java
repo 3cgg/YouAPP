@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.jave.reflect.JClassUtils;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.kernel.jave.reflect.JClassUtils;
 
 /**
  * the implementation prefixes the test/ the target class name.

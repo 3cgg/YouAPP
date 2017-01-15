@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.support;
 
-import j.jave.kernal.jave.io.memory.JStaticMemoryCacheIO;
+import me.bunny.kernel.jave.io.memory.JStaticMemoryCacheIO;
 
 /**
  * 

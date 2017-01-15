@@ -1,9 +1,9 @@
 package j.jave.kernal.mail;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import me.bunny.kernel.jave.model.JModel;
 
 public class JMailMessage implements JModel {
 

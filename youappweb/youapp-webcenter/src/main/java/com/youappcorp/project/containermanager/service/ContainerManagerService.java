@@ -1,8 +1,5 @@
 package com.youappcorp.project.containermanager.service;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-
 import java.util.List;
 
 import com.youappcorp.project.containermanager.model.AppMeta;
@@ -11,6 +8,9 @@ import com.youappcorp.project.containermanager.model.URLMappingMeta;
 import com.youappcorp.project.containermanager.model.URLMappingMetaRecord;
 import com.youappcorp.project.containermanager.vo.AppMetaCriteria;
 import com.youappcorp.project.containermanager.vo.URLMappingMetaCriteria;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 public interface ContainerManagerService {
 

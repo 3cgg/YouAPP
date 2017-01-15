@@ -1,6 +1,6 @@
 package j.jave.platform.data.web.model;
 
-import j.jave.kernal.jave.model.JCriteria;
+import me.bunny.kernel.jave.model.JCriteria;
 
 /**
  * interface to mark

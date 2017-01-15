@@ -3,10 +3,10 @@
  */
 package com.youappcorp.project.usermanager.model;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.sql.Timestamp;
 import java.util.List;
+
+import me.bunny.kernel.jave.model.JModel;
 
 /**
  * @author J

@@ -1,10 +1,10 @@
 package j.jave.kernal.sql;
 
-import j.jave.kernal.jave.proxy.JAtomicResourceSession;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
+
+import me.bunny.kernel.jave.proxy.JAtomicResourceSession;
 
 public interface JSQLExecutingSession extends JAtomicResourceSession{
 	

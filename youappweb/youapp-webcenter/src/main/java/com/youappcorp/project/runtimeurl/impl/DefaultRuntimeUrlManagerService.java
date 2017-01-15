@@ -1,16 +1,16 @@
 package com.youappcorp.project.runtimeurl.impl;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.async.JAsyncExecutor;
-import j.jave.kernal.jave.async.JAsyncTaskExecutingService;
-import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
-import j.jave.kernal.jave.support._package.JDefaultParamMeta;
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.data.common.MethodParamMeta;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.container.ContainerMappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelegateService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.async.JAsyncExecutor;
+import me.bunny.kernel.jave.async.JAsyncTaskExecutingService;
+import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel.jave.support._package.JDefaultParamMeta;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

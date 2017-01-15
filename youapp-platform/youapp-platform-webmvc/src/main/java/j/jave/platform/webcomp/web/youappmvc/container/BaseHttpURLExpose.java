@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.JContainer;
-import j.jave.kernal.container.JContainerDelegate;
-import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
+import me.bunny.kernel.container.JContainer;
+import me.bunny.kernel.container.JContainerDelegate;
+import me.bunny.kernel.container.rhttp.JRemoteHttpInvokeContainer;
 
 /**
  * the basic http url exposer for {@link InnerHttpInvokeContainer} OR {@link JRemoteHttpInvokeContainer}

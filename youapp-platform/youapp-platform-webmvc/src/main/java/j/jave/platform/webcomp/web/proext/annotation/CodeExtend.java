@@ -1,11 +1,11 @@
 package j.jave.platform.webcomp.web.proext.annotation;
 
-import j.jave.kernal.jave.support.databind.proext.annotation.PropertyExtendable;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import me.bunny.kernel.jave.support.databind.proext.annotation.PropertyExtendable;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

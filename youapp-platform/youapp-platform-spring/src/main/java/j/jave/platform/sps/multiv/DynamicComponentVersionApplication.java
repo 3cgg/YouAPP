@@ -1,16 +1,16 @@
 package j.jave.platform.sps.multiv;
 
-import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.io.JInputStreamWrapperSource;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext.JARScan;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.Component;
 import j.jave.platform.sps.multiv.ComponentVersionSpringApplicationSupport.ComponentProperties;
+import me.bunny.kernel.jave.exception.JInitializationException;
+import me.bunny.kernel.jave.io.JInputStreamWrapperSource;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.support._resource.JJARResourceURIScanner;
+import me.bunny.kernel.jave.utils.JPropertiesUtils;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

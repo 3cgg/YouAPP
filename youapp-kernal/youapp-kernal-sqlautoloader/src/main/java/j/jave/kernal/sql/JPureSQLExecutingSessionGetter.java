@@ -1,7 +1,7 @@
 package j.jave.kernal.sql;
 
-import j.jave.kernal.jave.proxy.JAtomicResourceSession;
-import j.jave.kernal.jave.proxy.JAtomicResourceSessionGetter;
+import me.bunny.kernel.jave.proxy.JAtomicResourceSession;
+import me.bunny.kernel.jave.proxy.JAtomicResourceSessionGetter;
 
 public class JPureSQLExecutingSessionGetter implements
 		JAtomicResourceSessionGetter {

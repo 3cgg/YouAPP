@@ -3,7 +3,7 @@
  */
 package j.jave.kernal.memcached.event;
 
-import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPEvent;
 
 
 /**

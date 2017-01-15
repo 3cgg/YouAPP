@@ -3,7 +3,7 @@ package j.jave.kernal.streaming.zookeeper;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class ZooKeeperConfig implements JModel {
 

@@ -1,20 +1,20 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.io.JURIPart;
-import j.jave.kernal.jave.json.JJSON;
-import j.jave.kernal.jave.proxy.JSimpleProxy;
-import j.jave.kernal.jave.proxy.JSimpleProxy.Callback;
-import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
-import j.jave.kernal.mock.JDefaultJSONMockService;
-import j.jave.kernal.mock.JDefaultMockURIPrefix;
-import j.jave.kernal.mock.JJSONMockModelParser;
-import j.jave.kernal.mock.JJSONMockService;
-import j.jave.kernal.mock.JMethodNameAsFileParser;
-import j.jave.kernal.mock.JMockContext;
-import j.jave.kernal.mock.JMockModel;
-import j.jave.kernal.mock.JMockProperties;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.io.JURIPart;
+import me.bunny.kernel.jave.json.JJSON;
+import me.bunny.kernel.jave.proxy.JSimpleProxy;
+import me.bunny.kernel.jave.proxy.JSimpleProxy.Callback;
+import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel.mock.JDefaultJSONMockService;
+import me.bunny.kernel.mock.JDefaultMockURIPrefix;
+import me.bunny.kernel.mock.JJSONMockModelParser;
+import me.bunny.kernel.mock.JJSONMockService;
+import me.bunny.kernel.mock.JMethodNameAsFileParser;
+import me.bunny.kernel.mock.JMockContext;
+import me.bunny.kernel.mock.JMockModel;
+import me.bunny.kernel.mock.JMockProperties;
 
 import java.lang.reflect.Method;
 import java.util.Map;

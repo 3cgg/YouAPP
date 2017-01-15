@@ -1,8 +1,8 @@
 package com.youappcorp.project.billmanager.model;
 
-import j.jave.kernal.jave.utils.JObjectUtils;
-
 import java.sql.Timestamp;
+
+import me.bunny.kernel.jave.utils.JObjectUtils;
 
 public class GoodRecord extends Good {
 

@@ -9,18 +9,18 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.CharsetUtil;
-import j.jave.kernal.dataexchange.model.MessageMeta.MessageMetaNames;
-import j.jave.kernal.eventdriven.servicehub.EventExecutionResult;
-import j.jave.kernal.eventdriven.servicehub.JAsyncCallback;
-import j.jave.kernal.eventdriven.servicehub.JEventExecution;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support.JDefaultHashCacheService;
-import j.jave.kernal.jave.sync.JSyncMonitorRegisterService;
-import j.jave.kernal.jave.sync.JSyncMonitorWakeupEvent;
-import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.jave.utils.JUniqueUtils;
+import me.bunny.kernel.dataexchange.model.MessageMeta.MessageMetaNames;
+import me.bunny.kernel.eventdriven.servicehub.EventExecutionResult;
+import me.bunny.kernel.eventdriven.servicehub.JAsyncCallback;
+import me.bunny.kernel.eventdriven.servicehub.JEventExecution;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.support.JDefaultHashCacheService;
+import me.bunny.kernel.jave.sync.JSyncMonitorRegisterService;
+import me.bunny.kernel.jave.sync.JSyncMonitorWakeupEvent;
+import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 public class HttpSnoopClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 

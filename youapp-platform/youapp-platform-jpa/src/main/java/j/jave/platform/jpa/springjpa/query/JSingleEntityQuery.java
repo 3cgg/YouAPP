@@ -1,11 +1,11 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageable;
-
 import java.util.List;
 
 import javax.persistence.EntityManager;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JPageable;
 
 public class JSingleEntityQuery {
 	

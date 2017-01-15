@@ -2,7 +2,7 @@ package j.jave.platform.standalone.client.netty.http;
 
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
-import j.jave.kernal.dataexchange.channel.JMessage;
+import me.bunny.kernel.dataexchange.channel.JMessage;
 
 import java.util.HashMap;
 import java.util.Map;

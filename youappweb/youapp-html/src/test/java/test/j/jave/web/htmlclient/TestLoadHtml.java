@@ -1,8 +1,8 @@
 package test.j.jave.web.htmlclient;
 
-import j.jave.kernal.jave.json.JJSON;
 import j.jave.web.htmlclient.ModuleInstallEvent;
 import j.jave.web.htmlclient.ModuleMeta;
+import me.bunny.kernel.jave.json.JJSON;
 
 import java.io.File;
 

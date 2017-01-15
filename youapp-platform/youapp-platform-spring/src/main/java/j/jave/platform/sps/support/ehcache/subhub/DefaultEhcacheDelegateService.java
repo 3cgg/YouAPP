@@ -5,7 +5,7 @@ package j.jave.platform.sps.support.ehcache.subhub;
 
 import j.jave.kernal.ehcache.JDefaultEhcacheService;
 import j.jave.kernal.ehcache.ext.JEhcacheInterfaceProvider;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,11 @@
 package j.jave.kernal.sqlloader.ddl;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.kernal.sqlloader.JDBConfig;
 import j.jave.kernal.sqlloader.JDBConfigNames;
 import j.jave.kernal.sqlloader.JSQLLoaderException;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.io.InputStream;
 

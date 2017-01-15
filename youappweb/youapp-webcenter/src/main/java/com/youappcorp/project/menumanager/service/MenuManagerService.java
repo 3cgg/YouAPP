@@ -1,14 +1,14 @@
 package com.youappcorp.project.menumanager.service;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-
 import java.util.List;
 
 import com.youappcorp.project.menumanager.model.MenuGroupRecord;
 import com.youappcorp.project.menumanager.model.MenuRecord;
 import com.youappcorp.project.menumanager.model.MenuRoleRecord;
 import com.youappcorp.project.menumanager.vo.MenuCriteriaInVO;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 public interface MenuManagerService {
 

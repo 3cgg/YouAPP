@@ -1,0 +1,182 @@
+package me.bunny.kernel.container;
+
+import java.net.URI;
+
+import me.bunny.kernel.container.JExecutableURIUtil.Type;
+import me.bunny.kernel.container.JResourceContainer.JInnerResourceURIParserService;
+import me.bunny.kernel.container._resource.JResourceURIParserService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.support._resource.JResourceNotSupportedException;
+
+public class JResourceContainer implements JExecutor, JContainer,JResourceURIParserGetter<JInnerResourceURIParserService> {
+
+	private JResourceContainerConfig resourceContainerConfig;
+	
+	private JResourceMicroContainer resourceMicroContainer;
+	
+	private JInnerResourceURIParserService resourceURIParserService
+	=new JInnerResourceURIParserService();
+	
+	public JResourceContainer(JResourceContainerConfig resourceContainerConfig) {
+		this.resourceContainerConfig = resourceContainerConfig;
+	}
+
+	@Override
+	public void initialize() {
+		JResourceMicroContainerConfig resourceMicroContainerConfig
+		=new JResourceMicroContainerConfig();
+		resourceMicroContainerConfig.setName(name());
+		resourceMicroContainerConfig.setUnique(unique());
+		this.resourceMicroContainer=new JResourceMicroContainer(resourceMicroContainerConfig);
+		
+		resourceMicroContainer.initialize();
+		
+		JContainerDelegate.get().register(this);
+	}
+
+	@Override
+	public void destroy() {
+		resourceMicroContainer.destroy();
+	}
+
+	@Override
+	public void restart() {
+		resourceMicroContainer.restart();
+	}
+
+	@Override
+	public String unique() {
+		return resourceContainerConfig.unique();
+	}
+
+	@Override
+	public String name() {
+		return resourceContainerConfig.name();
+	}
+
+	@Override
+	public boolean accept(URI uri) {
+		return true;
+	}
+
+	@Override
+	public Object execute(URI uri, Object object) {
+		Type type=Type.GET;
+		Object data=object;
+		if(object instanceof ExecutionContext){
+			ExecutionContext context=(ExecutionContext)object; 
+			type=context.getType();
+			data=context.data;
+		}
+		URI executableURI=uri;
+		if(!JExecutableURIUtil.isWrapped(uri)){
+			String tempURIStr=uri.toString();
+			try{
+				if(tempURIStr.startsWith(JResourceURIParserService.CLASS_PATH_PREFIX)){
+					executableURI=resourceURIParser().parse4ClassPath(tempURIStr,type);
+				}
+				else{
+					executableURI=resourceURIParser().parse(new URI(tempURIStr),type);
+				}
+			}catch(Exception e){
+				throw new JResourceNotSupportedException(e);
+			}
+		}
+		return resourceMicroContainer.execute(executableURI, data);
+	}
+
+	@Override
+	public JInnerResourceURIParserService resourceURIParser() {
+		return resourceURIParserService;
+	}
+
+	public class JInnerResourceURIParserService implements JResourceURIParser{
+		
+		private final JResourceURIParserService
+		resourceURIParserService=JServiceHubDelegate.get().getService(this, JResourceURIParserService.class);
+		
+		public URI parse(URI uri,Type type) throws Exception{
+			return resourceURIParserService.parse(uri, JResourceContainer.this.unique(), type);
+		}
+		
+		/**
+		 * convenience to {@link #parse(URI, String, Type.GET)}
+		 * @param uri
+		 * @param container
+		 * @return
+		 * @throws Exception
+		 */
+		public URI parse(URI uri) throws Exception{
+			return parse(uri, Type.GET);
+		}
+		
+		public URI parse4Bean(String uri) throws Exception{
+			return parse4Bean(uri,Type.GET);
+		}
+		
+		public URI parse4Bean(String uri,Type type) throws Exception{
+			return resourceURIParserService.parse4Bean(uri, JResourceContainer.this.unique(), Type.GET);
+		}
+		
+		public URI parse4ClassPath(String uri) throws Exception{
+			return parse4ClassPath(uri, Type.GET);
+		}
+		
+		public URI parse4ClassPath(String uri,Type type) throws Exception{
+			return resourceURIParserService.parse4ClassPath(uri, JResourceContainer.this.unique(), Type.GET);
+		}
+		
+		public URI parse4Controller(String uri) throws Exception{
+			return parse4Controller(uri, Type.GET);
+		}
+		
+		public URI parse4Controller(String uri,Type type) throws Exception{
+			return resourceURIParserService.parse4Controller(uri, JResourceContainer.this.unique(), Type.GET);
+		}
+		
+		public URI parse4RemoteHttp(String uri) throws Exception{
+			return parse4RemoteHttp(uri, Type.GET);
+		}
+		
+		public URI parse4RemoteHttp(String uri,Type type) throws Exception{
+			return resourceURIParserService.parse4RemoteHttp(uri, JResourceContainer.this.unique(), Type.GET);
+			
+		}
+	}
+	
+	/**
+	 * @param type
+	 * @return  as the parameter of execute method.
+	 */
+	public ExecutionContext newExecutionContext(Type type){
+		ExecutionContext context= new ExecutionContext();
+		context.setType(type);
+		return context;
+	}
+
+	public static class ExecutionContext{
+		private Type type;
+		
+		private Object data;
+
+		public Type getType() {
+			return type;
+		}
+
+		public ExecutionContext setType(Type type) {
+			this.type = type;
+			return this;
+		}
+
+		public Object getData() {
+			return data;
+		}
+
+		public ExecutionContext setData(Object data) {
+			this.data = data;
+			return this;
+		}
+	}
+	
+	
+}

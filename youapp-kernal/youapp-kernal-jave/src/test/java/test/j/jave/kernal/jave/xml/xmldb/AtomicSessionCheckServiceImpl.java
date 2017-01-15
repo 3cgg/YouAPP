@@ -1,8 +1,8 @@
 package test.j.jave.kernal.jave.xml.xmldb;
 
-import j.jave.kernal.jave.proxy.JAtomicResourceProxy;
-
 import java.util.List;
+
+import me.bunny.kernel.jave.proxy.JAtomicResourceProxy;
 
 public class AtomicSessionCheckServiceImpl implements AtomicSessionCheckService{
 

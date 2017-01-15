@@ -1,8 +1,8 @@
 package test.j.jave.kernal.eventdriven;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.transaction.JTransactional;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.transaction.JTransactional;
 
 @JTransactional
 public class TestUserService extends JServiceFactorySupport<TestUserService> implements JService , UserFindListener {

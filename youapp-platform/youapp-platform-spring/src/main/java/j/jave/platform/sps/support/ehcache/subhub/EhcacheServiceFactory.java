@@ -3,8 +3,8 @@
  */
 package j.jave.platform.sps.support.ehcache.subhub;
 
-import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.kernel.jave.utils.JAssert;
 import net.sf.ehcache.Ehcache;
 
 import org.springframework.beans.factory.FactoryBean;

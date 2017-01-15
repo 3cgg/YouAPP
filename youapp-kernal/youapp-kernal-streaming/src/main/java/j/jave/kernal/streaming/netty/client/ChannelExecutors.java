@@ -5,7 +5,7 @@ import javax.net.ssl.SSLException;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import j.jave.kernal.jave.exception.JNestedRuntimeException;
+import me.bunny.kernel.jave.exception.JNestedRuntimeException;
 
 public class ChannelExecutors {
 

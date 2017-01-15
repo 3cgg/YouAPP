@@ -3,9 +3,9 @@
  */
 package j.jave.kernal.ehcache;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support.JObjectLoop;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.support.JObjectLoop;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 

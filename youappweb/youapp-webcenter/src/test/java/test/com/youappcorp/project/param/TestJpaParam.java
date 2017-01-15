@@ -1,10 +1,10 @@
 package test.com.youappcorp.project.param;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-import j.jave.kernal.jave.utils.JAssert;
 import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
+import me.bunny.kernel.jave.utils.JAssert;
 
 import java.lang.reflect.Method;
 import java.util.List;

@@ -1,10 +1,10 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.service.JService;
-
 import java.util.List;
 
 import javax.persistence.Query;
+
+import me.bunny.kernel.jave.service.JService;
 
 public interface JSPIQueryService extends JService {
 

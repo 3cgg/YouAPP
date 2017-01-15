@@ -3,9 +3,9 @@
  */
 package j.jave.platform.webcomp.web.youappmvc.subhub.servletconfig;
 
-import j.jave.kernal.jave.service.JService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ValidPathInterceptor;
+import me.bunny.kernel.jave.service.JService;
 
 /**
  * the interface to make the rule of what common configuration to configure,

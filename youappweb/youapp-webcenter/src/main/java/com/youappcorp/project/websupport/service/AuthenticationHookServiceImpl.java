@@ -1,10 +1,10 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.platform.webcomp.access.subhub.AuthenticationHookService;
 import j.jave.platform.webcomp.core.service.SessionUser;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,12 +1,12 @@
 package j.jave.web.htmlclient.form;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.support.validate.JValidatingException;
-import j.jave.kernal.jave.utils.JAssert;
-import j.jave.kernal.jave.utils.JStringUtils;
-import j.jave.kernal.jave.utils.JUniqueUtils;
-
 import java.util.concurrent.locks.ReentrantLock;
+
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.jave.support.validate.JValidatingException;
+import me.bunny.kernel.jave.utils.JAssert;
+import me.bunny.kernel.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 public class DefaultVoidDuplicateSubmitService extends JServiceFactorySupport<VoidDuplicateSubmitService>
 implements VoidDuplicateSubmitService {

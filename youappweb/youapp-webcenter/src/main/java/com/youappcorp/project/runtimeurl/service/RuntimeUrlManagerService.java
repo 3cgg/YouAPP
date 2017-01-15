@@ -1,10 +1,10 @@
 package com.youappcorp.project.runtimeurl.service;
 
-import j.jave.kernal.jave.service.JService;
-
 import java.util.Collection;
 
 import com.youappcorp.project.runtimeurl.model.RuntimeUrl;
+
+import me.bunny.kernel.jave.service.JService;
 
 public interface RuntimeUrlManagerService extends JService {
 	

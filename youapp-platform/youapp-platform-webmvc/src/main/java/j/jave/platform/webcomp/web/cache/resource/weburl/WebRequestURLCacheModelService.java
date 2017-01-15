@@ -3,9 +3,9 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.weburl;
 
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheModelService;
-
 import java.util.List;
+
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheModelService;
 
 
 /**

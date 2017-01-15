@@ -1,12 +1,12 @@
 package j.jave.platform.sps.core;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.support._resource.JJARResourceURIScanner;
-import j.jave.kernal.jave.utils.JCollectionUtils;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.support._resource.JJARResourceURIScanner;
+import me.bunny.kernel.jave.utils.JCollectionUtils;
 
 import java.io.IOException;
 import java.net.URI;

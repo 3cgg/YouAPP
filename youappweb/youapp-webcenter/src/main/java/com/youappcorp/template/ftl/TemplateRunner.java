@@ -2,10 +2,10 @@ package com.youappcorp.template.ftl;
 
 import com.youappcorp.template.ftl.ui.UISingleModelExecutingTask;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
 import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
 import j.jave.kernal.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 public class TemplateRunner {
 	

@@ -3,15 +3,15 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.weburl;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshListener;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheServiceGetEvent;
-import j.jave.kernal.jave.support.resourceuri.SimpleStringIdentifierGenerator;
 import j.jave.platform.webcomp.web.cache.resource.ResourceCacheServiceSupport;
 import j.jave.platform.webcomp.web.cache.response.ResponseEhcacheCacheService;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.support.resourceuri.IdentifierGenerator;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheRefreshEvent;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheRefreshListener;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheService;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheServiceGetEvent;
+import me.bunny.kernel.jave.support.resourceuri.SimpleStringIdentifierGenerator;
 
 import java.util.List;
 

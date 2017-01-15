@@ -1,13 +1,13 @@
 package j.jave.module.crawl.kernel;
 
-import j.jave.kernal.jave.xml.node.JClassNameGetter;
-import j.jave.kernal.jave.xml.node.JIDGetter;
-import j.jave.kernal.jave.xml.node.JMixedGetter;
-import j.jave.kernal.jave.xml.node.JNameGetter;
-import j.jave.kernal.jave.xml.node.JTagNameGetter;
-import j.jave.kernal.jave.xml.node.JXPathGetter;
-
 import java.util.HashMap;
+
+import me.bunny.kernel.jave.xml.node.JClassNameGetter;
+import me.bunny.kernel.jave.xml.node.JIDGetter;
+import me.bunny.kernel.jave.xml.node.JMixedGetter;
+import me.bunny.kernel.jave.xml.node.JNameGetter;
+import me.bunny.kernel.jave.xml.node.JTagNameGetter;
+import me.bunny.kernel.jave.xml.node.JXPathGetter;
 
 public class JCrawlContext extends HashMap{
 

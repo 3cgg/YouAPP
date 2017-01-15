@@ -1,18 +1,18 @@
 package j.jave.platform.webcomp.web.cache.resource;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.exception.JOperationNotSupportedException;
-import j.jave.kernal.jave.io.memory.JSingleStaticMemoryCacheIO;
-import j.jave.kernal.jave.reflect.JClassUtils;
-import j.jave.kernal.jave.service.JCacheService;
-import j.jave.kernal.jave.support.resourceuri.DefaultIdentifierGenerator;
-import j.jave.kernal.jave.support.resourceuri.IdentifierGenerator;
-import j.jave.kernal.jave.support.resourceuri.InitialResource;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheRefreshEvent;
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
 import j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService;
 import j.jave.platform.webcomp.WebCompProperties;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
+import me.bunny.kernel.jave.io.memory.JSingleStaticMemoryCacheIO;
+import me.bunny.kernel.jave.reflect.JClassUtils;
+import me.bunny.kernel.jave.service.JCacheService;
+import me.bunny.kernel.jave.support.resourceuri.DefaultIdentifierGenerator;
+import me.bunny.kernel.jave.support.resourceuri.IdentifierGenerator;
+import me.bunny.kernel.jave.support.resourceuri.InitialResource;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheRefreshEvent;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheService;
 
 import java.util.HashSet;
 import java.util.Set;

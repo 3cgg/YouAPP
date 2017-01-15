@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.logging;
 
-import j.jave.kernal.jave.logging.JILoggerFactory;
-import j.jave.kernal.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JILoggerFactory;
+import me.bunny.kernel.jave.logging.JLogger;
 
 public class SimpleLoggerFactory implements JILoggerFactory{
 	

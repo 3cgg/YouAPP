@@ -1,15 +1,15 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.utils.JAssert;
-import j.jave.kernal.jave.utils.JStringUtils;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.springframework.data.jpa.provider.PersistenceProvider;
 import org.springframework.data.jpa.repository.query.QueryUtils;
+
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.utils.JAssert;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 public class JNamedQuery extends JQuery<JNamedQuery> {
 

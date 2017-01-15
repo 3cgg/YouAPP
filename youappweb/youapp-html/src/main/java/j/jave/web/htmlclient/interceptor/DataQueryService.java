@@ -1,7 +1,7 @@
 package j.jave.web.htmlclient.interceptor;
 
-import j.jave.kernal.jave.service.JService;
 import j.jave.web.htmlclient.request.RequestVO;
+import me.bunny.kernel.jave.service.JService;
 
 public interface DataQueryService extends JService {
 

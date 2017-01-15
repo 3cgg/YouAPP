@@ -1,11 +1,11 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import me.bunny.kernel.jave.model.JModel;
 
 public class JEntityModelMeta implements JModel{
 	

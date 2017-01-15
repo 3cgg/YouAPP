@@ -3,7 +3,7 @@ package com.youappcorp.template.ftl.ui;
 import com.youappcorp.template.ftl.KeyNames;
 import com.youappcorp.template.ftl.ModelField;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class UIField implements JModel {
 

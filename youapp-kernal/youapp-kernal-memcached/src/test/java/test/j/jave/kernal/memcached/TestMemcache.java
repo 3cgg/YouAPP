@@ -1,9 +1,9 @@
 package test.j.jave.kernal.memcached;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.kernal.memcached.JDefaultMemcachedDisServiceImpl;
 import junit.framework.TestCase;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 public class TestMemcache extends TestCase {
 	

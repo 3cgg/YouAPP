@@ -1,10 +1,10 @@
 package com.youappcorp.project.sysparam.service;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JSimplePageable;
-
 import com.youappcorp.project.sysparam.model.SysParam;
 import com.youappcorp.project.sysparam.vo.SysParamCriteriaInVO;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JSimplePageable;
 
 public interface SysParamService {
 

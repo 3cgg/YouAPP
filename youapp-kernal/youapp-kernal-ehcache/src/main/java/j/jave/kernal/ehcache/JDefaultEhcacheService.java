@@ -3,13 +3,12 @@
  */
 package j.jave.kernal.ehcache;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.io.JClassRootPathResolver;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.io.JClassRootPathResolver;
 import net.sf.ehcache.CacheManager;
 
 

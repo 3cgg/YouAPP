@@ -3,16 +3,16 @@
  */
 package j.jave.kernal.sqlloader;
 
-import j.jave.kernal.jave.io.JClassRootPathResolver;
-import j.jave.kernal.jave.io.JFileResource;
-import j.jave.kernal.jave.io.JInputStreamWrapperSource;
-import j.jave.kernal.jave.utils.JPropertiesUtils;
-import j.jave.kernal.jave.utils.JStringUtils;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Properties;
+
+import me.bunny.kernel.jave.io.JClassRootPathResolver;
+import me.bunny.kernel.jave.io.JFileResource;
+import me.bunny.kernel.jave.io.JInputStreamWrapperSource;
+import me.bunny.kernel.jave.utils.JPropertiesUtils;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 /**
  * @author J

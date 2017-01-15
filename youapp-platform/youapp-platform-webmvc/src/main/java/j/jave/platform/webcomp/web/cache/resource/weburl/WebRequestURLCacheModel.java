@@ -2,7 +2,7 @@ package j.jave.platform.webcomp.web.cache.resource.weburl;
 
 import java.util.List;
 
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheModel;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheModel;
 
 public interface WebRequestURLCacheModel extends ResourceCacheModel {
 

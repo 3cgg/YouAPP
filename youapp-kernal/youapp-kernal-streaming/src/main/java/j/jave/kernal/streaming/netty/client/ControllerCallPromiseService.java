@@ -1,9 +1,9 @@
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.service.JService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.service.JService;
 
 public class ControllerCallPromiseService 
 extends JServiceFactorySupport<ControllerCallPromiseService>

@@ -1,9 +1,9 @@
 package test.com.youappcorp.template.ftl;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-
 import org.junit.Before;
+
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 public class TestEventSupport{
 

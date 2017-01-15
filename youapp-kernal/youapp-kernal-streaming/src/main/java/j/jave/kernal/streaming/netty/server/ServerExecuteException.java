@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.netty.server;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class ServerExecuteException extends RuntimeException implements JModel{
 	

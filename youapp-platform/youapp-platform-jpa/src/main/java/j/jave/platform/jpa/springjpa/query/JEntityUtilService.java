@@ -1,11 +1,11 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
-import j.jave.kernal.jave.service.JService;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.kernel.jave.service.JService;
 
 public class JEntityUtilService
 extends JServiceFactorySupport<JEntityUtilService>

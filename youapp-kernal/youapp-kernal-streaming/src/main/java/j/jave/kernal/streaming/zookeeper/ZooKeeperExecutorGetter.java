@@ -1,8 +1,8 @@
 package j.jave.kernal.streaming.zookeeper;
 
-import j.jave.kernal.JConfiguration;
 import j.jave.kernal.streaming.ConfigNames;
 import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
+import me.bunny.kernel.JConfiguration;
 
 public class ZooKeeperExecutorGetter {
 

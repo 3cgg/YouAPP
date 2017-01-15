@@ -3,8 +3,8 @@
  */
 package j.jave.platform.standalone.server.netty.http;
 
-import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
-import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
+import me.bunny.kernel.eventdriven.servicehub.JListenerOnEvent;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPEvent;
 
 /**
  * @author J

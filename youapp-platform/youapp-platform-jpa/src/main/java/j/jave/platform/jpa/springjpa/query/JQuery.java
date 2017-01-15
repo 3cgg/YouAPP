@@ -1,15 +1,15 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.model.JPage;
-import j.jave.kernal.jave.model.JPageable;
-import j.jave.kernal.jave.utils.JAssert;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import me.bunny.kernel.jave.model.JPage;
+import me.bunny.kernel.jave.model.JPageable;
+import me.bunny.kernel.jave.utils.JAssert;
 
 public abstract class JQuery<T extends JQuery<T>> {
 	

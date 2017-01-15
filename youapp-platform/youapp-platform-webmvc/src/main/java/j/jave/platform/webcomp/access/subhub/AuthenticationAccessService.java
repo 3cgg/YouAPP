@@ -3,9 +3,9 @@
  */
 package j.jave.platform.webcomp.access.subhub;
 
-import j.jave.kernal.eventdriven.exception.JServiceException;
-import j.jave.kernal.jave.service.JService;
 import j.jave.platform.webcomp.core.service.SessionUserImpl;
+import me.bunny.kernel.eventdriven.exception.JServiceException;
+import me.bunny.kernel.jave.service.JService;
 
 /**
  * the interface contains all ability of controlling if the end-user can access the system or not. 

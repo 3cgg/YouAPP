@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.eventdriven.servicehub.JEventExecution;
-import j.jave.kernal.eventdriven.servicehub.JEventQueueEventResultCallBackPipe;
+import me.bunny.kernel.eventdriven.servicehub.JEventExecution;
+import me.bunny.kernel.eventdriven.servicehub.JEventQueueEventResultCallBackPipe;
 
 public class ControllerPromiseQueueCallBackPipe extends JEventQueueEventResultCallBackPipe {
 	

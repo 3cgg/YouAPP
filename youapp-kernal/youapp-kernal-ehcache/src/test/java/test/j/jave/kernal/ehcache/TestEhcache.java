@@ -1,9 +1,9 @@
 package test.j.jave.kernal.ehcache;
 
 import j.jave.kernal.ehcache.JDefaultEhcacheService;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import junit.framework.TestCase;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 public class TestEhcache extends TestCase {
 	

@@ -1,8 +1,8 @@
 package j.jave.kernal.taskdriven.tkdd.flow;
 
-import j.jave.kernal.jave.support.validate.JSelfValidator;
 import j.jave.kernal.taskdriven.tkdd.JTask;
 import j.jave.kernal.taskdriven.tkdd.JTaskMetadataSpecInit;
+import me.bunny.kernel.jave.support.validate.JSelfValidator;
 
 import java.util.HashMap;
 

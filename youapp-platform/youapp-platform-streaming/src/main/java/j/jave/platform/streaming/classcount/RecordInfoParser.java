@@ -2,7 +2,7 @@ package j.jave.platform.streaming.classcount;
 
 import java.io.Serializable;
 
-import j.jave.kernal.jave.support.parser.JParser;
+import me.bunny.kernel.jave.support.parser.JParser;
 
 public class RecordInfoParser implements JParser , Serializable{
 

@@ -1,14 +1,13 @@
 package test.j.jave.kernal.jave.xml.xmldb;
 
-import j.jave.kernal.jave.proxy.JAtomicResourceProxy;
-import j.jave.kernal.jave.xml.dom4j.util.JXMLUtils;
-import j.jave.kernal.jave.xml.xmldb.JXMLSession;
-import j.jave.kernal.jave.xml.xmldb.dom4j.JDom4jNodeGetter;
-
 import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import me.bunny.kernel.jave.proxy.JAtomicResourceProxy;
+import me.bunny.kernel.jave.xml.dom4j.util.JXMLUtils;
+import me.bunny.kernel.jave.xml.xmldb.JXMLSession;
+import me.bunny.kernel.jave.xml.xmldb.dom4j.JDom4jNodeGetter;
 
 public class TestAll extends TestCase{
 

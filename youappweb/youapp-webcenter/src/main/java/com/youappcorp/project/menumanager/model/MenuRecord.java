@@ -1,10 +1,10 @@
 package com.youappcorp.project.menumanager.model;
 
-import j.jave.kernal.jave.support.treeview.JSimpleTreeStrcture;
-import j.jave.kernal.jave.utils.JCollectionUtils;
-import j.jave.kernal.jave.utils.JObjectUtils;
-
 import java.util.Map;
+
+import me.bunny.kernel.jave.support.treeview.JSimpleTreeStrcture;
+import me.bunny.kernel.jave.utils.JCollectionUtils;
+import me.bunny.kernel.jave.utils.JObjectUtils;
 
 public class MenuRecord extends Menu implements JSimpleTreeStrcture {
 

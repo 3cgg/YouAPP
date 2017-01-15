@@ -3,8 +3,8 @@
  */
 package j.jave.platform.data.web.mapping;
 
-import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
 import j.jave.platform.data.common.MethodParamMeta;
+import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
 
 /**
  * @author J

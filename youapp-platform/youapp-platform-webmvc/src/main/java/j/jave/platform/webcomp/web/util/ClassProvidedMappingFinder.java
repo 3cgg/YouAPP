@@ -1,12 +1,12 @@
 package j.jave.platform.webcomp.web.util;
 
-import j.jave.kernal.jave.support.JProvider;
-import j.jave.kernal.jave.support.JResourceFinder;
-import j.jave.kernal.jave.support._package.JAbstractMethodFinder;
-import j.jave.kernal.jave.support._package.JDefaultMethodFilter;
-import j.jave.kernal.jave.support._package.JMethodInfoProvider;
-import j.jave.kernal.jave.support._package.JMethodOnSingleClassFinder;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.kernel.jave.support.JProvider;
+import me.bunny.kernel.jave.support.JResourceFinder;
+import me.bunny.kernel.jave.support._package.JAbstractMethodFinder;
+import me.bunny.kernel.jave.support._package.JDefaultMethodFilter;
+import me.bunny.kernel.jave.support._package.JMethodInfoProvider;
+import me.bunny.kernel.jave.support._package.JMethodOnSingleClassFinder;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

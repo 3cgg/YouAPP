@@ -1,12 +1,12 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.jave.model.JModel;
-import j.jave.kernal.jave.utils.JAssert;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import me.bunny.kernel.jave.model.JModel;
+import me.bunny.kernel.jave.utils.JAssert;
 
 public class JCondition implements JModel {
 	

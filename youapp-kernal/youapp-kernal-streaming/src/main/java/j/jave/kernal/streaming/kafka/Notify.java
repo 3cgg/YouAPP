@@ -1,6 +1,6 @@
 package j.jave.kernal.streaming.kafka;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class Notify implements JModel{
 

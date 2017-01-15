@@ -3,8 +3,8 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.weburl;
 
-import j.jave.kernal.eventdriven.servicehub.JYouAPPListener;
-import j.jave.kernal.eventdriven.servicehub.JEventOnListener;
+import me.bunny.kernel.eventdriven.servicehub.JEventOnListener;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPListener;
 
 /**
  * @author J

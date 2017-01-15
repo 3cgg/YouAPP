@@ -2,8 +2,8 @@ package j.jave.kernal.streaming.kryo;
 
 import com.esotericsoftware.kryo.Kryo;
 
-import j.jave.kernal.jave.serializer.JSerializer;
-import j.jave.kernal.jave.serializer.JSerializerFactory;
+import me.bunny.kernel.jave.serializer.JSerializer;
+import me.bunny.kernel.jave.serializer.JSerializerFactory;
 
 public class KryoSerializerFactory extends JSerializerFactory {
 

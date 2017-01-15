@@ -1,13 +1,13 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.JExecutableURIGenerator;
-import j.jave.kernal.container.JExecutableURIUtil;
-import j.jave.kernal.container.JRunner;
-import j.jave.kernal.container.JScheme;
-import j.jave.kernal.jave.exception.JOperationNotSupportedException;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
 import j.jave.platform.sps.multiv.ComponentVersionApplication;
+import me.bunny.kernel.container.JExecutableURIGenerator;
+import me.bunny.kernel.container.JExecutableURIUtil;
+import me.bunny.kernel.container.JRunner;
+import me.bunny.kernel.container.JScheme;
+import me.bunny.kernel.jave.exception.JOperationNotSupportedException;
 
 import java.net.URI;
 import java.util.Collections;

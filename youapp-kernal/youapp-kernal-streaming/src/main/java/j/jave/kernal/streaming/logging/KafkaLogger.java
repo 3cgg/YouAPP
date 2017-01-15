@@ -2,9 +2,9 @@ package j.jave.kernal.streaming.logging;
 
 import java.util.Date;
 
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.LoggerType;
-import j.jave.kernal.jave.utils.JDateUtils;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.LoggerType;
+import me.bunny.kernel.jave.utils.JDateUtils;
 
 public class KafkaLogger implements JLogger {
 

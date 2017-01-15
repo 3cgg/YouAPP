@@ -1,9 +1,9 @@
 package j.jave.module.crawl.kernel;
 
-import j.jave.kernal.jave.xml.util.JNodeWrapper;
-import j.jave.kernal.jave.xml.util.JNodeWrapperWalker;
 import j.jave.module.crawl.def.JWebModel;
 import j.jave.module.crawl.def.JWebModelDefProperties;
+import me.bunny.kernel.jave.xml.util.JNodeWrapper;
+import me.bunny.kernel.jave.xml.util.JNodeWrapperWalker;
 
 import java.util.ArrayList;
 import java.util.Collections;

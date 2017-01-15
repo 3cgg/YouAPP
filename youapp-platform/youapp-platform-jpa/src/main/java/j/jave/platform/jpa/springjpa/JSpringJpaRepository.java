@@ -1,12 +1,12 @@
 package j.jave.platform.jpa.springjpa;
 
-import j.jave.kernal.jave.model.JBaseModel;
-import j.jave.kernal.jave.persist.JIPersist;
-
 import java.io.Serializable;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import me.bunny.kernel.jave.model.JBaseModel;
+import me.bunny.kernel.jave.persist.JIPersist;
 
 @NoRepositoryBean
 public interface JSpringJpaRepository<T extends JBaseModel,ID extends Serializable> 

@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import j.jave.kernal.jave.serializer.JJSONSerializerFactory;
-import j.jave.kernal.jave.serializer.JJavaObjectSerializerFactory;
-import j.jave.kernal.jave.serializer.JSerializer;
-import j.jave.kernal.jave.serializer.JSerializerFactory;
 import j.jave.kernal.streaming.kryo.KryoSerializerFactory;
+import me.bunny.kernel.jave.serializer.JJSONSerializerFactory;
+import me.bunny.kernel.jave.serializer.JJavaObjectSerializerFactory;
+import me.bunny.kernel.jave.serializer.JSerializer;
+import me.bunny.kernel.jave.serializer.JSerializerFactory;
 
 public class TestKryoDeserializer {
 

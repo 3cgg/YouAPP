@@ -3,8 +3,8 @@ package com.youappcorp.template.ftl;
 import java.util.ArrayList;
 import java.util.List;
 
-import j.jave.kernal.jave.support._package.JDefaultFieldMeta;
-import j.jave.kernal.jave.support._package.JFieldOnSingleClassFinder;
+import me.bunny.kernel.jave.support._package.JDefaultFieldMeta;
+import me.bunny.kernel.jave.support._package.JFieldOnSingleClassFinder;
 
 public class DefaultModelFieldParser implements ModelFieldParser {
 

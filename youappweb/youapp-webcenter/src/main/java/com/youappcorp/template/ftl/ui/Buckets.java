@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
-import com.youappcorp.template.ftl.ModelField;
 
-import j.jave.kernal.jave.utils.JStringUtils;
+import me.bunny.kernel.jave.utils.JStringUtils;
+
+import com.youappcorp.template.ftl.ModelField;
 
 public class Buckets {
 

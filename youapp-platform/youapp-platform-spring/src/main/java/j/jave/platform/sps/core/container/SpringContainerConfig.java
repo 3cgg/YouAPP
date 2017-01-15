@@ -1,8 +1,8 @@
 package j.jave.platform.sps.core.container;
 
-import j.jave.kernal.container.JContainerConfig;
-
 import org.springframework.context.ApplicationContext;
+
+import me.bunny.kernel.container.JContainerConfig;
 
 public class SpringContainerConfig extends JContainerConfig{
 	

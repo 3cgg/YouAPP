@@ -1,7 +1,7 @@
 package j.jave.platform.standalone.client.netty.http;
 
-import j.jave.kernal.dataexchange.channel.JDirectSender;
-import j.jave.kernal.dataexchange.channel.JMessage;
+import me.bunny.kernel.dataexchange.channel.JDirectSender;
+import me.bunny.kernel.dataexchange.channel.JMessage;
 
 public class HttpClientDirectSender extends JDirectSender {
 

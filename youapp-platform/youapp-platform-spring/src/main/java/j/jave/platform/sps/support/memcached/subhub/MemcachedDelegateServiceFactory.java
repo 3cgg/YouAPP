@@ -3,8 +3,8 @@
  */
 package j.jave.platform.sps.support.memcached.subhub;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

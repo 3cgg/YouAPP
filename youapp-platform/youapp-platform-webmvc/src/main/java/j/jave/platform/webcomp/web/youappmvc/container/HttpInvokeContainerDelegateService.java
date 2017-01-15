@@ -1,18 +1,18 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.container.JContainer;
-import j.jave.kernal.container.JContainerDelegate;
-import j.jave.kernal.container.JExecutableURIUtil;
-import j.jave.kernal.container.JScheme;
-import j.jave.kernal.container.rhttp.JRemoteHttpContainerConfig;
-import j.jave.kernal.container.rhttp.JRemoteHttpInvokeContainer;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactorySupport;
-import j.jave.kernal.jave.service.JService;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
 import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
 import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
+import me.bunny.kernel.container.JContainer;
+import me.bunny.kernel.container.JContainerDelegate;
+import me.bunny.kernel.container.JExecutableURIUtil;
+import me.bunny.kernel.container.JScheme;
+import me.bunny.kernel.container.rhttp.JRemoteHttpContainerConfig;
+import me.bunny.kernel.container.rhttp.JRemoteHttpInvokeContainer;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactorySupport;
+import me.bunny.kernel.jave.service.JService;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;

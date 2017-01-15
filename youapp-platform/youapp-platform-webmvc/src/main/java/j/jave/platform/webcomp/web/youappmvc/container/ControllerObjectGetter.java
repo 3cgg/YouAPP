@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.kernal.jave.service.JService;
 import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.kernel.jave.service.JService;
 
 /**
  * determine how to get the controller object.

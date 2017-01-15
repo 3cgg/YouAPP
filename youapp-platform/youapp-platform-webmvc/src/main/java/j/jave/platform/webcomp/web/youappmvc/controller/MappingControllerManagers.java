@@ -1,12 +1,12 @@
 package j.jave.platform.webcomp.web.youappmvc.controller;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.exception.JInitializationException;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
-import j.jave.kernal.jave.utils.JStringUtils;
 import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.sps.core.context.SpringContextSupport;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.exception.JInitializationException;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.utils.JStringUtils;
 
 import java.util.Collection;
 import java.util.Collections;

@@ -1,7 +1,7 @@
 package j.jave.kernal.streaming.netty.client;
 
-import j.jave.kernal.eventdriven.servicehub.JListenerOnEvent;
-import j.jave.kernal.eventdriven.servicehub.JYouAPPEvent;
+import me.bunny.kernel.eventdriven.servicehub.JListenerOnEvent;
+import me.bunny.kernel.eventdriven.servicehub.JYouAPPEvent;
 
 @JListenerOnEvent(name=ControllerCallPromiseListener.class)
 public class ControllerCallPromiseEvent  extends JYouAPPEvent<ControllerCallPromiseEvent>{

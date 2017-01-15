@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.ThrowableUtil;
-import j.jave.kernal.jave.logging.JLogger;
-import j.jave.kernal.jave.logging.JLoggerFactory;
+import me.bunny.kernel.jave.logging.JLogger;
+import me.bunny.kernel.jave.logging.JLoggerFactory;
 
 /**
  * wrapped {@link ChannelFuture} , high layer can be independent to the concrete  

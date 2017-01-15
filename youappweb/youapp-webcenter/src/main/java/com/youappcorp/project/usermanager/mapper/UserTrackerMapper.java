@@ -3,8 +3,8 @@
  */
 package com.youappcorp.project.usermanager.mapper;
 
-import j.jave.kernal.jave.model.support.JModelRepo;
 import j.jave.platform.mybatis.JMapper;
+import me.bunny.kernel.jave.model.support.JModelRepo;
 
 import java.util.List;
 

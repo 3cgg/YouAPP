@@ -1,6 +1,6 @@
 package j.jave.kernal.mail;
 
-import j.jave.kernal.jave.model.JModel;
+import me.bunny.kernel.jave.model.JModel;
 
 public class JMail implements JModel {
 

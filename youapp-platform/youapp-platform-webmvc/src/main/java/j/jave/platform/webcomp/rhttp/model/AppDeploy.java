@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.rhttp.model;
 
-import j.jave.kernal.jave.model.JModel;
-
 import java.util.List;
+
+import me.bunny.kernel.jave.model.JModel;
 
 public class AppDeploy implements JModel {
 

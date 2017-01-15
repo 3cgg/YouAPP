@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.coderef;
 
-import j.jave.kernal.jave.support.resourceuri.ResourceCacheService;
+import me.bunny.kernel.jave.support.resourceuri.ResourceCacheService;
 
 
 

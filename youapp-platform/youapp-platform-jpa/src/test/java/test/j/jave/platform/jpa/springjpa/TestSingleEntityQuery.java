@@ -1,6 +1,5 @@
 package test.j.jave.platform.jpa.springjpa;
 
-import j.jave.kernal.jave.utils.JUniqueUtils;
 import j.jave.platform.jpa.springjpa.JJpaBaseModel;
 import j.jave.platform.jpa.springjpa.query.JCondition;
 import j.jave.platform.jpa.springjpa.query.JSingleEntityQueryMeta;
@@ -11,6 +10,7 @@ import java.util.Date;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import me.bunny.kernel.jave.utils.JUniqueUtils;
 
 import org.junit.Test;
 

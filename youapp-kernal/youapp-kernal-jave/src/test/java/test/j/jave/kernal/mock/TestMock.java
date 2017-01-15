@@ -1,20 +1,19 @@
 package test.j.jave.kernal.mock;
 
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.jave.io.JURIPart;
-import j.jave.kernal.jave.support._package.JDefaultMethodMeta;
-import j.jave.kernal.mock.JDefaultJSONMockService;
-import j.jave.kernal.mock.JDefaultMockURIPrefix;
-import j.jave.kernal.mock.JJSONMockModelParser;
-import j.jave.kernal.mock.JJSONMockService;
-import j.jave.kernal.mock.JMethodNameAsFileParser;
-import j.jave.kernal.mock.JMockClassMockModelParser;
-import j.jave.kernal.mock.JMockContext;
-import j.jave.kernal.mock.JMockModel;
-import j.jave.kernal.mock.JMockProperties;
-
 import org.junit.Test;
 
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.jave.io.JURIPart;
+import me.bunny.kernel.jave.support._package.JDefaultMethodMeta;
+import me.bunny.kernel.mock.JDefaultJSONMockService;
+import me.bunny.kernel.mock.JDefaultMockURIPrefix;
+import me.bunny.kernel.mock.JJSONMockModelParser;
+import me.bunny.kernel.mock.JJSONMockService;
+import me.bunny.kernel.mock.JMethodNameAsFileParser;
+import me.bunny.kernel.mock.JMockClassMockModelParser;
+import me.bunny.kernel.mock.JMockContext;
+import me.bunny.kernel.mock.JMockModel;
+import me.bunny.kernel.mock.JMockProperties;
 import test.j.jave.kernal.eventdriven.TestEventSupport;
 
 public class TestMock extends TestEventSupport {

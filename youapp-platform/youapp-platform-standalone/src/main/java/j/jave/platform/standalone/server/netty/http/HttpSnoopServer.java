@@ -10,10 +10,10 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
-import j.jave.kernal.JConfiguration;
-import j.jave.kernal.eventdriven.servicehub.JServiceFactoryManager;
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.standalone.server.controller.ControllerServiceFindingEvent;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 /**
  * An HTTP server that sends back the content of the received HTTP request

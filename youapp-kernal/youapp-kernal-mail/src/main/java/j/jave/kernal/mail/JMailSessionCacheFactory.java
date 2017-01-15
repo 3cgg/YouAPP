@@ -1,6 +1,6 @@
 package j.jave.kernal.mail;
 
-import j.jave.kernal.jave.service.JCacheService;
+import me.bunny.kernel.jave.service.JCacheService;
 
 /**
  * implement the interface to customize the mail session cache factory to provide the cache mechanism 

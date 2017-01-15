@@ -1,8 +1,8 @@
 package j.jave.platform.jpa.springjpa.query;
 
-import j.jave.kernal.eventdriven.servicehub.JServiceHubDelegate;
 import j.jave.platform.jpa.springjpa.spi.JGenericQueryService;
 import j.jave.platform.jpa.springjpa.spi.JHibernateQueryService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 public class JSPIQueryServiceUtil {
 

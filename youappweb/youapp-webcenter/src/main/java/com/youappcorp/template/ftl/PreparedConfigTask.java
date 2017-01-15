@@ -11,8 +11,8 @@ import com.youappcorp.template.ftl.Config.FieldConfig;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.utils.JAssert;
 import me.bunny.kernel._c.utils.JIOUtils;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

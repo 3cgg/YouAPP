@@ -4,8 +4,8 @@ import com.youappcorp.template.ftl.ui.UISingleModelExecutingTask;
 
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
-import me.bunny.kernel.taskdriven.tkdd.flow.JFlowContext;
-import me.bunny.kernel.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
+import me.bunny.modular._p.taskdriven.tkdd.flow.JFlowContext;
+import me.bunny.modular._p.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
 
 public class TemplateRunner {
 	

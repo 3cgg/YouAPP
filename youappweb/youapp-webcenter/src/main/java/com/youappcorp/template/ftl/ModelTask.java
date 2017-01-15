@@ -5,8 +5,8 @@ import java.util.List;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import me.bunny.kernel._c.reflect.JClassUtils;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

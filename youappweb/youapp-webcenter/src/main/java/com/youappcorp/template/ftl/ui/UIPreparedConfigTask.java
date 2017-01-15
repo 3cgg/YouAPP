@@ -4,8 +4,8 @@ package com.youappcorp.template.ftl.ui;
 import com.youappcorp.template.ftl.ControllerModel;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
 
 import com.youappcorp.template.ftl.TemplateTask;
 

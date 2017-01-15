@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.bunny.kernel._c.utils.JIOUtils;
-import me.bunny.kernel.taskdriven.tkdd.JTaskExecutionException;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskExecutionException;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

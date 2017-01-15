@@ -12,8 +12,8 @@ import java.util.Map;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
 import freemarker.template.Template;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

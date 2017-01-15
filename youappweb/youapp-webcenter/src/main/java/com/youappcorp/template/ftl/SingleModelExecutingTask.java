@@ -2,10 +2,10 @@ package com.youappcorp.template.ftl;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
-import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
-import me.bunny.kernel.taskdriven.tkdd.flow.JFlowContext;
-import me.bunny.kernel.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.modular._p.taskdriven.tkdd.flow.JFlowContext;
+import me.bunny.modular._p.taskdriven.tkdd.flow.JSimpleLinkedFlowImpl;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

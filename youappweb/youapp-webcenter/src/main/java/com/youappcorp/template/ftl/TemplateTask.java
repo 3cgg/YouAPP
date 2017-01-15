@@ -2,8 +2,8 @@ package com.youappcorp.template.ftl;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import me.bunny.kernel.taskdriven.tkdd.JBaseTask;
-import me.bunny.kernel.taskdriven.tkdd.JTaskExecutionException;
+import me.bunny.modular._p.taskdriven.tkdd.JBaseTask;
+import me.bunny.modular._p.taskdriven.tkdd.JTaskExecutionException;
 
 public abstract class TemplateTask extends JBaseTask {
 

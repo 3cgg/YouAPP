@@ -2,11 +2,11 @@ package test.j.jave.kernal.streaming.netty.controller;
 
 import java.lang.reflect.Method;
 
-import j.jave.kernal.streaming.netty.client.SimpleControllerAsyncCall;
-import j.jave.kernal.streaming.netty.client.SimpleInterfaceImplUtil;
-import j.jave.kernal.streaming.netty.examples.IUnitController;
 import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.modular._p.streaming.netty.client.SimpleControllerAsyncCall;
+import me.bunny.modular._p.streaming.netty.client.SimpleInterfaceImplUtil;
+import me.bunny.modular._p.streaming.netty.examples.IUnitController;
 
 public class ControllerTestAsync {
 

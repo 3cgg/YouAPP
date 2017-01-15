@@ -6,14 +6,14 @@ import java.util.Random;
 
 import org.apache.kafka.common.utils.Utils;
 
-import j.jave.kernal.streaming.ConfigNames;
-import j.jave.kernal.streaming.coordinator.NodeWorker;
-import j.jave.kernal.streaming.coordinator.NodeWorkers;
-import j.jave.kernal.streaming.kafka.KafkaNameKeys;
-import j.jave.kernal.streaming.kafka.KafkaProducerConfig;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import me.bunny.kernel._c.json.JJSON;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
+import me.bunny.modular._p.streaming.ConfigNames;
+import me.bunny.modular._p.streaming.coordinator.NodeWorker;
+import me.bunny.modular._p.streaming.coordinator.NodeWorkers;
+import me.bunny.modular._p.streaming.kafka.KafkaNameKeys;
+import me.bunny.modular._p.streaming.kafka.KafkaProducerConfig;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperExecutorGetter;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class Machine {
 	

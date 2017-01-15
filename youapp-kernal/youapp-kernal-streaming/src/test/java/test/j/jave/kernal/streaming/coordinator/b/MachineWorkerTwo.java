@@ -2,9 +2,9 @@ package test.j.jave.kernal.streaming.coordinator.b;
 
 import org.apache.kafka.common.utils.Utils;
 
-import j.jave.kernal.streaming.coordinator.NodeWorkers;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
+import me.bunny.modular._p.streaming.coordinator.NodeWorkers;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class MachineWorkerTwo {
 

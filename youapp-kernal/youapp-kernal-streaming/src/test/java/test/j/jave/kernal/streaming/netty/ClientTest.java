@@ -16,7 +16,7 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import j.jave.kernal.streaming.netty.client.SimpleHttpClientInitializer;
+import me.bunny.modular._p.streaming.netty.client.SimpleHttpClientInitializer;
 
 public class ClientTest {
 

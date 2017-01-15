@@ -1,12 +1,12 @@
 package test.j.jave.kernal.streaming.coordinator.a;
 
-import j.jave.kernal.streaming.coordinator.CoordinatorPaths;
-import j.jave.kernal.streaming.coordinator.WorkflowMeta;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConfig;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.utils.JStringUtils;
+import me.bunny.modular._p.streaming.coordinator.CoordinatorPaths;
+import me.bunny.modular._p.streaming.coordinator.WorkflowMeta;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConfig;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConnector;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 @Deprecated
 public class D_TaskStartTriggerTest {

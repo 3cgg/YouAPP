@@ -1,8 +1,8 @@
 package test.j.jave.kernal.streaming.netty;
 
-import j.jave.kernal.streaming.netty.server.SimpleHttpNioChannelServer;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+import me.bunny.modular._p.streaming.netty.server.SimpleHttpNioChannelServer;
 
 public class TestServer {
 	

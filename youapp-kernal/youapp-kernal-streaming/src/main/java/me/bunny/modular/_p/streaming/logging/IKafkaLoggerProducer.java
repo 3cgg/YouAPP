@@ -1,0 +1,12 @@
+package me.bunny.modular._p.streaming.logging;
+
+import me.bunny.kernel._c.logging.LoggerType;
+
+public interface IKafkaLoggerProducer {
+
+	void send(KafkaLogger logger,LoggerType type,Object message);
+	
+	void send(KafkaLogger logger,LoggerType type,Object message, Throwable t);
+	
+	
+}

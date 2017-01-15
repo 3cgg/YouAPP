@@ -1,13 +1,13 @@
 package test.j.jave.kernal.streaming.coordinator.b;
 
-import j.jave.kernal.streaming.coordinator.InstanceNodeVal;
-import j.jave.kernal.streaming.coordinator.NodeLeader;
-import j.jave.kernal.streaming.coordinator.NodeStatus;
-import j.jave.kernal.streaming.coordinator._SerializeFactoryGetter;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 import me.bunny.kernel._c.serializer.JSerializerFactory;
 import me.bunny.kernel._c.serializer.SerializerUtils;
-import j.jave.kernal.streaming.zookeeper.ZooKeeperExecutorGetter;
+import me.bunny.modular._p.streaming.coordinator.InstanceNodeVal;
+import me.bunny.modular._p.streaming.coordinator.NodeLeader;
+import me.bunny.modular._p.streaming.coordinator.NodeStatus;
+import me.bunny.modular._p.streaming.coordinator._SerializeFactoryGetter;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperExecutorGetter;
+import me.bunny.modular._p.streaming.zookeeper.ZooKeeperConnector.ZookeeperExecutor;
 
 public class B {
 

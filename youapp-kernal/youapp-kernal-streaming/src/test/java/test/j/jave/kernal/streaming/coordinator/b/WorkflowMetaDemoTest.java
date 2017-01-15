@@ -1,7 +1,7 @@
 package test.j.jave.kernal.streaming.coordinator.b;
 
-import j.jave.kernal.streaming.coordinator.DefaultNodeDataGenerator;
-import j.jave.kernal.streaming.coordinator.WorkflowMeta;
+import me.bunny.modular._p.streaming.coordinator.DefaultNodeDataGenerator;
+import me.bunny.modular._p.streaming.coordinator.WorkflowMeta;
 
 public class WorkflowMetaDemoTest {
 

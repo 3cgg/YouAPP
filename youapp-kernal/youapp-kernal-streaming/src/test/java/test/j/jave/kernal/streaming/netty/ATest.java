@@ -22,10 +22,10 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import j.jave.kernal.streaming.netty.client.SimpleHttpClientInitializer;
-import j.jave.kernal.streaming.netty.client.NioChannelRunnable;
-import j.jave.kernal.streaming.netty.client.Request;
-import j.jave.kernal.streaming.netty.client.RequestMeta;
+import me.bunny.modular._p.streaming.netty.client.NioChannelRunnable;
+import me.bunny.modular._p.streaming.netty.client.Request;
+import me.bunny.modular._p.streaming.netty.client.RequestMeta;
+import me.bunny.modular._p.streaming.netty.client.SimpleHttpClientInitializer;
 
 public class ATest {
 	

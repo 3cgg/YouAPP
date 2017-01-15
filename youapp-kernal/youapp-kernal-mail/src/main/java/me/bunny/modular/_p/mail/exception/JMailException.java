@@ -1,7 +1,7 @@
 /**
  * 
  */
-package j.jave.kernal.mail.exception;
+package me.bunny.modular._p.mail.exception;
 
 public class JMailException extends RuntimeException {
 

@@ -1,12 +1,12 @@
 package test.j.jave.framework.commons.mail;
 
-import j.jave.kernal.mail.JCcRecipient;
-import j.jave.kernal.mail.JDefaultMailService;
-import j.jave.kernal.mail.JMail;
-import j.jave.kernal.mail.JMailMessage;
-import j.jave.kernal.mail.JSMTPProtocol;
-import j.jave.kernal.mail.JToRecipient;
-import j.jave.kernal.mail.JUserNamePasswordAuthenticator;
+import me.bunny.modular._p.mail.JCcRecipient;
+import me.bunny.modular._p.mail.JDefaultMailService;
+import me.bunny.modular._p.mail.JMail;
+import me.bunny.modular._p.mail.JMailMessage;
+import me.bunny.modular._p.mail.JSMTPProtocol;
+import me.bunny.modular._p.mail.JToRecipient;
+import me.bunny.modular._p.mail.JUserNamePasswordAuthenticator;
 
 
 public class A {

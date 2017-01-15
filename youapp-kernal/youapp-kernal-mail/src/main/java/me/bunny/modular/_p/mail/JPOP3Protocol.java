@@ -1,8 +1,8 @@
-package j.jave.kernal.mail;
+package me.bunny.modular._p.mail;
 
 import java.util.Properties;
 
-public class JIMAPProtocol implements JMailProtocol {
+public class JPOP3Protocol implements JMailProtocol {
 
 	@Override
 	public void set(Properties properties) {

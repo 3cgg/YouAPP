@@ -1,4 +1,4 @@
-package j.jave.kernal.mail;
+package me.bunny.modular._p.mail;
 
 import javax.mail.PasswordAuthentication;
 

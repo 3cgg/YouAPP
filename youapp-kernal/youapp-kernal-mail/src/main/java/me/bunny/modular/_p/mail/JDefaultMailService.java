@@ -1,7 +1,7 @@
-package j.jave.kernal.mail;
+package me.bunny.modular._p.mail;
 
-import j.jave.kernal.mail.exception.JMailException;
 import me.bunny.kernel._c.utils.JCollectionUtils;
+import me.bunny.modular._p.mail.exception.JMailException;
 
 import java.util.Iterator;
 import java.util.Properties;

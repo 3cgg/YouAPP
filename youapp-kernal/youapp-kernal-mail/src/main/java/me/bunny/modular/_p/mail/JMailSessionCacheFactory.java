@@ -1,4 +1,4 @@
-package j.jave.kernal.mail;
+package me.bunny.modular._p.mail;
 
 import me.bunny.kernel._c.service.JCacheService;
 

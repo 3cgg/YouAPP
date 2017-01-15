@@ -3,10 +3,11 @@ package com.youappcorp.template.ftl.ui;
 
 import com.youappcorp.template.ftl.ControllerModel;
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
-import com.youappcorp.template.ftl.TemplateTask;
 
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
+import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
+
+import com.youappcorp.template.ftl.TemplateTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

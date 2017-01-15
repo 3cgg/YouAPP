@@ -8,11 +8,11 @@ import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.youappcorp.template.ftl.Config.FieldConfig;
 
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataHierarchy;
-import j.jave.kernal.taskdriven.tkdd.JTaskMetadataOnTask;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.utils.JAssert;
 import me.bunny.kernel._c.utils.JIOUtils;
+import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataHierarchy;
+import me.bunny.kernel.taskdriven.tkdd.JTaskMetadataOnTask;
 
 @JTaskMetadataHierarchy
 @JTaskMetadataOnTask

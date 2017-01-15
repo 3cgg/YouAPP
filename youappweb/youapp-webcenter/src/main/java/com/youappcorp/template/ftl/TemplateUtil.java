@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.youappcorp.template.ftl.InternalConfig.ModelConfig;
 
-import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
+import me.bunny.kernel.taskdriven.tkdd.flow.JFlowContext;
 
 public class TemplateUtil {
 

@@ -1,0 +1,23 @@
+package me.bunny.kernel.taskdriven.tkdd.interceptor;
+
+import me.bunny.kernel.taskdriven.tkdd.JTask;
+import me.bunny.kernel.taskdriven.tkdd.JTaskExecutionException;
+import me.bunny.kernel.taskdriven.tkdd.JTaskInterceptor;
+import me.bunny.kernel.taskdriven.tkdd.JTaskInvocation;
+import me.bunny.kernel.taskdriven.tkdd.JTaskMetadata;
+
+
+public class JTaskAuthorizeInterceptor implements JTaskInterceptor<JTask> {
+	
+	@Override
+	public Object interceptor(JTaskInvocation taskInvocation) {
+		JTask task=taskInvocation.getTask();
+		JTaskMetadata metadata= task.getRunningTaskMetadata();
+		
+		if(!metadata.authorize(task.getTaskContext().getSubject(task.getClass()))){
+			throw new JTaskExecutionException("has unsufficient right to access");
+		}
+		return taskInvocation.proceed();
+	}
+
+}

@@ -1,6 +1,6 @@
 package com.youappcorp.template.ftl;
 
-import j.jave.kernal.taskdriven.tkdd.flow.JFlowContext;
+import me.bunny.kernel.taskdriven.tkdd.flow.JFlowContext;
 
 public interface InternalConfigStrategy {
 	

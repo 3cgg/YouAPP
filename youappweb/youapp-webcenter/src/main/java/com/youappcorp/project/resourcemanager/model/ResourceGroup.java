@@ -1,13 +1,13 @@
 package com.youappcorp.project.resourcemanager.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.youappcorp.project.usermanager.model.Group;
+
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 
 @Table(name="RESOURCES_GROUPS")
 @Entity

@@ -1,6 +1,6 @@
 package com.youappcorp.project.billmanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import me.bunny.app._c.data.web.model.BaseCriteria;
 
 public class GoodSearchCriteria extends BaseCriteria {
 	

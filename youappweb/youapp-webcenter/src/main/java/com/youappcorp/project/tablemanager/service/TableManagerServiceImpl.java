@@ -1,6 +1,6 @@
 package com.youappcorp.project.tablemanager.service;
 
-import j.jave.platform.data.web.model.Criteria;
+import me.bunny.app._c.data.web.model.Criteria;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel._c.model.JBaseModel;

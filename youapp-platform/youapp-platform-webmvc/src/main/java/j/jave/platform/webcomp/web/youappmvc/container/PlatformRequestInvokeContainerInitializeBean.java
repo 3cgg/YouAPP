@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.sps.core.container.SpringContainerConfig;
-import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
-import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
+import me.bunny.app._c.sps.core.container.SpringContainerConfig;
+import me.bunny.app._c.sps.multiv.ComponentVersionTestApplication;
+import me.bunny.app._c.sps.multiv.PlatformComponentVersionApplication;
 import me.bunny.kernel.container.JContainerDelegate;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 

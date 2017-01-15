@@ -1,6 +1,6 @@
 package j.jave.platform.mybatis.plugin.pageable;
 
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 import me.bunny.kernel._c.service.JCacheService;
 import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel._c.support.JDefaultHashCacheService;

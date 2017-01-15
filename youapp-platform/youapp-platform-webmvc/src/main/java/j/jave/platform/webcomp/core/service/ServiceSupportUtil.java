@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.core.service;
 
-import j.jave.platform.data.web.model.SimplePageRequest;
+import me.bunny.app._c.data.web.model.SimplePageRequest;
 import me.bunny.kernel._c.model.JModel;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JPageImpl;

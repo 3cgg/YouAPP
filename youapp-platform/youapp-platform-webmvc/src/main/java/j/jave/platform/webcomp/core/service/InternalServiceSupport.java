@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.core.service;
 
-import j.jave.platform.data.web.model.SimplePageRequest;
-import j.jave.platform.jpa.springjpa.query.JSingleEntityQuery;
+import me.bunny.app._c.data.web.model.SimplePageRequest;
+import me.bunny.app._c.jpa.springjpa.query.JSingleEntityQuery;
 import me.bunny.kernel._c.exception.JConcurrentException;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;

@@ -3,9 +3,9 @@
  */
 package j.jave.platform.webcomp.web.cache.resource.obectref;
 
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-
 import org.springframework.stereotype.Service;
+
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 
 /**
  * @author J

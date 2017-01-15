@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.sps.core.SpringDynamicJARApplicationContext;
-import j.jave.platform.sps.multiv.ComponentVersionApplication;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
+import me.bunny.app._c.sps.core.SpringDynamicJARApplicationContext;
+import me.bunny.app._c.sps.multiv.ComponentVersionApplication;
 import me.bunny.kernel._c.exception.JOperationNotSupportedException;
 import me.bunny.kernel.container.JExecutableURIGenerator;
 import me.bunny.kernel.container.JExecutableURIUtil;

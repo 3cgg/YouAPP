@@ -1,6 +1,5 @@
 package j.jave.platform.webcomp.web.youappmvc.jsonview;
 
-import j.jave.platform.sps.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.access.subhub.AuthenticationAccessService;
 import j.jave.platform.webcomp.access.subhub.AuthenticationHookDelegateService;
@@ -10,6 +9,7 @@ import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.AuthenticationHandler;
 import j.jave.platform.webcomp.web.youappmvc.interceptor.ServletExceptionUtil;
 import j.jave.platform.webcomp.web.youappmvc.support.APPFilterConfig;
+import me.bunny.app._c.sps.support.memcached.subhub.MemcachedDelegateService;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 

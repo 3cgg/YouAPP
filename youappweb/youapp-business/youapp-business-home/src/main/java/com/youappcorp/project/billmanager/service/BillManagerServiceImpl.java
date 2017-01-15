@@ -3,10 +3,10 @@
  */
 package com.youappcorp.project.billmanager.service;
 
-import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
-import j.jave.platform.jpa.springjpa.query.JJpaDateParam;
-import j.jave.platform.jpa.springjpa.query.JQuery;
 import j.jave.platform.webcomp.core.service.ServiceSupport;
+import me.bunny.app._c.jpa.springjpa.query.JJpaDateParam;
+import me.bunny.app._c.jpa.springjpa.query.JQuery;
+import me.bunny.app._c.jpa.springjpa.query.JCondition.Condition;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JPageable;
 import me.bunny.kernel._c.utils.JDateUtils;

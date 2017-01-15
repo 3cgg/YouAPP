@@ -3,7 +3,7 @@
  */
 package j.jave.platform.webcomp.web.cache.response;
 
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 import me.bunny.kernel._c.exception.JOperationNotSupportedException;
 
 /**

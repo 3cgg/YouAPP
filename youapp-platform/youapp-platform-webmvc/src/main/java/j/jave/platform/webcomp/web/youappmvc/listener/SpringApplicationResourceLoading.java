@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.listener;
 
-import j.jave.platform.sps.core.servicehub.SpringApplicationContextInitializedEvent;
+import me.bunny.app._c.sps.core.servicehub.SpringApplicationContextInitializedEvent;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 

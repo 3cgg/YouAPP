@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.cache.resource;
 
-import j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService;
 import j.jave.platform.webcomp.WebCompProperties;
+import me.bunny.app._c.sps.support.ehcache.subhub.EhcacheDelegateService;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel._c.exception.JOperationNotSupportedException;
 import me.bunny.kernel._c.io.memory.JSingleStaticMemoryCacheIO;

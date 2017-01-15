@@ -5,7 +5,7 @@ package j.jave.platform.webcomp.web.support;
 
 import j.jave.kernal.ehcache.JEhcacheService;
 import j.jave.kernal.ehcache.JEhcacheServiceAware;
-import j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService;
+import me.bunny.app._c.sps.support.ehcache.subhub.EhcacheDelegateService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 
 import java.util.Iterator;

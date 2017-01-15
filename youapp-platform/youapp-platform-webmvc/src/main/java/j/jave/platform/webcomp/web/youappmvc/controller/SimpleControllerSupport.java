@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.controller;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.data.web.model.JInputModel;
 import j.jave.platform.webcomp.core.service.ServiceContext;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
+import me.bunny.app._c.data.web.model.JInputModel;
 import me.bunny.kernel._c.model.JSimplePageable;
 
 import java.lang.annotation.Annotation;

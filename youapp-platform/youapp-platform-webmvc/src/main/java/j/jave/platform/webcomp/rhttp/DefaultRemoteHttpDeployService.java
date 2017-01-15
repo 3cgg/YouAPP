@@ -1,10 +1,5 @@
 package j.jave.platform.webcomp.rhttp;
 
-import j.jave.platform.sps.core.container.DynamicSpringContainerConfig;
-import j.jave.platform.sps.core.context.SpringContextSupport;
-import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
-import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
-import j.jave.platform.sps.multiv.RemoteHttpComponentVersionApplication;
 import j.jave.platform.webcomp.rhttp.model.AppDeploy;
 import j.jave.platform.webcomp.rhttp.model.AppDeployMeta;
 import j.jave.platform.webcomp.rhttp.model.URLMappingDeployMeta;
@@ -13,6 +8,11 @@ import j.jave.platform.webcomp.web.youappmvc.container.HttpInvokeContainerDelega
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainer;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeContainerConfig;
 import j.jave.platform.webcomp.web.youappmvc.container.InnerHttpInvokeTestContainerConfig;
+import me.bunny.app._c.sps.core.container.DynamicSpringContainerConfig;
+import me.bunny.app._c.sps.core.context.SpringContextSupport;
+import me.bunny.app._c.sps.multiv.ComponentVersionTestApplication;
+import me.bunny.app._c.sps.multiv.DynamicComponentVersionApplication;
+import me.bunny.app._c.sps.multiv.RemoteHttpComponentVersionApplication;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;

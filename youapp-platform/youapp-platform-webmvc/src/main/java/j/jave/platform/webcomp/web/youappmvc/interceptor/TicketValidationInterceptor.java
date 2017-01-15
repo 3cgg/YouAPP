@@ -1,10 +1,10 @@
 package j.jave.platform.webcomp.web.youappmvc.interceptor;
 
-import j.jave.platform.sps.support.memcached.subhub.MemcachedDelegateService;
 import j.jave.platform.webcomp.core.service.ServiceContext;
 import j.jave.platform.webcomp.core.service.SessionUser;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.jsonview.JSONAuthenticationHandler;
+import me.bunny.app._c.sps.support.memcached.subhub.MemcachedDelegateService;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel._c.utils.JStringUtils;

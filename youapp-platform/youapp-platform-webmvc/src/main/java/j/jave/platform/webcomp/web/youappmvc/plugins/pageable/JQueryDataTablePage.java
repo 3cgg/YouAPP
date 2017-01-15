@@ -3,8 +3,8 @@
  */
 package j.jave.platform.webcomp.web.youappmvc.plugins.pageable;
 
-import j.jave.platform.data.web.model.BaseCriteria;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.app._c.data.web.model.BaseCriteria;
 import me.bunny.kernel._c.json.JJSONObject;
 import me.bunny.kernel._c.model.JModel;
 

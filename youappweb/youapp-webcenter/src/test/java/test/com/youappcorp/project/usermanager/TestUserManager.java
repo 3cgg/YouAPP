@@ -1,8 +1,8 @@
 package test.com.youappcorp.project.usermanager;
 
-import j.jave.platform.sps.support.security.subhub.DESedeCipherService;
 import j.jave.platform.webcomp.core.service.DefaultServiceContext;
 import j.jave.platform.webcomp.core.service.ServiceContext;
+import me.bunny.app._c.sps.support.security.subhub.DESedeCipherService;
 import me.bunny.kernel._c.support.random.JSimpleObjectRandomBinder;
 import me.bunny.kernel._c.utils.JUniqueUtils;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;

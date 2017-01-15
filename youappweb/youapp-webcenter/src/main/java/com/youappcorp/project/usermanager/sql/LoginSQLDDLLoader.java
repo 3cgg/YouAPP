@@ -3,9 +3,9 @@
  */
 package com.youappcorp.project.usermanager.sql;
 
-import j.jave.platform.sps.core.autoloader.AbstractSQLDDLLoader;
-
 import java.util.List;
+
+import me.bunny.app._c.sps.core.autoloader.AbstractSQLDDLLoader;
 
 /**
  * @author Administrator

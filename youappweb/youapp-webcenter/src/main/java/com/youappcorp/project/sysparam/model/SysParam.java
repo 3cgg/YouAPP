@@ -1,10 +1,10 @@
 package com.youappcorp.project.sysparam.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 
 @Entity
 @Table(name = "SYS_PARAM")

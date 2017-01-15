@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
 import me.bunny.kernel._c.service.JService;
 
 /**

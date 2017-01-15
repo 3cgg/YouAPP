@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.sps.core.container.SpringContainerConfig;
-import j.jave.platform.sps.multiv.ComponentVersionApplication;
+import me.bunny.app._c.sps.core.container.SpringContainerConfig;
+import me.bunny.app._c.sps.multiv.ComponentVersionApplication;
 import me.bunny.kernel.container.JExecutableURIGenerator;
 import me.bunny.kernel.container.JMicroContainer;
 import me.bunny.kernel.container.JMicroContainerConfig;

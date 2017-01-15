@@ -1,9 +1,9 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.sps.multiv.ComponentVersionTestApplication;
-import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
-import j.jave.platform.sps.multiv.PlatformComponentVersionApplication;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
+import me.bunny.app._c.sps.multiv.ComponentVersionTestApplication;
+import me.bunny.app._c.sps.multiv.DynamicComponentVersionApplication;
+import me.bunny.app._c.sps.multiv.PlatformComponentVersionApplication;
 import me.bunny.kernel._c.service.JService;
 import me.bunny.kernel._c.utils.JStringUtils;
 import me.bunny.kernel.container.JContainer;

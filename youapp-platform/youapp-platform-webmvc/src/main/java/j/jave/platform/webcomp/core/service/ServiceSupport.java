@@ -1,14 +1,14 @@
 package j.jave.platform.webcomp.core.service;
 
-import j.jave.platform.data.web.model.SimplePageRequest;
-import j.jave.platform.jpa.springjpa.query.JCondition.Condition;
+import me.bunny.app._c.data.web.model.SimplePageRequest;
+import me.bunny.app._c.jpa.springjpa.query.JQueryBuilder;
+import me.bunny.app._c.jpa.springjpa.query.JCondition.Condition;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel._c.model.JModel;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JPageable;
 import me.bunny.kernel._c.service.JService;
-import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
 
 import java.util.HashMap;
 import java.util.Map;

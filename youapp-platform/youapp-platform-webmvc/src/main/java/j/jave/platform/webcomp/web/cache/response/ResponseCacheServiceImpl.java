@@ -4,8 +4,8 @@
 package j.jave.platform.webcomp.web.cache.response;
 
 import j.jave.kernal.ehcache.JEhcacheService;
-import j.jave.platform.sps.support.ehcache.subhub.EhcacheDelegateService;
 import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheService;
+import me.bunny.app._c.sps.support.ehcache.subhub.EhcacheDelegateService;
 import me.bunny.kernel._c.io.memory.JSingleDynamicMemoryCacheIO;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
 

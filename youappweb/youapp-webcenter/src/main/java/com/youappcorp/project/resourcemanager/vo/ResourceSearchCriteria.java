@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.resourcemanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import me.bunny.app._c.data.web.model.BaseCriteria;
 
 /**
  * @author J

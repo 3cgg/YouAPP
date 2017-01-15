@@ -3,7 +3,7 @@
  */
 package com.youappcorp.project.codetable.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 import me.bunny.kernel._c.model.support.JColumn;
 import me.bunny.kernel._c.model.support.JSQLType;
 import me.bunny.kernel._c.model.support.JTable;

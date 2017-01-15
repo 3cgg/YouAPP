@@ -1,7 +1,7 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.sps.core.servicehub.SkipServiceNameCheck;
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.app._c.sps.core.servicehub.SkipServiceNameCheck;
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JSimplePageable;
 

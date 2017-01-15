@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.controller;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.sps.core.context.SpringContextSupport;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
+import me.bunny.app._c.sps.core.context.SpringContextSupport;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel._c.exception.JInitializationException;
 import me.bunny.kernel._c.logging.JLogger;

@@ -1,6 +1,6 @@
 package com.youappcorp.project.codetable.jpa;
 
-import j.jave.platform.jpa.springjpa.JSpringJpaRepository;
+import me.bunny.app._c.jpa.springjpa.JSpringJpaRepository;
 import me.bunny.kernel._c.model.support.JModelRepo;
 
 import org.springframework.stereotype.Repository;

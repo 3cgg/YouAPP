@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-
 import org.springframework.context.ApplicationContext;
+
+import me.bunny.app._c.data.web.mapping.MappingMeta;
 
 /**
  * the implementation prefixes the test/ the target bean name.

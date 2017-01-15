@@ -1,8 +1,8 @@
 package j.jave.platform.webcomp.web.util;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.WebCompProperties;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerSupport;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel._c.reflect.JClassUtils;
 import me.bunny.kernel._c.support.JProvider;

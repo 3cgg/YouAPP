@@ -1,7 +1,7 @@
 package com.youappcorp.project.alertmanager.model;
 
-import j.jave.platform.data.web.model.JInputModel;
-import j.jave.platform.data.web.model.JOutputModel;
+import me.bunny.app._c.data.web.model.JInputModel;
+import me.bunny.app._c.data.web.model.JOutputModel;
 import me.bunny.kernel._c.utils.JObjectUtils;
 
 import com.youappcorp.project.alertmanager.model.AlertItem;

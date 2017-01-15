@@ -3,9 +3,9 @@
  */
 package com.youappcorp.project.resourcemanager.sql;
 
-import j.jave.platform.sps.core.autoloader.AbstractSQLDMLLoader;
-
 import java.util.List;
+
+import me.bunny.app._c.sps.core.autoloader.AbstractSQLDMLLoader;
 
 /**
  * @author J

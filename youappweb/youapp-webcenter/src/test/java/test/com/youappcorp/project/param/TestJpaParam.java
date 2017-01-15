@@ -1,6 +1,6 @@
 package test.com.youappcorp.project.param;
 
-import j.jave.platform.jpa.springjpa.query.JQueryBuilder;
+import me.bunny.app._c.jpa.springjpa.query.JQueryBuilder;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JSimplePageable;
 import me.bunny.kernel._c.utils.JAssert;

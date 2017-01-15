@@ -3,9 +3,9 @@
  */
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.JInputModel;
-
 import com.youappcorp.project.usermanager.model.UserRecord;
+
+import me.bunny.app._c.data.web.model.JInputModel;
 
 /**
  * @author J

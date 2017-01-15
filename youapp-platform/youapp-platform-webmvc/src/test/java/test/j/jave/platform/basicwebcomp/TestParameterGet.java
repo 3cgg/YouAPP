@@ -1,7 +1,7 @@
 package test.j.jave.platform.basicwebcomp;
 
-import j.jave.platform.data.util.ParameterNameGet;
 import junit.framework.TestCase;
+import me.bunny.app._c.data.util.ParameterNameGet;
 
 public class TestParameterGet extends TestCase{
 

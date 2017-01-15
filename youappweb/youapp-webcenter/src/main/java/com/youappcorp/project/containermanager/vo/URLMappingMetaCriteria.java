@@ -1,6 +1,6 @@
 package com.youappcorp.project.containermanager.vo;
 
-import j.jave.platform.data.web.model.BaseCriteria;
+import me.bunny.app._c.data.web.model.BaseCriteria;
 
 public class URLMappingMetaCriteria extends BaseCriteria {
 

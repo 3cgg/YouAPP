@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.sps.multiv.ComponentVersionApplication;
+import me.bunny.app._c.sps.multiv.ComponentVersionApplication;
 import me.bunny.kernel.container.JMicroContainerConfig;
 import me.bunny.kernel.container.JRunner;
 import me.bunny.kernel.container.JRunnerLoader;

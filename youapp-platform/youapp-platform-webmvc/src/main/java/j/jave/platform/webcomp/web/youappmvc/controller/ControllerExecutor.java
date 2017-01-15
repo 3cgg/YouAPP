@@ -3,13 +3,13 @@
  */
 package j.jave.platform.webcomp.web.youappmvc.controller;
 
-import j.jave.platform.data.common.MethodParamMeta;
-import j.jave.platform.data.common.MethodParamObject;
-import j.jave.platform.data.web.mapping.MappingMeta;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
 import j.jave.platform.webcomp.web.youappmvc.HttpContextHolder;
 import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextDataBinder;
 import j.jave.platform.webcomp.web.youappmvc.bind.HttpContextWithInnerProtocolDataBinderAdapter;
+import me.bunny.app._c.data.common.MethodParamMeta;
+import me.bunny.app._c.data.common.MethodParamObject;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
 import me.bunny.kernel._c.reflect.JReflectionUtils;

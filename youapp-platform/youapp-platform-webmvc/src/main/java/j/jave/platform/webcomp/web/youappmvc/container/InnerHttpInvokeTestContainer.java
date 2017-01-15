@@ -1,10 +1,10 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
-import j.jave.platform.sps.multiv.ComponentVersionApplication;
 import j.jave.platform.webcomp.web.model.ResponseModel;
 import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
 import j.jave.platform.webcomp.web.youappmvc.controller.ControllerExecutor;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
+import me.bunny.app._c.sps.multiv.ComponentVersionApplication;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;

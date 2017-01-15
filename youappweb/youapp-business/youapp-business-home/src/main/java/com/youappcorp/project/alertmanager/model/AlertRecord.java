@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 
 
 @Entity

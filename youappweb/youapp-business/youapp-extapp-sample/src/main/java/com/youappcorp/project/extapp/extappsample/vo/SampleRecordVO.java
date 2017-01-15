@@ -1,7 +1,7 @@
 package com.youappcorp.project.extapp.extappsample.vo;
 
-import j.jave.platform.data.web.model.JInputModel;
-import j.jave.platform.data.web.model.JOutputModel;
+import me.bunny.app._c.data.web.model.JInputModel;
+import me.bunny.app._c.data.web.model.JOutputModel;
 
 public class SampleRecordVO implements JInputModel , JOutputModel {
 

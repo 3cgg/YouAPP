@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.youappmvc.container;
 
-import j.jave.platform.sps.core.container.SpringContainerConfig;
+import me.bunny.app._c.sps.core.container.SpringContainerConfig;
 import me.bunny.kernel.container.JContainerConfig;
 
 public class InnerHttpInvokeContainerConfig extends JContainerConfig {

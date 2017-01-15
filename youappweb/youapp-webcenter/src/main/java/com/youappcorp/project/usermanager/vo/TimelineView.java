@@ -1,6 +1,6 @@
 package com.youappcorp.project.usermanager.vo;
 
-import j.jave.platform.data.web.model.JOutputModel;
+import me.bunny.app._c.data.web.model.JOutputModel;
 
 public class TimelineView implements JOutputModel{
 	

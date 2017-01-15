@@ -1,6 +1,6 @@
 package com.youappcorp.project.codetable.vo;
 
-import j.jave.platform.data.web.model.JInputModel;
+import me.bunny.app._c.data.web.model.JInputModel;
 
 public class ParamCriteriaInVO implements JInputModel {
 	

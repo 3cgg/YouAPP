@@ -3,8 +3,6 @@
  */
 package test.com.youappcorp.template.ftl.testmanager.model;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -14,6 +12,8 @@ import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
+
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 
 /**
  * @author J

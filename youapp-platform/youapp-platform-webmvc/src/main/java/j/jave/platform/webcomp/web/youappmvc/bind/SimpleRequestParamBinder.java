@@ -1,7 +1,7 @@
 package j.jave.platform.webcomp.web.youappmvc.bind;
 
-import j.jave.platform.data.common.MethodParamObject;
 import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.app._c.data.common.MethodParamObject;
 import me.bunny.kernel.JConfiguration;
 import me.bunny.kernel._c.reflect.JClassUtils;
 import me.bunny.kernel._c.support._package.JDefaultFieldMeta;

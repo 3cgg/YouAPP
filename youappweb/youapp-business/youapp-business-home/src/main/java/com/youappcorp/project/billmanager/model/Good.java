@@ -3,9 +3,9 @@
  */
 package com.youappcorp.project.billmanager.model;
 
-import j.jave.platform.data.web.model.JInputModel;
-import j.jave.platform.data.web.model.JOutputModel;
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
+import me.bunny.app._c.data.web.model.JInputModel;
+import me.bunny.app._c.data.web.model.JOutputModel;
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.youappcorp.project.containermanager.vo;
 
-import j.jave.platform.data.web.model.JInputModel;
+import me.bunny.app._c.data.web.model.JInputModel;
 
 public class DeployModule implements JInputModel {
 

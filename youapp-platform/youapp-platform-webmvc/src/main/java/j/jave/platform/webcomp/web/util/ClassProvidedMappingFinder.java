@@ -1,6 +1,6 @@
 package j.jave.platform.webcomp.web.util;
 
-import j.jave.platform.data.web.mapping.MappingMeta;
+import me.bunny.app._c.data.web.mapping.MappingMeta;
 import me.bunny.kernel._c.support.JProvider;
 import me.bunny.kernel._c.support.JResourceFinder;
 import me.bunny.kernel._c.support._package.JAbstractMethodFinder;

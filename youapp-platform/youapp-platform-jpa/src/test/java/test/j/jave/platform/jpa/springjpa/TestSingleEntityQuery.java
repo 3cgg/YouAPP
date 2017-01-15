@@ -1,15 +1,14 @@
 package test.j.jave.platform.jpa.springjpa;
 
-import j.jave.platform.jpa.springjpa.JJpaBaseModel;
-import j.jave.platform.jpa.springjpa.query.JCondition;
-import j.jave.platform.jpa.springjpa.query.JSingleEntityQueryMeta;
-import j.jave.platform.jpa.springjpa.query.JCondition.LinkType;
-import j.jave.platform.jpa.springjpa.query.JOrder;
-
 import java.util.Date;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import me.bunny.app._c.jpa.springjpa.JJpaBaseModel;
+import me.bunny.app._c.jpa.springjpa.query.JCondition;
+import me.bunny.app._c.jpa.springjpa.query.JOrder;
+import me.bunny.app._c.jpa.springjpa.query.JSingleEntityQueryMeta;
+import me.bunny.app._c.jpa.springjpa.query.JCondition.LinkType;
 import me.bunny.kernel._c.utils.JUniqueUtils;
 
 import org.junit.Test;

@@ -3,9 +3,9 @@
  */
 package j.jave.platform.webcomp.access.subhub;
 
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-
 import org.springframework.stereotype.Service;
+
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 
 /**
  * @author J

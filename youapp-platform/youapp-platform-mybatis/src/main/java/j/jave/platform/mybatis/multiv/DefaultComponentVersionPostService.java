@@ -1,11 +1,11 @@
 package j.jave.platform.mybatis.multiv;
 
-import j.jave.platform.sps.core.servicehub.SpringServiceFactorySupport;
-import j.jave.platform.sps.multiv.ComponentVersionPostService;
-import j.jave.platform.sps.multiv.DynamicComponentVersionApplication;
-
 import org.apache.ibatis.io.Resources;
 import org.springframework.stereotype.Service;
+
+import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
+import me.bunny.app._c.sps.multiv.ComponentVersionPostService;
+import me.bunny.app._c.sps.multiv.DynamicComponentVersionApplication;
 
 @Service
 public class DefaultComponentVersionPostService 

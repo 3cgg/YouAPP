@@ -1,8 +1,8 @@
 package test.j.jave.platform.basicwebcomp;
 
-import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.ServletHttpContext;
-import j.jave.platform.webcomp.web.youappmvc.service.PageableService;
+import me.bunny.app._c._web.web.model.ResponseModel;
+import me.bunny.app._c._web.web.youappmvc.ServletHttpContext;
+import me.bunny.app._c._web.web.youappmvc.service.PageableService;
 import me.bunny.kernel._c.json.JJSON;
 import me.bunny.kernel._c.model.JPageable;
 import me.bunny.kernel.eventdriven.servicehub.JServiceFactoryManager;

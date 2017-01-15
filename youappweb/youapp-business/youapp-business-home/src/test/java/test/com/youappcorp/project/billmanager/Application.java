@@ -1,9 +1,5 @@
 package test.com.youappcorp.project.billmanager;
 
-import j.jave.platform.webcomp.web.listener.SimpleServiceRegisterContextListener;
-import j.jave.platform.webcomp.web.youappmvc.listener.MvcClassPathListener;
-import j.jave.platform.webcomp.web.youappmvc.servlet.MvcServiceServlet;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +18,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+
+import me.bunny.app._c._web.web.listener.SimpleServiceRegisterContextListener;
+import me.bunny.app._c._web.web.youappmvc.listener.MvcClassPathListener;
+import me.bunny.app._c._web.web.youappmvc.servlet.MvcServiceServlet;
 
 @SpringBootApplication
 @ImportResource("classpath:spring-context.xml")

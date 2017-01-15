@@ -1,6 +1,6 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.webcomp.core.service.ServiceSupport;
+import me.bunny.app._c._web.core.service.ServiceSupport;
 import me.bunny.app._c.jpa.springjpa.query.JJpaDateParam;
 import me.bunny.app._c.jpa.springjpa.query.JQuery;
 import me.bunny.app._c.jpa.springjpa.query.JCondition.Condition;

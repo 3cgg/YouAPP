@@ -1,6 +1,6 @@
 package com.youappcorp.project.sysparam.service;
 
-import j.jave.platform.webcomp.core.service.ServiceSupport;
+import me.bunny.app._c._web.core.service.ServiceSupport;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JSimplePageable;
 

@@ -1,8 +1,8 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.webcomp.access.subhub.AuthenticationHookService;
-import j.jave.platform.webcomp.core.service.SessionUser;
-import j.jave.platform.webcomp.web.youappmvc.HttpContext;
+import me.bunny.app._c._web.access.subhub.AuthenticationHookService;
+import me.bunny.app._c._web.core.service.SessionUser;
+import me.bunny.app._c._web.web.youappmvc.HttpContext;
 import me.bunny.kernel._c.logging.JLogger;
 import me.bunny.kernel._c.logging.JLoggerFactory;
 

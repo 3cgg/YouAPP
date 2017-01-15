@@ -1,8 +1,5 @@
 package test.com.youappcorp.project.tablemanager;
 
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
-import j.jave.platform.webcomp.core.service.ServiceContext;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -18,6 +15,9 @@ import com.youappcorp.project.tablemanager.model.Record;
 import com.youappcorp.project.tablemanager.model.Table;
 import com.youappcorp.project.tablemanager.model.TableSearch;
 import com.youappcorp.project.tablemanager.service.TableManagerService;
+
+import me.bunny.app._c._web.core.service.DefaultServiceContext;
+import me.bunny.app._c._web.core.service.ServiceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring-context.xml"})

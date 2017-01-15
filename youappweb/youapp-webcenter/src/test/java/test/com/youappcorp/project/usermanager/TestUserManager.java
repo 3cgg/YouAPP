@@ -1,7 +1,7 @@
 package test.com.youappcorp.project.usermanager;
 
-import j.jave.platform.webcomp.core.service.DefaultServiceContext;
-import j.jave.platform.webcomp.core.service.ServiceContext;
+import me.bunny.app._c._web.core.service.DefaultServiceContext;
+import me.bunny.app._c._web.core.service.ServiceContext;
 import me.bunny.app._c.sps.support.security.subhub.DESedeCipherService;
 import me.bunny.kernel._c.support.random.JSimpleObjectRandomBinder;
 import me.bunny.kernel._c.utils.JUniqueUtils;

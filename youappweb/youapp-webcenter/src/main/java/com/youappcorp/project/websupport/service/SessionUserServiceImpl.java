@@ -1,12 +1,12 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.webcomp.access.subhub.SessionUserGetEvent;
-import j.jave.platform.webcomp.access.subhub.SessionUserService;
-import j.jave.platform.webcomp.access.subhub.SessionUserServiceFactory;
-import j.jave.platform.webcomp.core.service.DefaultSessionUser;
-import j.jave.platform.webcomp.core.service.SessionUser;
-
 import org.springframework.stereotype.Service;
+
+import me.bunny.app._c._web.access.subhub.SessionUserGetEvent;
+import me.bunny.app._c._web.access.subhub.SessionUserService;
+import me.bunny.app._c._web.access.subhub.SessionUserServiceFactory;
+import me.bunny.app._c._web.core.service.DefaultSessionUser;
+import me.bunny.app._c._web.core.service.SessionUser;
 
 @Service(SessionUserServiceImpl.BEAN_NAME)
 public class SessionUserServiceImpl extends SessionUserServiceFactory implements SessionUserService{

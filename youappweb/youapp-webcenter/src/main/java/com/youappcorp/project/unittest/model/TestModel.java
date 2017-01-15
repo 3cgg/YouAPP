@@ -1,7 +1,7 @@
 package com.youappcorp.project.unittest.model;
 
-import j.jave.platform.webcomp.web.proext.annotation.CodeExtend;
-import j.jave.platform.webcomp.web.proext.annotation.ObjectExtend;
+import me.bunny.app._c._web.web.proext.annotation.CodeExtend;
+import me.bunny.app._c._web.web.proext.annotation.ObjectExtend;
 import me.bunny.kernel._c.model.JBaseModel;
 import me.bunny.kernel._c.support.databind.proext.JPropertyExtendable;
 import me.bunny.kernel._c.support.databind.proext.annotation.DateFormatExtend;

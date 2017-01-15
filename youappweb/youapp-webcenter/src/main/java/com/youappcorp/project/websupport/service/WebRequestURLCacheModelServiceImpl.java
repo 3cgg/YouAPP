@@ -1,7 +1,7 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
-import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModelService;
+import me.bunny.app._c._web.web.cache.resource.weburl.WebRequestURLCacheModel;
+import me.bunny.app._c._web.web.cache.resource.weburl.WebRequestURLCacheModelService;
 import me.bunny.kernel._c.utils.JCollectionUtils;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.youappcorp.project.menumanager.controller;
 
-import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
+import me.bunny.app._c._web.web.model.ResponseModel;
+import me.bunny.app._c._web.web.youappmvc.controller.SimpleControllerSupport;
 import me.bunny.kernel._c.model.JPage;
 import me.bunny.kernel._c.model.JPageImpl;
 import me.bunny.kernel._c.model.JSimplePageable;

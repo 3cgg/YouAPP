@@ -1,9 +1,5 @@
 package com.youappcorp.project.unittest.controller;
 
-import j.jave.platform.webcomp.web.model.ResponseModel;
-import j.jave.platform.webcomp.web.youappmvc.controller.SimpleControllerSupport;
-import j.jave.platform.webcomp.web.youappmvc.controller.SkipMappingCheck;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.youappcorp.project.unittest.model.TestModel;
 import com.youappcorp.project.usermanager.model.User;
+
+import me.bunny.app._c._web.web.model.ResponseModel;
+import me.bunny.app._c._web.web.youappmvc.controller.SimpleControllerSupport;
+import me.bunny.app._c._web.web.youappmvc.controller.SkipMappingCheck;
 
 @Controller
 @RequestMapping(value="/testmanager")

@@ -3,12 +3,12 @@
  */
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.webcomp.core.service.InternalService;
-
 import java.util.List;
 
 import com.youappcorp.project.BusinessException;
 import com.youappcorp.project.usermanager.model.UserTracker;
+
+import me.bunny.app._c._web.core.service.InternalService;
 
 /**
  * @author J

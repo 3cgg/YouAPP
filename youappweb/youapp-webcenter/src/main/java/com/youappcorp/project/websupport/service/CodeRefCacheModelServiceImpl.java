@@ -1,8 +1,5 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModel;
-import j.jave.platform.webcomp.web.cache.resource.coderef.CodeRefCacheModelService;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.youappcorp.project.codetable.service.CodeTableService;
 import com.youappcorp.project.websupport.model.CodeTableCacheModel;
+
+import me.bunny.app._c._web.web.cache.resource.coderef.CodeRefCacheModel;
+import me.bunny.app._c._web.web.cache.resource.coderef.CodeRefCacheModelService;
 
 @Service
 public class CodeRefCacheModelServiceImpl implements CodeRefCacheModelService {

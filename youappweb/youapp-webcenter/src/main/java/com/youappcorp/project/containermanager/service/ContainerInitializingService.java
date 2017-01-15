@@ -1,9 +1,9 @@
 package com.youappcorp.project.containermanager.service;
 
-import j.jave.platform.webcomp.rhttp.DefaultRemoteHttpDeployService;
-import j.jave.platform.webcomp.rhttp.model.AppDeploy;
-import j.jave.platform.webcomp.rhttp.model.AppDeployMeta;
-import j.jave.platform.webcomp.rhttp.model.URLMappingDeployMeta;
+import me.bunny.app._c._web.rhttp.DefaultRemoteHttpDeployService;
+import me.bunny.app._c._web.rhttp.model.AppDeploy;
+import me.bunny.app._c._web.rhttp.model.AppDeployMeta;
+import me.bunny.app._c._web.rhttp.model.URLMappingDeployMeta;
 import me.bunny.app._c.sps.core.servicehub.SpringApplicationContextInitializedEvent;
 import me.bunny.app._c.sps.core.servicehub.SpringApplicationContextInitializedListener;
 import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;

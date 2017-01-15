@@ -1,0 +1,76 @@
+package me.bunny.app._c._web.web.cache.resource;
+
+import me.bunny.app._c._web.WebCompProperties;
+import me.bunny.app._c.sps.support.ehcache.subhub.EhcacheDelegateService;
+import me.bunny.kernel.JConfiguration;
+import me.bunny.kernel._c.exception.JOperationNotSupportedException;
+import me.bunny.kernel._c.io.memory.JSingleStaticMemoryCacheIO;
+import me.bunny.kernel._c.reflect.JClassUtils;
+import me.bunny.kernel._c.service.JCacheService;
+import me.bunny.kernel._c.support.resourceuri.DefaultIdentifierGenerator;
+import me.bunny.kernel._c.support.resourceuri.IdentifierGenerator;
+import me.bunny.kernel._c.support.resourceuri.InitialResource;
+import me.bunny.kernel._c.support.resourceuri.ResourceCacheRefreshEvent;
+import me.bunny.kernel._c.support.resourceuri.ResourceCacheService;
+import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class ResourceCacheServiceSupport<T,M> implements ResourceCacheService<T>,
+JSingleStaticMemoryCacheIO<M>,InitialResource{
+
+	private JCacheService cacheService=null;
+	{
+		String cacheImpl=JConfiguration.get().getString(WebCompProperties.YOUAPPMVC_RESOURCE_CACHE_SERVICE_INTERFACE, EhcacheDelegateService.class.getName());
+		cacheService=JServiceHubDelegate.get().getService(this, JClassUtils.load(cacheImpl));
+	}
+	private static DefaultIdentifierGenerator defaultIdentifierGenerator=new DefaultIdentifierGenerator();
+	
+	private static Set<InitialResource> initialResources=new HashSet<InitialResource>();
+	
+	static Set<InitialResource> getInitialResources() {
+		return initialResources;
+	}
+	
+	public ResourceCacheServiceSupport() {
+		initialResources.add(this);
+	}
+	
+	@Override
+	public IdentifierGenerator generator() {
+		return defaultIdentifierGenerator;
+	}
+
+	@Override
+	public T set(String key, T object) {
+		return (T) cacheService.putNeverExpired(generator().key(key), object);
+	}
+
+	@Override
+	public T get(String key) {
+		return (T) cacheService.get(generator().key(key));
+	}
+	
+	@Override
+	public final M set() {
+		initResource(JConfiguration.get());
+		return null;
+	}
+
+	@Override
+	public T remove(String key) {
+		return (T) cacheService.remove(generator().key(key));
+	}
+	
+	@Override
+	public final M get() {
+		throw new JOperationNotSupportedException("not supported.");
+	}
+	
+	@Override
+	public Object trigger(ResourceCacheRefreshEvent event) {
+		initResource(JConfiguration.get());
+		return true;
+	}
+}

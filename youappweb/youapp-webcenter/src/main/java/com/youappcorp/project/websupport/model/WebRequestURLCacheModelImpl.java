@@ -1,8 +1,8 @@
 package com.youappcorp.project.websupport.model;
 
-import j.jave.platform.webcomp.web.cache.resource.weburl.WebRequestURLCacheModel;
-
 import java.util.List;
+
+import me.bunny.app._c._web.web.cache.resource.weburl.WebRequestURLCacheModel;
 
 public class WebRequestURLCacheModelImpl implements WebRequestURLCacheModel {
 

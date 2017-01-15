@@ -1,6 +1,6 @@
 package com.youappcorp.project.usermanager.service;
 
-import j.jave.platform.webcomp.core.service.InternalServiceSupport;
+import me.bunny.app._c._web.core.service.InternalServiceSupport;
 import me.bunny.kernel._c.persist.JIPersist;
 
 import org.springframework.beans.factory.annotation.Autowired;

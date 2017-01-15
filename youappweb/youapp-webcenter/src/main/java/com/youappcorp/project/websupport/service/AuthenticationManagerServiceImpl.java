@@ -1,8 +1,8 @@
 package com.youappcorp.project.websupport.service;
 
-import j.jave.platform.webcomp.access.subhub.AuthenticationManagerService;
-import j.jave.platform.webcomp.access.subhub.AuthorizedResource;
-import j.jave.platform.webcomp.core.service.SessionUserImpl;
+import me.bunny.app._c._web.access.subhub.AuthenticationManagerService;
+import me.bunny.app._c._web.access.subhub.AuthorizedResource;
+import me.bunny.app._c._web.core.service.SessionUserImpl;
 import me.bunny.app._c.sps.core.servicehub.SpringServiceFactorySupport;
 import me.bunny.app._c.sps.support.security.subhub.DESedeCipherService;
 import me.bunny.kernel.eventdriven.servicehub.JServiceHubDelegate;

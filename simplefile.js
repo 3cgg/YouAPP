@@ -4,7 +4,7 @@
   $fc : '' // file form container
   added : fn(data,{ opt: {} , others...}) //
   removed : fn({ opt: {} , others...}) //
-
+  types : [] // file type , such as txt, jpg , jpeg
 }
 */
 function fileAttach(opt){
@@ -22,8 +22,29 @@ function fileAttach(opt){
                   +'</button>'
               +'</span>'
             +'</div>'
+            +'<span name="msg" style="color:red;" ></span>'
           +'</div>';
   }
+
+  function acceptTypes(){
+    return obj.opt.types.join(',');
+  }
+
+  function fileForm(){
+    var fileForm='<form enctype="multipart/form-data" role="form" id="'+obj.formId+'" class="form-horizontal" >'
+                +'<input type="file" name="file"  id="'+obj.fileId+'" accept="'+acceptTypes()+'" />'
+                +'</form>';
+    return fileForm;
+  }
+
+  function fileInput(){
+    return obj.$fform.find('#'+obj.fileId);
+  }
+
+  function msg(message){
+    $root.find('span[name="msg"]').text(message);
+  }
+
 
 
   if(!opt.$fsc){
@@ -33,7 +54,7 @@ function fileAttach(opt){
 
 
   var $root=$(fileUploadTemplate());
-  var $e=$root.find('[name="browserBtn"]');
+  var $b=$root.find('[name="browserBtn"]');
   var $u=$root.find('[name="uploadBtn"]');
   var $t=$root.find('[name="nameShownInput"]');
   var $fc=$(opt.$fc);
@@ -45,18 +66,23 @@ function fileAttach(opt){
   $fsc.append($root);
 
 
-  var id=$e.attr('id')?$e.attr('id'):new Date().getTime();
+  var id=new Date().getTime();
   var obj={};
-  obj.formId=id+"FileForm";
-  obj.fileBtn=id+"FileBtn";
-  obj.$e=$e;
+  obj.$b=$b;
   obj.$u=$u;
   obj.$t=$t;
-  obj.$fc=$fc;
+  obj.$fc=$fc;  // file container
   obj.opt=opt;
+  var $fform=$(fileForm());
+  obj.$fform=$fform;
+  obj.$root=$root;
 
-  formData($e,obj);
+  // put file iput into the file container
+  $fc.append($fform);
+
+  formData($b,obj);
   formData($u,obj);
+  formData(fileInput(),obj);
 
   function formData($e,formData){
     if(formData){
@@ -66,46 +92,32 @@ function fileAttach(opt){
     }
   }
 
+  // initial
+  $u.attr("disabled",true);
 
+  // processing ...............start here
 
-  function append(_form){
-    $fc.append(_form);
-    formData($fc.find('#'+obj.fileBtn),obj);
-  }
-
-  function fileForm(){
-    var fileForm='<form enctype="multipart/form-data" role="form" id="'+obj.formId+'" class="form-horizontal" >'
-                +'<input type="file" name="file"  id="'+obj.fileBtn+'" />'
-                +'</form>';
-    return fileForm;
-  }
-
-
-
-  append(fileForm());
-
-  function showImg(data,obj){
+  function showImg(data){
 
     var $div=$('<div> '
                 +'<img style="width:120px;height:120px;" src="/'+data.path+'" />'
                 +'<a href="javascript:void(0);">delete</a>'
             +'</div>');
 
-    var $e=obj.$e;
-    $e.parent().parent().parent().append($div);
+    $root.append($div);
     $div.find('a').on('click',function(e){  // remove action
       if(obj.opt.removed){
           obj.opt.removed(data,obj);
       }
       $div.remove();
-      $('#'+obj.formId)[0].reset();
-      setFileName(obj);
-      $(obj.$e).attr("disabled",false);
+      obj.$fform[0].reset();
+      setFileName();
+      $(obj.$b).attr("disabled",false);
     });
 
   }
 
-  function setFileName(obj,file){
+  function setFileName(file){
     if(file){
       $(obj.$t).val(file.name);
     }else{
@@ -113,32 +125,43 @@ function fileAttach(opt){
     }
   }
 
+  function accept(file){
+    var type=file.type;
+    var types=obj.opt.types;
+    if(types){
+      return types.includes(type);
+    }
+    return true;
+  }
 
-  $('#'+obj.fileBtn).on('change',function(e){
-    var obj=formData($(e.target));
+
+  fileInput().on('change',function(e){
+    //var obj=formData($(e.target));
 
     if(e.target.files.length>0){
       var file=e.target.files[0];
-      setFileName(obj,file);
-      $(obj.$u).attr("disabled",false);
+      if(accept(file)){
+        msg('');
+        setFileName(file);
+        $u.attr("disabled",false);
+      }
+      else{
+        $u.attr("disabled",true);
+        setFileName();
+        msg('file type is invalid;'+acceptTypes());
+      }
     }else{
-      setFileName(obj);
+      setFileName();
     }
   });
 
-  $e.on('click',function(e){
-    var $e=$(e.target);
-    var obj=formData($e);
-    var fileBtn=obj.fileBtn;
-    $('#'+fileBtn).click();
+  $b.on('click',function(e){
+    fileInput().click();
   });
 
   $u.on('click',function(e){
-    var $e=$(e.target);
-    var obj=formData($e);
-    var formId=obj.formId;
-    $e.attr("disabled",true);
-    obj.$e.attr("disabled",true);
+    $u.attr("disabled",true);
+    $b.attr("disabled",true);
 
     var opts={
       type : "POST",
@@ -147,7 +170,7 @@ function fileAttach(opt){
       success : function(data) {
         alertTool.success("操作成功!");
         var _data=data.data[0];
-        showImg(_data,obj);
+        showImg(_data);
 
         var added=obj.opt.added;
         if(added){
@@ -159,7 +182,7 @@ function fileAttach(opt){
       }
     }
 
-    $('#'+formId).ajaxSubmit(opts);
+    $fform.ajaxSubmit(opts);
 
   });
 

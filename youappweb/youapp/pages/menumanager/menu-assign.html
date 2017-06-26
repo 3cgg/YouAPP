@@ -1,0 +1,454 @@
+	 <!-- Main content -->
+    <section class="content"  id="editMenuSection"  ms-controller="menu_edit">
+    
+    	<form role="form"  id="editMenuForm"  class="form-horizontal">
+    	
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="submit" class="btn btn-primary">提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/menumanager/menu-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">Menu Assign</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+             <div class="form-group">
+                  <label for="code" class="col-sm-1 control-label ">编码</label>
+                  <div class="col-sm-5">
+				  <span id="code"  class="form-control label-form-control">{{data.code}}</span>
+				 </div>
+				 <label for="name" class="col-sm-1 control-label requiredMask">名称</label>
+				 <div class="col-sm-5">
+				    <span id="name"  class="form-control label-form-control">{{data.name}}</span>
+	             </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="sequence" class="col-sm-1 control-label ">顺序</label>
+                  <div class="col-sm-5">
+                  <span id="sequence"  class="form-control label-form-control">{{data.sequence}}</span>
+				 </div>
+                </div>
+                
+                <div class="form-group">
+                <label for="url" class="col-sm-1 control-label requiredMask">地址</label>
+				 <div class="col-sm-5">
+				 <span id="url"  class="form-control label-form-control">{{data.url}}</span>
+	             </div>
+                  <label for="description" class="col-sm-1 control-label requiredMask">描述</label>
+                  <div class="col-sm-5">
+                  <span id="description"  class="form-control label-form-control">{{data.description}}</span>
+			      </div>
+                </div>
+                
+	        </div>
+      </div>
+      <input type="hidden"  name="id"  ms-attr-value="data.id"  />
+    </form>
+    
+    <div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">角色</h3>
+	          <div class="box-tools pull-right">
+	          		<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+		   		<div class="col-md-6"  style="padding-left: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">已绑定角色</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="roleOnMenuListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+      
+      <div class="col-md-6"  style="padding-left: 0px; padding-right: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">未绑定角色</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="roleNotOnMenuListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+		   
+		   </div>
+		  </div>
+    
+    
+    <div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">组</h3>
+	          <div class="box-tools pull-right">
+	          	<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body form-horizontal">
+				<div class="col-md-6"  style="padding-left: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">已绑定组</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="groupOnMenuListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+      
+      <div class="col-md-6"  style="padding-left: 0px; padding-right: 0px;">
+      
+      <div class="box box-info" >
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+			  <h3 class="box-title">未绑定组</h3>	          
+	          <div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	          </div>
+	          
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body" >
+	          <table id="groupNotOnMenuListTable" 
+	          		class="table dataTable table-striped row-border cell-border " 
+	          			cellspacing="0" width="100%">
+	            <thead>
+					<tr>
+						<th></th>
+						<th>编码</th>
+						<th>名称</th>
+						<th>描述</th>
+					</tr>
+				</thead>
+            </table>
+	          <!-- /.row -->
+	        </div>
+      </div>
+      </div>
+
+		   </div>
+		  </div>
+    
+    </section>
+	<script type="text/javascript">
+    
+    $_youapp.ready(function(){
+    	
+    	var page=$.extend({
+    		root:$("#editMenuSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "menu_edit",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
+    	function getId(){
+        	return page.root.getViewParam().id;
+        }
+    	
+    	page.ajaxGet({
+			  url:'/menumanager/getMenuById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
+			  }
+		});
+    	
+    	
+    	page.roleOnMenuListTable=page.root.find('#roleOnMenuListTable').initDataTable({
+			url:"/menumanager/getBindMenuRoles",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [
+			{
+			    "className":      'recordRemove',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%"
+			},
+			{
+				"data" : "roleCode",
+				"width": "10%"
+			},
+			{
+				"data" : "roleName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "roleDesc",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('#roleOnMenuListTable td.recordRemove').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.roleOnMenuListTable.row( $tr );
+		            var data=row.data();
+		            var roleId=data.roleId;
+		            var menuId=getId();
+		            page.ajaxPost({
+	  					  url:'/menumanager/unbindMenuRole',
+	  					  formData:{
+	  						  menuId:menuId,
+	  						  roleId:roleId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('unbing-success : ' + data);
+	  						  page.roleOnMenuListTable.ajax.reload();
+	  						  page.roleNotOnMenuListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    	page.roleNotOnMenuListTable=page.root.find('#roleNotOnMenuListTable').initDataTable({
+			url:"/menumanager/getUnbindMenuRoles",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [ 
+			{
+			    "className":      'recordAdd',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%",
+			    "createdCell":function (td, cellData, rowData, row, col) {
+			        if ( cellData < 1 ) {
+			            $(td).css('color', 'red')
+			          }
+			    }
+			},
+			{
+				"data" : "roleCode",
+				"width": "10%"
+			},
+			{
+				"data" : "roleName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "roleDesc",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('#roleNotOnMenuListTable td.recordAdd').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.roleNotOnMenuListTable.row( $tr );
+		            var data=row.data();
+		            var roleId=data.roleId;
+		            var menuId=getId();
+		            page.ajaxPost({
+	  					  url:'/menumanager/bindMenuRole',
+	  					  formData:{
+	  						  menuId:menuId,
+	  						  roleId:roleId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('bing-success : ' + data);
+	  						  page.roleOnMenuListTable.ajax.reload();
+	  						  page.roleNotOnMenuListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    	page.groupOnMenuListTable=page.root.find('#groupOnMenuListTable').initDataTable({
+			url:"/menumanager/getBindMenuGroups",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [
+			{
+			    "className":      'recordRemove',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%"
+			},
+			{
+				"data" : "groupCode",
+				"width": "10%"
+			},
+			{
+				"data" : "groupName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "groupDesc",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('#groupOnMenuListTable td.recordRemove').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.groupOnMenuListTable.row( $tr );
+		            var data=row.data();
+		            var groupId=data.groupId;
+		            var menuId=getId();
+		            page.ajaxPost({
+	  					  url:'/menumanager/unbindMenuGroup',
+	  					  formData:{
+	  						  menuId:menuId,
+	  						  groupId:groupId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('unbing-success : ' + data);
+	  						  page.groupOnMenuListTable.ajax.reload();
+	  						  page.groupNotOnMenuListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    	page.groupNotOnMenuListTable=page.root.find('#groupNotOnMenuListTable').initDataTable({
+			url:"/menumanager/getUnbindMenuGroups",
+			urlDataFn:function(){
+				return {'id':getId()};
+			},
+			paging:false,
+			columns : [ 
+			{
+			    "className":      'recordAdd',
+			    "orderable":      false,
+			    "data":           null,
+			    "defaultContent": '',
+			    "width":"5%"
+			},
+			{
+				"data" : "groupCode",
+				"width": "10%"
+			},
+			{
+				"data" : "groupName",
+				"width": "10%"
+			}, 
+			{
+				"data" : "groupDesc",
+				"width": "20%"
+			}
+			],
+			callAfterDrawn:function(data,opts){
+				page.root.find('#groupNotOnMenuListTable td.recordAdd').on('click',function(event){
+					var $tr = $(this).closest('tr');
+		            var row = page.groupNotOnMenuListTable.row( $tr );
+		            var data=row.data();
+		            var groupId=data.groupId;
+		            var menuId=getId();
+		            page.ajaxPost({
+	  					  url:'/menumanager/bindMenuGroup',
+	  					  formData:{
+	  						  menuId:menuId,
+	  						  groupId:groupId 
+	  					  },
+	  					  success:function(data){
+	  						  page.success('bing-success : ' + data);
+	  						  page.groupOnMenuListTable.ajax.reload();
+	  						  page.groupNotOnMenuListTable.ajax.reload();
+	  					  }
+	  				});
+		            event.stopPropagation();
+				})
+			}
+		});
+    	
+    	
+    	
+    });
+    </script>

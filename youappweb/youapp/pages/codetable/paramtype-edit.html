@@ -1,0 +1,105 @@
+	 <!-- Main content -->
+    <section class="content"  id="editParamTypeSection"  ms-controller="paramtype_edit">
+    
+    	<form role="form"  id="editParamTypeForm"  class="form-horizontal">
+    	
+    	<div class="box box-info">
+	        <div class="box-footer">
+	          <button type="submit" class="btn btn-primary">提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/ui/pages/codetable/paramtype-list.html");'
+	          >返回</button>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-info">
+	    	<!--   .box-header   -->
+	        <div class="box-header with-border">
+	          <h3 class="box-title">字典类型修改</h3>
+	          <div class="box-tools pull-right">
+	          </div>
+	        </div>
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+             <div class="form-group">
+                  <label for="code" class="col-sm-1 control-label ">编码</label>
+                  <div class="col-sm-5">
+				  <input name="code" type="text" class="form-control" placeholder=""  ms-attr-value="data.code">
+				 </div>
+				 <label for="codeName" class="col-sm-1 control-label requiredMask">名称</label>
+				 <div class="col-sm-5">
+				  	<input id="codeName" name="codeName" type="text" class="form-control" placeholder=""  ms-attr-value="data.codeName">
+	             </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="description" class="col-sm-1 control-label requiredMask">详情描述</label>
+                  <div class="col-sm-5">
+                  	<textarea name="description" class="form-control" rows="3" placeholder=" ..."  ms-attr-value="data.description"></textarea>
+			      </div>
+                </div>
+	        </div>
+      </div>
+      <input type="hidden"  name="id"  ms-attr-value="data.id" />
+    </form>
+    
+    </section>
+	<script type="text/javascript">
+    
+    $_youapp.ready(function(){
+    	
+    	var page=$.extend({
+    		root:$("#editParamTypeSection"),
+    		model:{
+    			vm:avalon.define({
+    		        $id: "paramtype_edit",
+    		        data: {}
+    		    })
+    		}
+    	},$_youapp.pageTemplate);
+    	
+    	avalon.scan(page.root[0], page.model.vm);  // void braces
+    	
+    	function getId(){
+        	return page.root.getViewParam().id;
+        }
+    	
+    	page.ajaxGet({
+			  url:'/codetablemanager/getParamTypeById',
+			  formData:{'id':getId()},
+			  success:function(data){
+				  page.model.vm.data=data;
+		  		  avalon.scan(page.root[0], page.model.vm);
+			  }
+		});
+    	
+    	page.root.find("#editParamTypeForm").validate({
+ 			rules: {
+ 				'code': {
+ 					   required: true,
+ 					   maxlength:32
+ 				   },
+ 			   'codeName': {
+ 				   required: true,
+ 				   maxlength:128
+ 			   },
+ 			   'description': {
+ 				   required: true,
+ 				   maxlength:2000
+ 			   }
+ 			  },
+ 			  submitHandler:function(form){
+ 				  page.submitForm({
+ 					  url:'/codetablemanager/updateParamType',
+ 					  formSelector:form,
+ 					  success:function(data){
+ 						  page.root.goView('/ui/pages/codetable/paramtype-list.html');
+ 					  }
+ 					});
+ 			  
+ 			  } 
+ 		});
+    	
+    });
+    </script>

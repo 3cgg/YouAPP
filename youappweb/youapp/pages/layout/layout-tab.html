@@ -1,0 +1,66 @@
+<div id="layoutTab"  class="tabuloustab"  
+data-layoutFor="contentContent" 
+data-layoutId="layoutTab"   
+data-top="120"
+data-height="cal"
+data-slicetop="5"
+ >
+	<ul class="nav nav-tabs  tabul"  id="tabMenu"  style="padding-left:0px">
+		<li id="quicktaskli"><a href="#quicktask" title="QuickTask"  id="quicktask">QuickTask</a></li>
+		<li id="timelineli"><a href="#timeline" title="Timeline"  id="timeline">Timeline</a></li>
+	</ul>
+	<div class="tabcontainer"  style="height: 100% "  id="tabContainer">
+		<div id="quicktask">
+			<!--tab content-->
+			<div data-layoutId="tabQuicktask"   
+					data-htmlUrl="ui/pages/quicktask/quicktask.html"   style="height: auto;"></div>
+		</div>
+		<!-- -->
+		<div id="timeline">
+			<div data-layoutId="tabTimeline"   
+					data-htmlUrl="ui/pages/timeline.html"   style="height: auto;"></div>
+		</div>
+		 
+	</div>
+	<!--End tabs container-->
+</div>
+<script type="text/javascript">
+ $_youapp.ready(function() {
+  	
+	  	var page=$.extend({
+	  		root:$("#layoutTab"),
+	  		model:{
+	  		}
+	  	},$_youapp.pageTemplate);
+	  	
+		$_youapp.$tabs={};
+		$_youapp.$tabs.layoutTab=$('#layoutTab').tabulous({
+			effect: 'scaleUp'
+		});
+		
+		$menu=page.root.find('#tabContainer');
+		
+		function setHeight(){
+			  var windowHeight=$(window).height();
+			  var menuHeight=$menu.offset().top;
+			  page.log('window-height: '+windowHeight);
+			  page.log('menu-height: '+menuHeight);
+			  var height=windowHeight-menuHeight;
+			  $menu.css({
+				  'height':height+'px',
+				  'overflow-y':'auto'
+			  });
+			  page.log(height)
+		  }
+		
+		setTimeout(setHeight,150);
+		  
+		  $(window).resize(function(){
+			  setTimeout(setHeight,150);
+		  });
+		
+	});
+</script>
+
+
+

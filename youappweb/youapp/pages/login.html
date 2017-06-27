@@ -15,25 +15,25 @@
        folder instead of downloading all of them to reduce the load. -->
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="../plugins/iCheck/all.css">
-  
+
   <link rel="stylesheet" href="../dist/css/admin-all-demo.css">
-	<!--  jquery confirm -->	
+	<!--  jquery confirm -->
   <link rel="stylesheet" href="../plugins/jquery-confirm/jquery-confirm.css">
-	
+
 	<!--  youapp -->
 	<link rel="stylesheet" href="../_youapp/youapp.css">
-	
+
 	<!-- JS Cookie -->
 	<script src="../plugins/cookie/js.cookie.js"></script>
-	
+
 	<!-- ./wrapper -->
 	<!-- jQuery 2.2.3 -->
 	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<!-- Bootstrap 3.3.6 -->
 	<script src="../bootstrap/js/bootstrap.min.js"></script>
-	
+
 	<link rel="stylesheet"  href="../plugins/toast/jquery.toast.css">
-	
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -53,7 +53,7 @@
 </style>
 
 <body>
-  
+
 <img src="../_youapp/blurred-bg-3.jpg" class="login-img wow fadeIn" alt="">
 <div class="center-vertical"  id="loginSection">
     <div class="center-content row">
@@ -77,7 +77,7 @@
                     <div class="content-box-wrapper">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="email"    name="_name" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                <input type="email"    name="userName" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                                 <span class="input-group-addon bg-blue">
                                     <i class="glyph-icon icon-envelope-o"></i>
                                 </span>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="password"  name="_password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <input type="password"  name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                                 <span class="input-group-addon bg-blue">
                                     <i class="glyph-icon icon-unlock-alt"></i>
                                 </span>
@@ -115,7 +115,7 @@
 
 <!--  webuploader -->
 <script src="../plugins/toast/jquery.toast.js"></script>
-		
+
 <!-- YouAPP -->
 <script src="../_youapp/_jsregister.js"></script>
 <script src="../_youapp/util.js"></script>
@@ -125,13 +125,13 @@
 <script src="../_youapp/youapp.js"></script>
 <script src="../_youapp/datatables.js"></script>
 <script src="../_youapp/uploads.js"></script>
-<script src="../_youapp/codetables.js"></script>	
-	
+<script src="../_youapp/codetables.js"></script>
+
 </body>
 
 <script type="text/javascript">
 $_youapp.ready(function(){
-	
+
 	var page=$.extend({
 		root:$("#loginSection"),
 		model:{
@@ -142,7 +142,7 @@ $_youapp.ready(function(){
 			checkboxClass : 'icheckbox_minimal-blue',
 			radioClass : 'iradio_minimal-blue'
 		});
-	
+
 	page.root.find("#loginForm").validate({
 		rules: {
 			'_name': {
@@ -156,11 +156,11 @@ $_youapp.ready(function(){
 		  },
 		  submitHandler:function(form){
 			  page.submitForm({
-				  url:'/_youapp/authenticate/login',
+				  url:'/aclmanager/login',
 				  formSelector:form,
 				  success:function(data){
 					  page.success('login success.');
-					  $_youapp.$_ticket.setTicket(data.ticket);
+					  $_youapp.$_ticket.setTicket(data);
 					  setTimeout(function(){
 						  window.location.href=$_youapp.$_config.getEndpoint()+'/pages/index.html';
 					  },1000);

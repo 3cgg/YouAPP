@@ -39,7 +39,7 @@
 						if(index!=-1){
 							param=JSON.parse(requsetVO.htmlUrl.substring(index+'?param='.length));
 						}
-						
+
 						var token={};
 						$layoutDom.data('param',param);
 						$layoutDom.data('token',token);
@@ -416,13 +416,10 @@
 	}
 
 	(function(){
-		window.$_youapp.$_layout=new LayoutDraw();
-		window.$_youapp.$_layout.draw('body',$('body'));
-		window.$_youapp.$_data=new DataExchange();
-		window.$_youapp.$_html=new HtmlExchange();
+
 		window.$_youapp.$_ticket=(function(){
 			function getKey(){
-				return '_youapp_ticket';
+				return $_youapp.$_config.getTokenKey();
 			}
 			this.getTicket=function(){
 				return Cookies.get(getKey());
@@ -497,7 +494,12 @@
 					$_youapp.$_util.log(e);
 				}
 			});
-		}
+		};
+
+		window.$_youapp.$_layout=new LayoutDraw();
+		window.$_youapp.$_layout.draw('body',$('body'));
+		window.$_youapp.$_data=new DataExchange();
+		window.$_youapp.$_html=new HtmlExchange();
 
 		window.$_youapp.pageTemplate={
 				ajaxGet:function(options){

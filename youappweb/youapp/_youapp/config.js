@@ -22,6 +22,11 @@
 			//return getWebPath()+"/get/fileupload/";
 			return window.location.protocol+"//"+window.location.host+"/api/file/batch/upload";
 		}
+
+		this.getTokenKey=function(){
+			//return getWebPath()+"/get/fileupload/";
+			return '_token';
+		}
 	}
 
 	window.$_youapp.$_config=new _Config();

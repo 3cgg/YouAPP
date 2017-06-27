@@ -1,6 +1,6 @@
 (function(){
 	function _Util(){
-		
+
 		function List() {
 			this.arrys = [];
 			this.position = -1;
@@ -112,8 +112,8 @@
 				return tempArr;
 			}
 		}
-		
-		
+
+
 		function ListMap(){
 
 			this.entries = new List();
@@ -181,7 +181,7 @@
 			}
 
 		}
-		
+
 		/**
 		 *{
 			url:'www.baidu.com',
@@ -191,11 +191,12 @@
 			}
 		 */
 		function Ajax(){
-			
+
 			this.request=function(options){
 				var defOptions={
 						async:true,
-						data:{}
+						data:{},
+						headers:{}
 				}
 				var _options={};
 				_options=$.extend(_options,defOptions,options);
@@ -205,6 +206,10 @@
 				    //context: document.body,
 				    data:_options.data,
 				    async:_options.async,
+						headers:
+						$.extend({},_options.headers,{
+						        _token: $_youapp.$_ticket.getTicket()
+						}),
 				    success: function(data){
 				    	$_youapp.$_util.log('success: '+_options.url);
 				    	if(_options.success){
@@ -220,35 +225,35 @@
 				});
 			}
 		}
-		
+
 		this.ajaxGet=function(options){
 			var ajax=new Ajax();
 			ajax.request($.extend({},options,{type:'GET'}));
 		}
-		
+
 		this.ajaxPost=function(options){
 			var ajax=new Ajax();
 			ajax.request($.extend({},options,{type:'POST'}));
 		}
-		
+
 		this.newList=function(){
 			return new List();
 		}
-		
+
 		this.isList=function(obj){
 			return List==obj.constructor
 		}
-		
+
 		this.newMap=function(){
 			return new ListMap();
 		}
-		
+
 		this.log=function(msg){
 			if(window.console){
 				window.console.log(msg);
 			}
 		}
-		
+
 		this.serializeObj=function(formSelector){
 			var obj={};
 			var arrays= $(formSelector).serializeArray();
@@ -273,8 +278,8 @@
 					obj[eleName]=eleValue;
 				}
 			}
-			
-			for(var i in obj){ 
+
+			for(var i in obj){
 				var ele=i;
 				var val=obj[ele];
 				if(val.constructor===List){
@@ -283,16 +288,16 @@
 			}
 			return obj;
 		}
-		
+
 		this.json=function(obj){
 			return JSON.stringify(obj);
 		}
-		
+
 		this.formJson=function(formSelector){
 			return JSON.stringify(this.serializeObj(formSelector));
 		}
-		
+
 	}
-	
+
 	window.$_youapp.$_util=new _Util();
 })(window);

@@ -1,7 +1,7 @@
 <!--所有的人 按照这个页面来做啊， 包括 列表+表单 -->
 	 <!-- Main content -->
     <section class="content"   id="searchSysParamSection"   ms-controller="sysparam_view">
-      
+
       <div class="box box-info">
       	<div class="box-header with-border">
           <h3 class="box-title"></h3>
@@ -23,7 +23,7 @@
                     <input type="text"  name="value" class="form-control" id="value" placeholder="参数值">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label for="desc" class="col-sm-1 control-label">详细描述</label>
 
@@ -31,7 +31,7 @@
                     <input type="text"  name="desc" class="form-control" id="desc" placeholder="描述">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                 	<label for="desc" class="col-sm-1 control-label"></label>
                 	<div class="col-sm-2 col-lg-1">
@@ -42,23 +42,23 @@
               </div>
           </div>
           <!-- /.box -->
-      
-    	
+
+
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-add.html");'
+	          onclick='$(this).goView("/pages/sysparam/sysparam-add.html");'
 	          >新增</button>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
-	          
+
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="sysparamListTable" 
-	          		class="table dataTable table-striped row-border cell-border " 
+	          <table id="sysparamListTable"
+	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
@@ -71,16 +71,16 @@
 					</tr>
 				</thead>
             </table>
-	          
-	          
+
+
 	          <!-- /.row -->
 	        </div>
       </div>
-    
+
     </section>
     <script type="text/javascript">
     $_youapp.ready(function() {
-    	
+
     	var page=$.extend({
     		root:$("#searchSysParamSection"),
     		model:{
@@ -90,7 +90,7 @@
     		    })
     		}
     	},$_youapp.pageTemplate);
-    	
+
     	page.listTable=page.root.find('#sysparamListTable').initDataTable({
 			url:"/sysparam/getSysParamsByPage",
 			urlDataFn:function(){
@@ -100,13 +100,13 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-view.html',{"id":id});
+                    page.root.find('#sysparamListTable').goView('/pages/sysparam/sysparam-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#sysparamListTable').goView('/ui/pages/sysparam/sysparam-edit.html',{"id":id});
+					page.root.find('#sysparamListTable').goView('/pages/sysparam/sysparam-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					page.ajaxGet({
+					page.ajaxPost({
 						  url:'/sysparam/deleteSysParamById',
 						  formData:{'id':id},
 						  success:function(data){
@@ -115,12 +115,12 @@
 						});
 				}
 			},
-			columns : [ 
+			columns : [
 			{
 				"data" : "id",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "code",
 				"width": "10%"
@@ -128,19 +128,18 @@
 			{
 				"data" : "value",
 				"width": "10%"
-			}, 
+			},
 			{
 				"data" : "desc",
 				"width": "20%"
 			}
-			
+
 			]
 		});
-		
+
 		page.root.find("#searchSysparamBtn").on("click",function(){
 			page.listTable.ajax.reload();
 		})
-		
+
 	});
 	</script>
-

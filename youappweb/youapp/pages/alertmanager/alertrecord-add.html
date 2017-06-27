@@ -4,7 +4,7 @@
 	        <div class="box-footer">
 	          <button type="button" class="btn btn-primary"  id="addAlertRecordBtn" >提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/alertmanager/alertrecord-list.html");'
+	          onclick='$(this).goView("/pages/alertmanager/alertrecord-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -113,7 +113,7 @@
 							  url:'/alertmanager/saveAlertRecord',
 							  formSelector:form,
 							  success:function(data){
-								  page.root.goView('/ui/pages/alertmanager/alertrecord-list.html');
+								  page.root.goView('/pages/alertmanager/alertrecord-list.html');
 							  }
 							});
 					 }

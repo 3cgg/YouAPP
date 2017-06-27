@@ -67,7 +67,7 @@
     	
     	page.root.find('#returnBtn').on('click',function(event){
     		var billId=page.root.find('#billId').val();
-    		$(this).goView("/ui/pages/billmanager/good-part-list.html",{"id":billId});
+    		$(this).goView("/pages/billmanager/good-part-list.html",{"id":billId});
     	});
     	
     	page.ajaxGet({

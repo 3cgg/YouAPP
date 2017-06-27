@@ -4,7 +4,7 @@
     	<div class="box box-info">
 	        <div class="box-footer">
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/billmanager/bill-list.html");'
+	          onclick='$(this).goView("/pages/billmanager/bill-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -65,7 +65,7 @@
 	        <!-- /.box-header -->
 	        
 	        <div class="box-body form-horizontal">
-		      <div data-layoutId="billGoodContent"   data-htmlUrl="/ui/pages/billmanager/good-pt.html"  id="billGoodContentLayoutDiv">
+		      <div data-layoutId="billGoodContent"   data-htmlUrl="/pages/billmanager/good-pt.html"  id="billGoodContentLayoutDiv">
 			
 			  </div>
 		   </div>
@@ -102,7 +102,7 @@
 			  }
 			});
 	
-    	page.root.find('#billGoodContentLayoutDiv').setView('/ui/pages/billmanager/good-part-list.html',{"id":getId()});
+    	page.root.find('#billGoodContentLayoutDiv').setView('/pages/billmanager/good-part-list.html',{"id":getId()});
 		
     
     });

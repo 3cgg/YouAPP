@@ -1,6 +1,6 @@
 	 <!-- Main content -->
     <section class="content"   id="searchUserSection"   ms-controller="user_view">
-      
+
       <div class="box box-info">
       	<div class="box-header with-border">
           <h3 class="box-title"></h3>
@@ -15,25 +15,25 @@
                   <div class="col-sm-5">
                     <input type="text"  name="userName" class="form-control" id="userName" placeholder="用户名">
                   </div>
-                  
+
                   <label for="natureName" class="col-sm-1 control-label">昵称</label>
                   <div class="col-sm-5">
                     <input type="text"  name="natureName" class="form-control" id="natureName" placeholder="昵称">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label for="registerTimeStart" class="col-sm-1 control-label">注册时间（起）</label>
                   <div class="col-sm-5">
                     <input type="text"  name="registerTimeStart" class="form-control" id="registerTimeStart" placeholder="">
                   </div>
-                  
+
                   <label for="registerTimeEnd" class="col-sm-1 control-label">注册时间（止）</label>
                   <div class="col-sm-5">
                     <input type="text"  name="registerTimeEnd" class="form-control" id="registerTimeEnd" placeholder="">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label for="status" class="col-sm-1 control-label">状态</label>
                   <div class="col-sm-5">
@@ -41,7 +41,7 @@
 	                </select>
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                 	<label for="desc" class="col-sm-1 control-label"></label>
                 	<div class="col-sm-2 col-lg-1">
@@ -52,13 +52,13 @@
               </div>
           </div>
           <!-- /.box -->
-      
-    	
+
+
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="button" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/usermanager/user-add.html");'
+	          onclick='$(this).goView("/pages/usermanager/user-add.html");'
 	          >新增</button>
 	          <button type="button" class="btn btn-primary btn-sm"  id="toAssignRoleBtn"
 	          >分配角色</button>
@@ -67,12 +67,12 @@
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
-	          
+
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="userListTable" 
-	          		class="table dataTable table-striped row-border cell-border " 
+	          <table id="userListTable"
+	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
@@ -86,16 +86,16 @@
 					</tr>
 				</thead>
             </table>
-	          
-	          
+
+
 	          <!-- /.row -->
 	        </div>
       </div>
-    
+
     </section>
     <script type="text/javascript">
     $_youapp.ready(function() {
-    	
+
     	var page=$.extend({
     		root:$("#searchUserSection"),
     		model:{
@@ -105,7 +105,7 @@
     		    })
     		}
     	},$_youapp.pageTemplate);
-    	
+
     	page.listTable=page.root.find('#userListTable').initDataTable({
 			url:"/usermanager/getUsersByPage",
 			urlDataFn:function(){
@@ -114,13 +114,13 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#userListTable').goView('/ui/pages/usermanager/user-view.html',{"id":id});
+                    page.root.find('#userListTable').goView('/pages/usermanager/user-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#userListTable').goView('/ui/pages/usermanager/user-edit.html',{"id":id});
+					page.root.find('#userListTable').goView('/pages/usermanager/user-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					page.ajaxGet({
+					page.ajaxPost({
 						  url:'/usermanager/deleteUser',
 						  formData:{'id':id},
 						  success:function(data){
@@ -129,12 +129,12 @@
 						});
 				}
 			},
-			columns : [ 
+			columns : [
 			{
 				"data" : "id",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "userName",
 				"width": "10%"
@@ -142,7 +142,7 @@
 			{
 				"data" : "natureName",
 				"width": "10%"
-			}, 
+			},
 			{
 				"data" : "status",
 				"width": "10%"
@@ -153,13 +153,13 @@
 			}
 			]
 		});
-		
+
 		page.root.find("#searchUserBtn").on("click",function(){
 			page.listTable.ajax.reload();
 		});
-		
+
 		page.codeTable($('.codetable'));
-		
+
 		function valid(ids){
 			if(ids&&ids.length==0){
 				page.warning('请选择一条记录');
@@ -174,17 +174,16 @@
 		page.root.find('#toAssignRoleBtn').on('click',function(){
 			var ids=page.root.find('#userListTable').getSelectedRow();
 			if(valid(ids)){
-				$(this).goView('/ui/pages/usermanager/user-assignrole.html',{"id":ids[0]});
+				$(this).goView('/pages/usermanager/user-assignrole.html',{"id":ids[0]});
 			}
 		});
-		
+
 		page.root.find('#toAssignGroupBtn').on('click',function(){
 			var ids=page.root.find('#userListTable').getSelectedRow();
 			if(valid(ids)){
-				$(this).goView('/ui/pages/usermanager/user-assigngroup.html',{"id":ids[0]});
+				$(this).goView('/pages/usermanager/user-assigngroup.html',{"id":ids[0]});
 			}
 		});
-		
+
 	});
 	</script>
-

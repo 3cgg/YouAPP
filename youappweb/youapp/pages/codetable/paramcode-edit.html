@@ -7,7 +7,7 @@
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/codetable/paramcode-list.html");'
+	          onclick='$(this).goView("/pages/codetable/paramcode-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -94,7 +94,7 @@
  					  url:'/codetablemanager/updateParamCode',
  					  formSelector:form,
  					  success:function(data){
- 						  page.root.goView('/ui/pages/codetable/paramcode-list.html');
+ 						  page.root.goView('/pages/codetable/paramcode-list.html');
  					  }
  					});
  			  

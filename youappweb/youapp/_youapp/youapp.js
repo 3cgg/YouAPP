@@ -14,14 +14,14 @@
 			}
 			return all.val();
 		}
-		
-		this.requset=function(){
+
+		this.request=function(){
 			var $allHtmlUrlls=this.dataHtmlUrls();
 			for(var i=0;i<$allHtmlUrlls.length;i++){
 				var $htmlUrl=$($allHtmlUrlls[i]);
 				var layoutId=$htmlUrl.data('layoutid');
 				var htmlUrl=$htmlUrl.data('htmlurl');
-				if(htmlUrl==''){ 
+				if(htmlUrl==''){
 					continue;
 				}
 				var requsetVO={
@@ -29,23 +29,22 @@
 						htmlUrl:htmlUrl
 				}
 				$_youapp.$_util.ajaxGet({
-					url:$_youapp.$_config.getHtmlEndpoint(),
-					data:{data:$_youapp.$_util.json(requsetVO)},
-					success:function(data){
-						var resp=JSON.parse(data);
-						$layoutDom=$_youapp.$_layout.getLayoutDom(resp.htmlDef.layoutId);
+					url:$_youapp.$_config.getHtmlEndpoint()+'/'+htmlUrl,
+					// data:{data:$_youapp.$_util.json(requsetVO)},
+					success:function(html){
+						$layoutDom=$_youapp.$_layout.getLayoutDom(requsetVO.layoutId);
+
 						var param={};
-						if(resp.htmlParam){
-							param=JSON.parse(resp.htmlParam);
+						var index=requsetVO.htmlUrl.indexOf('?param=');
+						if(index!=-1){
+							param=JSON.parse(requsetVO.htmlUrl.substring(index+'?param='.length));
 						}
+						
 						var token={};
-						if(resp.token){
-							token=JSON.parse(resp.token);
-						}
 						$layoutDom.data('param',param);
 						$layoutDom.data('token',token);
-						var layout=new Layout($(resp.html));
-						layout.draw(resp.htmlDef.layoutId);
+						var layout=new Layout($(html));
+						layout.draw(requsetVO.layoutId);
 					},
 					error:function(data){
 //						var layout=new Layout(data);
@@ -54,35 +53,35 @@
 					})
 			}
 		}
-		
+
 		this.appendTo=function(layoutId){
 			var $target=$(document).find('[data-layoutid="'+layoutId+'"]');
 			$htl.appendTo($target);
 		}
-		
+
 		this.bingSelect=function(){
 			if($_youapp.$_codeTable&&$_youapp.$_codeTable.defaultDraw){
 				$_youapp.$_codeTable.defaultDraw($htl);
 			}
 		}
-		
+
 		this.draw=function(layoutId){
 			this.bingSelect();
 			if(layoutId){
 				this.appendTo(layoutId);
 			}
-			this.requset();
+			this.request();
 		}
 	}
-	
-	
+
+
 	function LayoutDraw(){
 		this.draw=function(layoutId,$dom){
 			var layout=new Layout($dom);
 			layout.draw(layoutId);
 		}
 		/*
-		 * $_youapp.$_layout.drawTab('Me','MMMEEE','ui/pages/default.html','layoutTab')
+		 * $_youapp.$_layout.drawTab('Me','MMMEEE','pages/default.html','layoutTab')
 		 * */
 		this.drawTab=function(id,title,htmlurl,tabDomId){
 			if($_youapp.$tabs[tabDomId].exists(id)){
@@ -96,18 +95,18 @@
 			});
 			$_youapp.$tabs.tabDomId.active(id);
 		}
-		
+
 		this.removeTab=function(id,tabDomId){
 			if($_youapp.$tabs[tabDomId].exists(id)){
 				$_youapp.$tabs[tabDomId].remove(id);
 			}
 		}
-		
+
 		this.isLayout=function($_dom){
 			var $dom=$($_dom);
 			return $dom.is('div')&&$dom.attr("data-layoutid");
 		}
-		
+
 		this.getClosestLayoutId=function($_dom){
 			var $dom=$($_dom);
 			var $parent=$dom;
@@ -119,7 +118,7 @@
 				cycl++;
 			}while(cycl<1000&&($parent=$parent.parent()));
 		}
-		
+
 		this.replace=function(layoutId,htmlurl,isDraw){
 			var $target=$(document).find('[data-layoutid="'+layoutId+'"]');
 			var $dom;
@@ -136,45 +135,45 @@
 				this.draw(layoutId,$dom);
 			}
 		}
-		
+
 		this.layoutDomString=function(layoutId,htmlurl){
 			return '<div data-layoutId="'+id+'" data-htmlUrl="'+htmlurl+'" ></div>';
 		}
-		
+
 		this.getLayoutDom=function(layoutId){
 			return $(document).find('div[data-layoutId="'+layoutId+'"]');
 		}
-		
+
 		this.getParameter=function($dom) {
 			var layoutId=this.getClosestLayoutId($dom);
 			var layoutDom=this.getLayoutDom(layoutId);
 			return $(layoutDom).data('param');
 		}
-		
+
 		this.getToken=function($dom) {
 			var layoutId=this.getClosestLayoutId($dom);
 			var layoutDom=this.getLayoutDom(layoutId);
 			return $(layoutDom).data('token');
 		}
-		
+
 	}
-	
-	
+
+
 	function TabContent($tabDom){
 		var $htl=$tabDom;
 		this.getMenu=function(id,title){
 			var $li= $('<li><a id="'+id+'"   href="#'+id+'" title="'+title+'">'+title+'</a></li>');
 			return $li;
 		}
-		
+
 		this.getSlice=function(id,title,htmlurl){
 			return $('<div id="'+id+'">'
 					+'<div data-layoutId="tab-'+id+'" data-htmlUrl="'+htmlurl+'"   style="height: auto;"></div>'
 					+'</div>');
 		}
-		
+
 		this.draw=function(id,title,htmlurl,close){
-			
+
 			var menu=this.getMenu(id,title);
 			var sliceView=this.getSlice(id,title,htmlurl);
 			menu.insertAfter($htl.children('ul.tabul').find('li:last'));
@@ -188,23 +187,23 @@
 			menu.on( 'mouseleave', function() {
 				$(this).children('div.action-panel').stop().animate({height: 0});
 	        });
-			
+
 			$btns.on('click',function(event){
 				var menuid=$(this).children('span.cancel').data('tabmenuid');
 				var tabid=$(this).children('span.cancel').data('tabid');
 				$_youapp.$_layout.removeTab(menuid,tabid);
 				$_youapp.$tabs[tabid].active();
 			});
-			
+
 			sliceView.appendTo($htl.children('div.tabcontainer'));
 			$_youapp.$_layout.draw(null,sliceView);
 		}
-		
+
 	}
-	
-	
+
+
 	function DataExchange(){
-		
+
 		/**
 		 * {
 		 * url:'',
@@ -213,8 +212,8 @@
 		 * }
 		 */
 		this.ajaxGet=function(options){
-			
-			var paginationDataOpts={
+
+			/*var paginationDataOpts={
 			};
 			if(options.paginationData){
 				paginationDataOpts=$.extend(paginationDataOpts,{
@@ -225,34 +224,51 @@
 					})
 				})
 			}
-			
+
 			var formDataOpts={};
 			if(options.formData){
 				formDataOpts=$.extend(formDataOpts,{
 					formData:$_youapp.$_util.json(options.formData)
 				})
-			}
-			
-			
+			}*/
+
+			var _data={};
+			if(options.formData){
+				_data=$.extend(_data,
+					options.formData  // form data
+				);
+			};
+			if(options.paginationData){
+				_data=$.extend(_data,
+					{
+						pageNumber:options.paginationData.pageNumber,
+						pageSize:options.paginationData.pageSize,
+						orders:options.paginationData.orders
+					});
+			};
+
 			$_youapp.$_util.ajaxGet({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
-				data:{data:$_youapp.$_util.json($.extend({},{
-					endpoint:options.url,
-					ticket:$_youapp.$_ticket.getTicket()
-			  		},formDataOpts,paginationDataOpts
-			  		))},
+				data:_data,
 		  		success:function(data){
-		  			var resp=JSON.parse(data);
-		  			if(!resp.success){
+		  			var resp=data;
+		  			if("SUCCESS"!=resp.status){
+							$_youapp.$_util.log('bys error : '+options.url);
 		  				$_youapp.$_toast.error("error",resp.data);
+							if(options.failure){
+		  					options.failure(resp);
+		  				}
 		  				return;
-		  			}
-		  			options.success(resp.data);
-		  			}
-				
+		  			}else{
+							if(options.success){
+								options.success(resp.data);
+							}
+						}
+		  		}
+
 			});
 		}
-		
+
 		/**
 		 * {
 		 * url:'',
@@ -264,7 +280,8 @@
 		 * }
 		 */
 		this.ajaxPost=function(options){
-			var paginationDataOpts={
+
+			/*var paginationDataOpts={
 			};
 			if(options.paginationData){
 				paginationDataOpts=$.extend(paginationDataOpts,{
@@ -275,44 +292,58 @@
 					})
 				})
 			}
-			
+
 			var formDataOpts={};
 			if(options.formData){
 				formDataOpts=$.extend(formDataOpts,{
 					formData:$_youapp.$_util.json(options.formData)
 				})
 			}
-			
+
 			var tokenOpts={};
 			if(options.token){
 				tokenOpts=$.extend(tokenOpts,{
 					token:$_youapp.$_util.json(options.token)
 				})
-			}
-			
-			
+			}*/
+
+			var _data={};
+			if(options.formData){
+				_data=$.extend(_data,
+					options.formData  // form data
+				);
+			};
+			if(options.paginationData){
+				_data=$.extend(_data,
+					{
+						pageNumber:options.paginationData.pageNumber,
+						pageSize:options.paginationData.pageSize,
+						orders:options.paginationData.orders
+					});
+			};
+
+
 			$_youapp.$_util.ajaxPost({
 				url:$_youapp.$_config.getDataEndpoint()+options.url,
-				data:{data:$_youapp.$_util.json($.extend({},{
-					endpoint:options.url,
-					ticket:$_youapp.$_ticket.getTicket()
-			  		},formDataOpts,paginationDataOpts,tokenOpts
-			  		))},
+				data:_data,
 		  		success:function(data){
-		  			var resp=JSON.parse(data);
-		  			if(!resp.success){
+		  			var resp=data;
+		  			if("SUCCESS"!=resp.status){
+							$_youapp.$_util.log('bys error : '+options.url);
 		  				$_youapp.$_toast.error("error",resp.data);
 		  				if(options.failure){
 		  					options.failure(resp);
 		  				}
 		  				return;
-		  			}
-		  			options.success(resp.data);
-		  			}
-				
+		  			}else{
+							if(options.success){
+								options.success(resp.data);
+							}
+						}
+				}
 			});
 		}
-		
+
 		/**
 		 * {
 		 * url:'',
@@ -348,27 +379,27 @@
 			});
 		}
 	}
-	
+
 	function HtmlExchange(){
 		this.htmlView=function(htmlUrl,layoutId,isDraw){
 			$_youapp.$_layout.replace(layoutId,htmlUrl,isDraw);
 		}
-		
+
 		this.linkView=function($linkDom,htmlUrl,layoutId){
 			if(!layoutId)
 				layoutId=$_youapp.$_layout.getClosestLayoutId($linkDom);
 			this.htmlView(htmlUrl,layoutId,true);
 		}
-		
+
 		this.setView=function($linkDom,htmlUrl,layoutId){
 			if(!layoutId)
 				layoutId=$_youapp.$_layout.getClosestLayoutId($linkDom);
 			this.htmlView(htmlUrl,layoutId,false);
 		}
-		
+
 		this.newTab=function($aDom){
 			/*
-			 * data-url="ui/pages/tabs.html"
+			 * data-url="pages/tabs.html"
             data-urldata=""
             data-tabid="layoutTab"
             data-tabmenuid="tabDemo"
@@ -383,7 +414,7 @@
 			$_youapp.$_layout.drawTab(tabmenuid,tabmenutitle,url,tabid);
 		}
 	}
-	
+
 	(function(){
 		window.$_youapp.$_layout=new LayoutDraw();
 		window.$_youapp.$_layout.draw('body',$('body'));
@@ -405,7 +436,7 @@
 			}
 		})();
 		window.$_youapp.$_toast=(function(){
-			
+
 			function def(opts){
 				var defOpts={
 					stack:10,
@@ -413,7 +444,7 @@
 				}
 				return $.extend({},defOpts,opts);
 			}
-			
+
 			this.success=function(heading,text){
 				$.toast(def({
 				    heading: heading,
@@ -422,7 +453,7 @@
 				    icon: 'success'
 				}));
 			}
-			
+
 			this.warning=function(heading,text){
 				$.toast(def({
 				    heading: heading,
@@ -431,7 +462,7 @@
 				    icon: 'warning'
 				}));
 			}
-			
+
 			this.info=function(heading,text){
 				$.toast(def({
 				    heading: heading,
@@ -440,7 +471,7 @@
 				    icon: 'info'
 				}));
 			}
-			
+
 			this.error=function(heading,text){
 				$.toast(def({
 				    heading: heading,
@@ -457,7 +488,7 @@
 				error:this.error
 			}
 		})();
-		
+
 		window.$_youapp.ready=function(func){
 			$(function(){
 				try{
@@ -467,7 +498,7 @@
 				}
 			});
 		}
-		
+
 		window.$_youapp.pageTemplate={
 				ajaxGet:function(options){
 					$_youapp.$_data.ajaxGet(options);
@@ -492,7 +523,7 @@
 				storage:$_youapp.$_storage
 		}
 	})();
-	
+
 	$.fn.extend({
 		goView:function(htmlUrl,data,layoutId){
 			if(data){
@@ -519,14 +550,14 @@
 			return $_youapp.$_util.serializeObj(this);
 		}
 	});
-	
+
 	setTimeout(function(){
 		var minHeight = $(window).outerHeight()
 		- $(".main-header").outerHeight()
 		- $(".main-footer").outerHeight();
 		$(".content-wrapper").css("min-height", minHeight + "px");
 	},1000);
-	
+
 	$.validator.addMethod("valueNotEquals", function(value, element, arg){
 		  return arg != value;
 		 }, "Value must not equal arg .");

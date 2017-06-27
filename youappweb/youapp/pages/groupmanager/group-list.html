@@ -1,6 +1,6 @@
 	 <!-- Main content -->
     <section class="content"   id="searchGroupSection"   ms-controller="group_view">
-      
+
       <div class="box box-info">
       	<div class="box-header with-border">
           <h3 class="box-title"></h3>
@@ -22,7 +22,7 @@
                     <input type="text"  name="groupName" class="form-control" id="groupName" placeholder="名称">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label for="description" class="col-sm-1 control-label">详细描述</label>
 
@@ -30,7 +30,7 @@
                     <input type="text"  name="description" class="form-control" id="description" placeholder="描述">
                   </div>
                 </div>
-                
+
                 <div class="form-group">
                 	<label for="desc" class="col-sm-1 control-label"></label>
                 	<div class="col-sm-2 col-lg-1">
@@ -41,26 +41,26 @@
               </div>
           </div>
           <!-- /.box -->
-      
-    	
+
+
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/usermanager/group-add.html");'
+	          onclick='$(this).goView("/pages/groupmanager/group-add.html");'
 	          >新增</button>
 	          <button type="button" class="btn btn-primary btn-sm"  id="toAssignRoleBtn"
 	          >分配角色</button>
-	          
+
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
-	          
+
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="groupListTable" 
-	          		class="table dataTable table-striped row-border cell-border " 
+	          <table id="groupListTable"
+	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
@@ -73,16 +73,16 @@
 					</tr>
 				</thead>
             </table>
-	          
-	          
+
+
 	          <!-- /.row -->
 	        </div>
       </div>
-    
+
     </section>
     <script type="text/javascript">
     $_youapp.ready(function() {
-    	
+
     	var page=$.extend({
     		root:$("#searchGroupSection"),
     		model:{
@@ -92,23 +92,23 @@
     		    })
     		}
     	},$_youapp.pageTemplate);
-    	
+
     	page.listTable=page.root.find('#groupListTable').initDataTable({
-			url:"/usermanager/getGroupsByPage",
+			url:"/groupmanager/getGroupsByPage",
 			urlDataFn:function(){
 				return page.root.find("#searchGroupForm").serializeObj();
 			},
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#groupListTable').goView('/ui/pages/usermanager/group-view.html',{"id":id});
+                    page.root.find('#groupListTable').goView('/pages/groupmanager/group-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#groupListTable').goView('/ui/pages/usermanager/group-edit.html',{"id":id});
+					page.root.find('#groupListTable').goView('/pages/groupmanager/group-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
-					page.ajaxGet({
-						  url:'/usermanager/deleteGroup',
+					page.ajaxPost({
+						  url:'/groupmanager/deleteGroup',
 						  formData:{'id':id},
 						  success:function(data){
 							  page.listTable.ajax.reload();
@@ -116,12 +116,12 @@
 						});
 				}
 			},
-			columns : [ 
+			columns : [
 			{
 				"data" : "id",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "groupCode",
 				"width": "10%"
@@ -129,19 +129,19 @@
 			{
 				"data" : "groupName",
 				"width": "10%"
-			}, 
+			},
 			{
 				"data" : "description",
 				"width": "20%"
 			}
-			
+
 			]
 		});
-		
+
 		page.root.find("#searchGroupBtn").on("click",function(){
 			page.listTable.ajax.reload();
 		});
-		
+
 		function valid(ids){
 			if(ids&&ids.length==0){
 				page.warning('请选择一条记录');
@@ -156,17 +156,16 @@
 		page.root.find('#toAssignRoleBtn').on('click',function(){
 			var ids=page.root.find('#groupListTable').getSelectedRow();
 			if(valid(ids)){
-				$(this).goView('/ui/pages/usermanager/group-assignrole.html',{"id":ids[0]});
+				$(this).goView('/pages/groupmanager/group-assignrole.html',{"id":ids[0]});
 			}
 		});
-		
+
 		page.root.find('#toAssignGroupBtn').on('click',function(){
 			var ids=page.root.find('#groupListTable').getSelectedRow();
 			if(valid(ids)){
-				$(this).goView('/ui/pages/usermanager/group-assigngroup.html',{"id":ids[0]});
+				$(this).goView('/pages/groupmanager/group-assigngroup.html',{"id":ids[0]});
 			}
 		});
-		
+
 	});
 	</script>
-

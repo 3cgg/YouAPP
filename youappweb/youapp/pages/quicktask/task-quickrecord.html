@@ -1,7 +1,7 @@
 	 <!-- Main content -->
     <section class="content"  id="addAlertItemSection" >
     	<button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/quicktask/quicktask.html");'
+	          onclick='$(this).goView("/pages/quicktask/quicktask.html");'
 	          >返回</button>
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-dialog">
@@ -151,7 +151,7 @@
 							  url:'/alertmanager/saveAlertItem',
 							  formSelector:form,
 							  success:function(data){
-								  page.root.goView('/ui/pages/alertmanager/alertitem-list.html');
+								  page.root.goView('/pages/alertmanager/alertitem-list.html');
 							  }
 							});
 					 }

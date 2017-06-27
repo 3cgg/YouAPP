@@ -119,7 +119,7 @@
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/alertmanager/alertrecord-add.html");'
+	          onclick='$(this).goView("/pages/alertmanager/alertrecord-add.html");'
 	          >新增</button>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -173,10 +173,10 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#alertRecordListTable').goView('/ui/pages/alertmanager/alertrecord-view.html',{"id":id});
+                    page.root.find('#alertRecordListTable').goView('/pages/alertmanager/alertrecord-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#alertRecordListTable').goView('/ui/pages/alertmanager/alertrecord-edit.html',{"id":id});
+					page.root.find('#alertRecordListTable').goView('/pages/alertmanager/alertrecord-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({

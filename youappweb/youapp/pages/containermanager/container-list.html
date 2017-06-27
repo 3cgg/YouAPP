@@ -58,7 +58,7 @@
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="button" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/containermanager/container-deploy.html");'
+	          onclick='$(this).goView("/pages/containermanager/container-deploy.html");'
 	          >部署应用(JAR)</button>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -112,7 +112,7 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#containerListTable').goView('/ui/pages/containermanager/container-view.html',{"id":id});
+                    page.root.find('#containerListTable').goView('/pages/containermanager/container-view.html',{"id":id});
 				}
 			},
 			columns : [ 

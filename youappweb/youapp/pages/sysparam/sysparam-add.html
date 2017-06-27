@@ -7,7 +7,7 @@
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/sysparam/sysparam-list.html");'
+	          onclick='$(this).goView("/pages/sysparam/sysparam-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -102,7 +102,7 @@
 							  url:'/sysparam/saveSysParam',
 							  formSelector:form,
 							  success:function(data){
-								  page.root.goView('/ui/pages/sysparam/sysparam-list.html');
+								  page.root.goView('/pages/sysparam/sysparam-list.html');
 							  }
 							});
 					 }

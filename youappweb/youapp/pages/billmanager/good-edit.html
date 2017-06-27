@@ -5,7 +5,7 @@
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/billmanager/good-list.html");'
+	          onclick='$(this).goView("/pages/billmanager/good-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -166,7 +166,7 @@
 					  url:page.comp+'/bill/billmanager/updateGood',
 					  formSelector:form,
 					  success:function(data){
-						  page.root.goView('/ui/pages/billmanager/good-list.html');
+						  page.root.goView('/pages/billmanager/good-list.html');
 					  }
 					});
 			 }

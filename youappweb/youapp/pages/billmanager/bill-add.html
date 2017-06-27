@@ -7,7 +7,7 @@
 	        <div class="box-footer">
 	          <button type="submit" class="btn btn-primary">提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/billmanager/bill-list.html");'
+	          onclick='$(this).goView("/pages/billmanager/bill-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -104,7 +104,7 @@
 							  url:page.comp+'/bill/billmanager/saveBill',
 							  formSelector:form,
 							  success:function(data){
-								  page.root.goView('/ui/pages/billmanager/bill-list.html');
+								  page.root.goView('/pages/billmanager/bill-list.html');
 							  }
 							});
 					 }

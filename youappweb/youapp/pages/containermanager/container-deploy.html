@@ -8,7 +8,7 @@
 	        <button type="button" class="btn btn-primary"  id="deployJarOverrideBtn"
 	          >强制部署</button>  
 	          <button type="button" class="btn btn-primary" 
-	          onclick='$(this).goView("/ui/pages/containermanager/container-list.html");'
+	          onclick='$(this).goView("/pages/containermanager/container-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -79,7 +79,7 @@
 					  url:'/containermanager/deployJar',
 					  formData:{'jarUri':files[0].value.data.fileUrl,override:false},
 					  success:function(data){
-						  page.root.goView("/ui/pages/containermanager/container-list.html");
+						  page.root.goView("/pages/containermanager/container-list.html");
 					  }
 					});
 			}
@@ -91,7 +91,7 @@
 					  url:'/containermanager/deployJar',
 					  formData:{'jarUri':files[0].value.data.fileUrl,override:true},
 					  success:function(data){
-						  page.root.goView("/ui/pages/containermanager/container-list.html");
+						  page.root.goView("/pages/containermanager/container-list.html");
 					  }
 					});
 			}

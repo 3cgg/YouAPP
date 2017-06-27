@@ -126,10 +126,10 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#goodListTable').goView('/ui/pages/billmanager/good-view.html',{"id":id});
+                    page.root.find('#goodListTable').goView('/pages/billmanager/good-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#goodListTable').goView('/ui/pages/billmanager/good-edit.html',{"id":id});
+					page.root.find('#goodListTable').goView('/pages/billmanager/good-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({

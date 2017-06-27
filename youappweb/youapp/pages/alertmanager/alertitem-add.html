@@ -4,7 +4,7 @@
 	        <div class="box-footer">
 	          <button type="button" class="btn btn-primary"  id="addAlertItemBtn" >提交</button>
 	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/ui/pages/alertmanager/alertitem-list.html");'
+	          onclick='$(this).goView("/pages/alertmanager/alertitem-list.html");'
 	          >返回</button>
 	        </div> 
       </div>
@@ -114,7 +114,7 @@
 							  url:'/alertmanager/saveAlertItem',
 							  formSelector:form,
 							  success:function(data){
-								  page.root.goView('/ui/pages/alertmanager/alertitem-list.html');
+								  page.root.goView('/pages/alertmanager/alertitem-list.html');
 							  }
 							});
 					 }

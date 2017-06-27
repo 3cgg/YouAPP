@@ -1,14 +1,14 @@
 	 <!-- Main content -->
     <section class="content"   id="viewUserSection"   ms-controller="user_view">
-    
+
     	<div class="box box-info">
 	        <div class="box-footer">
-	          <button type="button" class="btn btn-primary" 
-	          onclick='$(this).goView("/ui/pages/usermanager/user-list.html");'
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/pages/usermanager/user-list.html");'
 	          >返回</button>
-	        </div> 
+	        </div>
       </div>
-    	
+
     	<div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
@@ -17,7 +17,7 @@
 	          </div>
 	        </div>
 	        <!-- /.box-header -->
-	        
+
 	        <div class="box-body  form-horizontal" >
 	        	<div class="form-group">
                   <label for="userName" class="col-sm-1 control-label">用户名</label>
@@ -26,10 +26,10 @@
 				 </div>
 				  <label for="natureName" class="col-sm-1 control-label">昵称</label>
 				  <div class="col-sm-5">
-				  	<span id="natureName"  class="form-control label-form-control" >{{data.natureName}}</span>		
+				  	<span id="natureName"  class="form-control label-form-control" >{{data.natureName}}</span>
                  </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label for="statusName" class="col-sm-1 control-label">状态</label>
                   <div class="col-sm-5">
@@ -42,21 +42,21 @@
                 </div>
 	        </div>
       </div>
-      
-      
+
+
       <div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
-			  <h3 class="box-title">用户角色</h3>	          
+			  <h3 class="box-title">用户角色</h3>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
-	          
+
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="roleOnUserListTable" 
-	          		class="table dataTable table-striped row-border cell-border " 
+	          <table id="roleOnUserListTable"
+	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
@@ -70,20 +70,20 @@
 	          <!-- /.row -->
 	        </div>
       </div>
-      
+
       <div class="box box-info">
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
-			  <h3 class="box-title">用户组</h3>	          
+			  <h3 class="box-title">用户组</h3>
 	          <div class="box-tools pull-right">
 	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
-	          
+
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
-	          <table id="groupOnUserListTable" 
-	          		class="table dataTable table-striped row-border cell-border " 
+	          <table id="groupOnUserListTable"
+	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
 	            <thead>
 					<tr>
@@ -99,9 +99,9 @@
       </div>
     </section>
     <script type="text/javascript">
-    
+
     $_youapp.ready(function(){
-    	
+
     	var page=$.extend({
     		root:$("#viewUserSection"),
     		model:{
@@ -111,9 +111,9 @@
     		    })
     		}
     	},$_youapp.pageTemplate);
-    	
+
     	avalon.scan(page.root[0], page.model.vm);  // void braces
-    	
+
     	function getId(){
         	return page.root.getViewParam().id;
         }
@@ -126,19 +126,19 @@
 		  		  avalon.scan(page.root[0], page.model.vm);
 			  }
 			});
-    	
+
     	page.listTable=page.root.find('#roleOnUserListTable').initDataTable({
 			url:"/usermanager/getRolesByUserIdByPage",
 			urlDataFn:function(){
 				return {'id':getId()};
 			},
 			paging:false,
-			columns : [ 
+			columns : [
 			{
 				"data" : "id",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "roleCode",
 				"width": "10%"
@@ -146,17 +146,17 @@
 			{
 				"data" : "roleName",
 				"width": "10%"
-			}, 
+			},
 			{
 				"data" : "description",
 				"width": "20%"
 			}
-			
+
 			]
 		});
-    	
-    	
-    	
+
+
+
     	page.userlistTable=page.root.find('#groupOnUserListTable').initDataTable({
 			url:"/usermanager/getGroupsByUserIdByPage",
 			urlDataFn:function(){
@@ -168,12 +168,12 @@
 				"data" : "id",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "groupCode",
 				"orderable" : false,
 				 "width": "10%"
-			}, 
+			},
 			{
 				"data" : "groupName",
 				"width": "10%"
@@ -184,8 +184,6 @@
 			}
 			]
 		});
-    	
+
     });
     </script>
-	
-

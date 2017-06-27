@@ -70,7 +70,7 @@
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/ui/pages/billmanager/bill-add.html");'
+	          onclick='$(this).goView("/pages/billmanager/bill-add.html");'
 	          >新增</button>
 	          <button type="button" class="btn btn-primary btn-sm"  id="toAddGoodBtn"
 	          >增加商品</button>
@@ -126,10 +126,10 @@
 			checkbox:true,
 			ops:{
 				view:function(id,rowData){
-                    page.root.find('#billListTable').goView('/ui/pages/billmanager/bill-view.html',{"id":id});
+                    page.root.find('#billListTable').goView('/pages/billmanager/bill-view.html',{"id":id});
 				},
 				edit:function(id,rowData){
-					page.root.find('#billListTable').goView('/ui/pages/billmanager/bill-edit.html',{"id":id});
+					page.root.find('#billListTable').goView('/pages/billmanager/bill-edit.html',{"id":id});
 				},
 				del:function(id,rowData){
 					page.ajaxGet({
@@ -185,7 +185,7 @@
 		page.root.find('#toAddGoodBtn').on('click',function(){
 			var ids=page.root.find('#billListTable').getSelectedRow();
 			if(valid(ids)){
-				$(this).goView('/ui/pages/billmanager/good-add.html',{"id":ids[0]});
+				$(this).goView('/pages/billmanager/good-add.html',{"id":ids[0]});
 			}
 		});
 		

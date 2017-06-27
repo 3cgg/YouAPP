@@ -19,7 +19,8 @@
 		}
 
 		this.getFileUploaderEndpoint=function(){
-			return getWebPath()+"/get/fileupload/";
+			//return getWebPath()+"/get/fileupload/";
+			return window.location.protocol+"//"+window.location.host+"/api/file/batch/upload";
 		}
 	}
 

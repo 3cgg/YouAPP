@@ -82,6 +82,14 @@ tr.shown td.details-control {
     background-position: -48px 0;
 }
 
+.tabuloustab .tabul li a{
+  background-color: transparent;
+  border: 1px solid #dfe8f1;
+}
+
+.tabuloustab .tabul li a:active{
+
+}
 
 /***############### **/
 td.recordAdd {
@@ -319,6 +327,7 @@ td.recordRemove {
   /*position: absolute;*/
   right: 10px;
   top: 5px;
+  margin-top: -5px;
 }
 .box-header > .box-tools [data-toggle="tooltip"] {
   position: relative;
@@ -441,3 +450,105 @@ td.recordRemove {
 .box-body table.dataTable{
 	margin-top:0px!important
 }
+
+
+/*
+   2017 -09 -10
+ */
+.box-search{
+  border-top: 0px solid #d2d6de;
+  border-radius: 0px;
+  margin-bottom: 10px;
+}
+
+.box-result{
+  border-top : 0px;
+  padding-left: 0px;
+  margin-top: -9px;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+
+}
+
+.box-result .box-header{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.box-result .box-body{
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.box-result .box-header{
+  border-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.box-result .box-header .box-tools{
+  margin-top: -5px;
+}
+
+
+.box-search input ,
+.box-search select,
+.box-search button,
+.box-result input ,
+.box-result select,
+.box-result button,
+.box-bys-btn input ,
+.box-bys-btn select,
+.box-bys-btn button,
+.box-bys-content input ,
+.box-bys-content select,
+.box-bys-content button,
+.box-bys-content textarea
+
+{
+  border-radius: 0px;
+  box-shadow: inset 0px 0px 0px #f6f6f6;
+}
+
+
+.box-bys-btn{
+  border-top: 0px;
+  border-radius: 0px;
+  margin-bottom : 3px;
+}
+
+.box-bys-btn .box-footer{
+  border-top: 0px;
+}
+
+.box-bys-btn .box-footer .box-tools{
+  padding-top: 5px;
+  color: #302828;
+}
+
+
+.box-bys-content{
+  border-top: 0px;
+  border-radius: 0px;
+  /*margin-bottom : 3px;*/
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.content{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.box-follow{
+  border: 1px solid #d2d6de;
+}
+
+.box-follow .box-header{
+  height: 30px;
+}
+
+.box-follow .box-header .box-tools{
+  margin-top: -8px;
+}
+
+
+
+

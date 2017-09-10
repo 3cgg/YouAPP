@@ -31,7 +31,9 @@
 				$_youapp.$_util.ajaxGet({
 					url:$_youapp.$_config.getHtmlEndpoint()+'/'+htmlUrl,
 					// data:{data:$_youapp.$_util.json(requsetVO)},
+                    requsetVO :requsetVO, // avoid closure variable refer to the same one with reference type
 					success:function(html){
+						var requsetVO =this.requsetVO; // run as local variable
 						$layoutDom=$_youapp.$_layout.getLayoutDom(requsetVO.layoutId);
 
 						var param={};

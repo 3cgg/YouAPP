@@ -3,22 +3,25 @@
     
     	<form role="form"  id="addMenuForm"  class="form-horizontal">
     	
-    	<div class="box box-info">
+    	<div class="box box-bys-btn">
 	        <div class="box-footer">
-	          <button type="submit" class="btn btn-primary">提交</button>
-	          <button type="button" class="btn btn-primary"
+	          <button type="submit" class="btn btn-primary btn-sm">提交</button>
+	          <button type="button" class="btn btn-primary btn-sm"
 	          onclick='$(this).goView("/pages/menumanager/menu-list.html");'
 	          >返回</button>
+				<div class="box-tools pull-right">
+					Menu Add
+				</div>
 	        </div> 
       </div>
     	
-    	<div class="box box-info">
+    	<div class="box box-bys-content">
 	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-	          <h3 class="box-title">Menu Add</h3>
-	          <div class="box-tools pull-right">
-	          </div>
-	        </div>
+	        <!--<div class="box-header with-border">-->
+	          <!--<h3 class="box-title">Menu Add</h3>-->
+	          <!--<div class="box-tools pull-right">-->
+	          <!--</div>-->
+	        <!--</div>-->
 	        <!-- /.box-header -->
 	        
 	        <div class="box-body">
@@ -55,11 +58,12 @@
       </div>
     </form>
     
-    <div class="box box-info"  id="parentMenuDiv"'>
+    <div class="box box-follow"  id="parentMenuDiv" >
 	    	<!--   .box-header   -->
 	        <div class="box-header with-border">
 	          <h3 class="box-title">Parent</h3>
 	          <div class="box-tools pull-right">
+				  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
 	          </div>
 	        </div>
 	        <!-- /.box-header -->

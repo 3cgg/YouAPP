@@ -1,0 +1,177 @@
+	 <!-- Main content -->
+    <section class="content"  id="addContentSection" >
+    	<div class="box box-bys-btn">
+	        <div class="box-footer">
+	          <button type="button" class="btn btn-primary"  id="addContentBtn" >提交</button>
+	          <button type="button" class="btn btn-primary"
+	          onclick='$(this).goView("/pages/cms/contentmanager/content-list.html");'
+	          >返回</button>
+                <div class="box-tools pull-right">
+                    新增
+                </div>
+	        </div> 
+      </div>
+    	
+    	<div class="box box-bys-content">
+	    	<!--   .box-header   -->
+	        <!-- /.box-header -->
+	        
+	        <div class="box-body">
+	        
+	        <form role="form"  id="addContentForm"  class="form-horizontal">
+              	<div class="form-group">
+              	
+              	   <label for="title" class="col-sm-1 control-label">标题</label>
+                   <div class="col-sm-5">
+                    <input  id="title" name="title" type="text" class="form-control"></input>
+                  </div>
+              	  
+					
+              	
+              	   <label for="author" class="col-sm-1 control-label">作者</label>
+                   <div class="col-sm-5">
+                    <input  id="author" name="author" type="text" class="form-control"></input>
+                  </div>
+              	  
+              	</div>
+					
+              	<div class="form-group">
+              	
+              	   <label for="publishTime" class="col-sm-1 control-label">发布时间</label>
+                   <div class="col-sm-5">
+                  </div>
+              	  
+					
+              	
+              	   <label for="source" class="col-sm-1 control-label">来源</label>
+                   <div class="col-sm-5">
+                    <input  id="source" name="source" type="text" class="form-control"></input>
+                  </div>
+              	  
+              	</div>
+					
+              	<div class="form-group">
+              	
+              	   <label for="link" class="col-sm-1 control-label">源地址（http://）</label>
+                   <div class="col-sm-5">
+                    <input  id="link" name="link" type="text" class="form-control"></input>
+                  </div>
+              	  
+					
+              	
+              	   <label for="overview" class="col-sm-1 control-label">简介</label>
+                   <div class="col-sm-5">
+                    <input  id="overview" name="overview" type="text" class="form-control"></input>
+                  </div>
+              	  
+              	</div>
+					
+              	<div class="form-group">
+              	
+              	   <label for="adImg" class="col-sm-1 control-label">宣传图</label>
+                   <div class="col-sm-5">
+                    <input  id="adImg" name="adImg" type="text" class="form-control"></input>
+                  </div>
+              	  
+					
+              	
+              	   <label for="content" class="col-sm-1 control-label">内容</label>
+                   <div class="col-sm-5">
+                    <input  id="content" name="content" type="text" class="form-control"></input>
+                  </div>
+              	  
+              	</div>
+					
+              	<div class="form-group">
+              	
+              	   <label for="sequence" class="col-sm-1 control-label">顺序</label>
+                   <div class="col-sm-5">
+                    <input  id="sequence" name="sequence" type="text" class="form-control"></input>
+                  </div>
+              	  
+					
+              	
+              	  
+              	</div>
+					
+    		</form>
+	          <!-- /.row -->
+	        </div>
+      </div>
+    </section>
+	
+	
+	<script type="text/javascript">
+		
+		$_youapp.ready(function (){
+			
+			var page=$.extend({
+	    		root:$("#addContentSection"),
+	    		model:{
+	    		}
+	    	},$_youapp.pageTemplate);
+			
+			page.root.find("#addContentForm").validate({
+					rules: {
+						'title': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'author': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'publishTime': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'source': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'link': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'overview': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'adImg': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'content': {
+							   required: true,
+							   maxlength:64
+						   }
+						,
+						'sequence': {
+							   required: true,
+							   maxlength:64
+						   }
+					  },
+					  submitHandler:function(form){
+						  page.submitForm({
+							  url:'/contentmanager/saveContent',
+							  formSelector:form,
+							  success:function(data){
+								  page.root.goView('/pages/cms/contentmanager/content-list.html');
+							  }
+							});
+					 }
+				});
+			page.root.find('#addContentBtn').on('click',function(){
+				page.root.find("#addContentForm").submit();
+			});	
+		});
+	</script>
+
+

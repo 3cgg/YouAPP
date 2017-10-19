@@ -81,6 +81,15 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
+				<div class="col-lg-4 col-ms-12 col-md-4" style="position: relative;float: right;padding-right:0px;">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search for..." id="titleOnBindContent">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" id="searchBindContentBtn">Go!</button>
+						  </span>
+					</div><!-- /input-group -->
+				</div><!-- /.col-lg-6 -->
+				<!--<div style="clear: both;"></div>-->
 	          <table id="contentOnColListTable"
 	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
@@ -111,6 +120,15 @@
 	        </div>
 	        <!-- /.box-header -->
 	        <div class="box-body" >
+				<div class="col-lg-4 col-ms-12 col-md-4" style="position: relative;float: right;padding-right:0px;">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search for..." id="titleOnUnbindContent">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button" id="searchUnbindContentBtn">Go!</button>
+						  </span>
+					</div><!-- /input-group -->
+				</div><!-- /.col-lg-6 -->
+
 	          <table id="contentNotOnColListTable"
 	          		class="table dataTable table-striped row-border cell-border "
 	          			cellspacing="0" width="100%">
@@ -165,10 +183,21 @@
 		});
 
 
+    	function titleOnUnbindContent() {
+			return page.root.find('#titleOnUnbindContent').val();
+        }
+
+        function titleOnBindContent() {
+            return page.root.find('#titleOnBindContent').val();
+        }
+
     	page.contentOnColListTable=page.root.find('#contentOnColListTable').initDataTable({
 			url:"/colmanager/getBindColContents",
 			urlDataFn:function(){
-				return {'colId':getId()};
+				return {
+				    'colId':getId(),
+					'title' :titleOnBindContent()
+				};
 			},
 //			paging:false,
 			columns : [
@@ -181,7 +210,11 @@
 			},
 			{
 				"data" : "title",
-				"width": "10%"
+				"width": "10%",
+                "render": function (data, type, row, meta) {
+//				    debugger;
+                    return '<a href="javascript:void(0);" id="tileLink" data-content-id="'+row.id+'">'+data+'</a>';
+                }
 			},
 			{
 				"data" : "author",
@@ -212,7 +245,20 @@
 	  					  }
 	  				});
 		            event.stopPropagation();
-				})
+				});
+
+                page.root.find('#contentOnColListTable #tileLink').on('click',function (event) {
+					var contentId=$(event.target).data("contentId");
+
+                    page.modal.open(page,
+                        {	id:"peekContentModal",
+                            title:"内容详情",
+                            hidden : function(e,ra){
+                                alert("hide modal  "+ JSON.stringify(ra[0]) );
+                            }
+                        },'/pages/cms/colmanager/content-peek-pop.html',{contentId : contentId , name : 'contentPeek' });
+
+                });
 			}
 		});
 
@@ -220,7 +266,10 @@
     	page.contentNotOnColListTable=page.root.find('#contentNotOnColListTable').initDataTable({
 			url:"/colmanager/getUnbindColContents",
 			urlDataFn:function(){
-				return {'colId':getId()};
+				return {
+				    'colId':getId(),
+                    'title' :titleOnUnbindContent()
+				};
 			},
 //			paging:false,
 			columns : [
@@ -273,6 +322,13 @@
 			}
 		});
 
+    	page.root.find('#searchBindContentBtn').on('click',function(event){
+            page.contentOnColListTable.ajax.reload();
+		});
+
+        page.root.find('#searchUnbindContentBtn').on('click',function(event){
+            page.contentNotOnColListTable.ajax.reload();
+        });
 
     });
     </script>

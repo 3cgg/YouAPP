@@ -1,17 +1,6 @@
 	 <!-- Main content -->
-    <section class="content"   id="viewContentSection"   ms-controller="content_view">
-    
-    	<div class="box box-bys-btn">
-	        <div class="box-footer">
-	          <button type="button" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/pages/cms/contentmanager/content-list.html");'
-	          >返回</button>
-                <div class="box-tools pull-right">
-                    明细
-                </div>
-	        </div> 
-      </div>
-    	
+    <section class="content"   id="peekContentPopSection"   ms-controller="content_peek_pop_view">
+
     	<div class="box box-bys-content">
 	    	<!--   .box-header   -->
 	        <!-- /.box-header -->
@@ -101,10 +90,10 @@
     $_youapp.ready(function(){
     	
     	var page=$.extend({
-    		root:$("#viewContentSection"),
+    		root:$("#peekContentPopSection"),
     		model:{
     			vm:avalon.define({
-    		        $id: "content_view",
+    		        $id: "content_peek_pop_view",
     		        data: {}
     		    })
     		}
@@ -113,9 +102,9 @@
     	avalon.scan(page.root[0], page.model.vm);  // void braces
     	
     	function getId(){
-        	return page.root.getViewParam().id;
+        	return page.modal.param(page,"contentId");
         }
-    	
+
     	page.ajaxGet({
 			  url:'/contentmanager/getContentById',
 			  formData:{'id':getId()},
@@ -124,6 +113,29 @@
 		  		  avalon.scan(page.root[0], page.model.vm);
 			  }
 			});
+
+        page.modal.registerParent(page);
+//        page.modal.registerReturn(page,function(){
+//            return {
+//                'peek' : true,
+//                'peekTime' : new Date().getTime()
+//            };
+//        });
+
+        page.modal.close(page,{
+            returnFn : function(){
+                return {
+                    'peek' : true,
+                    'peekTime' : new Date().getTime()
+                };
+
+            }
+        });
+
+
+
+
+
     });
     </script>
 	

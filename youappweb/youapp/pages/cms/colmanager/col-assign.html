@@ -210,15 +210,14 @@
 			},
 			{
 				"data" : "title",
-				"width": "10%",
+				"width": "60%",
                 "render": function (data, type, row, meta) {
-//				    debugger;
-                    return '<a href="javascript:void(0);" id="tileLink" data-content-id="'+row.id+'">'+data+'</a>';
+                    return '<a href="javascript:void(0);" name="tileLink" data-content-id="'+row.id+'"  style="text-decoration:underline">'+data+'</a>';
                 }
 			},
 			{
 				"data" : "author",
-				"width": "10%"
+				"width": "15%"
 			},
 			{
 				"data" : "source",
@@ -247,14 +246,14 @@
 		            event.stopPropagation();
 				});
 
-                page.root.find('#contentOnColListTable #tileLink').on('click',function (event) {
+                page.root.find('#contentOnColListTable [name="tileLink"]').on('click',function (event) {
 					var contentId=$(event.target).data("contentId");
 
                     page.modal.open(page,
                         {	id:"peekContentModal",
                             title:"内容详情",
                             hidden : function(e,ra){
-                                alert("hide modal  "+ JSON.stringify(ra[0]) );
+                                console.log("hide modal  "+ JSON.stringify(ra[0]) );
                             }
                         },'/pages/cms/colmanager/content-peek-pop.html',{contentId : contentId , name : 'contentPeek' });
 
@@ -287,11 +286,14 @@
 			},
 			{
 				"data" : "title",
-				"width": "10%"
+				"width": "60%",
+                "render": function (data, type, row, meta) {
+                    return '<a href="javascript:void(0);" name="tileLink" data-content-id="'+row.id+'"  style="text-decoration:underline">'+data+'</a>';
+                }
 			},
 			{
 				"data" : "author",
-				"width": "10%"
+				"width": "15%"
 			},
 			{
 				"data" : "source",
@@ -318,7 +320,22 @@
 	  					  }
 	  				});
 		            event.stopPropagation();
-				})
+				});
+
+
+                page.root.find('#contentNotOnColListTable [name="tileLink"]').on('click',function (event) {
+                    var contentId=$(event.target).data("contentId");
+
+                    page.modal.open(page,
+                        {	id:"peekContentModal",
+                            title:"内容详情",
+                            hidden : function(e,ra){
+                                console.log("hide modal  "+ JSON.stringify(ra[0]) );
+                            }
+                        },'/pages/cms/colmanager/content-peek-pop.html',{contentId : contentId , name : 'contentPeek' });
+
+                });
+
 			}
 		});
 

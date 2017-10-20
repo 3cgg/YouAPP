@@ -1,7 +1,10 @@
 /**
+ *
+ * we need put the modal dom under body level , so find the dom from the body source using $,
+ * page.root is is bind to the certain layout.
+ *
  * Created by J on 2017/10/19.
  */
-
 $.extend(window.$_youapp.pageTemplate,{
     modal : function() {
         return {
@@ -29,9 +32,9 @@ $.extend(window.$_youapp.pageTemplate,{
                     + '</div>'
                     + '</div>'
                     + '</div>';
-                page.root.find('#' + divId).remove();
-                page.root.append($(template));
-                var $dom = page.root.find('#' + divId);
+                $('#' + divId).remove();
+                $('body').append($(template));
+                var $dom = $('#' + divId);
                 $dom.data('parentPage', page);
                 $dom.data('params', params);
                 $dom.data('modalOpts', modalOpts);
@@ -91,7 +94,7 @@ $.extend(window.$_youapp.pageTemplate,{
 
                 var $dom;
                 if (_modalOpts.id) {
-                    $dom = this.parent.root.find('#' + _modalOpts.id);
+                    $dom = $('#' + _modalOpts.id); //this.parent.root.find('#' + _modalOpts.id);
                 } else {
                     $dom = this.modalSource(page);
                 }
@@ -119,6 +122,11 @@ $.extend(window.$_youapp.pageTemplate,{
                 this.parent = $modalSource.data('parentPage');
             },
 
+            /**
+             * find modal in the popup page
+             * @param page the page object int the popup page
+             * @returns {*}
+             */
             modalSource: function (page) {
                 return page.root.parents('div[name="modalSource"]');
             },

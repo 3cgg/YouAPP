@@ -72,16 +72,17 @@
                    <div class="col-sm-5">
                     <input  id="adImg" name="adImg" type="text" class="form-control"></input>
                   </div>
-              	  
-					
-              	
-              	   <label for="content" class="col-sm-1 control-label">内容</label>
-                   <div class="col-sm-5">
-                    <input  id="content" name="content" type="text" class="form-control"></input>
+
                   </div>
-              	  
-              	</div>
-					
+				<div class="form-group">
+
+					<label for="contentContainer" class="col-sm-1 control-label">内容</label>
+					<!--<div class="col-sm-5">-->
+					<!--<input  id="content" name="content" type="button" value="Click"></input>-->
+					<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>
+
+				</div>
+
               	<div class="form-group">
               	
               	   <label for="sequence" class="col-sm-1 control-label">顺序</label>
@@ -170,7 +171,31 @@
 				});
 			page.root.find('#addContentBtn').on('click',function(){
 				page.root.find("#addContentForm").submit();
-			});	
+			});
+
+//			page.root.find('#content').on('click',function () {
+//                page.modal.open(page,
+//                    {	id:"contentEditorModal",
+//                        title:"内容详情",
+//                        hidden : function(e,ra){
+//                            console.log("hide modal  "+ JSON.stringify(ra[0]) );
+//                        },
+//						opt:{
+//                            width : '100%',
+//                            height : '100%'
+//						}
+//                    },'/pages/cms/contentmanager/content-editor-pop.html',{name : 'contentEditor' });
+//            });
+
+
+            var contentContainer = UE.getEditor('contentContainer',{
+                zIndex : 9999
+
+            });
+
+            contentContainer.render('contentContainer');
+
+
 		});
 	</script>
 

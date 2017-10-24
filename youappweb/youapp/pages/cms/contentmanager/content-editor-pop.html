@@ -1,0 +1,33 @@
+<!-- 加载编辑器的容器 -->
+<div id="contentContainer" name="contentContainer" >
+        <!--这里写你的初始化内容-->
+    </div>
+
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+
+
+
+
+    $_youapp.ready(function () {
+
+        var page = $.extend({
+            root: $("#contentContainer"),
+            model: {}
+        }, $_youapp.pageTemplate);
+
+
+        var contentContainer = UE.getEditor('contentContainer',{
+            zIndex : 9999
+
+        });
+
+        page.modal.registerClose(page,function () {
+           contentContainer.destroy();
+        });
+
+    });
+
+
+
+</script>

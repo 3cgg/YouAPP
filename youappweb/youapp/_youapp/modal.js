@@ -19,9 +19,18 @@ $.extend(window.$_youapp.pageTemplate,{
 					 * }
              */
             open: function (page, modalOpts, url, params) {
+
+                var opt=$.extend({},
+                    {
+                        width : '80%',
+                        height : 'auto'
+                    },
+                    modalOpts.opt);
+                var width=opt.width;
+                var height=opt.height;
                 var divId = modalOpts.id;
                 var template = '<div name="modalSource" id="' + divId + '" class="modal fade " tabindex="-1" role="dialog">'
-                    + '<div class="modal-dialog" style="width:80%" role="document">'
+                    + '<div class="modal-dialog" style="width:'+width+';height: '+height+'" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
                     + '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
@@ -107,7 +116,12 @@ $.extend(window.$_youapp.pageTemplate,{
                  }*/
                 $dom.modal('hide');
             },
-
+            /**
+             * 注册弹出页面的关闭通知函数
+             */
+            registerClose: function (page, fn) {
+                this.modalSource(page).data('modalHiddenFn', fn);
+            },
             /**
              * 注册返回参数函数
              */

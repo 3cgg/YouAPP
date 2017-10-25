@@ -29,7 +29,7 @@ $.extend(window.$_youapp.pageTemplate,{
                 var width=opt.width;
                 var height=opt.height;
                 var divId = modalOpts.id;
-                var template = '<div name="editorModalSource" id="' + divId + '" class="modal fade " tabindex="-1" role="dialog">'
+                var template = '<div name="editorModalSource" id="' + divId + '" class="modal-backdrop modal fade " tabindex="-1" role="dialog" style="overflow: hidden;background-color: #ffffff;opacity: 1">'
                     + '<div class="modal-dialog" style="width:'+width+';height: '+height+'" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'

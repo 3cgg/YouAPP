@@ -29435,8 +29435,8 @@ UE.ui = baidu.editor.ui = {};
                     if(holder.style.height){
                         holder.style.height = ''
                     }
-                    // editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
-                    editor.container.style.width = '100%';
+                    editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
+                    // editor.container.style.width = '100%';
                     editor.container.style.zIndex = opt.zIndex;
                     oldRender.call(editor, editor.ui.getDom('iframeholder'));
                     editor.fireEvent("afteruiready");

@@ -78,8 +78,8 @@
 
 					<label for="contentContainer" class="col-sm-1 control-label">内容</label>
 					<!--<div class="col-sm-5">-->
-					<!--<input  id="content" name="content" type="button" value="Click"></input>-->
-					<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>
+					<input  id="content" name="content" type="button" value="Click"></input>
+					<!--<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>-->
 
 				</div>
 
@@ -173,27 +173,37 @@
 				page.root.find("#addContentForm").submit();
 			});
 
-//			page.root.find('#content').on('click',function () {
-//                page.modal.open(page,
-//                    {	id:"contentEditorModal",
-//                        title:"内容详情",
-//                        hidden : function(e,ra){
-//                            console.log("hide modal  "+ JSON.stringify(ra[0]) );
-//                        },
-//						opt:{
-//                            width : '100%',
-//                            height : '100%'
-//						}
-//                    },'/pages/cms/contentmanager/content-editor-pop.html',{name : 'contentEditor' });
-//            });
-
-
-            var contentContainer = UE.getEditor('contentContainer',{
-                zIndex : 9999
-
+			page.root.find('#content').on('click',function () {
+                page.modal.open(page,
+                    {	id:"contentEditorModal",
+                        title:"内容详情",
+                        hidden : function(e,ra){
+                            console.log("hide modal  "+ JSON.stringify(ra[0]) );
+                        },
+						opt:{
+                            width : '100%',
+                            height : '100%'
+						}
+                    },'/pages/cms/contentmanager/content-editor-pop.html',{name : 'contentEditor' });
             });
 
-            contentContainer.render('contentContainer');
+
+
+//			UE.delEditor('contentContainer');
+//
+//            var contentContainer = UE.getEditor('contentContainer',{
+//
+//
+//            });
+//
+//            $('#tabContainer').scroll(function (event) {
+//                var $this=$(event.target);
+//                var top=$this.scrollTop();
+//
+//                console.log(top)
+//
+//
+//            });
 
 
 		});

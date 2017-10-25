@@ -29063,7 +29063,22 @@ UE.ui = baidu.editor.ui = {};
                     while (container.tagName != "BODY") {
                         var position = baidu.editor.dom.domUtils.getComputedStyle(container, "position");
                         nodeStack.push(position);
-                        container.style.position = "static";
+                        var isModal = false;
+                        //判断该dom是否为modal
+                        var classes = $(container).attr('class');
+                        if (classes !== undefined) {
+                            classes = classes.split(' ');
+                            for (var i = 0; i < classes.length; i++) {
+                                if (classes[i] == "modal") {
+                                    isModal = true;
+                                }
+                            }
+                        }
+                        //如果是modal,则不设置position为static
+                        if (!isModal) {
+                            container.style.position = "static";
+                        }
+                        // container.style.position = "static";
                         container = container.parentNode;
                     }
                     this._bakHtmlOverflow = document.documentElement.style.overflow;
@@ -29130,6 +29145,7 @@ UE.ui = baidu.editor.ui = {};
             if (this._fullscreen) {
                 var vpRect = uiUtils.getViewportRect();
                 this.getDom().style.cssText = 'border:0;position:absolute;left:0;top:' + (this.editor.options.topOffset || 0) + 'px;width:' + vpRect.width + 'px;height:' + vpRect.height + 'px;z-index:' + (this.getDom().style.zIndex * 1 + 100);
+                // this.getDom().style.cssText = 'border:0;position:absolute;left:0;top:' + (this.editor.options.topOffset || 0) + 'px;width:100%' +'height:' + vpRect.height + 'px;z-index:' + (this.getDom().style.zIndex * 1 + 100);
                 uiUtils.setViewportOffset(this.getDom(), { left:0, top:this.editor.options.topOffset || 0 });
                 this.editor.setHeight(vpRect.height - this.getDom('toolbarbox').offsetHeight - this.getDom('bottombar').offsetHeight - (this.editor.options.topOffset || 0),true);
                 //不手动调一下，会导致全屏失效
@@ -29419,7 +29435,8 @@ UE.ui = baidu.editor.ui = {};
                     if(holder.style.height){
                         holder.style.height = ''
                     }
-                    editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
+                    // editor.container.style.width = opt.initialFrameWidth + (/%$/.test(opt.initialFrameWidth) ? '' : 'px');
+                    editor.container.style.width = '100%';
                     editor.container.style.zIndex = opt.zIndex;
                     oldRender.call(editor, editor.ui.getDom('iframeholder'));
                     editor.fireEvent("afteruiready");

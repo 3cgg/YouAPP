@@ -17,15 +17,19 @@
         }, $_youapp.pageTemplate);
 
 
+
+//        var frameHeight=window.innerHeight-50*10;
+
         var contentContainer = UE.getEditor('contentContainer',{
             zIndex : 9999,
             allowDivTransToP: false,
-            initialFrameHeight : 320
+            initialFrameHeight : window.innerHeight-50*5
 
         });
 
-        page.modal.registerClose(page,function () {
-           contentContainer.destroy();
+        page.editorModal.registerClose(page,function () {
+            console.log("destroy contentContainer ");
+            contentContainer.destroy();
         });
 
     });

@@ -51,25 +51,18 @@
               	<div class="form-group">
               	
               	   <label for="title" class="col-sm-1 control-label">标题</label>
-                   <div class="col-sm-5">
+                   <div class="col-sm-11 col-lg-11">
                     <input  id="title" name="title" type="text" class="form-control"></input>
-                  </div>
-              	  
-					
-              	
-              	   <label for="author" class="col-sm-1 control-label">作者</label>
-                   <div class="col-sm-5">
-                    <input  id="author" name="author" type="text" class="form-control"></input>
                   </div>
               	  
               	</div>
 					
               	<div class="form-group">
-              	
-              	   <label for="publishTime" class="col-sm-1 control-label">发布时间</label>
-                   <div class="col-sm-5">
-                  </div>
-              	  
+
+					<label for="author" class="col-sm-1 control-label">作者</label>
+					<div class="col-sm-5">
+						<input  id="author" name="author" type="text" class="form-control"></input>
+					</div>
 					
               	
               	   <label for="source" class="col-sm-1 control-label">来源</label>
@@ -78,22 +71,41 @@
                   </div>
               	  
               	</div>
+
+				<div class="form-group">
+
+					<label for="publishTime" class="col-sm-1 control-label">发布时间</label>
+					<div class="col-sm-5">
+					</div>
+
+					<label for="sequence" class="col-sm-1 control-label">顺序</label>
+					<div class="col-sm-5">
+						<input  id="sequence" name="sequence" type="text" class="form-control"></input>
+					</div>
+
+				</div>
+
+
 					
               	<div class="form-group">
-              	
+
               	   <label for="link" class="col-sm-1 control-label">源地址（http://）</label>
-                   <div class="col-sm-5">
+                   <div class="col-sm-11 col-lg-11">
                     <input  id="link" name="link" type="text" class="form-control"></input>
                   </div>
-              	  
-					
-              	
-              	   <label for="overview" class="col-sm-1 control-label">简介</label>
-                   <div class="col-sm-5">
-                    <input  id="overview" name="overview" type="text" class="form-control"></input>
-                  </div>
-              	  
+
               	</div>
+
+
+				<div class="form-group">
+
+					<label for="overview" class="col-sm-1 control-label">简介</label>
+					<div class="col-sm-11 col-lg-11">
+						<textarea id="overview" name="overview"  class="form-control" rows="3" placeholder=" ..." ></textarea>
+					</div>
+
+				</div>
+
 					
               	<div class="form-group">
               	
@@ -109,13 +121,7 @@
 					<!--<div class="col-sm-5">-->
 					<!--<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>-->
 					<div class="col-sm-11 col-lg-11">
-						<textarea id="content" name="content" style="border: solid 1px #887c7c;height: 318px"  ms-attr-value="data.htmlPath" class="form-control" rows="15" placeholder=" ..." readonly >
-
-							不裁剪内容，可能会显示在内容框之外。
-Conveying meaning to assistive technologies
-Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (the contextual colors are only used to reinforce meaning that is already present in the text/markup), or is included through alternative means, such as additional text hidden with the .sr-only class.
-
-						</textarea>
+						<textarea id="content" name="content" style="border: solid 1px #887c7c;height: 318px" class="form-control" rows="15" placeholder=" ..." readonly ></textarea>
 						<div class="editor-cover" >
 
 							<div style="">
@@ -132,17 +138,6 @@ Using color to add meaning only provides a visual indication, which will not be 
 
 				</div>
 
-              	<div class="form-group">
-              	
-              	   <label for="sequence" class="col-sm-1 control-label">顺序</label>
-                   <div class="col-sm-5">
-                    <input  id="sequence" name="sequence" type="text" class="form-control"></input>
-                  </div>
-              	  
-					
-              	
-              	  
-              	</div>
 					
     		</form>
 	          <!-- /.row -->

@@ -1,4 +1,33 @@
-	 <!-- Main content -->
+
+<!-- Main content -->
+<style type="text/css">
+
+	.editor-cover{
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;background-color: #fff;
+		opacity: .5;text-align: center;
+		padding: 100px;
+	}
+
+	.editor-cover-btn{
+		width: 114px;
+		height: 114px;
+		padding: 35px;
+		border: #ccbcbc solid 1px;
+		color: #000000;
+	}
+	.editor-cover-btn:hover{
+		color: #ffffff;
+	}
+
+
+</style>
+
     <section class="content"  id="addContentSection" >
     	<div class="box box-bys-btn">
 	        <div class="box-footer">
@@ -76,10 +105,30 @@
                   </div>
 				<div class="form-group">
 
-					<label for="contentContainer" class="col-sm-1 control-label">内容</label>
+					<label for="content" class="col-sm-1 control-label">内容</label>
 					<!--<div class="col-sm-5">-->
-					<input  id="content" name="content" type="button" value="Click"></input>
 					<!--<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>-->
+					<div class="col-sm-11 col-lg-11">
+						<textarea id="content" name="content" style="border: solid 1px #887c7c;height: 318px"  ms-attr-value="data.htmlPath" class="form-control" rows="15" placeholder=" ..." readonly >
+
+							不裁剪内容，可能会显示在内容框之外。
+Conveying meaning to assistive technologies
+Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (the contextual colors are only used to reinforce meaning that is already present in the text/markup), or is included through alternative means, such as additional text hidden with the .sr-only class.
+
+						</textarea>
+						<div class="editor-cover" >
+
+							<div style="">
+								<a id="contentEdit" href="#" class="btn editor-cover-btn hover-black-opacity" title="" >
+									编辑
+								</a>
+								<a id="contentPreview" href="#" class="btn editor-cover-btn hover-black-opacity " title="" >
+									查看
+								</a>
+
+							</div>
+						</div>
+					</div>
 
 				</div>
 
@@ -173,20 +222,46 @@
 				page.root.find("#addContentForm").submit();
 			});
 
-			page.root.find('#content').on('click',function () {
+			page.root.find('#contentEdit').on('click',function () {
+			    var $content=page.root.find('#content');
                 page.editorModal.open(page,
                     {	id:"contentEditorModal",
                         title:"内容详情",
                         hidden : function(txt){
                             console.log("hide modal  "+ JSON.stringify(txt) );
+                            $content.val(txt.htmlContent);
                         },
 						opt:{
                             width : '100%',
                             height : '100%'
 						}
-                    },'/pages/cms/contentmanager/content-editor-pop.html',{name : 'contentEditor' });
+                    },'/pages/cms/contentmanager/content-editor-pop.html',
+					{
+					    name : 'contentEditor',
+						content : $content.val()
+					});
             });
 
+            page.root.find('#contentPreview').on('click',function () {
+                var $content=page.root.find('#content');
+                page.editorModal.open(page,
+                    {	id:"contentPreviewModal",
+                        title:"内容详情",
+                        hidden : function(txt){
+                            console.log("hide modal  "+ JSON.stringify(txt) );
+                            $content.val(txt.htmlContent);
+                        },
+                        opt:{
+                            width : '100%',
+                            height : '100%'
+                        }
+                    },'/pages/cms/contentmanager/content-editor-pop.html',
+                    {
+                        name : 'contentPreview',
+                        content : $content.val(),
+						preview : true
+                    });
+            });
 
 
 //			UE.delEditor('contentContainer');

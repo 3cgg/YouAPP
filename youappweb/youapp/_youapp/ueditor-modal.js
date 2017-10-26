@@ -118,11 +118,11 @@ $.extend(window.$_youapp.pageTemplate,{
             close: function (page, modalOpts) {
 
                 var defaultOpts = {
-                    hidden: function (e) {
-                    },
-                    returnFn: function () {
-                        return {}
-                    },
+                    // hidden: function (e) {
+                    // },
+                    // returnFn: function () {
+                    //     return {}
+                    // },
                     skip: false,
                     opt: {}
                 };
@@ -137,14 +137,20 @@ $.extend(window.$_youapp.pageTemplate,{
                 } else {
                     $dom = this.modalSource(page);
                 }
-                $dom.data('modalHiddenFn', _modalOpts.hidden);
-                this.registerReturn(page, _modalOpts.returnFn);
+
+                if(_modalOpts.hidden){
+                    $dom.data('modalHiddenFn', _modalOpts.hidden);
+                }
+
+                if(_modalOpts.returnFn){
+                    this.registerReturn(page, _modalOpts.returnFn);
+                }
+
                 $dom.data('modalSkip', _modalOpts.skip);
-                /*
-                 if(modalOpts.skip){
-                 $dom.off('hidden.bs.modal');
-                 }*/
-                $dom.modal('hide');
+
+
+                $dom.find('.modal-header > button.close').trigger('click');
+
             },
             /**
              * 注册弹出页面的关闭通知函数

@@ -30,6 +30,34 @@
 
         });
 
+        contentContainer.ready(function() {
+            var content=page.editorModal.param(page,"content");
+            console.log(content);
+            contentContainer.setContent(content);
+        });
+
+        contentContainer.ready(function() {
+            var preview=page.editorModal.param(page,"preview");
+            var content=page.editorModal.param(page,"content");
+            console.log(content);
+            console.log(preview);
+            if(preview){
+                contentContainer.setContent(content);
+                contentContainer.setDisabled();
+                contentContainer.execCommand( 'preview' );
+//                setTimeout(function () {
+//                    page.editorModal.close(page,{
+//
+//                    });
+//                },1000);
+                page.editorModal.close(page,{
+
+                });
+            }
+
+        });
+
+
         page.editorModal.registerClose(page,function () {
             console.log("destroy contentContainer ");
             contentContainer.destroy();
@@ -42,6 +70,7 @@
                 plainContent : contentContainer.getContentTxt()
             }
         });
+
 
     });
 

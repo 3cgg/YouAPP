@@ -177,8 +177,8 @@
                 page.editorModal.open(page,
                     {	id:"contentEditorModal",
                         title:"内容详情",
-                        hidden : function(e,ra){
-                            console.log("hide modal  "+ JSON.stringify(ra[0]) );
+                        hidden : function(txt){
+                            console.log("hide modal  "+ JSON.stringify(txt) );
                         },
 						opt:{
                             width : '100%',

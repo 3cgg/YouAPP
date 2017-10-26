@@ -20,6 +20,9 @@
 
 //        var frameHeight=window.innerHeight-50*10;
 
+
+
+
         var contentContainer = UE.getEditor('contentContainer',{
             zIndex : 9999,
             allowDivTransToP: false,
@@ -30,6 +33,14 @@
         page.editorModal.registerClose(page,function () {
             console.log("destroy contentContainer ");
             contentContainer.destroy();
+        });
+
+        page.editorModal.registerReturn(page,function () {
+            var html = contentContainer.getContent();
+            return {
+                htmlContent : html,
+                plainContent : contentContainer.getContentTxt()
+            }
         });
 
     });

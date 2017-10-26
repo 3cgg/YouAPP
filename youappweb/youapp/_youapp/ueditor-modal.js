@@ -22,14 +22,16 @@ $.extend(window.$_youapp.pageTemplate,{
 
                 var opt=$.extend({},
                     {
-                        width : '80%',
-                        height : 'auto'
+                        width : '80%'
                     },
-                    modalOpts.opt);
+                    modalOpts.opt,
+                    {
+                        height : '90%'
+                    });
                 var width=opt.width;
                 var height=opt.height;
                 var divId = modalOpts.id;
-                var template = '<div name="editorModalSource" id="' + divId + '" class="modal-backdrop modal fade " tabindex="-1" role="dialog" style="overflow: hidden;background-color: #ffffff;opacity: 1">'
+                var template = '<div name="editorModalSource" id="' + divId + '" class="modal-backdrop modal fade " tabindex="-1" role="dialog" style="overflow: visible;background-color: #ffffff;opacity: 1">'
                     + '<div class="modal-dialog" style="width:'+width+';height: '+height+'" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
@@ -56,24 +58,25 @@ $.extend(window.$_youapp.pageTemplate,{
                 $dom.css('display','block');
 
                 $dom.find('.modal-header > button.close').on('click',function () {
+
+                    var modalReturnFn = $dom.data('modalReturnFn');
+                    var result = {};
+                    if (modalReturnFn) {
+                        result = modalReturnFn();
+                    }
+                    if (!$dom.data('modalSkip')) {
+                        try {
+                            modalOpts.hidden(result);
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    }
                     try {
                         if ($dom.data('modalHiddenFn')) {
                             $dom.data('modalHiddenFn')();
                         }
                     } catch (e) {
 
-                    }
-                    if ($dom.data('modalSkip')) {
-                        return;
-                    }
-                    var modalReturnFn = $dom.data('modalReturnFn');
-                    var result = [];
-                    if (modalReturnFn) {
-                        result[0] = modalReturnFn();
-                    }
-                    try {
-                        modalOpts.hidden(e, result);
-                    } catch (e) {
                     }
                     $dom.remove();
 

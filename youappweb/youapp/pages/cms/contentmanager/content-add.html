@@ -111,7 +111,8 @@
               	
               	   <label for="adImg" class="col-sm-1 control-label">宣传图</label>
                    <div class="col-sm-5">
-                    <input  id="adImg" name="adImg" type="text" class="form-control"></input>
+					   <div name="fileUploadDiv"></div>
+					   <input id="adImg" name="adImg" type="text" class="form-control" style="display: none"></input>
                   </div>
 
                   </div>
@@ -143,6 +144,14 @@
 	          <!-- /.row -->
 	        </div>
       </div>
+
+		<div id="filesDiv"  style="display:none;">
+			<!--
+            <form role="form" id="caseImage1FileForm" class="form-horizontal">
+              <input type="file"  />
+            </form>-->
+		</div>
+
     </section>
 	
 	
@@ -274,6 +283,22 @@
 //
 //
 //            });
+
+            page.root.find('[name="fileUploadDiv"]').each(function(i,e){
+                var opt={
+                    $fsc : $(e),
+                    $fc : page.root.find('#filesDiv'), // form container
+                    added : function(data,obj){
+                        obj.opt.$fsc.parent().children('input').val(data.id);
+                    },
+                    removed : function(data,obj){
+                        obj.opt.$fsc.parent().children('input').val('');
+                    },
+                    types : ['image/jpeg','image/jpg','image/png']
+                }
+                fileAttach(opt);
+            });
+
 
 
 		});

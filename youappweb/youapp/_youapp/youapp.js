@@ -562,8 +562,5 @@
 		$(".content-wrapper").css("min-height", minHeight + "px");
 	},1000);
 
-	$.validator.addMethod("valueNotEquals", function(value, element, arg){
-		  return arg != value;
-		 }, "Value must not equal arg .");
 
 })(window);

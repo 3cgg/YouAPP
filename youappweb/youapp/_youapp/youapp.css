@@ -550,5 +550,36 @@ td.recordRemove {
 }
 
 
+.requiredMask:after{
+
+  content : '*';
+  color: red;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

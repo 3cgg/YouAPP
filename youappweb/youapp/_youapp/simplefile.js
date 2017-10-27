@@ -10,7 +10,7 @@
 function fileAttach(opt){
 
   function fileUploadTemplate(){
-    return '<div class="col-sm-12">'
+    return '<div class="col-sm-12 col-lg-12" style="padding-left: 0px;">'
             +'<div class="input-group">'
               +'<input name="nameShownInput" readOnly type="text" class="form-control input-sm" placeholder="" />'
               +'<span class="input-group-btn">'

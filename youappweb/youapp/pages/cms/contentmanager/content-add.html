@@ -50,7 +50,7 @@
 	        <form role="form"  id="addContentForm"  class="form-horizontal">
               	<div class="form-group">
               	
-              	   <label for="title" class="col-sm-1 control-label">标题</label>
+              	   <label for="title" class="col-sm-1 control-label requiredMask">标题</label>
                    <div class="col-sm-11 col-lg-11">
                     <input  id="title" name="title" type="text" class="form-control"></input>
                   </div>
@@ -59,13 +59,13 @@
 					
               	<div class="form-group">
 
-					<label for="author" class="col-sm-1 control-label">作者</label>
+					<label for="author" class="col-sm-1 control-label requiredMask">作者</label>
 					<div class="col-sm-5">
 						<input  id="author" name="author" type="text" class="form-control"></input>
 					</div>
 					
               	
-              	   <label for="source" class="col-sm-1 control-label">来源</label>
+              	   <label for="source" class="col-sm-1 control-label requiredMask">来源</label>
                    <div class="col-sm-5">
                     <input  id="source" name="source" type="text" class="form-control"></input>
                   </div>
@@ -74,11 +74,14 @@
 
 				<div class="form-group">
 
-					<label for="publishTime" class="col-sm-1 control-label">发布时间</label>
+					<label for="publishTime" class="col-sm-1 control-label requiredMask">发布时间</label>
 					<div class="col-sm-5">
+
+						<input  id="publishTime" name="publishTime" type="text" class="form-control" ></input>
+
 					</div>
 
-					<label for="sequence" class="col-sm-1 control-label">顺序</label>
+					<label for="sequence" class="col-sm-1 control-label requiredMask">顺序</label>
 					<div class="col-sm-5">
 						<input  id="sequence" name="sequence" type="text" class="form-control"></input>
 					</div>
@@ -89,7 +92,7 @@
 					
               	<div class="form-group">
 
-              	   <label for="link" class="col-sm-1 control-label">源地址（http://）</label>
+              	   <label for="link" class="col-sm-1 control-label requiredMask">源地址（http://）</label>
                    <div class="col-sm-11 col-lg-11">
                     <input  id="link" name="link" type="text" class="form-control"></input>
                   </div>
@@ -99,7 +102,7 @@
 
 				<div class="form-group">
 
-					<label for="overview" class="col-sm-1 control-label">简介</label>
+					<label for="overview" class="col-sm-1 control-label requiredMask">简介</label>
 					<div class="col-sm-11 col-lg-11">
 						<textarea id="overview" name="overview"  class="form-control" rows="3" placeholder=" ..." ></textarea>
 					</div>
@@ -109,16 +112,16 @@
 					
               	<div class="form-group">
               	
-              	   <label for="adImg" class="col-sm-1 control-label">宣传图</label>
+              	   <label for="adImg" class="col-sm-1 control-label requiredMask">宣传图</label>
                    <div class="col-sm-5">
 					   <div name="fileUploadDiv"></div>
-					   <input id="adImg" name="adImg" type="text" class="form-control" style="display: none"></input>
+					   <input id="adImg" name="adImg" type="text" class="form-control" style="width:0px;height: 0px;padding: 0px;"></input>
                   </div>
 
                   </div>
 				<div class="form-group">
 
-					<label for="content" class="col-sm-1 control-label">内容</label>
+					<label for="content" class="col-sm-1 control-label requiredMask">内容</label>
 					<!--<div class="col-sm-5">-->
 					<!--<div id="contentContainer" name="contentContainer" class="col-sm-11 col-lg-11" ></div>-->
 					<div class="col-sm-11 col-lg-11">
@@ -164,12 +167,15 @@
 	    		model:{
 	    		}
 	    	},$_youapp.pageTemplate);
+
+			page.root.find('#publishTime').datetimepicker();
+
 			
 			page.root.find("#addContentForm").validate({
 					rules: {
 						'title': {
 							   required: true,
-							   maxlength:64
+							   maxlength:256
 						   }
 						,
 						'author': {
@@ -179,7 +185,7 @@
 						,
 						'publishTime': {
 							   required: true,
-							   maxlength:64
+							   maxlength:16
 						   }
 						,
 						'source': {
@@ -189,12 +195,12 @@
 						,
 						'link': {
 							   required: true,
-							   maxlength:64
+							   maxlength:256
 						   }
 						,
 						'overview': {
 							   required: true,
-							   maxlength:64
+							   maxlength:2000
 						   }
 						,
 						'adImg': {
@@ -203,13 +209,12 @@
 						   }
 						,
 						'content': {
-							   required: true,
-							   maxlength:64
+							   required: true
 						   }
 						,
 						'sequence': {
 							   required: true,
-							   maxlength:64
+							   number : true
 						   }
 					  },
 					  submitHandler:function(form){

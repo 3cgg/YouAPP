@@ -30,4 +30,5 @@
 	}
 
 	window.$_youapp.$_config=new _Config();
+
 })(window);

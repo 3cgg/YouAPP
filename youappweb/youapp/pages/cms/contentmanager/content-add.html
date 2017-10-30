@@ -1,33 +1,7 @@
 
+<link rel="stylesheet" href="cms/contentmanager/content-add.css">
+
 <!-- Main content -->
-<style type="text/css">
-
-	.editor-cover{
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;background-color: #fff;
-		opacity: .5;text-align: center;
-		padding: 100px;
-	}
-
-	.editor-cover-btn{
-		width: 114px;
-		height: 114px;
-		padding: 35px;
-		border: #ccbcbc solid 1px;
-		color: #000000;
-	}
-	.editor-cover-btn:hover{
-		color: #ffffff;
-	}
-
-
-</style>
-
     <section class="content"  id="addContentSection" >
     	<div class="box box-bys-btn">
 	        <div class="box-footer">
@@ -82,7 +56,7 @@
 					</div>
 
 					<label for="sequence" class="col-sm-1 control-label requiredMask">顺序</label>
-					<div class="col-sm-5">
+					<div class="col-sm-1 col-lg-1 ">
 						<input  id="sequence" name="sequence" type="text" class="form-control"></input>
 					</div>
 
@@ -175,7 +149,7 @@
 					rules: {
 						'title': {
 							   required: true,
-							   maxlength:256
+							   maxlength:255
 						   }
 						,
 						'author': {
@@ -195,7 +169,7 @@
 						,
 						'link': {
 							   required: true,
-							   maxlength:256
+							   maxlength:255
 						   }
 						,
 						'overview': {

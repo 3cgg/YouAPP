@@ -141,7 +141,7 @@ $_youapp.ready(function (){
     page.root.find('[name="fileUploadDiv"]').each(function(i,e){
         var opt={
             $fsc : $(e),
-            $fc : page.root.find('#filesDiv'), // form container
+            // $fc : page.root.find('#filesDiv'), // form container
             added : function(data,obj){
                 obj.opt.$fsc.parent().children('input').val(data.id);
             },

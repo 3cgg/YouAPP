@@ -45,7 +45,39 @@
 						var token={};
 						$layoutDom.data('param',param);
 						$layoutDom.data('token',token);
-						var layout=new Layout($(html));
+						var $html=$(html);
+						$.each($html,function (i,e) {
+							var nodeName=e.nodeName;
+							if(('SCRIPT'==nodeName||'script'==nodeName)&&$(e).attr('src')!=undefined){
+                                var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
+                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('src');
+                                var id=$.md5(absolute);
+                                $(e).attr('src',absolute).attr('id' ,id);
+							}
+                            if(('LINK'==nodeName||'link'==nodeName)&&$(e).attr('href')!=undefined){
+                                var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
+                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('href');
+                                var id=$.md5(absolute);
+                                $(e).attr('href',absolute).attr('id' ,id);
+                            }
+                        });
+
+
+						$html.find('script').each(function (i ,e) {
+							var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
+							var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('src');
+							var id=$.md5(absolute);
+                            $(e).attr('src',absolute).attr('id' ,id);
+                        });
+
+                        $html.find('link').each(function (i ,e) {
+                            var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
+                            var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('href');
+                            var id=$.md5(absolute);
+                            $(e).attr('href',absolute).attr('id' ,id);
+                        });
+						
+						var layout=new Layout($html);
 						layout.draw(requsetVO.layoutId);
 					},
 					error:function(data){

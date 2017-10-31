@@ -4,15 +4,21 @@
 $_youapp.ready(function (){
 
     var page=$.extend({
-        root:$("#addContentSection"),
+        root:$("#editContentSection"),
         model:{
+            vm:avalon.define({
+                $id: "content_edit",
+                data: {}
+            })
         }
     },$_youapp.pageTemplate);
 
     page.root.find('#publishTime').datetimepicker();
 
 
-    page.root.find("#addContentForm").validate({
+    avalon.scan(page.root[0], page.model.vm);  // void braces
+
+    page.root.find("#editContentForm").validate({
         rules: {
             'title': {
                 required: true,
@@ -60,7 +66,7 @@ $_youapp.ready(function (){
         },
         submitHandler:function(form){
             page.submitForm({
-                url:'/contentmanager/saveContent',
+                url:'/contentmanager/updateContent',
                 formSelector:form,
                 success:function(data){
                     page.root.goView('/pages/cms/contentmanager/content-list.html');
@@ -68,8 +74,8 @@ $_youapp.ready(function (){
             });
         }
     });
-    page.root.find('#addContentBtn').on('click',function(){
-        page.root.find("#addContentForm").submit();
+    page.root.find('#editContentBtn').on('click',function(){
+        page.root.find("#editContentForm").submit();
     });
 
     page.root.find('#contentEdit').on('click',function () {
@@ -130,6 +136,8 @@ $_youapp.ready(function (){
 //
 //            });
 
+    var adImgFile;
+
     page.root.find('[name="fileUploadDiv"]').each(function(i,e){
         var opt={
             $fsc : $(e),
@@ -142,8 +150,30 @@ $_youapp.ready(function (){
             },
             types : ['image/jpeg','image/jpg','image/png']
         }
-        fileAttach(opt);
+        adImgFile=fileAttach(opt);
     });
+
+
+    function getId(){
+        return page.root.getViewParam().id;
+    }
+
+    page.ajaxGet({
+        url:'/contentmanager/getContentById',
+        formData:{'id':getId()},
+        success:function(data){
+            page.model.vm.data=data;
+            avalon.scan(page.root[0], page.model.vm);
+            if(data.adImgFile&&data.adImgFile!=null&&data.adImgFile!=''){
+                var data={
+                    id : data.adImg,
+                    uri : data.adImgFile.uri
+                }
+                adImgFile.resetImg(data);
+            }
+        }
+    });
+
 
 
 

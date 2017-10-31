@@ -1,17 +1,21 @@
 /**
 *{
+  id : '' // unique identification , default as div ($fsc) 's id attribute
   $fsc : '' // file select container
   $fc : '' // file form container
   added : fn(data,{ opt: {} , others...}) //
   removed : fn({ opt: {} , others...}) //
   types : [] // file type , such as txt, jpg , jpeg
+  edit : {
+
+  }
 }
 */
 function fileAttach(opt){
 
   function fileUploadTemplate(){
     return '<div class="col-sm-12 col-lg-12" style="padding-left: 0px;">'
-            +'<div class="input-group">'
+            +'<div class="input-group" name="inputGroup">'
               +'<input name="nameShownInput" readOnly type="text" class="form-control input-sm" placeholder="" />'
               +'<span class="input-group-btn">'
                   +'<button class="btn btn-primary btn-sm" type="button" name="browserBtn" style="margin: 0px;" >'
@@ -73,6 +77,7 @@ function fileAttach(opt){
   obj.$t=$t;
   obj.$fc=$fc;  // file container
   obj.opt=opt;
+  obj.opt.id=$fsc.attr('id')==undefined?id:$fsc.attr('id');
   var $fform=$(fileForm());
   obj.$fform=$fform;
   obj.$root=$root;
@@ -97,6 +102,38 @@ function fileAttach(opt){
 
   // processing ...............start here
 
+  function showDefaultImg(_data){
+      var data;
+      if (_data) {
+          var edit = data = obj.opt.edit = {};
+          edit.id = data.id = _data.id;
+          edit.uri = data.uri = _data.uri;
+      } else {
+          data = {};
+          data.id = obj.opt.edit.id;
+          data.uri = obj.opt.edit.uri;
+      }
+
+      showImg(data);
+      obj.$fform[0].reset();
+      setFileName();
+      $(obj.$b).attr("disabled", false);
+      obj.$root.find('[name="inputGroup"]').hide();
+
+      if(obj.$root.find('[name="resetBtn"]').length==0){
+          var $btnGroup = obj.$root.find('[name="inputGroup"] .input-group-btn');
+          var $resetBtn = $('<button class="btn btn-primary btn-sm" type="button" name="resetBtn" style="margin: 0px;" >'
+              + '<i class="fa"></i> 重置'
+              + '</button>');
+          $btnGroup.append($resetBtn);
+          $resetBtn.on('click', function () {
+              showDefaultImg();
+          });
+      }
+
+  }
+
+
   function showImg(data){
 
     var $div=$('<div> '
@@ -112,6 +149,7 @@ function fileAttach(opt){
       $div.remove();
       obj.$fform[0].reset();
       setFileName();
+      obj.$root.find('[name="inputGroup"]').show();
       $(obj.$b).attr("disabled",false);
     });
 
@@ -185,5 +223,25 @@ function fileAttach(opt){
     $fform.ajaxSubmit(opts);
 
   });
+
+  return {
+
+      /**
+       * var data={
+       * id :
+       * uri :
+       * };
+       * @param data
+       */
+      resetImg : function (data) {
+          showDefaultImg(data);
+      },
+
+      id : function () {
+          return obj.opt.id;
+      }
+
+
+  }
 
 }

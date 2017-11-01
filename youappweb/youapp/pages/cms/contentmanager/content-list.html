@@ -1,264 +1,104 @@
-	 <!-- Main content -->
-    <section class="content"   id="searchContentSection"   ms-controller="content_view">
-      
-      <div class="box box-search">
-              <div class="box-body">
-              <form class="form-horizontal"  id="searchContentForm">
-              	
-              	<div class="form-group">
-              	
-              	   <label for="title" class="col-sm-1 control-label">标题</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="title" class="form-control" id="title">
-                  </div>
-              	  
-					
-              	
-              	   <label for="author" class="col-sm-1 control-label">作者</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="author" class="form-control" id="author">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="publishTimeStart" class="col-sm-1 control-label">publishTimeStart</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="publishTimeStart" class="form-control" id="publishTimeStart">
-                  </div>
-              	  
-					
-              	
-              	   <label for="publishTimeEnd" class="col-sm-1 control-label">publishTimeEnd</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="publishTimeEnd" class="form-control" id="publishTimeEnd">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="publishTime" class="col-sm-1 control-label">发布时间</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="publishTime" class="form-control" id="publishTime">
-                  </div>
-              	  
-					
-              	
-              	   <label for="source" class="col-sm-1 control-label">来源</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="source" class="form-control" id="source">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="link" class="col-sm-1 control-label">源地址（http://）</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="link" class="form-control" id="link">
-                  </div>
-              	  
-					
-              	
-              	   <label for="overview" class="col-sm-1 control-label">简介</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="overview" class="form-control" id="overview">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="adImg" class="col-sm-1 control-label">宣传图</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="adImg" class="form-control" id="adImg">
-                  </div>
-              	  
-					
-              	
-              	   <label for="content" class="col-sm-1 control-label">内容</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="content" class="form-control" id="content">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="sequence" class="col-sm-1 control-label">顺序</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="sequence" class="form-control" id="sequence">
-                  </div>
-              	  
-					
-              	
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="createTimeStart" class="col-sm-1 control-label">创建时间（起）</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="createTimeStart" class="form-control" id="createTimeStart">
-                  </div>
-              	  
-					
-              	
-              	   <label for="createTimeEnd" class="col-sm-1 control-label">创建时间（止）</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="createTimeEnd" class="form-control" id="createTimeEnd">
-                  </div>
-              	  
-              	</div>
-					
-              	<div class="form-group">
-              	
-              	   <label for="updateTimeStart" class="col-sm-1 control-label">更新时间（起）</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="updateTimeStart" class="form-control" id="updateTimeStart">
-                  </div>
-              	  
-					
-              	
-              	   <label for="updateTimeEnd" class="col-sm-1 control-label">更新时间（止）</label>
-                  <div class="col-sm-5">
-                    <input type="text"  name="updateTimeEnd" class="form-control" id="updateTimeEnd">
-                  </div>
-              	  
-              	</div>
-					
-				<div class="form-group">
-                	<label for="desc" class="col-sm-1 control-label"></label>
-                	<div class="col-sm-2 col-lg-1">
-	                	<input id="searchContentBtn" type="button" class="form-control btn-primary "  value="查询"   >
-	                </div>
+<!-- Main content -->
+<section class="content" id="searchContentSection" ms-controller="content_view">
+
+    <div class="box box-search">
+        <div class="box-body">
+            <form class="form-horizontal" id="searchContentForm">
+
+                <div class="form-group">
+
+                    <label for="title" class="col-sm-1 control-label">标题</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="title" class="form-control" id="title">
+                    </div>
+
+
+                    <label for="author" class="col-sm-1 control-label">作者</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="author" class="form-control" id="author">
+                    </div>
+
                 </div>
-                </form>
-              </div>
-          </div>
-          <!-- /.box -->
-      
-    	
-    	<div class="box box-result">
-	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/pages/cms/contentmanager/content-add.html");'
-	          >新增</button>
-	          <div class="box-tools pull-right">
-	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	          </div>
-	          
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body" >
-	          <table id="contentListTable" 
-	          		class="" 
-	          			cellspacing="0" width="100%">
-	            <thead>
-					<tr>
-		              	<th></th>
-						
-						<th>标题</th>
-						<th>作者</th>
-						<th>发布时间</th>
-						<th>来源</th>
-						<th>源地址（http://）</th>
-						<th>简介</th>
-						<th>顺序</th>
-						<th>操作</th>
-					</tr>
-				</thead>
+
+                <div class="form-group">
+
+                    <label for="publishTimeStart" class="col-sm-1 control-label">发布时间（起）</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="publishTimeStart" class="form-control" id="publishTimeStart">
+                    </div>
+
+
+                    <label for="publishTimeEnd" class="col-sm-1 control-label">发布时间（止）</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="publishTimeEnd" class="form-control" id="publishTimeEnd">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="link" class="col-sm-1 control-label">源地址（http://）</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="link" class="form-control" id="link">
+                    </div>
+
+
+                    <label for="source" class="col-sm-1 control-label">来源</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="source" class="form-control" id="source">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="desc" class="col-sm-1 control-label"></label>
+                    <div class="col-sm-2 col-lg-1">
+                        <input id="searchContentBtn" type="button" class="form-control btn-primary " value="查询">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.box -->
+
+
+    <div class="box box-result">
+        <!--   .box-header   -->
+        <div class="box-header with-border">
+            <button type="submit" class="btn btn-primary btn-sm" id="toAddContentBtn">新增</button>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="contentListTable"
+                   class=""
+                   cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th></th>
+
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>发布时间</th>
+                    <th>来源</th>
+                    <th>源地址（http://）</th>
+                    <th>简介</th>
+                    <th>顺序</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
             </table>
-	          
-	          
-	          <!-- /.row -->
-	        </div>
-      </div>
-    
-    </section>
-    <script type="text/javascript">
-    $_youapp.ready(function() {
-    	
-    	var page=$.extend({
-    		root:$("#searchContentSection"),
-    		model:{
-    			vm:avalon.define({
-    		        $id: "content_view",
-    		        data: {}
-    		    })
-    		}
-    	},$_youapp.pageTemplate);
-    	
-    	page.listTable=page.root.find('#contentListTable').initDataTable({
-			url:"/contentmanager/getContentsByPage",
-			urlDataFn:function(){
-				return page.root.find("#searchContentForm").serializeObj();
-			},
-			lengthChange:false,
-			checkbox:true,
-			ops:{
-				view:function(id,rowData){
-                    page.root.find('#contentListTable').goView('/pages/cms/contentmanager/content-view.html',{"id":id});
-				},
-				edit:function(id,rowData){
-					page.root.find('#contentListTable').goView('/pages/cms/contentmanager/content-edit.html',{"id":id});
-				},
-				del:function(id,rowData){
-					page.ajaxGet({
-						  url:'/contentmanager/deleteContentById',
-						  formData:{'id':id},
-						  success:function(data){
-							  page.listTable.ajax.reload();
-						  }
-						});
-				}
-			},
-			columns : [
-			
-			{
-				"data" : "title",
-				"width": "15%"
-			}
-			,
-			{
-				"data" : "author",
-				"width": "5%"
-			}
-			,
-			{
-				"data" : "publishTime",
-				"width": "5%"
-			}
-			,
-			{
-				"data" : "source",
-				"width": "10%"
-			}
-			,
-			{
-				"data" : "link",
-				"width": "10%"
-			}
-			,
-			{
-				"data" : "overview",
-				"width": "25%"
-			}
-			,
-			{
-				"data" : "sequence",
-				"width": "5%"
-			}
-			]
-		});
-		
-		page.root.find("#searchContentBtn").on("click",function(){
-			page.listTable.ajax.reload();
-		})
-		
-	});
-	</script>
+
+
+            <!-- /.row -->
+        </div>
+    </div>
+
+</section>
+
+<script src="content-list.js"></script>
 

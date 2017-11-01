@@ -11,6 +11,10 @@ $_youapp.ready(function (){
 
     page.root.find('#publishTime').datetimepicker();
 
+    page.root.find('#backContentBtn').on('click',function (e) {
+        $(this).goView("/pages/cms/contentmanager/content-list.html");
+    });
+
 
     page.root.find("#addContentForm").validate({
         rules: {
@@ -26,7 +30,7 @@ $_youapp.ready(function (){
             ,
             'publishTime': {
                 required: true,
-                maxlength:16
+                maxlength:24
             }
             ,
             'source': {

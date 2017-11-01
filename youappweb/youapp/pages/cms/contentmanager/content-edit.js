@@ -13,10 +13,12 @@ $_youapp.ready(function (){
         }
     },$_youapp.pageTemplate);
 
-    page.root.find('#publishTime').datetimepicker();
-
-
     avalon.scan(page.root[0], page.model.vm);  // void braces
+
+    page.root.find('#publishTime').datetimepicker();
+    page.root.find('#backContentBtn').on('click',function (e) {
+        $(this).goView("/pages/cms/contentmanager/content-list.html");
+    });
 
     page.root.find("#editContentForm").validate({
         rules: {
@@ -32,7 +34,7 @@ $_youapp.ready(function (){
             ,
             'publishTime': {
                 required: true,
-                maxlength:16
+                maxlength:24
             }
             ,
             'source': {

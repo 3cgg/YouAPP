@@ -8,7 +8,7 @@
     }, "Value must not equal arg .");
 
     $.fn.datetimepicker.defaults={
-        format: 'yyyy-mm-dd hh:ii',
+        format: 'yyyy-mm-dd hh:ii:ss',
         autoclose: true,
         todayBtn: true
     };

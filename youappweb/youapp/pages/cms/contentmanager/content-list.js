@@ -63,12 +63,16 @@ $_youapp.ready(function () {
             ,
             {
                 "data": "link",
-                "width": "10%"
+                "render": function (data, type, row, meta) {
+                    return '<span style="width: 27em;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;display: block ">'+data+'</span>'
+                }
             }
             ,
             {
                 "data": "overview",
-                "width": "25%"
+                "render": function (data, type, row, meta) {
+                    return '<span style="width: 27em;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;display: block ">'+data+'</span>'
+                }
             }
             ,
             {

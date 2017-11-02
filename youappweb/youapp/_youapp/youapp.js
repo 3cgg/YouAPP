@@ -76,7 +76,10 @@
                             var id=$.md5(absolute);
                             $(e).attr('href',absolute).attr('id' ,id);
                         });
-						
+
+                        //append url to hash
+						location.hash=requsetVO.htmlUrl;
+
 						var layout=new Layout($html);
 						layout.draw(requsetVO.layoutId);
 					},

@@ -557,7 +557,13 @@ td.recordRemove {
 
 }
 
+.editor-modal{
 
+}
+
+.editor-modal .editor-modal-btn{
+  padding: 0px 5px;
+}
 
 
 

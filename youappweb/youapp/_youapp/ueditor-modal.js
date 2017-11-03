@@ -31,12 +31,16 @@ $.extend(window.$_youapp.pageTemplate,{
                 var width=opt.width;
                 var height=opt.height;
                 var divId = modalOpts.id;
-                var template = '<div name="editorModalSource" id="' + divId + '" class="modal-backdrop modal fade " tabindex="-1" role="dialog" style="overflow: visible;background-color: #ffffff;opacity: 1">'
+                var template = '<div name="editorModalSource" id="' + divId + '" class="modal-backdrop modal fade editor-modal" tabindex="-1" role="dialog" style="overflow: visible;background-color: #ffffff;opacity: 1">'
                     + '<div class="modal-dialog" style="width:'+width+';height: '+height+'" role="document">'
                     + '<div class="modal-content">'
                     + '<div class="modal-header">'
-                    + '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'
+                    + '<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="display: none" data-type="none">'
                     + '<span aria-hidden="true">&times;</span></button>'
+                    + '<button type="button" class="close editor-modal-btn" data-dismiss="modal" aria-label="Close" data-type="save">'
+                    + '<span aria-hidden="true">保存退出</span></button>'
+                    + '<button type="button" class="close editor-modal-btn" data-dismiss="modal" aria-label="Close" data-type="unsave">'
+                    + '<span aria-hidden="true">丢弃退出</span></button>'
                     + '<h4 class="modal-title" >' + modalOpts.title + '</h4>'
                     + '</div>'
                     + '<div class="modal-body">'
@@ -57,14 +61,19 @@ $.extend(window.$_youapp.pageTemplate,{
                 $dom.addClass('in');
                 $dom.css('display','block');
 
-                $dom.find('.modal-header > button.close').on('click',function () {
+                $dom.find('.modal-header > button.close').on('click',function (e) {
+
+                    var save=false;
+                    if($(e.target).data('type')=='save'||$(e.target.parentNode).data('type')=='save'){
+                        save=true;
+                    }
 
                     var modalReturnFn = $dom.data('modalReturnFn');
                     var result = {};
                     if (modalReturnFn) {
                         result = modalReturnFn();
                     }
-                    if (!$dom.data('modalSkip')) {
+                    if (!$dom.data('modalSkip')&&save) {
                         try {
                             modalOpts.hidden(result);
                         } catch (e) {

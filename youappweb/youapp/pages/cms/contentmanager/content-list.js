@@ -30,7 +30,7 @@ $_youapp.ready(function () {
                 page.root.find('#contentListTable').goView('/pages/cms/contentmanager/content-edit.html', {"id": id});
             },
             del: function (id, rowData) {
-                page.ajaxGet({
+                page.ajaxPost({
                     url: '/contentmanager/deleteContentById',
                     formData: {'id': id},
                     success: function (data) {

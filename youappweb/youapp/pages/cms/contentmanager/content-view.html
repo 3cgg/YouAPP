@@ -37,12 +37,22 @@
                 <p>{{data.overview}}</p>
             </div>
 
-            <div id="contentDiv" style="border-top: #ddd 1px solid;
-    padding: 30px;
+            <div id="contentDiv" style="border-top: #ddd 1px solid;padding: 30px;height:3000px;">
 
-">
+                <iframe id="contentViewIframe" style="    border-top-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    width: 100%;
+    height: 100%;">
+                    <html>
+                        <head></head>
+                        <body>
 
+                        </body>
 
+                    </html>
+                </iframe>
 
             </div>
 
@@ -77,7 +87,7 @@
 
 		  		  page.root.find('#adImag').attr('src',data.adImgFile.uri);
 
-		  		  page.root.find('#contentDiv').html(data.content);
+                  $(window.frames["contentViewIframe"].contentDocument).find('body').html(data.content);
 
 			  }
 			});

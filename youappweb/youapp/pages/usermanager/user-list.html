@@ -77,6 +77,7 @@
 	            <thead>
 					<tr>
 						<th></th>
+                        <th>No.</th>
 						<th>主键</th>
 						<th>用户名</th>
 						<th>昵称</th>
@@ -112,6 +113,7 @@
 				return page.root.find("#searchUserForm").serializeObj();
 			},
 			checkbox:true,
+            index :true,
 			ops:{
 				view:function(id,rowData){
                     page.root.find('#userListTable').goView('/pages/usermanager/user-view.html',{"id":id});

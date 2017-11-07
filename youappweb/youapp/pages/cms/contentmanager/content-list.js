@@ -22,6 +22,7 @@ $_youapp.ready(function () {
         },
         lengthChange: false,
         checkbox: true,
+        index:true,
         ops: {
             view: function (id, rowData) {
                 page.root.find('#contentListTable').goView('/pages/cms/contentmanager/content-view.html', {"id": id});

@@ -12,6 +12,7 @@ $.fn.extend({
 	 * {
 				selected:true,
 				checkbox:false,
+				index:false,
 				createdRow:function(){},
 				serverSide:true,
 				processing:true,
@@ -34,20 +35,22 @@ $.fn.extend({
 	initDataTable : function(options) {
 		$(this).css("width", "100%");
 		$(this).addClass("table table-striped table-bordered table-condensed table-hover");
-		
-		var defaultOpts={
-				selected:true,
-				checkbox:false,
-				createdRow:function(){},
-				paging: true,
-				removeColumns:true
-		}
+
+        var defaultOpts = {
+            selected: true,
+            checkbox: false,
+            index : false,
+            createdRow: function () {
+            },
+            paging: true,
+            removeColumns: true
+        }
 		
 		options=$.extend({},defaultOpts,options);
 		
 		options.serverSide =true;
 		options.processing=true;
-		var _columns=[]
+		var _columns=[];
 		var checkboxColumns=[{
             "orderable":      false,
             "data":           null,
@@ -90,15 +93,29 @@ $.fn.extend({
 			opsColumns=opsColumns.concat(opsGenColumns);
 			
 		}
-		
-		
-		
+
+        var indexColumns = [{
+            "searchable": false,
+            "orderable": false,
+            "width":"1%",
+			"render" : function (data, type, row, meta) {
+            	var startIndex=meta.settings._iDisplayStart;
+            	var rowIndex=meta.row;
+				var rowNumber=startIndex+rowIndex+1;
+            	return '<div style="text-align: center;width: 100%">'+rowNumber+'</div>';
+            }
+
+        }];
+
 		if(options.checkbox){
-			_columns=_columns.concat(checkboxColumns).concat(options.columns);
+			_columns=_columns.concat(checkboxColumns);
 		}
-		else{
-			_columns=_columns.concat(options.columns);
-		}
+
+        if(options.index){
+            _columns=_columns.concat(indexColumns);
+        }
+
+        _columns=_columns.concat(options.columns);
 		
 		if(options.ops){
 			_columns=_columns.concat(opsColumns);

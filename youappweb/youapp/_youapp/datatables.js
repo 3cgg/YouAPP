@@ -270,6 +270,8 @@ $.fn.extend({
 						orders:[]
 				  		}),
 			  		success:function(data){
+                        data.recordsTotal=data.totalRecordNumber;
+                        data.recordsFiltered=data.totalRecordNumber;
 						new DatatableAjax($wrap,options).ajaxSuccess(data,callback);
 			  			}
 					
@@ -331,10 +333,11 @@ $.fn.extend({
 				      previous:"前一页",
 				      next:"后一页"
 				    },
-				    info:"显示  _START_  到  _END_ 条记录, 共  _TOTAL_  条记录",
+				    // info:"显示  _START_  到  _END_ 条记录, 共  _TOTAL_  条记录",
+                	info:", 共  _TOTAL_  条记录",
 				    infoEmpty:"没有数据",
 				    lengthMenu: "每页显示 _MENU_ 条记录",
-				    infoFiltered: "(从 _MAX_ 条数据中检索)", 
+				    infoFiltered: "(从 _MAX_ 条数据中检索)",
 				    loadingRecords: "Please wait - loading...",
 				    zeroRecords: "No records to display",
 				    processing: "处理中..."
@@ -343,18 +346,18 @@ $.fn.extend({
 			//"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
 			//"<'row'<'col-sm-12'tr>>" +
 			"tr"+	
-			"<'row'<'col-sm-5'l><'col-sm-7'p>>",
-			/* oLanguage: {  
-				"sLengthMenu": "每页显示 _MENU_ 条记录",  
-				"sZeroRecords": "抱歉， 没有找到",  
-				"sInfo": "显示  _START_  到  _END_ 条记录, 共  _TOTAL_  条记录",  
-				"sInfoEmpty": "没有数据",  
-				"sInfoFiltered": "(从 _MAX_ 条数据中检索)", 
-				"oPaginate": {  
-				"sFirst": "首页",  
-				"sPrevious": "前一页",  
-				"sNext": "后一页",  
-				"sLast": "尾页"  
+			"<'row'<'col-sm-5'li><'col-sm-7'p>>",
+			/* oLanguage: {
+				"sLengthMenu": "每页显示 _MENU_ 条记录",
+				"sZeroRecords": "抱歉， 没有找到",
+				"sInfo": "显示  _START_  到  _END_ 条记录, 共  _TOTAL_  条记录",
+				"sInfoEmpty": "没有数据",
+				"sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+				"oPaginate": {
+				"sFirst": "首页",
+				"sPrevious": "前一页",
+				"sNext": "后一页",
+				"sLast": "尾页"
 				},
 			sZeroRecords: "没有检索到数据"
 			},

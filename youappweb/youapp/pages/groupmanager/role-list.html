@@ -1,171 +1,86 @@
-	 <!-- Main content -->
-    <section class="content"   id="searchRoleSection"   ms-controller="role_view">
+<!-- Main content -->
+<section class="content" id="searchRoleSection" ms-controller="role_view">
 
-      <div class="box box-search">
-      	<!--<div class="box-header with-border">-->
-          <!--<h3 class="box-title"></h3>-->
-          <!--<div class="box-tools pull-right">-->
-            <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
-          <!--</div>-->
+    <div class="box box-search">
+        <!--<div class="box-header with-border">-->
+        <!--<h3 class="box-title"></h3>-->
+        <!--<div class="box-tools pull-right">-->
+        <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
         <!--</div>-->
-              <div class="box-body">
-              <form class="form-horizontal"  id="searchRoleForm">
+        <!--</div>-->
+        <div class="box-body">
+            <form class="form-horizontal" id="searchRoleForm">
                 <div class="form-group">
-                  <label for="roleCode" class="col-sm-1 control-label">编码</label>
+                    <label for="roleCode" class="col-sm-1 control-label">编码</label>
 
-                  <div class="col-sm-5">
-                    <input type="text"  name="roleCode" class="form-control" id="roleCode" placeholder="编码">
-                  </div>
-                  <label for="roleName" class="col-sm-1 control-label">名称</label>
+                    <div class="col-sm-5">
+                        <input type="text" name="roleCode" class="form-control" id="roleCode" placeholder="编码">
+                    </div>
+                    <label for="roleName" class="col-sm-1 control-label">名称</label>
 
-                  <div class="col-sm-5">
-                    <input type="text"  name="roleName" class="form-control" id="roleName" placeholder="名称">
-                  </div>
+                    <div class="col-sm-5">
+                        <input type="text" name="roleName" class="form-control" id="roleName" placeholder="名称">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="description" class="col-sm-1 control-label">详细描述</label>
+                    <label for="description" class="col-sm-1 control-label">详细描述</label>
 
-                  <div class="col-sm-11">
-                    <input type="text"  name="description" class="form-control" id="description" placeholder="描述">
-                  </div>
+                    <div class="col-sm-11">
+                        <input type="text" name="description" class="form-control" id="description" placeholder="描述">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                	<label for="desc" class="col-sm-1 control-label"></label>
-                	<div class="col-sm-2 col-lg-1">
-	                	<input id="searchRoleBtn" type="button" class="form-control btn-primary"  value="查询"   >
-	                </div>
+                    <label for="desc" class="col-sm-1 control-label"></label>
+                    <div class="col-sm-2 col-lg-1">
+                        <input id="searchRoleBtn" type="button" class="form-control btn-primary" value="查询">
+                    </div>
                 </div>
-                </form>
-              </div>
-          </div>
-          <!-- /.box -->
+            </form>
+        </div>
+    </div>
+    <!-- /.box -->
 
 
-    	<div class="box box-result">
-	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-	          <button type="submit" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/pages/groupmanager/role-add.html");'
-	          >新增</button>
-	          <button type="submit" class="btn btn-primary btn-sm"  id="toAssignGroupBtn"
-	          >分配组</button>
+    <div class="box box-result">
+        <!--   .box-header   -->
+        <div class="box-header with-border">
+            <button type="submit" class="btn btn-primary btn-sm"
+                    onclick='$(this).goView("/pages/groupmanager/role-add.html");'
+            >新增
+            </button>
+            <button type="submit" class="btn btn-primary btn-sm" id="toAssignGroupBtn"
+            >分配组
+            </button>
 
-	          <div class="box-tools pull-right">
-	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	          </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
 
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body" >
-	          <table id="roleListTable"
-	          		class="table dataTable table-striped row-border cell-border "
-	          			cellspacing="0" width="100%">
-	            <thead>
-					<tr>
-						<th></th>
-						<th>主键</th>
-						<th>编码</th>
-						<th>名称</th>
-						<th>描述</th>
-						<th>操作</th>
-					</tr>
-				</thead>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table id="roleListTable"
+                   class="table dataTable table-striped row-border cell-border "
+                   cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>主键</th>
+                    <th>编码</th>
+                    <th>名称</th>
+                    <th>描述</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
             </table>
 
 
-	          <!-- /.row -->
-	        </div>
-      </div>
+            <!-- /.row -->
+        </div>
+    </div>
 
-    </section>
-    <script type="text/javascript">
-    $_youapp.ready(function() {
-
-    	var page=$.extend({
-    		root:$("#searchRoleSection"),
-    		model:{
-    			vm:avalon.define({
-    		        $id: "role_view",
-    		        data: {}
-    		    })
-    		}
-    	},$_youapp.pageTemplate);
-
-    	page.listTable=page.root.find('#roleListTable').initDataTable({
-			url:"/groupmanager/getRolesByPage",
-			urlDataFn:function(){
-				return page.root.find("#searchRoleForm").serializeObj();
-			},
-			checkbox:true,
-			ops:{
-				view:function(id,rowData){
-                    page.root.find('#roleListTable').goView('/pages/groupmanager/role-view.html',{"id":id});
-				},
-				edit:function(id,rowData){
-					page.root.find('#roleListTable').goView('/pages/groupmanager/role-edit.html',{"id":id});
-				},
-				del:function(id,rowData){
-					page.ajaxPost({
-						  url:'/groupmanager/deleteRole',
-						  formData:{'id':id},
-						  success:function(data){
-							  page.listTable.ajax.reload();
-						  }
-						});
-				}
-			},
-			columns : [
-			{
-				"data" : "id",
-				"orderable" : false,
-				 "width": "10%"
-			},
-			{
-				"data" : "roleCode",
-				"width": "10%"
-			},
-			{
-				"data" : "roleName",
-				"width": "10%"
-			},
-			{
-				"data" : "description",
-				"width": "20%"
-			}
-
-			]
-		});
-
-		page.root.find("#searchRoleBtn").on("click",function(){
-			page.listTable.ajax.reload();
-		});
-
-		function valid(ids){
-			if(ids&&ids.length==0){
-				page.warning('请选择一条记录');
-				return false;
-			}
-			if(ids&&ids.length>1){
-				page.warning('只能选择一条记录');
-				return false;
-			}
-			return true;
-		}
-		page.root.find('#toAssignRoleBtn').on('click',function(){
-			var ids=page.root.find('#roleListTable').getSelectedRow();
-			if(valid(ids)){
-				$(this).goView('/pages/groupmanager/user-assignrole.html',{"id":ids[0]});
-			}
-		});
-
-		page.root.find('#toAssignGroupBtn').on('click',function(){
-			var ids=page.root.find('#roleListTable').getSelectedRow();
-			if(valid(ids)){
-				$(this).goView('/pages/groupmanager/role-assigngroup.html',{"id":ids[0]});
-			}
-		});
-
-	});
-	</script>
+</section>
+<script src="role-list.js"></script>

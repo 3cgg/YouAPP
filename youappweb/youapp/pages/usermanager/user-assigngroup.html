@@ -1,241 +1,111 @@
-	 <!-- Main content -->
-    <section class="content"   id="assignGroupOnUserSection"   ms-controller="user_view">
+<!-- Main content -->
+<section class="content" id="assignGroupOnUserSection" ms-controller="user_view">
 
-    	<div class="box box-info">
-	        <div class="box-footer">
-	          <button type="button" class="btn btn-primary"
-	          onclick='$(this).goView("/pages/usermanager/user-list.html");'
-	          >返回</button>
-	        </div>
-      </div>
+    <div class="box box-info">
+        <div class="box-footer">
+            <button type="button" class="btn btn-primary"
+                    onclick='$(this).goView("/pages/usermanager/user-list.html");'
+            >返回
+            </button>
+        </div>
+    </div>
 
-    	<div class="box box-info">
-	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-	          <h3 class="box-title">用户信息明细</h3>
-	          <div class="box-tools pull-right">
-	          </div>
-	        </div>
-	        <!-- /.box-header -->
+    <div class="box box-info">
+        <!--   .box-header   -->
+        <div class="box-header with-border">
+            <h3 class="box-title">用户信息明细</h3>
+            <div class="box-tools pull-right">
+            </div>
+        </div>
+        <!-- /.box-header -->
 
-	        <div class="box-body  form-horizontal" >
-	        	<div class="form-group">
-                  <label for="userName" class="col-sm-1 control-label">用户名</label>
-                  <div class="col-sm-5">
-				  <span id="userName"  class="form-control label-form-control">{{data.userName}}</span>
-				 </div>
-				  <label for="natureName" class="col-sm-1 control-label">昵称</label>
-				  <div class="col-sm-5">
-				  	<span id="natureName"  class="form-control label-form-control" >{{data.natureName}}</span>
-                 </div>
+        <div class="box-body  form-horizontal">
+            <div class="form-group">
+                <label for="userName" class="col-sm-1 control-label">用户名</label>
+                <div class="col-sm-5">
+                    <span id="userName" class="form-control label-form-control">{{data.userName}}</span>
+                </div>
+                <label for="natureName" class="col-sm-1 control-label">昵称</label>
+                <div class="col-sm-5">
+                    <span id="natureName" class="form-control label-form-control">{{data.natureName}}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="statusName" class="col-sm-1 control-label">状态</label>
+                <div class="col-sm-5">
+                    <span id="statusName"
+                          class="form-control label-form-control">{{data.status}}({{data.statusName}})</span>
+                </div>
+                <label for="registerTime" class="col-sm-1 control-label">注册时间</label>
+                <div class="col-sm-5">
+                    <span id="registerTime" class="form-control label-form-control">{{data.registerTime}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" style="padding-left: 0px;">
+
+        <div class="box box-info">
+            <!--   .box-header   -->
+            <div class="box-header with-border">
+                <h3 class="box-title">已绑定组</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
                 </div>
 
-                <div class="form-group">
-                  <label for="statusName" class="col-sm-1 control-label">状态</label>
-                  <div class="col-sm-5">
-                  	<span id="statusName"  class="form-control label-form-control">{{data.status}}({{data.statusName}})</span>
-                  </div>
-                  <label for="registerTime" class="col-sm-1 control-label">注册时间</label>
-                  <div class="col-sm-5">
-                  	<span id="registerTime"  class="form-control label-form-control">{{data.registerTime}}</span>
-                  </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="groupOnUserListTable"
+                       class="table dataTable table-striped row-border cell-border "
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>编码</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                </table>
+                <!-- /.row -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" style="padding-left: 0px; padding-right: 0px;">
+
+        <div class="box box-info">
+            <!--   .box-header   -->
+            <div class="box-header with-border">
+                <h3 class="box-title">未绑定组</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    </button>
                 </div>
-	        </div>
-      </div>
 
-      <div class="col-md-6"  style="padding-left: 0px;">
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table id="groupNotOnUserListTable"
+                       class="table dataTable table-striped row-border cell-border "
+                       cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>编码</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                </table>
+                <!-- /.row -->
+            </div>
+        </div>
+    </div>
 
-      <div class="box box-info" >
-	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-			  <h3 class="box-title">已绑定组</h3>
-	          <div class="box-tools pull-right">
-	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	          </div>
-
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body" >
-	          <table id="groupOnUserListTable"
-	          		class="table dataTable table-striped row-border cell-border "
-	          			cellspacing="0" width="100%">
-	            <thead>
-					<tr>
-						<th></th>
-						<th>编码</th>
-						<th>名称</th>
-						<th>描述</th>
-					</tr>
-				</thead>
-            </table>
-	          <!-- /.row -->
-	        </div>
-      </div>
-      </div>
-
-      <div class="col-md-6"  style="padding-left: 0px; padding-right: 0px;">
-
-      <div class="box box-info" >
-	    	<!--   .box-header   -->
-	        <div class="box-header with-border">
-			  <h3 class="box-title">未绑定组</h3>
-	          <div class="box-tools pull-right">
-	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-	          </div>
-
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body" >
-	          <table id="groupNotOnUserListTable"
-	          		class="table dataTable table-striped row-border cell-border "
-	          			cellspacing="0" width="100%">
-	            <thead>
-					<tr>
-						<th></th>
-						<th>编码</th>
-						<th>名称</th>
-						<th>描述</th>
-					</tr>
-				</thead>
-            </table>
-	          <!-- /.row -->
-	        </div>
-      </div>
-      </div>
-
-    </section>
-    <script type="text/javascript">
-
-    $_youapp.ready(function(){
-
-    	var page=$.extend({
-    		root:$("#assignGroupOnUserSection"),
-    		model:{
-    			vm:avalon.define({
-    		        $id: "user_view",
-    		        data: {}
-    		    })
-    		}
-    	},$_youapp.pageTemplate);
-
-    	avalon.scan(page.root[0], page.model.vm);  // void braces
-
-    	function getId(){
-        	return page.root.getViewParam().id;
-        }
-
-    	page.ajaxGet({
-			  url:'/usermanager/getUserById',
-			  formData:{'id':getId()},
-			  success:function(data){
-				  page.model.vm.data=data;
-		  		  avalon.scan(page.root[0], page.model.vm);
-			  }
-			});
-
-    	page.groupOnUserListTable=page.root.find('#groupOnUserListTable').initDataTable({
-			url:"/usermanager/getGroupsByUserIdByPage",
-			urlDataFn:function(){
-				return {'userId':getId()};
-			},
-			paging:false,
-			columns : [
-			{
-			    "className":      'recordRemove',
-			    "orderable":      false,
-			    "data":           null,
-			    "defaultContent": '',
-			    "width":"5%"
-			},
-			{
-				"data" : "groupCode",
-				"width": "10%"
-			},
-			{
-				"data" : "groupName",
-				"width": "10%"
-			},
-			{
-				"data" : "description",
-				"width": "20%"
-			}
-			],
-			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordRemove').on('click',function(event){
-					var $tr = $(this).closest('tr');
-		            var row = page.groupOnUserListTable.row( $tr );
-		            var data=row.data();
-		            var groupId=data.id;
-		            var userId=getId();
-		            page.ajaxPost({
-	  					  url:'/usermanager/unbingUserGroup',
-	  					  formData:{
-	  						  userId:userId,
-	  						  groupId:groupId
-	  					  },
-	  					  success:function(data){
-	  						  page.success('unbing-success : ' + data);
-	  						  page.groupOnUserListTable.ajax.reload();
-	  						  page.groupNotOnUserListTable.ajax.reload();
-	  					  }
-	  				});
-		            event.stopPropagation();
-				})
-			}
-		});
-
-
-    	page.groupNotOnUserListTable=page.root.find('#groupNotOnUserListTable').initDataTable({
-			url:"/usermanager/getUnbingGroupsByUserIdByPage",
-			urlDataFn:function(){
-				return {'userId':getId()};
-			},
-			paging:false,
-			columns : [
-			{
-			    "className":      'recordAdd',
-			    "orderable":      false,
-			    "data":           null,
-			    "defaultContent": '',
-			    "width":"5%"
-			},
-			{
-				"data" : "groupCode",
-				"width": "10%"
-			},
-			{
-				"data" : "groupName",
-				"width": "10%"
-			},
-			{
-				"data" : "description",
-				"width": "20%"
-			}
-			],
-			callAfterDrawn:function(data,opts){
-				page.root.find('td.recordAdd').on('click',function(event){
-					var $tr = $(this).closest('tr');
-		            var row = page.groupNotOnUserListTable.row( $tr );
-		            var data=row.data();
-		            var groupId=data.id;
-		            var userId=getId();
-		            page.ajaxPost({
-	  					  url:'/usermanager/bingUserGroup',
-	  					  formData:{
-	  						  userId:userId,
-	  						  groupId:groupId
-	  					  },
-	  					  success:function(data){
-	  						  page.success('bing-success : ' + data);
-	  						  page.groupOnUserListTable.ajax.reload();
-	  						  page.groupNotOnUserListTable.ajax.reload();
-	  					  }
-	  				});
-		            event.stopPropagation();
-				})
-			}
-		});
-
-
-    });
-    </script>
+</section>
+<script src="user-assigngroup.js"></script>

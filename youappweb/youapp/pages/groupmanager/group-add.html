@@ -1,88 +1,53 @@
-	 <!-- Main content -->
-    <section class="content"  id="addGroupSection" >
+<!-- Main content -->
+<section class="content" id="addGroupSection">
 
-    	<form role="form"  id="addGroupForm"  class="form-horizontal">
+    <form role="form" id="addGroupForm" class="form-horizontal">
 
-    	<div class="box box-bys-btn">
-	        <div class="box-footer">
-	          <button type="submit" class="btn btn-primary btn-sm">提交</button>
-	          <button type="button" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/pages/groupmanager/group-list.html");'
-	          >返回</button>
-				<div class="box-tools pull-right">
-					组新增
-				</div>
-	        </div>
-      </div>
+        <div class="box box-bys-btn">
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary btn-sm">提交</button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick='$(this).goView("/pages/groupmanager/group-list.html");'
+                >返回
+                </button>
+                <div class="box-tools pull-right">
+                    组新增
+                </div>
+            </div>
+        </div>
 
-    	<div class="box box-bys-content">
-	    	<!--   .box-header   -->
-	        <!--<div class="box-header with-border">-->
-	          <!--<h3 class="box-title">组新增</h3>-->
-	          <!--<div class="box-tools pull-right">-->
-	          <!--</div>-->
-	        <!--</div>-->
-	        <!-- /.box-header -->
+        <div class="box box-bys-content">
+            <!--   .box-header   -->
+            <!--<div class="box-header with-border">-->
+            <!--<h3 class="box-title">组新增</h3>-->
+            <!--<div class="box-tools pull-right">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!-- /.box-header -->
 
-	        <div class="box-body">
-             <div class="form-group">
-                  <label for="groupCode" class="col-sm-1 control-label requiredMask">编码</label>
-                  <div class="col-sm-5">
-				  <input name="groupCode" type="text" class="form-control" placeholder=""  >
-				 </div>
-				 <label for="groupName" class="col-sm-1 control-label requiredMask">名称</label>
-				 <div class="col-sm-5">
-				  	<input name="groupName" type="text" class="form-control" placeholder=""  >
-	             </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="groupCode" class="col-sm-1 control-label requiredMask">编码</label>
+                    <div class="col-sm-5">
+                        <input name="groupCode" type="text" class="form-control" placeholder="">
+                    </div>
+                    <label for="groupName" class="col-sm-1 control-label requiredMask">名称</label>
+                    <div class="col-sm-5">
+                        <input name="groupName" type="text" class="form-control" placeholder="">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="description" class="col-sm-1 control-label requiredMask">详情描述</label>
-                  <div class="col-sm-5">
-                  	<textarea name="description" class="form-control" rows="3" placeholder=" ..."  ></textarea>
-			      </div>
+                    <label for="description" class="col-sm-1 control-label requiredMask">详情描述</label>
+                    <div class="col-sm-5">
+                        <textarea name="description" class="form-control" rows="3" placeholder=" ..."></textarea>
+                    </div>
                 </div>
-	        </div>
-      </div>
+            </div>
+        </div>
     </form>
 
-    </section>
+</section>
 
 
-	<script type="text/javascript">
-
-		$_youapp.ready(function (){
-
-			var page=$.extend({
-	    		root:$("#addGroupSection"),
-	    		model:{
-	    		}
-	    	},$_youapp.pageTemplate);
-
-			page.root.find("#addGroupForm").validate({
-					rules: {
-						'groupCode': {
-							   required: true,
-							   maxlength:32
-						   },
-					   'groupName': {
-						   required: true,
-						   maxlength:128
-					   },
-					   'description': {
-						   required: true,
-						   maxlength:2000
-					   }
-					  },
-					  submitHandler:function(form){
-						  page.submitForm({
-							  url:'/groupmanager/saveGroup',
-							  formSelector:form,
-							  success:function(data){
-								  page.root.goView('/pages/groupmanager/group-list.html');
-							  }
-							});
-					 }
-				})
-		});
-	</script>
+<script src="group-add.js"></script>

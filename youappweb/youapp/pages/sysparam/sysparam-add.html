@@ -1,48 +1,49 @@
-	 <!-- Main content -->
-    <section class="content"  id="addSysParamSection" >
-    
-    	<form role="form"  id="addSysParamForm"  class="form-horizontal">
-    	
-    	<div class="box box-bys-btn">
-	        <div class="box-footer">
-	          <button type="submit" class="btn btn-primary btn-sm">提交</button>
-	          <button type="button" class="btn btn-primary btn-sm"
-	          onclick='$(this).goView("/pages/sysparam/sysparam-list.html");'
-	          >返回</button>
-				<div class="box-tools pull-right">
-					参数信息新增
-				</div>
-	        </div> 
-      </div>
-    	
-    	<div class="box box-bys-content">
-	    	<!--   .box-header   -->
-	        <!--<div class="box-header with-border">-->
-	          <!--<h3 class="box-title">参数信息新增</h3>-->
-	          <!--<div class="box-tools pull-right">-->
-	          <!--</div>-->
-	        <!--</div>-->
-	        <!-- /.box-header -->
-	        
-	        <div class="box-body">
-             <div class="form-group">
-                  <label for="code" class="col-sm-1 control-label requiredMask">编码</label>
-                  <div class="col-sm-5">
-				  <input name="code" id="code" type="text" class="form-control" placeholder=""  >
-				 </div>
-				 <label for="value" class="col-sm-1 control-label requiredMask">参数值</label>
-				 <div class="col-sm-5">
-				  	<input name="value" id="value" type="text" class="form-control" placeholder=""  >
-	             </div>
+<!-- Main content -->
+<section class="content" id="addSysParamSection">
+
+    <form role="form" id="addSysParamForm" class="form-horizontal">
+
+        <div class="box box-bys-btn">
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary btn-sm">提交</button>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick='$(this).goView("/pages/sysparam/sysparam-list.html");'
+                >返回
+                </button>
+                <div class="box-tools pull-right">
+                    参数信息新增
                 </div>
-                
+            </div>
+        </div>
+
+        <div class="box box-bys-content">
+            <!--   .box-header   -->
+            <!--<div class="box-header with-border">-->
+            <!--<h3 class="box-title">参数信息新增</h3>-->
+            <!--<div class="box-tools pull-right">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!-- /.box-header -->
+
+            <div class="box-body">
                 <div class="form-group">
-                  <label for="desc" class="col-sm-1 control-label requiredMask">详情描述</label>
-                  <div class="col-sm-5">
-                  	<textarea name="desc" id="desc" class="form-control" rows="3" placeholder=" ..."  ></textarea>
-			      </div>
+                    <label for="code" class="col-sm-1 control-label requiredMask">编码</label>
+                    <div class="col-sm-5">
+                        <input name="code" id="code" type="text" class="form-control" placeholder="">
+                    </div>
+                    <label for="value" class="col-sm-1 control-label requiredMask">参数值</label>
+                    <div class="col-sm-5">
+                        <input name="value" id="value" type="text" class="form-control" placeholder="">
+                    </div>
                 </div>
-                
+
+                <div class="form-group">
+                    <label for="desc" class="col-sm-1 control-label requiredMask">详情描述</label>
+                    <div class="col-sm-5">
+                        <textarea name="desc" id="desc" class="form-control" rows="3" placeholder=" ..."></textarea>
+                    </div>
+                </div>
+
                 <!-- 
 	          <div class="row">
 	            <div class="col-md-12">
@@ -67,54 +68,14 @@
 	            </div>
 	          </div>
 	           -->
-	          <!-- /.row -->
-	        </div>
-      </div>
+                <!-- /.row -->
+            </div>
+        </div>
     </form>
-    
-    </section>
-	
-	
-	<script type="text/javascript">
-		
-		$_youapp.ready(function (){
-			
-			var page=$.extend({
-	    		root:$("#addSysParamSection"),
-	    		model:{
-	    		}
-	    	},$_youapp.pageTemplate);
-			
-			page.root.find("#addSysParamForm").validate({
-					rules: {
-						'code': {
-							   required: true,
-							   maxlength:64
-						   },
-					   'value': {
-						   required: true,
-						   maxlength:128
-					   },
-					   'desc': {
-						   required: true,
-						   maxlength:2000
-					   }
-					  },
-					  submitHandler:function(form){
-						  page.submitForm({
-							  url:'/sysparam/saveSysParam',
-							  formSelector:form,
-							  success:function(data){
-								  page.root.goView('/pages/sysparam/sysparam-list.html');
-							  }
-							});
-					 }
-				});
-			page.root.find('#addSysParamBtn').on('click',function(){
-				page.root.find("#addSysParamForm").submit();
-			});
-			
-		});
-	</script>
+
+</section>
+
+
+<script src="sysparam-add.js"></script>
 
 

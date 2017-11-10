@@ -1,126 +1,31 @@
 <section class="content" id="searchMenuSection" ms-controller="menu_list">
-		<div class="box box-search">
-			<div class="box-body">
-				<button id="btnAddRoot" class="btn btn-success btn-sm labelAdd" type="button"><i class="fa fa-plus"></i>&nbsp;新增根节点</button>
-				<button id="btnAdd" class="btn btn-success btn-sm labelAdd" type="button"><i class="fa fa-plus"></i>&nbsp;新增节点</button>
-				<button id="btnEdit" class="btn btn-warning btn-sm labelEdit" type="button"><i class="fa fa-edit"></i>&nbsp;编辑</button>
-				<button id="btnDel" class="btn btn-danger btn-sm labelDelete" type="button"><i class="fa fa-remove"></i>&nbsp;删除</button>
-				<button id="btnAssign" class="btn btn-warning btn-sm labelEdit"  type="button"><i class="fa fa-edit"></i>&nbsp;Assign</button>
-			</div>
-		</div>
-		<div class="box box-result">
-     		<div class="box-header with-border">
-   			 	<h3 class="box-title">Menu</h3>
-   			 	<div class="box-tools pull-right">
-   				</div>
-     		</div>
-			<div class="box-body">
-				<div class="form-group">
-					<div class="col-sm-12">
-						<div id="menuTree"></div>
-					</div>
-				</div>
-			</div>
-	</section>
-<script type="text/javascript">
-	$_youapp.ready(function() {
-		var page=$.extend({
-    		root:$("#searchMenuSection"),
-    		model:{
-    		}
-    	},$_youapp.pageTemplate);
-
-
-		page.labelTree = page.root.find('#menuTree').jstree({
-			core : {
-				'multiple':false,
-				"animation" : 0,
-				"check_callback" : true,
-				"themes" : {
-					"stripes" : true,
-					"responsive" : false
-				},
-				data : function(obj, callback) {
-					page.ajaxGet({
-						  url:'/menumanager/getMenusTree',
-						  formData:{},
-						  success:function(data){
-							  callback.call(this, page.formatJstree(data));
-						  }
-						});
-				}
-			},
-			"types" : {
-				"default" : {
-					"draggable" : false,
-					"icon" : "fa fa-folder icon-state-warning icon-lg"
-				}
-			},
-			"plugins" : [ "types", "wholerow", "dnd" ]
-		}).on("load_node.jstree", function() {
-			page.root.find('#menuTree').jstree("open_all");
-		});
-
-		page.root.find('#btnAddRoot').on('click', function() {
-			page.root.goView('/pages/menumanager/menu-add.html', {"id" : null});
-		});
-
-		page.root.find('#btnAdd').on('click', function() {
-			var $jstree = page.root.find('#menuTree').jstree(true);
-			var selected = $jstree.get_selected(true);
-
-			if(selected.length == 0) {
-				page.warning("请选择节点进行添加");
-				return;
-			}
-
-			page.root.goView('/pages/menumanager/menu-add.html', {"id" : selected[0].id});
-		});
-
-		page.root.find('#btnEdit').on('click', function() {
-			var $jstree = page.root.find('#menuTree').jstree(true);
-			var selected = $jstree.get_selected(true);
-
-			if(selected.length == 0) {
-				page.warning("请选择节点进行编辑");
-				return;
-			}
-
-			page.root.goView('/pages/menumanager/menu-edit.html', {"id" : selected[0].id});
-		});
-
-		page.root.find('#btnDel').on('click', function() {
-			var $jstree = page.root.find('#menuTree').jstree(true);
-			var selected = $jstree.get_selected(true);
-
-			if(selected.length == 0) {
-				page.warning("请选择节点进行删除");
-				return;
-			}
-
-
-			page.ajaxPost({
-				  url:'/menumanager/deleteMenuById',
-				  formData:{"id" : selected[0].id},
-				  success:function(data){
-					  page.success("delete-success");
-				  	  $jstree.delete_node(selected[0]);
-				  }
-			});
-
-		});
-
-
-		page.root.find('#btnAssign').on('click', function() {
-			var $jstree = page.root.find('#menuTree').jstree(true);
-			var selected = $jstree.get_selected(true);
-
-			if(selected.length == 0) {
-				page.warning("请选择节点进行Assign");
-				return;
-			}
-
-			page.root.goView('/pages/menumanager/menu-assign.html', {"id" : selected[0].id});
-		});
-	});
-</script>
+    <div class="box box-search">
+        <div class="box-body">
+            <button id="btnAddRoot" class="btn btn-success btn-sm labelAdd" type="button"><i class="fa fa-plus"></i>&nbsp;新增根节点
+            </button>
+            <button id="btnAdd" class="btn btn-success btn-sm labelAdd" type="button"><i class="fa fa-plus"></i>&nbsp;新增节点
+            </button>
+            <button id="btnEdit" class="btn btn-warning btn-sm labelEdit" type="button"><i class="fa fa-edit"></i>&nbsp;编辑
+            </button>
+            <button id="btnDel" class="btn btn-danger btn-sm labelDelete" type="button"><i class="fa fa-remove"></i>&nbsp;删除
+            </button>
+            <button id="btnAssign" class="btn btn-warning btn-sm labelEdit" type="button"><i class="fa fa-edit"></i>&nbsp;Assign
+            </button>
+        </div>
+    </div>
+    <div class="box box-result">
+        <div class="box-header with-border">
+            <h3 class="box-title">Menu</h3>
+            <div class="box-tools pull-right">
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div id="menuTree"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="menu-list.js"></script>

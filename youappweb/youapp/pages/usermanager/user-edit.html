@@ -84,8 +84,8 @@
     	page.root.find("#editUserForm").validate({
  			rules: {
  				'natureName': {
- 					   required: false,
- 					   maxlength:128
+ 					   required: true,
+ 					   maxlength:32
  				   }
  			  },
  			  submitHandler:function(form){

@@ -565,6 +565,9 @@ td.recordRemove {
   padding: 0px 5px;
 }
 
+.error{
+  color: red;
+}
 
 
 

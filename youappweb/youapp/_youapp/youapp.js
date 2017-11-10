@@ -28,11 +28,17 @@
 						layoutId:layoutId,
 						htmlUrl:htmlUrl
 				}
+
+				if(htmlUrl.indexOf('pages/quicktask/undefined')!=-1){
+					debugger;
+				}
+
 				$_youapp.$_util.ajaxGet({
 					url:$_youapp.$_config.getHtmlEndpoint()+'/'+htmlUrl,
 					// data:{data:$_youapp.$_util.json(requsetVO)},
                     requsetVO :requsetVO, // avoid closure variable refer to the same one with reference type
 					success:function(html){
+						var html='<div>'+html+'</div>';
 						var requsetVO =this.requsetVO; // run as local variable
 						$layoutDom=$_youapp.$_layout.getLayoutDom(requsetVO.layoutId);
 
@@ -50,13 +56,13 @@
 							var nodeName=e.nodeName;
 							if(('SCRIPT'==nodeName||'script'==nodeName)&&$(e).attr('src')!=undefined){
                                 var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('src');
+                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('src');
                                 var id=$.md5(absolute);
                                 $(e).attr('src',absolute).attr('id' ,id);
 							}
                             if(('LINK'==nodeName||'link'==nodeName)&&$(e).attr('href')!=undefined){
                                 var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('href');
+                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('href');
                                 var id=$.md5(absolute);
                                 $(e).attr('href',absolute).attr('id' ,id);
                             }
@@ -65,20 +71,25 @@
 
 						$html.find('script').each(function (i ,e) {
 							var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-							var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('src');
+							var absolute=$_youapp.$_config.getHtmlEndpoint()+"/"+defaultRelative+"/"+$(e).attr('src');
 							var id=$.md5(absolute);
                             $(e).attr('src',absolute).attr('id' ,id);
                         });
 
                         $html.find('link').each(function (i ,e) {
                             var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                            var absolute=$_youapp.$_config.getHtmlEndpoint()+ defaultRelative+"/"+$(e).attr('href');
+                            var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('href');
                             var id=$.md5(absolute);
                             $(e).attr('href',absolute).attr('id' ,id);
                         });
 
                         //append url to hash
 						location.hash=requsetVO.htmlUrl;
+
+						//mark the container reference to the url as snapshot
+						if($_youapp.$_snapshot.isSnapshotOnHtml($html)){
+                            $_youapp.$_snapshot.putSnapshot(requsetVO.layoutId,requsetVO.htmlUrl,null);
+						}
 
 						var layout=new Layout($html);
 						layout.draw(requsetVO.layoutId);
@@ -156,20 +167,33 @@
 			}while(cycl<1000&&($parent=$parent.parent()));
 		}
 
+
 		this.replace=function(layoutId,htmlurl,isDraw){
-			var $target=$(document).find('[data-layoutid="'+layoutId+'"]');
+
+			var $layout=$(document).find('[data-layoutid="'+layoutId+'"]');
 			var $dom;
-			if($target){
-				$target.empty();
-				$target.data('htmlurl',htmlurl);
-				$dom=$target;
+			if($layout){
+                //check if the target is snapshot
+                if($_youapp.$_snapshot.isSnapshot(layoutId,$layout.data('htmlurl'))){
+                    $layout.children(':last').hide();
+                }else{
+                    $layout.children(':last').remove();
+				}
+                $layout.data('htmlurl',htmlurl);
+				$dom=$layout;
 			}
 			else{
 				var layoutString=this.layoutDomString(layoutId,htmlurl);
 				$dom=$(layoutString);
 			}
 			if(isDraw){
-				this.draw(layoutId,$dom);
+				//check if the target is snapshot
+                if($_youapp.$_snapshot.isSnapshot(layoutId,htmlurl)){
+                    $layout.children(':last').show();
+                }else{
+                    this.draw(layoutId,$dom);
+				}
+
 			}
 		}
 

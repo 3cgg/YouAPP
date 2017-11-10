@@ -200,6 +200,9 @@
 				}
 				var _options={};
 				_options=$.extend(_options,defOptions,options);
+                if(_options.url.indexOf('pages/quicktask/undefined')!=-1){
+                    debugger;
+                }
 				$.ajax({
 				    url: _options.url,
 				    type: _options.type,

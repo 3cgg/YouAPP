@@ -277,7 +277,7 @@ $.fn.extend({
 			}
 			
 			this.ajax=function(data, callback, settings,options,$wrap){
-				//debugger;
+				// debugger;
 				$_youapp.$_data.ajaxGet({
 					url:options.url,
 					formData:options.urlDataFn.apply(),
@@ -380,7 +380,8 @@ $.fn.extend({
 			},
 			*/
 			bSort:false,
-			searching:false
+			searching:false,
+            lengthMenu: [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]]
 		});
 		return dataTableObj;
 	}

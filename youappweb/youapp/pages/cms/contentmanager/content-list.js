@@ -35,7 +35,7 @@ $_youapp.ready(function () {
                     url: '/contentmanager/deleteContentById',
                     formData: {'id': id},
                     success: function (data) {
-                        page.listTable.ajax.reload();
+                        page.listTable.ajax.reload(null,false);
                     }
                 });
             }
@@ -91,6 +91,12 @@ $_youapp.ready(function () {
 
     page.root.find('#publishTimeEnd').datetimepicker();
 
+    page.root.find('snapshot').on('onCallback',function (event,args) {
+
+        console.log(event);
+        console.log(JSON.stringify(args));
+        page.listTable.ajax.reload(null,false);
+    })
 
 
 

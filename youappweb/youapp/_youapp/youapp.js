@@ -172,9 +172,12 @@
 
 			var $layout=$(document).find('[data-layoutid="'+layoutId+'"]');
 			var $dom;
+			var _history={};
 			if($layout){
                 //check if the target is snapshot
-                if($_youapp.$_snapshot.isSnapshot(layoutId,$layout.data('htmlurl'))){
+				var oldHtmlUrl=$layout.data('htmlurl');
+				_history.preHtmlUrl=oldHtmlUrl;
+                if($_youapp.$_snapshot.isSnapshot(layoutId,oldHtmlUrl)){
                     $layout.children(':last').hide();
                 }else{
                     $layout.children(':last').remove();
@@ -189,7 +192,9 @@
 			if(isDraw){
 				//check if the target is snapshot
                 if($_youapp.$_snapshot.isSnapshot(layoutId,htmlurl)){
+                    _history.targetHtmlUrl=htmlurl;
                     $layout.children(':last').show();
+                    $layout.children(':last').find('snapshot').trigger('onCallback',_history);
                 }else{
                     this.draw(layoutId,$dom);
 				}

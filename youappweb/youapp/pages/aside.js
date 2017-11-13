@@ -24,12 +24,13 @@ $_youapp.ready(function() {
         var $menuItem=page.root.find('#_template_treeview > #_template_treeview_item> ul>li ').clone(false);
         var $menuItemLink=$menuItem.find('a');
         $menuItemLink.val('href','javascript:void(0)');
-        $menuItemLink.attr('data-url',data.url);
-        $menuItemLink.attr('data-urldata','');
-        $menuItemLink.attr('data-tabid','layoutTab');
-        $menuItemLink.attr('data-tabmenuid',data.code+'_'+data.id);
-        $menuItemLink.attr('data-tabmenutitle',data.name);
+        $menuItemLink.data('url',data.url);
+        $menuItemLink.data('urldata','');
+        $menuItemLink.data('tabid','layoutTab');
+        $menuItemLink.data('tabmenuid',data.code+'_'+data.id);
+        $menuItemLink.data('tabmenutitle',data.name);
         $menuItemLink.text(data.name);
+        $menuItemLink.attr('id',data.id);
         return $menuItem;
     }
 

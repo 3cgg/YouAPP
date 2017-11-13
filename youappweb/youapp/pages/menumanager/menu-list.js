@@ -76,14 +76,27 @@ $_youapp.ready(function () {
         }
 
 
-        page.ajaxPost({
-            url: '/menumanager/deleteMenuById',
-            formData: {"id": selected[0].id},
-            success: function (data) {
-                page.success("delete-success");
-                $jstree.delete_node(selected[0]);
+        $.confirm({
+            title: false,
+            content: '确定删除？',
+            confirm: function(){
+                page.ajaxPost({
+                    url: '/menumanager/deleteMenuById',
+                    formData: {"id": selected[0].id},
+                    success: function (data) {
+                        page.success("delete-success");
+                        $jstree.delete_node(selected[0]);
+                    }
+                });
+            },
+            cancel: function(){
+            },
+            confirmButton: '确定',
+            cancelButton: '撤销',
+            onOpen: function(){
             }
         });
+
 
     });
 

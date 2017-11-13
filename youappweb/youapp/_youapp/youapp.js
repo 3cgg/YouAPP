@@ -24,75 +24,42 @@
 				if(htmlUrl==''){
 					continue;
 				}
-				var requsetVO={
+				var requestVO={
 						layoutId:layoutId,
 						htmlUrl:htmlUrl
 				}
-
-				if(htmlUrl.indexOf('pages/quicktask/undefined')!=-1){
-					debugger;
-				}
-
 				$_youapp.$_util.ajaxGet({
 					url:$_youapp.$_config.getHtmlEndpoint()+'/'+htmlUrl,
-					// data:{data:$_youapp.$_util.json(requsetVO)},
-                    requsetVO :requsetVO, // avoid closure variable refer to the same one with reference type
+					// data:{data:$_youapp.$_util.json(requestVO)},
+                    requestVO :requestVO, // avoid closure variable refer to the same one with reference type
 					success:function(html){
 						var html='<div>'+html+'</div>';
-						var requsetVO =this.requsetVO; // run as local variable
-						$layoutDom=$_youapp.$_layout.getLayoutDom(requsetVO.layoutId);
+						var requestVO =this.requestVO; // run as local variable
+						$layoutDom=$_youapp.$_layout.getLayoutDom(requestVO.layoutId);
 
 						var param={};
-						var index=requsetVO.htmlUrl.indexOf('?param=');
+						var index=requestVO.htmlUrl.indexOf('?param=');
 						if(index!=-1){
-							param=JSON.parse(requsetVO.htmlUrl.substring(index+'?param='.length));
+							param=JSON.parse(requestVO.htmlUrl.substring(index+'?param='.length));
 						}
 
 						var token={};
 						$layoutDom.data('param',param);
 						$layoutDom.data('token',token);
 						var $html=$(html);
-						$.each($html,function (i,e) {
-							var nodeName=e.nodeName;
-							if(('SCRIPT'==nodeName||'script'==nodeName)&&$(e).attr('src')!=undefined){
-                                var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('src');
-                                var id=$.md5(absolute);
-                                $(e).attr('src',absolute).attr('id' ,id);
-							}
-                            if(('LINK'==nodeName||'link'==nodeName)&&$(e).attr('href')!=undefined){
-                                var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                                var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('href');
-                                var id=$.md5(absolute);
-                                $(e).attr('href',absolute).attr('id' ,id);
-                            }
-                        });
 
-
-						$html.find('script').each(function (i ,e) {
-							var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-							var absolute=$_youapp.$_config.getHtmlEndpoint()+"/"+defaultRelative+"/"+$(e).attr('src');
-							var id=$.md5(absolute);
-                            $(e).attr('src',absolute).attr('id' ,id);
-                        });
-
-                        $html.find('link').each(function (i ,e) {
-                            var defaultRelative=requsetVO.htmlUrl.substring(0,requsetVO.htmlUrl.lastIndexOf('/'));
-                            var absolute=$_youapp.$_config.getHtmlEndpoint()+ "/"+defaultRelative+"/"+$(e).attr('href');
-                            var id=$.md5(absolute);
-                            $(e).attr('href',absolute).attr('id' ,id);
-                        });
+                        $_youapp.$_htmlWorker.all($html,requestVO); // modify js , css resource location
 
                         //append url to hash
-						location.hash=requsetVO.htmlUrl;
+						location.hash=requestVO.htmlUrl;
 
 						//mark the container reference to the url as snapshot
 						if($_youapp.$_snapshot.isSnapshotOnHtml($html)){
-                            $_youapp.$_snapshot.putSnapshot(requsetVO.layoutId,requsetVO.htmlUrl,null);
+                            $_youapp.$_snapshot.putSnapshot(requestVO.layoutId,requestVO.htmlUrl,null);
 						}
 
 						var layout=new Layout($html);
-						layout.draw(requsetVO.layoutId);
+						layout.draw(requestVO.layoutId);
 					},
 					error:function(data){
 //						var layout=new Layout(data);

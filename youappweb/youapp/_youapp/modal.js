@@ -52,7 +52,37 @@ $.extend(window.$_youapp.pageTemplate,{
                     keyboard: false,
                     backdrop: 'static'
                 });
-                $dom.find('.modal-content > .modal-body').load($_youapp.$_config.getHtmlEndpoint() + url);
+
+                // $dom.find('.modal-content > .modal-body').load($_youapp.$_config.getHtmlEndpoint() + url);
+
+                var requestVO={
+                    layoutId:'',
+                    htmlUrl:url
+                }
+                $_youapp.$_util.ajaxGet({
+                    url:$_youapp.$_config.getHtmlEndpoint()+'/'+url,
+                    // data:{data:$_youapp.$_util.json(requestVO)},
+                    requestVO :requestVO, // avoid closure variable refer to the same one with reference type
+                    success:function(html){
+                        var html='<div>'+html+'</div>';
+                        var requestVO =this.requestVO; // run as local variable
+                        var $html=$(html);
+
+                        $_youapp.$_htmlWorker.all($html,requestVO); // modify js , css resource location
+
+                        $dom.find('.modal-content > .modal-body').html($html);
+
+                        //append url to hash
+                        // location.hash=requestVO.htmlUrl;
+                    },
+                    error:function(data){
+//						var layout=new Layout(data);
+//						layout.draw();
+                    }
+                });
+
+
+
                 $dom.on('hidden.bs.modal', function (e) {
                     try {
                         if ($dom.data('modalHiddenFn')) {

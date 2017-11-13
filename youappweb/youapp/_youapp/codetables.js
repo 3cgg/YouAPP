@@ -250,7 +250,11 @@
 			
 			defaultDraw:function($dom){
 				$_youapp.$_codeTable.draw($($dom).find('.codetable'));
-			}
+			},
+
+			val:function () {
+				return codes.val();
+            }
 	}
 	
 	

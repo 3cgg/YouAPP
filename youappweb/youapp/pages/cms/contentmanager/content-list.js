@@ -91,7 +91,7 @@ $_youapp.ready(function () {
 
     page.root.find('#publishTimeEnd').datetimepicker();
 
-    page.root.find('snapshot').on('onCallback',function (event,args) {
+    page.root.find('snapshot').on('snapshot.shown',function (event,args) {
 
         console.log(event);
         console.log(JSON.stringify(args));

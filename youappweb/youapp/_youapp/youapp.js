@@ -161,7 +161,7 @@
                 if($_youapp.$_snapshot.isSnapshot(layoutId,htmlurl)){
                     _history.targetHtmlUrl=htmlurl;
                     $layout.children(':last').show();
-                    $layout.children(':last').find('snapshot').trigger('onCallback',_history);
+                    $layout.children(':last').find('snapshot').trigger('snapshot.shown',_history);
                 }else{
                     this.draw(layoutId,$dom);
 				}

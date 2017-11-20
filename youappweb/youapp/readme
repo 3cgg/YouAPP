@@ -1,6 +1,6 @@
 1. page snapshot (reference content-list.html)
 (1). put directly the tag <snapshot> in the top level ,
-(2). when the page is re-rendered, the 'onCallback' event is to be called,
+(2). when the page is re-rendered, the 'snapshot.shown' event is to be called,
     so if you need do something to clear or reset , you can register the event callback function , i.e.
     /*
     page.root.find('snapshot').on('onCallback',function (event,args) {
